@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    container_name: backend_service
+    restart: always
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend:/usr/src/app       # Mount the local backend folder
+      - /usr/src/app/node_modules    # Exclude node_modules to avoid conflicts
+    environment:
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_USER=${POSTGRES_USER}
+      - DATABASE_PASSWORD=${POSTGRES_PASSWORD}
+      - DATABASE_NAME=${POSTGRES_DB}
+    depends_on:
+      - postgres
+    profiles:
+      - fullstack
+      - backend
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: frontend_service
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/usr/src/app       # Mount the local frontend folder
+      - /usr/src/app/node_modules     # Exclude node_modules
+    depends_on:
+      - backend
+    profiles:
+      - frontend
+      - fullstack
+
+  postgres:
+    image: postgres:14
+    container_name: postgres_container
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    profiles:
+      - database
+      - backend
+      - fullstack
+
+volumes:
+  postgres_data:
