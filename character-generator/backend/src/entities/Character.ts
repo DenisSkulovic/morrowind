@@ -1,57 +1,59 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, ManyToOne } from "typeorm";
 import { CharacterMemory } from "./CharacterMemory";
 import { MemoryPool } from "./MemoryPool";
-import { Attribute } from "./Attribute";
+import { Trait } from "./Trait/Trait";
 import { CharacterProfession } from "./CharacterProfession";
+import { Skill } from "./Skill/Skill";
+import { Birthsign } from "./Birthsign";
+import { Race } from "./Race";
+import { Inventory } from "./Inventory";
+import { Tag } from "./Tag";
 
 @Entity()
 export class Character {
     @PrimaryGeneratedColumn("uuid")
-    id: string;
+    id!: string;
 
     @Column()
-    name: string;
+    name!: string;
+
+    @ManyToOne(() => Race)
+    race!: Race;
 
     @Column()
-    raceId: string; // FK to Race entity
+    gender!: "Male" | "Female";
+
+    @ManyToOne(() => Birthsign)
+    birthsign!: Birthsign;
 
     @Column()
-    gender: string;
+    birthYear!: number;
 
     @Column()
-    birthsignId: string; // FK to Birthsign entity
-
-    @Column({ nullable: true })
-    educationId: string; // FK to Education entity
+    birthMonth!: string;
 
     @Column()
-    birthYear: number;
+    birthDay!: number;
 
-    @Column()
-    birthMonth: string;
-
-    @Column()
-    birthDay: number;
+    @OneToMany(() => Skill)
+    skills!: Record<string, number>;
 
     @Column("jsonb")
-    skills: Record<string, number>; // Skill IDs with levels
-
-    @Column("jsonb")
-    inventory: Inventory; // Hybrid: some attributes can be computed (e.g., weight)
+    inventory!: Inventory;
 
     @OneToMany(() => CharacterProfession, profession => profession.character)
-    professions: CharacterProfession[]; // Tracks current and past professions
+    professions!: CharacterProfession[]; // Tracks current and past professions
 
     @ManyToMany(() => MemoryPool)
     @JoinTable()
-    memoryPools: Promise<MemoryPool[]>; // Assigned during generation, or as the person expands their knowledge as their personality develops
+    memoryPools!: Promise<MemoryPool[]>; // Assigned during generation, or as the person expands their knowledge as their personality develops
 
     @OneToMany(() => CharacterMemory, charMemory => charMemory.character, { lazy: true })
     characterMemories!: Promise<CharacterMemory[]>; // Lazy-loaded for performance
 
-    @Column("jsonb")
-    personalityTraits: Record<string, number>; // Stored base values, modifiers computed
-
     @ManyToMany()
-    attributes: Attribute[]; // Traits like "Brave", "Greedy", etc.
+    traits!: Trait[]; // Traits like "Brave", "Greedy", etc.
+
+    @ManyToMany(() => Tag, (tag) => tag.character)
+    tags: Tag[];
 }

@@ -5,6 +5,6 @@ export default {
     username: "morrowind_user",
     password: "password123",
     database: "morrowind_db",
-    entities: ["src/entities/*.ts"],
+    entities: ["src/entities/**/*.ts"],
     synchronize: true, // Automatically update the schema (for development only)
 };
