@@ -1,0 +1,20 @@
+{
+    "BREAD": {
+        "name": "Bread",
+        "description": "A freshly baked loaf of bread. Simple but filling.",
+        "weight": 1,
+        "value": 2,
+        "magical": false,
+        "nutrition": 20,
+        "spoilage": 48
+    },
+    "APPLE": {
+        "name": "Apple",
+        "description": "A fresh apple, perfect for a quick snack.",
+        "weight": 0.5,
+        "value": 1,
+        "magical": false,
+        "nutrition": 10,
+        "spoilage": 36
+    }
+}
