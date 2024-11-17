@@ -1,11 +1,10 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
 import { Memory } from "./Memory"
 import { Character } from "./Character"
+import { ContentBase } from "./ContentBase";
 
 @Entity()
-export class CharacterMemory {
-    @PrimaryGeneratedColumn("uuid")
-    id: string;
+export class CharacterMemory extends ContentBase {
 
     @ManyToOne(() => Character, character => character.characterMemories)
     character: Character;

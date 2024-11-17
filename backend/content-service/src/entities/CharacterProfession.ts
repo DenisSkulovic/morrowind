@@ -2,11 +2,10 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany } from "t
 import { MemoryPool } from "./MemoryPool";
 import { Character } from "./Character";
 import { Tag } from "./Tag";
+import { ContentBase } from "./ContentBase";
 
 @Entity()
-export class CharacterProfession {
-    @PrimaryGeneratedColumn("uuid")
-    id: string;
+export class CharacterProfession extends ContentBase {
 
     @ManyToOne(() => Character, character => character.professions)
     character: Character;

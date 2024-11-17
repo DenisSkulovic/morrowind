@@ -2,11 +2,10 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany } from "t
 import {Memory} from "./Memory"
 import {MemoryPool} from "./MemoryPool"
 import { Tag } from "./Tag";
+import { ContentBase } from "./ContentBase";
 
 @Entity()
-export class MemoryPoolEntry {
-    @PrimaryGeneratedColumn("uuid")
-    id: string;
+export class MemoryPoolEntry extends ContentBase {
 
     @ManyToOne(() => MemoryPool, pool => pool.memories)
     pool: MemoryPool;

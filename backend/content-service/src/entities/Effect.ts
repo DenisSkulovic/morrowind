@@ -1,9 +1,8 @@
 import { Tag } from "./Tag";
+import { ContentBase } from "./ContentBase";
 
 @Entity()
-export class Effect {
-    @PrimaryGeneratedColumn("uuid")
-    id: string;
+export class Effect extends ContentBase {
 
     @Column()
     name: Record<string, string>; // Localized names

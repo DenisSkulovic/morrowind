@@ -1,11 +1,10 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany } from "typeorm";
 import {Tag} from "./Tag"
 import {MemoryPoolEntry} from "./MemoryPoolEntry"
+import { ContentBase } from "./ContentBase";
 
 @Entity()
-export class MemoryPool {
-    @PrimaryGeneratedColumn("uuid")
-    id: string;
+export class MemoryPool extends ContentBase {
 
     @Column()
     name: string; // E.g., "Seida Neen Knowledge - Extensive" IMPORTANT - Extensive should be in the tags, not just text; tag like extensive_knowledge

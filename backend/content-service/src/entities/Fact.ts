@@ -1,10 +1,9 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from "typeorm";
 import { Tag } from "./Tag";
+import { ContentBase } from "./ContentBase";
 
 @Entity()
-export class Fact {
-    @PrimaryGeneratedColumn("uuid")
-    id: string;
+export class Fact extends ContentBase {
 
     @Column()
     description: string

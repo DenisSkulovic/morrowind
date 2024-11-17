@@ -8,11 +8,10 @@ import { Trait } from "./Trait/Trait";
 import { MemoryPoolEntry } from "./MemoryPoolEntry";
 import { Character } from "./Character";
 import { Race } from "./Race";
+import { ContentBase } from "./ContentBase";
 
 @Entity()
-export class Tag {
-    @PrimaryGeneratedColumn("uuid")
-    id: string;
+export class Tag extends ContentBase {
 
     @Column({ unique: true })
     name: string; // Tag name (e.g., "volcano", "eruption")

@@ -8,11 +8,10 @@ import { Birthsign } from "./Birthsign";
 import { Race } from "./Race";
 import { Inventory } from "./Inventory";
 import { Tag } from "./Tag";
+import { ContentBase } from "./ContentBase";
 
 @Entity()
-export class Character {
-    @PrimaryGeneratedColumn("uuid")
-    id!: string;
+export class Character extends ContentBase {
 
     @Column()
     name!: string;

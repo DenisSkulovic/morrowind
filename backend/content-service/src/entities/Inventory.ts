@@ -1,10 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany } from "typeorm";
-
+import { ContentBase } from "./ContentBase";
 
 @Entity()
-export class Inventory {
-    @PrimaryGeneratedColumn("uuid")
-    id: string;
+export class Inventory extends ContentBase {
 
     @Column("jsonb")
     equipment: Record<string, string | null>; // FK to Item entity
