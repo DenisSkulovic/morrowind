@@ -1,0 +1,176 @@
+{
+    "well_fed": {
+        "name": "Well-Fed",
+        "type": "buff",
+        "effects": [
+            "stamina_regen_boost",
+            "mood_boost"
+        ]
+    },
+    "hungry": {
+        "name": "Hungry",
+        "type": "debuff",
+        "effects": [
+            "stamina_regen_debuff"
+        ]
+    },
+    "starving": {
+        "name": "Starving",
+        "type": "debuff",
+        "effects": [
+            "stamina_regen_debuff",
+            "health_drain"
+        ]
+    },
+    "thirsty": {
+        "name": "Thirsty",
+        "type": "debuff",
+        "effects": [
+            "stamina_regen_debuff"
+        ]
+    },
+    "dehydrated": {
+        "name": "Dehydrated",
+        "type": "debuff",
+        "effects": [
+            "stamina_regen_debuff",
+            "health_drain"
+        ]
+    },
+    "well_rested": {
+        "name": "Well-Rested",
+        "type": "buff",
+        "effects": [
+            "stamina_boost",
+            "mood_boost"
+        ]
+    },
+    "sleepy": {
+        "name": "Sleepy",
+        "type": "debuff",
+        "effects": [
+            "reaction_speed_debuff"
+        ]
+    },
+    "exhausted": {
+        "name": "Exhausted",
+        "type": "debuff",
+        "effects": [
+            "reaction_speed_debuff",
+            "stamina_regen_debuff"
+        ]
+    },
+    "drunk": {
+        "name": "Drunk",
+        "type": "neutral",
+        "effects": [
+            "agility_debuff",
+            "charisma_buff",
+            "confusion"
+        ]
+    },
+    "hungover": {
+        "name": "Hungover",
+        "type": "debuff",
+        "effects": [
+            "stamina_debuff",
+            "reaction_speed_debuff"
+        ]
+    },
+    "confused": {
+        "name": "Confused",
+        "type": "debuff",
+        "effects": [
+            "decision_accuracy_debuff"
+        ]
+    },
+    "panicking": {
+        "name": "Panicking",
+        "type": "debuff",
+        "effects": [
+            "reaction_speed_boost",
+            "decision_accuracy_debuff"
+        ]
+    },
+    "in_pain": {
+        "name": "In Pain",
+        "type": "debuff",
+        "effects": [
+            "stamina_regen_debuff",
+            "reaction_speed_debuff"
+        ]
+    },
+    "poisoned": {
+        "name": "Poisoned",
+        "type": "debuff",
+        "effects": [
+            "health_drain"
+        ]
+    },
+    "burning": {
+        "name": "Burning",
+        "type": "debuff",
+        "effects": [
+            "health_drain"
+        ]
+    },
+    "freezing": {
+        "name": "Freezing",
+        "type": "debuff",
+        "effects": [
+            "stamina_drain"
+        ]
+    },
+    "wet": {
+        "name": "Wet",
+        "type": "neutral",
+        "effects": [
+            "fire_resistance_boost"
+        ]
+    },
+    "overburdened": {
+        "name": "Overburdened",
+        "type": "debuff",
+        "effects": [
+            "movement_speed_debuff",
+            "stamina_drain"
+        ]
+    },
+    "well_hydrated": {
+        "name": "Well-Hydrated",
+        "type": "buff",
+        "effects": [
+            "stamina_regen_boost"
+        ]
+    },
+    "motivated": {
+        "name": "Motivated",
+        "type": "buff",
+        "effects": [
+            "stamina_boost",
+            "mood_boost"
+        ]
+    },
+    "demoralized": {
+        "name": "Demoralized",
+        "type": "debuff",
+        "effects": [
+            "stamina_debuff",
+            "reaction_speed_debuff"
+        ]
+    },
+    "focused": {
+        "name": "Focused",
+        "type": "buff",
+        "effects": [
+            "decision_accuracy_boost"
+        ]
+    },
+    "distracted": {
+        "name": "Distracted",
+        "type": "debuff",
+        "effects": [
+            "decision_accuracy_debuff"
+        ]
+    }
+}

@@ -1,7 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
-import { Memory } from "./Knowledge/Memory"
-import { Character } from "./Character"
-import { ContentBase } from "./ContentBase";
+import { Entity, Column, ManyToOne } from "typeorm";
+import { Memory } from "./Memory"
+import { Character } from "../Character"
+import { ContentBase } from "../ContentBase";
 
 @Entity()
 export class CharacterMemory extends ContentBase {

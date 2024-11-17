@@ -1,29 +1,22 @@
-import { Tag } from "./Tag";
+import { Column, Entity } from "typeorm";
 import { ContentBase } from "./ContentBase";
 
 @Entity()
 export class Effect extends ContentBase {
-    id_prefix = "EFFECT"
+    id_prefix = "EFFECT";
 
     @Column()
-    name: Record<string, string>; // Localized names
+    name: string;
 
     @Column()
-    type: string; // Attribute modifier, status modifier, etc.
+    type: string; // "damage", "healing", "buff", "debuff", "resistance", etc.
 
-    @Column("jsonb", { nullable: true })
-    targetTags: {
-        add?: string[];
-        remove?: string[];
-    };
+    @Column({ nullable: true })
+    target: string; // "health", "stamina", "magic", etc.
 
-    @Column("jsonb", { nullable: true })
-    targetAttributes: Record<string, { add?: number; max?: number }>;
+    @Column({ nullable: true })
+    mode: string; // "instant", "gradual", "persistent"
 
-    @Column({ default: 0 })
-    duration: number; // 0 = instant, >0 = buff/debuff duration in ticks
-
-    @Column({ default: false })
-    stackable: boolean;
-
+    @Column({ nullable: true })
+    element?: string; // "fire", "frost", "poison"
 }

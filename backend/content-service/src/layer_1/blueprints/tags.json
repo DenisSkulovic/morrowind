@@ -1,0 +1,67 @@
+{
+    "culture_highland": {
+        "name": "Highland Culture",
+        "subtype": "tag_culture",
+        "description": "Pertains to a Highland cultural identity."
+    },
+    "culture_lowland": {
+        "name": "Lowland Culture",
+        "subtype": "tag_culture",
+        "description": "Pertains to a Lowland cultural identity."
+    },
+    "item_material_iron": {
+        "name": "Iron",
+        "subtype": "tag_material",
+        "description": "Indicates the item is made of iron."
+    },
+    "item_material_steel": {
+        "name": "Steel",
+        "subtype": "tag_material",
+        "description": "Indicates the item is made of steel."
+    },
+    "item_material_wood": {
+        "name": "Wood",
+        "subtype": "tag_material",
+        "description": "Indicates the item is made of wood."
+    },
+    "weapon_blade": {
+        "name": "Blade",
+        "subtype": "tag_weapon",
+        "description": "A general tag for bladed weapons."
+    },
+    "weapon_blunt": {
+        "name": "Blunt",
+        "subtype": "tag_weapon",
+        "description": "A general tag for blunt weapons."
+    },
+    "weapon_ranged": {
+        "name": "Ranged Weapon",
+        "subtype": "tag_weapon",
+        "description": "A general tag for ranged weapons."
+    },
+    "faction_fighters_guild": {
+        "name": "Fighters Guild",
+        "subtype": "tag_faction",
+        "description": "Represents the Fighters guild."
+    },
+    "faction_highland_kingdom": {
+        "name": "Highland Kingdom",
+        "subtype": "tag_faction",
+        "description": "Represents the Highland Kingdom."
+    },
+    "faction_lowland_kingdom": {
+        "name": "Lowland Kingdom",
+        "subtype": "tag_faction",
+        "description": "Represents the Lowland Kingdom."
+    },
+    "stolen_item": {
+        "name": "Stolen Item",
+        "subtype": "tag_status",
+        "description": "Marks the item as stolen property."
+    },
+    "tag_quest_active": {
+        "name": "Active Quest Item",
+        "subtype": "tag_quest",
+        "description": "Marks this item as important for an active quest."
+    }
+}
