@@ -12,6 +12,7 @@ import { ContentBase } from "./ContentBase";
 
 @Entity()
 export class Character extends ContentBase {
+    id_prefix = "CHARACTER"
 
     @Column()
     name!: string;
@@ -52,7 +53,4 @@ export class Character extends ContentBase {
 
     @ManyToMany()
     traits!: Trait[]; // Traits like "Brave", "Greedy", etc.
-
-    @ManyToMany(() => Tag, (tag) => tag.character)
-    tags: Tag[];
 }

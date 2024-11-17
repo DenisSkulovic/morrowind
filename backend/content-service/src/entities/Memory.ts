@@ -5,10 +5,8 @@ import { ContentBase } from "./ContentBase";
 
 @Entity()
 export class Memory extends ContentBase {
+    id_prefix = "MEMORY"
 
     @OneToMany(() => Fact, memory => memory.facts, { lazy: true })
     facts: Promise<Fact[]>
-
-    @ManyToMany(() => Tag, (tag) => tag.memory)
-    tags: Tag[];
 }

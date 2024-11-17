@@ -3,4 +3,5 @@ import { ContentBase } from "./ContentBase";
 
 @Entity()
 export class Birthsign extends ContentBase {
+    id_prefix = "BIRTHSIGN"
 }

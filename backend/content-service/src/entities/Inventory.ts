@@ -3,6 +3,7 @@ import { ContentBase } from "./ContentBase";
 
 @Entity()
 export class Inventory extends ContentBase {
+    id_prefix = "INVENTORY"
 
     @Column("jsonb")
     equipment: Record<string, string | null>; // FK to Item entity

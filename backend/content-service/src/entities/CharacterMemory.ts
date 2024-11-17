@@ -5,6 +5,7 @@ import { ContentBase } from "./ContentBase";
 
 @Entity()
 export class CharacterMemory extends ContentBase {
+    id_prefix = "CHARACTER_MEMORY"
 
     @ManyToOne(() => Character, character => character.characterMemories)
     character: Character;

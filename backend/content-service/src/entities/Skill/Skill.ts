@@ -3,4 +3,6 @@ import { ContentBase } from "../ContentBase";
 
 @Entity()
 export class Skill extends ContentBase {
+
+    id_prefix = "SKILL"
 }

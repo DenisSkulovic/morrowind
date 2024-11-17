@@ -3,6 +3,7 @@ import { ContentBase } from "./ContentBase";
 
 @Entity()
 export class Effect extends ContentBase {
+    id_prefix = "EFFECT"
 
     @Column()
     name: Record<string, string>; // Localized names
@@ -24,8 +25,5 @@ export class Effect extends ContentBase {
 
     @Column({ default: false })
     stackable: boolean;
-
-    @ManyToMany(() => Tag, (tag) => tag.effect)
-    tags: Tag[];
 
 }

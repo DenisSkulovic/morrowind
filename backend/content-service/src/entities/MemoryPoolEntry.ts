@@ -6,6 +6,7 @@ import { ContentBase } from "./ContentBase";
 
 @Entity()
 export class MemoryPoolEntry extends ContentBase {
+    id_prefix = "MEMORY_POOL_ENTRY"
 
     @ManyToOne(() => MemoryPool, pool => pool.memories)
     pool: MemoryPool;
@@ -21,7 +22,4 @@ export class MemoryPoolEntry extends ContentBase {
 
     @Column({ default: 1 })
     defaultImportance: number; // Importance level for this pool
-
-    @ManyToMany(() => Tag, (tag) => tag.memoryPoolEntries)
-    tags: Tag[];
 }

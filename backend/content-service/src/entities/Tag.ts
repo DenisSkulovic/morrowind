@@ -1,45 +1,16 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from "typeorm";
-import { Fact } from "./Fact";
-import { Memory } from "./Memory";
-import { MemoryPool } from "./MemoryPool";
-import { Item } from "./Item";
-import { Effect } from "./Effect";
-import { Trait } from "./Trait/Trait";
-import { MemoryPoolEntry } from "./MemoryPoolEntry";
-import { Character } from "./Character";
-import { Race } from "./Race";
+import { Entity, Column, ManyToMany } from "typeorm";
 import { ContentBase } from "./ContentBase";
+import {TagSubtypeEnum} from "../enum/TagSubtypeEnum"
 
 @Entity()
 export class Tag extends ContentBase {
-
+    id_prefix = "TAG"
     @Column({ unique: true })
-    name: string; // Tag name (e.g., "volcano", "eruption")
+    name: string; // The tag's name (e.g., "dunmeri", "rare")
 
-    @ManyToMany(() => Trait, (trait) => trait.tags)
-    traits: Trait[];
+    @Column()
+    subtype: TagSubtypeEnum; // The tag's subtype (e.g., "tag_culture", "tag_weapon_quality")
 
-    @ManyToMany(() => MemoryPoolEntry, (memoryPoolEntry) => memoryPoolEntry.tags)
-    memoryPoolEntries: MemoryPoolEntry[]
-
-    @ManyToMany(() => MemoryPool, (memoryPool) => memoryPool.tags)
-    memoryPools: MemoryPool[]
-
-    @ManyToMany(() => Memory, (memory) => memory.tags)
-    memories: Memory[];
-
-    @ManyToMany(() => Fact, (fact) => fact.tags)
-    facts: Fact[];
-
-    @ManyToMany(() => Item, (item) => item.tags)
-    items: Item[];
-
-    @ManyToMany(() => Effect, (effect) => effect.tags)
-    effects: Effect[];
-
-    @ManyToMany(() => Character, (character) => character.tags)
-    characters: Character[];
-
-    @ManyToMany(() => Race, (race) => race.tags)
-    races: Race[];
+    @ManyToMany(() => ContentBase, (content) => content.tags)
+    content: ContentBase[];
 }

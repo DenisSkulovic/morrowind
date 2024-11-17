@@ -8,7 +8,4 @@ export abstract class Trait extends ContentBase {
 
     @Column()
     name: string;
-
-    @ManyToMany(() => Tag, (tag) => tag.traits)
-    tags: Tag[];
 }

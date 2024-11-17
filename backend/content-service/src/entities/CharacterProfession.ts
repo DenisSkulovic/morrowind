@@ -6,6 +6,7 @@ import { ContentBase } from "./ContentBase";
 
 @Entity()
 export class CharacterProfession extends ContentBase {
+    id_prefix = "CHARACTER_PROFESSION"
 
     @ManyToOne(() => Character, character => character.professions)
     character: Character;
@@ -21,9 +22,6 @@ export class CharacterProfession extends ContentBase {
 
     @Column({ nullable: true })
     endYear: number; // Null if currently active
-
-    @ManyToMany(() => Tag, (tag) => tag.characterProfession)
-    tags: Tag[];
 }
 
 // example: Fisherman (Beginner). Beginner here would be represented by a tag, and specific memory pools will be connected. On generation, certain memories will be created, but after generation memories begin a free float.

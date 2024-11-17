@@ -5,6 +5,7 @@ import { ContentBase } from "./ContentBase";
 
 @Entity()
 export class MemoryPool extends ContentBase {
+    id_prefix = "MEMORY_POOL"
 
     @Column()
     name: string; // E.g., "Seida Neen Knowledge - Extensive" IMPORTANT - Extensive should be in the tags, not just text; tag like extensive_knowledge
@@ -14,9 +15,6 @@ export class MemoryPool extends ContentBase {
 
     @OneToMany(() => MemoryPoolEntry, memory => memory.memoryPool)
     memories: MemoryPoolEntry[]; // Probabilities for each memory in the pool
-
-    @ManyToMany(() => Tag, (tag) => tag.memoryPools)
-    tags: Tag[];
 }
 
 // memory pools are collections of memory entries, memory pool entries contain a memory and some expected values for generation, and memories are collections of facts. Memory pools can be any groupings by region, topic, etc.

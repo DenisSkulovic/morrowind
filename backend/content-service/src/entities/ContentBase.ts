@@ -1,16 +1,17 @@
-import { BaseEntity, PrimaryColumn, Column, BeforeInsert } from "typeorm";
-import { v4 as uuidv4 } from "uuid";
+import { BaseEntity, PrimaryColumn, Column, BeforeInsert, ManyToMany, JoinTable } from "typeorm";
+import { Tag } from "./Tag";
 
 export abstract class ContentBase extends BaseEntity {
 
     @PrimaryColumn()
     id: string;
 
+    abstract id_prefix: string; // Each entity defines its own prefix
+
     @BeforeInsert()
     generateId() {
-        const uuid = uuidv4().replace(/-/g, ""); // Generate UUID without dashes
-        const prefix = this.constructor.name.toLowerCase(); // Use the class name as the prefix
-        this.id = `${prefix}_${uuid}`;
+        const counter = Math.floor(Math.random() * 100000).toString().padStart(5, '0'); // Example counter
+        this.id = `${this.id_prefix}_${counter}`;
     }
 
     @Column({ nullable: true })
@@ -21,4 +22,8 @@ export abstract class ContentBase extends BaseEntity {
 
     @Column({ nullable: true })
     world_id?: string;
+
+    @ManyToMany(() => Tag, (tag) => tag.content)
+    @JoinTable() // Defines the owning side of the relation
+    tags: Tag[];
 }
