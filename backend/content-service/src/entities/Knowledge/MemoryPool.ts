@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany } from "typeorm";
-import {Tag} from "./Tag"
+import {Tag} from "../Tag"
 import {MemoryPoolEntry} from "./MemoryPoolEntry"
-import { ContentBase } from "./ContentBase";
+import { ContentBase } from "../ContentBase";
 
 @Entity()
 export class MemoryPool extends ContentBase {

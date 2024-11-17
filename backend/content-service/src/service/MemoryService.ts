@@ -1,5 +1,5 @@
 import { AppDataSource } from "../data-source";
-import { Memory } from "../entities/Memory";
+import { Memory } from "../entities/Knowledge/Memory";
 import { Character } from "../entities/Character";
 
 export class MemoryService {

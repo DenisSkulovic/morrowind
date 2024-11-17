@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany } from "typeorm";
-import { MemoryPool } from "./MemoryPool";
+import { MemoryPool } from "./Knowledge/MemoryPool";
 import { Character } from "./Character";
 import { Tag } from "./Tag";
 import { ContentBase } from "./ContentBase";

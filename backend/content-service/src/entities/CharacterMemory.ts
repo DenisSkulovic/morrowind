@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
-import { Memory } from "./Memory"
+import { Memory } from "./Knowledge/Memory"
 import { Character } from "./Character"
 import { ContentBase } from "./ContentBase";
 

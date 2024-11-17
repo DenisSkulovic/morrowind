@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, ManyToOne } from "typeorm";
 import { CharacterMemory } from "./CharacterMemory";
-import { MemoryPool } from "./MemoryPool";
+import { MemoryPool } from "./Knowledge/MemoryPool";
 import { Trait } from "./Trait/Trait";
 import { CharacterProfession } from "./CharacterProfession";
 import { Skill } from "./Skill/Skill";
