@@ -5,6 +5,9 @@ import { Item } from "../Item";
 export class ItemRepairable extends Item {
     id_prefix = "ITEM_REPAIRABLE";
 
+    @Column({default: true})
+    repairable: boolean;
+
     @Column()
     durability: number;
 

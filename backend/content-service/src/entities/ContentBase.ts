@@ -49,4 +49,7 @@ export class ContentBase extends BaseEntity {
      */
     @Column({ type: "json", nullable: true })
     metadata?: Record<string, any>; // Arbitrary key-value pairs for additional data
+
+
+    targetEntity?: string
 }

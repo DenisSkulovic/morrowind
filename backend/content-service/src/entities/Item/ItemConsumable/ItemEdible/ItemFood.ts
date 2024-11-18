@@ -1,8 +1,8 @@
 import { ChildEntity, Column } from "typeorm";
-import { Item } from "./Item";
+import { ItemConsumable } from "./ItemConsumable";
 
 @ChildEntity()
-export class ItemFood extends Item {
+export class ItemFood extends ItemConsumable {
     id_prefix = "ITEM_FOOD";
 
     @Column()

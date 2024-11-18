@@ -1,9 +1,10 @@
 import { Entity, TableInheritance, Column, ManyToOne } from "typeorm";
 import { ContentBase } from "../ContentBase";
 import { Skill } from "../Skill/Skill";
+import { ItemInstanceService } from "../../service/ItemInstanceService";
 
 @Entity()
-@TableInheritance({ column: { type: "varchar", name: "type" } }) // Discriminator column for inheritance
+@TableInheritance({ column: { type: "varchar", name: "type" } })
 export class Item extends ContentBase {
     id_prefix = "ITEM";
 
@@ -26,6 +27,24 @@ export class Item extends ContentBase {
     trained_skill?: Skill
 
     @Column("jsonb")
-    requirements: { [type: string]: { [name: string]: number } }
+    requirements: { [type: string]: { [name: string]: number | boolean } }
 
+    @Column({ default: false })
+    consumable: boolean;
+
+    @Column({ default: false })
+    stackable: boolean;
+
+    @Column({default: false})
+    repairable: boolean;
+
+    @Column({default: false})
+    drinkable: boolean;
+
+    @Column({default: false})
+    edible: boolean;
+
+    public async merge(item2: this): Promise<this> {
+        return ItemInstanceService.merge(this, item2);
+    }
 }

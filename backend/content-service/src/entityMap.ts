@@ -1,9 +1,9 @@
-import { BaseEntity } from "typeorm";
 import * as ent from "./entities";
+import { ContentBase } from "./entities";
 
 export type EntityConstructor<T> = new () => T;
 
-export const entityMap: Record<string, EntityConstructor<BaseEntity>> = {
+export const entityMap: Record<string, EntityConstructor<ContentBase>> = {
     "ItemMisc": ent.ItemMisc,
     "ItemMiscCurrency": ent.ItemMiscCurrency,
     "ItemWeapon": ent.ItemWeapon,
@@ -40,7 +40,6 @@ export const entityMap: Record<string, EntityConstructor<BaseEntity>> = {
     "TraitPersonality": ent.TraitPersonality,
     "TraitPhysical": ent.TraitPhysical,
     "Birthsign": ent.Birthsign,
-    "Campaign": ent.Campaign,
     "Character": ent.Character,
     "CharacterProfession": ent.CharacterProfession,
     "ContentBase": ent.ContentBase,
@@ -58,6 +57,4 @@ export const entityMap: Record<string, EntityConstructor<BaseEntity>> = {
     "Resistance": ent.Resistance,
     "Status": ent.Status,
     "Tag": ent.Tag,
-    "User": ent.User,
-    "World": ent.World,
 };
