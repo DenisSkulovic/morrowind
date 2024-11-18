@@ -1,8 +1,7 @@
 import { DataSource, Repository } from "typeorm";
-import { WorldDataSource } from "../data-source";
 import { Item } from "../entities/Item/Item";
 import { ItemSet } from "../entities/ItemSet";
-import { ItemSetCombinator, ItemSetEndObj } from "../layer_1/loaders/ItemSetLoader/types";
+import { ItemSetCombinator, ItemSetEndObj } from "../layer_1/types";
 import { ItemInstanceService } from "./ItemInstanceService";
 
 export class ItemInstanceSetService {
@@ -33,30 +32,31 @@ export class ItemInstanceSetService {
 
         for (const item of combinator.items) {
             if (Math.random() > (item.prob || 1)) continue;  // Skip items that fail the probability check
-            const endObj: ItemSetEndObj | null = "item_id" in item ? item : null
-            const nextCombinator: ItemSetCombinator | null = "items" in item ? item : null
+            const endObj: ItemSetEndObj | null = ("item_id" in item) ? item : null
+            const nextCombinator: ItemSetCombinator | null = ("items" in item) ? item : null
 
             if (endObj) {
                 const generatedItem: Item = this.itemInstanceService.generateItem(endObj, this._calcQuant(endObj));
                 generatedItems.push(generatedItem);
             } else if (nextCombinator) {
                 switch (nextCombinator.condition) {
-                    case "AND":
+                    case ("AND"): {
                         generatedItems.push(...this._processCombinator(nextCombinator));
                         break;
-                    case "OR":
+                    }
+                    case ("OR"): {
                         const chosenItem: ItemSetEndObj | ItemSetCombinator | null = this._chooseRandom(nextCombinator.items);
-                        if (chosenItem) {
-                            const endObj: ItemSetEndObj | null = "item_id" in chosenItem ? chosenItem : null
-                            const nextCombinator: ItemSetCombinator | null = "items" in chosenItem ? chosenItem : null
-
-                            if (nextCombinator) generatedItems.push(...this._processCombinator(nextCombinator))
-                            else if (endObj) generatedItems.push(this.itemInstanceService.generateItem(endObj, this._calcQuant(endObj)))
-                        }
+                        if (!chosenItem) break
+                        const endObj: ItemSetEndObj | null = "item_id" in chosenItem ? chosenItem : null
+                        const nextCombinator: ItemSetCombinator | null = "items" in chosenItem ? chosenItem : null
+                        if (nextCombinator) generatedItems.push(...this._processCombinator(nextCombinator))
+                        else if (endObj) generatedItems.push(this.itemInstanceService.generateItem(endObj, this._calcQuant(endObj)))
                         break;
-                    case "ANY":
+                    }
+                    case ("ANY"): {
                         generatedItems.push(...this._processAny(nextCombinator.items));
                         break;
+                    }
                     default:
                         throw new Error(`Unsupported condition: ${nextCombinator.condition}`);
                 }

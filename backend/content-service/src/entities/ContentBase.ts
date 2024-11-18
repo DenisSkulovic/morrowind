@@ -8,7 +8,7 @@ export class ContentBase extends BaseEntity {
     @PrimaryColumn()
     id: string;
 
-    abstract id_prefix: string; // Each entity defines its own prefix
+    id_prefix: string = ""; // Each entity defines its own prefix
 
     @BeforeInsert()
     generateId() {

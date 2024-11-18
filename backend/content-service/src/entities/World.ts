@@ -22,4 +22,7 @@ export class World extends BaseEntity {
 
     @OneToMany(() => ContentBase, (content) => content.world_id)
     content: ContentBase[]; // All blueprints linked to this world.
+
+    @Column({ default: false })
+    frozen: boolean;
 }

@@ -8,6 +8,9 @@ import { ItemInstanceService } from "../../service/ItemInstanceService";
 export class Item extends ContentBase {
     id_prefix = "ITEM";
 
+    @Column({ nullable: true })
+    instance_id: string;
+
     @Column()
     name: string; // Item name, e.g., "Iron Short Sword".
 
@@ -35,13 +38,13 @@ export class Item extends ContentBase {
     @Column({ default: false })
     stackable: boolean;
 
-    @Column({default: false})
+    @Column({ default: false })
     repairable: boolean;
 
-    @Column({default: false})
+    @Column({ default: false })
     drinkable: boolean;
 
-    @Column({default: false})
+    @Column({ default: false })
     edible: boolean;
 
     public async merge(item2: this): Promise<this> {
