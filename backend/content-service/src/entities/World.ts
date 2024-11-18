@@ -1,8 +1,9 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
+import { TableInheritance, Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
 import { Campaign } from "./Campaign";
 import { ContentBase } from "./ContentBase";
 
 @Entity()
+@TableInheritance({ column: { type: "varchar", name: "type" } }) // Discriminator column for inheritance
 export class World {
     @PrimaryGeneratedColumn("uuid")
     id: string;

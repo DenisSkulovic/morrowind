@@ -1,7 +1,8 @@
-import { Entity, Column } from "typeorm";
+import { TableInheritance, Entity, Column } from "typeorm";
 import { ContentBase } from "./ContentBase";
 
 @Entity()
+@TableInheritance({ column: { type: "varchar", name: "type" } }) // Discriminator column for inheritance
 export class Resistance extends ContentBase {
     id_prefix = "RESISTANCE";
 

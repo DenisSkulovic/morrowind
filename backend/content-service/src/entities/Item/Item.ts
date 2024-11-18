@@ -1,5 +1,6 @@
-import { Entity, TableInheritance, Column } from "typeorm";
+import { Entity, TableInheritance, Column, ManyToOne } from "typeorm";
 import { ContentBase } from "../ContentBase";
+import { Skill } from "../Skill/Skill";
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } }) // Discriminator column for inheritance
@@ -16,8 +17,15 @@ export class Item extends ContentBase {
     weight: number; // Weight in pounds.
 
     @Column()
-    value: number; // Monetary value in gold coins.
+    base_value: number; // Monetary value in gold coins.
 
-    @Column({ default: false })
-    magical: boolean; // Whether the item has magical properties.
+    @Column()
+    protection: number; // Protection provided to that body part.
+
+    @ManyToOne(() => Skill, { nullable: true })
+    trained_skill?: Skill
+
+    @Column("jsonb")
+    requirements: { [type: string]: { [name: string]: number } }
+
 }

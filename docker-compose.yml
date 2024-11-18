@@ -1,61 +1,162 @@
 version: '3.8'
 
 services:
-  backend:
+  # Backend Microservices
+  content-service:
     build:
-      context: ./backend
+      context: /home/denis/CODE/morrowind2/backend/content-service
       dockerfile: Dockerfile.dev
-    container_name: backend_service
+    container_name: content_service
     restart: always
     ports:
-      - "5000:5000"
-    volumes:
-      - ./backend:/usr/src/app       # Mount the local backend folder
-      - /usr/src/app/node_modules    # Exclude node_modules to avoid conflicts
+      - "5001:5000"
     environment:
-      - DATABASE_HOST=postgres
-      - DATABASE_PORT=5432
       - DATABASE_USER=${POSTGRES_USER}
       - DATABASE_PASSWORD=${POSTGRES_PASSWORD}
-      - DATABASE_NAME=${POSTGRES_DB}
-    depends_on:
-      - postgres
-    profiles:
-      - fullstack
-      - backend
-
-  frontend:
-    build:
-      context: ./frontend
-    container_name: frontend_service
-    restart: always
-    ports:
-      - "3000:3000"
+      - DATABASE_HOST__WORLD=world-db
+      - DATABASE_PORT__WORLD=5432
+      - DATABASE_NAME__WORLD=${POSTGRES_DB__WORLD}
+      - DATABASE_HOST__CAMPAIGN=campaign-db
+      - DATABASE_PORT__CAMPAIGN=5432
+      - DATABASE_NAME__CAMPAIGN=${POSTGRES_DB__CAMPAIGN}
     volumes:
-      - ./frontend:/usr/src/app       # Mount the local frontend folder
-      - /usr/src/app/node_modules     # Exclude node_modules
+      - /home/denis/CODE/morrowind2/backend/content-service:/usr/src/app
+      - /usr/src/app/node_modules
     depends_on:
-      - backend
+      - world-db
+      - campaign-db
     profiles:
-      - frontend
       - fullstack
+      - backend
 
-  postgres:
+  # Uncomment the other services as they become ready
+  # ai-service:
+  #   build:
+  #     context: /home/denis/CODE/morrowind2/backend/ai-service
+  #     dockerfile: Dockerfile.dev
+  #   container_name: ai_service
+  #   restart: always
+  #   ports:
+  #     - "5002:5000"
+  #   depends_on:
+  #     - world-db
+  #   profiles:
+  #     - backend
+
+  # campaign-service:
+  #   build:
+  #     context: /home/denis/CODE/morrowind2/backend/campaign-service
+  #     dockerfile: Dockerfile.dev
+  #   container_name: campaign_service
+  #   restart: always
+  #   ports:
+  #     - "5003:5000"
+  #   depends_on:
+  #     - campaign-db
+  #   profiles:
+  #     - backend
+
+  # combat-service:
+  #   build:
+  #     context: /home/denis/CODE/morrowind2/backend/combat-service
+  #     dockerfile: Dockerfile.dev
+  #   container_name: combat_service
+  #   restart: always
+  #   ports:
+  #     - "5004:5000"
+  #   depends_on:
+  #     - world-db
+  #   profiles:
+  #     - backend
+
+  # dialogue-service:
+  #   build:
+  #     context: /home/denis/CODE/morrowind2/backend/dialogue-service
+  #     dockerfile: Dockerfile.dev
+  #   container_name: dialogue_service
+  #   restart: always
+  #   ports:
+  #     - "5005:5000"
+  #   depends_on:
+  #     - world-db
+  #   profiles:
+  #     - backend
+
+  # trade-service:
+  #   build:
+  #     context: /home/denis/CODE/morrowind2/backend/trade-service
+  #     dockerfile: Dockerfile.dev
+  #   container_name: trade_service
+  #   restart: always
+  #   ports:
+  #     - "5006:5000"
+  #   depends_on:
+  #     - world-db
+  #   profiles:
+  #     - backend
+
+  # Databases
+  world-db:
     image: postgres:14
-    container_name: postgres_container
+    container_name: world_db
     restart: always
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_DB: ${POSTGRES_DB__WORLD}
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - world_db_data:/var/lib/postgresql/data
     profiles:
       - database
-      - backend
       - fullstack
 
+  campaign-db:
+    image: postgres:14
+    container_name: campaign_db
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB__CAMPAIGN}
+    ports:
+      - "5434:5432"
+    volumes:
+      - campaign_db_data:/var/lib/postgresql/data
+    profiles:
+      - database
+      - fullstack
+
+  # Frontends
+  world-building-ui:
+    build:
+      context: /home/denis/CODE/morrowind2/frontend/world-building-ui
+    container_name: world_building_ui
+    restart: always
+    ports:
+      - "3001:3000"
+    volumes:
+      - /home/denis/CODE/morrowind2/frontend/world-building-ui:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - content-service
+    profiles:
+      - frontend
+      - fullstack
+
+  # campaign-ui:
+  #   build:
+  #     context: /home/denis/CODE/morrowind2/frontend/campaign-ui
+  #   container_name: campaign_ui
+  #   restart: always
+  #   ports:
+  #     - "3002:3000"
+  #   depends_on:
+  #     - campaign-service
+  #   profiles:
+  #     - frontend
+
 volumes:
-  postgres_data:
+  world_db_data:
+  campaign_db_data:

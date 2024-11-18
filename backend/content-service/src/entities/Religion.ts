@@ -1,8 +1,8 @@
-import { Entity, Column, ManyToMany } from "typeorm";
+import { Entity, Column, TableInheritance } from "typeorm";
 import { ContentBase } from "./ContentBase";
-import { Tag } from "./Tag";
 
 @Entity()
+@TableInheritance({ column: { type: "varchar", name: "type" } }) // Discriminator column for inheritance
 export class Religion extends ContentBase {
     id_prefix = "RELIGION";
 

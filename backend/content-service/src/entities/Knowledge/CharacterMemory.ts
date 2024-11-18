@@ -1,9 +1,10 @@
-import { Entity, Column, ManyToOne } from "typeorm";
+import { TableInheritance, Entity, Column, ManyToOne } from "typeorm";
 import { Memory } from "./Memory"
 import { Character } from "../Character"
 import { ContentBase } from "../ContentBase";
 
 @Entity()
+@TableInheritance({ column: { type: "varchar", name: "type" } }) // Discriminator column for inheritance
 export class CharacterMemory extends ContentBase {
     id_prefix = "CHARACTER_MEMORY"
 

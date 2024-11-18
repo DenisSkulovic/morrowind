@@ -5,11 +5,14 @@ import { Item } from "../Item";
 export class ItemWeapon extends Item {
     id_prefix = "ITEM_WEAPON";
 
-    @Column()
-    damage: string; // Damage dice, e.g., "1d6", "2d8".
+    @Column({nullable: true})
+    damage_slash?: string;
 
-    @Column()
-    damage_type: string; // E.g., "Slashing", "Piercing", "Bludgeoning".
+    @Column({nullable: true})
+    damage_pierce?: string;
+
+    @Column({nullable: true})
+    damage_blunt?: string;
 
     @Column({ nullable: true })
     range?: string; // Range in feet for ranged weapons, e.g., "30/120".

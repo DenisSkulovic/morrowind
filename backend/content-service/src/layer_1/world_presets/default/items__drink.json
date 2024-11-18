@@ -1,0 +1,12 @@
+[
+    {
+        "id": "WATER_FLASK",
+        "name": "Water Flask",
+        "description": "A leather flask filled with clean drinking water.",
+        "weight": 1.5,
+        "base_value": 1,
+        "thirst_quenched": 30,
+        "refills": 3,
+        "targetEntity": "ItemDrink"
+    }
+]

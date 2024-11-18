@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, ManyToOne } from "typeorm";
+import { Entity, TableInheritance, Column, OneToMany, ManyToMany, ManyToOne } from "typeorm";
 import { CharacterMemory } from "./CharacterMemory";
 import { MemoryPool } from "./Knowledge/MemoryPool";
 import { Trait } from "./Trait/Trait";
@@ -11,6 +11,7 @@ import { Tag } from "./Tag";
 import { ContentBase } from "./ContentBase";
 
 @Entity()
+@TableInheritance({ column: { type: "varchar", name: "type" } }) // Discriminator column for inheritance
 export class Character extends ContentBase {
     id_prefix = "CHARACTER"
 

@@ -1,0 +1,77 @@
+[
+    {
+        "id": "NATURE_FAITH",
+        "name": "Nature Faith",
+        "description": "A religion that venerates the forces of nature, viewing the natural world as sacred and interconnected.",
+        "rituals": [
+            {
+                "name": "Spring Festival",
+                "description": "A celebration of growth and renewal held during the spring equinox."
+            },
+            {
+                "name": "Rain Dance",
+                "description": "A ritual performed to invoke rainfall during dry seasons."
+            }
+        ],
+        "tenets": [
+            {
+                "name": "Harmony with Nature",
+                "description": "Live in balance with the natural world and avoid unnecessary harm."
+            },
+            {
+                "name": "Reverence for Life",
+                "description": "All living things have intrinsic value and must be treated with respect."
+            }
+        ]
+    },
+    {
+        "id": "ANCESTOR_WORSHIP",
+        "name": "Ancestor Worship",
+        "description": "A religion that emphasizes reverence for ancestors, believing they offer guidance and protection.",
+        "rituals": [
+            {
+                "name": "Ancestor Feast",
+                "description": "A communal gathering to honor and celebrate the spirits of ancestors."
+            },
+            {
+                "name": "Shrine Maintenance",
+                "description": "Regular upkeep of family shrines to maintain a connection with the ancestors."
+            }
+        ],
+        "tenets": [
+            {
+                "name": "Honor the Past",
+                "description": "Respect and remember the deeds of those who came before."
+            },
+            {
+                "name": "Preserve Tradition",
+                "description": "Follow the customs and practices handed down through generations."
+            }
+        ]
+    },
+    {
+        "id": "MONOTHEISTIC_FAITH",
+        "name": "Monotheistic Faith",
+        "description": "A religion centered on the worship of a single all-powerful deity, emphasizing moral conduct and devotion.",
+        "rituals": [
+            {
+                "name": "Daily Prayer",
+                "description": "Devotees pray daily at specific times to connect with the deity."
+            },
+            {
+                "name": "Holy Day Observance",
+                "description": "Special ceremonies held on days of religious significance."
+            }
+        ],
+        "tenets": [
+            {
+                "name": "Faithfulness",
+                "description": "Maintain unwavering devotion to the deity."
+            },
+            {
+                "name": "Charity",
+                "description": "Help those in need as an expression of divine will."
+            }
+        ]
+    }
+]

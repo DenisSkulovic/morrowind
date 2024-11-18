@@ -1,8 +1,9 @@
-import { Entity, Column, ManyToMany } from "typeorm";
+import { TableInheritance, Entity, Column, ManyToMany } from "typeorm";
 import { ContentBase } from "./ContentBase";
 import {TagSubtypeEnum} from "../enum/TagSubtypeEnum"
 
 @Entity()
+@TableInheritance({ column: { type: "varchar", name: "type" } }) // Discriminator column for inheritance
 export class Tag extends ContentBase {
     id_prefix = "TAG"
     @Column({ unique: true })

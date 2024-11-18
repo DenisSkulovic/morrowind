@@ -1,0 +1,371 @@
+[
+    {
+        "id": "PROFILE_IDEALIST",
+        "name": "The Idealist",
+        "coreType": "1w9",
+        "traits": [
+            {
+                "name": "hopeful",
+                "probability": 0.9
+            },
+            {
+                "name": "optimistic",
+                "probability": 0.8
+            },
+            {
+                "name": "empathetic",
+                "probability": 0.7
+            }
+        ],
+        "traumaInfluence": {
+            "processed": [
+                {
+                    "name": "visionary",
+                    "probability": 0.8
+                },
+                {
+                    "name": "motivational",
+                    "probability": 0.7
+                }
+            ],
+            "unresolved": [
+                {
+                    "name": "unrealistic",
+                    "probability": 0.6
+                },
+                {
+                    "name": "overly trusting",
+                    "probability": 0.5
+                }
+            ]
+        }
+    },
+    {
+        "id": "PROFILE_DIPLOMAT",
+        "name": "The Diplomat",
+        "coreType": "9w1",
+        "traits": [
+            {
+                "name": "peaceful",
+                "probability": 0.9
+            },
+            {
+                "name": "cooperative",
+                "probability": 0.8
+            },
+            {
+                "name": "skilled mediator",
+                "probability": 0.7
+            }
+        ],
+        "traumaInfluence": {
+            "processed": [
+                {
+                    "name": "fair",
+                    "probability": 0.8
+                },
+                {
+                    "name": "compassionate",
+                    "probability": 0.7
+                }
+            ],
+            "unresolved": [
+                {
+                    "name": "avoidant",
+                    "probability": 0.6
+                },
+                {
+                    "name": "indecisive",
+                    "probability": 0.5
+                }
+            ]
+        }
+    },
+    {
+        "id": "PROFILE_MENTOR",
+        "name": "The Mentor",
+        "coreType": "2w1",
+        "traits": [
+            {
+                "name": "wise",
+                "probability": 0.9
+            },
+            {
+                "name": "nurturing",
+                "probability": 0.8
+            },
+            {
+                "name": "patient",
+                "probability": 0.7
+            }
+        ],
+        "traumaInfluence": {
+            "processed": [
+                {
+                    "name": "insightful",
+                    "probability": 0.8
+                },
+                {
+                    "name": "supportive",
+                    "probability": 0.7
+                }
+            ],
+            "unresolved": [
+                {
+                    "name": "overprotective",
+                    "probability": 0.6
+                },
+                {
+                    "name": "dismissive of independence",
+                    "probability": 0.5
+                }
+            ]
+        }
+    },
+    {
+        "id": "PROFILE_LOYAL_COMPANION",
+        "name": "The Loyal Companion",
+        "coreType": "6w5",
+        "traits": [
+            {
+                "name": "devoted",
+                "probability": 0.9
+            },
+            {
+                "name": "steadfast",
+                "probability": 0.8
+            },
+            {
+                "name": "dependable",
+                "probability": 0.7
+            }
+        ],
+        "traumaInfluence": {
+            "processed": [
+                {
+                    "name": "protective",
+                    "probability": 0.8
+                },
+                {
+                    "name": "courageous",
+                    "probability": 0.7
+                }
+            ],
+            "unresolved": [
+                {
+                    "name": "clingy",
+                    "probability": 0.6
+                },
+                {
+                    "name": "overly cautious",
+                    "probability": 0.5
+                }
+            ]
+        }
+    },
+    {
+        "id": "PROFILE_CHARMER",
+        "name": "The Charmer",
+        "coreType": "3w2",
+        "traits": [
+            {
+                "name": "sociable",
+                "probability": 0.9
+            },
+            {
+                "name": "charismatic",
+                "probability": 0.8
+            },
+            {
+                "name": "quick-witted",
+                "probability": 0.7
+            }
+        ],
+        "traumaInfluence": {
+            "processed": [
+                {
+                    "name": "diplomatic",
+                    "probability": 0.8
+                },
+                {
+                    "name": "adaptive",
+                    "probability": 0.7
+                }
+            ],
+            "unresolved": [
+                {
+                    "name": "superficial",
+                    "probability": 0.6
+                },
+                {
+                    "name": "manipulative",
+                    "probability": 0.5
+                }
+            ]
+        }
+    },
+    {
+        "id": "PROFILE_DREAMER",
+        "name": "The Dreamer",
+        "coreType": "4w5",
+        "traits": [
+            {
+                "name": "imaginative",
+                "probability": 0.9
+            },
+            {
+                "name": "creative",
+                "probability": 0.8
+            },
+            {
+                "name": "introspective",
+                "probability": 0.7
+            }
+        ],
+        "traumaInfluence": {
+            "processed": [
+                {
+                    "name": "inventive",
+                    "probability": 0.8
+                },
+                {
+                    "name": "innovative",
+                    "probability": 0.7
+                }
+            ],
+            "unresolved": [
+                {
+                    "name": "disconnected",
+                    "probability": 0.6
+                },
+                {
+                    "name": "impractical",
+                    "probability": 0.5
+                }
+            ]
+        }
+    },
+    {
+        "id": "PROFILE_SURVIVOR",
+        "name": "The Survivor",
+        "coreType": "6w7",
+        "traits": [
+            {
+                "name": "resilient",
+                "probability": 0.9
+            },
+            {
+                "name": "adaptable",
+                "probability": 0.8
+            },
+            {
+                "name": "pragmatic",
+                "probability": 0.7
+            }
+        ],
+        "traumaInfluence": {
+            "processed": [
+                {
+                    "name": "courageous",
+                    "probability": 0.8
+                },
+                {
+                    "name": "wise",
+                    "probability": 0.7
+                }
+            ],
+            "unresolved": [
+                {
+                    "name": "cynical",
+                    "probability": 0.6
+                },
+                {
+                    "name": "mistrustful",
+                    "probability": 0.5
+                }
+            ]
+        }
+    },
+    {
+        "id": "PROFILE_REBEL", 
+        "name": "The Rebel",
+        "coreType": "8w7",
+        "traits": [
+            {
+                "name": "defiant",
+                "probability": 0.9
+            },
+            {
+                "name": "independent",
+                "probability": 0.8
+            },
+            {
+                "name": "unconventional",
+                "probability": 0.7
+            }
+        ],
+        "traumaInfluence": {
+            "processed": [
+                {
+                    "name": "determined",
+                    "probability": 0.8
+                },
+                {
+                    "name": "resilient",
+                    "probability": 0.7
+                }
+            ],
+            "unresolved": [
+                {
+                    "name": "reckless",
+                    "probability": 0.6
+                },
+                {
+                    "name": "confrontational",
+                    "probability": 0.5
+                }
+            ]
+        }
+    },
+    {
+        "id": "PROFILE_LONER",
+        "name": "The Loner",
+        "coreType": "5w4",
+        "traits": [
+            {
+                "name": "independent",
+                "probability": 0.9
+            },
+            {
+                "name": "reserved",
+                "probability": 0.8
+            },
+            {
+                "name": "introspective",
+                "probability": 0.7
+            }
+        ],
+        "traumaInfluence": {
+            "processed": [
+                {
+                    "name": "wise",
+                    "probability": 0.8
+                },
+                {
+                    "name": "self-sufficient",
+                    "probability": 0.7
+                }
+            ],
+            "unresolved": [
+                {
+                    "name": "antisocial",
+                    "probability": 0.6
+                },
+                {
+                    "name": "distrustful",
+                    "probability": 0.5
+                }
+            ]
+        }
+    }
+]

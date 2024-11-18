@@ -1,10 +1,10 @@
-import { Entity, Column, ManyToOne } from "typeorm";
+import { TableInheritance, Entity, Column, ManyToOne } from "typeorm";
 import {Memory} from "./Memory"
 import {MemoryPool} from "./MemoryPool"
-import { Tag } from "../Tag";
 import { ContentBase } from "../ContentBase";
 
 @Entity()
+@TableInheritance({ column: { type: "varchar", name: "type" } }) // Discriminator column for inheritance
 export class MemoryPoolEntry extends ContentBase {
     id_prefix = "MEMORY_POOL_ENTRY"
 
