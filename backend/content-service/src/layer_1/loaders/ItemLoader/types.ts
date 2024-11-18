@@ -24,7 +24,7 @@ export abstract class ClothingJSONObj extends ItemJSONObj {
     armor_class: number;
     stealth_disadvantage?: boolean; // Optional, as not all clothing includes this
     strength_requirement?: number; // Optional, as not all clothing includes this
-    targetEntity: "ItemClothingCuirass" | "ItemClothingHelmet";
+    targetEntity: "ItemWearableCuirass" | "ItemWearableHelmet";
 };
 
 export abstract class AlcoholJSONObj extends ItemJSONObj {

@@ -1,5 +1,5 @@
 import { ChildEntity, Column } from "typeorm";
-import { Item } from "../Item";
+import { Item } from "./Item";
 
 @ChildEntity()
 export class ItemFood extends Item {

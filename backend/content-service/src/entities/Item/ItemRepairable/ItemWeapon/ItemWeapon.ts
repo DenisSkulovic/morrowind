@@ -1,8 +1,8 @@
 import { ChildEntity, Column } from "typeorm";
-import { Item } from "../Item";
+import { ItemRepairable } from "../ItemRepairable";
 
 @ChildEntity()
-export class ItemWeapon extends Item {
+export class ItemWeapon extends ItemRepairable {
     id_prefix = "ITEM_WEAPON";
 
     @Column({nullable: true})
@@ -20,12 +20,4 @@ export class ItemWeapon extends Item {
     @Column({ default: false })
     two_handed: boolean; // Whether the weapon requires two hands.
 
-    @Column({ default: false })
-    finesse: boolean; // Whether the weapon can use Dexterity for attack rolls.
-
-    @Column({ default: false })
-    heavy: boolean; // Heavy weapon trait.
-
-    @Column({ default: false })
-    light: boolean; // Light weapon trait for dual wielding.
 }

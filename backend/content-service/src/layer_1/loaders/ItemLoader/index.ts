@@ -3,7 +3,7 @@
 import { join } from "path";
 import { readFileSync } from "fs";
 import { ItemBlueprintKind, ItemJSONObj } from "./types";
-import { EntityConstructor, entityMap } from "./entityMap"
+import { EntityConstructor, entityMap } from "../../../entityMap"
 import { BaseEntity } from "typeorm";
 
 const path_to_blueprints = "../../layer_1/item_blueprints"

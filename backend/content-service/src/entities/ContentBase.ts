@@ -4,7 +4,7 @@ import { User } from "./User";
 import { Campaign } from "./Campaign";
 import { World } from "./World";
 
-export abstract class ContentBase extends BaseEntity {
+export class ContentBase extends BaseEntity {
     @PrimaryColumn()
     id: string;
 

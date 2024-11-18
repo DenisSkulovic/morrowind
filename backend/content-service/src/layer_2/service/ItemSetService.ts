@@ -1,20 +1,20 @@
 import { ContentBase } from "../../entities/ContentBase";
-import { AppDataSource } from "../../data-source";
+import { WorldDataSource } from "../../data-source";
 import { World } from "../../entities/World";
 import { ItemSetCombinator, ItemSetEndObj } from "../../layer_1/item_sets/loader/types__item_sets"
+import { Item } from "../../entities/Item/Item";
 
 export class ItemSetService {
 
-    private static _worldRepository = AppDataSource.getRepository(World);
-    private static _contentRepository = AppDataSource.getRepository(ContentBase);
+    private static _itemRepository = WorldDataSource.getRepository(Item);
 
     /**
      * Recursively generates items for an item set based on probabilities and conditions.
      * @param itemSet The item set definition
      * @returns Generated items
      */
-    public static generateItemsFromSet(itemSet: any): ContentBase[] {
-        const generatedItems: ContentBase[] = [];
+    public static generateItemsFromSet(itemSet: any): Item[] {
+        const generatedItems: Item[] = [];
 
         if (!itemSet || !itemSet.items || !Array.isArray(itemSet.items)) {
             return generatedItems;
@@ -49,8 +49,8 @@ export class ItemSetService {
         return generatedItems;
     }
 
-    private static _generateItem(item: any): ContentBase | null {
-        const entity = this._contentRepository.create({ id: item.item_id });
+    private static _generateItem(item: any): Item | null {
+        const entity = this._itemRepository.create({ id: item.item_id });
         entity.quantity = this._calculateQuantity(item);
         return entity;
     }

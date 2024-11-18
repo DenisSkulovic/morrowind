@@ -6,8 +6,9 @@
         "weight": 2,
         "base_value": 10,
         "damage_slash": "1d6",
-        "damage_pierce": "1d6",
+        "damage_pierce": "1d8",
         "trained_skill": "SHORT_SWORD",
+        "two_handed": false,
         "requirements": {
             "skill": {
                 "SHORT_SWORD": 10
@@ -25,8 +26,9 @@
         "weight": 2,
         "base_value": 25,
         "damage_slash": "1d6",
-        "damage_pierce": "1d6",
+        "damage_pierce": "1d8",
         "trained_skill": "SHORT_SWORD",
+        "two_handed": false,
         "requirements": {
             "skill": {
                 "SHORT_SWORD": 10
@@ -46,6 +48,7 @@
         "damage_slash": "1d8",
         "damage_pierce": "1d6",
         "trained_skill": "LONG_SWORD",
+        "two_handed": false,
         "requirements": {
             "skill": {
                 "LONG_SWORD": 10
@@ -65,6 +68,7 @@
         "damage_slash": "1d8",
         "damage_pierce": "1d6",
         "trained_skill": "LONG_SWORD",
+        "two_handed": false,
         "requirements": {
             "skill": {
                 "LONG_SWORD": 10

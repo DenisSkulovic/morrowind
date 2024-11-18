@@ -6,20 +6,21 @@ import { WorldDataSource } from "../../data-source"; // Import your configured d
 
 export class ItemBlueprintService {
 
-    private static _worldRepository = WorldDataSource.getRepository(World);
-    private static _contentRepository = WorldDataSource.getRepository(ContentBase);
 
 
-    /**
-     * Updates an existing blueprint or creates a new one for a given world.
-     * @param worldId ID of the world
-     * @param blueprintData Data for the blueprint to be updated or created
-     */
-    public static async upsertBlueprint(worldId: string, blueprintData: Partial<ContentBase>): Promise<ContentBase> {
-        const world = await this._worldRepository.findOne({ where: { id: worldId } });
+
+    public static async upsertBlueprint(
+        worldId: string,
+        blueprintData: Partial<ContentBase>
+    ): Promise<ContentBase> {
+        const worldRepository = WorldDataSource.getRepository(World);
+        const world = await worldRepository.findOne({ where: { id: worldId } });
         if (!world) {
             throw new Error(`World with ID ${worldId} not found`);
         }
+
+        const blueprintRepository = WorldDataSource.getRepository(ContentBase);
+
 
         let existingBlueprint = blueprintData.id
             ? await this._contentRepository.findOne({ where: { id: blueprintData.id } })
@@ -37,11 +38,9 @@ export class ItemBlueprintService {
 
 
 
-    /**
-     * Deletes a blueprint from the world.
-     * @param blueprintId ID of the blueprint to delete
-     */
-    public static async deleteBlueprint(blueprintId: string): Promise<void> {
+    public static async deleteBlueprint(
+        blueprintId: string
+    ): Promise<void> {
         const blueprint = await this._contentRepository.findOne({ where: { id: blueprintId } });
         if (!blueprint) {
             throw new Error(`Blueprint with ID ${blueprintId} not found`);
@@ -52,14 +51,12 @@ export class ItemBlueprintService {
 
 
 
-    /**
-     * Searches blueprints in a world with pagination.
-     * @param worldId ID of the world
-     * @param searchCriteria Criteria to search for
-     * @param page Current page
-     * @param limit Number of items per page
-     */
-    public static async searchBlueprints(worldId: string, searchCriteria: Partial<ContentBase>, page: number, limit: number): Promise<ContentBase[]> {
+    public static async searchBlueprints(
+        worldId: string,
+        searchCriteria: Partial<ContentBase>,
+        page: number,
+        limit: number
+    ): Promise<ContentBase[]> {
         const queryBuilder = this._contentRepository.createQueryBuilder("content")
             .where("content.worldId = :worldId", { worldId });
 
@@ -73,5 +70,5 @@ export class ItemBlueprintService {
             .getMany();
     }
 
-    
+
 }

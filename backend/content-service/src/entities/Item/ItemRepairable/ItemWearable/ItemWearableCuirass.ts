@@ -1,9 +1,9 @@
 import { ChildEntity, Column } from "typeorm";
-import { ItemClothing } from "./ItemClothing";
+import { ItemWearable } from "./ItemWearable";
 
 @ChildEntity()
-export class ItemClothingCuirass extends ItemClothing {
-    id_prefix = "ITEM_CLOTHING_CUIRASS";
+export class ItemWearableCuirass extends ItemWearable {
+    id_prefix = "ITEM_WEARABLE_CUIRASS";
 
     @Column()
     armor_class: number; // Base AC provided by the armor.

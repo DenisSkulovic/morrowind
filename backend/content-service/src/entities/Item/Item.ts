@@ -14,13 +14,13 @@ export class Item extends ContentBase {
     description?: string; // Item description or lore.
 
     @Column()
-    weight: number; // Weight in pounds.
+    weight: number;
+
+    @Column()
+    quantity: number;
 
     @Column()
     base_value: number; // Monetary value in gold coins.
-
-    @Column()
-    protection: number; // Protection provided to that body part.
 
     @ManyToOne(() => Skill, { nullable: true })
     trained_skill?: Skill

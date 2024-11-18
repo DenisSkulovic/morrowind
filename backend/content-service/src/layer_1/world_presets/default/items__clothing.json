@@ -6,7 +6,7 @@
         "weight": 1,
         "base_value": 2,
         "stealth_disadvantage": false,
-        "targetEntity": "ItemClothingHead"
+        "targetEntity": "ItemWearableHead"
     },
     {
         "id": "COMMON_SHIRT",
@@ -15,7 +15,7 @@
         "weight": 1,
         "base_value": 2,
         "stealth_disadvantage": false,
-        "targetEntity": "ItemClothingClothesTorso"
+        "targetEntity": "ItemWearableClothesTorso"
     },
     {
         "id": "COMMON_PANTS",
@@ -24,7 +24,7 @@
         "weight": 1,
         "base_value": 2,
         "stealth_disadvantage": false,
-        "targetEntity": "ItemClothingClothesPants"
+        "targetEntity": "ItemWearableClothesPants"
     },
     {
         "id": "COMMON_SHOES",
@@ -33,7 +33,7 @@
         "weight": 1,
         "base_value": 2,
         "stealth_disadvantage": false,
-        "targetEntity": "ItemClothingFeet"
+        "targetEntity": "ItemWearableFeet"
     },
 
 
@@ -54,7 +54,7 @@
                 "STRENGTH": 5
             }
         },
-        "targetEntity": "ItemClothingGreaves"
+        "targetEntity": "ItemWearableGreaves"
     },
     {
         "id": "STEEL_GREAVES",
@@ -73,7 +73,7 @@
                 "STRENGTH": 5
             }
         },
-        "targetEntity": "ItemClothingGreaves"
+        "targetEntity": "ItemWearableGreaves"
     },
 
 
@@ -94,7 +94,7 @@
                 "STRENGTH": 5
             }
         },
-        "targetEntity": "ItemClothingCuirass"
+        "targetEntity": "ItemWearableCuirass"
     },
     {
         "id": "STEEL_CUIRASS",
@@ -113,7 +113,7 @@
                 "STRENGTH": 5
             }
         },
-        "targetEntity": "ItemClothingCuirass"
+        "targetEntity": "ItemWearableCuirass"
     },
 
 
@@ -133,7 +133,7 @@
                 "STRENGTH": 5
             }
         },
-        "targetEntity": "ItemClothingHead"
+        "targetEntity": "ItemWearableHead"
     },
     {
         "id": "STEEL_HELMET",
@@ -151,7 +151,7 @@
                 "STRENGTH": 5
             }
         },
-        "targetEntity": "ItemClothingHead"
+        "targetEntity": "ItemWearableHead"
     },
 
 
@@ -171,7 +171,7 @@
                 "STRENGTH": 5
             }
         },
-        "targetEntity": "ItemClothingFeet"
+        "targetEntity": "ItemWearableFeet"
     },
     {
         "id": "STEEL_BOOTS",
@@ -190,6 +190,45 @@
             }
         },
         "stealth_disadvantage": true,
-        "targetEntity": "ItemClothingFeet"
+        "targetEntity": "ItemWearableFeet"
+    },
+
+    
+    {
+        "id": "IRON_SHIELD",
+        "name": "Iron Shield",
+        "description": "Basic iron shield offering minimal protection.",
+        "weight": 12,
+        "base_value": 70,
+        "protection": 50,
+        "trained_skill": "HEAVY_ARMOR",
+        "requirements": {
+            "skill": {
+                "HEAVY_ARMOR": 10
+            },
+            "attribute": {
+                "STRENGTH": 5
+            }
+        },
+        "targetEntity": "ItemWearableShield"
+    },
+    {
+        "id": "STEEL_SHIELD",
+        "name": "Steel Shield",
+        "description": "A durable steel shield providing decent protection.",
+        "weight": 10,
+        "base_value": 140,
+        "protection": 60,
+        "trained_skill": "HEAVY_ARMOR",
+        "requirements": {
+            "skill": {
+                "HEAVY_ARMOR": 10
+            },
+            "attribute": {
+                "STRENGTH": 5
+            }
+        },
+        "stealth_disadvantage": true,
+        "targetEntity": "ItemWearableShield"
     }
 ]

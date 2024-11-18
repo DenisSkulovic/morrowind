@@ -1,10 +1,10 @@
-import { TableInheritance, Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
+import { TableInheritance, Entity, Column, PrimaryGeneratedColumn, OneToMany, BaseEntity } from "typeorm";
 import { Campaign } from "./Campaign";
 import { ContentBase } from "./ContentBase";
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } }) // Discriminator column for inheritance
-export class World {
+export class World extends BaseEntity {
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
