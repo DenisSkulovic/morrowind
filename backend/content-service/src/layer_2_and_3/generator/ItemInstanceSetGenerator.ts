@@ -1,7 +1,7 @@
 import { DataSource, Repository } from "typeorm";
 import * as entC from "../entities/Content";
-import { ItemSetCombinator, ItemGenInstruction } from "../layer_1/types";
-import { ItemInstanceService } from "./ItemInstanceService";
+import { ItemSetCombinator, ItemGenInstruction } from "../../layer_1/types";
+import { ItemInstanceService } from "./ItemInstanceGenerator";
 
 export class ItemInstanceSetService {
     dataSource: DataSource

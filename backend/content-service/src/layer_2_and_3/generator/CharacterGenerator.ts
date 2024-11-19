@@ -1,11 +1,11 @@
-import { WorldDataSource, CampaignDataSource } from "../data-source";
+import { WorldDataSource, CampaignDataSource } from "../../data-source";
 import { Repository } from "typeorm";
-import { ItemInstanceSetService } from "./ItemInstanceSetService";
-import { Character } from "../entities/Content/Character";
+import { ItemInstanceSetService } from "./ItemInstanceSetGenerator";
+import { Character } from "../../entities/Content/Character";
 import { Background } from "../../entities/Content/Background";
-import { Tag } from "../entities/Content/Tag";
-import { ItemSet } from "../entities/Content/ItemSet";
-import { CharacterGenInstruction } from "../types";
+import { Tag } from "../../entities/Content/Tag";
+import { ItemSet } from "../../entities/Content/ItemSet";
+import { CharacterGenInstruction } from "../../types";
 
 export class CharacterGenerator {
     private worldDataSource = WorldDataSource;

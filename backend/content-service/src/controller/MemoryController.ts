@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { MemoryService } from "../service/MemoryService";
+import { MemoryService } from "../layer_2_and_3/service/MemoryService";
 
 
 export class MemoryController {

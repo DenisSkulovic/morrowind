@@ -1,7 +1,7 @@
 import { DataSource, Repository } from "typeorm";
 import * as entC from "../entities/Content";
-import { DataSourceEnum } from "../enum/DataSourceEnum"
-import { EntityConstructor } from "../types";
+import { DataSourceEnum } from "../../enum/DataSourceEnum"
+import { EntityConstructor } from "../../types";
 
 export type ContentServiceSettings = {
     sources: Map<DataSourceEnum, DataSource>

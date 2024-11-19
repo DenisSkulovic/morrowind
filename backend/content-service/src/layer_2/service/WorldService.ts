@@ -4,7 +4,7 @@
 import { contentEntityMap as cEM, isParentEntity } from "../../contentEntityMap";
 import { WorldDataSource } from "../../data-source"; // Import your configured data source
 import { PresetLoader } from "../../layer_1/PresetLoader";
-import { ContentServiceBase, ContentServiceSettings } from "../../service/ContentServiceBase";
+import { ContentServiceBase, ContentServiceSettings } from "../../layer_2_and_3/service/ContentServiceBase";
 import { DataSourceEnum } from "../../enum/DataSourceEnum";
 import { World } from "../../entities/World";
 import { PresetEnum } from "../../enum/PresetEnum";

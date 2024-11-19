@@ -1,7 +1,7 @@
 import { Entity, TableInheritance, Column, ManyToOne } from "typeorm";
 import { ContentBase } from "../ContentBase";
 import { Skill } from "../Skill/Skill";
-import { ItemInstanceService } from "../../../service/ItemInstanceService";
+import { ItemInstanceService } from "../../../layer_2_and_3/generator/ItemInstanceGenerator";
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })

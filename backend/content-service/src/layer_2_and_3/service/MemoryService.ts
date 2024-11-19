@@ -1,6 +1,6 @@
-import { AppDataSource } from "../data-source";
-import { Memory } from "../entities/Content/Knowledge/Memory";
-import { Character } from "../entities/Content/Character";
+import { AppDataSource } from "../../data-source";
+import { Memory } from "../../entities/Content/Knowledge/Memory";
+import { Character } from "../../entities/Content/Character";
 
 export class MemoryService {
     private memoryRepository = AppDataSource.getRepository(Memory);

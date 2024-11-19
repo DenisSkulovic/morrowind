@@ -1,7 +1,7 @@
 import { DataSource, EntityManager, Repository } from "typeorm";
-import { WorldDataSource } from "../data-source";
-import { Item } from "../entities/Content/Item/Item";
-import { ItemGenInstruction } from "../layer_1/types";
+import { WorldDataSource } from "../../data-source";
+import { Item } from "../../entities/Content/Item/Item";
+import { ItemGenInstruction } from "../../layer_1/types";
 import { randomUUID } from "crypto";
 
 export class ItemInstanceService {
