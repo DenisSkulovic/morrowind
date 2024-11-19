@@ -6,7 +6,7 @@ export class ItemWearable extends ItemRepairable {
     id_prefix = "ITEM_WEARABLE"
 
     @Column({default: null, nullable: true})
-    armor_class!: number | null; // AC provided to that body part.
+    armor_class!: number; // AC provided to that body part.
 
     @Column({default: 0})
     durability!: number;

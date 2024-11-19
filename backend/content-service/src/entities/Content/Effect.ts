@@ -19,10 +19,10 @@ export class Effect extends ContentBase {
     type!: string; // "damage", "healing", "buff", "debuff", "resistance", etc.
 
     @Column({ type: "enum", enum: ["HEALTH", "STAMINA", "MAGIC"]})
-    target!: string | null; // "health", "stamina", "magic", etc.
+    target!: string; // "health", "stamina", "magic", etc.
 
     @Column({ type: "enum", enum: ["INSTANT", "GRADUAL", "PERSISTENT"]})
-    mode!: string | null; // "instant", "gradual", "persistent"
+    mode!: string; // "instant", "gradual", "persistent"
 
     @Column({ type: "enum", enum: ["FIRE", "FROST", "POISON", "SHOCK"]})
     element?: string;

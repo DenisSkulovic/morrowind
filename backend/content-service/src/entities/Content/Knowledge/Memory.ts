@@ -2,12 +2,12 @@ import { Entity, TableInheritance, OneToMany, ManyToMany, Column, JoinTable, Man
 import { Fact } from "../Fact";
 import { Tag } from "../Tag";
 import { ContentBase } from "../../../ContentBase";
-import { Character } from "../Character";
 import { Campaign } from "../../Campaign";
 import { User } from "../../User";
 import { World } from "../../World";
 
 @Entity()
+@TableInheritance({ column: { type: "varchar", name: "type" } })
 export class Memory extends ContentBase {
     @PrimaryGeneratedColumn("uuid")
     id!: string;

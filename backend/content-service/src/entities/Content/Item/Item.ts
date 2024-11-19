@@ -18,7 +18,7 @@ export class Item extends ContentBase {
     id_prefix = "ITEM";
 
     @Column({ default: null, nullable: true })
-    instance_id!: string | null;
+    instance_id!: string;
 
     @Column({default: "PLACEHOLDER"})
     name!: string; // Item name, e.g., "Iron Short Sword".
@@ -39,7 +39,7 @@ export class Item extends ContentBase {
     trained_skill?: Skill
 
     @Column("jsonb", {default: null, nullable: true})
-    requirements!: ItemRequirements | null
+    requirements!: ItemRequirements
 
     @Column({ default: false })
     consumable!: boolean;

@@ -21,7 +21,7 @@ export class MemoryPool extends ContentBase {
     description?: string; // Optional explanation of the pool
 
     @OneToMany(() => MemoryPoolEntry, (memoryPoolEntry) => memoryPoolEntry.memory)
-    memories!: MemoryPoolEntry[]; // Probabilities for each memory in the pool
+    memoryPoolEntries!: MemoryPoolEntry[]; // Probabilities for each memory in the pool
 
     @ManyToMany(() => CharacterProfession)
     @JoinTable()

@@ -23,10 +23,10 @@ export class Disease extends ContentBase {
     severity!: string;
 
     @Column("jsonb", { nullable: true, default: null })
-    effects!: string[] | null; // Links to associated Effect IDs.
+    effects!: string[]; // Links to associated Effect IDs.
 
     @Column("jsonb", { nullable: true, default: null })
-    resistances!: string[] | null; // Links to associated Resistance IDs.
+    resistances!: string[]; // Links to associated Resistance IDs.
 
     @ManyToMany(() => Tag, (tag) => tag.diseases)
     tags?: Tag[];

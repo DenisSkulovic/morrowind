@@ -9,6 +9,7 @@ import { User } from "../../../User";
 import { World } from "../../../World";
 
 @Entity()
+@TableInheritance({ column: { type: "varchar", name: "type" } })
 export class PastExperience extends ContentBase {
     @PrimaryGeneratedColumn("uuid")
     id!: string;

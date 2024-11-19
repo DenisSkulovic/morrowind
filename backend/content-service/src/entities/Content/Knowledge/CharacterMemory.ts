@@ -8,6 +8,7 @@ import { User } from "../../User";
 import { World } from "../../World";
 
 @Entity()
+@TableInheritance({ column: { type: "varchar", name: "type" } })
 export class CharacterMemory extends ContentBase {
     @PrimaryGeneratedColumn("uuid")
     id!: string;
@@ -25,7 +26,7 @@ export class CharacterMemory extends ContentBase {
         [id: string]: {
             status: "accessible" | "inaccessible",
         }
-    } | null
+    }
 
     @Column({ default: 1 })
     importance!: number; // How significant this memory is (affects reinforcement)

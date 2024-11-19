@@ -1,4 +1,4 @@
-import { JoinTable, Entity, TableInheritance, Column, OneToMany, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { JoinTable, Entity, TableInheritance, Column, OneToMany, ManyToMany, ManyToOne, PrimaryGeneratedColumn, OneToOne } from "typeorm";
 import { CharacterMemory } from "./Knowledge/CharacterMemory";
 import { MemoryPool } from "./Knowledge/MemoryPool";
 import { Trait } from "./Trait/Trait";
@@ -44,7 +44,7 @@ export class Character extends ContentBase {
     @Column("jsonb", {default: {}})
     skills!: {[skill: string]: number};
 
-    @Column("jsonb")
+    @OneToOne(() => Inventory)
     inventory!: Inventory;
 
     @OneToMany(() => CharacterProfession, profession => profession.character)
@@ -61,7 +61,7 @@ export class Character extends ContentBase {
     @JoinTable()
     traits!: Trait[];
 
-                        
+    
     @ManyToMany(() => Tag, (tag) => tag.characters)
     @JoinTable()
     tags?: Tag[];

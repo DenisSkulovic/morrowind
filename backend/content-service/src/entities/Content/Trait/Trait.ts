@@ -14,7 +14,7 @@ export class Trait extends ContentBase {
     @Column({default: "PLACEHOLDER"})
     name!: string;
 
-                    
+    
     @ManyToMany(() => Tag, (tag) => tag.traits)
     tags?: Tag[];
 

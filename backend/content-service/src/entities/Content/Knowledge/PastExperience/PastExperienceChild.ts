@@ -1,4 +1,4 @@
-import { ChildEntity, Column } from "typeorm";
+import { ChildEntity } from "typeorm";
 import { PastExperience } from "./PastExperience";
 
 @ChildEntity()

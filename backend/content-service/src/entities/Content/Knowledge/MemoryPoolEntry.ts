@@ -13,8 +13,8 @@ export class MemoryPoolEntry extends ContentBase {
 
     id_prefix = "MEMORY_POOL_ENTRY"
 
-    @ManyToOne(() => MemoryPool, pool => pool.memories)
-    pool!: MemoryPool;
+    @ManyToOne(() => MemoryPool, memoryPool => memoryPool.memoryPoolEntries)
+    memoryPool!: MemoryPool;
 
     @ManyToOne(() => Memory, memory => memory.id)
     memory!: Memory;
