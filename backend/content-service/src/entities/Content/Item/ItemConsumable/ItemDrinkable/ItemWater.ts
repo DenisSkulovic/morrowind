@@ -5,6 +5,6 @@ import { ItemDrinkable } from "./ItemDrinkable";
 export class ItemWater extends ItemDrinkable {
     id_prefix = "ITEM_WATER";
 
-    @Column()
-    thirst_quenched: number; // Amount of thirst satisfied.
+    @Column({default: 0})
+    thirst_quenched!: number; // Amount of thirst satisfied.
 }

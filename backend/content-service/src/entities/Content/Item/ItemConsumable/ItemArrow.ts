@@ -5,10 +5,10 @@ import { ItemConsumable } from "./ItemConsumable";
 export class ItemArrow extends ItemConsumable {
     id_prefix = "ITEM_ARROW";
 
-    @Column({nullable: false})
-    damage_pierce: string;
+    @Column({default: null, nullable: true})
+    damage_pierce!: string | null;
 
     @Column({default: true})
-    stackable: boolean;
+    stackable!: boolean;
 
 }

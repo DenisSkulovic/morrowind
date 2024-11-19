@@ -1,4 +1,5 @@
 import { ChildEntity } from "typeorm";
+
 import { ItemWearable } from "./ItemWearable";
 
 @ChildEntity()

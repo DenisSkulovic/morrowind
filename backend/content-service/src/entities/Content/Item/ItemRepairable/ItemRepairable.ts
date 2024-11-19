@@ -6,11 +6,11 @@ export class ItemRepairable extends Item {
     id_prefix = "ITEM_REPAIRABLE";
 
     @Column({default: true})
-    repairable: boolean;
+    repairable!: boolean;
 
-    @Column()
-    durability: number;
+    @Column({default: 0})
+    durability!: number;
 
-    @Column()
-    maxDurability: number;
+    @Column({default: 0})
+    maxDurability!: number;
 }

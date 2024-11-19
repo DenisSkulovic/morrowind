@@ -2,7 +2,7 @@ import { join } from "path";
 import { readdirSync, readFileSync } from "fs";
 import { EntityConstructor } from "../types";
 import { contentEntityMap as cEM } from "../contentEntityMap";
-import { ContentBase } from "../entities/Content/ContentBase";
+import { ContentBase } from "../ContentBase";
 import { PresetEnum } from "../enum/PresetEnum";
 
 export class PresetLoader {

@@ -1,6 +1,6 @@
 import { Repository } from "typeorm";
 import { World } from "../../entities/World";
-import { ContentBase } from "../../entities/Content/ContentBase";
+import { ContentBase } from "../../ContentBase";
 import { WorldDataSource } from "../../data-source";
 import { ContentServiceBase, ContentServiceSettings } from "../../layer_2_and_3/service/ContentServiceBase";
 import { DataSourceEnum } from "../../enum/DataSourceEnum";

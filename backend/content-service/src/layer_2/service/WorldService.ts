@@ -8,7 +8,7 @@ import { ContentServiceBase, ContentServiceSettings } from "../../layer_2_and_3/
 import { DataSourceEnum } from "../../enum/DataSourceEnum";
 import { World } from "../../entities/World";
 import { PresetEnum } from "../../enum/PresetEnum";
-import { ContentBase } from "../../entities/Content/ContentBase";
+import { ContentBase } from "../../ContentBase";
 import { TemporarilyFreezeWorld } from "../../decorator/TemporarilyFreezeWorld";
 
 export class WorldService extends ContentServiceBase {

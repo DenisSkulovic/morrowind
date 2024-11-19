@@ -1,8 +1,8 @@
 export enum TagSubtypeEnum {
-    CULTURE = "tag_culture",
-    RELATION = "tag_relation",
-    FACTION = "tag_faction",
-    RELIGION = "tag_religion",
-    WEAPON_QUALITY = "tag_weapon_quality",
-    ARMOR_QUALITY = "tag_armor_quality",
+    CULTURE = "CULTURE",
+    RELATION = "RELATION",
+    FACTION = "FACTION",
+    RELIGION = "RELIGION",
+    WEAPON_QUALITY = "WEAPON_QUALITY",
+    ARMOR_QUALITY = "ARMOR_QUALITY",
 }

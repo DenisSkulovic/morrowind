@@ -1,53 +1,47 @@
-import { TableInheritance, Entity, Column } from "typeorm";
-import { ContentBase } from "./ContentBase";
+import { TableInheritance, Entity, Column, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { ContentBase } from "../../ContentBase";
+import { Campaign } from "../Campaign";
+import { User } from "../User";
+import { World } from "../World";
 
 @Entity()
-@TableInheritance({ column: { type: "varchar", name: "type" } }) // Discriminator column for inheritance
 export class Need extends ContentBase {
+    @PrimaryGeneratedColumn("uuid")
+    id!: string;
+
     id_prefix = "NEED";
 
     /**
      * Name of the need (e.g., Hunger, Security, Financial Stability).
      */
-    @Column()
-    name: string;
+    @Column({ type: "varchar", length: 255 })
+    name!: string;
 
     /**
      * Description of the need.
      */
-    @Column()
-    description: string;
+    @Column({type: "text"})
+    description!: string;
 
     /**
      * The type of need (e.g., dynamic, threshold, external).
+     * Hunger is a dynamic need. Safety is an external need as it is based on the world around the NPC. 
      */
-    @Column()
-    type: string; // "dynamic", "threshold", "external".
+    @Column({ type: "enum", enum: ["DYNAMIC", "THRESHOLD", "EXTERNAL"]})
+    type!: string; // "dynamic", "threshold", "external".
 
     /**
-     * Decay rate for dynamic needs.
+     * Need layer according to Maslow pyramid
      */
-    @Column("float", { nullable: true })
-    decayRate?: number; // Example: 0.05 per tick (for dynamic needs).
+    @Column({ type: "enum", enum: ["PHYSIOLOGICAL", "SAFETY", "BELONGING_AND_LOVE", "ESTEEM", "COGNITIVE", "AESTHETIC", "SELF_ACTUALIZATION", "TRANSCENDENCE"]})
+    layer!: string
 
-    /**
-     * Minimum threshold for threshold-based needs.
-     */
-    @Column("float", { nullable: true })
-    threshold?: number; // Example: Financial Stability = 10 coins.
+    @ManyToOne(() => User, { nullable: true })
+    user?: User;
 
-    /**
-     * Source of external needs, if applicable.
-     */
-    @Column("jsonb", { nullable: true })
-    externalSource?: {
-        type: string; // Example: "location_security".
-        value?: number; // Current level of security in the environment.
-    };
+    @ManyToOne(() => Campaign, { nullable: true })
+    campaign?: Campaign;
 
-    /**
-     * Effects triggered when the need is unmet.
-     */
-    @Column("jsonb", { nullable: true })
-    neglectEffects?: string[]; // Links to Effect IDs.
+    @ManyToOne(() => World, { nullable: true })
+    world?: World;
 }

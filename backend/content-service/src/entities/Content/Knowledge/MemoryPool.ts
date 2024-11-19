@@ -1,20 +1,45 @@
-import { Entity, TableInheritance, Column } from "typeorm";
+import { Entity, TableInheritance, Column, OneToMany, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import {MemoryPoolEntry} from "./MemoryPoolEntry"
-import { ContentBase } from "../ContentBase";
+import { ContentBase } from "../../../ContentBase";
+import { Tag } from "../Tag";
+import { CharacterProfession } from "../CharacterProfession";
+import { Campaign } from "../../Campaign";
+import { User } from "../../User";
+import { World } from "../../World";
 
 @Entity()
-@TableInheritance({ column: { type: "varchar", name: "type" } }) // Discriminator column for inheritance
 export class MemoryPool extends ContentBase {
+    @PrimaryGeneratedColumn("uuid")
+    id!: string;
+
     id_prefix = "MEMORY_POOL"
 
-    @Column()
-    name: string; // E.g., "Seida Neen Knowledge - Extensive" IMPORTANT - Extensive should be in the tags, not just text; tag like extensive_knowledge
+    @Column({default: "PLACEHOLDER"})
+    name!: string; // E.g., "Seida Neen Knowledge - Extensive" IMPORTANT - Extensive should be in the tags, not just text; tag like extensive_knowledge
 
     @Column("text", { nullable: true })
     description?: string; // Optional explanation of the pool
 
-    @OneToMany(() => MemoryPoolEntry, memory => memory.memoryPool)
-    memories: MemoryPoolEntry[]; // Probabilities for each memory in the pool
+    @OneToMany(() => MemoryPoolEntry, (memoryPoolEntry) => memoryPoolEntry.memory)
+    memories!: MemoryPoolEntry[]; // Probabilities for each memory in the pool
+
+    @ManyToMany(() => CharacterProfession)
+    @JoinTable()
+    characterProfessions!: CharacterProfession[]
+
+            
+    @ManyToMany(() => Tag, (tag) => tag.memoryPools)
+    @JoinTable()
+    tags?: Tag[];
+
+    @ManyToOne(() => User, { nullable: true })
+    user?: User;
+
+    @ManyToOne(() => Campaign, { nullable: true })
+    campaign?: Campaign;
+
+    @ManyToOne(() => World, { nullable: true })
+    world?: World;
 }
 
 // memory pools are collections of memory entries, memory pool entries contain a memory and some expected values for generation, and memories are collections of facts. Memory pools can be any groupings by region, topic, etc.

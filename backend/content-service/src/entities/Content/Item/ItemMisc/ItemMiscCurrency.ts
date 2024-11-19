@@ -6,6 +6,6 @@ export class ItemMiscCurrency extends ItemMisc {
     id_prefix = "ITEM_MISC_CURRENCY"
 
     @Column({default: true})
-    stackable: boolean;
+    stackable!: boolean;
 
 }

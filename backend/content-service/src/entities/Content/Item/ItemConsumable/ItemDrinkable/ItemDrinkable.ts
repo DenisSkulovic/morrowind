@@ -6,5 +6,5 @@ export class ItemDrinkable extends ItemConsumable {
     id_prefix = "ITEM_DRINKABLE";
 
     @Column({default: true})
-    drinkable: boolean;
+    drinkable!: boolean;
 }

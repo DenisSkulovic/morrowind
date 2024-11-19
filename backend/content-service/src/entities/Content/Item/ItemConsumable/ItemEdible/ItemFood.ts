@@ -5,9 +5,9 @@ import { ItemConsumable } from "../ItemConsumable";
 export class ItemFood extends ItemConsumable {
     id_prefix = "ITEM_FOOD";
 
-    @Column()
-    nutrition: number; // Amount of hunger satisfied.
+    @Column({default: 0})
+    nutrition!: number; // Amount of hunger satisfied.
 
-    @Column()
-    spoilage: number; // Time in hours before the item spoils.
+    @Column({default: 0})
+    spoilage!: number; // Time in hours before the item spoils.
 }

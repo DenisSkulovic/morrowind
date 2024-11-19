@@ -5,9 +5,6 @@
         "description": "A potent local liquor brewed from fermented grains.",
         "weight": 1,
         "base_value": 8,
-        "thirst_quenched": -5,
-        "intoxication": 20,
-        "mood_boost": 10,
         "targetEntity": "ItemAlcohol"
     }
 ]

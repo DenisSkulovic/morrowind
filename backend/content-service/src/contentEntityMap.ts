@@ -25,7 +25,9 @@ import { CharacterMemory } from "./entities/Content/Knowledge/CharacterMemory";
 import { Memory } from "./entities/Content/Knowledge/Memory";
 import { MemoryPool } from "./entities/Content/Knowledge/MemoryPool";
 import { MemoryPoolEntry } from "./entities/Content/Knowledge/MemoryPoolEntry";
-import { PastExperience } from "./entities/Content/Knowledge/PastExperience";
+import { PastExperience } from "./entities/Content/Knowledge/PastExperience/PastExperience";
+import { PastExperienceAdult } from "./entities/Content/Knowledge/PastExperience/PastExperienceAdult";
+import { PastExperienceChild } from "./entities/Content/Knowledge/PastExperience/PastExperienceChild";
 import { Skill } from "./entities/Content/Skill/Skill";
 import { Trait } from "./entities/Content/Trait/Trait";
 import { TraitCongenital } from "./entities/Content/Trait/TraitCongenital";
@@ -41,7 +43,7 @@ import { TraitPhysical } from "./entities/Content/Trait/TraitPhysical";
 import { Birthsign } from "./entities/Content/Birthsign";
 import { Character } from "./entities/Content/Character";
 import { CharacterProfession } from "./entities/Content/CharacterProfession";
-import { ContentBase } from "./entities/Content/ContentBase";
+import { ContentBase } from "./ContentBase";
 import { Disease } from "./entities/Content/Disease";
 import { Effect } from "./entities/Content/Effect";
 import { Fact } from "./entities/Content/Fact";
@@ -102,6 +104,8 @@ export const contentEntityMap: {[name: string]: EntityConstructor<ContentBase>} 
     "MemoryPool": MemoryPool,
     "MemoryPoolEntry": MemoryPoolEntry,
     "PastExperience": PastExperience,
+    "PastExperienceChild": PastExperienceChild,
+    "PastExperienceAdult": PastExperienceAdult,
     "Skill": Skill,
     "Trait": Trait,
     "TraitCongenital": TraitCongenital,
@@ -117,7 +121,6 @@ export const contentEntityMap: {[name: string]: EntityConstructor<ContentBase>} 
     "Birthsign": Birthsign,
     "Character": Character,
     "CharacterProfession": CharacterProfession,
-    "ContentBase": ContentBase,
     "Disease": Disease,
     "Effect": Effect,
     "Fact": Fact,

@@ -5,36 +5,36 @@
         "coreType": "1w9",
         "traits": [
             {
-                "name": "hopeful",
+                "name": "HOPEFUL",
                 "probability": 0.9
             },
             {
-                "name": "optimistic",
+                "name": "OPTIMISTIC",
                 "probability": 0.8
             },
             {
-                "name": "empathetic",
+                "name": "EMPATHETIC",
                 "probability": 0.7
             }
         ],
         "traumaInfluence": {
             "processed": [
                 {
-                    "name": "visionary",
+                    "name": "VISIONARY",
                     "probability": 0.8
                 },
                 {
-                    "name": "motivational",
+                    "name": "MOTIVATIONAL",
                     "probability": 0.7
                 }
             ],
             "unresolved": [
                 {
-                    "name": "unrealistic",
+                    "name": "UNREALISTIC",
                     "probability": 0.6
                 },
                 {
-                    "name": "overly trusting",
+                    "name": "OVERLY_TRUSTING",
                     "probability": 0.5
                 }
             ]
@@ -46,36 +46,36 @@
         "coreType": "9w1",
         "traits": [
             {
-                "name": "peaceful",
+                "name": "PEACEFUL",
                 "probability": 0.9
             },
             {
-                "name": "cooperative",
+                "name": "COOPERATIVE",
                 "probability": 0.8
             },
             {
-                "name": "skilled mediator",
+                "name": "SKILLED_MEDIATOR",
                 "probability": 0.7
             }
         ],
         "traumaInfluence": {
             "processed": [
                 {
-                    "name": "fair",
+                    "name": "FAIR",
                     "probability": 0.8
                 },
                 {
-                    "name": "compassionate",
+                    "name": "COMPASSIONATE",
                     "probability": 0.7
                 }
             ],
             "unresolved": [
                 {
-                    "name": "avoidant",
+                    "name": "AVOIDANT",
                     "probability": 0.6
                 },
                 {
-                    "name": "indecisive",
+                    "name": "INDECISIVE",
                     "probability": 0.5
                 }
             ]
@@ -87,36 +87,36 @@
         "coreType": "2w1",
         "traits": [
             {
-                "name": "wise",
+                "name": "WISE",
                 "probability": 0.9
             },
             {
-                "name": "nurturing",
+                "name": "NURTURING",
                 "probability": 0.8
             },
             {
-                "name": "patient",
+                "name": "PATIENT",
                 "probability": 0.7
             }
         ],
         "traumaInfluence": {
             "processed": [
                 {
-                    "name": "insightful",
+                    "name": "INSIGHTFUL",
                     "probability": 0.8
                 },
                 {
-                    "name": "supportive",
+                    "name": "SUPPORTIVE",
                     "probability": 0.7
                 }
             ],
             "unresolved": [
                 {
-                    "name": "overprotective",
+                    "name": "OVERPROTECTIVE",
                     "probability": 0.6
                 },
                 {
-                    "name": "dismissive of independence",
+                    "name": "DISMISSIVE_OF_INDEPENDENCE",
                     "probability": 0.5
                 }
             ]
@@ -128,36 +128,36 @@
         "coreType": "6w5",
         "traits": [
             {
-                "name": "devoted",
+                "name": "DEVOTED",
                 "probability": 0.9
             },
             {
-                "name": "steadfast",
+                "name": "STEADFAST",
                 "probability": 0.8
             },
             {
-                "name": "dependable",
+                "name": "DEPENDABLE",
                 "probability": 0.7
             }
         ],
         "traumaInfluence": {
             "processed": [
                 {
-                    "name": "protective",
+                    "name": "PROTECTIVE",
                     "probability": 0.8
                 },
                 {
-                    "name": "courageous",
+                    "name": "COURAGEOUS",
                     "probability": 0.7
                 }
             ],
             "unresolved": [
                 {
-                    "name": "clingy",
+                    "name": "CLINGY",
                     "probability": 0.6
                 },
                 {
-                    "name": "overly cautious",
+                    "name": "OVERLY_CAUTIOUS",
                     "probability": 0.5
                 }
             ]
@@ -169,36 +169,36 @@
         "coreType": "3w2",
         "traits": [
             {
-                "name": "sociable",
+                "name": "SOCIABLE",
                 "probability": 0.9
             },
             {
-                "name": "charismatic",
+                "name": "CHARISMATIC",
                 "probability": 0.8
             },
             {
-                "name": "quick-witted",
+                "name": "QUICK_WITTED",
                 "probability": 0.7
             }
         ],
         "traumaInfluence": {
             "processed": [
                 {
-                    "name": "diplomatic",
+                    "name": "DIPLOMATIC",
                     "probability": 0.8
                 },
                 {
-                    "name": "adaptive",
+                    "name": "ADAPTIVE",
                     "probability": 0.7
                 }
             ],
             "unresolved": [
                 {
-                    "name": "superficial",
+                    "name": "SUPERFICIAL",
                     "probability": 0.6
                 },
                 {
-                    "name": "manipulative",
+                    "name": "MANIPULATIVE",
                     "probability": 0.5
                 }
             ]
@@ -210,36 +210,36 @@
         "coreType": "4w5",
         "traits": [
             {
-                "name": "imaginative",
+                "name": "IMAGINATIVE",
                 "probability": 0.9
             },
             {
-                "name": "creative",
+                "name": "CREATIVE",
                 "probability": 0.8
             },
             {
-                "name": "introspective",
+                "name": "INTROSPECTIVE",
                 "probability": 0.7
             }
         ],
         "traumaInfluence": {
             "processed": [
                 {
-                    "name": "inventive",
+                    "name": "INVENTIVE",
                     "probability": 0.8
                 },
                 {
-                    "name": "innovative",
+                    "name": "INNOVATIVE",
                     "probability": 0.7
                 }
             ],
             "unresolved": [
                 {
-                    "name": "disconnected",
+                    "name": "DISCONNECTED",
                     "probability": 0.6
                 },
                 {
-                    "name": "impractical",
+                    "name": "IMPRACTICAL",
                     "probability": 0.5
                 }
             ]
@@ -251,36 +251,36 @@
         "coreType": "6w7",
         "traits": [
             {
-                "name": "resilient",
+                "name": "RESILIENT",
                 "probability": 0.9
             },
             {
-                "name": "adaptable",
+                "name": "ADAPTABLE",
                 "probability": 0.8
             },
             {
-                "name": "pragmatic",
+                "name": "PRAGMATIC",
                 "probability": 0.7
             }
         ],
         "traumaInfluence": {
             "processed": [
                 {
-                    "name": "courageous",
+                    "name": "COURAGEOUS",
                     "probability": 0.8
                 },
                 {
-                    "name": "wise",
+                    "name": "WISE",
                     "probability": 0.7
                 }
             ],
             "unresolved": [
                 {
-                    "name": "cynical",
+                    "name": "CYNICAL",
                     "probability": 0.6
                 },
                 {
-                    "name": "mistrustful",
+                    "name": "MISTRUSTFUL",
                     "probability": 0.5
                 }
             ]
@@ -292,36 +292,36 @@
         "coreType": "8w7",
         "traits": [
             {
-                "name": "defiant",
+                "name": "DEFIANT",
                 "probability": 0.9
             },
             {
-                "name": "independent",
+                "name": "INDEPENDENT",
                 "probability": 0.8
             },
             {
-                "name": "unconventional",
+                "name": "UNCONVENTIONAL",
                 "probability": 0.7
             }
         ],
         "traumaInfluence": {
             "processed": [
                 {
-                    "name": "determined",
+                    "name": "DETERMINED",
                     "probability": 0.8
                 },
                 {
-                    "name": "resilient",
+                    "name": "RESILIENT",
                     "probability": 0.7
                 }
             ],
             "unresolved": [
                 {
-                    "name": "reckless",
+                    "name": "RECKLESS",
                     "probability": 0.6
                 },
                 {
-                    "name": "confrontational",
+                    "name": "CONFRONTATIONAL",
                     "probability": 0.5
                 }
             ]
@@ -333,36 +333,36 @@
         "coreType": "5w4",
         "traits": [
             {
-                "name": "independent",
+                "name": "INDEPENDENT",
                 "probability": 0.9
             },
             {
-                "name": "reserved",
+                "name": "RESERVED",
                 "probability": 0.8
             },
             {
-                "name": "introspective",
+                "name": "INTROSPECTIVE",
                 "probability": 0.7
             }
         ],
         "traumaInfluence": {
             "processed": [
                 {
-                    "name": "wise",
+                    "name": "WISE",
                     "probability": 0.8
                 },
                 {
-                    "name": "self-sufficient",
+                    "name": "SELF_SUFFICIENT",
                     "probability": 0.7
                 }
             ],
             "unresolved": [
                 {
-                    "name": "antisocial",
+                    "name": "ANTISOCIAL",
                     "probability": 0.6
                 },
                 {
-                    "name": "distrustful",
+                    "name": "DISTRUSTFUL",
                     "probability": 0.5
                 }
             ]

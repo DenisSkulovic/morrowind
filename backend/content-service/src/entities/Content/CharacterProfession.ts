@@ -1,27 +1,40 @@
-import { Entity, TableInheritance, Column, ManyToOne, ManyToMany } from "typeorm";
+import { Entity, TableInheritance, Column, ManyToOne, ManyToMany, JoinTable, PrimaryGeneratedColumn } from "typeorm";
 import { MemoryPool } from "./Knowledge/MemoryPool";
 import { Character } from "./Character";
-import { ContentBase } from "./ContentBase";
+import { ContentBase } from "../../ContentBase";
+import { Tag } from "./Tag";
+import { Campaign } from "../Campaign";
+import { User } from "../User";
+import { World } from "../World";
 
 @Entity()
-@TableInheritance({ column: { type: "varchar", name: "type" } }) // Discriminator column for inheritance
 export class CharacterProfession extends ContentBase {
+    @PrimaryGeneratedColumn("uuid")
+    id!: string;
+
     id_prefix = "CHARACTER_PROFESSION"
 
     @ManyToOne(() => Character, character => character.professions)
-    character: Character;
+    character?: Character;
 
-    @ManyToMany(())
-    memoryPools: MemoryPool[]
+    @ManyToMany(() => MemoryPool)
+    memoryPools!: MemoryPool[]
 
-    @Column()
-    name: string; // E.g., "Fisherman", "Kwama Egg Miner", "Imperial Soldier"
+    @Column({ type: "varchar", length: 255, default: "PLACEHOLDER" })
+    name!: string; // E.g., "Fisherman", "Kwama Egg Miner", "Imperial Soldier"
 
-    @Column()
-    startYear: number;
 
-    @Column({ nullable: true })
-    endYear: number; // Null if currently active
+    @ManyToMany(() => Tag, (tag) => tag.characterProfessions)
+    tags?: Tag[];
+
+    @ManyToOne(() => User, { nullable: true })
+    user?: User;
+
+    @ManyToOne(() => Campaign, { nullable: true })
+    campaign?: Campaign;
+
+    @ManyToOne(() => World, { nullable: true })
+    world?: World;
 }
 
 // example: Fisherman (Beginner). Beginner here would be represented by a tag, and specific memory pools will be connected. On generation, certain memories will be created, but after generation memories begin a free float.

@@ -1,24 +1,42 @@
-import { TableInheritance, Column, Entity } from "typeorm";
-import { ContentBase } from "./ContentBase";
+import { TableInheritance, Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { ContentBase } from "../../ContentBase";
+import { Tag } from "./Tag";
+import { Campaign } from "../Campaign";
+import { User } from "../User";
+import { World } from "../World";
 
 
 @Entity()
-@TableInheritance({ column: { type: "varchar", name: "type" } }) // Discriminator column for inheritance
 export class Disease extends ContentBase {
+    @PrimaryGeneratedColumn("uuid")
+    id!: string;
+
     id_prefix = "DISEASE";
 
-    @Column()
-    name: string;
+    @Column({ type: "varchar", length: 255 })
+    name!: string;
 
-    @Column()
-    description: string;
+    @Column({ type: "text" })
+    description!: string;
 
-    @Column()
-    severity: string; // "mild", "moderate", "severe".
+    @Column({ type: "enum", enum: ["mild", "moderate", "severe"] })
+    severity!: string;
 
-    @Column("jsonb", { nullable: true })
-    effects: string[]; // Links to associated Effect IDs.
+    @Column("jsonb", { nullable: true, default: null })
+    effects!: string[] | null; // Links to associated Effect IDs.
 
-    @Column("jsonb", { nullable: true })
-    resistances: string[]; // Links to associated Resistance IDs.
+    @Column("jsonb", { nullable: true, default: null })
+    resistances!: string[] | null; // Links to associated Resistance IDs.
+
+    @ManyToMany(() => Tag, (tag) => tag.diseases)
+    tags?: Tag[];
+
+    @ManyToOne(() => User, { nullable: true })
+    user?: User;
+
+    @ManyToOne(() => Campaign, { nullable: true })
+    campaign?: Campaign;
+
+    @ManyToOne(() => World, { nullable: true })
+    world?: World;
 }

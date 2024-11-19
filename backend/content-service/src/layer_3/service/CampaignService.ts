@@ -2,7 +2,7 @@ import { WorldDataSource, CampaignDataSource } from "../../data-source";
 import { TemporarilyFreezeWorld } from "../../decorator/TemporarilyFreezeWorld";
 import { getMetadataArgsStorage } from "typeorm";
 import { EntityTarget } from "typeorm/common/EntityTarget";
-import { ContentBase } from "../../entities/Content/ContentBase";
+import { ContentBase } from "../../ContentBase";
 import { contentEntityMap } from "../../contentEntityMap";
 import { Repository } from "typeorm";
 import { isParentEntity } from "../../contentEntityMap";

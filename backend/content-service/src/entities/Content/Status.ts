@@ -1,24 +1,38 @@
-import { TableInheritance, Column, Entity } from "typeorm";
-import { ContentBase } from "./ContentBase";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { ContentBase } from "../../ContentBase";
+import { Campaign } from "../Campaign";
+import { User } from "../User";
+import { World } from "../World";
 
 
 @Entity()
-@TableInheritance({ column: { type: "varchar", name: "type" } }) // Discriminator column for inheritance
 export class Status extends ContentBase {
+    @PrimaryGeneratedColumn("uuid")
+    id!: string;
+
     id_prefix = "STATUS";
 
-    @Column()
-    name: string;
+    @Column({ type: "varchar", length: 255 })
+    name!: string;
 
-    @Column()
-    description: string;
+    @Column({ type: "text" })
+    description!: string;
 
-    @Column()
-    type: string; // "buff", "debuff", "neutral"
+    @Column({ type: "enum", enum: ["BUFF", "DEBUFF", "NEUTRAL"]})
+    type!: string; // "buff", "debuff", "neutral"
 
     @Column("jsonb", { nullable: true })
-    effects: string[]; // Links to associated Effect IDs.
+    effects!: string[]; // Links to associated Effect IDs.
 
     @Column({ nullable: true })
-    duration: number; // Duration in ticks (0 for permanent).
+    duration!: number; // Duration in ticks (0 for permanent).
+
+    @ManyToOne(() => User, { nullable: true })
+    user?: User;
+
+    @ManyToOne(() => Campaign, { nullable: true })
+    campaign?: Campaign;
+
+    @ManyToOne(() => World, { nullable: true })
+    world?: World;
 }

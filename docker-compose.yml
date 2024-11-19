@@ -111,6 +111,7 @@ services:
     profiles:
       - database
       - fullstack
+      - backend
 
   campaign-db:
     image: postgres:14
@@ -127,23 +128,24 @@ services:
     profiles:
       - database
       - fullstack
+      - backend
 
-  # Frontends
-  world-building-ui:
-    build:
-      context: /home/denis/CODE/morrowind2/frontend/world-building-ui
-    container_name: world_building_ui
-    restart: always
-    ports:
-      - "3001:3000"
-    volumes:
-      - /home/denis/CODE/morrowind2/frontend/world-building-ui:/usr/src/app
-      - /usr/src/app/node_modules
-    depends_on:
-      - content-service
-    profiles:
-      - frontend
-      - fullstack
+  # # Frontends
+  # world-building-ui:
+  #   build:
+  #     context: /home/denis/CODE/morrowind2/frontend/world-building-ui
+  #   container_name: world_building_ui
+  #   restart: always
+  #   ports:
+  #     - "3001:3000"
+  #   volumes:
+  #     - /home/denis/CODE/morrowind2/frontend/world-building-ui:/usr/src/app
+  #     - /usr/src/app/node_modules
+  #   depends_on:
+  #     - content-service
+  #   profiles:
+  #     - frontend
+  #     - fullstack
 
   # campaign-ui:
   #   build:
