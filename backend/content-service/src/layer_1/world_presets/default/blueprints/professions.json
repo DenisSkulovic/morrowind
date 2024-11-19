@@ -1,0 +1,26 @@
+[
+    {
+        "blueprint_id": "TOWN_GUARD",
+        "name": "Town guard",
+        "memoryPools": [],
+        "targetEntity": "CharacterProfession"
+    },
+    {
+        "blueprint_id": "VILLAGE_FISHERMAN",
+        "name": "Village fisherman",
+        "memoryPools": [],
+        "targetEntity": "CharacterProfession"
+    },
+    {
+        "blueprint_id": "FOREST BANDIT",
+        "name": "Forest bandit",
+        "memoryPools": [],
+        "targetEntity": "CharacterProfession"
+    },
+    {
+        "blueprint_id": "MERCHANT",
+        "name": "Merchant",
+        "memoryPools": [],
+        "targetEntity": "CharacterProfession"
+    }
+]

@@ -1,0 +1,214 @@
+[
+    {
+        "blueprint_id": "BACKGROUND_HIGHLAND_TOWN_GUARD",
+        "name": "Highland Town Guard",
+        "faction_prob": {
+            "condition": "OR",
+            "prob": {
+                "HIGHLAND_KINGDOM": 1
+            }
+        },
+        "disease_prob": {
+            "condition": "ANY",
+            "prob": {
+                "COMMON_COLD": 0.1,
+                "PLAGUE": 0.05
+            }
+        },
+        "addiction_prob": {
+            "condition": "ANY",
+            "prob": {
+                "ALCOHOLISM": 0.1,
+                "DEVILS_LETTUCE": 0.05
+            }
+        },
+        "profession_prob": {
+            "condition": "OR",
+            "prob": {
+                "TOWN_GUARD": 1
+            }
+        },
+        "race_prob": {
+            "condition": "OR",
+            "prob": {
+                "HUMAN": 1
+            }
+        },
+        "religion_prob": {
+            "condition": "OR",
+            "prob": {
+                "MONOTHEISTIC_FAITH": 0.8,
+                "ANCESTOR_WORSHIP": 0.1,
+                "NATURE_FAITH": 0.1
+            }
+        },
+        "personality_prob": {
+            "condition": "OR",
+            "prob": {
+                "PROFILE_LOYALIST": 0.6,
+                "PROFILE_REFORMER": 0.3,
+                "PROFILE_CHALLENGER": 0.1
+            }
+        },
+        "item_set_prob": {
+            "condition": "ANY",
+            "prob": {
+                "SHORTSWORD_SHIELD": 1,
+                "COMMON_SHIRT_PANTS": 1,
+                "FULL_ARMOR": 1
+            }
+        },
+        "past_exp_prob": {
+            "child": {
+                "condition": "OR",
+                "prob": {
+                    "BLACKSMITH_APPRENTICE": 0.3,
+                    "FARM_CHILD": 0.4,
+                    "ORPHAN": 0.15,
+                    "BEGGAR_CHILD": 0.15
+                }
+            },
+            "adult": {
+                "condition": "OR",
+                "prob": {
+                    "RETIRED_SOLDIER": 0.3,
+                    "QUIET_TOWN_LIFE": 0.4,
+                    "WIDOW": 0.1,
+                    "FREED_SLAVE": 0.05,
+                    "RETIRED_ADVENTURER": 0.05
+                }
+            }
+        }
+    },
+    {
+        "blueprint_id": "BACKGROUND_GUARD_RANGED",
+        "name": "Ranged Guard",
+        "personality_probabilities": [
+            {
+                "profile_id": "profile_loyalist",
+                "probability": 0.6
+            },
+            {
+                "profile_id": "profile_reformer",
+                "probability": 0.3
+            },
+            {
+                "profile_id": "profile_challenger",
+                "probability": 0.1
+            }
+        ],
+        "item_sets": [
+            "SHORTSWORD",
+            "BOW_AND_ARROWS",
+            "COMMON_SHIRT_PANTS_SHOES",
+            "CUIRASS_HELMET"
+        ],
+        "skill_pools": [
+            "pool_combat_skills",
+            "pool_watchman_skills"
+        ]
+    },
+    {
+        "blueprint_id": "BACKGROUND_BANDIT",
+        "name": "Bandit",
+        "personality_probabilities": [
+            {
+                "profile_id": "profile_challenger",
+                "probability": 0.5
+            },
+            {
+                "profile_id": "profile_opportunist",
+                "probability": 0.3
+            },
+            {
+                "profile_id": "profile_rebel",
+                "probability": 0.2
+            }
+        ],
+        "item_pools": [
+            "SHORTSWORD",
+            "BOW_AND_ARROWS",
+            "COMMON_SHIRT_PANTS_SHOES",
+            "CUIRASS_HELMET"
+        ],
+        "skill_pools": [
+            "pool_combat_skills",
+            "pool_survival_skills"
+        ]
+    },
+    {
+        "blueprint_id": "BACKGROUND_FISHERMAN",
+        "name": "Fisherman",
+        "personality_probabilities": [
+            {
+                "profile_id": "profile_loyal_companion",
+                "probability": 0.4
+            },
+            {
+                "profile_id": "profile_dreamer",
+                "probability": 0.4
+            },
+            {
+                "profile_id": "profile_loner",
+                "probability": 0.2
+            }
+        ],
+        "item_pools": [
+            "FULL_COMMON_CLOTHES"
+        ],
+        "skill_pools": [
+            "pool_fishing_skills",
+            "pool_seafaring_skills"
+        ]
+    },
+    {
+        "blueprint_id": "BACKGROUND_SCHOLAR",
+        "name": "Scholar",
+        "personality_probabilities": [
+            {
+                "profile_id": "profile_investigator",
+                "probability": 0.7
+            },
+            {
+                "profile_id": "profile_idealist",
+                "probability": 0.2
+            },
+            {
+                "profile_id": "profile_melancholic",
+                "probability": 0.1
+            }
+        ],
+        "item_pools": [
+            "FULL_COMMON_CLOTHES"
+        ],
+        "skill_pools": [
+            "pool_academic_skills",
+            "pool_linguistic_skills"
+        ]
+    },
+    {
+        "blueprint_id": "BACKGROUND_MERCHANT",
+        "name": "Merchant",
+        "personality_probabilities": [
+            {
+                "profile_id": "profile_charmer",
+                "probability": 0.6
+            },
+            {
+                "profile_id": "profile_opportunist",
+                "probability": 0.3
+            },
+            {
+                "profile_id": "profile_loyal_companion",
+                "probability": 0.1
+            }
+        ],
+        "item_pools": [
+            "FULL_COMMON_CLOTHES"
+        ],
+        "skill_pools": [
+            "pool_bargaining_skills",
+            "pool_logistics_skills"
+        ]
+    }
+]

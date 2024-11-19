@@ -1,0 +1,10 @@
+[
+    {
+        "blueprint_id": "ALCOHOLISM",
+        "target_entity": "Addiction"
+    },
+    {
+        "blueprint_id": "DEVILS_LETTUCE",
+        "target_entity": "Addiction"
+    }
+]

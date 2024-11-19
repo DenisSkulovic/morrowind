@@ -1,7 +1,9 @@
 import { join } from "path";
 import { readdirSync, readFileSync } from "fs";
-import { EntityConstructor, entityMap } from "../entityMap";
-import { ContentBase } from "../entities";
+import { EntityConstructor } from "../types";
+import { contentEntityMap as cEM } from "../contentEntityMap";
+import { ContentBase } from "../entities/Content/ContentBase";
+import { PresetEnum } from "../enum/PresetEnum";
 
 export class PresetLoader {
     private static basePath = "./world_presets"; // Base folder for presets
@@ -10,7 +12,7 @@ export class PresetLoader {
      * Loads all blueprints from a given preset folder and fills the database.
      */
     public static async loadPreset(
-        preset: string
+        preset: PresetEnum
     ): Promise<Record<string, Record<string, ContentBase>>> {
         const presetPath = join(__dirname, this.basePath, preset);
         const files = this._getJSONFiles(presetPath);
@@ -66,7 +68,7 @@ export class PresetLoader {
 
             // Group entities by their target type
             if (!entitiesByType[targetEntity]) entitiesByType[targetEntity] = {};
-            entitiesByType[targetEntity][blueprintRaw.id] = entity;
+            entitiesByType[targetEntity][blueprintRaw.blueprint_id] = entity;
         }
 
         return entitiesByType;
@@ -75,8 +77,8 @@ export class PresetLoader {
     /**
      * Retrieves the constructor for the target entity.
      */
-    private static _getBlueprintEntity<T extends ContentBase>(targetEntity: string): EntityConstructor<T> {
-        const EntityClass = entityMap[targetEntity];
+    private static _getBlueprintEntity(targetEntity: string): EntityConstructor<ContentBase> {
+        const EntityClass: EntityConstructor<ContentBase> | undefined = cEM[targetEntity];
         if (!EntityClass) throw new Error(`Unknown targetEntity: ${targetEntity}`);
         return EntityClass;
     }

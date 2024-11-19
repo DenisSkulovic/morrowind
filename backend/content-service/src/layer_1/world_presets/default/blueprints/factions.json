@@ -1,0 +1,22 @@
+[
+    {
+        "blueprint_id": "HIGHLAND_KINGDOM",
+        "name": "Highland Kingdom"
+    },
+    {
+        "blueprint_id": "LOWLAND_KINGDOM",
+        "name": "Lowland Kingdom"
+    },
+    {
+        "blueprint_id": "BANDITS",
+        "name": "Bandits"
+    },
+    {
+        "blueprint_id": "FIGHTERS_GUILD",
+        "name": "Fighters Guild"
+    },
+    {
+        "blueprint_id": "COMMONER",
+        "name": "Commoner"
+    }
+]

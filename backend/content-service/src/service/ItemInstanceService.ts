@@ -1,7 +1,7 @@
 import { DataSource, EntityManager, Repository } from "typeorm";
 import { WorldDataSource } from "../data-source";
-import { Item } from "../entities/Item/Item";
-import { ItemSetEndObj } from "../layer_1/types";
+import { Item } from "../entities/Content/Item/Item";
+import { ItemGenInstruction } from "../layer_1/types";
 import { randomUUID } from "crypto";
 
 export class ItemInstanceService {
@@ -17,10 +17,10 @@ export class ItemInstanceService {
      * Creates an Item instance based on item definition.
      */
     public generateItem(
-        item: ItemSetEndObj,
+        item: ItemGenInstruction,
         quantity: number
     ): Item {
-        const entity: Item = this.itemRepository.create({ id: item.item_id });
+        const entity: Item = this.itemRepository.create({ id: item.item_blueprint_id });
         entity.quantity = quantity;
         entity.instance_id = `${entity.id}_${randomUUID().replace(/-/g, "")}`
         return entity;

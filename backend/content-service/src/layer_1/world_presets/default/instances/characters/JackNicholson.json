@@ -1,0 +1,22 @@
+[
+    {
+        "first_name": "Jack",
+        "last_name": "Nicholson",
+        "location": "",
+        "background": "BACKGROUND_HIGHLAND_TOWN_GUARD",
+        "background_customization": {
+            "add": {},
+            "replace": {
+                "personality_probabilities": [
+                    {
+                        "profile_id": "profile_challenger",
+                        "probability": 1
+                    }
+                ],
+                "item_sets": [
+                    "NAKED"
+                ]
+            }
+        }
+    }
+]

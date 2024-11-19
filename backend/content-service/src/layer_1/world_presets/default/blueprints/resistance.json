@@ -1,0 +1,31 @@
+[
+    {
+        "blueprint_id": "FIRE_RESISTANCE",
+        "name": "Fire Resistance",
+        "effectType": "elemental",
+        "targetEffect": "fire"
+    },
+    {
+        "blueprint_id": "FROST_RESISTANCE",
+        "name": "Frost Resistance",
+        "effectType": "elemental",
+        "targetEffect": "frost"
+    },
+    {
+        "blueprint_id": "POISON_RESISTANCE", 
+        "name": "Poison Resistance",
+        "effectType": "status",
+        "targetEffect": "poison"
+    },
+    {
+        "blueprint_id": "MAGIC_RESISTANCE",
+        "name": "Magic Resistance",
+        "effectType": "magic"
+    },
+    {
+        "blueprint_id": "DISEASE_RESISTANCE", 
+        "name": "Disease Resistance",
+        "effectType": "status",
+        "targetEffect": "disease"
+    }
+]

@@ -1,6 +1,6 @@
 import { TableInheritance, Entity, Column, PrimaryGeneratedColumn, OneToMany, BaseEntity } from "typeorm";
 import { Campaign } from "./Campaign";
-import { ContentBase } from "./ContentBase";
+import { ContentBase } from "./Content/ContentBase";
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } }) // Discriminator column for inheritance

@@ -1,0 +1,1 @@
+export type EntityConstructor<T> = new () => T;

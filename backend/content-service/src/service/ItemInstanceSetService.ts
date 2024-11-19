@@ -1,24 +1,23 @@
 import { DataSource, Repository } from "typeorm";
-import { Item } from "../entities/Item/Item";
-import { ItemSet } from "../entities/ItemSet";
-import { ItemSetCombinator, ItemSetEndObj } from "../layer_1/types";
+import * as entC from "../entities/Content";
+import { ItemSetCombinator, ItemGenInstruction } from "../layer_1/types";
 import { ItemInstanceService } from "./ItemInstanceService";
 
 export class ItemInstanceSetService {
     dataSource: DataSource
-    itemRepository: Repository<Item>
+    itemRepository: Repository<entC.Item>
     itemInstanceService: ItemInstanceService
 
     constructor(dataSource: DataSource) {
         this.dataSource = dataSource
-        this.itemRepository = dataSource.getRepository(Item);
+        this.itemRepository = dataSource.getRepository(entC.Item);
         this.itemInstanceService = new ItemInstanceService(dataSource)
     }
 
     /**
      * Generates an array of items based on an item set.
      */
-    public generateItemsFromSet(itemSet: ItemSet): Item[] {
+    public generateItemsFromSet(itemSet: entC.ItemSet): entC.Item[] {
         if (!itemSet || !itemSet.set || !Array.isArray(itemSet.set.items)) return [];
 
         return this._processCombinator(itemSet.set);
@@ -27,16 +26,16 @@ export class ItemInstanceSetService {
     /**
      * Recursively processes an item set definition.
      */
-    private _processCombinator(combinator: ItemSetCombinator): Item[] {
-        const generatedItems: Item[] = [];
+    private _processCombinator(combinator: ItemSetCombinator): entC.Item[] {
+        const generatedItems: entC.Item[] = [];
 
         for (const item of combinator.items) {
             if (Math.random() > (item.prob || 1)) continue;  // Skip items that fail the probability check
-            const endObj: ItemSetEndObj | null = ("item_id" in item) ? item : null
+            const endObj: ItemGenInstruction | null = ("item_id" in item) ? item : null
             const nextCombinator: ItemSetCombinator | null = ("items" in item) ? item : null
 
             if (endObj) {
-                const generatedItem: Item = this.itemInstanceService.generateItem(endObj, this._calcQuant(endObj));
+                const generatedItem: entC.Item = this.itemInstanceService.generateItem(endObj, this._calcQuant(endObj));
                 generatedItems.push(generatedItem);
             } else if (nextCombinator) {
                 switch (nextCombinator.condition) {
@@ -45,9 +44,9 @@ export class ItemInstanceSetService {
                         break;
                     }
                     case ("OR"): {
-                        const chosenItem: ItemSetEndObj | ItemSetCombinator | null = this._chooseRandom(nextCombinator.items);
+                        const chosenItem: ItemGenInstruction | ItemSetCombinator | null = this._chooseRandom(nextCombinator.items);
                         if (!chosenItem) break
-                        const endObj: ItemSetEndObj | null = "item_id" in chosenItem ? chosenItem : null
+                        const endObj: ItemGenInstruction | null = "item_id" in chosenItem ? chosenItem : null
                         const nextCombinator: ItemSetCombinator | null = "items" in chosenItem ? chosenItem : null
                         if (nextCombinator) generatedItems.push(...this._processCombinator(nextCombinator))
                         else if (endObj) generatedItems.push(this.itemInstanceService.generateItem(endObj, this._calcQuant(endObj)))
@@ -69,11 +68,11 @@ export class ItemInstanceSetService {
     /**
      * Processes "ANY" condition for item sets.
      */
-    private _processAny(items: (ItemSetCombinator | ItemSetEndObj)[]): Item[] {
-        const generatedItems: Item[] = [];
+    private _processAny(items: (ItemSetCombinator | ItemGenInstruction)[]): entC.Item[] {
+        const generatedItems: entC.Item[] = [];
         for (const subItem of items) {
             if (Math.random() <= (subItem.prob || 1)) {
-                const endObj: ItemSetEndObj | null = "item_id" in subItem ? subItem : null
+                const endObj: ItemGenInstruction | null = "item_id" in subItem ? subItem : null
                 const nextCombinator: ItemSetCombinator | null = "items" in subItem ? subItem : null
 
                 if (nextCombinator) generatedItems.push(...this._processCombinator(nextCombinator))
@@ -86,7 +85,7 @@ export class ItemInstanceSetService {
     /**
      * Calculates the quantity of an item based on its statistical properties.
      */
-    private _calcQuant(item: ItemSetEndObj): number {
+    private _calcQuant(item: ItemGenInstruction): number {
         const avg = item.avg_quan || 1;
         const stDev = item.st_dev || 0;
         const skew = item.skew || 0;
@@ -109,7 +108,7 @@ export class ItemInstanceSetService {
     /**
      * Randomly selects an item based on probability weights.
      */
-    private _chooseRandom(items: (ItemSetCombinator | ItemSetEndObj)[]): (ItemSetEndObj | ItemSetCombinator) | null {
+    private _chooseRandom(items: (ItemSetCombinator | ItemGenInstruction)[]): (ItemGenInstruction | ItemSetCombinator) | null {
         const totalProb = items.reduce((sum, item) => sum + (item.prob || 1), 0);
         let randomValue = Math.random() * totalProb;
 

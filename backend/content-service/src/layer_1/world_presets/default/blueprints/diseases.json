@@ -1,0 +1,24 @@
+[
+    {
+        "blueprint_id": "COMMON_COLD",
+        "name": "Common Cold",
+        "severity": "mild",
+        "effects": [
+            "stamina_regen_debuff"
+        ],
+        "resistances": [
+            "disease_resistance"
+        ]
+    },
+    {
+        "blueprint_id": "PLAGUE",
+        "name": "Plague",
+        "severity": "severe",
+        "effects": [
+            "all_stats_debuff"
+        ],
+        "resistances": [
+            "disease_resistance"
+        ]
+    }
+]

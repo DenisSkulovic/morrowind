@@ -1,0 +1,234 @@
+[
+    {
+        "blueprint_id": "COMMON_HAT",
+        "name": "Common Hat",
+        "description": "A simple hat.",
+        "weight": 1,
+        "base_value": 2,
+        "stealth_disadvantage": false,
+        "targetEntity": "ItemWearableHead"
+    },
+    {
+        "blueprint_id": "COMMON_SHIRT",
+        "name": "Common Shirt",
+        "description": "A simple shirt.",
+        "weight": 1,
+        "base_value": 2,
+        "stealth_disadvantage": false,
+        "targetEntity": "ItemWearableClothesTorso"
+    },
+    {
+        "blueprint_id": "COMMON_PANTS",
+        "name": "Common Pants",
+        "description": "Simple pants.",
+        "weight": 1,
+        "base_value": 2,
+        "stealth_disadvantage": false,
+        "targetEntity": "ItemWearableClothesPants"
+    },
+    {
+        "blueprint_id": "COMMON_SHOES",
+        "name": "Common Shoes",
+        "description": "Simple shoes.",
+        "weight": 1,
+        "base_value": 2,
+        "stealth_disadvantage": false,
+        "targetEntity": "ItemWearableFeet"
+    },
+
+
+    {
+        "blueprint_id": "IRON_GREAVES",
+        "name": "Iron Greaves",
+        "description": "Sturdy greaves made from iron plates.",
+        "weight": 15,
+        "base_value": 35,
+        "protection": 8,
+        "stealth_disadvantage": true,
+        "trained_skill": "HEAVY_ARMOR",
+        "requirements": {
+            "skill": {
+                "HEAVY_ARMOR": 10
+            },
+            "attribute": {
+                "STRENGTH": 5
+            }
+        },
+        "targetEntity": "ItemWearableGreaves"
+    },
+    {
+        "blueprint_id": "STEEL_GREAVES",
+        "name": "Steel Greaves",
+        "description": "Sturdy greaves made from steel plates.",
+        "weight": 12,
+        "base_value": 70,
+        "protection": 11,
+        "stealth_disadvantage": true,
+        "trained_skill": "HEAVY_ARMOR",
+        "requirements": {
+            "skill": {
+                "HEAVY_ARMOR": 10
+            },
+            "attribute": {
+                "STRENGTH": 5
+            }
+        },
+        "targetEntity": "ItemWearableGreaves"
+    },
+
+
+    {
+        "blueprint_id": "IRON_CUIRASS",
+        "name": "Iron Cuirass",
+        "description": "A sturdy cuirass made from iron plates.",
+        "weight": 25,
+        "base_value": 50,
+        "protection": 12,
+        "stealth_disadvantage": true,
+        "trained_skill": "HEAVY_ARMOR",
+        "requirements": {
+            "skill": {
+                "HEAVY_ARMOR": 10
+            },
+            "attribute": {
+                "STRENGTH": 5
+            }
+        },
+        "targetEntity": "ItemWearableCuirass"
+    },
+    {
+        "blueprint_id": "STEEL_CUIRASS",
+        "name": "Steel Cuirass",
+        "description": "A well-forged steel cuirass offering better protection.",
+        "weight": 20,
+        "base_value": 100,
+        "protection": 15,
+        "stealth_disadvantage": true,
+        "trained_skill": "HEAVY_ARMOR",
+        "requirements": {
+            "skill": {
+                "HEAVY_ARMOR": 10
+            },
+            "attribute": {
+                "STRENGTH": 5
+            }
+        },
+        "targetEntity": "ItemWearableCuirass"
+    },
+
+
+    {
+        "blueprint_id": "IRON_HELMET",
+        "name": "Iron Helmet",
+        "description": "A basic iron helmet offering minimal protection.",
+        "weight": 5,
+        "base_value": 10,
+        "protection": 2,
+        "trained_skill": "HEAVY_ARMOR",
+        "requirements": {
+            "skill": {
+                "HEAVY_ARMOR": 10
+            },
+            "attribute": {
+                "STRENGTH": 5
+            }
+        },
+        "targetEntity": "ItemWearableHead"
+    },
+    {
+        "blueprint_id": "STEEL_HELMET",
+        "name": "Steel Helmet",
+        "description": "A durable steel helmet providing decent protection.",
+        "weight": 4,
+        "base_value": 25,
+        "protection": 3,
+        "trained_skill": "HEAVY_ARMOR",
+        "requirements": {
+            "skill": {
+                "HEAVY_ARMOR": 10
+            },
+            "attribute": {
+                "STRENGTH": 5
+            }
+        },
+        "targetEntity": "ItemWearableHead"
+    },
+
+
+    {
+        "blueprint_id": "IRON_BOOTS",
+        "name": "Iron Boots",
+        "description": "Basic iron boots offering minimal protection.",
+        "weight": 6,
+        "base_value": 15,
+        "protection": 3,
+        "trained_skill": "HEAVY_ARMOR",
+        "requirements": {
+            "skill": {
+                "HEAVY_ARMOR": 10
+            },
+            "attribute": {
+                "STRENGTH": 5
+            }
+        },
+        "targetEntity": "ItemWearableFeet"
+    },
+    {
+        "blueprint_id": "STEEL_BOOTS",
+        "name": "Steel BOOTS",
+        "description": "A durable steel helmet providing decent protection.",
+        "weight": 5,
+        "base_value": 35,
+        "protection": 4,
+        "trained_skill": "HEAVY_ARMOR",
+        "requirements": {
+            "skill": {
+                "HEAVY_ARMOR": 10
+            },
+            "attribute": {
+                "STRENGTH": 5
+            }
+        },
+        "stealth_disadvantage": true,
+        "targetEntity": "ItemWearableFeet"
+    },
+
+    
+    {
+        "blueprint_id": "IRON_SHIELD",
+        "name": "Iron Shield",
+        "description": "Basic iron shield offering minimal protection.",
+        "weight": 12,
+        "base_value": 70,
+        "protection": 50,
+        "trained_skill": "HEAVY_ARMOR",
+        "requirements": {
+            "skill": {
+                "HEAVY_ARMOR": 10
+            },
+            "attribute": {
+                "STRENGTH": 5
+            }
+        },
+        "targetEntity": "ItemWearableShield"
+    },
+    {
+        "blueprint_id": "STEEL_SHIELD",
+        "name": "Steel Shield",
+        "description": "A durable steel shield providing decent protection.",
+        "weight": 10,
+        "base_value": 140,
+        "protection": 60,
+        "trained_skill": "HEAVY_ARMOR",
+        "requirements": {
+            "skill": {
+                "HEAVY_ARMOR": 10
+            },
+            "attribute": {
+                "STRENGTH": 5
+            }
+        },
+        "stealth_disadvantage": true,
+        "targetEntity": "ItemWearableShield"
+    }
+]

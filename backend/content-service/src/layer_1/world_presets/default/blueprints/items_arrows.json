@@ -1,0 +1,11 @@
+[
+    {
+        "blueprint_id": "IRON_ARROW",
+        "name": "Iron Arrow",
+        "description": "A basic arrow made of iron.",
+        "weight": 0.1,
+        "base_value": 2,
+        "damage_pierce": "1d8",
+        "targetEntity": "ItemArrow"
+    }
+]

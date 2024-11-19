@@ -1,76 +1,53 @@
 // This service creates a World, populates it with initial default content, resets it or deletes it.
 
 
-import { World } from "../../entities/World";
-import { ContentBase } from "../../entities/ContentBase";
+import { contentEntityMap as cEM, isParentEntity } from "../../contentEntityMap";
 import { WorldDataSource } from "../../data-source"; // Import your configured data source
-import { BlueprintPopulationService } from "./BlueprintPopulationService";
-import { ItemBlueprintKind } from "../../layer_1/types";
-import { entityMap } from "../../entityMap";
 import { PresetLoader } from "../../layer_1/PresetLoader";
+import { ContentServiceBase, ContentServiceSettings } from "../../service/ContentServiceBase";
+import { DataSourceEnum } from "../../enum/DataSourceEnum";
+import { World } from "../../entities/World";
+import { PresetEnum } from "../../enum/PresetEnum";
+import { ContentBase } from "../../entities/Content/ContentBase";
+import { TemporarilyFreezeWorld } from "../../decorator/TemporarilyFreezeWorld";
 
-export class WorldService {
+export class WorldService extends ContentServiceBase {
 
-    private static _worldRepository = WorldDataSource.getRepository(World);
-    private static _contentRepository = WorldDataSource.getRepository(ContentBase);
+    constructor(settings: ContentServiceSettings) {
+        super(settings)
+    }
 
 
 
     /**
      * Creates a new world.
      */
-    public static async createWorld(name: string, description: string): Promise<World> {
-        const newWorld = this._worldRepository.create({ name, description });
-        return await this._worldRepository.save(newWorld);
+    public async createWorld(name: string, description: string): Promise<World> {
+        const worldRepository = WorldDataSource.getRepository(World)
+        const newWorld = worldRepository.create({ name, description });
+        return await worldRepository.save(newWorld);
     }
 
 
 
-    public static async setWorldFrozen(worldId: string, frozen: boolean): Promise<void> {
-        const worldRepository = WorldDataSource.getRepository(World);
-        await worldRepository.update({ id: worldId }, { frozen });
-    }
-
-
-    /**
-     * Populates a world with blueprints.
-     */
-    public static async populateWorld(worldId: string, blueprintKinds: ItemBlueprintKind[], reset = false): Promise<void> {
-        const world = await this._worldRepository.findOne({ where: { id: worldId } });
-        if (!world) {
-            throw new Error(`World with ID ${worldId} not found`);
-        }
-
-        if (reset) {
-            // Drop all content related to this world
-            await this.dropWorldContents(world)
-        }
-
-        for (const kind of blueprintKinds) {
-            const blueprints = BlueprintPopulationService.loadBlueprintJSON(kind);
-            for (const blueprint of Object.values(blueprints)) {
-                blueprint.world = world; // Link blueprint to the world
-                await this._contentRepository.save(blueprint);
-            }
-        }
-    }
-
-
-
-    
     /**
      * Loads blueprints from a preset folder and upserts them into the database in batches.
      */
-    public static async loadPresetIntoWorld(
-        preset: string,
+    @TemporarilyFreezeWorld("worldId")
+    public async loadPresetIntoWorld(
+        preset: PresetEnum,
         worldId: string,
-        batchSize: number = 50
+        batchSize: number = 50,
+        dropPreviousContent = true
     ): Promise<void> {
+        // remove any previous content
+        if (dropPreviousContent) await this.dropWorldContents(worldId)
+
         // Load blueprints from the preset folder
-        const allBlueprints = await PresetLoader.loadPreset(preset);
+        const allBlueprints: Record<string, Record<string, ContentBase>> = await PresetLoader.loadPreset(preset);
 
         for (const [targetEntity, blueprintMap] of Object.entries(allBlueprints)) {
-            const blueprintRepository = this.getContentRepository(targetEntity);
+            const blueprintRepository = this.getContentRepository(targetEntity, DataSourceEnum.WORLD);
 
             // Process blueprints in batches
             const blueprints = Object.values(blueprintMap);
@@ -93,44 +70,36 @@ export class WorldService {
     /**
      * Drops all content from a world.
      */
-    public static async dropWorldContents(worldId: string): Promise<void> {
-        const worldRepository = WorldDataSource.getRepository(World);
-        const world = await worldRepository.findOne({ where: { id: worldId } });
-    
-        if (!world) throw new Error(`World with ID ${worldId} not found.`);
-    
-        // Iterate over all entities in entityMap
-        for (const [targetEntity, EntityClass] of Object.entries(entityMap)) {
-            const repository = WorldDataSource.getRepository(EntityClass);
-    
-            // Delete all content related to the world
-            await repository.delete({ world: { id: worldId } });
-        }
-    
-        console.log(`All content for world ${worldId} has been deleted.`);
+    @TemporarilyFreezeWorld("worldId")
+    public async dropWorldContents(worldId: string): Promise<void> {
+
+        await WorldDataSource.transaction(async (transactionManager) => {
+            const worldRepository = transactionManager.getRepository(cEM.World);
+            const world = await worldRepository.findOne({ where: { id: worldId } });
+
+            if (!world) throw new Error(`World with ID ${worldId} not found.`);
+
+            // Iterate over all entities in entityMap
+            for (const [targetEntity, EntityClass] of Object.entries(cEM)) {
+                if (!isParentEntity(EntityClass)) continue; // Skip ChildEntity
+
+                const repository = transactionManager.getRepository(EntityClass);
+
+                // Delete all content related to the world
+                await repository.delete({ world: { id: worldId } });
+            }
+
+            console.log(`All content for world ${worldId} has been deleted.`);
+        });
     }
-
-
-    /**
-     * Resets a world by dropping all content and repopulating with blueprints.
-     */
-    public static async resetWorld(worldId: string, blueprintKinds: ItemBlueprintKind[]): Promise<void> {
-        const world = await this._worldRepository.findOne({ where: { id: worldId } });
-        if (!world) {
-            throw new Error(`World with ID ${worldId} not found`);
-        }
-        await this.dropWorldContents(world);
-        await this.populateWorld(worldId, blueprintKinds);
-    }
-
-
 
     /**
      * Retrieves a world and its content.
      * @param worldId ID of the world to retrieve
      */
     public static async getWorld(worldId: string): Promise<World | null> {
-        return this._worldRepository.findOne({ where: { id: worldId } });
+        const worldRepository = WorldDataSource.getRepository(World);
+        return worldRepository.findOne({ where: { id: worldId } });
     }
 
 }
