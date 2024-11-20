@@ -1,10 +1,11 @@
-import { Entity, TableInheritance, OneToMany, ManyToMany, Column, JoinTable, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, TableInheritance, OneToMany, ManyToMany, Column, JoinTable, ManyToOne, PrimaryGeneratedColumn, BeforeInsert, PrimaryColumn } from "typeorm";
 import { Fact } from "../Fact";
 import { Tag } from "../Tag";
 import { TaggableContentBase } from "../../../TaggableContentBase";
 import { Campaign } from "../../Campaign";
 import { User } from "../../User";
 import { World } from "../../World";
+import { randomUUID } from "crypto";
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })
@@ -14,11 +15,8 @@ export class Memory extends TaggableContentBase {
     
     @BeforeInsert()
     generateId() {
-        if (this.targetEntity) { // if this is an imported blueprint - make the id the same as blueprint id
-            this.id = this.blueprint_id
-        } else {
-            this.id = `${this.id_prefix}_${randomUUID().replace(/-/g, "")}`;
-        }
+        if (this.targetEntity) this.id = this.blueprint_id
+        else this.id = `${this.id_prefix}_${randomUUID().replace(/-/g, "")}`;
     }
     id_prefix = "MEMORY"
 
@@ -37,11 +35,11 @@ export class Memory extends TaggableContentBase {
     tags?: Tag[];
 
     @ManyToOne(() => User, { nullable: true })
-    user?: User;
+    user!: User;
 
     @ManyToOne(() => Campaign, { nullable: true })
     campaign?: Campaign;
 
     @ManyToOne(() => World, { nullable: true })
-    world?: World;
+    world!: World;
 }

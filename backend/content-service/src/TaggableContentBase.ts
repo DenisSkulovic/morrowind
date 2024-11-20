@@ -2,7 +2,7 @@ import { ContentBase } from "./ContentBase";
 import { Tag } from "./entities/Content/Tag";
 
 export abstract class TaggableContentBase extends ContentBase {
-    tags?: Tag[] = [];
+    tags?: Tag[];
 
     addTag(tag: Tag): void {
         if (!this.tags) this.tags = [];

@@ -4,16 +4,16 @@
 import { contentEntityMap as cEM, isParentEntity } from "../../contentEntityMap";
 import { WorldDataSource } from "../../data-source"; // Import your configured data source
 import { PresetLoader } from "../../layer_1/PresetLoader";
-import { ContentServiceBase, ContentServiceSettings } from "../../layer_2_and_3/service/RepositoryServiceBase";
+import { RepositoryServiceBase, RepositoryServiceSettings } from "../../layer_2_and_3/service/RepositoryServiceBase";
 import { DataSourceEnum } from "../../enum/DataSourceEnum";
 import { World } from "../../entities/World";
 import { PresetEnum } from "../../enum/PresetEnum";
 import { ContentBase } from "../../ContentBase";
 import { TemporarilyFreezeWorld } from "../../decorator/TemporarilyFreezeWorld";
 
-export class WorldService extends ContentServiceBase {
+export class WorldService extends RepositoryServiceBase {
 
-    constructor(settings: ContentServiceSettings) {
+    constructor(settings: RepositoryServiceSettings) {
         super(settings)
     }
 

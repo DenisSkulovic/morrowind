@@ -1,8 +1,10 @@
-import { TableInheritance, Entity, Column, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { TableInheritance, Entity, Column, ManyToOne, PrimaryGeneratedColumn, BeforeInsert, PrimaryColumn } from "typeorm";
 import { ContentBase } from "../../ContentBase";
 import { Campaign } from "../Campaign";
 import { User } from "../User";
 import { World } from "../World";
+import { randomUUID } from "crypto";
+import { CharGenProbMap, CharGenProbObject } from "../../layer_2_and_3/generator/CharacterGenerator";
 
 @Entity()
 export class PersonalityProfile extends ContentBase {
@@ -11,11 +13,8 @@ export class PersonalityProfile extends ContentBase {
     
     @BeforeInsert()
     generateId() {
-        if (this.targetEntity) { // if this is an imported blueprint - make the id the same as blueprint id
-            this.id = this.blueprint_id
-        } else {
-            this.id = `${this.id_prefix}_${randomUUID().replace(/-/g, "")}`;
-        }
+        if (this.targetEntity) this.id = this.blueprint_id
+        else this.id = `${this.id_prefix}_${randomUUID().replace(/-/g, "")}`;
     }
     id_prefix = "PROFILE";
 
@@ -23,32 +22,17 @@ export class PersonalityProfile extends ContentBase {
     name!: string;
 
     @Column({ type: "varchar", length: 3 })
-    coreType!: string; // Enneagram type with wing as a string.
+    enneagramType!: string; // Enneagram type with wing as a string.
 
     @Column("jsonb")
-    traits!: {
-        name: string;
-        probability: number; // Probability of assigning this trait during generation.
-    }[];
-
-    @Column("jsonb")
-    traumaInfluence!: {
-        processed?: {
-            name: string;
-            probability: number; // Probability of assigning this processed trauma trait.
-        }[];
-        unresolved?: {
-            name: string;
-            probability: number; // Probability of assigning this unresolved trauma trait.
-        }[];
-    };
+    traits!: CharGenProbObject;
 
     @ManyToOne(() => User, { nullable: true })
-    user?: User;
+    user!: User;
 
     @ManyToOne(() => Campaign, { nullable: true })
     campaign?: Campaign;
 
     @ManyToOne(() => World, { nullable: true })
-    world?: World;
+    world!: World;
 }

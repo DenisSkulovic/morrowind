@@ -1,11 +1,11 @@
-import { Entity, Column, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, ManyToOne, BeforeInsert, PrimaryColumn } from "typeorm";
 import { ContentBase } from "../../ContentBase";
 import { Campaign } from "../Campaign";
 import { User } from "../User";
 import { World } from "../World";
+import { randomUUID } from "crypto";
+import { CharGenProbObject } from "../../layer_2_and_3/generator/CharacterGenerator";
 
-type ProbabilityCondition = "OR" | "ANY";
-type ProbabilityMap = Record<string, number>;
 
 @Entity()
 export class Background extends ContentBase {
@@ -14,11 +14,8 @@ export class Background extends ContentBase {
     
     @BeforeInsert()
     generateId() {
-        if (this.targetEntity) { // if this is an imported blueprint - make the id the same as blueprint id
-            this.id = this.blueprint_id
-        } else {
-            this.id = `${this.id_prefix}_${randomUUID().replace(/-/g, "")}`;
-        }
+        if (this.targetEntity) this.id = this.blueprint_id
+        else this.id = `${this.id_prefix}_${randomUUID().replace(/-/g, "")}`;
     }
     id_prefix = "BACKGROUND";
 
@@ -26,72 +23,42 @@ export class Background extends ContentBase {
     name!: string; // Name of the background (e.g., "Highland Town Guard")
 
     @Column({ type: "jsonb", nullable: true })
-    faction_prob?: {
-        condition: ProbabilityCondition;
-        prob: ProbabilityMap;
-    };
+    faction_prob?: CharGenProbObject;
 
     @Column({ type: "jsonb", nullable: true })
-    disease_prob?: {
-        condition: ProbabilityCondition;
-        prob: ProbabilityMap;
-    };
+    disease_prob?: CharGenProbObject;
 
     @Column({ type: "jsonb", nullable: true })
-    addiction_prob?: {
-        condition: ProbabilityCondition;
-        prob: ProbabilityMap;
-    };
+    addiction_prob?: CharGenProbObject;
 
     @Column({ type: "jsonb", nullable: true })
-    profession_prob?: {
-        condition: ProbabilityCondition;
-        prob: ProbabilityMap;
-    };
+    profession_prob?: CharGenProbObject;
 
     @Column({ type: "jsonb", nullable: true })
-    race_prob?: {
-        condition: ProbabilityCondition;
-        prob: ProbabilityMap;
-    };
+    race_prob?: CharGenProbObject;
 
     @Column({ type: "jsonb", nullable: true })
-    religion_prob?: {
-        condition: ProbabilityCondition;
-        prob: ProbabilityMap;
-    };
+    religion_prob?: CharGenProbObject;
 
     @Column({ type: "jsonb", nullable: true })
-    personality_prob?: {
-        condition: ProbabilityCondition;
-        prob: ProbabilityMap;
-    };
+    personality_prob?: CharGenProbObject;
 
     @Column({ type: "jsonb", nullable: true })
-    item_set_prob?: {
-        condition: ProbabilityCondition;
-        prob: ProbabilityMap;
-    };
+    item_set_prob?: CharGenProbObject;
 
     @Column({ type: "jsonb", nullable: true })
     past_exp_prob?: {
-        child: {
-            condition: ProbabilityCondition;
-            prob: ProbabilityMap;
-        };
-        adult: {
-            condition: ProbabilityCondition;
-            prob: ProbabilityMap;
-        };
+        child: CharGenProbObject;
+        adult: CharGenProbObject;
     };
 
     // Relationships
     @ManyToOne(() => User, { nullable: true })
-    user?: User;
+    user!: User;
 
     @ManyToOne(() => Campaign, { nullable: true })
     campaign?: Campaign;
 
     @ManyToOne(() => World, { nullable: true })
-    world?: World;
+    world!: World;
 }

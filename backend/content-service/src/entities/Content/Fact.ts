@@ -1,10 +1,11 @@
-import { Entity, Column, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, ManyToMany, ManyToOne, PrimaryGeneratedColumn, BeforeInsert, PrimaryColumn } from "typeorm";
 import { Tag } from "./Tag";
 import { TaggableContentBase } from "../../TaggableContentBase";
 import { Campaign } from "../Campaign";
 import { User } from "../User";
 import { World } from "../World";
 import { Memory } from "./Knowledge/Memory";
+import { randomUUID } from "crypto";
 
 @Entity()
 export class Fact extends TaggableContentBase {
@@ -13,11 +14,8 @@ export class Fact extends TaggableContentBase {
     
     @BeforeInsert()
     generateId() {
-        if (this.targetEntity) { // if this is an imported blueprint - make the id the same as blueprint id
-            this.id = this.blueprint_id
-        } else {
-            this.id = `${this.id_prefix}_${randomUUID().replace(/-/g, "")}`;
-        }
+        if (this.targetEntity) this.id = this.blueprint_id
+        else this.id = `${this.id_prefix}_${randomUUID().replace(/-/g, "")}`;
     }
     id_prefix = "FACT"
 
@@ -34,11 +32,11 @@ export class Fact extends TaggableContentBase {
     tags?: Tag[];
 
     @ManyToOne(() => User, { nullable: true })
-    user?: User;
+    user!: User;
 
     @ManyToOne(() => Campaign, { nullable: true })
     campaign?: Campaign;
 
     @ManyToOne(() => World, { nullable: true })
-    world?: World;
+    world!: World;
 }

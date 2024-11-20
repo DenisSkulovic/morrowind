@@ -2,370 +2,154 @@
     {
         "blueprint_id": "PROFILE_IDEALIST",
         "name": "The Idealist",
-        "coreType": "1w9",
-        "traits": [
-            {
-                "name": "HOPEFUL",
-                "probability": 0.9
-            },
-            {
-                "name": "OPTIMISTIC",
-                "probability": 0.8
-            },
-            {
-                "name": "EMPATHETIC",
-                "probability": 0.7
+        "enneagramType": "1w9",
+        "traits": {
+            "cond": "ANY",
+            "prob": {
+                "HOPEFUL": 0.9,
+                "OPTIMISTIC": 0.8,
+                "EMPATHETIC": 0.7,
+                "VISIONARY": 0.8,
+                "MOTIVATIONAL": 0.7,
+                "UNREALISTIC": 0.6,
+                "OVERLY_TRUSTING": 0.5
             }
-        ],
-        "traumaInfluence": {
-            "processed": [
-                {
-                    "name": "VISIONARY",
-                    "probability": 0.8
-                },
-                {
-                    "name": "MOTIVATIONAL",
-                    "probability": 0.7
-                }
-            ],
-            "unresolved": [
-                {
-                    "name": "UNREALISTIC",
-                    "probability": 0.6
-                },
-                {
-                    "name": "OVERLY_TRUSTING",
-                    "probability": 0.5
-                }
-            ]
         }
     },
     {
         "blueprint_id": "PROFILE_DIPLOMAT",
         "name": "The Diplomat",
-        "coreType": "9w1",
-        "traits": [
-            {
-                "name": "PEACEFUL",
-                "probability": 0.9
-            },
-            {
-                "name": "COOPERATIVE",
-                "probability": 0.8
-            },
-            {
-                "name": "SKILLED_MEDIATOR",
-                "probability": 0.7
+        "enneagramType": "9w1",
+        "traits": {
+            "cond": "ANY",
+            "prob": {
+                "PEACEFUL": 0.9,
+                "COOPERATIVE": 0.8,
+                "SKILLED_MEDIATOR": 0.7,
+                "FAIR": 0.8,
+                "COMPASSIONATE": 0.7,
+                "AVOIDANT": 0.6,
+                "INDECISIVE": 0.5
             }
-        ],
-        "traumaInfluence": {
-            "processed": [
-                {
-                    "name": "FAIR",
-                    "probability": 0.8
-                },
-                {
-                    "name": "COMPASSIONATE",
-                    "probability": 0.7
-                }
-            ],
-            "unresolved": [
-                {
-                    "name": "AVOIDANT",
-                    "probability": 0.6
-                },
-                {
-                    "name": "INDECISIVE",
-                    "probability": 0.5
-                }
-            ]
         }
     },
     {
         "blueprint_id": "PROFILE_MENTOR",
         "name": "The Mentor",
-        "coreType": "2w1",
-        "traits": [
-            {
-                "name": "WISE",
-                "probability": 0.9
-            },
-            {
-                "name": "NURTURING",
-                "probability": 0.8
-            },
-            {
-                "name": "PATIENT",
-                "probability": 0.7
+        "enneagramType": "2w1",
+        "traits": {
+            "cond": "ANY",
+            "prob": {
+                "WISE": 0.9,
+                "NURTURING": 0.8,
+                "PATIENT": 0.7,
+                "INSIGHTFUL": 0.8,
+                "SUPPORTIVE": 0.7,
+                "OVERPROTECTIVE": 0.6,
+                "DISMISSIVE_OF_INDEPENDENCE": 0.5
             }
-        ],
-        "traumaInfluence": {
-            "processed": [
-                {
-                    "name": "INSIGHTFUL",
-                    "probability": 0.8
-                },
-                {
-                    "name": "SUPPORTIVE",
-                    "probability": 0.7
-                }
-            ],
-            "unresolved": [
-                {
-                    "name": "OVERPROTECTIVE",
-                    "probability": 0.6
-                },
-                {
-                    "name": "DISMISSIVE_OF_INDEPENDENCE",
-                    "probability": 0.5
-                }
-            ]
         }
     },
     {
         "blueprint_id": "PROFILE_LOYAL_COMPANION",
         "name": "The Loyal Companion",
-        "coreType": "6w5",
-        "traits": [
-            {
-                "name": "DEVOTED",
-                "probability": 0.9
-            },
-            {
-                "name": "STEADFAST",
-                "probability": 0.8
-            },
-            {
-                "name": "DEPENDABLE",
-                "probability": 0.7
+        "enneagramType": "6w5",
+        "traits": {
+            "cond": "ANY",
+            "prob": {
+                "DEVOTED": 0.9,
+                "STEADFAST": 0.8,
+                "DEPENDABLE": 0.7,
+                "PROTECTIVE": 0.8,
+                "COURAGEOUS": 0.7,
+                "CLINGY": 0.6,
+                "OVERLY_CAUTIOUS": 0.5
             }
-        ],
-        "traumaInfluence": {
-            "processed": [
-                {
-                    "name": "PROTECTIVE",
-                    "probability": 0.8
-                },
-                {
-                    "name": "COURAGEOUS",
-                    "probability": 0.7
-                }
-            ],
-            "unresolved": [
-                {
-                    "name": "CLINGY",
-                    "probability": 0.6
-                },
-                {
-                    "name": "OVERLY_CAUTIOUS",
-                    "probability": 0.5
-                }
-            ]
         }
     },
     {
         "blueprint_id": "PROFILE_CHARMER",
         "name": "The Charmer",
-        "coreType": "3w2",
-        "traits": [
-            {
-                "name": "SOCIABLE",
-                "probability": 0.9
-            },
-            {
-                "name": "CHARISMATIC",
-                "probability": 0.8
-            },
-            {
-                "name": "QUICK_WITTED",
-                "probability": 0.7
+        "enneagramType": "3w2",
+        "traits": {
+            "cond": "ANY",
+            "prob": {
+                "SOCIABLE": 0.9,
+                "CHARISMATIC": 0.8,
+                "QUICK_WITTED": 0.7,
+                "DIPLOMATIC": 0.8,
+                "ADAPTIVE": 0.7,
+                "SUPERFICIAL": 0.6,
+                "MANIPULATIVE": 0.5
             }
-        ],
-        "traumaInfluence": {
-            "processed": [
-                {
-                    "name": "DIPLOMATIC",
-                    "probability": 0.8
-                },
-                {
-                    "name": "ADAPTIVE",
-                    "probability": 0.7
-                }
-            ],
-            "unresolved": [
-                {
-                    "name": "SUPERFICIAL",
-                    "probability": 0.6
-                },
-                {
-                    "name": "MANIPULATIVE",
-                    "probability": 0.5
-                }
-            ]
         }
     },
     {
         "blueprint_id": "PROFILE_DREAMER",
         "name": "The Dreamer",
-        "coreType": "4w5",
-        "traits": [
-            {
-                "name": "IMAGINATIVE",
-                "probability": 0.9
-            },
-            {
-                "name": "CREATIVE",
-                "probability": 0.8
-            },
-            {
-                "name": "INTROSPECTIVE",
-                "probability": 0.7
+        "enneagramType": "4w5",
+        "traits": {
+            "cond": "ANY",
+            "prob": {
+                "IMAGINATIVE": 0.9,
+                "CREATIVE": 0.8,
+                "INTROSPECTIVE": 0.7,
+                "INVENTIVE": 0.8,
+                "INNOVATIVE": 0.7,
+                "DISCONNECTED": 0.6,
+                "IMPRACTICAL": 0.5
             }
-        ],
-        "traumaInfluence": {
-            "processed": [
-                {
-                    "name": "INVENTIVE",
-                    "probability": 0.8
-                },
-                {
-                    "name": "INNOVATIVE",
-                    "probability": 0.7
-                }
-            ],
-            "unresolved": [
-                {
-                    "name": "DISCONNECTED",
-                    "probability": 0.6
-                },
-                {
-                    "name": "IMPRACTICAL",
-                    "probability": 0.5
-                }
-            ]
         }
     },
     {
         "blueprint_id": "PROFILE_SURVIVOR",
         "name": "The Survivor",
-        "coreType": "6w7",
-        "traits": [
-            {
-                "name": "RESILIENT",
-                "probability": 0.9
-            },
-            {
-                "name": "ADAPTABLE",
-                "probability": 0.8
-            },
-            {
-                "name": "PRAGMATIC",
-                "probability": 0.7
+        "enneagramType": "6w7",
+        "traits": {
+            "cond": "ANY",
+            "prob": {
+                "RESILIENT": 0.9,
+                "ADAPTABLE": 0.8,
+                "PRAGMATIC": 0.7,
+                "COURAGEOUS": 0.8,
+                "WISE": 0.7,
+                "CYNICAL": 0.6,
+                "MISTRUSTFUL": 0.5
             }
-        ],
-        "traumaInfluence": {
-            "processed": [
-                {
-                    "name": "COURAGEOUS",
-                    "probability": 0.8
-                },
-                {
-                    "name": "WISE",
-                    "probability": 0.7
-                }
-            ],
-            "unresolved": [
-                {
-                    "name": "CYNICAL",
-                    "probability": 0.6
-                },
-                {
-                    "name": "MISTRUSTFUL",
-                    "probability": 0.5
-                }
-            ]
         }
     },
     {
-        "blueprint_id": "PROFILE_REBEL", 
+        "blueprint_id": "PROFILE_REBEL",
         "name": "The Rebel",
-        "coreType": "8w7",
-        "traits": [
-            {
-                "name": "DEFIANT",
-                "probability": 0.9
-            },
-            {
-                "name": "INDEPENDENT",
-                "probability": 0.8
-            },
-            {
-                "name": "UNCONVENTIONAL",
-                "probability": 0.7
+        "enneagramType": "8w7",
+        "traits": {
+            "cond": "ANY",
+            "prob": {
+                "DEFIANT": 0.9,
+                "INDEPENDENT": 0.8,
+                "UNCONVENTIONAL": 0.7,
+                "DETERMINED": 0.8,
+                "RESILIENT": 0.7,
+                "RECKLESS": 0.6,
+                "CONFRONTATIONAL": 0.5
             }
-        ],
-        "traumaInfluence": {
-            "processed": [
-                {
-                    "name": "DETERMINED",
-                    "probability": 0.8
-                },
-                {
-                    "name": "RESILIENT",
-                    "probability": 0.7
-                }
-            ],
-            "unresolved": [
-                {
-                    "name": "RECKLESS",
-                    "probability": 0.6
-                },
-                {
-                    "name": "CONFRONTATIONAL",
-                    "probability": 0.5
-                }
-            ]
         }
     },
     {
         "blueprint_id": "PROFILE_LONER",
         "name": "The Loner",
-        "coreType": "5w4",
-        "traits": [
-            {
-                "name": "INDEPENDENT",
-                "probability": 0.9
-            },
-            {
-                "name": "RESERVED",
-                "probability": 0.8
-            },
-            {
-                "name": "INTROSPECTIVE",
-                "probability": 0.7
+        "enneagramType": "5w4",
+        "traits": {
+            "cond": "ANY",
+            "prob": {
+                "INDEPENDENT": 0.9,
+                "RESERVED": 0.8,
+                "INTROSPECTIVE": 0.7,
+                "WISE": 0.8,
+                "SELF_SUFFICIENT": 0.7,
+                "ANTISOCIAL": 0.6,
+                "DISTRUSTFUL": 0.5
             }
-        ],
-        "traumaInfluence": {
-            "processed": [
-                {
-                    "name": "WISE",
-                    "probability": 0.8
-                },
-                {
-                    "name": "SELF_SUFFICIENT",
-                    "probability": 0.7
-                }
-            ],
-            "unresolved": [
-                {
-                    "name": "ANTISOCIAL",
-                    "probability": 0.6
-                },
-                {
-                    "name": "DISTRUSTFUL",
-                    "probability": 0.5
-                }
-            ]
         }
     }
 ]

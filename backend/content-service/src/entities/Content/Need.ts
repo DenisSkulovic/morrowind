@@ -1,8 +1,9 @@
-import { TableInheritance, Entity, Column, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { TableInheritance, Entity, Column, ManyToOne, PrimaryGeneratedColumn, BeforeInsert, PrimaryColumn } from "typeorm";
 import { ContentBase } from "../../ContentBase";
 import { Campaign } from "../Campaign";
 import { User } from "../User";
 import { World } from "../World";
+import { randomUUID } from "crypto";
 
 @Entity()
 export class Need extends ContentBase {
@@ -11,11 +12,8 @@ export class Need extends ContentBase {
     
     @BeforeInsert()
     generateId() {
-        if (this.targetEntity) { // if this is an imported blueprint - make the id the same as blueprint id
-            this.id = this.blueprint_id
-        } else {
-            this.id = `${this.id_prefix}_${randomUUID().replace(/-/g, "")}`;
-        }
+        if (this.targetEntity) this.id = this.blueprint_id
+        else this.id = `${this.id_prefix}_${randomUUID().replace(/-/g, "")}`;
     }
     id_prefix = "NEED";
 
@@ -45,11 +43,11 @@ export class Need extends ContentBase {
     layer!: string
 
     @ManyToOne(() => User, { nullable: true })
-    user?: User;
+    user!: User;
 
     @ManyToOne(() => Campaign, { nullable: true })
     campaign?: Campaign;
 
     @ManyToOne(() => World, { nullable: true })
-    world?: World;
+    world!: World;
 }

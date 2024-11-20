@@ -1,8 +1,7 @@
 import { Repository } from "typeorm";
 import { Character } from "../../entities/Content/Character";
 import { DataSourceEnum } from "../../enum/DataSourceEnum";
-import { CharacterGenInstruction } from "../../types";
-import { CharacterGenerator } from "../generator/CharacterGenerator";
+import { CharacterGenerator, CharacterGenInstruction } from "../generator/CharacterGenerator";
 import { RepositoryServiceBase, RepositoryServiceSettings } from "./RepositoryServiceBase";
 
 export class GenerationService extends RepositoryServiceBase {

@@ -2,11 +2,12 @@
 // The mood is a result of personality traits and fulfillment of needs(?).
 // A depressed person will most likely be always in a bad mood.
 
-import { TableInheritance, Entity, Column, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { TableInheritance, Entity, Column, ManyToOne, PrimaryGeneratedColumn, BeforeInsert, PrimaryColumn } from "typeorm";
 import { ContentBase } from "../../ContentBase";
 import { Campaign } from "../Campaign";
 import { User } from "../User";
 import { World } from "../World";
+import { randomUUID } from "crypto";
 
 @Entity()
 export class Mood extends ContentBase {
@@ -15,11 +16,8 @@ export class Mood extends ContentBase {
     
     @BeforeInsert()
     generateId() {
-        if (this.targetEntity) { // if this is an imported blueprint - make the id the same as blueprint id
-            this.id = this.blueprint_id
-        } else {
-            this.id = `${this.id_prefix}_${randomUUID().replace(/-/g, "")}`;
-        }
+        if (this.targetEntity) this.id = this.blueprint_id
+        else this.id = `${this.id_prefix}_${randomUUID().replace(/-/g, "")}`;
     }
     id_prefix = "MOOD";
 
@@ -30,11 +28,11 @@ export class Mood extends ContentBase {
     description!: string;
 
     @ManyToOne(() => User, { nullable: true })
-    user?: User;
+    user!: User;
 
     @ManyToOne(() => Campaign, { nullable: true })
     campaign?: Campaign;
 
     @ManyToOne(() => World, { nullable: true })
-    world?: World;
+    world!: World;
 }

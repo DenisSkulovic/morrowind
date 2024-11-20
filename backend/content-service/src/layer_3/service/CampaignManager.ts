@@ -1,13 +1,12 @@
 import { WorldDataSource, CampaignDataSource } from "../../data-source";
 import { TemporarilyFreezeWorld } from "../../decorator/TemporarilyFreezeWorld";
-import { getMetadataArgsStorage } from "typeorm";
 import { EntityTarget } from "typeorm/common/EntityTarget";
 import { ContentBase } from "../../ContentBase";
 import { contentEntityMap } from "../../contentEntityMap";
 import { Repository } from "typeorm";
 import { isParentEntity } from "../../contentEntityMap";
 
-export class CampaignService {
+export class CampaignManager {
     /**
      * Copies all world content into the campaign database for the given campaign ID.
      * Processes entities entity-by-entity in batches.
@@ -26,20 +25,6 @@ export class CampaignService {
         }
 
         console.log(`All content for world ${worldId} has been copied to campaign ${campaignId}.`);
-    }
-
-    /**
-     * Deletes all campaign data related to the given campaign ID.
-     */
-    public static async deleteCampaign(campaignId: string): Promise<void> {
-        for (const EntityClass of Object.values(contentEntityMap)) {
-            if (!isParentEntity(EntityClass)) continue; // Skip child entities
-
-            const campaignRepository = CampaignDataSource.getRepository(EntityClass);
-            await campaignRepository.delete({ campaignId });
-        }
-
-        console.log(`All content for campaign ${campaignId} has been deleted.`);
     }
 
     /**

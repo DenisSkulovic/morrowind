@@ -2,13 +2,13 @@ import { Repository } from "typeorm";
 import { World } from "../../entities/World";
 import { ContentBase } from "../../ContentBase";
 import { WorldDataSource } from "../../data-source";
-import { ContentServiceBase, ContentServiceSettings } from "../../layer_2_and_3/service/RepositoryServiceBase";
+import { RepositoryServiceBase, RepositoryServiceSettings } from "../../layer_2_and_3/service/RepositoryServiceBase";
 import { DataSourceEnum } from "../../enum/DataSourceEnum";
 import { MakeSureWorldIsNotFrozen } from "../../decorator/MakeSureWorldIsNotFrozen";
 
-export class BlueprintEditService extends ContentServiceBase {
+export class BlueprintEditService extends RepositoryServiceBase {
 
-    constructor(settings: ContentServiceSettings) {
+    constructor(settings: RepositoryServiceSettings) {
         super(settings)
     }
 

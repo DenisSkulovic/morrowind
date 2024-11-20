@@ -1,9 +1,10 @@
-import { Entity, TableInheritance, Column, OneToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, TableInheritance, Column, OneToMany, ManyToOne, PrimaryGeneratedColumn, BeforeInsert, PrimaryColumn } from "typeorm";
 import { ContentBase } from "../../ContentBase";
 import { Need } from "./Need";
 import { Campaign } from "../Campaign";
 import { User } from "../User";
 import { World } from "../World";
+import { randomUUID } from "crypto";
 
 // TODO somehow I need a way to connect races to needs, but also add needs through other ways, like an addiction. Also, a layer of modifiers, so that I can adjust the rate of decay and thresholds with %.
 
@@ -14,11 +15,8 @@ export class Race extends ContentBase {
     
     @BeforeInsert()
     generateId() {
-        if (this.targetEntity) { // if this is an imported blueprint - make the id the same as blueprint id
-            this.id = this.blueprint_id
-        } else {
-            this.id = `${this.id_prefix}_${randomUUID().replace(/-/g, "")}`;
-        }
+        if (this.targetEntity) this.id = this.blueprint_id
+        else this.id = `${this.id_prefix}_${randomUUID().replace(/-/g, "")}`;
     }
     id_prefix = "RACE"
 
@@ -26,11 +24,11 @@ export class Race extends ContentBase {
     name!: string;
 
     @ManyToOne(() => User, { nullable: true })
-    user?: User;
+    user!: User;
 
     @ManyToOne(() => Campaign, { nullable: true })
     campaign?: Campaign;
 
     @ManyToOne(() => World, { nullable: true })
-    world?: World;
+    world!: World;
 }
