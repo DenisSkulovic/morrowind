@@ -1,17 +1,25 @@
 import { Entity, TableInheritance, Column, ManyToOne, ManyToMany, JoinTable, PrimaryGeneratedColumn } from "typeorm";
 import { MemoryPool } from "./Knowledge/MemoryPool";
 import { Character } from "./Character";
-import { ContentBase } from "../../ContentBase";
+import { TaggableContentBase } from "../../TaggableContentBase";
 import { Tag } from "./Tag";
 import { Campaign } from "../Campaign";
 import { User } from "../User";
 import { World } from "../World";
 
 @Entity()
-export class CharacterProfession extends ContentBase {
-    @PrimaryGeneratedColumn("uuid")
+export class CharacterProfession extends TaggableContentBase {
+    @PrimaryColumn()
     id!: string;
-
+    
+    @BeforeInsert()
+    generateId() {
+        if (this.targetEntity) { // if this is an imported blueprint - make the id the same as blueprint id
+            this.id = this.blueprint_id
+        } else {
+            this.id = `${this.id_prefix}_${randomUUID().replace(/-/g, "")}`;
+        }
+    }
     id_prefix = "CHARACTER_PROFESSION"
 
     @ManyToOne(() => Character, character => character.professions)

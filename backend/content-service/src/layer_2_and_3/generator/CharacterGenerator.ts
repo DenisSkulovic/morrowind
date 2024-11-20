@@ -7,6 +7,7 @@ import { Tag } from "../../entities/Content/Tag";
 import { ItemSet } from "../../entities/Content/ItemSet";
 import { CharacterGenInstruction } from "../../types";
 
+
 export class CharacterGenerator {
     private worldDataSource = WorldDataSource;
     private campaignDataSource = CampaignDataSource;
@@ -114,7 +115,5 @@ export class CharacterGenerator {
         return null;
     }
 
-    public async saveCharacter(character: Character): Promise<void> {
-        await this.characterRepository.save(character);
-    }
+
 }

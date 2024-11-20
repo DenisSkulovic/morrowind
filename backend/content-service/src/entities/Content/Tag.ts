@@ -1,4 +1,4 @@
-import { Entity, Column, ManyToMany, ManyToOne, PrimaryGeneratedColumn, JoinTable } from "typeorm";
+import { Entity, Column, ManyToMany, ManyToOne, PrimaryGeneratedColumn, JoinTable, PrimaryColumn } from "typeorm";
 import { ContentBase } from "../../ContentBase";
 import { TagSubtypeEnum } from "../../enum/TagSubtypeEnum"
 import { Item } from "./Item/Item";
@@ -21,13 +21,21 @@ import { World } from "../World";
 
 @Entity()
 export class Tag extends ContentBase {
-    @PrimaryGeneratedColumn("uuid")
+    @PrimaryColumn()
     id!: string;
-
+    
+    @BeforeInsert()
+    generateId() {
+        if (this.targetEntity) { // if this is an imported blueprint - make the id the same as blueprint id
+            this.id = this.blueprint_id
+        } else {
+            this.id = `${this.id_prefix}_${randomUUID().replace(/-/g, "")}`;
+        }
+    }
     id_prefix = "TAG"
 
     @Column({ type: "varchar", length: 30, unique: true })
-    name!: string; // The tag's name (e.g., "dunmeri", "rare")
+    label!: string; // The tag's name (e.g., "dunmeri", "rare")
 
     @Column({ type: "enum", enum: ["CULTURE", "RELATION", "FACTION", "RELIGION", "WEAPON_QUALITY", "ARMOR_QUALITY"]})
     subtype?: string; // TagSubtypeEnum

@@ -1,35 +1,37 @@
-import {CharacterMemory} from "../entities/CharacterMemory"
+import {CharacterMemory} from "../../entities/Content/Knowledge/CharacterMemory"
 
-function reinforceMemory(charMemory: CharacterMemory) {
-    const baseValue = 50; // Base reinforcement value
-    charMemory.accumulator += baseValue * charMemory.importance;
+// TODO develop this idea further when I get to memories
 
-    if (charMemory.accumulator >= 100) {
-        charMemory.resistance += 30; // Increase resistance
-        charMemory.accumulator = 0; // Reset accumulator
-    }
+// function reinforceMemory(charMemory: CharacterMemory) {
+//     const baseValue = 50; // Base reinforcement value
+//     charMemory.accumulator += baseValue * charMemory.importance;
 
-    // Refresh clarity
-    charMemory.clarity = 100;
-    charMemory.lastReferencedAt = new Date();
-}
+//     if (charMemory.accumulator >= 100) {
+//         charMemory.resistance += 30; // Increase resistance
+//         charMemory.accumulator = 0; // Reset accumulator
+//     }
 
-function decayMemory(charMemory: CharacterMemory) {
-    const timeElapsed = getTimeSince(charMemory.lastReferencedAt || charMemory.acquiredAt);
+//     // Refresh clarity
+//     charMemory.clarity = 100;
+//     charMemory.lastReferencedAt = new Date();
+// }
 
-    // Decay clarity
-    const clarityDecayRate = 1 / (charMemory.resistance + 1); // Slower decay with higher resistance
-    charMemory.clarity -= timeElapsed * clarityDecayRate;
+// function decayMemory(charMemory: CharacterMemory) {
+//     const timeElapsed = getTimeSince(charMemory.lastReferencedAt || charMemory.acquiredAt);
 
-    if (charMemory.clarity < 0) {
-        charMemory.clarity = 0;
-    }
+//     // Decay clarity
+//     const clarityDecayRate = 1 / (charMemory.resistance + 1); // Slower decay with higher resistance
+//     charMemory.clarity -= timeElapsed * clarityDecayRate;
 
-    // Decay accumulator
-    const accumulatorDecayRate = 5; // Arbitrary value
-    charMemory.accumulator -= timeElapsed * accumulatorDecayRate;
+//     if (charMemory.clarity < 0) {
+//         charMemory.clarity = 0;
+//     }
 
-    if (charMemory.accumulator < 0) {
-        charMemory.accumulator = 0;
-    }
-}
+//     // Decay accumulator
+//     const accumulatorDecayRate = 5; // Arbitrary value
+//     charMemory.accumulator -= timeElapsed * accumulatorDecayRate;
+
+//     if (charMemory.accumulator < 0) {
+//         charMemory.accumulator = 0;
+//     }
+// }

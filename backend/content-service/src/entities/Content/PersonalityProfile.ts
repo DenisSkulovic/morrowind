@@ -6,35 +6,31 @@ import { World } from "../World";
 
 @Entity()
 export class PersonalityProfile extends ContentBase {
-    @PrimaryGeneratedColumn("uuid")
+    @PrimaryColumn()
     id!: string;
-
+    
+    @BeforeInsert()
+    generateId() {
+        if (this.targetEntity) { // if this is an imported blueprint - make the id the same as blueprint id
+            this.id = this.blueprint_id
+        } else {
+            this.id = `${this.id_prefix}_${randomUUID().replace(/-/g, "")}`;
+        }
+    }
     id_prefix = "PROFILE";
 
-    /**
-     * Name of the personality profile (e.g., "The Reformer").
-     */
     @Column({ type: "varchar", length: 255 })
     name!: string;
 
-    /**
-     * Core type with wing (e.g., "5w4", "1w9").
-     */
     @Column({ type: "varchar", length: 3 })
     coreType!: string; // Enneagram type with wing as a string.
 
-    /**
-     * List of traits associated with the profile, each with a probability.
-     */
     @Column("jsonb")
     traits!: {
         name: string;
         probability: number; // Probability of assigning this trait during generation.
     }[];
 
-    /**
-     * Effects of trauma on behavior and traits, each with a probability.
-     */
     @Column("jsonb")
     traumaInfluence!: {
         processed?: {

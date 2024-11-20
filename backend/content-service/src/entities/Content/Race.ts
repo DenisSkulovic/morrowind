@@ -9,9 +9,17 @@ import { World } from "../World";
 
 @Entity()
 export class Race extends ContentBase {
-    @PrimaryGeneratedColumn("uuid")
+    @PrimaryColumn()
     id!: string;
-
+    
+    @BeforeInsert()
+    generateId() {
+        if (this.targetEntity) { // if this is an imported blueprint - make the id the same as blueprint id
+            this.id = this.blueprint_id
+        } else {
+            this.id = `${this.id_prefix}_${randomUUID().replace(/-/g, "")}`;
+        }
+    }
     id_prefix = "RACE"
 
     @Column({ type: "varchar", length: 255 })

@@ -1,6 +1,6 @@
 import { Entity, TableInheritance, Column, OneToMany, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import {MemoryPoolEntry} from "./MemoryPoolEntry"
-import { ContentBase } from "../../../ContentBase";
+import { TaggableContentBase } from "../../../TaggableContentBase";
 import { Tag } from "../Tag";
 import { CharacterProfession } from "../CharacterProfession";
 import { Campaign } from "../../Campaign";
@@ -8,10 +8,18 @@ import { User } from "../../User";
 import { World } from "../../World";
 
 @Entity()
-export class MemoryPool extends ContentBase {
-    @PrimaryGeneratedColumn("uuid")
+export class MemoryPool extends TaggableContentBase {
+    @PrimaryColumn()
     id!: string;
-
+    
+    @BeforeInsert()
+    generateId() {
+        if (this.targetEntity) { // if this is an imported blueprint - make the id the same as blueprint id
+            this.id = this.blueprint_id
+        } else {
+            this.id = `${this.id_prefix}_${randomUUID().replace(/-/g, "")}`;
+        }
+    }
     id_prefix = "MEMORY_POOL"
 
     @Column({default: "PLACEHOLDER"})
@@ -27,9 +35,7 @@ export class MemoryPool extends ContentBase {
     @JoinTable()
     characterProfessions!: CharacterProfession[]
 
-            
     @ManyToMany(() => Tag, (tag) => tag.memoryPools)
-    @JoinTable()
     tags?: Tag[];
 
     @ManyToOne(() => User, { nullable: true })

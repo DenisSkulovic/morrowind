@@ -17,6 +17,10 @@
                 "STRENGTH": 5
             }
         },
+        "tags": [
+            "ITEM_MATERIAL_IRON",
+            "WEAPON_BLADE"
+        ],
         "targetEntity": "ItemWeaponShortSword"
     },
     {

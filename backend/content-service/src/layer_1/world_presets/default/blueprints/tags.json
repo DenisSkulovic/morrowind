@@ -1,79 +1,79 @@
 [
     {
         "blueprint_id": "CULTURE_HIGHLAND",
-        "name": "Highland Culture",
+        "label": "Highland Culture",
         "subtype": "tag_culture",
         "description": "Pertains to a Highland cultural identity."
     },
     {
         "blueprint_id": "CULTURE_LOWLAND",
-        "name": "Lowland Culture",
+        "label": "Lowland Culture",
         "subtype": "tag_culture",
         "description": "Pertains to a Lowland cultural identity."
     },
     {
         "blueprint_id": "ITEM_MATERIAL_IRON",
-        "name": "Iron",
+        "label": "Iron",
         "subtype": "tag_material",
         "description": "Indicates the item is made of iron."
     },
     {
         "blueprint_id": "ITEM_MATERIAL_STEEL",
-        "name": "Steel",
+        "label": "Steel",
         "subtype": "tag_material",
         "description": "Indicates the item is made of steel."
     },
     {
         "blueprint_id": "ITEM_MATERIAL_WOOD",
-        "name": "Wood",
+        "label": "Wood",
         "subtype": "tag_material",
         "description": "Indicates the item is made of wood."
     },
     {
         "blueprint_id": "WEAPON_BLADE",
-        "name": "Blade",
+        "label": "Blade",
         "subtype": "tag_weapon",
         "description": "A general tag for bladed weapons."
     },
     {
         "blueprint_id": "WEAPON_BLUNT",
-        "name": "Blunt",
+        "label": "Blunt",
         "subtype": "tag_weapon",
         "description": "A general tag for blunt weapons."
     },
     {
         "blueprint_id": "WEAPON_RANGED",
-        "name": "Ranged Weapon",
+        "label": "Ranged Weapon",
         "subtype": "tag_weapon",
         "description": "A general tag for ranged weapons."
     },
     {
         "blueprint_id": "FACTION_FIGHTERS_GUILD",
-        "name": "Fighters Guild",
+        "label": "Fighters Guild",
         "subtype": "tag_faction",
         "description": "Represents the Fighters guild."
     },
     {
         "blueprint_id": "FACTION_HIGHLAND_KINGDOM",
-        "name": "Highland Kingdom",
+        "label": "Highland Kingdom",
         "subtype": "tag_faction",
         "description": "Represents the Highland Kingdom."
     },
     {
         "blueprint_id": "FACTION_LOWLAND_KINGDOM",
-        "name": "Lowland Kingdom",
+        "label": "Lowland Kingdom",
         "subtype": "tag_faction",
         "description": "Represents the Lowland Kingdom."
     },
     {
         "blueprint_id": "STOLEN_ITEM",
-        "name": "Stolen Item",
+        "label": "Stolen Item",
         "subtype": "tag_status",
         "description": "Marks the item as stolen property."
     },
     {
         "blueprint_id": "TAG_QUEST_ACTIVE",
-        "name": "Active Quest Item",
+        "label": "Active Quest Item",
         "subtype": "tag_quest",
         "description": "Marks this item as important for an active quest."
     }

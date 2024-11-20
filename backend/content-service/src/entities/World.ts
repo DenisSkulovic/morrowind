@@ -27,12 +27,16 @@ import { Religion } from "./Content/Religion";
 import { Resistance } from "./Content/Resistance";
 import { Status } from "./Content/Status";
 import { Tag } from "./Content/Tag";
+import { Background } from "./Content/Background";
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })
 export class World extends BaseEntity {
     @PrimaryGeneratedColumn("uuid")
     id!: string;
+
+    @ManyToOne(() => User)
+    user!: User; // User who created this campaign.
 
     @Column({ type: "varchar", length: 255 })
     name!: string; // Name of the world, e.g., "Morrowind", "Middle-earth".
@@ -43,90 +47,90 @@ export class World extends BaseEntity {
     @Column({ type: "json", nullable: true })
     settings?: any; // Custom world settings (e.g., starting conditions, mechanics).
 
-    @OneToMany(() => Campaign, (campaign) => campaign.world)
-    campaigns!: Campaign[]; // Associated campaigns created from this world.
-
     @Column({ default: false })
     frozen!: boolean;
 
-    @ManyToOne(() => User)
-    user!: User; // User who created this campaign.
+    @OneToMany(() => Campaign, (campaign) => campaign.world)
+    campaigns!: Campaign[]; // Associated campaigns created from this world.
 
-    @OneToMany(() => Item, item => item.world)
+    @OneToMany(() => Item, item => item.world, { onDelete: "CASCADE" })
     items!: Item[]
 
-    @OneToMany(() => PastExperience, pastExperience => pastExperience.world)
+    @OneToMany(() => PastExperience, pastExperience => pastExperience.world, { onDelete: "CASCADE" })
     pastExperiences!: PastExperience[]
 
-    @OneToMany(() => CharacterMemory, characterMemory => characterMemory.world)
+    @OneToMany(() => CharacterMemory, characterMemory => characterMemory.world, { onDelete: "CASCADE" })
     characterMemories!: CharacterMemory[]
 
-    @OneToMany(() => Memory, memory => memory.world)
+    @OneToMany(() => Memory, memory => memory.world, { onDelete: "CASCADE" })
     memories!: Memory[]
 
-    @OneToMany(() => MemoryPool, memoryPool => memoryPool.world)
+    @OneToMany(() => MemoryPool, memoryPool => memoryPool.world, { onDelete: "CASCADE" })
     memoryPools!: MemoryPool[]
 
-    @OneToMany(() => MemoryPoolEntry, memoryPoolEntry => memoryPoolEntry.world)
+    @OneToMany(() => MemoryPoolEntry, memoryPoolEntry => memoryPoolEntry.world, { onDelete: "CASCADE" })
     memoryPoolEntries!: MemoryPoolEntry[]
 
-    @OneToMany(() => Skill, skill => skill.world)
+    @OneToMany(() => Skill, skill => skill.world, { onDelete: "CASCADE" })
     skills!: Skill[]
 
-    @OneToMany(() => Trait, trait => trait.world)
+    @OneToMany(() => Trait, trait => trait.world, { onDelete: "CASCADE" })
     traits!: Trait[]
 
-    @OneToMany(() => Addiction, addiction => addiction.world)
+    @OneToMany(() => Addiction, addiction => addiction.world, { onDelete: "CASCADE" })
     addictions!: Addiction[]
 
-    @OneToMany(() => Birthsign, birthsign => birthsign.world)
+    @OneToMany(() => Birthsign, birthsign => birthsign.world, { onDelete: "CASCADE" })
     birthsigns!: Birthsign[]
 
-    @OneToMany(() => Character, character => character.world)
+    @OneToMany(() => Character, character => character.world, { onDelete: "CASCADE" })
     characters!: Character[]
 
-    @OneToMany(() => CharacterProfession, characterProfession => characterProfession.world)
+    @OneToMany(() => CharacterProfession, characterProfession => characterProfession.world, { onDelete: "CASCADE" })
     characterProfessions!: CharacterProfession[]
 
-    @OneToMany(() => Disease, disease => disease.world)
+    @OneToMany(() => Disease, disease => disease.world, { onDelete: "CASCADE" })
     diseases!: Disease[]
 
-    @OneToMany(() => Effect, effect => effect.world)
+    @OneToMany(() => Effect, effect => effect.world, { onDelete: "CASCADE" })
     effects!: Effect[]
 
-    @OneToMany(() => Fact, fact => fact.world)
+    @OneToMany(() => Fact, fact => fact.world, { onDelete: "CASCADE" })
     facts!: Fact[]
 
-    @OneToMany(() => Faction, faction => faction.world)
+    @OneToMany(() => Faction, faction => faction.world, { onDelete: "CASCADE" })
     factions!: Faction[]
 
-    @OneToMany(() => Inventory, inventory => inventory.world)
+    @OneToMany(() => Inventory, inventory => inventory.world, { onDelete: "CASCADE" })
     inventories!: Inventory[]
     
-    @OneToMany(() => ItemSet, itemSet => itemSet.world)
+    @OneToMany(() => ItemSet, itemSet => itemSet.world, { onDelete: "CASCADE" })
     itemSets!: ItemSet[]
 
-    @OneToMany(() => Mood, mood => mood.world)
+    @OneToMany(() => Mood, mood => mood.world, { onDelete: "CASCADE" })
     moods!: Mood[]
 
-    @OneToMany(() => Need, need => need.world)
+    @OneToMany(() => Need, need => need.world, { onDelete: "CASCADE" })
     needs!: Need[]
 
-    @OneToMany(() => PersonalityProfile, personalityProfile => personalityProfile.world)
+    @OneToMany(() => PersonalityProfile, personalityProfile => personalityProfile.world, { onDelete: "CASCADE" })
     personalityProfiles!: PersonalityProfile[]
 
-    @OneToMany(() => Race, race => race.world)
+    @OneToMany(() => Race, race => race.world, { onDelete: "CASCADE" })
     races!: Race[]
 
-    @OneToMany(() => Religion, religion => religion.world)
+    @OneToMany(() => Religion, religion => religion.world, { onDelete: "CASCADE" })
     religions!: Religion[]
 
-    @OneToMany(() => Resistance, resistance => resistance.world)
+    @OneToMany(() => Resistance, resistance => resistance.world, { onDelete: "CASCADE" })
     resistances!: Resistance[]
 
-    @OneToMany(() => Status, status => status.world)
+    @OneToMany(() => Status, status => status.world, { onDelete: "CASCADE" })
     statuses!: Status[]
 
-    @OneToMany(() => Tag, tag => tag.world)
+    @OneToMany(() => Tag, tag => tag.world, { onDelete: "CASCADE" })
     tags!: Tag[]
+        
+    @OneToMany(() => Background, background => background.world, { onDelete: "CASCADE" })
+    backgrounds!: Background[]
 }

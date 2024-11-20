@@ -1,17 +1,25 @@
 import { Entity, TableInheritance, OneToMany, ManyToMany, Column, JoinTable, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Fact } from "../Fact";
 import { Tag } from "../Tag";
-import { ContentBase } from "../../../ContentBase";
+import { TaggableContentBase } from "../../../TaggableContentBase";
 import { Campaign } from "../../Campaign";
 import { User } from "../../User";
 import { World } from "../../World";
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })
-export class Memory extends ContentBase {
-    @PrimaryGeneratedColumn("uuid")
+export class Memory extends TaggableContentBase {
+    @PrimaryColumn()
     id!: string;
-
+    
+    @BeforeInsert()
+    generateId() {
+        if (this.targetEntity) { // if this is an imported blueprint - make the id the same as blueprint id
+            this.id = this.blueprint_id
+        } else {
+            this.id = `${this.id_prefix}_${randomUUID().replace(/-/g, "")}`;
+        }
+    }
     id_prefix = "MEMORY"
 
     @Column({ nullable: true, default: null })
@@ -26,7 +34,6 @@ export class Memory extends ContentBase {
 
         
     @ManyToMany(() => Tag, (tag) => tag.memories)
-    @JoinTable()
     tags?: Tag[];
 
     @ManyToOne(() => User, { nullable: true })

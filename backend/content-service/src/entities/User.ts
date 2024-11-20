@@ -1,4 +1,4 @@
-import { TableInheritance, Entity, Column, PrimaryGeneratedColumn, OneToMany, BaseEntity } from "typeorm";
+import { TableInheritance, Entity, Column, PrimaryGeneratedColumn, OneToMany, BaseEntity, OneToOne } from "typeorm";
 import { Campaign } from "./Campaign";
 import { World } from "./World";
 import { Item } from "./Content/Item/Item";
@@ -27,6 +27,8 @@ import { Skill } from "./Content/Skill/Skill";
 import { Status } from "./Content/Status";
 import { Tag } from "./Content/Tag";
 import { Trait } from "./Content/Trait/Trait";
+import { Account } from "./Account";
+import { Background } from "./Content/Background";
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })
@@ -34,102 +36,93 @@ export class User extends BaseEntity {
     @PrimaryGeneratedColumn("uuid")
     id!: string;
 
-    @Column({ unique: true })
-    username!: string; // Unique username.
+    @OneToOne(() => Account, (account) => account.user)
+    account!: Account
 
-    @Column({ type: "varchar", length: 255 })
-    password_hash!: string; // Hashed password for authentication.
+    @OneToMany(() => World, (world) => world.user, { onDelete: "CASCADE" })
+    worlds?: World[]; // Worlds created by this user.
 
-    @Column({ type: "varchar", length: 255, nullable: true })
-    email?: string; // Optional email for communication and recovery.
+    @OneToMany(() => Campaign, (campaign) => campaign.user, { onDelete: "CASCADE" })
+    campaigns?: Campaign[]; // Campaigns created or managed by this user.
 
-    @OneToMany(() => World, (world) => world.user)
-    worlds!: World[]; // Worlds created by this user.
+    @OneToMany(() => Item, item => item.user, { onDelete: "CASCADE" })
+    items?: Item[]
 
-    @OneToMany(() => Campaign, (campaign) => campaign.user)
-    campaigns!: Campaign[]; // Campaigns created or managed by this user.
+    @OneToMany(() => PastExperience, pastExperience => pastExperience.user, { onDelete: "CASCADE" })
+    pastExperiences?: PastExperience[]
 
-    @Column({ type: "varchar", length: 255, default: "player" })
-    role!: string; // Role of the user: "player", "admin", etc.
+    @OneToMany(() => CharacterMemory, characterMemory => characterMemory.user, { onDelete: "CASCADE" })
+    characterMemories?: CharacterMemory[]
 
-    @Column({ type: "json", nullable: true })
-    preferences?: any; // User-specific preferences/settings.
+    @OneToMany(() => Memory, memory => memory.user, { onDelete: "CASCADE" })
+    memories?: Memory[]
 
-    @OneToMany(() => Item, item => item.user)
-    items!: Item[]
+    @OneToMany(() => MemoryPool, memoryPool => memoryPool.user, { onDelete: "CASCADE" })
+    memoryPools?: MemoryPool[]
 
-    @OneToMany(() => PastExperience, pastExperience => pastExperience.user)
-    pastExperiences!: PastExperience[]
+    @OneToMany(() => MemoryPoolEntry, memoryPoolEntry => memoryPoolEntry.user, { onDelete: "CASCADE" })
+    memoryPoolEntries?: MemoryPoolEntry[]
 
-    @OneToMany(() => CharacterMemory, characterMemory => characterMemory.user)
-    characterMemories!: CharacterMemory[]
+    @OneToMany(() => Skill, skill => skill.user, { onDelete: "CASCADE" })
+    skills?: Skill[]
 
-    @OneToMany(() => Memory, memory => memory.user)
-    memories!: Memory[]
+    @OneToMany(() => Trait, trait => trait.user, { onDelete: "CASCADE" })
+    traits?: Trait[]
 
-    @OneToMany(() => MemoryPool, memoryPool => memoryPool.user)
-    memoryPools!: MemoryPool[]
+    @OneToMany(() => Addiction, addiction => addiction.user, { onDelete: "CASCADE" })
+    addictions?: Addiction[]
 
-    @OneToMany(() => MemoryPoolEntry, memoryPoolEntry => memoryPoolEntry.user)
-    memoryPoolEntries!: MemoryPoolEntry[]
+    @OneToMany(() => Birthsign, birthsign => birthsign.user, { onDelete: "CASCADE" })
+    birthsigns?: Birthsign[]
 
-    @OneToMany(() => Skill, skill => skill.user)
-    skills!: Skill[]
+    @OneToMany(() => Character, character => character.user, { onDelete: "CASCADE" })
+    characters?: Character[]
 
-    @OneToMany(() => Trait, trait => trait.user)
-    traits!: Trait[]
+    @OneToMany(() => CharacterProfession, characterProfession => characterProfession.user, { onDelete: "CASCADE" })
+    characterProfessions?: CharacterProfession[]
 
-    @OneToMany(() => Addiction, addiction => addiction.user)
-    addictions!: Addiction[]
+    @OneToMany(() => Disease, disease => disease.user, { onDelete: "CASCADE" })
+    diseases?: Disease[]
 
-    @OneToMany(() => Birthsign, birthsign => birthsign.user)
-    birthsigns!: Birthsign[]
+    @OneToMany(() => Effect, effect => effect.user, { onDelete: "CASCADE" })
+    effects?: Effect[]
 
-    @OneToMany(() => Character, character => character.user)
-    characters!: Character[]
+    @OneToMany(() => Fact, fact => fact.user, { onDelete: "CASCADE" })
+    facts?: Fact[]
 
-    @OneToMany(() => CharacterProfession, characterProfession => characterProfession.user)
-    characterProfessions!: CharacterProfession[]
+    @OneToMany(() => Faction, faction => faction.user, { onDelete: "CASCADE" })
+    factions?: Faction[]
 
-    @OneToMany(() => Disease, disease => disease.user)
-    diseases!: Disease[]
-
-    @OneToMany(() => Effect, effect => effect.user)
-    effects!: Effect[]
-
-    @OneToMany(() => Fact, fact => fact.user)
-    facts!: Fact[]
-
-    @OneToMany(() => Faction, faction => faction.user)
-    factions!: Faction[]
-
-    @OneToMany(() => Inventory, inventory => inventory.user)
-    inventories!: Inventory[]
+    @OneToMany(() => Inventory, inventory => inventory.user, { onDelete: "CASCADE" })
+    inventories?: Inventory[]
     
-    @OneToMany(() => ItemSet, itemSet => itemSet.user)
-    itemSets!: ItemSet[]
+    @OneToMany(() => ItemSet, itemSet => itemSet.user, { onDelete: "CASCADE" })
+    itemSets?: ItemSet[]
 
-    @OneToMany(() => Mood, mood => mood.user)
-    moods!: Mood[]
+    @OneToMany(() => Mood, mood => mood.user, { onDelete: "CASCADE" })
+    moods?: Mood[]
 
-    @OneToMany(() => Need, need => need.user)
-    needs!: Need[]
+    @OneToMany(() => Need, need => need.user, { onDelete: "CASCADE" })
+    needs?: Need[]
 
-    @OneToMany(() => PersonalityProfile, personalityProfile => personalityProfile.user)
-    personalityProfiles!: PersonalityProfile[]
+    @OneToMany(() => PersonalityProfile, personalityProfile => personalityProfile.user, { onDelete: "CASCADE" })
+    personalityProfiles?: PersonalityProfile[]
 
-    @OneToMany(() => Race, race => race.user)
-    races!: Race[]
+    @OneToMany(() => Race, race => race.user, { onDelete: "CASCADE" })
+    races?: Race[]
 
-    @OneToMany(() => Religion, religion => religion.user)
-    religions!: Religion[]
+    @OneToMany(() => Religion, religion => religion.user, { onDelete: "CASCADE" })
+    religions?: Religion[]
 
-    @OneToMany(() => Resistance, resistance => resistance.user)
-    resistances!: Resistance[]
+    @OneToMany(() => Resistance, resistance => resistance.user, { onDelete: "CASCADE" })
+    resistances?: Resistance[]
 
-    @OneToMany(() => Status, status => status.user)
-    statuses!: Status[]
+    @OneToMany(() => Status, status => status.user, { onDelete: "CASCADE" })
+    statuses?: Status[]
 
-    @OneToMany(() => Tag, tag => tag.user)
-    tags!: Tag[]
+    @OneToMany(() => Tag, tag => tag.user, { onDelete: "CASCADE" })
+    tags?: Tag[]
+    
+    @OneToMany(() => Background, background => background.user, { onDelete: "CASCADE" })
+    backgrounds!: Background[]
 }

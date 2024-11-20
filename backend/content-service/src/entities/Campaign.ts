@@ -27,6 +27,7 @@ import { Skill } from "./Content/Skill/Skill";
 import { Status } from "./Content/Status";
 import { Tag } from "./Content/Tag";
 import { Trait } from "./Content/Trait/Trait";
+import { Background } from "./Content/Background";
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })
@@ -52,81 +53,84 @@ export class Campaign extends BaseEntity {
     @ManyToOne(() => User, user => user.campaigns)
     user!: User; // User who created this campaign.
 
-    @OneToMany(() => Item, item => item.campaign)
+    @OneToMany(() => Item, item => item.campaign, { onDelete: "CASCADE" })
     items!: Item[]
 
-    @OneToMany(() => PastExperience, pastExperience => pastExperience.campaign)
+    @OneToMany(() => PastExperience, pastExperience => pastExperience.campaign, { onDelete: "CASCADE" })
     pastExperiences!: PastExperience[]
 
-    @OneToMany(() => CharacterMemory, characterMemory => characterMemory.campaign)
+    @OneToMany(() => CharacterMemory, characterMemory => characterMemory.campaign, { onDelete: "CASCADE" })
     characterMemories!: CharacterMemory[]
 
-    @OneToMany(() => Memory, memory => memory.campaign)
+    @OneToMany(() => Memory, memory => memory.campaign, { onDelete: "CASCADE" })
     memories!: Memory[]
 
-    @OneToMany(() => MemoryPool, memoryPool => memoryPool.campaign)
+    @OneToMany(() => MemoryPool, memoryPool => memoryPool.campaign, { onDelete: "CASCADE" })
     memoryPools!: MemoryPool[]
 
-    @OneToMany(() => MemoryPoolEntry, memoryPoolEntry => memoryPoolEntry.campaign)
+    @OneToMany(() => MemoryPoolEntry, memoryPoolEntry => memoryPoolEntry.campaign, { onDelete: "CASCADE" })
     memoryPoolEntries!: MemoryPoolEntry[]
 
-    @OneToMany(() => Skill, skill => skill.campaign)
+    @OneToMany(() => Skill, skill => skill.campaign, { onDelete: "CASCADE" })
     skills!: Skill[]
 
-    @OneToMany(() => Trait, trait => trait.campaign)
+    @OneToMany(() => Trait, trait => trait.campaign, { onDelete: "CASCADE" })
     traits!: Trait[]
 
-    @OneToMany(() => Addiction, addiction => addiction.campaign)
+    @OneToMany(() => Addiction, addiction => addiction.campaign, { onDelete: "CASCADE" })
     addictions!: Addiction[]
 
-    @OneToMany(() => Birthsign, birthsign => birthsign.campaign)
+    @OneToMany(() => Birthsign, birthsign => birthsign.campaign, { onDelete: "CASCADE" })
     birthsigns!: Birthsign[]
 
-    @OneToMany(() => Character, character => character.campaign)
+    @OneToMany(() => Character, character => character.campaign, { onDelete: "CASCADE" })
     characters!: Character[]
 
-    @OneToMany(() => CharacterProfession, characterProfession => characterProfession.campaign)
+    @OneToMany(() => CharacterProfession, characterProfession => characterProfession.campaign, { onDelete: "CASCADE" })
     characterProfessions!: CharacterProfession[]
 
-    @OneToMany(() => Disease, disease => disease.campaign)
+    @OneToMany(() => Disease, disease => disease.campaign, { onDelete: "CASCADE" })
     diseases!: Disease[]
 
-    @OneToMany(() => Effect, effect => effect.campaign)
+    @OneToMany(() => Effect, effect => effect.campaign, { onDelete: "CASCADE" })
     effects!: Effect[]
 
-    @OneToMany(() => Fact, fact => fact.campaign)
+    @OneToMany(() => Fact, fact => fact.campaign, { onDelete: "CASCADE" })
     facts!: Fact[]
 
-    @OneToMany(() => Faction, faction => faction.campaign)
+    @OneToMany(() => Faction, faction => faction.campaign, { onDelete: "CASCADE" })
     factions!: Faction[]
 
-    @OneToMany(() => Inventory, inventory => inventory.campaign)
+    @OneToMany(() => Inventory, inventory => inventory.campaign, { onDelete: "CASCADE" })
     inventories!: Inventory[]
     
-    @OneToMany(() => ItemSet, itemSet => itemSet.campaign)
+    @OneToMany(() => ItemSet, itemSet => itemSet.campaign, { onDelete: "CASCADE" })
     itemSets!: ItemSet[]
 
-    @OneToMany(() => Mood, mood => mood.campaign)
+    @OneToMany(() => Mood, mood => mood.campaign, { onDelete: "CASCADE" })
     moods!: Mood[]
 
-    @OneToMany(() => Need, need => need.campaign)
+    @OneToMany(() => Need, need => need.campaign, { onDelete: "CASCADE" })
     needs!: Need[]
 
-    @OneToMany(() => PersonalityProfile, personalityProfile => personalityProfile.campaign)
+    @OneToMany(() => PersonalityProfile, personalityProfile => personalityProfile.campaign, { onDelete: "CASCADE" })
     personalityProfiles!: PersonalityProfile[]
 
-    @OneToMany(() => Race, race => race.campaign)
+    @OneToMany(() => Race, race => race.campaign, { onDelete: "CASCADE" })
     races!: Race[]
 
-    @OneToMany(() => Religion, religion => religion.campaign)
+    @OneToMany(() => Religion, religion => religion.campaign, { onDelete: "CASCADE" })
     religions!: Religion[]
 
-    @OneToMany(() => Resistance, resistance => resistance.campaign)
+    @OneToMany(() => Resistance, resistance => resistance.campaign, { onDelete: "CASCADE" })
     resistances!: Resistance[]
 
-    @OneToMany(() => Status, status => status.campaign)
+    @OneToMany(() => Status, status => status.campaign, { onDelete: "CASCADE" })
     statuses!: Status[]
 
-    @OneToMany(() => Tag, tag => tag.campaign)
+    @OneToMany(() => Tag, tag => tag.campaign, { onDelete: "CASCADE" })
     tags!: Tag[]
+
+    @OneToMany(() => Background, background => background.campaign, { onDelete: "CASCADE" })
+    backgrounds!: Background[]
 }

@@ -1,16 +1,24 @@
-import { Entity, TableInheritance, Column, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Tag } from "./Tag";
-import { ContentBase } from "../../ContentBase";
+import { TaggableContentBase } from "../../TaggableContentBase";
 import { Campaign } from "../Campaign";
 import { User } from "../User";
 import { World } from "../World";
 import { Memory } from "./Knowledge/Memory";
 
 @Entity()
-export class Fact extends ContentBase {
-    @PrimaryGeneratedColumn("uuid")
+export class Fact extends TaggableContentBase {
+    @PrimaryColumn()
     id!: string;
-
+    
+    @BeforeInsert()
+    generateId() {
+        if (this.targetEntity) { // if this is an imported blueprint - make the id the same as blueprint id
+            this.id = this.blueprint_id
+        } else {
+            this.id = `${this.id_prefix}_${randomUUID().replace(/-/g, "")}`;
+        }
+    }
     id_prefix = "FACT"
 
     @Column({ type: "text" })

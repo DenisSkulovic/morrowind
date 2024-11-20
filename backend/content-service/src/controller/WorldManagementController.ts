@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
 
-export class MemoryController {
+export class WorldManagementController {
 
     public static async createWorld(req: Request, res: Response): Promise<void> {
         try {
