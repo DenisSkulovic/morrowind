@@ -135,12 +135,16 @@ export class CharacterGenerator {
                 user: context.user,
                 world: context.world,
                 campaign: context.campaign
-            });
+            })[0];
+            
+            // assign character to inventory and save it
+            inventory.character = character
+            await inventory.save()
 
             // assign tags based on everything
             // TODO
 
-            return character[0];
+            return character;
         })
 
         const characters: Character[] = await Promise.all(promises)
