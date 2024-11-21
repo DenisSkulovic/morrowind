@@ -1,16 +1,12 @@
 import { DataSource, In, Repository } from "typeorm";
-import { WorldDataSource, CampaignDataSource, sourcesMap } from "../../data-source";
+import { sourcesMap } from "../../data-source";
 import { ItemSetGenerator } from "./ItemSetGenerator";
 import { Character } from "../../entities/Content/Character";
 import { Background } from "../../entities/Content/Background";
-import { Tag } from "../../entities/Content/Tag";
-import { ItemSet } from "../../entities/Content/ItemSet";
-import { BackgroundService } from "../service/content_services/BackgroundService";
 import { DataSourceEnum } from "../../enum/DataSourceEnum";
 import { Item } from "../../entities/Content/Item/Item";
 import { Faction } from "../../entities/Content/Faction";
 import { cloneDeep } from "lodash"
-import { FactionService } from "../service/content_services/FactionService";
 import { Disease } from "../../entities/Content/Disease";
 import { Addiction } from "../../entities/Content/Addiction";
 import { PersonalityProfile } from "../../entities/Content/PersonalityProfile";
@@ -21,8 +17,20 @@ import { ContentBase } from "../../ContentBase";
 import { Context, EntityConstructor } from "../../types";
 import { CharacterProfession } from "../../entities/Content/CharacterProfession";
 import { MemoryPool } from "../../entities/Content/Knowledge/MemoryPool";
-import { Inventory } from "../../entities/Content/Inventory";
 import { World } from "../../entities/World";
+import { StorageSlot } from "../../entities/Content/Slot/StorageSlot";
+import { EquipmentSlot } from "../../entities/Content/Slot/EquipmentSlot";
+import { EquipmentSlotService } from "../service/EquipmentSlotService";
+import { StorageSlotService } from "../service/StorageSlotService";
+import { ItemSet } from "../../entities/Content/ItemSet";
+
+
+// TODO I need to conceptualize how I will deal with modifiers
+// modifiers will have to be calculated based on many sources
+// having a trait can apply a modifier. Having a disease can apply a modifier. 
+// Having an addiction, a status, etc. can apply a modifier.
+// Maybe statuses? Sick, in-pain, withdrawal, well-fed, etc.?
+// need to understand how games like CK3 does this.
 
 
 export type CharacterGenInstruction = {
@@ -46,25 +54,27 @@ export type CharGenProbMap = { [blueprint_id: string]: number };
 
 
 export type BlueprintsCache = {
-    [field?: string]: {
-        [key?: string]: any
+    [field: string]: {
+        [key: string]: any
     }
 }
 
 export class CharacterGenerator {
+    context: Context
+    constructor(context: Context) {
+        this.context = context
+    }
 
-    public static async generateCharacters(
+    public async generateCharacters(
         instructions: CharacterGenInstruction[],
         source: DataSourceEnum,
-        context: Context
     ): Promise<Character[]> {
 
-        const blueprintsCache: BlueprintsCache = {}
+        const blueprintsCache: BlueprintsCache = {} // caching blueprint data extracted from db to not request for info I already have from previous characters
         const dataSource: DataSource | undefined = sourcesMap.get(source)
         if (!dataSource) throw new Error(`failed to find data source for source: "source"`)
 
         const promises = instructions.map(async (instruction) => {
-
             // Fetch the background blueprint
             let background: Background | null = null
             if (instruction.background_blueprint_id) {
@@ -83,32 +93,20 @@ export class CharacterGenerator {
             // Apply customizations to background
             const customizedBackground: Background = Object.assign(backgroundClone, instruction.background_customization);
 
-            const [
-                race,
-                items,
-                factions,
-                diseases,
-                addictions,
-                professions,
-                memoryPools,
-                personality,
+            // Collect necessary data from either cache or db
+            const [race, items, factions,
+                diseases, addictions, professions,
+                memoryPools, personality,
             ] = await Promise.all([
-                this._processGenericEntity("race", Race, customizedBackground.race_prob, source, blueprintsCache),
-                this._processItemSets(customizedBackground, source),
-                this._processGenericEntity("faction", Faction, customizedBackground.faction_prob, source, blueprintsCache),
-                this._processGenericEntity("disease", Disease, customizedBackground.disease_prob, source, blueprintsCache),
-                this._processGenericEntity("addiction", Addiction, customizedBackground.addiction_prob, source, blueprintsCache),
-                this._processGenericEntity("profession", CharacterProfession, customizedBackground.profession_prob, source, blueprintsCache),
-                this._processGenericEntity("memoryPool", MemoryPool, customizedBackground.memory_pools_prob, source, blueprintsCache),
-                this._processPersonality(customizedBackground.personality_prob, source, blueprintsCache)
+                this._extractGenericBlueprints("race", Race, customizedBackground.race_prob, source, blueprintsCache),
+                this._extractItemSetBlueprints(customizedBackground, source),
+                this._extractGenericBlueprints("faction", Faction, customizedBackground.faction_prob, source, blueprintsCache),
+                this._extractGenericBlueprints("disease", Disease, customizedBackground.disease_prob, source, blueprintsCache),
+                this._extractGenericBlueprints("addiction", Addiction, customizedBackground.addiction_prob, source, blueprintsCache),
+                this._extractGenericBlueprints("profession", CharacterProfession, customizedBackground.profession_prob, source, blueprintsCache),
+                this._extractGenericBlueprints("memoryPool", MemoryPool, customizedBackground.memory_pools_prob, source, blueprintsCache),
+                this._extractPersonalityBlueprints(customizedBackground.personality_prob, source, blueprintsCache),
             ])
-
-            const inventory = Inventory.create({
-                items,
-                user: context.user,
-                world: context.world,
-                campaign: context.campaign
-            })
 
             // Create character entity
             const character = Character.create({
@@ -122,7 +120,6 @@ export class CharacterGenerator {
                 birthMonth: instruction.birthMonth,
                 birthDay: instruction.birthDay,
                 skills,
-                inventory,
                 professions,
                 memoryPools,
                 characterMemories,
@@ -132,17 +129,31 @@ export class CharacterGenerator {
                 diseases,
                 addictions,
                 tags,
-                user: context.user,
-                world: context.world,
-                campaign: context.campaign
+                user: this.context.user,
+                world: this.context.world,
+                campaign: this.context.campaign
             })[0];
-            
-            // assign character to inventory and save it
-            inventory.character = character
-            await inventory.save()
 
-            // assign tags based on everything
-            // TODO
+            // DEALING WITH ITEMS AND SLOTS
+            // assign equipment slots according to character race
+            this._createAndAssignEquipmentSlots(character)
+            // put items into equipment slots if and when appropriate
+            const { equippedItems, unequippedItems } = EquipmentSlotService.equipItems(character.equipmentSlots, items)
+            console.log(`equipped ${equippedItems.length} items`)
+            // collect storage slots
+            const storageSlots: StorageSlot[] = []
+            character.equipmentSlots.forEach((eqSlot) => {
+                eqSlot.equippedItem?.storageSlots?.forEach((stSlot) => {
+                    storageSlots.push(stSlot)
+                })
+            })
+            // store remaining items into storage slots
+            const { placedItems, unplacedItems } = StorageSlotService.placeItemsIntoStorageSlots(storageSlots, unequippedItems)
+            console.log(`stored ${placedItems.length} items`)
+            // raise warning that some items did not fit and were discarded
+            if (unplacedItems.length) console.warn(`during character generation some items did not fit into slots; discarding: `, JSON.stringify(unplacedItems))
+
+            // TODO assign tags based on everything
 
             return character;
         })
@@ -151,7 +162,7 @@ export class CharacterGenerator {
         return characters
     }
 
-    private static async _processGenericEntity<T extends ContentBase>(
+    private async _extractGenericBlueprints<T extends ContentBase>(
         field: string,
         entityConstructor: EntityConstructor<T>,
         prob_obj: CharGenProbObject | undefined,
@@ -164,7 +175,7 @@ export class CharacterGenerator {
         const entities: T[] = []
         const blueprintsToFetch: string[] = []
 
-        // TODO this "extract cached or fetch missing" can be generalized - _processGenericEntity and _processPersonality do it the same way
+        // TODO this "extract cached or fetch missing" can be generalized - _extractGenericBlueprints and _extractPersonalityBlueprints do it the same way
         // extract cached entities or record ID as to be fetched
         blueprintIds.forEach((blueprint_id: string) => {
             const cachedEntity: T | undefined = blueprintsCache[field][blueprint_id]
@@ -187,7 +198,7 @@ export class CharacterGenerator {
     }
 
 
-    private static async _processPersonality(
+    private async _extractPersonalityBlueprints(
         prob_obj: CharGenProbObject | undefined,
         source: DataSourceEnum,
         blueprintsCache: BlueprintsCache
@@ -211,7 +222,7 @@ export class CharacterGenerator {
         const traits: Trait[] = []
         const triatsToFetch: string[] = []
 
-        // TODO this "extract cached or fetch missing" can be generalized - _processGenericEntity and _processPersonality do it the same way
+        // TODO this "extract cached or fetch missing" can be generalized - _extractGenericBlueprints and _extractPersonalityBlueprints do it the same way
         // extract cached traits or record ID as to be fetched
         traitNames.forEach((traitName: string) => {
             const cachedEntity: Trait | undefined = blueprintsCache["trait"][traitName]
@@ -234,14 +245,33 @@ export class CharacterGenerator {
     }
 
 
-    private static async _processItemSets(background: Background, source: DataSourceEnum): Promise<Item[]> {
+    private async _extractItemSetBlueprints(background: Background, source: DataSourceEnum): Promise<ItemSet[]> {
 
     }
-    private static async _processPastExp(background: Background, source: DataSourceEnum) { }
-    private static async _processTags(background: Background, source: DataSourceEnum) { }
+    private async _processPastExp(background: Background, source: DataSourceEnum) { }
+    private async _processTags(background: Background, source: DataSourceEnum) { }
+    private _createAndAssignEquipmentSlots(character: Character): void {
+        character.equipmentSlots = []
+        const slotDefinitions: {
+            name: string;
+            allowedEntities: string[];
+        }[] = character.race.equipment_slot_definitions
+
+        slotDefinitions.forEach((definition) => {
+            const slot: EquipmentSlot = EquipmentSlot.create({
+                name: definition.name,
+                allowedEntities: definition.allowedEntities,
+                character,
+                world: this.context.world,
+                user: this.context.user,
+                campaign: this.context.campaign
+            })
+            character.equipmentSlots.push(slot)
+        })
+    }
 
 
-    private static _getBlueprintIdsForProbObject(probObj: CharGenProbObject): string[] {
+    private _getBlueprintIdsForProbObject(probObj: CharGenProbObject): string[] {
         const blueprintIds: string[] = [];
 
         switch (probObj.cond) {
@@ -257,7 +287,7 @@ export class CharacterGenerator {
         return blueprintIds;
     }
 
-    private static _chooseOR(probObj: CharGenProbMap, targetArr?: string[]): string | undefined {
+    private _chooseOR(probObj: CharGenProbMap, targetArr?: string[]): string | undefined {
         const totalProb = Object.values(probObj).reduce((sum, prob) => sum + prob, 0);
         let randomValue = Math.random() * totalProb;
 
@@ -269,7 +299,7 @@ export class CharacterGenerator {
             };
         }
     }
-    private static _chooseANY(probObj: CharGenProbMap, targetArr?: string[]) {
+    private _chooseANY(probObj: CharGenProbMap, targetArr?: string[]) {
         const ownArray: string[] = []
         for (const [blueprintId, prob] of Object.entries(probObj.prob)) {
             if (Math.random() <= prob) {

@@ -18,7 +18,6 @@ import { CharacterProfession } from "./Content/CharacterProfession";
 import { Disease } from "./Content/Disease";
 import { Effect } from "./Content/Effect";
 import { Fact } from "./Content/Fact";
-import { Inventory } from "./Content/Inventory";
 import { Mood } from "./Content/Mood";
 import { Need } from "./Content/Need";
 import { PersonalityProfile } from "./Content/PersonalityProfile";
@@ -28,6 +27,8 @@ import { Resistance } from "./Content/Resistance";
 import { Status } from "./Content/Status";
 import { Tag } from "./Content/Tag";
 import { Background } from "./Content/Background";
+import { EquipmentSlot } from "./Content/Slot/EquipmentSlot";
+import { StorageSlot } from "./Content/Slot/StorageSlot";
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })
@@ -101,8 +102,11 @@ export class World extends BaseEntity {
     @OneToMany(() => Faction, faction => faction.world, { onDelete: "CASCADE" })
     factions!: Faction[]
 
-    @OneToMany(() => Inventory, inventory => inventory.world, { onDelete: "CASCADE" })
-    inventories!: Inventory[]
+    @OneToMany(() => StorageSlot, storageSlot => storageSlot.world, { onDelete: "CASCADE" })
+    storageSlots!: StorageSlot[]
+
+    @OneToMany(() => EquipmentSlot, equipmentSlot => equipmentSlot.world, { onDelete: "CASCADE" })
+    equipmentSlots!: EquipmentSlot[]
     
     @OneToMany(() => ItemSet, itemSet => itemSet.world, { onDelete: "CASCADE" })
     itemSets!: ItemSet[]

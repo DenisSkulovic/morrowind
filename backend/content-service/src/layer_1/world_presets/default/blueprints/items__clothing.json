@@ -24,6 +24,24 @@
         "weight": 1,
         "base_value": 2,
         "stealth_disadvantage": false,
+        "storageSlots": [
+            {
+                "name": "Left Pocket",
+                "grid": {
+                    "width": 3,
+                    "height": 5
+                },
+                "maxWeight": 10
+            },
+            {
+                "name": "Right Pocket",
+                "grid": {
+                    "width": 3,
+                    "height": 5
+                },
+                "maxWeight": 10
+            }
+        ],
         "targetEntity": "ItemWearableClothesPants"
     },
     {
@@ -35,8 +53,6 @@
         "stealth_disadvantage": false,
         "targetEntity": "ItemWearableFeet"
     },
-
-
     {
         "blueprint_id": "IRON_GREAVES",
         "name": "Iron Greaves",
@@ -75,8 +91,6 @@
         },
         "targetEntity": "ItemWearableGreaves"
     },
-
-
     {
         "blueprint_id": "IRON_CUIRASS",
         "name": "Iron Cuirass",
@@ -115,8 +129,6 @@
         },
         "targetEntity": "ItemWearableCuirass"
     },
-
-
     {
         "blueprint_id": "IRON_HELMET",
         "name": "Iron Helmet",
@@ -153,8 +165,6 @@
         },
         "targetEntity": "ItemWearableHead"
     },
-
-
     {
         "blueprint_id": "IRON_BOOTS",
         "name": "Iron Boots",
@@ -192,8 +202,6 @@
         "stealth_disadvantage": true,
         "targetEntity": "ItemWearableFeet"
     },
-
-    
     {
         "blueprint_id": "IRON_SHIELD",
         "name": "Iron Shield",
@@ -230,5 +238,75 @@
         },
         "stealth_disadvantage": true,
         "targetEntity": "ItemWearableShield"
+    },
+    {
+        "blueprint_id": "SMALL_BACKPACK",
+        "name": "Small Backpack",
+        "description": "A simple small backpack that can store some items",
+        "weight": 2,
+        "base_value": 100,
+        "storageSlots": [
+            {
+                "name": "Main Section",
+                "grid": {
+                    "width": 10,
+                    "height": 10
+                },
+                "maxWeight": 50
+            },
+            {
+                "name": "Smaller Section",
+                "grid": {
+                    "width": 10,
+                    "height": 5
+                },
+                "maxWeight": 20
+            }
+        ],
+        "stealth_disadvantage": false,
+        "targetEntity": "ItemWearableBackpack"
+    },
+    {
+        "blueprint_id": "LARGE_BACKPACK",
+        "name": "Large Backpack",
+        "description": "A large backpack that can store many items",
+        "weight": 4,
+        "base_value": 200,
+        "storageSlots": [
+            {
+                "name": "Main Section",
+                "grid": {
+                    "width": 12,
+                    "height": 15
+                },
+                "maxWeight": 100
+            },
+            {
+                "name": "Smaller Section",
+                "grid": {
+                    "width": 12,
+                    "height": 12
+                },
+                "maxWeight": 60
+            },
+            {
+                "name": "Left Pocket",
+                "grid": {
+                    "width": 3,
+                    "height": 5
+                },
+                "maxWeight": 10
+            },
+            {
+                "name": "Right Pocket",
+                "grid": {
+                    "width": 3,
+                    "height": 5
+                },
+                "maxWeight": 10
+            }
+        ],
+        "stealth_disadvantage": true,
+        "targetEntity": "ItemWearableBackpack"
     }
 ]

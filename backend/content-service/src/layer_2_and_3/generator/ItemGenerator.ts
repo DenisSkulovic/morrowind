@@ -10,6 +10,9 @@ export class ItemGenerator {
         const entity: Item = Item.create({ id: instruction.item_blueprint_id });
         entity.quantity = this._calcQuant(instruction);
         entity.instance_id = `${entity.id}_${randomUUID().replace(/-/g, "")}`
+        
+        // process storage slots, if any
+
         return entity;
     }
 

@@ -10,7 +10,6 @@ import { Disease } from "./Content/Disease";
 import { Effect } from "./Content/Effect";
 import { Fact } from "./Content/Fact";
 import { Faction } from "./Content/Faction";
-import { Inventory } from "./Content/Inventory";
 import { ItemSet } from "./Content/ItemSet";
 import { CharacterMemory } from "./Content/Knowledge/CharacterMemory";
 import { Memory } from "./Content/Knowledge/Memory";
@@ -28,6 +27,8 @@ import { Status } from "./Content/Status";
 import { Tag } from "./Content/Tag";
 import { Trait } from "./Content/Trait/Trait";
 import { Background } from "./Content/Background";
+import { StorageSlot } from "./Content/Slot/StorageSlot";
+import { EquipmentSlot } from "./Content/Slot/EquipmentSlot";
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })
@@ -101,8 +102,11 @@ export class Campaign extends BaseEntity {
     @OneToMany(() => Faction, faction => faction.campaign, { onDelete: "CASCADE" })
     factions!: Faction[]
 
-    @OneToMany(() => Inventory, inventory => inventory.campaign, { onDelete: "CASCADE" })
-    inventories!: Inventory[]
+    @OneToMany(() => StorageSlot, storageSlot => storageSlot.campaign, { onDelete: "CASCADE" })
+    storageSlots!: StorageSlot[]
+
+    @OneToMany(() => EquipmentSlot, equipmentSlot => equipmentSlot.campaign, { onDelete: "CASCADE" })
+    equipmentSlots!: EquipmentSlot[]
     
     @OneToMany(() => ItemSet, itemSet => itemSet.campaign, { onDelete: "CASCADE" })
     itemSets!: ItemSet[]

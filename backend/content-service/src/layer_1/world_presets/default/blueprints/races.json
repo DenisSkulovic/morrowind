@@ -2,6 +2,44 @@
     {
         "blueprint_id": "HUMAN",
         "name": "Human",
-        "description": "A versatile and adaptable race, known for their resilience."
+        "description": "A versatile and adaptable race, known for their resilience.",
+        "equipment_slot_definitions": [
+            {
+                "name": "Head",
+                "allowedEntities": ["ItemWearableHead"]
+            },
+            {
+                "name": "Torso",
+                "allowedEntities": ["ItemWearableClotherTorso"]
+            },
+            {
+                "name": "Cuirass",
+                "allowedEntities": ["ItemWearableCuirass"]
+            },
+            {
+                "name": "Greaves",
+                "allowedEntities": ["ItemWearableGreaves"]
+            },
+            {
+                "name": "Legs",
+                "allowedEntities": ["ItemWearableClothesPants"]
+            },
+            {
+                "name": "Feet",
+                "allowedEntities": ["ItemWearableFeet"]
+            },
+            {
+                "name": "Left Hand",
+                "allowedEntities": ["ItemWearableShield", "ItemWeapon"]
+            },
+            {
+                "name": "Right Hand",
+                "allowedEntities": ["ItemWeapon"]
+            },
+            {
+                "name": "Backpack",
+                "allowedEntities": ["ItemWearableBackpack"]
+            }
+        ]
     }
 ]

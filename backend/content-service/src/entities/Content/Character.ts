@@ -6,7 +6,6 @@ import { CharacterProfession } from "./CharacterProfession";
 import { Skill } from "./Skill/Skill";
 import { Birthsign } from "./Birthsign";
 import { Race } from "./Race";
-import { Inventory } from "./Inventory";
 import { Tag } from "./Tag";
 import { TaggableContentBase } from "../../TaggableContentBase";
 import { Campaign } from "../Campaign";
@@ -16,12 +15,23 @@ import { randomUUID } from "crypto";
 import { Faction } from "./Faction";
 import { Disease } from "./Disease";
 import { Addiction } from "./Addiction";
+import { EquipmentSlot } from "./Slot/EquipmentSlot";
+
+
+// lazy loading means when I need to access traits of a character, it will perform 2 queries. 
+// One to fetch the character, and a second one to fetch inventories, but only when I access that field.
+// If I know from the start that I will need the inventories, I can use eager loading:
+// const character = await characterRepository.findOne({
+//     where: { id: 1 },
+//     relations: ['inventories'], // Load inventories in the same query
+// });
+
 
 @Entity()
 export class Character extends TaggableContentBase {
     @PrimaryColumn()
     id!: string;
-    
+
     @BeforeInsert()
     generateId() {
         if (this.targetEntity) this.id = this.blueprint_id
@@ -38,66 +48,66 @@ export class Character extends TaggableContentBase {
     @ManyToOne(() => Race)
     race!: Race;
 
-    @Column({type: "enum", enum: ["MALE", "FEMALE"] })
+    @Column({ type: "enum", enum: ["MALE", "FEMALE"] })
     gender!: string;
 
     @ManyToOne(() => Birthsign)
     birthsign?: Birthsign;
 
-    @Column({default: null, nullable: true})
+    @Column({ default: null, nullable: true })
     birthYear?: number;
 
-    @Column({default: null, nullable: true})
+    @Column({ default: null, nullable: true })
     birthMonth?: number;
 
-    @Column({default: null, nullable: true})
+    @Column({ default: null, nullable: true })
     birthDay?: number;
 
-    @Column("jsonb", {default: {}})
-    skills!: {[skill: string]: number};
+    @Column("jsonb", { default: {} })
+    skills!: { [skill: string]: number };
 
-    @OneToOne(() => Inventory)
+    @OneToMany(() => EquipmentSlot, eqiupmentSlot => eqiupmentSlot.character)
     @JoinTable()
-    inventory!: Inventory;
+    equipmentSlots!: EquipmentSlot[];
 
-    @OneToMany(() => CharacterProfession, profession => profession.character)
+    @OneToMany(() => CharacterProfession, profession => profession.character, { lazy: true })
     professions!: CharacterProfession[]; // Tracks current and past professions
 
-    @ManyToMany(() => MemoryPool)
+    @ManyToMany(() => MemoryPool, { lazy: true })
     @JoinTable()
     memoryPools!: Promise<MemoryPool[]>; // Assigned during generation, or as the person expands their knowledge as their personality develops
 
-    @OneToMany(() => CharacterMemory, charMemory => charMemory.character)
+    @OneToMany(() => CharacterMemory, charMemory => charMemory.character, { lazy: true })
     characterMemories!: Promise<CharacterMemory[]>;
 
-    @Column({type: "varchar", length: 3})
+    @Column({ type: "varchar", length: 3 })
     enneagramType!: string;
 
-    @ManyToMany(() => Trait)
+    @ManyToMany(() => Trait, { lazy: true })
     @JoinTable()
     traits!: Trait[];
 
-    @ManyToMany(() => Disease)
+    @ManyToMany(() => Disease, { lazy: true })
     @JoinTable()
     diseases?: Disease[];
 
-    @ManyToMany(() => Addiction)
+    @ManyToMany(() => Addiction, { lazy: true })
     @JoinTable()
     addictions?: Addiction[];
 
 
-    @ManyToMany(() => Faction, (faction) => faction.characters)
+    @ManyToMany(() => Faction, (faction) => faction.characters, { lazy: true })
     @JoinTable()
     factions?: Faction[];
 
-    
-    @ManyToMany(() => Tag, (tag) => tag.characters)
+
+    @ManyToMany(() => Tag, (tag) => tag.characters, { lazy: true })
     @JoinTable()
     tags?: Tag[];
 
     @ManyToOne(() => User, { nullable: true })
     user!: User;
-    
+
     @ManyToOne(() => World, { nullable: true })
     world!: World;
 

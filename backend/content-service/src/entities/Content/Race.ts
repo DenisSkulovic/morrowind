@@ -12,7 +12,7 @@ import { randomUUID } from "crypto";
 export class Race extends ContentBase {
     @PrimaryColumn()
     id!: string;
-    
+
     @BeforeInsert()
     generateId() {
         if (this.targetEntity) this.id = this.blueprint_id
@@ -22,6 +22,9 @@ export class Race extends ContentBase {
 
     @Column({ type: "varchar", length: 255 })
     name!: string;
+
+    @Column("jsonb")
+    equipment_slot_definitions!: { name: string, allowedEntities: string[] }[]
 
     @ManyToOne(() => User, { nullable: true })
     user!: User;

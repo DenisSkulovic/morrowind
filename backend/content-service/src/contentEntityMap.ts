@@ -47,7 +47,6 @@ import { ContentBase } from "./ContentBase";
 import { Disease } from "./entities/Content/Disease";
 import { Effect } from "./entities/Content/Effect";
 import { Fact } from "./entities/Content/Fact";
-import { Inventory } from "./entities/Content/Inventory";
 import { ItemSet } from "./entities/Content/ItemSet";
 import { Mood } from "./entities/Content/Mood";
 import { Need } from "./entities/Content/Need";
@@ -124,7 +123,6 @@ export const contentEntityMap: {[name: string]: EntityConstructor<ContentBase>} 
     "Disease": Disease,
     "Effect": Effect,
     "Fact": Fact,
-    "Inventory": Inventory,
     "ItemSet": ItemSet,
     "Mood": Mood,
     "Need": Need,
