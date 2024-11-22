@@ -4,7 +4,7 @@ import { ContentBase } from "../../ContentBase";
 import { DataSource, Repository } from "typeorm";
 import { EntityConstructor } from "../../types";
 
-export type IdAndQuant = { blueprint_id: string, quantity: number }
+export type IdAndQuant = { blueprint_id: string, quantity?: number }
 
 export type BlueprintsCache = {
     [field: string]: {
@@ -42,7 +42,8 @@ export abstract class AbstractProbGenerator<T extends ContentBase> {
     public async generateMany(ids_and_quant: IdAndQuant[]): Promise<T[]> {
         const res: T[] = []
         for (const id_and_quant of ids_and_quant) {
-            for (let i = 0; i < id_and_quant.quantity; i++) {
+            const quantity = id_and_quant.quantity || 1
+            for (let i = 0; i < quantity; i++) {
                 const item = await this.generateOne(id_and_quant)
                 res.push(item)
             }
@@ -86,14 +87,14 @@ export abstract class AbstractProbGenerator<T extends ContentBase> {
             switch (instruction.cond) {
                 case "OR": {
                     const blueprint_id: string | undefined = this._processProbOr(instruction.prob)
-                    if (blueprint_id) res.push({ blueprint_id, quantity: 1 })
+                    if (blueprint_id) res.push({ blueprint_id })
                     break;
                 }
                 case "AND": // not sure if there is any difference between AND and ANY, will keep both for now
                 case "ANY": {
                     const blueprintIds: string[] = this._processProbAny(instruction.prob)
                     blueprintIds.forEach((blueprint_id) => {
-                        res.push({ blueprint_id, quantity: 1 })
+                        res.push({ blueprint_id })
                     })
                     break;
                 }

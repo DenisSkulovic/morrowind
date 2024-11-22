@@ -33,6 +33,20 @@ import { PastExperienceAdult } from "../../entities/Content/Knowledge/PastExperi
 
 
 
+enum CacheKeyEnum {
+    CHARACTER_INSTRUCTION = "characterInstruction",
+    BACKGROUND = "background",
+    RACE = "race",
+    FACTION = "faction",
+    DISEASE = "disease",
+    ADDICTION = "addiction",
+    PROFESSION = "profession",
+    MEMORY_POOL = "memoryPool",
+    PERSONALITY = "personality",
+    PAST_EXP_CHILD = "past_exp_child",
+    PAST_EXP_ADULT = "past_exp_adult",
+}
+
 
 
 
@@ -68,22 +82,26 @@ export class CharacterGenerator extends AbstractProbGenerator<Character> {
         if (!background) throw new Error(`Background ${background} not found.`);
         const backgroundClone: Background = cloneDeep(background)
 
+        // TODO
+        // TODO I need to start taking custom fields from the character instruction; the code at the moment only creates according to background, without customization
+        // TODO 
+
         // Collect necessary data from either cache or db
         const [race, items, factions,
             diseases, addictions, professions,
             memoryPools, personality,
             past_enp_child, past_exp_adult
         ] = await Promise.all([
-            this._extractGenericBlueprints("race", Race, backgroundClone.race_prob),
-            this._extractItemSetBlueprints(backgroundClone),
-            this._extractGenericBlueprints("faction", Faction, backgroundClone.faction_prob),
-            this._extractGenericBlueprints("disease", Disease, backgroundClone.disease_prob),
-            this._extractGenericBlueprints("addiction", Addiction, backgroundClone.addiction_prob),
-            this._extractGenericBlueprints("profession", CharacterProfession, backgroundClone.profession_prob),
-            this._extractGenericBlueprints("memoryPool", MemoryPool, backgroundClone.memory_pools_prob),
+            this._extractGenericBlueprints(CacheKeyEnum.RACE, Race, backgroundClone.race_prob),
+            this._generateCharacterItems(backgroundClone),
+            this._extractGenericBlueprints(CacheKeyEnum.FACTION, Faction, backgroundClone.faction_prob),
+            this._extractGenericBlueprints(CacheKeyEnum.DISEASE, Disease, backgroundClone.disease_prob),
+            this._extractGenericBlueprints(CacheKeyEnum.ADDICTION, Addiction, backgroundClone.addiction_prob),
+            this._extractGenericBlueprints(CacheKeyEnum.PROFESSION, CharacterProfession, backgroundClone.profession_prob),
+            this._extractGenericBlueprints(CacheKeyEnum.MEMORY_POOL, MemoryPool, backgroundClone.memory_pools_prob),
             this._extractPersonalityBlueprints(backgroundClone.personality_prob),
-            this._extractGenericBlueprints("past_exp_child", PastExperienceChild, backgroundClone.past_exp_child_prob),
-            this._extractGenericBlueprints("past_exp_adult", PastExperienceAdult, backgroundClone.past_exp_adult_prob),
+            this._extractGenericBlueprints(CacheKeyEnum.PAST_EXP_CHILD, PastExperienceChild, backgroundClone.past_exp_child_prob),
+            this._extractGenericBlueprints(CacheKeyEnum.PAST_EXP_ADULT, PastExperienceAdult, backgroundClone.past_exp_adult_prob),
         ])
 
         // Create character entity
@@ -141,11 +159,12 @@ export class CharacterGenerator extends AbstractProbGenerator<Character> {
 
 
     protected async _extractGenericBlueprints<T extends ContentBase>(
-        type: string,
+        type: CacheKeyEnum,
         entityConstructor: EntityConstructor<T>,
-        prob_obj: ProbObject_Simple | undefined,
+        prob_obj: ProbObject_Simple | undefined
     ): Promise<T[]> {
         if (!prob_obj) return []
+
         const idsAndQuantity: IdAndQuant[] = this._processProbSimple([prob_obj])
         const blueprintIds: string[] = idsAndQuantity.map((obj) => obj.blueprint_id)
         const extractedBlueprints: T[] = await this._getBlueprints_cacheOrRequest(type, entityConstructor, blueprintIds)

@@ -1,10 +1,11 @@
 import { DataSource, EntityManager, Repository } from "typeorm";
-import { DataSourceEnum } from "../../../enum/DataSourceEnum";
-import { RepositoryServiceBase, RepositoryServiceSettings } from "../RepositoryServiceBase";
-import { Item } from "../../../entities/Content/Item/Item";
-import { ItemGenerator } from "../../generator/ItemGenerator";
-import { BlueprintGenInstruction_Gaussian, BlueprintSetInstruction } from "../../../layer_1/types";
-import { BlueprintSetProcessor } from "../BlueprintSetProcessor";
+import { DataSourceEnum } from "../../enum/DataSourceEnum";
+import { RepositoryServiceBase, RepositoryServiceSettings } from "./RepositoryServiceBase";
+import { Item } from "../../entities/Content/Item/Item";
+import { ItemGenerator } from "../generator/ItemGenerator";
+import { BlueprintGenInstruction_Gaussian, BlueprintSetInstruction } from "../../layer_1/types";
+import { BlueprintSetProcessor } from "./BlueprintSetProcessor";
+import { IdAndQuant } from "../generator/AbstractProbGenerator";
 
 export class ItemService extends RepositoryServiceBase {
     constructor(settings: RepositoryServiceSettings) {
@@ -15,25 +16,37 @@ export class ItemService extends RepositoryServiceBase {
         return this.getRepository("Item", source) as Repository<Item>
     }
 
-    public async createItems(instructions: BlueprintGenInstruction_Gaussian[], source: DataSourceEnum): Promise<Item[]> {
+    public async createItems(idAndQuant: IdAndQuant, source: DataSourceEnum): Promise<Item[]>;
+    public async createItems(idAndQuants: IdAndQuant[], source: DataSourceEnum): Promise<Item[]>;
+    public async createItems(arg1: IdAndQuant | IdAndQuant[], source: DataSourceEnum): Promise<Item[]> {
+        const dataSource = this.settings.sourcesMap.get(source)
+        if (!dataSource) throw new Error("dataSource cannot be undefined")
+        const itemGenerator = new ItemGenerator(dataSource)
+        const items: Item[] = Array.isArray(arg1) ? await itemGenerator.generateMany(arg1) : await itemGenerator.generateMany([arg1])
+        const repository: Repository<Item> = this._getItemRepo(source)
+        return await repository.save(items);
+    }
+
+    // TODO make this an overload of createItems
+    public async createItems_probGaussian(instructions: BlueprintGenInstruction_Gaussian[], source: DataSourceEnum): Promise<Item[]> {
         const dataSource = this.settings.sourcesMap.get(source)
         if (!dataSource) throw new Error("dataSource cannot be undefined")
         const itemGenerator = new ItemGenerator(dataSource)
         const items: Item[] = await itemGenerator.generateMany_probGaussian(instructions)
-        const itemRepo = this._getItemRepo(source)
+        const itemRepo: Repository<Item> = this._getItemRepo(source)
         const res: Item[] = await itemRepo.save(items)
         return res
     }
 
+    // TODO make this an overload of createItems
     public async createItemsFromSet(sets: BlueprintSetInstruction[], source: DataSourceEnum): Promise<Item[]> {
         const dataSource = this.settings.sourcesMap.get(source)
         if (!dataSource) throw new Error("dataSource cannot be undefined")
         const itemGenerator = new ItemGenerator(dataSource)
         const instructions: BlueprintGenInstruction_Gaussian[] = sets.map((set) => BlueprintSetProcessor.getInstructionsFromSet(set)).flat()
         const items: Item[] = await itemGenerator.generateMany_probGaussian(instructions)
-        const itemRepo = this._getItemRepo(source)
-        await itemRepo.save(items)
-        return items
+        const itemRepo: Repository<Item> = this._getItemRepo(source)
+        return await itemRepo.save(items)
     }
 
     public async mergeTwoItems<T extends Item>(item1: T, item2: T, source: DataSourceEnum): Promise<T> {

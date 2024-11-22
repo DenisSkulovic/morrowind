@@ -25,10 +25,10 @@ export class CharacterService extends RepositoryServiceBase {
         const characterGenerator = new CharacterGenerator(context, dataSource)
         let character: Character
         if (typeof arg1 === "string") {
-            character = await characterGenerator.generateOne({"blueprint_id": arg1, quantity: 1})
+            character = await characterGenerator.generateOne({"blueprint_id": arg1})
         }else {
             characterGenerator.cacheBlueprint("characterInstruction", arg1.id, arg1)
-            character = await characterGenerator.generateOne({"blueprint_id": arg1.id, quantity: 1})
+            character = await characterGenerator.generateOne({"blueprint_id": arg1.id})
         }
         return await this.saveCharacter(character, source)
     }
