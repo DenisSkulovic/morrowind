@@ -1,0 +1,86 @@
+[
+    {
+        "blueprint_id": "COMBAT_COMMON_SWORDSMAN",
+        "name": "Basic Sword and Armor training",
+        "skill_improvement": {
+            "SHORT_SWORD": 20,
+            "LONG_SWORD": 20,
+            "BLOCK": 25,
+            "HEAVY_ARMOR": 20,
+            "LIGHT_ARMOR": 10
+        }
+    },
+    {
+        "blueprint_id": "COMBAT_ADVANCED_SWORDSMAN",
+        "name": "Advanced Sword and Armor training",
+        "skill_improvement": {
+            "SHORT_SWORD": 40,
+            "LONG_SWORD": 40,
+            "BLOCK": 50,
+            "HEAVY_ARMOR": 40,
+            "LIGHT_ARMOR": 30
+        }
+    },
+    {
+        "blueprint_id": "COMBAT_MASTER_SWORDSMAN",
+        "name": "Master Sword and Armor training",
+        "skill_improvement": {
+            "SHORT_SWORD": 60,
+            "LONG_SWORD": 60,
+            "BLOCK": 70,
+            "HEAVY_ARMOR": 60,
+            "LIGHT_ARMOR": 50
+        }
+    },
+    {
+        "blueprint_id": "COMBAT_COMMON_SKIRMISHER",
+        "name": "Basic Skirmisher training",
+        "skill_improvement": {
+            "SHORT_SWORD": 20,
+            "BLOCK": 15,
+            "LIGHT_ARMOR": 20,
+            "MARKSMAN": 20
+        }
+    },
+    {
+        "blueprint_id": "COMBAT_COMMON_SPEARMAN",
+        "name": "Basic Spear and Armor training",
+        "skill_improvement": {
+            "SPEAR": 20,
+            "LIGHT_ARMOR": 10,
+            "HEAVY_ARMOR": 20
+        }
+    },
+    {
+        "blueprint_id": "COMBAT_COMMON_ARCHER",
+        "name": "Basic Archery training",
+        "skill_improvement": {
+            "MARKSMAN": 20,
+            "LIGHT_ARMOR": 10
+        }
+    },
+    {
+        "blueprint_id": "COMBAT_ADVANCED_ARCHER",
+        "name": "Advanced Archery training",
+        "skill_improvement": {
+            "MARKSMAN": 40,
+            "LIGHT_ARMOR": 30
+        }
+    },
+    {
+        "blueprint_id": "SOCIAL_COMMON_NEGOTIATOR",
+        "name": "Common Negotiator",
+        "skill_improvement": {
+            "MERCHANTILE": 25,
+            "SPEECHCRAFT": 25
+        }
+    },
+    {
+        "blueprint_id": "SOCIAL_ADVANCED_NEGOTIATOR",
+        "name": "Advanced Negotiator",
+        "skill_improvement": {
+            "MERCHANTILE": 50,
+            "SPEECHCRAFT": 50
+        }
+    }
+]

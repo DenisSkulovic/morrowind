@@ -1,38 +1,35 @@
+
+
+
+
 import { Item } from "../../entities/Content/Item/Item";
-import { ItemGenInstruction } from "../../layer_1/types";
-import { randomUUID } from "crypto";
+import { AbstractProbGenerator } from "./AbstractProbGenerator";
+import { cloneDeep } from "lodash";
 
-export class ItemGenerator {
+export class ItemGenerator extends AbstractProbGenerator<Item> {
 
-    public static generateItem(
-        instruction: ItemGenInstruction
-    ): Item {
-        const entity: Item = Item.create({ id: instruction.item_blueprint_id });
-        entity.quantity = this._calcQuant(instruction);
-        entity.instance_id = `${entity.id}_${randomUUID().replace(/-/g, "")}`
-        
-        // process storage slots, if any
+    public async generateOne(
+        blueprintId: string
+    ): Promise<Item> {
+        const cacheExtract: (Item | null)[] = await this._getBlueprints_cacheOrRequest("item", Item, [blueprintId])
+        const extractedBlueprint: Item | null = cacheExtract[0]
+        if (!extractedBlueprint) throw new Error(`could not find Item blueprint for id: "${blueprintId}"`)
 
-        return entity;
-    }
+        // create clone for safety
+        const blueprint: Item = cloneDeep(extractedBlueprint)
 
-    private static _calcQuant(
-        item: ItemGenInstruction
-    ): number {
-        const avg = item.avg_quan || 1;
-        const stDev = item.st_dev || 0;
-        const skew = item.skew || 0;
+        // make sure TypeORM creates a new entry
+        delete blueprint.id
 
-        const randomValue = this._skewedRandom(stDev, skew);
-        return Math.max(1, Math.round(avg + randomValue));
-    }
+        // create an instance with identical params to blueprint; assign instance id
+        const instance: Item = Item.create({
+            ...blueprint,
+        });
+        instance.instance_id = this._createInstanceId(blueprintId)
 
-    private static _skewedRandom(stDev: number, skew: number): number {
-        if (stDev === 0) return 0 // exit before any unnecessary computations
-        const u = Math.random();
-        const v = Math.random();
-        const z = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
-        return z * stDev + skew;
+        // TODO assign storage slots, if any
+
+        return instance;
     }
 
 }

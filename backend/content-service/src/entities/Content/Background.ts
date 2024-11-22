@@ -4,7 +4,8 @@ import { Campaign } from "../Campaign";
 import { User } from "../User";
 import { World } from "../World";
 import { randomUUID } from "crypto";
-import { CharGenProbObject } from "../../layer_2_and_3/generator/CharacterGenerator";
+import { ProbObject_Simple } from "../../layer_1/types";
+
 
 
 @Entity()
@@ -23,34 +24,34 @@ export class Background extends ContentBase {
     name!: string; // Name of the background (e.g., "Highland Town Guard")
 
     @Column({ type: "jsonb", nullable: true })
-    faction_prob?: CharGenProbObject;
+    faction_prob?: ProbObject_Simple;
 
     @Column({ type: "jsonb", nullable: true })
-    disease_prob?: CharGenProbObject;
+    disease_prob?: ProbObject_Simple;
 
     @Column({ type: "jsonb", nullable: true })
-    addiction_prob?: CharGenProbObject;
+    addiction_prob?: ProbObject_Simple;
 
     @Column({ type: "jsonb", nullable: true })
-    profession_prob?: CharGenProbObject;
+    profession_prob?: ProbObject_Simple;
 
     @Column({ type: "jsonb", nullable: true })
-    race_prob?: CharGenProbObject;
+    race_prob?: ProbObject_Simple;
 
     @Column({ type: "jsonb", nullable: true })
-    religion_prob?: CharGenProbObject;
+    religion_prob?: ProbObject_Simple;
 
     @Column({ type: "jsonb", nullable: true })
-    personality_prob?: CharGenProbObject;
+    personality_prob?: ProbObject_Simple;
 
     @Column({ type: "jsonb", nullable: true })
-    item_set_prob?: CharGenProbObject;
+    item_set_prob?: ProbObject_Simple;
 
     @Column({ type: "jsonb", nullable: true })
-    past_exp_prob?: {
-        child: CharGenProbObject;
-        adult: CharGenProbObject;
-    };
+    past_exp_child_prob?: ProbObject_Simple
+    
+    @Column({ type: "jsonb", nullable: true })
+    past_exp_adult_prob?: ProbObject_Simple
 
     // Relationships
     @ManyToOne(() => User, { nullable: true })

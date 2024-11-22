@@ -22,14 +22,14 @@
                     "condition": "OR",
                     "items": [
                         {
-                            "item_blueprint_id": "IRON_SHORT_SWORD",
+                            "blueprint_id": "IRON_SHORT_SWORD",
                             "prob": 0.8,
                             "avg_quan": 1,
                             "st_dev": 0,
                             "skew": 0
                         },
                         {
-                            "item_blueprint_id": "STEEL_SHORT_SWORD",
+                            "blueprint_id": "STEEL_SHORT_SWORD",
                             "prob": 0.2,
                             "avg_quan": 1,
                             "st_dev": 0,
@@ -43,7 +43,7 @@
                     "condition": "AND",
                     "items": [
                         {
-                            "item_blueprint_id": "IRON_SHIELD",
+                            "blueprint_id": "IRON_SHIELD",
                             "prob": 1
                         }
                     ]
@@ -65,14 +65,14 @@
                     "condition": "OR",
                     "items": [
                         {
-                            "item_blueprint_id": "IRON_SHORT_SWORD",
+                            "blueprint_id": "IRON_SHORT_SWORD",
                             "prob": 0.8,
                             "avg_quan": 1,
                             "st_dev": 0,
                             "skew": 0
                         },
                         {
-                            "item_blueprint_id": "STEEL_SHORT_SWORD",
+                            "blueprint_id": "STEEL_SHORT_SWORD",
                             "prob": 0.2,
                             "avg_quan": 1,
                             "st_dev": 0,
@@ -97,17 +97,17 @@
                     "condition": "OR",
                     "items": [
                         {
-                            "item_blueprint_id": "SHORT_BOW",
+                            "blueprint_id": "SHORT_BOW",
                             "prob": 0.8
                         },
                         {
-                            "item_blueprint_id": "LONG_BOW",
+                            "blueprint_id": "LONG_BOW",
                             "prob": 0.2
                         }
                     ]
                 },
                 {
-                    "item_blueprint_id": "IRON_ARROW",
+                    "blueprint_id": "IRON_ARROW",
                     "avg_quan": 20,
                     "st_dev": 1
                 }

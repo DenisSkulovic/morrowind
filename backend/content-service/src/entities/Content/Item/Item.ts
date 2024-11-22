@@ -14,7 +14,7 @@ import { EquipmentSlot } from "../Slot/EquipmentSlot";
 @TableInheritance({ column: { type: "varchar", name: "type" } })
 export class Item extends TaggableContentBase {
     @PrimaryColumn()
-    id!: string;
+    id?: string;
     
     @BeforeInsert()
     generateId() {

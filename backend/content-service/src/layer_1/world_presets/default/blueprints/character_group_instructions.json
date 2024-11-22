@@ -1,0 +1,38 @@
+[
+    {
+        "blueprint_id": "SMALL_GROUP__HIGHLAND_TOWN_GUARDS",
+        "set": {
+            "name": "small_group__highland_town_guards",
+            "prob": 1,
+            "condition": "AND",
+            "items": [
+                {
+                    "blueprint_id": "GENERIC_HIGHLAND_GUARD",
+                    "prob": 1,
+                    "avg_quan": 5,
+                    "st_dev": 1,
+                    "skew": 0
+                }
+            ]
+        },
+        "targetEntity": "CharacterGroupGenInstruction"
+    },
+    {
+        "blueprint_id": "TWINS_CAIUS_COSSADES",
+        "set": {
+            "name": "twins_caius_cossades",
+            "prob": 1,
+            "condition": "AND",
+            "items": [
+                {
+                    "blueprint_id": "SPECIFIC_CAIUS_COSSADES",
+                    "prob": 1,
+                    "avg_quan": 2,
+                    "st_dev": 0,
+                    "skew": 0
+                }
+            ]
+        },
+        "targetEntity": "CharacterGroupGenInstruction"
+    }
+]

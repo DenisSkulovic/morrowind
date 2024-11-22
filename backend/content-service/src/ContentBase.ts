@@ -3,6 +3,8 @@ import { randomUUID } from "crypto";
 
 export abstract class ContentBase extends BaseEntity {
 
+    id?: string
+
     @Column({ type: "varchar", length: 255, nullable: true })
     blueprint_id!: string;
 
@@ -10,5 +12,7 @@ export abstract class ContentBase extends BaseEntity {
     @Column({ type: "json", nullable: true })
     metadata?: Record<string, any>;
 
-    targetEntity?: string
+    // TODO make an automatic assignment based on specific class name
+    @Column()
+    targetEntity!: string
 }

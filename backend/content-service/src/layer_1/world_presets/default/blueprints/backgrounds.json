@@ -3,39 +3,39 @@
         "blueprint_id": "BACKGROUND_HIGHLAND_TOWN_GUARD",
         "name": "Highland Town Guard",
         "faction_prob": {
-            "condition": "OR",
+            "cond": "OR",
             "prob": {
                 "HIGHLAND_KINGDOM": 1
             }
         },
         "disease_prob": {
-            "condition": "ANY",
+            "cond": "ANY",
             "prob": {
                 "COMMON_COLD": 0.1,
                 "PLAGUE": 0.05
             }
         },
         "addiction_prob": {
-            "condition": "ANY",
+            "cond": "ANY",
             "prob": {
                 "ALCOHOLISM": 0.1,
                 "DEVILS_LETTUCE": 0.05
             }
         },
         "profession_prob": {
-            "condition": "OR",
+            "cond": "OR",
             "prob": {
                 "TOWN_GUARD": 1
             }
         },
         "race_prob": {
-            "condition": "OR",
+            "cond": "OR",
             "prob": {
                 "HUMAN": 1
             }
         },
         "religion_prob": {
-            "condition": "OR",
+            "cond": "OR",
             "prob": {
                 "MONOTHEISTIC_FAITH": 0.8,
                 "ANCESTOR_WORSHIP": 0.1,
@@ -43,7 +43,7 @@
             }
         },
         "personality_prob": {
-            "condition": "OR",
+            "cond": "OR",
             "prob": {
                 "PROFILE_LOYALIST": 0.6,
                 "PROFILE_REFORMER": 0.3,
@@ -51,34 +51,56 @@
             }
         },
         "item_set_prob": {
-            "condition": "ANY",
+            "cond": "ANY",
             "prob": {
                 "SHORTSWORD_SHIELD": 1,
                 "COMMON_SHIRT_PANTS": 1,
                 "FULL_ARMOR": 1
             }
         },
-        "past_exp_prob": {
-            "child": {
-                "condition": "OR",
-                "prob": {
-                    "BLACKSMITH_APPRENTICE": 0.3,
-                    "FARM_CHILD": 0.4,
-                    "ORPHAN": 0.15,
-                    "BEGGAR_CHILD": 0.15
-                }
-            },
-            "adult": {
-                "condition": "OR",
-                "prob": {
-                    "RETIRED_SOLDIER": 0.3,
-                    "QUIET_TOWN_LIFE": 0.4,
-                    "WIDOW": 0.1,
-                    "FREED_SLAVE": 0.05,
-                    "RETIRED_ADVENTURER": 0.05
-                }
+        "items": [],
+        "past_exp_child_prob": {
+            "cond": "OR",
+            "prob": {
+                "BLACKSMITH_APPRENTICE": 0.3,
+                "FARM_CHILD": 0.4,
+                "ORPHAN": 0.15,
+                "BEGGAR_CHILD": 0.15
             }
-        }
+        },
+        "past_exp_adult_prob": {
+            "cond": "OR",
+            "prob": {
+                "RETIRED_SOLDIER": 0.3,
+                "QUIET_TOWN_LIFE": 0.4,
+                "WIDOW": 0.1,
+                "FREED_SLAVE": 0.05,
+                "RETIRED_ADVENTURER": 0.05
+            }
+        },
+        "skill_set_prob": {
+            "cond": "ANY",
+            "set": {
+                "name": "common_or_advanced_swordsman",
+                "prob": 1,
+                "condition": "OR",
+                "items": [
+                    {
+                        "blueprint_id": "COMBAT_COMMON_SWORDSMAN",
+                        "prob": 0.80
+                    },
+                    {
+                        "blueprint_id": "COMBAT_ADVANCED_SWORDSMAN",
+                        "prob": 0.18
+                    },
+                    {
+                        "blueprint_id": "COMBAT_MASTER_SWORDSMAN",
+                        "prob": 0.02
+                    }
+                ]
+            }
+        },
+        "skill_adjustments": {}
     },
     {
         "blueprint_id": "BACKGROUND_GUARD_RANGED",

@@ -7,7 +7,7 @@ import { World } from "../World";
 import { randomUUID } from "crypto";
 
 @Entity()
-export class ItemSet extends ContentBase {
+export class CharacterGroupGenInstruction extends ContentBase {
     @PrimaryColumn()
     id!: string;
     
@@ -16,7 +16,7 @@ export class ItemSet extends ContentBase {
         if (this.targetEntity) this.id = this.blueprint_id
         else this.id = `${this.id_prefix}_${randomUUID().replace(/-/g, "")}`;
     }
-    id_prefix = "ITEM_SET"
+    id_prefix = "CHARACTER_GROUP_GEN_INSTRUCTION"
     
     @Column({ type: "jsonb" })
     set!: BlueprintSetCombinator; // JSON structure for the set, stored as jsonb

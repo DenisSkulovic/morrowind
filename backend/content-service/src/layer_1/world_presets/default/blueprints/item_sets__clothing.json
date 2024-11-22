@@ -22,7 +22,7 @@
                     "condition": "AND",
                     "items": [
                         {
-                            "item_blueprint_id": "COMMON_SHIRT"
+                            "blueprint_id": "COMMON_SHIRT"
                         }
                     ]
                 },
@@ -32,7 +32,7 @@
                     "condition": "AND",
                     "items": [
                         {
-                            "item_blueprint_id": "COMMON_PANTS"
+                            "blueprint_id": "COMMON_PANTS"
                         }
                     ]
                 }
@@ -53,7 +53,7 @@
                     "condition": "AND",
                     "items": [
                         {
-                            "item_blueprint_id": "COMMON_SHIRT"
+                            "blueprint_id": "COMMON_SHIRT"
                         }
                     ]
                 },
@@ -63,7 +63,7 @@
                     "condition": "AND",
                     "items": [
                         {
-                            "item_blueprint_id": "COMMON_PANTS"
+                            "blueprint_id": "COMMON_PANTS"
                         }
                     ]
                 },
@@ -73,7 +73,7 @@
                     "condition": "AND",
                     "items": [
                         {
-                            "item_blueprint_id": "COMMON_SHOES"
+                            "blueprint_id": "COMMON_SHOES"
                         }
                     ]
                 }
@@ -94,7 +94,7 @@
                     "condition": "AND",
                     "items": [
                         {
-                            "item_blueprint_id": "COMMON_HAT"
+                            "blueprint_id": "COMMON_HAT"
                         }
                     ]
                 },
@@ -104,7 +104,7 @@
                     "condition": "AND",
                     "items": [
                         {
-                            "item_blueprint_id": "COMMON_SHIRT"
+                            "blueprint_id": "COMMON_SHIRT"
                         }
                     ]
                 },
@@ -114,7 +114,7 @@
                     "condition": "AND",
                     "items": [
                         {
-                            "item_blueprint_id": "COMMON_PANTS"
+                            "blueprint_id": "COMMON_PANTS"
                         }
                     ]
                 },
@@ -124,7 +124,7 @@
                     "condition": "AND",
                     "items": [
                         {
-                            "item_blueprint_id": "COMMON_SHOES"
+                            "blueprint_id": "COMMON_SHOES"
                         }
                     ]
                 }
@@ -145,11 +145,11 @@
                     "condition": "OR",
                     "items": [
                         {
-                            "item_blueprint_id": "IRON_CUIRASS",
+                            "blueprint_id": "IRON_CUIRASS",
                             "prob": 0.8
                         },
                         {
-                            "item_blueprint_id": "STEEL_CUIRASS",
+                            "blueprint_id": "STEEL_CUIRASS",
                             "prob": 0.2
                         }
                     ]
@@ -160,11 +160,11 @@
                     "condition": "OR",
                     "items": [
                         {
-                            "item_blueprint_id": "IRON_HELMET",
+                            "blueprint_id": "IRON_HELMET",
                             "prob": 0.8
                         },
                         {
-                            "item_blueprint_id": "STEEL_HELMET",
+                            "blueprint_id": "STEEL_HELMET",
                             "prob": 0.2
                         }
                     ]
@@ -175,11 +175,11 @@
                     "condition": "OR",
                     "items": [
                         {
-                            "item_blueprint_id": "IRON_GREAVES",
+                            "blueprint_id": "IRON_GREAVES",
                             "prob": 0.8
                         },
                         {
-                            "item_blueprint_id": "STEEL_GREAVES",
+                            "blueprint_id": "STEEL_GREAVES",
                             "prob": 0.2
                         }
                     ]
@@ -190,11 +190,11 @@
                     "condition": "OR",
                     "items": [
                         {
-                            "item_blueprint_id": "IRON_BOOTS",
+                            "blueprint_id": "IRON_BOOTS",
                             "prob": 0.8
                         },
                         {
-                            "item_blueprint_id": "STEEL_BOOTS",
+                            "blueprint_id": "STEEL_BOOTS",
                             "prob": 0.2
                         }
                     ]
@@ -216,11 +216,11 @@
                     "condition": "OR",
                     "items": [
                         {
-                            "item_blueprint_id": "IRON_CUIRASS",
+                            "blueprint_id": "IRON_CUIRASS",
                             "prob": 0.8
                         },
                         {
-                            "item_blueprint_id": "STEEL_CUIRASS",
+                            "blueprint_id": "STEEL_CUIRASS",
                             "prob": 0.2
                         }
                     ]
@@ -231,11 +231,11 @@
                     "condition": "OR",
                     "items": [
                         {
-                            "item_blueprint_id": "IRON_HELMET",
+                            "blueprint_id": "IRON_HELMET",
                             "prob": 0.8
                         },
                         {
-                            "item_blueprint_id": "STEEL_HELMET",
+                            "blueprint_id": "STEEL_HELMET",
                             "prob": 0.2
                         }
                     ]
@@ -257,11 +257,11 @@
                     "condition": "OR",
                     "items": [
                         {
-                            "item_blueprint_id": "IRON_CUIRASS",
+                            "blueprint_id": "IRON_CUIRASS",
                             "prob": 0.8
                         },
                         {
-                            "item_blueprint_id": "STEEL_CUIRASS",
+                            "blueprint_id": "STEEL_CUIRASS",
                             "prob": 0.2
                         }
                     ]
@@ -283,17 +283,17 @@
                     "condition": "OR",
                     "items": [
                         {
-                            "item_blueprint_id": "SHORT_BOW",
+                            "blueprint_id": "SHORT_BOW",
                             "prob": 0.8
                         },
                         {
-                            "item_blueprint_id": "LONG_BOW",
+                            "blueprint_id": "LONG_BOW",
                             "prob": 0.2
                         }
                     ]
                 },
                 {
-                    "item_blueprint_id": "IRON_ARROW",
+                    "blueprint_id": "IRON_ARROW",
                     "avg_quan": 25,
                     "st_dev": 1
                 }

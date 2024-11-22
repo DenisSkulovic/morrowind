@@ -4,7 +4,8 @@ import { Campaign } from "../Campaign";
 import { User } from "../User";
 import { World } from "../World";
 import { randomUUID } from "crypto";
-import { CharGenProbMap, CharGenProbObject } from "../../layer_2_and_3/generator/CharacterGenerator";
+import { ProbObject_Simple } from "../../layer_1/types";
+
 
 @Entity()
 export class PersonalityProfile extends ContentBase {
@@ -25,7 +26,7 @@ export class PersonalityProfile extends ContentBase {
     enneagramType!: string; // Enneagram type with wing as a string.
 
     @Column("jsonb")
-    traits!: CharGenProbObject;
+    traits!: ProbObject_Simple;
 
     @ManyToOne(() => User, { nullable: true })
     user!: User;

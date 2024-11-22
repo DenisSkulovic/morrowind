@@ -1,0 +1,53 @@
+[
+    {
+        "blueprint_id": "GENERIC_HIGHLAND_GUARD",
+        "background_blueprint_id": "BACKGROUND_HIGHLAND_TOWN_GUARD",
+        "targetEntity": "CharacterGenInstruction"
+    },
+    {
+        "blueprint_id": "SPECIFIC_CAIUS_COSSADES",
+        "first_name": "Caius",
+        "last_name": "Cossades",
+        "gender": "MALE",
+        "birthsign": "TOWER",
+        "birthEra": "3E",
+        "birthYear": 427,
+        "birthMonth": "Last Seed",
+        "birthDay": 17,
+        "background_blueprint_id": "BACKGROUND_HIGHLAND_TOWN_GUARD",
+        "race": "HUMAN",
+        "factions": [
+            "HIGHLAND_KINGDOM"
+        ],
+        "diseases": [
+            "PLAGUE"
+        ],
+        "addictions": [
+            "ALCOHOLISM"
+        ],
+        "professions": [
+            "TOWN_GUARD"
+        ],
+        "religion": "ANCESTOR_WORSHIP",
+        "item_sets": [
+            "COMMON_SHIRT_PANTS"
+        ],
+        "items": [],
+        "past_exp_child": [
+            "FARM_CHILD"
+        ],
+        "past_exp_adult": [
+            "RETIRED_SOLDIER",
+            "QUIET_TOWN_LIFE"
+        ],
+        "skill_sets": [
+            "COMBAT_MASTER_SWORDSMAN"
+        ],
+        "skill_adjustments": {
+            "MERCHANTILE": 10,
+            "SPEECHCRAFT": -20
+        },
+        "personality": "PROFILE_CHALLENGER",
+        "targetEntity": "CharacterGenInstruction"
+    }
+]

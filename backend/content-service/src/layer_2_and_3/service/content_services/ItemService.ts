@@ -1,12 +1,10 @@
 import { DataSource, EntityManager, Repository } from "typeorm";
 import { DataSourceEnum } from "../../../enum/DataSourceEnum";
 import { RepositoryServiceBase, RepositoryServiceSettings } from "../RepositoryServiceBase";
-import { WorldDataSource } from "../../../data-source";
 import { Item } from "../../../entities/Content/Item/Item";
-import { ItemSet } from "../../../entities/Content/ItemSet";
 import { ItemGenerator } from "../../generator/ItemGenerator";
-import { ItemGenInstruction, ItemSetInstruction } from "../../../layer_1/types";
-import { ItemSetGenerator } from "../../generator/ItemSetGenerator";
+import { BlueprintGenInstruction_Gaussian, BlueprintSetInstruction } from "../../../layer_1/types";
+import { BlueprintSetProcessor } from "../BlueprintSetProcessor";
 
 export class ItemService extends RepositoryServiceBase {
     constructor(settings: RepositoryServiceSettings) {
@@ -17,17 +15,24 @@ export class ItemService extends RepositoryServiceBase {
         return this.getRepository("Item", source) as Repository<Item>
     }
 
-    public async createItems(instructions: ItemGenInstruction[], source: DataSourceEnum): Promise<Item[]> {
-        const items = instructions.map((instruction) => ItemGenerator.generateItem(instruction))
+    public async createItems(instructions: BlueprintGenInstruction_Gaussian[], source: DataSourceEnum): Promise<Item[]> {
+        const dataSource = this.settings.sourcesMap.get(source)
+        if (!dataSource) throw new Error("dataSource cannot be undefined")
+        const itemGenerator = new ItemGenerator(dataSource)
+        const items: Item[] = await itemGenerator.generateMany_probGaussian(instructions)
         const itemRepo = this._getItemRepo(source)
         const res: Item[] = await itemRepo.save(items)
         return res
     }
 
-    public async createItemsFromSet(setInstructions: ItemSetInstruction[], source: DataSourceEnum): Promise<Item[]> {
-        const items = setInstructions.map(setInstruction => ItemSetGenerator.generateItemsFromSet(setInstruction)).flat()
+    public async createItemsFromSet(sets: BlueprintSetInstruction[], source: DataSourceEnum): Promise<Item[]> {
+        const dataSource = this.settings.sourcesMap.get(source)
+        if (!dataSource) throw new Error("dataSource cannot be undefined")
+        const itemGenerator = new ItemGenerator(dataSource)
+        const instructions: BlueprintGenInstruction_Gaussian[] = sets.map((set) => BlueprintSetProcessor.getInstructionsFromSet(set)).flat()
+        const items: Item[] = await itemGenerator.generateMany_probGaussian(instructions)
         const itemRepo = this._getItemRepo(source)
-        const res: Item[] = await itemRepo.save(items)
+        await itemRepo.save(items)
         return items
     }
 
