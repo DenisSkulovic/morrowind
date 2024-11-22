@@ -1,8 +1,6 @@
-import { BaseEntity, DataSource, In, Repository } from "typeorm";
-import { sourcesMap } from "../../data-source";
+import { DataSource } from "typeorm";
 import { Character } from "../../entities/Content/Character";
 import { Background } from "../../entities/Content/Background";
-import { DataSourceEnum } from "../../enum/DataSourceEnum";
 import { Faction } from "../../entities/Content/Faction";
 import { cloneDeep } from "lodash"
 import { Disease } from "../../entities/Content/Disease";
@@ -18,12 +16,12 @@ import { StorageSlot } from "../../entities/Content/Slot/StorageSlot";
 import { EquipmentSlot } from "../../entities/Content/Slot/EquipmentSlot";
 import { EquipmentSlotService } from "../service/EquipmentSlotService";
 import { StorageSlotService } from "../service/StorageSlotService";
-import { ItemSet } from "../../entities/Content/ItemSet";
-import { PastExperience } from "../../entities/Content/Knowledge/PastExperience/PastExperience";
-import { ProbObject_Simple, BlueprintGenInstruction_Gaussian } from "../../layer_1/types";
+import { ProbObject_Simple } from "../../layer_1/types";
 import { AbstractProbGenerator, IdAndQuant } from "./AbstractProbGenerator";
 import { CharacterGenInstruction } from "../../entities/Content/CharacterGenInstruction";
 import { CharacterGroupGenInstruction } from "../../entities/Content/CharacterGroupGenInstruction";
+import { PastExperienceChild } from "../../entities/Content/Knowledge/PastExperience/PastExperienceChild";
+import { PastExperienceAdult } from "../../entities/Content/Knowledge/PastExperience/PastExperienceAdult";
 
 
 // TODO I need to conceptualize how I will deal with modifiers
@@ -36,11 +34,7 @@ import { CharacterGroupGenInstruction } from "../../entities/Content/CharacterGr
 
 
 
-export type BlueprintsCache = {
-    [field: string]: {
-        [key: string]: any
-    }
-}
+
 
 export class CharacterGenerator extends AbstractProbGenerator<Character> {
     context: Context
@@ -59,11 +53,11 @@ export class CharacterGenerator extends AbstractProbGenerator<Character> {
 
     // Implementation of an abstract method. After this, you can generate the same instruction
     // in many ways (simple or gaussian probabilities) using methods on the parent abstract class.
-    public async generateOne(
-        blueprint_id: string,
-    ): Promise<Character> {
+    public async generateOne(idAndQuant: IdAndQuant): Promise<Character> {
+        // TODO ignore quantity - doesn make sense for characters. quantity is used for items; probably a use case for overloads to allow both a string and idAndQuant
+        const blueprint_id = idAndQuant.blueprint_id
 
-        const extractedCharacterGenInstructions: (CharacterGenInstruction | null)[] = await this._getBlueprints_cacheOrRequest("character", CharacterGenInstruction, [blueprint_id])
+        const extractedCharacterGenInstructions: (CharacterGenInstruction | null)[] = await this._getBlueprints_cacheOrRequest("characterInstruction", CharacterGenInstruction, [blueprint_id])
         const instruction: CharacterGenInstruction | null = extractedCharacterGenInstructions[0]
         if (!instruction) throw new Error(`character generation instruction not found; did you forget to set it into the `)
 
@@ -88,8 +82,8 @@ export class CharacterGenerator extends AbstractProbGenerator<Character> {
             this._extractGenericBlueprints("profession", CharacterProfession, backgroundClone.profession_prob),
             this._extractGenericBlueprints("memoryPool", MemoryPool, backgroundClone.memory_pools_prob),
             this._extractPersonalityBlueprints(backgroundClone.personality_prob),
-            this._extractGenericBlueprints("past_exp", PastExperience, backgroundClone.past_exp_child_prob),
-            this._extractGenericBlueprints("past_exp", PastExperience, backgroundClone.past_exp_adult_prob),
+            this._extractGenericBlueprints("past_exp_child", PastExperienceChild, backgroundClone.past_exp_child_prob),
+            this._extractGenericBlueprints("past_exp_adult", PastExperienceAdult, backgroundClone.past_exp_adult_prob),
         ])
 
         // Create character entity
@@ -117,6 +111,8 @@ export class CharacterGenerator extends AbstractProbGenerator<Character> {
             world: this.context.world,
             campaign: this.context.campaign
         })[0];
+
+
 
         // DEALING WITH ITEMS AND SLOTS
         // assign equipment slots according to character race

@@ -23,9 +23,6 @@ export class Item extends TaggableContentBase {
     }
     id_prefix = "ITEM";
 
-    @Column({ default: null, nullable: true })
-    instance_id!: string;
-
     @Column({ default: "PLACEHOLDER" })
     name!: string; // Item name, e.g., "Iron Short Sword".
     @Column({ nullable: true })

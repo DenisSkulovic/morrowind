@@ -1,8 +1,8 @@
 import { Repository } from "typeorm";
-import { Tag } from "../../../entities/Content/Tag";
-import { DataSourceEnum } from "../../../enum/DataSourceEnum";
-import { RepositoryServiceBase, RepositoryServiceSettings } from "../RepositoryServiceBase";
-import { TaggableContentBase } from "../../../TaggableContentBase";
+import { Tag } from "../../entities/Content/Tag";
+import { DataSourceEnum } from "../../enum/DataSourceEnum";
+import { RepositoryServiceBase, RepositoryServiceSettings } from "./RepositoryServiceBase";
+import { TaggableContentBase } from "../../TaggableContentBase";
 
 
 

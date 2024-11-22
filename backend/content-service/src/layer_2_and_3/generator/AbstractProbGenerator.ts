@@ -1,11 +1,16 @@
 import { BlueprintGenInstruction_Gaussian, BlueprintGenInstruction_Simple, ProbObject_Simple } from "../../layer_1/types";
 import { randomUUID } from "crypto";
 import { ContentBase } from "../../ContentBase";
-import { BlueprintsCache } from "./CharacterGenerator";
 import { DataSource, Repository } from "typeorm";
 import { EntityConstructor } from "../../types";
 
 export type IdAndQuant = { blueprint_id: string, quantity: number }
+
+export type BlueprintsCache = {
+    [field: string]: {
+        [key: string]: any
+    }
+}
 
 export abstract class AbstractProbGenerator<T extends ContentBase> {
 
@@ -22,7 +27,7 @@ export abstract class AbstractProbGenerator<T extends ContentBase> {
 
     // The implementation should use "_getBlueprints_cacheOrRequest" for db data handling,
     // or if the gen instruction is completely custom (not in db), then use "cacheBlueprint" before calling "generateOne"
-    abstract generateOne(blueprintId: string): Promise<T>
+    abstract generateOne(idAndQuant: IdAndQuant): Promise<T>
 
 
 
@@ -38,7 +43,7 @@ export abstract class AbstractProbGenerator<T extends ContentBase> {
         const res: T[] = []
         for (const id_and_quant of ids_and_quant) {
             for (let i = 0; i < id_and_quant.quantity; i++) {
-                const item = await this.generateOne(id_and_quant.blueprint_id)
+                const item = await this.generateOne(id_and_quant)
                 res.push(item)
             }
         }
@@ -141,11 +146,6 @@ export abstract class AbstractProbGenerator<T extends ContentBase> {
         const z = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
         return z * stDev + skew;
     }
-
-    protected _createInstanceId(blueprintId: string) {
-        return `${blueprintId}_${randomUUID().replace(/-/g, "")}`
-    }
-
 
     protected async _getBlueprints_cacheOrRequest<E extends ContentBase>(
         type: string,

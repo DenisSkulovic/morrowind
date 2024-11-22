@@ -3,17 +3,15 @@
 
 
 import { Item } from "../../entities/Content/Item/Item";
-import { AbstractProbGenerator } from "./AbstractProbGenerator";
+import { AbstractProbGenerator, IdAndQuant } from "./AbstractProbGenerator";
 import { cloneDeep } from "lodash";
 
 export class ItemGenerator extends AbstractProbGenerator<Item> {
 
-    public async generateOne(
-        blueprintId: string
-    ): Promise<Item> {
-        const cacheExtract: (Item | null)[] = await this._getBlueprints_cacheOrRequest("item", Item, [blueprintId])
+    public async generateOne(idAndQuant: IdAndQuant): Promise<Item> {
+        const cacheExtract: (Item | null)[] = await this._getBlueprints_cacheOrRequest("item", Item, [idAndQuant.blueprint_id])
         const extractedBlueprint: Item | null = cacheExtract[0]
-        if (!extractedBlueprint) throw new Error(`could not find Item blueprint for id: "${blueprintId}"`)
+        if (!extractedBlueprint) throw new Error(`could not find Item blueprint for id: "${idAndQuant.blueprint_id}"`)
 
         // create clone for safety
         const blueprint: Item = cloneDeep(extractedBlueprint)
@@ -21,11 +19,12 @@ export class ItemGenerator extends AbstractProbGenerator<Item> {
         // make sure TypeORM creates a new entry
         delete blueprint.id
 
-        // create an instance with identical params to blueprint; assign instance id
-        const instance: Item = Item.create({
-            ...blueprint,
-        });
-        instance.instance_id = this._createInstanceId(blueprintId)
+        // create an instance with identical params to blueprint
+        const instance: Item = Item.create({ ...blueprint });
+
+        // assign quantity for stackables
+        if (!instance.stackable && instance.quantity > 1) throw new Error(`received generation request with quantity > 1, but entity is not stackable; use "generateMany" and other appropriate methods for non-stackables`)
+        if (instance.stackable) instance.quantity = idAndQuant.quantity
 
         // TODO assign storage slots, if any
 
