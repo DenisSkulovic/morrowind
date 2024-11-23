@@ -4,6 +4,9 @@
         "name": "Fishing Rod",
         "description": "A basic wooden fishing rod with a simple reel and line.",
         "weight": 4,
+        "size": [1, 5],
+        "stackable": true,
+        "maxQuantity": 3,
         "base_value": 5,
         "use": "Fishing",
         "durability": 20,
@@ -14,6 +17,9 @@
         "name": "Coin(s)",
         "description": "A small gold coin commonly used as currency.",
         "weight": 0.02,
+        "size": [1, 1],
+        "stackable": true,
+        "maxQuantity": 64,
         "base_value": 1,
         "targetEntity": "ItemMiscCurrency"
     }

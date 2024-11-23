@@ -27,7 +27,7 @@ export class StorageSlot extends ContentBase {
     name!: string
 
     @Column({ nullable: true })
-    grid!: { width: number; height: number }; // Grid configuration for storage slots
+    grid!: [number, number]; // Grid configuration for storage slots
 
     @Column("json", { default: [] })
     gridState!: StorageGrid; // 2D array representing the grid's current state

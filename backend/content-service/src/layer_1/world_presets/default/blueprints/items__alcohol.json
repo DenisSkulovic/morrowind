@@ -4,6 +4,9 @@
         "name": "Beer",
         "description": "A potent local liquor brewed from fermented grains.",
         "weight": 1,
+        "size": [1, 1],
+        "stackable": true,
+        "maxQuantity": 6,
         "base_value": 8,
         "targetEntity": "ItemAlcohol"
     }

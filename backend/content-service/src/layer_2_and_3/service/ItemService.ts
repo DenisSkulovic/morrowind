@@ -3,9 +3,9 @@ import { DataSourceEnum } from "../../enum/DataSourceEnum";
 import { RepositoryServiceBase, RepositoryServiceSettings } from "./RepositoryServiceBase";
 import { Item } from "../../entities/Content/Item/Item";
 import { ItemGenerator } from "../generator/ItemGenerator";
-import { BlueprintGenInstruction_Gaussian, BlueprintSetInstruction } from "../../layer_1/types";
+import {  BlueprintSetInstruction } from "../../layer_1/types";
 import { BlueprintSetProcessor } from "./BlueprintSetProcessor";
-import { IdAndQuant } from "../generator/AbstractProbGenerator";
+import { IdAndQuant, BlueprintGenInstruction_Gaussian } from "../../class/blueprint_id_and_prob";
 
 export class ItemService extends RepositoryServiceBase {
     constructor(settings: RepositoryServiceSettings) {
@@ -49,17 +49,49 @@ export class ItemService extends RepositoryServiceBase {
         return await itemRepo.save(items)
     }
 
-    public async mergeTwoItems<T extends Item>(item1: T, item2: T, source: DataSourceEnum): Promise<T> {
-        if (!item1.stackable || !item2.stackable) throw new Error("Items are not stackable and cannot be merged.");
-        if (item1.blueprint_id !== item2.blueprint_id) throw new Error("Items must have the same blueprint ID to be merged.");
-
-        const dataSource: DataSource | undefined = this.settings.sourcesMap.get(source)
-        if (!dataSource) throw new Error(`failed to find data source for "${source}"`)
+    public async balanceStackableItems<T extends Item>(items: T[], source: DataSourceEnum): Promise<T[]> {
+        if (items.length === 0) throw new Error("No items provided for balancing.");
+    
+        const blueprintId = items[0].blueprint_id;
+        if (!items.every(item => item.stackable && item.blueprint_id === blueprintId)) {
+            throw new Error("All items must be stackable and have the same blueprint ID.");
+        }
+    
+        const maxQuantity = items[0].maxQuantity;
+        if (!maxQuantity) throw new Error("Item does not define a maxQuantity.");
+    
+        const dataSource: DataSource | undefined = this.settings.sourcesMap.get(source);
+        if (!dataSource) throw new Error(`Failed to find data source for "${source}"`);
+    
         return await dataSource.transaction(async (transactionManager: EntityManager) => {
-            item1.quantity += item2.quantity;
-            const mergedItem = await transactionManager.save(item1);
-            await transactionManager.remove(item2);
-            return mergedItem;
+            const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
+    
+            const fullStacks = Math.floor(totalQuantity / maxQuantity);
+            const remainder = totalQuantity % maxQuantity;
+    
+            const balancedItems: T[] = [];
+    
+            // Create full stacks
+            for (let i = 0; i < fullStacks; i++) {
+                const newItem = items[0]; // Clone the first item to create a new instance
+                newItem.quantity = maxQuantity;
+                balancedItems.push(await transactionManager.save(newItem));
+            }
+    
+            // Handle the remainder
+            if (remainder > 0) {
+                const newItem = items[0]; // Clone the first item to create a new instance
+                newItem.quantity = remainder;
+                balancedItems.push(await transactionManager.save(newItem));
+            }
+    
+            // Remove old items
+            for (const item of items) {
+                await transactionManager.remove(item);
+            }
+    
+            return balancedItems;
         });
     }
+
 }

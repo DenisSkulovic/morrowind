@@ -15,4 +15,7 @@ export abstract class ContentBase extends BaseEntity {
     // TODO make an automatic assignment based on specific class name
     @Column()
     targetEntity!: string
+
+    stackable = false
+    maxQuantity = 1
 }

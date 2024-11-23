@@ -1,13 +1,19 @@
 import { BlueprintSetCombinator, BlueprintGenInstruction_Gaussian, BlueprintSetInstruction } from "../../layer_1/types";
-import { Item } from "../../entities/Content/Item/Item";
 
 export class BlueprintSetProcessor {
+    // ###########################
+    // PUBLIC
+    // ###########################
 
     public static getInstructionsFromSet(BlueprintSetInstruction: BlueprintSetInstruction): BlueprintGenInstruction_Gaussian[] {
         if (!BlueprintSetInstruction || !BlueprintSetInstruction.set || !Array.isArray(BlueprintSetInstruction.set.items)) return [];
 
         return this._processCombinator(BlueprintSetInstruction.set);
     }
+
+    // ###########################
+    // PRIVATE
+    // ###########################
 
     private static _processCombinator(combinator: BlueprintSetCombinator): BlueprintGenInstruction_Gaussian[] {
         const instructions: BlueprintGenInstruction_Gaussian[] = [];

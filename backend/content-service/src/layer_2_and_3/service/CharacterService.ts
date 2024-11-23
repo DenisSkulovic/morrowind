@@ -10,26 +10,39 @@ export class CharacterService extends RepositoryServiceBase {
         super(settings)
     }
 
-    protected _getCharacterRepo(source: DataSourceEnum): Repository<Character> {
-        return this.getRepository("Character", source) as Repository<Character>
-    }
+    // ###########################
+    // PUBLIC
+    // ###########################
 
-    public async saveCharacter(character: Character, source: DataSourceEnum): Promise<Character> {
+    public async saveCharacter(character: Character, source: DataSourceEnum): Promise<Character[]>;
+    public async saveCharacter(characters: Character[], source: DataSourceEnum): Promise<Character[]>;
+    public async saveCharacter(character_s: Character | Character[], source: DataSourceEnum): Promise<Character[]> {
         const repository: Repository<Character> = this._getCharacterRepo(source)
-        return await repository.save(character);
+        let arr: Character[]
+        if (Array.isArray(character_s)) arr = character_s
+        else arr = [character_s]
+        return await repository.save(arr);
     }
 
-    public async createCharacter(instruction_id: string, source: DataSourceEnum): Promise<Character>;
-    public async createCharacter(instruction: CharacterGenInstruction, source: DataSourceEnum): Promise<Character>;
-    public async createCharacter(arg1: string | CharacterGenInstruction, source: DataSourceEnum): Promise<Character> {
+    public async createCharacter(instruction_id: string, source: DataSourceEnum): Promise<Character[]>;
+    public async createCharacter(instruction: CharacterGenInstruction, source: DataSourceEnum): Promise<Character[]>;
+    public async createCharacter(arg1: string | CharacterGenInstruction, source: DataSourceEnum): Promise<Character[]> {
         const characterGenerator = new CharacterGenerator(context, dataSource)
         let character: Character
         if (typeof arg1 === "string") {
-            character = await characterGenerator.generateOne({"blueprint_id": arg1})
-        }else {
+            character = await characterGenerator.generateOne({ "blueprint_id": arg1 })
+        } else {
             characterGenerator.cacheBlueprint("characterInstruction", arg1.id, arg1)
-            character = await characterGenerator.generateOne({"blueprint_id": arg1.id})
+            character = await characterGenerator.generateOne({ "blueprint_id": arg1.id })
         }
         return await this.saveCharacter(character, source)
+    }
+
+    // ###########################
+    // PROTECTED
+    // ###########################
+
+    protected _getCharacterRepo(source: DataSourceEnum): Repository<Character> {
+        return this.getRepository("Character", source) as Repository<Character>
     }
 }

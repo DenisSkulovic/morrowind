@@ -4,6 +4,7 @@
         "name": "Common Hat",
         "description": "A simple hat.",
         "weight": 1,
+        "size": [1, 2],
         "base_value": 2,
         "stealth_disadvantage": false,
         "targetEntity": "ItemWearableHead"
@@ -13,6 +14,9 @@
         "name": "Common Shirt",
         "description": "A simple shirt.",
         "weight": 1,
+        "size": [1, 2],
+        "stackable": true,
+        "maxQuantity": 6,
         "base_value": 2,
         "stealth_disadvantage": false,
         "targetEntity": "ItemWearableClothesTorso"
@@ -22,23 +26,20 @@
         "name": "Common Pants",
         "description": "Simple pants.",
         "weight": 1,
+        "size": [1, 2],
+        "stackable": true,
+        "maxQuantity": 4,
         "base_value": 2,
         "stealth_disadvantage": false,
         "storageSlots": [
             {
                 "name": "Left Pocket",
-                "grid": {
-                    "width": 3,
-                    "height": 5
-                },
+                "grid": [3, 5],
                 "maxWeight": 10
             },
             {
                 "name": "Right Pocket",
-                "grid": {
-                    "width": 3,
-                    "height": 5
-                },
+                "grid": [3, 5],
                 "maxWeight": 10
             }
         ],
@@ -49,6 +50,7 @@
         "name": "Common Shoes",
         "description": "Simple shoes.",
         "weight": 1,
+        "size": [1, 2],
         "base_value": 2,
         "stealth_disadvantage": false,
         "targetEntity": "ItemWearableFeet"
@@ -58,6 +60,7 @@
         "name": "Iron Greaves",
         "description": "Sturdy greaves made from iron plates.",
         "weight": 15,
+        "size": [2, 3],
         "base_value": 35,
         "protection": 8,
         "stealth_disadvantage": true,
@@ -77,6 +80,7 @@
         "name": "Steel Greaves",
         "description": "Sturdy greaves made from steel plates.",
         "weight": 12,
+        "size": [2, 3],
         "base_value": 70,
         "protection": 11,
         "stealth_disadvantage": true,
@@ -96,6 +100,7 @@
         "name": "Iron Cuirass",
         "description": "A sturdy cuirass made from iron plates.",
         "weight": 25,
+        "size": [3, 5],
         "base_value": 50,
         "protection": 12,
         "stealth_disadvantage": true,
@@ -115,6 +120,7 @@
         "name": "Steel Cuirass",
         "description": "A well-forged steel cuirass offering better protection.",
         "weight": 20,
+        "size": [3, 5],
         "base_value": 100,
         "protection": 15,
         "stealth_disadvantage": true,
@@ -134,6 +140,7 @@
         "name": "Iron Helmet",
         "description": "A basic iron helmet offering minimal protection.",
         "weight": 5,
+        "size": [2, 2],
         "base_value": 10,
         "protection": 2,
         "trained_skill": "HEAVY_ARMOR",
@@ -152,6 +159,7 @@
         "name": "Steel Helmet",
         "description": "A durable steel helmet providing decent protection.",
         "weight": 4,
+        "size": [2, 2],
         "base_value": 25,
         "protection": 3,
         "trained_skill": "HEAVY_ARMOR",
@@ -170,6 +178,7 @@
         "name": "Iron Boots",
         "description": "Basic iron boots offering minimal protection.",
         "weight": 6,
+        "size": [2, 3],
         "base_value": 15,
         "protection": 3,
         "trained_skill": "HEAVY_ARMOR",
@@ -188,6 +197,7 @@
         "name": "Steel BOOTS",
         "description": "A durable steel helmet providing decent protection.",
         "weight": 5,
+        "size": [2, 3],
         "base_value": 35,
         "protection": 4,
         "trained_skill": "HEAVY_ARMOR",
@@ -207,6 +217,7 @@
         "name": "Iron Shield",
         "description": "Basic iron shield offering minimal protection.",
         "weight": 12,
+        "size": [5, 5],
         "base_value": 70,
         "protection": 50,
         "trained_skill": "HEAVY_ARMOR",
@@ -225,6 +236,7 @@
         "name": "Steel Shield",
         "description": "A durable steel shield providing decent protection.",
         "weight": 10,
+        "size": [5, 5],
         "base_value": 140,
         "protection": 60,
         "trained_skill": "HEAVY_ARMOR",
@@ -244,22 +256,17 @@
         "name": "Small Backpack",
         "description": "A simple small backpack that can store some items",
         "weight": 2,
+        "size": [2, 1],
         "base_value": 100,
         "storageSlots": [
             {
                 "name": "Main Section",
-                "grid": {
-                    "width": 10,
-                    "height": 10
-                },
+                "grid": [10, 10],
                 "maxWeight": 50
             },
             {
                 "name": "Smaller Section",
-                "grid": {
-                    "width": 10,
-                    "height": 5
-                },
+                "grid": [10, 5],
                 "maxWeight": 20
             }
         ],
@@ -271,38 +278,27 @@
         "name": "Large Backpack",
         "description": "A large backpack that can store many items",
         "weight": 4,
+        "size": [3, 1],
         "base_value": 200,
         "storageSlots": [
             {
                 "name": "Main Section",
-                "grid": {
-                    "width": 12,
-                    "height": 15
-                },
+                "grid": [12, 15],
                 "maxWeight": 100
             },
             {
                 "name": "Smaller Section",
-                "grid": {
-                    "width": 12,
-                    "height": 12
-                },
+                "grid": [12, 12],
                 "maxWeight": 60
             },
             {
                 "name": "Left Pocket",
-                "grid": {
-                    "width": 3,
-                    "height": 5
-                },
+                "grid": [3, 5],
                 "maxWeight": 10
             },
             {
                 "name": "Right Pocket",
-                "grid": {
-                    "width": 3,
-                    "height": 5
-                },
+                "grid": [3, 5],
                 "maxWeight": 10
             }
         ],

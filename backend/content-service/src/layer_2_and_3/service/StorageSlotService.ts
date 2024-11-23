@@ -12,7 +12,7 @@ export class StorageSlotService {
     ): boolean {
 
 
-        const { width, height } = item.size!;
+        const [ width, height ] = item.size!;
         const { x, y } = grid_position;
 
         // Check bounds
@@ -29,7 +29,7 @@ export class StorageSlotService {
     }
 
     private static _placeItemIntoGrid(grid: StorageGrid, item: Item, grid_position: { x: number; y: number }): void {
-        const { width, height } = item.size!;
+        const [ width, height ] = item.size!;
         const { x, y } = grid_position;
 
         for (let i = x; i < x + width; i++) {
@@ -43,7 +43,7 @@ export class StorageSlotService {
 
     private static _removeItemFromGrid(grid: StorageGrid, item: Item): void {
         const { x, y } = item.grid_position!;
-        const { width, height } = item.size!;
+        const [ width, height ] = item.size!;
 
         for (let i = x; i < x + width; i++) {
             for (let j = y; j < y + height; j++) {
@@ -97,7 +97,7 @@ export class StorageSlotService {
         }
 
         // Sort items by size (largest first)
-        items.sort((a, b) => (b.size!.width * b.size!.height) - (a.size!.width * a.size!.height));
+        items.sort((a, b) => (b.size![0] * b.size![1]) - (a.size![0] * a.size![1]));
 
         // Place items
         items.forEach((item) => {
@@ -166,13 +166,13 @@ export class StorageSlotService {
     ): { placedItems: Item[]; unplacedItems: Item[] } {
         // Sort items by size (largest first), then by weight
         items.sort((a, b) => 
-            (b.size!.width * b.size!.height) - (a.size!.width * a.size!.height) || 
+            (b.size![0] * b.size![1]) - (a.size![0] * a.size![1]) || 
             b.weight - a.weight
         );
     
         // Sort slots by available space and weight limit (smallest first)
         storageSlots.sort((a, b) => 
-            (a.grid!.width * a.grid!.height) - (b.grid!.width * b.grid!.height) || 
+            (a.grid![0] * a.grid![1]) - (b.grid![0] * b.grid![1]) || 
             (a.maxWeight! - a.storedItems!.reduce((sum, i) => sum + i.weight, 0))
         );
     
@@ -215,13 +215,13 @@ export class StorageSlotService {
     
     private static _findPlacementForItemInGrid(
         gridCells: StorageGrid,
-        grid: { width: number; height: number },
+        grid: [number, number],
         item: Item
     ): { x: number; y: number } | null {
-        const { width: itemWidth, height: itemHeight } = item.size!;
+        const [itemWidth, itemHeight ] = item.size!;
     
-        for (let x = 0; x <= grid.width - itemWidth; x++) {
-            for (let y = 0; y <= grid.height - itemHeight; y++) {
+        for (let x = 0; x <= grid[0] - itemWidth; x++) {
+            for (let y = 0; y <= grid[1] - itemHeight; y++) {
                 let canPlace = true;
     
                 // Check if the item fits in the grid without collision
@@ -250,7 +250,7 @@ export class StorageSlotService {
         item: Item,
         position: { x: number; y: number }
     ): void {
-        const { width: itemWidth, height: itemHeight } = item.size!;
+        const [itemWidth, itemHeight ] = item.size!;
         const { x, y } = position;
     
         for (let i = x; i < x + itemWidth; i++) {

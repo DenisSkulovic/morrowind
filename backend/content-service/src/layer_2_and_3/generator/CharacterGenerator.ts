@@ -16,12 +16,16 @@ import { StorageSlot } from "../../entities/Content/Slot/StorageSlot";
 import { EquipmentSlot } from "../../entities/Content/Slot/EquipmentSlot";
 import { EquipmentSlotService } from "../service/EquipmentSlotService";
 import { StorageSlotService } from "../service/StorageSlotService";
-import { ProbObject_Simple } from "../../layer_1/types";
-import { AbstractProbGenerator, IdAndQuant } from "./AbstractProbGenerator";
+import { BlueprintSetInstruction } from "../../layer_1/types";
+import { AbstractProbGenerator } from "./AbstractProbGenerator";
 import { CharacterGenInstruction } from "../../entities/Content/CharacterGenInstruction";
 import { CharacterGroupGenInstruction } from "../../entities/Content/CharacterGroupGenInstruction";
 import { PastExperienceChild } from "../../entities/Content/Knowledge/PastExperience/PastExperienceChild";
 import { PastExperienceAdult } from "../../entities/Content/Knowledge/PastExperience/PastExperienceAdult";
+import { BlueprintSetProcessor } from "../service/BlueprintSetProcessor";
+import { ItemGenerator } from "./ItemGenerator";
+import { Item } from "../../entities/Content/Item/Item";
+import { IdAndQuant, BlueprintGenInstruction_Gaussian, ProbObject_Simple } from "../../class/blueprint_id_and_prob";
 
 
 // TODO I need to conceptualize how I will deal with modifiers
@@ -58,26 +62,26 @@ export class CharacterGenerator extends AbstractProbGenerator<Character> {
         this.blueprintsCache = {}
     }
 
-    public async generateGroup_probGaussian(
-        group_blueprint: CharacterGroupGenInstruction
-    ) {
-        const characters: Character[] = await this.generateMany_probGaussian([group_blueprint])
+    public async generateGroup(group_blueprint: CharacterGroupGenInstruction) {
+        const instructionsGaussian = BlueprintSetProcessor.getInstructionsFromSet(group_blueprint)
+        const characters: Character[] = await this.generateMany(instructionsGaussian)
         return characters
     }
 
     // Implementation of an abstract method. After this, you can generate the same instruction
     // in many ways (simple or gaussian probabilities) using methods on the parent abstract class.
-    public async generateOne(idAndQuant: IdAndQuant): Promise<Character> {
-        // TODO ignore quantity - doesn make sense for characters. quantity is used for items; probably a use case for overloads to allow both a string and idAndQuant
-        const blueprint_id = idAndQuant.blueprint_id
+    public async generateOne(instruction: string | IdAndQuant | BlueprintGenInstruction_Gaussian): Promise<Character[]> {
+        const idAndQuant: IdAndQuant = this.simplifyInstruction(instruction)
+        const quantity: number = idAndQuant.quantity || 1
 
-        const extractedCharacterGenInstructions: (CharacterGenInstruction | null)[] = await this._getBlueprints_cacheOrRequest("characterInstruction", CharacterGenInstruction, [blueprint_id])
-        const instruction: CharacterGenInstruction | null = extractedCharacterGenInstructions[0]
-        if (!instruction) throw new Error(`character generation instruction not found; did you forget to set it into the `)
+
+        const extractedCharacterGenInstructions: (CharacterGenInstruction | null)[] = await this._getBlueprints_cacheOrRequest(CacheKeyEnum.CHARACTER_INSTRUCTION, CharacterGenInstruction, [blueprint_id])
+        const charGenInstruction: CharacterGenInstruction | null = extractedCharacterGenInstructions[0]
+        if (!charGenInstruction) throw new Error(`character generation instruction not found; did you forget to set it into the `)
 
         // Fetch the background blueprint
-        const background_blueprint_id: string | undefined = instruction.background_blueprint_id
-        const extractedBackgrounds: (Background | null)[] = await this._getBlueprints_cacheOrRequest("background", Background, [background_blueprint_id])
+        const background_blueprint_id: string | undefined = charGenInstruction.background_blueprint_id
+        const extractedBackgrounds: (Background | null)[] = await this._getBlueprints_cacheOrRequest(CacheKeyEnum.BACKGROUND, Background, [background_blueprint_id])
         const background: Background | null = extractedBackgrounds[0]
         if (!background) throw new Error(`Background ${background} not found.`);
         const backgroundClone: Background = cloneDeep(background)
@@ -86,93 +90,96 @@ export class CharacterGenerator extends AbstractProbGenerator<Character> {
         // TODO I need to start taking custom fields from the character instruction; the code at the moment only creates according to background, without customization
         // TODO 
 
-        // Collect necessary data from either cache or db
-        const [race, items, factions,
+        // RACE
+
+        // Collect necessary data from either cache or db (these only extract data and dont create anything, so no need to handle unique instances for each separate character)
+        const [race, factions,
             diseases, addictions, professions,
             memoryPools, personality,
             past_enp_child, past_exp_adult
         ] = await Promise.all([
-            this._extractGenericBlueprints(CacheKeyEnum.RACE, Race, backgroundClone.race_prob),
-            this._generateCharacterItems(backgroundClone),
-            this._extractGenericBlueprints(CacheKeyEnum.FACTION, Faction, backgroundClone.faction_prob),
-            this._extractGenericBlueprints(CacheKeyEnum.DISEASE, Disease, backgroundClone.disease_prob),
-            this._extractGenericBlueprints(CacheKeyEnum.ADDICTION, Addiction, backgroundClone.addiction_prob),
-            this._extractGenericBlueprints(CacheKeyEnum.PROFESSION, CharacterProfession, backgroundClone.profession_prob),
-            this._extractGenericBlueprints(CacheKeyEnum.MEMORY_POOL, MemoryPool, backgroundClone.memory_pools_prob),
-            this._extractPersonalityBlueprints(backgroundClone.personality_prob),
-            this._extractGenericBlueprints(CacheKeyEnum.PAST_EXP_CHILD, PastExperienceChild, backgroundClone.past_exp_child_prob),
-            this._extractGenericBlueprints(CacheKeyEnum.PAST_EXP_ADULT, PastExperienceAdult, backgroundClone.past_exp_adult_prob),
+            charGenInstruction.race ? this._extractGeneric(CacheKeyEnum.RACE, Race, charGenInstruction.race) : this._extractGeneric(CacheKeyEnum.RACE, Race, backgroundClone.race_prob),
+            this._extractGeneric(CacheKeyEnum.FACTION, Faction, backgroundClone.faction_prob),
+            this._extractGeneric(CacheKeyEnum.DISEASE, Disease, backgroundClone.disease_prob),
+            this._extractGeneric(CacheKeyEnum.ADDICTION, Addiction, backgroundClone.addiction_prob),
+            this._extractGeneric(CacheKeyEnum.PROFESSION, CharacterProfession, backgroundClone.profession_prob),
+            this._extractGeneric(CacheKeyEnum.MEMORY_POOL, MemoryPool, backgroundClone.memory_pools_prob),
+            this._extractPersonality(backgroundClone.personality_prob),
+            this._extractGeneric(CacheKeyEnum.PAST_EXP_CHILD, PastExperienceChild, backgroundClone.past_exp_child_prob),
+            this._extractGeneric(CacheKeyEnum.PAST_EXP_ADULT, PastExperienceAdult, backgroundClone.past_exp_adult_prob),
         ])
 
-        // Create character entity
-        const character = Character.create({
-            first_name: instruction.first_name,
-            last_name: instruction.last_name,
-            gender: instruction.gender,
-            race,
-            birthsign: instruction.birthsign,
-            birthEra: instruction.birthEra,
-            birthYear: instruction.birthYear,
-            birthMonth: instruction.birthMonth,
-            birthDay: instruction.birthDay,
-            skills,
-            professions,
-            memoryPools,
-            characterMemories,
-            enneagramType: personality.enneagramType,
-            traits: personality.traits,
-            factions,
-            diseases,
-            addictions,
-            tags,
-            user: this.context.user,
-            world: this.context.world,
-            campaign: this.context.campaign
-        })[0];
+        // create as many instances as quantity requires
+        const characters: Character[] = []
+        for (let i = 0; i < quantity; i++) {
+            // Create character entity
+            const character = Character.create({
+                first_name: charGenInstruction.first_name,
+                last_name: charGenInstruction.last_name,
+                gender: charGenInstruction.gender,
+                race,
+                birthsign: charGenInstruction.birthsign,
+                birthEra: charGenInstruction.birthEra,
+                birthYear: charGenInstruction.birthYear,
+                birthMonth: charGenInstruction.birthMonth,
+                birthDay: charGenInstruction.birthDay,
+                skills,
+                professions,
+                memoryPools,
+                characterMemories,
+                enneagramType: personality.enneagramType,
+                traits: personality.traits,
+                factions,
+                diseases,
+                addictions,
+                tags,
+                user: this.context.user,
+                world: this.context.world,
+                campaign: this.context.campaign
+            })[0];
 
+            // DEALING WITH ITEMS AND SLOTS 
+            // generate an array of items (items are generated but not yet saved to DB, because generators only perform READ operations on the DB)
+            const items: Item[] = await this._generateCharacterItems(charGenInstruction, backgroundClone)
+            // assign equipment slots according to character race
+            this._createAndAssignEquipmentSlots(character)
+            this._allocateItemsToEquipmentOrStorage(items, character)
 
+            // TODO assign tags based on everything
 
-        // DEALING WITH ITEMS AND SLOTS
-        // assign equipment slots according to character race
-        this._createAndAssignEquipmentSlots(character)
-        // put items into equipment slots if and when appropriate
-        const { equippedItems, unequippedItems } = EquipmentSlotService.equipItems(character.equipmentSlots, items)
-        console.log(`equipped ${equippedItems.length} items`)
-        // collect storage slots
-        const storageSlots: StorageSlot[] = []
-        character.equipmentSlots.forEach((eqSlot) => {
-            eqSlot.equippedItem?.storageSlots?.forEach((stSlot) => {
-                storageSlots.push(stSlot)
-            })
-        })
-        // store remaining items into storage slots
-        const { placedItems, unplacedItems } = StorageSlotService.placeItemsIntoStorageSlots(storageSlots, unequippedItems)
-        console.log(`stored ${placedItems.length} items`)
-        // raise warning that some items did not fit and were discarded
-        if (unplacedItems.length) console.warn(`during character generation some items did not fit into slots; discarding: `, JSON.stringify(unplacedItems))
+            characters.push(character);
+        }
 
-        // TODO assign tags based on everything
-
-        return character;
+        return characters
     }
 
 
+    protected async _extractGeneric<T extends ContentBase>(type: CacheKeyEnum, entityConstructor: EntityConstructor<T>, customBlueprintId: string): Promise<T[]>;
+    protected async _extractGeneric<T extends ContentBase>(type: CacheKeyEnum, entityConstructor: EntityConstructor<T>, customBlueprintIds: string[]): Promise<T[]>;
+    protected async _extractGeneric<T extends ContentBase>(type: CacheKeyEnum, entityConstructor: EntityConstructor<T>, prob_obj_simple: ProbObject_Simple): Promise<T[]>;
+    protected async _extractGeneric<T extends ContentBase>(type: CacheKeyEnum, entityConstructor: EntityConstructor<T>, prob_obj_gaussian: BlueprintSetInstruction): Promise<T[]>;
+    protected async _extractGeneric<T extends ContentBase>(type: CacheKeyEnum, entityConstructor: EntityConstructor<T>, probOrIds: string | string[] | ProbObject_Simple | BlueprintSetInstruction): Promise<T[]> {
+        let blueprintIds: string[]
+        if (typeof probOrIds === "string") { // single id provided
+            blueprintIds = [probOrIds]
+        } else if ("blueprint_id" in probOrIds) { // combinator and gaussian probabilities were provided
+            const res: BlueprintGenInstruction_Gaussian[] = BlueprintSetProcessor.getInstructionsFromSet(probOrIds)
+            blueprintIds = this._processProbGaussian(res).map((obj) => obj.blueprint_id)
+        } else if ("prob" in probOrIds) { // simple probabilities were provided
+            const idsAndQuantity: IdAndQuant[] = this._processProbSimple([probOrIds])
+            blueprintIds = idsAndQuantity.map((obj) => obj.blueprint_id)
+        } else if (Array.isArray(probOrIds)) {// specific ids were provided as a simple array
+            blueprintIds = probOrIds
+        } else {
+            throw new Error("got into the else statement of _extractGeneric, which should be impossible")
+        }
 
-    protected async _extractGenericBlueprints<T extends ContentBase>(
-        type: CacheKeyEnum,
-        entityConstructor: EntityConstructor<T>,
-        prob_obj: ProbObject_Simple | undefined
-    ): Promise<T[]> {
-        if (!prob_obj) return []
-
-        const idsAndQuantity: IdAndQuant[] = this._processProbSimple([prob_obj])
-        const blueprintIds: string[] = idsAndQuantity.map((obj) => obj.blueprint_id)
-        const extractedBlueprints: T[] = await this._getBlueprints_cacheOrRequest(type, entityConstructor, blueprintIds)
-        return extractedBlueprints
+        const entities = await this._getBlueprints_cacheOrRequest(type, entityConstructor, blueprintIds)
+        return entities
     }
 
 
-    protected async _extractPersonalityBlueprints(
+    protected async _extractPersonality(
         prob_obj: ProbObject_Simple | undefined,
     ): Promise<{ traits: Trait[], enneagramType: string }> {
         if (!prob_obj) throw new Error("a character cannot exist without a personality")
@@ -192,8 +199,32 @@ export class CharacterGenerator extends AbstractProbGenerator<Character> {
         return { traits, enneagramType: personalityProfile.enneagramType }
     }
 
+    protected async _generateCharacterItems(
+        charGenInstruction: CharacterGenInstruction,
+        background: Background,
+    ): Promise<Item[]> {
+        const itemGenerator: ItemGenerator = new ItemGenerator(this.dataSource)
+        const idsAndQuants: IdAndQuant[] = []
+        const items: Item[] = []
+        // handle separate items
+        if (charGenInstruction.items) {
+            const res = await itemGenerator.generateMany(charGenInstruction.items)
+        } else if (background.item_prob)
+            itemGenerator.generateOne()
+        // handle item sets
+        if (charGenInstruction.item_sets) {
 
-    
+        } else if (background.item_set_prob)
+
+            if (!items.length) return []
+        // instruction can have both item sets and items, and there are no probabilities. Extract items for item sets, and compine with the provided items array.
+        itemGenerator.generateMany()
+
+        return items
+    }
+
+
+
     protected _createAndAssignEquipmentSlots(character: Character): void {
         // nothing to fetch in this method, only to create empty equipment slots on the character, according to their race
 
@@ -217,5 +248,26 @@ export class CharacterGenerator extends AbstractProbGenerator<Character> {
     }
 
 
+    protected _allocateItemsToEquipmentOrStorage(items: Item[], character: Character) {
+        // put items into equipment slots if and when appropriate
+        const { equippedItems, unequippedItems } = EquipmentSlotService.equipItems(character.equipmentSlots, items)
+        console.log(`equipped ${equippedItems.length} items`)
+
+        // collect storage slots
+        const storageSlots: StorageSlot[] = []
+        character.equipmentSlots.forEach((eqSlot) => {
+            eqSlot.equippedItem?.storageSlots?.forEach((stSlot) => {
+                storageSlots.push(stSlot)
+            })
+        })
+
+        // store remaining items into storage slots
+        const { placedItems, unplacedItems } = StorageSlotService.placeItemsIntoStorageSlots(storageSlots, unequippedItems)
+        console.log(`stored ${placedItems.length} items`)
+
+        // raise warning that some items did not fit and were discarded
+        if (unplacedItems.length) console.warn(`during character generation some items did not fit into slots; discarding: `, JSON.stringify(unplacedItems))
+
+    }
 
 }

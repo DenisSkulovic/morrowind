@@ -30,7 +30,7 @@ export class Item extends TaggableContentBase {
 
     // properties
     @Column("json", { nullable: true })
-    size!: { width: number; height: number }; // Grid size for grid-based inventories
+    size!: [number, number]; // Grid size for grid-based inventories
     @Column({ default: 0 })
     weight!: number;
     @Column({ default: 1 })

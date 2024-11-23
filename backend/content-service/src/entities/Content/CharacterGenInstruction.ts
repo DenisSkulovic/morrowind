@@ -1,13 +1,10 @@
-import { Entity, TableInheritance, Column, ManyToOne, ManyToMany, JoinTable, PrimaryGeneratedColumn, BeforeInsert, PrimaryColumn } from "typeorm";
-import { MemoryPool } from "./Knowledge/MemoryPool";
-import { Character } from "./Character";
-import { TaggableContentBase } from "../../TaggableContentBase";
-import { Tag } from "./Tag";
+import { Entity, Column, ManyToOne, BeforeInsert, PrimaryColumn } from "typeorm";
 import { Campaign } from "../Campaign";
 import { User } from "../User";
 import { World } from "../World";
 import { randomUUID } from "crypto";
 import { ContentBase } from "../../ContentBase";
+import { IdAndQuant } from "../../layer_2_and_3/generator/AbstractProbGenerator";
 
 
 
@@ -23,12 +20,10 @@ export class CharacterGenInstruction extends ContentBase {
     }
     id_prefix = "CHARACTER_GEN_INSTRUCTION"
 
-    @Column()
-    background_blueprint_id!: string
-
+    
     @Column()
     first_name?: string
-
+    
     @Column()
     last_name?: string
 
@@ -37,18 +32,24 @@ export class CharacterGenInstruction extends ContentBase {
 
     @Column()
     birthsign?: string
-
+    
     @Column()
     birthEra?: string
-
+    
     @Column()
     birthYear?: number
 
     @Column()
     birthMonth?: string
-
+    
     @Column()
     birthDay?: number
+    
+    @Column()
+    background_blueprint_id!: string
+
+    @Column()
+    race!: string
 
     @Column("jsonb")
     factions?: string[]
@@ -69,7 +70,7 @@ export class CharacterGenInstruction extends ContentBase {
     item_sets?: string[]
     
     @Column("jsonb")
-    items?: { blueprint_id: string, quantity: number }[]
+    items?: IdAndQuant[]
     
     @Column("jsonb")
     past_exp_child?: string[]

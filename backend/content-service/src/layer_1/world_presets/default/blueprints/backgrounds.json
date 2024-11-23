@@ -58,7 +58,14 @@
                 "FULL_ARMOR": 1
             }
         },
-        "items": [],
+        "item_prob": [
+            {
+                "blueprint_id": "COIN",
+                "prob": 0.6,
+                "avg_quan": 20,
+                "st_dev": 1
+            }
+        ],
         "past_exp_child_prob": {
             "cond": "OR",
             "prob": {

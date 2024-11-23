@@ -4,7 +4,7 @@ import { Campaign } from "../Campaign";
 import { User } from "../User";
 import { World } from "../World";
 import { randomUUID } from "crypto";
-import { ProbObject_Simple } from "../../layer_1/types";
+import { BlueprintGenInstruction_Gaussian, ProbObject_Simple } from "../../layer_1/types";
 
 
 
@@ -36,19 +36,22 @@ export class Background extends ContentBase {
     profession_prob?: ProbObject_Simple;
 
     @Column({ type: "jsonb", nullable: true })
-    race_prob?: ProbObject_Simple;
+    race_prob!: ProbObject_Simple;
 
     @Column({ type: "jsonb", nullable: true })
     religion_prob?: ProbObject_Simple;
 
     @Column({ type: "jsonb", nullable: true })
-    personality_prob?: ProbObject_Simple;
+    personality_prob!: ProbObject_Simple;
 
     @Column({ type: "jsonb", nullable: true })
     item_set_prob?: ProbObject_Simple;
 
     @Column({ type: "jsonb", nullable: true })
-    past_exp_child_prob?: ProbObject_Simple
+    item_prob?: BlueprintGenInstruction_Gaussian[];
+
+    @Column({ type: "jsonb", nullable: true })
+    past_exp_child_prob!: ProbObject_Simple
     
     @Column({ type: "jsonb", nullable: true })
     past_exp_adult_prob?: ProbObject_Simple
