@@ -86,27 +86,21 @@ export class CharacterGenerator extends AbstractProbGenerator<Character> {
         if (!background) throw new Error(`Background ${background} not found.`);
         const backgroundClone: Background = cloneDeep(background)
 
-        // TODO
-        // TODO I need to start taking custom fields from the character instruction; the code at the moment only creates according to background, without customization
-        // TODO 
-
-        // RACE
-
         // Collect necessary data from either cache or db (these only extract data and dont create anything, so no need to handle unique instances for each separate character)
         const [race, factions,
             diseases, addictions, professions,
             memoryPools, personality,
             past_enp_child, past_exp_adult
         ] = await Promise.all([
-            charGenInstruction.race ? this._extractGeneric(CacheKeyEnum.RACE, Race, charGenInstruction.race) : this._extractGeneric(CacheKeyEnum.RACE, Race, backgroundClone.race_prob),
-            this._extractGeneric(CacheKeyEnum.FACTION, Faction, backgroundClone.faction_prob),
-            this._extractGeneric(CacheKeyEnum.DISEASE, Disease, backgroundClone.disease_prob),
-            this._extractGeneric(CacheKeyEnum.ADDICTION, Addiction, backgroundClone.addiction_prob),
-            this._extractGeneric(CacheKeyEnum.PROFESSION, CharacterProfession, backgroundClone.profession_prob),
-            this._extractGeneric(CacheKeyEnum.MEMORY_POOL, MemoryPool, backgroundClone.memory_pools_prob),
-            this._extractPersonality(backgroundClone.personality_prob),
-            this._extractGeneric(CacheKeyEnum.PAST_EXP_CHILD, PastExperienceChild, backgroundClone.past_exp_child_prob),
-            this._extractGeneric(CacheKeyEnum.PAST_EXP_ADULT, PastExperienceAdult, backgroundClone.past_exp_adult_prob),
+            this._extractGeneric(CacheKeyEnum.RACE, Race, charGenInstruction.race || backgroundClone.race_prob),
+            this._extractGeneric(CacheKeyEnum.FACTION, Faction, charGenInstruction.factions || backgroundClone.faction_prob),
+            this._extractGeneric(CacheKeyEnum.DISEASE, Disease,  charGenInstruction.diseases || backgroundClone.disease_prob),
+            this._extractGeneric(CacheKeyEnum.ADDICTION, Addiction, charGenInstruction.addictions || backgroundClone.addiction_prob),
+            this._extractGeneric(CacheKeyEnum.PROFESSION, CharacterProfession, charGenInstruction.professions || backgroundClone.profession_prob),
+            this._extractGeneric(CacheKeyEnum.MEMORY_POOL, MemoryPool, charGenInstruction.memory_pools || backgroundClone.memory_pools_prob),
+            this._extractPersonality(charGenInstruction.personality || backgroundClone.personality_prob),
+            this._extractGeneric(CacheKeyEnum.PAST_EXP_CHILD, PastExperienceChild, charGenInstruction.past_exp_child || backgroundClone.past_exp_child_prob),
+            this._extractGeneric(CacheKeyEnum.PAST_EXP_ADULT, PastExperienceAdult, charGenInstruction.past_exp_adult || backgroundClone.past_exp_adult_prob),
         ])
 
         // create as many instances as quantity requires
@@ -154,10 +148,6 @@ export class CharacterGenerator extends AbstractProbGenerator<Character> {
     }
 
 
-    protected async _extractGeneric<T extends ContentBase>(type: CacheKeyEnum, entityConstructor: EntityConstructor<T>, customBlueprintId: string): Promise<T[]>;
-    protected async _extractGeneric<T extends ContentBase>(type: CacheKeyEnum, entityConstructor: EntityConstructor<T>, customBlueprintIds: string[]): Promise<T[]>;
-    protected async _extractGeneric<T extends ContentBase>(type: CacheKeyEnum, entityConstructor: EntityConstructor<T>, prob_obj_simple: ProbObject_Simple): Promise<T[]>;
-    protected async _extractGeneric<T extends ContentBase>(type: CacheKeyEnum, entityConstructor: EntityConstructor<T>, prob_obj_gaussian: BlueprintSetInstruction): Promise<T[]>;
     protected async _extractGeneric<T extends ContentBase>(type: CacheKeyEnum, entityConstructor: EntityConstructor<T>, probOrIds: string | string[] | ProbObject_Simple | BlueprintSetInstruction): Promise<T[]> {
         let blueprintIds: string[]
         if (typeof probOrIds === "string") { // single id provided
