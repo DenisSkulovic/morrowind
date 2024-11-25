@@ -5,6 +5,7 @@ import { World } from "../World";
 import { randomUUID } from "crypto";
 import { ContentBase } from "../../ContentBase";
 import { IdAndQuant } from "../../layer_2_and_3/generator/AbstractProbGenerator";
+import { Background } from "./Background";
 
 
 
@@ -48,46 +49,8 @@ export class CharacterGenInstruction extends ContentBase {
     @Column()
     background_blueprint_id!: string
 
-    @Column()
-    race!: string
-
     @Column("jsonb")
-    factions?: string[]
-    
-    @Column("jsonb")
-    diseases?: string[]
-    
-    @Column("jsonb")
-    addictions?: string[]
-    
-    @Column("jsonb")
-    professions?: string[]
-    
-    @Column()
-    religion?: string
-    
-    @Column("jsonb")
-    item_sets?: string[]
-    
-    @Column("jsonb")
-    items?: IdAndQuant[]
-    
-    @Column("jsonb")
-    past_exp_child?: string[]
-    
-    @Column("jsonb")
-    past_exp_adult?: string[]
-    
-    @Column("jsonb")
-    skill_sets?: string[]
-    
-    @Column("jsonb")
-    skill_adjustments?: { [skill_blueprint_id: string]: number }
-    
-    @Column()
-    personality?: string
-
-
+    background_customization?: Partial<Background>
 
     @ManyToOne(() => User, { nullable: true })
     user!: User;

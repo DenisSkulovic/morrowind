@@ -1,9 +1,10 @@
 import { BlueprintGenInstruction_Simple, CombinatorCondition, Probability_0_to_1 } from "../layer_1/types"
+import { GenerationInstruction } from "../types"
 
 export class IdAndQuant {
     blueprint_id: string
     quantity?: number
-    type = "IdAndQuant"
+    clazz = "IdAndQuant"
     constructor(blueprint_id: string, quantity?: number) {
         this.blueprint_id = blueprint_id
         this.quantity = quantity
@@ -16,7 +17,7 @@ export class IdAndQuant {
 export class ProbObject_Simple {
     cond: CombinatorCondition
     prob: BlueprintGenInstruction_Simple
-    type = "SimpleProb"
+    clazz = "ProbObject_Simple"
     constructor(cond: CombinatorCondition, prob: BlueprintGenInstruction_Simple) {
         this.cond = cond
         this.prob = prob
@@ -32,7 +33,7 @@ export class BlueprintGenInstruction_Gaussian {
     avg_quan?: number // positive integer, default 1
     st_dev?: number // positive float, default 0
     skew?: number // positive float, default 0
-    type = "GaussianProb"
+    clazz = "BlueprintGenInstruction_Gaussian"
     constructor(blueprint_id: string, prob?: Probability_0_to_1, avg_quan?: number, st_dev?: number, skew?: number) {
         this.blueprint_id = blueprint_id
         this.prob = prob
@@ -42,5 +43,22 @@ export class BlueprintGenInstruction_Gaussian {
     }
     public static build(obj: any): BlueprintGenInstruction_Gaussian {
         return new BlueprintGenInstruction_Gaussian(obj.blueprint_id, obj.prob, obj.avg_quan, obj.st_dev, obj.skew)
+    }
+}
+
+export class BlueprintSetCombinator {
+    name: string
+    prob: Probability_0_to_1 // 0-1, default 1
+    cond: CombinatorCondition
+    items: GenerationInstruction[]
+    clazz = "BlueprintSetCombinator"
+    constructor(name: string, prob: Probability_0_to_1, cond: CombinatorCondition, items: GenerationInstruction[]) {
+        this.name = name
+        this.prob = prob
+        this.cond = cond
+        this.items = items
+    }
+    public static build(obj: any): BlueprintSetCombinator {
+        return new BlueprintSetCombinator(obj.name, obj.prob, obj.cond, obj.items)
     }
 }

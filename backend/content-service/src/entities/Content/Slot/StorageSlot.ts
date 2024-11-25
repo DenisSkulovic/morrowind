@@ -14,7 +14,7 @@ export type StorageGrid = StorageGridCell[][]; // 2D grid array
 @TableInheritance({ column: { type: "varchar", name: "type" } })
 export class StorageSlot extends ContentBase {
     @PrimaryColumn()
-    id!: string;
+    id?: string;
     
     @BeforeInsert()
     generateId() {

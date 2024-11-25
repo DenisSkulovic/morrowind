@@ -2,111 +2,130 @@
     {
         "blueprint_id": "BACKGROUND_HIGHLAND_TOWN_GUARD",
         "name": "Highland Town Guard",
-        "faction_prob": {
-            "cond": "OR",
-            "prob": {
-                "HIGHLAND_KINGDOM": 1
+        "faction": [
+            "HIGHLAND_KINGDOM"
+        ],
+        "disease": [
+            {
+                "cond": "ANY",
+                "prob": {
+                    "COMMON_COLD": 0.1,
+                    "PLAGUE": 0.05
+                },
+                "clazz": "ProbObject_Simple"
             }
-        },
-        "disease_prob": {
-            "cond": "ANY",
-            "prob": {
-                "COMMON_COLD": 0.1,
-                "PLAGUE": 0.05
+        ],
+        "addiction": [
+            {
+                "cond": "ANY",
+                "prob": {
+                    "ALCOHOLISM": 0.1,
+                    "DEVILS_LETTUCE": 0.05
+                },
+                "clazz": "ProbObject_Simple"
             }
-        },
-        "addiction_prob": {
-            "cond": "ANY",
-            "prob": {
-                "ALCOHOLISM": 0.1,
-                "DEVILS_LETTUCE": 0.05
+        ],
+        "profession": [
+            "TOWN_GUARD"
+        ],
+        "race": [
+            "HUMAN"
+        ],
+        "religion": [
+            {
+                "cond": "OR",
+                "prob": {
+                    "MONOTHEISTIC_FAITH": 0.8,
+                    "ANCESTOR_WORSHIP": 0.1,
+                    "NATURE_FAITH": 0.1
+                },
+                "clazz": "ProbObject_Simple"
             }
-        },
-        "profession_prob": {
-            "cond": "OR",
-            "prob": {
-                "TOWN_GUARD": 1
+        ],
+        "personality": [
+            {
+                "cond": "OR",
+                "prob": {
+                    "PROFILE_LOYALIST": 0.6,
+                    "PROFILE_REFORMER": 0.3,
+                    "PROFILE_CHALLENGER": 0.1
+                },
+                "clazz": "ProbObject_Simple"
             }
-        },
-        "race_prob": {
-            "cond": "OR",
-            "prob": {
-                "HUMAN": 1
+        ],
+        "item_sets": [
+            {
+                "cond": "ANY",
+                "prob": {
+                    "SHORTSWORD_SHIELD": 1,
+                    "COMMON_SHIRT_PANTS": 1,
+                    "FULL_ARMOR": 1
+                },
+                "clazz": "ProbObject_Simple"
             }
-        },
-        "religion_prob": {
-            "cond": "OR",
-            "prob": {
-                "MONOTHEISTIC_FAITH": 0.8,
-                "ANCESTOR_WORSHIP": 0.1,
-                "NATURE_FAITH": 0.1
-            }
-        },
-        "personality_prob": {
-            "cond": "OR",
-            "prob": {
-                "PROFILE_LOYALIST": 0.6,
-                "PROFILE_REFORMER": 0.3,
-                "PROFILE_CHALLENGER": 0.1
-            }
-        },
-        "item_set_prob": {
-            "cond": "ANY",
-            "prob": {
-                "SHORTSWORD_SHIELD": 1,
-                "COMMON_SHIRT_PANTS": 1,
-                "FULL_ARMOR": 1
-            }
-        },
-        "item_prob": [
+        ],
+        "items": [
             {
                 "blueprint_id": "COIN",
                 "prob": 0.6,
                 "avg_quan": 20,
-                "st_dev": 1
+                "st_dev": 1,
+                "clazz": "BlueprintGenInstruction_Gaussian"
             }
         ],
-        "past_exp_child_prob": {
-            "cond": "OR",
-            "prob": {
-                "BLACKSMITH_APPRENTICE": 0.3,
-                "FARM_CHILD": 0.4,
-                "ORPHAN": 0.15,
-                "BEGGAR_CHILD": 0.15
+        "past_exp_child": [
+            {
+                "cond": "OR",
+                "prob": {
+                    "BLACKSMITH_APPRENTICE": 0.3,
+                    "FARM_CHILD": 0.4,
+                    "ORPHAN": 0.15,
+                    "BEGGAR_CHILD": 0.15
+                },
+                "clazz": "ProbObject_Simple"
             }
-        },
-        "past_exp_adult_prob": {
-            "cond": "OR",
-            "prob": {
-                "RETIRED_SOLDIER": 0.3,
-                "QUIET_TOWN_LIFE": 0.4,
-                "WIDOW": 0.1,
-                "FREED_SLAVE": 0.05,
-                "RETIRED_ADVENTURER": 0.05
+        ],
+        "past_exp_adult": [
+            {
+                "cond": "OR",
+                "prob": {
+                    "RETIRED_SOLDIER": 0.3,
+                    "QUIET_TOWN_LIFE": 0.4,
+                    "WIDOW": 0.1,
+                    "FREED_SLAVE": 0.05,
+                    "RETIRED_ADVENTURER": 0.05
+                },
+                "clazz": "ProbObject_Simple"
             }
-        },
-        "skill_set_prob": {
-            "cond": "ANY",
-            "set": {
-                "name": "common_or_advanced_swordsman",
-                "prob": 1,
-                "condition": "OR",
-                "items": [
-                    {
-                        "blueprint_id": "COMBAT_COMMON_SWORDSMAN",
-                        "prob": 0.80
-                    },
-                    {
-                        "blueprint_id": "COMBAT_ADVANCED_SWORDSMAN",
-                        "prob": 0.18
-                    },
-                    {
-                        "blueprint_id": "COMBAT_MASTER_SWORDSMAN",
-                        "prob": 0.02
-                    }
-                ]
+        ],
+        "skill_sets": [
+            {
+                "cond": "ANY",
+                "set": {
+                    "name": "common_or_advanced_swordsman",
+                    "prob": 1,
+                    "condition": "OR",
+                    "items": [
+                        {
+                            "blueprint_id": "COMBAT_COMMON_SWORDSMAN",
+                            "prob": 0.80,
+                            "clazz": "BlueprintGenInstruction_Gaussian"
+                        },
+                        {
+                            "blueprint_id": "COMBAT_ADVANCED_SWORDSMAN",
+                            "prob": 0.18,
+                            "clazz": "BlueprintGenInstruction_Gaussian"
+                        },
+                        {
+                            "blueprint_id": "COMBAT_MASTER_SWORDSMAN",
+                            "prob": 0.02,
+                            "clazz": "BlueprintGenInstruction_Gaussian"
+                        }
+                    ]
+                },
+                "clazz": "BlueprintGenInstruction_Gaussian"
             }
-        },
+        ],
         "skill_adjustments": {}
     },
     {

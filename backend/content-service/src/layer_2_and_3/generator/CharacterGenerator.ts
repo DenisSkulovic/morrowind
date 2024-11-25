@@ -9,23 +9,23 @@ import { PersonalityProfile } from "../../entities/Content/PersonalityProfile";
 import { Trait } from "../../entities/Content/Trait/Trait";
 import { Race } from "../../entities/Content/Race";
 import { ContentBase } from "../../ContentBase";
-import { Context, EntityConstructor } from "../../types";
+import { Context, EntityConstructor, GenerationInstruction } from "../../types";
 import { CharacterProfession } from "../../entities/Content/CharacterProfession";
 import { MemoryPool } from "../../entities/Content/Knowledge/MemoryPool";
 import { StorageSlot } from "../../entities/Content/Slot/StorageSlot";
 import { EquipmentSlot } from "../../entities/Content/Slot/EquipmentSlot";
 import { EquipmentSlotService } from "../service/EquipmentSlotService";
 import { StorageSlotService } from "../service/StorageSlotService";
-import { BlueprintSetInstruction } from "../../layer_1/types";
 import { AbstractProbGenerator } from "./AbstractProbGenerator";
 import { CharacterGenInstruction } from "../../entities/Content/CharacterGenInstruction";
 import { CharacterGroupGenInstruction } from "../../entities/Content/CharacterGroupGenInstruction";
 import { PastExperienceChild } from "../../entities/Content/Knowledge/PastExperience/PastExperienceChild";
 import { PastExperienceAdult } from "../../entities/Content/Knowledge/PastExperience/PastExperienceAdult";
-import { BlueprintSetProcessor } from "../service/BlueprintSetProcessor";
 import { ItemGenerator } from "./ItemGenerator";
 import { Item } from "../../entities/Content/Item/Item";
-import { IdAndQuant, BlueprintGenInstruction_Gaussian, ProbObject_Simple } from "../../class/blueprint_id_and_prob";
+import { IdAndQuant } from "../../class/blueprint_id_and_prob";
+import { InstructionProcessor } from "../service/InstructionProcessor";
+import { SkillSet } from "../../entities/Content/Skill/SkillSet";
 
 
 // TODO I need to conceptualize how I will deal with modifiers
@@ -40,6 +40,8 @@ import { IdAndQuant, BlueprintGenInstruction_Gaussian, ProbObject_Simple } from 
 enum CacheKeyEnum {
     CHARACTER_INSTRUCTION = "characterInstruction",
     BACKGROUND = "background",
+    SKILL_SET = "skill_set",
+    SKILL = "skill",
     RACE = "race",
     FACTION = "faction",
     DISEASE = "disease",
@@ -47,6 +49,7 @@ enum CacheKeyEnum {
     PROFESSION = "profession",
     MEMORY_POOL = "memoryPool",
     PERSONALITY = "personality",
+    TRAIT = "trait",
     PAST_EXP_CHILD = "past_exp_child",
     PAST_EXP_ADULT = "past_exp_adult",
 }
@@ -63,19 +66,18 @@ export class CharacterGenerator extends AbstractProbGenerator<Character> {
     }
 
     public async generateGroup(group_blueprint: CharacterGroupGenInstruction) {
-        const instructionsGaussian = BlueprintSetProcessor.getInstructionsFromSet(group_blueprint)
-        const characters: Character[] = await this.generateMany(instructionsGaussian)
+        const instructions: IdAndQuant[] = InstructionProcessor.processInstruction(group_blueprint.set)
+        const characters: Character[] = await this.generateMany(instructions)
         return characters
     }
 
     // Implementation of an abstract method. After this, you can generate the same instruction
     // in many ways (simple or gaussian probabilities) using methods on the parent abstract class.
-    public async generateOne(instruction: string | IdAndQuant | BlueprintGenInstruction_Gaussian): Promise<Character[]> {
-        const idAndQuant: IdAndQuant = this.simplifyInstruction(instruction)
+    public async _generateOne(idAndQuant: IdAndQuant): Promise<Character[]> {
         const quantity: number = idAndQuant.quantity || 1
 
-
-        const extractedCharacterGenInstructions: (CharacterGenInstruction | null)[] = await this._getBlueprints_cacheOrRequest(CacheKeyEnum.CHARACTER_INSTRUCTION, CharacterGenInstruction, [blueprint_id])
+        // extract CharacterGenInstruction objects from cache or db
+        const extractedCharacterGenInstructions: (CharacterGenInstruction | null)[] = await this._getBlueprints_cacheOrRequest(CacheKeyEnum.CHARACTER_INSTRUCTION, CharacterGenInstruction, [idAndQuant.blueprint_id])
         const charGenInstruction: CharacterGenInstruction | null = extractedCharacterGenInstructions[0]
         if (!charGenInstruction) throw new Error(`character generation instruction not found; did you forget to set it into the `)
 
@@ -84,23 +86,27 @@ export class CharacterGenerator extends AbstractProbGenerator<Character> {
         const extractedBackgrounds: (Background | null)[] = await this._getBlueprints_cacheOrRequest(CacheKeyEnum.BACKGROUND, Background, [background_blueprint_id])
         const background: Background | null = extractedBackgrounds[0]
         if (!background) throw new Error(`Background ${background} not found.`);
-        const backgroundClone: Background = cloneDeep(background)
+        const customizedBackground: Background = cloneDeep(background)
+
+        if (charGenInstruction.background_customization) Object.assign(customizedBackground, charGenInstruction.background_customization)
 
         // Collect necessary data from either cache or db (these only extract data and dont create anything, so no need to handle unique instances for each separate character)
         const [race, factions,
             diseases, addictions, professions,
             memoryPools, personality,
-            past_enp_child, past_exp_adult
+            past_enp_child, past_exp_adult,
+            skills
         ] = await Promise.all([
-            this._extractGeneric(CacheKeyEnum.RACE, Race, charGenInstruction.race || backgroundClone.race_prob),
-            this._extractGeneric(CacheKeyEnum.FACTION, Faction, charGenInstruction.factions || backgroundClone.faction_prob),
-            this._extractGeneric(CacheKeyEnum.DISEASE, Disease,  charGenInstruction.diseases || backgroundClone.disease_prob),
-            this._extractGeneric(CacheKeyEnum.ADDICTION, Addiction, charGenInstruction.addictions || backgroundClone.addiction_prob),
-            this._extractGeneric(CacheKeyEnum.PROFESSION, CharacterProfession, charGenInstruction.professions || backgroundClone.profession_prob),
-            this._extractGeneric(CacheKeyEnum.MEMORY_POOL, MemoryPool, charGenInstruction.memory_pools || backgroundClone.memory_pools_prob),
-            this._extractPersonality(charGenInstruction.personality || backgroundClone.personality_prob),
-            this._extractGeneric(CacheKeyEnum.PAST_EXP_CHILD, PastExperienceChild, charGenInstruction.past_exp_child || backgroundClone.past_exp_child_prob),
-            this._extractGeneric(CacheKeyEnum.PAST_EXP_ADULT, PastExperienceAdult, charGenInstruction.past_exp_adult || backgroundClone.past_exp_adult_prob),
+            this._extractGeneric(CacheKeyEnum.RACE, Race, customizedBackground.race),
+            this._extractGeneric(CacheKeyEnum.FACTION, Faction, customizedBackground.faction),
+            this._extractGeneric(CacheKeyEnum.DISEASE, Disease, customizedBackground.disease),
+            this._extractGeneric(CacheKeyEnum.ADDICTION, Addiction, customizedBackground.addiction),
+            this._extractGeneric(CacheKeyEnum.PROFESSION, CharacterProfession, customizedBackground.profession),
+            this._extractGeneric(CacheKeyEnum.MEMORY_POOL, MemoryPool, customizedBackground.memory_pools),
+            this._extractPersonality(customizedBackground.personality[0]),
+            this._extractGeneric(CacheKeyEnum.PAST_EXP_CHILD, PastExperienceChild, customizedBackground.past_exp_child),
+            this._extractGeneric(CacheKeyEnum.PAST_EXP_ADULT, PastExperienceAdult, customizedBackground.past_exp_adult),
+            this._extractSkills(customizedBackground)
         ])
 
         // create as many instances as quantity requires
@@ -134,7 +140,7 @@ export class CharacterGenerator extends AbstractProbGenerator<Character> {
 
             // DEALING WITH ITEMS AND SLOTS 
             // generate an array of items (items are generated but not yet saved to DB, because generators only perform READ operations on the DB)
-            const items: Item[] = await this._generateCharacterItems(charGenInstruction, backgroundClone)
+            const items: Item[] = await this._generateCharacterItems(customizedBackground)
             // assign equipment slots according to character race
             this._createAndAssignEquipmentSlots(character)
             this._allocateItemsToEquipmentOrStorage(items, character)
@@ -148,69 +154,71 @@ export class CharacterGenerator extends AbstractProbGenerator<Character> {
     }
 
 
-    protected async _extractGeneric<T extends ContentBase>(type: CacheKeyEnum, entityConstructor: EntityConstructor<T>, probOrIds: string | string[] | ProbObject_Simple | BlueprintSetInstruction): Promise<T[]> {
-        let blueprintIds: string[]
-        if (typeof probOrIds === "string") { // single id provided
-            blueprintIds = [probOrIds]
-        } else if ("blueprint_id" in probOrIds) { // combinator and gaussian probabilities were provided
-            const res: BlueprintGenInstruction_Gaussian[] = BlueprintSetProcessor.getInstructionsFromSet(probOrIds)
-            blueprintIds = this._processProbGaussian(res).map((obj) => obj.blueprint_id)
-        } else if ("prob" in probOrIds) { // simple probabilities were provided
-            const idsAndQuantity: IdAndQuant[] = this._processProbSimple([probOrIds])
-            blueprintIds = idsAndQuantity.map((obj) => obj.blueprint_id)
-        } else if (Array.isArray(probOrIds)) {// specific ids were provided as a simple array
-            blueprintIds = probOrIds
-        } else {
-            throw new Error("got into the else statement of _extractGeneric, which should be impossible")
+    protected async _extractGeneric<T extends ContentBase>(type: CacheKeyEnum, entityConstructor: EntityConstructor<T>, instructions: GenerationInstruction[] | undefined): Promise<T[]> {
+        const res: T[] = []
+        if (!instructions) return res
+        for (const instruction of instructions) {
+            const idsAndQuants: IdAndQuant[] = InstructionProcessor.processInstruction(instruction)
+            const blueprintIds: string[] = idsAndQuants.map((idAndQuant) => idAndQuant.blueprint_id)
+            const entities = await this._getBlueprints_cacheOrRequest(type, entityConstructor, blueprintIds)
+            entities.forEach((entity) => res.push(entity))
         }
-
-        const entities = await this._getBlueprints_cacheOrRequest(type, entityConstructor, blueprintIds)
-        return entities
+        return res
     }
 
 
     protected async _extractPersonality(
-        prob_obj: ProbObject_Simple | undefined,
+        instruction: GenerationInstruction,
     ): Promise<{ traits: Trait[], enneagramType: string }> {
-        if (!prob_obj) throw new Error("a character cannot exist without a personality")
-        const personalityProfileName: string | undefined = this._processProbOr(prob_obj.prob)
+        const personalityProfileName: string | undefined = InstructionProcessor.processInstruction(instruction)[0].blueprint_id
         if (!personalityProfileName) throw new Error(`no personality profile chosen; a character cannot be without personality`)
 
         // get personality profile
-        const extractedPersonalityProfiles: (PersonalityProfile | null)[] = await this._getBlueprints_cacheOrRequest("personality", PersonalityProfile, [personalityProfileName])
+        const extractedPersonalityProfiles: (PersonalityProfile | null)[] = await this._getBlueprints_cacheOrRequest(CacheKeyEnum.PERSONALITY, PersonalityProfile, [personalityProfileName])
         const personalityProfile: PersonalityProfile | null = extractedPersonalityProfiles[0]
         if (!personalityProfile) throw new Error(`cannot proceed with character generation without personality profile`)
 
         // get traits
-        const traits_prob: ProbObject_Simple = personalityProfile.traits
-        const traitNames = this._processProbAny(traits_prob.prob)
-        const traits: Trait[] = await this._getBlueprints_cacheOrRequest("trait", Trait, traitNames)
+        const traits_instructions: GenerationInstruction[] = personalityProfile.traits
+        const trait_idsAndQuants: IdAndQuant[] = traits_instructions.map((trait_instruction) => InstructionProcessor.processInstruction(trait_instruction)).flat()
+        const traitNames: string[] = trait_idsAndQuants.map((trait_idAndQuant) => trait_idAndQuant.blueprint_id)
+        const traits: Trait[] = await this._getBlueprints_cacheOrRequest(CacheKeyEnum.TRAIT, Trait, traitNames)
 
         return { traits, enneagramType: personalityProfile.enneagramType }
     }
 
-    protected async _generateCharacterItems(
-        charGenInstruction: CharacterGenInstruction,
-        background: Background,
-    ): Promise<Item[]> {
+    protected async _generateCharacterItems(customizedBackground: Background): Promise<Item[]> {
+        if (!customizedBackground.items) return []
         const itemGenerator: ItemGenerator = new ItemGenerator(this.dataSource)
-        const idsAndQuants: IdAndQuant[] = []
-        const items: Item[] = []
-        // handle separate items
-        if (charGenInstruction.items) {
-            const res = await itemGenerator.generateMany(charGenInstruction.items)
-        } else if (background.item_prob)
-            itemGenerator.generateOne()
-        // handle item sets
-        if (charGenInstruction.item_sets) {
+        return await itemGenerator.generateMany(customizedBackground.items)
+    }
 
-        } else if (background.item_set_prob)
+    protected async _extractSkills(customizedBackground: Background): Promise<{ [skill: string]: number }> {
+        const skills: { [skill: string]: number } = {}
 
-            if (!items.length) return []
-        // instruction can have both item sets and items, and there are no probabilities. Extract items for item sets, and compine with the provided items array.
-        itemGenerator.generateMany()
+        // TODO create some base definitions for races, like in Morrowind
+        // start with initial skill definition for the race
 
-        return items
+        // process skill sets
+        const skillSetIds: string[] | undefined = customizedBackground.skill_sets
+        if (skillSetIds) {
+            const skillSets: SkillSet[] = await this._extractGeneric(CacheKeyEnum.SKILL_SET, SkillSet, skillSetIds)
+            for (const skillSet of skillSets) {
+                for (const [skill, amount] of Object.entries(skillSet.skill_improvement)) {
+                    if (!skills[skill]) skills[skill] = 0
+                    skills[skill] += amount
+                }
+            }
+        }
+
+        // process custom adjustments
+        if (customizedBackground.skill_adjustments) {
+            for (const [skill, amount] of Object.entries(customizedBackground.skill_adjustments)) {
+                if (!skills[skill]) skills[skill] = 0
+                skills[skill] += amount
+            }
+        }
+        return skills
     }
 
 

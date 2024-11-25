@@ -4,7 +4,7 @@ import { RepositoryServiceBase, RepositoryServiceSettings } from "./RepositorySe
 import { Item } from "../../entities/Content/Item/Item";
 import { ItemGenerator } from "../generator/ItemGenerator";
 import {  BlueprintSetInstruction } from "../../layer_1/types";
-import { BlueprintSetProcessor } from "./BlueprintSetProcessor";
+import { BlueprintSetProcessor } from "./InstructionProcessor";
 import { IdAndQuant, BlueprintGenInstruction_Gaussian } from "../../class/blueprint_id_and_prob";
 
 export class ItemService extends RepositoryServiceBase {

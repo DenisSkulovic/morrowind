@@ -2,9 +2,10 @@
 
 
 
-import { BlueprintGenInstruction_Gaussian, IdAndQuant } from "../../class/blueprint_id_and_prob";
+import { BlueprintGenInstruction_Gaussian, BlueprintSetCombinator, IdAndQuant } from "../../class/blueprint_id_and_prob";
 import { Item } from "../../entities/Content/Item/Item";
 import { StorageSlot } from "../../entities/Content/Slot/StorageSlot";
+import { InstructionProcessor } from "../service/InstructionProcessor";
 import { AbstractProbGenerator } from "./AbstractProbGenerator";
 import { cloneDeep } from "lodash";
 
@@ -14,8 +15,9 @@ enum CacheKeyEnum {
 
 export class ItemGenerator extends AbstractProbGenerator<Item> {
 
-    public async generateOne(instruction: string | IdAndQuant | BlueprintGenInstruction_Gaussian): Promise<Item[]> {
-        const idAndQuant: IdAndQuant = this.simplifyInstruction(instruction)
+    public async _generateOne(idAndQuant: IdAndQuant): Promise<Item[]> {
+        const instances: Item[] = []
+
         const quantity: number = idAndQuant.quantity || 1
 
         const cacheExtract: (Item | null)[] = await this._getBlueprints_cacheOrRequest(CacheKeyEnum.ITEM, Item, [idAndQuant.blueprint_id])
@@ -31,7 +33,6 @@ export class ItemGenerator extends AbstractProbGenerator<Item> {
         delete blueprint.id
 
         // create one or many instances with identical params to blueprint
-        const instances: Item[] = []
         if (isStackable) {
             // deal with quantity, maxQuantity and stackables. For example generating 1000 arrows, when maxQuantity per stack is 20. We need many stacks as a result.
             // generate full stacks, if any
@@ -48,7 +49,6 @@ export class ItemGenerator extends AbstractProbGenerator<Item> {
         } else { // if not stackable - create separate instances
             for (let i = 0; i < quantity; i++) {
                 const instance: Item = Item.create({ ...blueprint })
-                // create storage slots to later clone into items (be careful not to forget cloning)
                 // FYI: I made a simple assumption that a stackable item cannot have storage slots... So it somewhat simplifies things
                 if (blueprint.storageSlots) {
                     const storageSlots: StorageSlot[] = []
@@ -62,10 +62,9 @@ export class ItemGenerator extends AbstractProbGenerator<Item> {
             }
         }
 
-
         // TODO assign storage slots, if any
-
-        return instances;
+        
+        return instances
     }
 
 }

@@ -5,6 +5,7 @@ import { User } from "../User";
 import { World } from "../World";
 import { randomUUID } from "crypto";
 import { BlueprintGenInstruction_Gaussian, ProbObject_Simple } from "../../layer_1/types";
+import { GenerationInstruction } from "../../types";
 
 
 
@@ -24,37 +25,43 @@ export class Background extends ContentBase {
     name!: string; // Name of the background (e.g., "Highland Town Guard")
 
     @Column({ type: "jsonb", nullable: true })
-    faction_prob?: ProbObject_Simple;
+    faction?: GenerationInstruction[];
 
     @Column({ type: "jsonb", nullable: true })
-    disease_prob?: ProbObject_Simple;
+    disease?: GenerationInstruction[];
 
     @Column({ type: "jsonb", nullable: true })
-    addiction_prob?: ProbObject_Simple;
+    addiction?: GenerationInstruction[];
 
     @Column({ type: "jsonb", nullable: true })
-    profession_prob?: ProbObject_Simple;
+    profession?: GenerationInstruction[];
 
     @Column({ type: "jsonb", nullable: true })
-    race_prob!: ProbObject_Simple;
+    race!: GenerationInstruction[];
 
     @Column({ type: "jsonb", nullable: true })
-    religion_prob?: ProbObject_Simple;
+    religion?: GenerationInstruction[];
 
     @Column({ type: "jsonb", nullable: true })
-    personality_prob!: ProbObject_Simple;
+    personality!: GenerationInstruction[];
 
     @Column({ type: "jsonb", nullable: true })
-    item_set_prob?: ProbObject_Simple;
+    items?: GenerationInstruction[];
 
     @Column({ type: "jsonb", nullable: true })
-    item_prob?: BlueprintGenInstruction_Gaussian[];
-
-    @Column({ type: "jsonb", nullable: true })
-    past_exp_child_prob!: ProbObject_Simple
+    past_exp_child!: GenerationInstruction[]
     
     @Column({ type: "jsonb", nullable: true })
-    past_exp_adult_prob?: ProbObject_Simple
+    past_exp_adult?: GenerationInstruction[]
+    
+    @Column({ type: "jsonb", nullable: true })
+    memory_pools?: GenerationInstruction[]
+
+    @Column({ type: "jsonb", nullable: true })
+    skill_sets?: string[]
+    
+    @Column({ type: "jsonb", nullable: true })
+    skill_adjustments?: { [skill_blueprint_id: string]: number }
 
     // Relationships
     @ManyToOne(() => User, { nullable: true })
