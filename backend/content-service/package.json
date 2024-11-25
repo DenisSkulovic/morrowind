@@ -4,7 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "proto:generate": "npx protoc --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=. ./src/proto/*.proto"
+    "proto:generate": "npx protoc --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=. ./src/proto/*.proto",
+    "migrate:generate:world": "npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate -d ./src/data-source/WorldDataSource.ts src/migration/world/CreateWorldSchema || true",
+    "migrate:generate:campaign": "npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate -d ./src/data-source/CampaignDataSource.ts src/migration/campaign/CreateCampaignSchema || true",
+    "migrate:generate": "npm run migrate:generate:world && npm run migrate:generate:campaign",
+    "migrate:run:world": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d ./src/data-source/WorldDataSource.ts",
+    "migrate:run:campaign": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d ./src/data-source/CampaignDataSource.ts",
+    "migrate:run": "npm run migrate:run:world && npm run migrate:run:campaign",
+    "start": "nodemon src/index.ts"
   },
   "keywords": [],
   "author": "",
@@ -24,6 +31,7 @@
     "nodemon": "^3.1.7",
     "ts-node": "^10.9.2",
     "ts-proto": "^2.3.0",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.6.3"
   }
 }

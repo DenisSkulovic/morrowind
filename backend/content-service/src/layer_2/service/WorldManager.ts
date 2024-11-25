@@ -24,7 +24,7 @@ export class WorldService extends RepositoryServiceBase {
     /**
      * Creates a new world.
      */
-    public async createWorld(name: string, description: string, user: User): Promise<World> {
+    public async createWorld(name: string, description: string | undefined, user: User): Promise<World> {
         const worldRepository: Repository<World> = WorldDataSource.getRepository(World)
         const newWorld: World = worldRepository.create({
             name,

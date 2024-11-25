@@ -1,4 +1,4 @@
-import { TableInheritance, Entity, Column, PrimaryGeneratedColumn, OneToMany, BaseEntity, ManyToOne } from "typeorm";
+import { TableInheritance, Entity, Column, PrimaryGeneratedColumn, OneToMany, BaseEntity, ManyToOne, BeforeInsert, PrimaryColumn } from "typeorm";
 import { Campaign } from "./Campaign";
 import { User } from "./User";
 import { Item } from "./Content/Item/Item";
@@ -29,14 +29,24 @@ import { Tag } from "./Content/Tag";
 import { Background } from "./Content/Background";
 import { EquipmentSlot } from "./Content/Slot/EquipmentSlot";
 import { StorageSlot } from "./Content/Slot/StorageSlot";
+import { randomUUID } from "crypto";
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })
 export class World extends BaseEntity {
-    @PrimaryGeneratedColumn("uuid")
+    // @PrimaryGeneratedColumn("uuid")
+    // id!: string;
+
+    @PrimaryColumn()
     id!: string;
 
-    @ManyToOne(() => User)
+    @BeforeInsert()
+    generateId() {
+        this.id = `${this.id_prefix}_${randomUUID().replace(/-/g, "")}`;
+    }
+    id_prefix = "WORLD";
+
+    @ManyToOne(() => User, { lazy: true })
     user!: User; // User who created this campaign.
 
     @Column({ type: "varchar", length: 255 })
@@ -51,90 +61,90 @@ export class World extends BaseEntity {
     @Column({ default: false })
     frozen!: boolean;
 
-    @OneToMany(() => Campaign, (campaign) => campaign.world)
+    @OneToMany(() => Campaign, (campaign) => campaign.world, { lazy: true })
     campaigns!: Campaign[]; // Associated campaigns created from this world.
 
-    @OneToMany(() => Item, item => item.world, { onDelete: "CASCADE" })
+    @OneToMany(() => Item, item => item.world, { onDelete: "CASCADE", lazy: true })
     items!: Item[]
 
-    @OneToMany(() => PastExperience, pastExperience => pastExperience.world, { onDelete: "CASCADE" })
+    @OneToMany(() => PastExperience, pastExperience => pastExperience.world, { onDelete: "CASCADE", lazy: true })
     pastExperiences!: PastExperience[]
 
-    @OneToMany(() => CharacterMemory, characterMemory => characterMemory.world, { onDelete: "CASCADE" })
+    @OneToMany(() => CharacterMemory, characterMemory => characterMemory.world, { onDelete: "CASCADE", lazy: true })
     characterMemories!: CharacterMemory[]
 
-    @OneToMany(() => Memory, memory => memory.world, { onDelete: "CASCADE" })
+    @OneToMany(() => Memory, memory => memory.world, { onDelete: "CASCADE", lazy: true })
     memories!: Memory[]
 
-    @OneToMany(() => MemoryPool, memoryPool => memoryPool.world, { onDelete: "CASCADE" })
+    @OneToMany(() => MemoryPool, memoryPool => memoryPool.world, { onDelete: "CASCADE", lazy: true })
     memoryPools!: MemoryPool[]
 
-    @OneToMany(() => MemoryPoolEntry, memoryPoolEntry => memoryPoolEntry.world, { onDelete: "CASCADE" })
+    @OneToMany(() => MemoryPoolEntry, memoryPoolEntry => memoryPoolEntry.world, { onDelete: "CASCADE", lazy: true })
     memoryPoolEntries!: MemoryPoolEntry[]
 
-    @OneToMany(() => Skill, skill => skill.world, { onDelete: "CASCADE" })
+    @OneToMany(() => Skill, skill => skill.world, { onDelete: "CASCADE", lazy: true })
     skills!: Skill[]
 
-    @OneToMany(() => Trait, trait => trait.world, { onDelete: "CASCADE" })
+    @OneToMany(() => Trait, trait => trait.world, { onDelete: "CASCADE", lazy: true })
     traits!: Trait[]
 
-    @OneToMany(() => Addiction, addiction => addiction.world, { onDelete: "CASCADE" })
+    @OneToMany(() => Addiction, addiction => addiction.world, { onDelete: "CASCADE", lazy: true })
     addictions!: Addiction[]
 
-    @OneToMany(() => Birthsign, birthsign => birthsign.world, { onDelete: "CASCADE" })
+    @OneToMany(() => Birthsign, birthsign => birthsign.world, { onDelete: "CASCADE", lazy: true })
     birthsigns!: Birthsign[]
 
-    @OneToMany(() => Character, character => character.world, { onDelete: "CASCADE" })
+    @OneToMany(() => Character, character => character.world, { onDelete: "CASCADE", lazy: true })
     characters!: Character[]
 
-    @OneToMany(() => CharacterProfession, characterProfession => characterProfession.world, { onDelete: "CASCADE" })
+    @OneToMany(() => CharacterProfession, characterProfession => characterProfession.world, { onDelete: "CASCADE", lazy: true })
     characterProfessions!: CharacterProfession[]
 
-    @OneToMany(() => Disease, disease => disease.world, { onDelete: "CASCADE" })
+    @OneToMany(() => Disease, disease => disease.world, { onDelete: "CASCADE", lazy: true })
     diseases!: Disease[]
 
-    @OneToMany(() => Effect, effect => effect.world, { onDelete: "CASCADE" })
+    @OneToMany(() => Effect, effect => effect.world, { onDelete: "CASCADE", lazy: true })
     effects!: Effect[]
 
-    @OneToMany(() => Fact, fact => fact.world, { onDelete: "CASCADE" })
+    @OneToMany(() => Fact, fact => fact.world, { onDelete: "CASCADE", lazy: true })
     facts!: Fact[]
 
-    @OneToMany(() => Faction, faction => faction.world, { onDelete: "CASCADE" })
+    @OneToMany(() => Faction, faction => faction.world, { onDelete: "CASCADE", lazy: true })
     factions!: Faction[]
 
-    @OneToMany(() => StorageSlot, storageSlot => storageSlot.world, { onDelete: "CASCADE" })
+    @OneToMany(() => StorageSlot, storageSlot => storageSlot.world, { onDelete: "CASCADE", lazy: true })
     storageSlots!: StorageSlot[]
 
-    @OneToMany(() => EquipmentSlot, equipmentSlot => equipmentSlot.world, { onDelete: "CASCADE" })
+    @OneToMany(() => EquipmentSlot, equipmentSlot => equipmentSlot.world, { onDelete: "CASCADE", lazy: true })
     equipmentSlots!: EquipmentSlot[]
-    
-    @OneToMany(() => ItemSet, itemSet => itemSet.world, { onDelete: "CASCADE" })
+
+    @OneToMany(() => ItemSet, itemSet => itemSet.world, { onDelete: "CASCADE", lazy: true })
     itemSets!: ItemSet[]
 
-    @OneToMany(() => Mood, mood => mood.world, { onDelete: "CASCADE" })
+    @OneToMany(() => Mood, mood => mood.world, { onDelete: "CASCADE", lazy: true })
     moods!: Mood[]
 
-    @OneToMany(() => Need, need => need.world, { onDelete: "CASCADE" })
+    @OneToMany(() => Need, need => need.world, { onDelete: "CASCADE", lazy: true })
     needs!: Need[]
 
-    @OneToMany(() => PersonalityProfile, personalityProfile => personalityProfile.world, { onDelete: "CASCADE" })
+    @OneToMany(() => PersonalityProfile, personalityProfile => personalityProfile.world, { onDelete: "CASCADE", lazy: true })
     personalityProfiles!: PersonalityProfile[]
 
-    @OneToMany(() => Race, race => race.world, { onDelete: "CASCADE" })
+    @OneToMany(() => Race, race => race.world, { onDelete: "CASCADE", lazy: true })
     races!: Race[]
 
-    @OneToMany(() => Religion, religion => religion.world, { onDelete: "CASCADE" })
+    @OneToMany(() => Religion, religion => religion.world, { onDelete: "CASCADE", lazy: true })
     religions!: Religion[]
 
-    @OneToMany(() => Resistance, resistance => resistance.world, { onDelete: "CASCADE" })
+    @OneToMany(() => Resistance, resistance => resistance.world, { onDelete: "CASCADE", lazy: true })
     resistances!: Resistance[]
 
-    @OneToMany(() => Status, status => status.world, { onDelete: "CASCADE" })
+    @OneToMany(() => Status, status => status.world, { onDelete: "CASCADE", lazy: true })
     statuses!: Status[]
 
-    @OneToMany(() => Tag, tag => tag.world, { onDelete: "CASCADE" })
+    @OneToMany(() => Tag, tag => tag.world, { onDelete: "CASCADE", lazy: true })
     tags!: Tag[]
-        
-    @OneToMany(() => Background, background => background.world, { onDelete: "CASCADE" })
+
+    @OneToMany(() => Background, background => background.world, { onDelete: "CASCADE", lazy: true })
     backgrounds!: Background[]
 }

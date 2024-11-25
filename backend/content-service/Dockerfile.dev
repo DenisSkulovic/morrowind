@@ -13,11 +13,8 @@ RUN npm install
 # Copy the rest of the code into the container
 COPY src/ ./src
 
-# Generate gRPC code if needed (optional, for runtime generation)
-RUN npx protoc --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=. ./src/proto/*.proto
-
 # Expose the gRPC server port
 EXPOSE 50051
 
 # Start the gRPC server
-CMD ["npx", "nodemon", "src/index.ts"]
+CMD ["sh", "-c", "npm run proto:generate && npm run migrate:generate && npm run migrate:run && npm start"]

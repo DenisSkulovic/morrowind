@@ -4,6 +4,7 @@ package account;
 
 service AccountController {
     rpc createAccount (CreateAccountRequest) returns (CreateAccountResponse);
+    rpc getAccount (GetAccountRequest) returns (GetAccountResponse);
 }
 
 message CreateAccountRequest {
@@ -16,4 +17,23 @@ message CreateAccountRequest {
 message CreateAccountResponse {
     string userId = 1;
     string accountId = 2;
+}
+
+message GetAccountRequest {
+    string username = 1;
+}
+
+message GetAccountResponse {
+    Account account = 1;
+}
+
+message Account {
+    string id = 1;
+    string username = 2;
+    string email = 3;
+    string role = 4;
+    User user = 5;
+}
+message User {
+    string id = 1;
 }

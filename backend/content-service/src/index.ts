@@ -4,6 +4,7 @@ import { loadSync, PackageDefinition } from '@grpc/proto-loader';
 import path from 'path';
 import { AccountController } from './controller/AccountController';
 import { WorldDataSource, CampaignDataSource } from "./data-source";
+import { WorldController } from "./controller/world/WorldController";
 
 (async () => {
     // Initialize TypeORM Data Source
@@ -17,26 +18,34 @@ import { WorldDataSource, CampaignDataSource } from "./data-source";
     
     // Load the proto file
     console.log(`hello`)
-    const packageDefinition: PackageDefinition = loadSync(path.join(__dirname, '../src/proto/account.proto'), {
+    const protoOptions = {
         keepCase: true,
         longs: String,
         enums: String,
         defaults: true,
         oneofs: true,
-    });
-    console.log(`packageDefinition: `, packageDefinition)
+    }
+    const accountPackageDefinition: PackageDefinition = loadSync(path.join(__dirname, '../src/proto/account.proto'), protoOptions);
+    const worldPackageDefinition: PackageDefinition = loadSync(path.join(__dirname, '../src/proto/world.proto'), protoOptions);
+    console.log(`accountPackageDefinition: `, accountPackageDefinition)
+    console.log(`worldPackageDefinition: `, worldPackageDefinition)
     
-    const protoDescriptor = grpc.loadPackageDefinition(packageDefinition) as any;
-    console.log(`protoDescriptor: `, protoDescriptor)
-    const accountPackage = protoDescriptor.account;
+    const accountProtoDescriptor = grpc.loadPackageDefinition(accountPackageDefinition) as any;
+    const worldProtoDescriptor = grpc.loadPackageDefinition(worldPackageDefinition) as any;
+    console.log(`accountProtoDescriptor: `, accountProtoDescriptor)
+    console.log(`worldProtoDescriptor: `, worldProtoDescriptor)
+    const accountPackage = accountProtoDescriptor.account;
+    const worldPackage = worldProtoDescriptor.world;
     console.log(`accountPackage: `, accountPackage)
+    console.log(`worldPackage: `, worldPackage)
     
     // Initialize gRPC server
     const server = new grpc.Server();
     console.log(`server: `, server)
     
-    // Add the service and bind implementation
+    // Add the services and bind implementation
     server.addService(accountPackage.AccountController.service, new AccountController());
+    server.addService(worldPackage.WorldController.service, new WorldController());
     
     const PORT = '50051';
     server.bindAsync(`0.0.0.0:${PORT}`, grpc.ServerCredentials.createInsecure(), (err: Error | null, port: number) => {

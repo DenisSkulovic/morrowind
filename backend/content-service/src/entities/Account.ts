@@ -1,5 +1,6 @@
-import { TableInheritance, Entity, Column, PrimaryGeneratedColumn, OneToMany, BaseEntity, OneToOne, JoinColumn } from "typeorm";
+import { TableInheritance, Entity, Column, PrimaryGeneratedColumn, OneToMany, BaseEntity, OneToOne, JoinColumn, BeforeInsert, PrimaryColumn } from "typeorm";
 import { User } from "./User";
+import { randomUUID } from "crypto";
 
 export enum AccountRoleEnum {
     PLAYER = "player",
@@ -9,8 +10,16 @@ export enum AccountRoleEnum {
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })
 export class Account extends BaseEntity {
-    @PrimaryGeneratedColumn("uuid")
+    // @PrimaryGeneratedColumn("uuid")
+    // id!: string;
+    @PrimaryColumn()
     id!: string;
+
+    @BeforeInsert()
+    generateId() {
+        this.id = `${this.id_prefix}_${randomUUID().replace(/-/g, "")}`;
+    }
+    id_prefix = "ACCOUNT";
 
     @Column({ unique: true })
     username!: string; // Unique username.
@@ -21,8 +30,8 @@ export class Account extends BaseEntity {
     @Column({ type: "varchar", length: 255, nullable: true })
     email!: string; // Optional email for communication and recovery.
 
-    @Column({ type: "varchar", length: 255, default: "player" })
-    role!: string; // Role of the user: "player", "admin", etc.
+    @Column({ type: "enum", enum: [AccountRoleEnum.ADMIN, AccountRoleEnum.PLAYER], nullable:true}) // TODO remove nullable because this is temporary. I need to add a value for entries that appear to be missing this
+    role!: string;
 
     @Column({ type: "json", nullable: true })
     preferences?: any; // User-specific preferences/settings.

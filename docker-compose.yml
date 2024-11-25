@@ -21,7 +21,6 @@ services:
       - DATABASE_NAME__CAMPAIGN=${POSTGRES_DB__CAMPAIGN}
     volumes:
       - /home/denis/CODE/morrowind2/backend/content-service:/usr/src/app
-      - content-service-node-modules:/usr/src/app/node_modules
     depends_on:
       - world-db
       - campaign-db
@@ -140,7 +139,6 @@ services:
   #     - "3001:3000"
   #   volumes:
   #     - /home/denis/CODE/morrowind2/frontend/world-building-ui:/usr/src/app
-  #     - /usr/src/app/node_modules
   #   depends_on:
   #     - content-service
   #   profiles:
@@ -162,4 +160,3 @@ services:
 volumes:
   world_db_data:
   campaign_db_data:
-  content-service-node-modules:

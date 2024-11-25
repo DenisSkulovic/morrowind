@@ -21,6 +21,26 @@ export interface CreateAccountResponse {
   accountId: string;
 }
 
+export interface GetAccountRequest {
+  username: string;
+}
+
+export interface GetAccountResponse {
+  account: Account | undefined;
+}
+
+export interface Account {
+  id: string;
+  username: string;
+  email: string;
+  role: string;
+  user: User | undefined;
+}
+
+export interface User {
+  id: string;
+}
+
 function createBaseCreateAccountRequest(): CreateAccountRequest {
   return { username: "", passwordHash: "", email: "", role: "" };
 }
@@ -205,8 +225,309 @@ export const CreateAccountResponse: MessageFns<CreateAccountResponse> = {
   },
 };
 
+function createBaseGetAccountRequest(): GetAccountRequest {
+  return { username: "" };
+}
+
+export const GetAccountRequest: MessageFns<GetAccountRequest> = {
+  encode(message: GetAccountRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.username !== "") {
+      writer.uint32(10).string(message.username);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetAccountRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetAccountRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.username = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetAccountRequest {
+    return { username: isSet(object.username) ? globalThis.String(object.username) : "" };
+  },
+
+  toJSON(message: GetAccountRequest): unknown {
+    const obj: any = {};
+    if (message.username !== "") {
+      obj.username = message.username;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetAccountRequest>, I>>(base?: I): GetAccountRequest {
+    return GetAccountRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetAccountRequest>, I>>(object: I): GetAccountRequest {
+    const message = createBaseGetAccountRequest();
+    message.username = object.username ?? "";
+    return message;
+  },
+};
+
+function createBaseGetAccountResponse(): GetAccountResponse {
+  return { account: undefined };
+}
+
+export const GetAccountResponse: MessageFns<GetAccountResponse> = {
+  encode(message: GetAccountResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.account !== undefined) {
+      Account.encode(message.account, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetAccountResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetAccountResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.account = Account.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetAccountResponse {
+    return { account: isSet(object.account) ? Account.fromJSON(object.account) : undefined };
+  },
+
+  toJSON(message: GetAccountResponse): unknown {
+    const obj: any = {};
+    if (message.account !== undefined) {
+      obj.account = Account.toJSON(message.account);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetAccountResponse>, I>>(base?: I): GetAccountResponse {
+    return GetAccountResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetAccountResponse>, I>>(object: I): GetAccountResponse {
+    const message = createBaseGetAccountResponse();
+    message.account = (object.account !== undefined && object.account !== null)
+      ? Account.fromPartial(object.account)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseAccount(): Account {
+  return { id: "", username: "", email: "", role: "", user: undefined };
+}
+
+export const Account: MessageFns<Account> = {
+  encode(message: Account, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.username !== "") {
+      writer.uint32(18).string(message.username);
+    }
+    if (message.email !== "") {
+      writer.uint32(26).string(message.email);
+    }
+    if (message.role !== "") {
+      writer.uint32(34).string(message.role);
+    }
+    if (message.user !== undefined) {
+      User.encode(message.user, writer.uint32(42).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): Account {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAccount();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.username = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.email = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.role = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.user = User.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Account {
+    return {
+      id: isSet(object.id) ? globalThis.String(object.id) : "",
+      username: isSet(object.username) ? globalThis.String(object.username) : "",
+      email: isSet(object.email) ? globalThis.String(object.email) : "",
+      role: isSet(object.role) ? globalThis.String(object.role) : "",
+      user: isSet(object.user) ? User.fromJSON(object.user) : undefined,
+    };
+  },
+
+  toJSON(message: Account): unknown {
+    const obj: any = {};
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    if (message.username !== "") {
+      obj.username = message.username;
+    }
+    if (message.email !== "") {
+      obj.email = message.email;
+    }
+    if (message.role !== "") {
+      obj.role = message.role;
+    }
+    if (message.user !== undefined) {
+      obj.user = User.toJSON(message.user);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<Account>, I>>(base?: I): Account {
+    return Account.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<Account>, I>>(object: I): Account {
+    const message = createBaseAccount();
+    message.id = object.id ?? "";
+    message.username = object.username ?? "";
+    message.email = object.email ?? "";
+    message.role = object.role ?? "";
+    message.user = (object.user !== undefined && object.user !== null) ? User.fromPartial(object.user) : undefined;
+    return message;
+  },
+};
+
+function createBaseUser(): User {
+  return { id: "" };
+}
+
+export const User: MessageFns<User> = {
+  encode(message: User, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): User {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUser();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): User {
+    return { id: isSet(object.id) ? globalThis.String(object.id) : "" };
+  },
+
+  toJSON(message: User): unknown {
+    const obj: any = {};
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<User>, I>>(base?: I): User {
+    return User.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<User>, I>>(object: I): User {
+    const message = createBaseUser();
+    message.id = object.id ?? "";
+    return message;
+  },
+};
+
 export interface AccountController {
   createAccount(request: CreateAccountRequest): Promise<CreateAccountResponse>;
+  getAccount(request: GetAccountRequest): Promise<GetAccountResponse>;
 }
 
 export const AccountControllerServiceName = "account.AccountController";
@@ -217,11 +538,18 @@ export class AccountControllerClientImpl implements AccountController {
     this.service = opts?.service || AccountControllerServiceName;
     this.rpc = rpc;
     this.createAccount = this.createAccount.bind(this);
+    this.getAccount = this.getAccount.bind(this);
   }
   createAccount(request: CreateAccountRequest): Promise<CreateAccountResponse> {
     const data = CreateAccountRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "createAccount", data);
     return promise.then((data) => CreateAccountResponse.decode(new BinaryReader(data)));
+  }
+
+  getAccount(request: GetAccountRequest): Promise<GetAccountResponse> {
+    const data = GetAccountRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "getAccount", data);
+    return promise.then((data) => GetAccountResponse.decode(new BinaryReader(data)));
   }
 }
 

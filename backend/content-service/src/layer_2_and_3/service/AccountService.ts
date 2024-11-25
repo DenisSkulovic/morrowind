@@ -11,6 +11,21 @@ export class AccountService extends RepositoryServiceBase {
         super(settings)
     }
 
+    public async getAccount(
+        username: string,
+        source: DataSourceEnum,
+    ): Promise<Account[]> {
+        const dataSource: DataSource | undefined = sourcesMap.get(source)
+        if (!dataSource) throw new Error(`failed to get data source for source: "${source}"`)
+        const accountRepository: Repository<Account> = dataSource.getRepository(Account)
+        const accounts: Account[] = await accountRepository.find({
+            where: { username },
+            relations: { user: true }
+        })
+        console.log(`[AccountService - getAccount] accounts:`, accounts)
+        return accounts
+    }
+
     public async createAccountAndUser(
         username: string,
         password_hash: string, // TODO clearly this is only for testing purposes; will use a proper auth approach
@@ -18,24 +33,26 @@ export class AccountService extends RepositoryServiceBase {
         role: AccountRoleEnum,
         source: DataSourceEnum,
     ): Promise<{ account: Account, user: User }> {
+        console.log(`[AccountService - createAccountAndUser] entry:`, JSON.stringify({ username, password_hash, email, role, source }))
         const dataSource: DataSource | undefined = sourcesMap.get(source)
         if (!dataSource) throw new Error(`failed to get data source for source: "${source}"`)
-        const userRepository: Repository<User> = dataSource.getRepository(User)
-        console.log(`before create user`)
-        const user: User = userRepository.create({
 
-        })
-        console.log(`after create user`)
+        const userRepository: Repository<User> = dataSource.getRepository(User)
         const accountRepository: Repository<Account> = dataSource.getRepository(Account)
+
+        const user: User = userRepository.create()
+        console.log(`[AccountService - createAccountAndUser] created user`)
         const account: Account = accountRepository.create({
             username,
             password_hash,
             email,
             role,
         })
-        account.user = user
+        console.log(`[AccountService - createAccountAndUser] created account`)
         user.account = account
-        await account.save() // TODO as far as I know, typeorm saves all connected entities as well, if they are changed or new, so this should also save the user
+        account.user = user
+        console.log(`[AccountService - createAccountAndUser] user, account:`, user, account)
+        await accountRepository.save(account) // TODO as far as I know, typeorm saves all connected entities as well, if they are changed or new, so this should also save the user
         return { account, user }
     }
 }
