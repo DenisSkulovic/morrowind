@@ -32,7 +32,7 @@ export class BlueprintEditService extends RepositoryServiceBase {
         if (!world) throw new Error(`World with ID ${worldId} not found.`);
 
         // Get the appropriate repository for the target entity
-        const blueprintRepository: Repository<ContentBase> = this.getContentRepository(blueprintData.targetEntity, source);
+        const blueprintRepository: Repository<ContentBase> = this.getRepository(blueprintData.targetEntity, source);
 
         // Check for an existing blueprint in the repository
         const existingBlueprint = await blueprintRepository.findOne({ where: { id: blueprintData.id } });
@@ -65,7 +65,7 @@ export class BlueprintEditService extends RepositoryServiceBase {
         source: DataSourceEnum,
         targetEntity: string
     ): Promise<void> {
-        const blueprintRepository: Repository<ContentBase> = this.getContentRepository(targetEntity, source);
+        const blueprintRepository: Repository<ContentBase> = this.getRepository(targetEntity, source);
         const blueprint = await blueprintRepository.findOne({ where: { id: blueprintId } });
         if (!blueprint) throw new Error(`Blueprint with ID ${blueprintId} not found`);
         await blueprintRepository.remove(blueprint);
@@ -85,7 +85,7 @@ export class BlueprintEditService extends RepositoryServiceBase {
         page: number,
         limit: number
     ): Promise<ContentBase[]> {
-        const blueprintRepository: Repository<ContentBase> = this.getContentRepository(targetEntity, source);
+        const blueprintRepository: Repository<ContentBase> = this.getRepository(targetEntity, source);
         const queryBuilder = blueprintRepository.createQueryBuilder("content")
             .where("content.worldId = :worldId", { worldId });
 

@@ -26,10 +26,10 @@ export class StorageSlot extends ContentBase {
     @Column({type: "varchar", length: 50})
     name!: string
 
-    @Column({ nullable: true })
+    @Column({type: "jsonb", nullable: true })
     grid!: [number, number]; // Grid configuration for storage slots
 
-    @Column("json", { default: [] })
+    @Column({ type:"jsonb", default: [] })
     gridState!: StorageGrid; // 2D array representing the grid's current state
 
     @Column({ nullable: true })

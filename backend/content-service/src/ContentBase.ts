@@ -1,5 +1,8 @@
 import { BaseEntity, BeforeInsert, Column, PrimaryColumn } from "typeorm";
 import { randomUUID } from "crypto";
+import { Campaign } from "./entities/Campaign";
+import { User } from "./entities/User";
+import { World } from "./entities/World";
 
 export abstract class ContentBase extends BaseEntity {
 
@@ -18,4 +21,8 @@ export abstract class ContentBase extends BaseEntity {
 
     stackable = false
     maxQuantity = 1
+
+    user!: User;
+    campaign?: Campaign;
+    world!: World;
 }

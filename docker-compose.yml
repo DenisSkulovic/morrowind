@@ -9,7 +9,7 @@ services:
     container_name: content_service
     restart: always
     ports:
-      - "5001:5000"
+      - "5001:50051"
     environment:
       - DATABASE_USER=${POSTGRES_USER}
       - DATABASE_PASSWORD=${POSTGRES_PASSWORD}
@@ -21,7 +21,7 @@ services:
       - DATABASE_NAME__CAMPAIGN=${POSTGRES_DB__CAMPAIGN}
     volumes:
       - /home/denis/CODE/morrowind2/backend/content-service:/usr/src/app
-      - /usr/src/app/node_modules
+      - content-service-node-modules:/usr/src/app/node_modules
     depends_on:
       - world-db
       - campaign-db
@@ -37,7 +37,7 @@ services:
   #   container_name: ai_service
   #   restart: always
   #   ports:
-  #     - "5002:5000"
+  #     - "5002:50051"
   #   depends_on:
   #     - world-db
   #   profiles:
@@ -50,7 +50,7 @@ services:
   #   container_name: campaign_service
   #   restart: always
   #   ports:
-  #     - "5003:5000"
+  #     - "5003:50051"
   #   depends_on:
   #     - campaign-db
   #   profiles:
@@ -63,7 +63,7 @@ services:
   #   container_name: combat_service
   #   restart: always
   #   ports:
-  #     - "5004:5000"
+  #     - "5004:50051"
   #   depends_on:
   #     - world-db
   #   profiles:
@@ -76,7 +76,7 @@ services:
   #   container_name: dialogue_service
   #   restart: always
   #   ports:
-  #     - "5005:5000"
+  #     - "5005:50051"
   #   depends_on:
   #     - world-db
   #   profiles:
@@ -89,7 +89,7 @@ services:
   #   container_name: trade_service
   #   restart: always
   #   ports:
-  #     - "5006:5000"
+  #     - "5006:50051"
   #   depends_on:
   #     - world-db
   #   profiles:
@@ -162,3 +162,4 @@ services:
 volumes:
   world_db_data:
   campaign_db_data:
+  content-service-node-modules:

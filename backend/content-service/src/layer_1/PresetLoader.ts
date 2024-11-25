@@ -11,13 +11,13 @@ export class PresetLoader {
     /**
      * Loads all blueprints from a given preset folder and fills the database.
      */
-    public static async loadPreset(
+    public static async loadPreset<T extends ContentBase>(
         preset: PresetEnum
-    ): Promise<Record<string, Record<string, ContentBase>>> {
+    ): Promise<Record<string, Record<string, T>>> {
         const presetPath = join(__dirname, this.basePath, preset);
         const files = this._getJSONFiles(presetPath);
 
-        const allBlueprints: Record<string, Record<string, ContentBase>> = {};
+        const allBlueprints: Record<string, Record<string, T>> = {};
 
         for (const file of files) {
             const entities = this._loadBlueprintsFromFile(presetPath, file);
@@ -41,23 +41,23 @@ export class PresetLoader {
     /**
      * Loads blueprints from a single JSON file.
      */
-    private static _loadBlueprintsFromFile(
+    private static _loadBlueprintsFromFile<T extends ContentBase>(
         presetPath: string,
         file: string
-    ): Record<string, Record<string, ContentBase>> {
+    ): Record<string, Record<string, T>> {
         const path = join(presetPath, file);
         const fileContent = readFileSync(path, "utf-8");
         const blueprintsRaw: Array<{ targetEntity: string; [key: string]: any }> = JSON.parse(fileContent);
 
-        const entitiesByType: Record<string, Record<string, ContentBase>> = {};
+        const entitiesByType: Record<string, Record<string, T>> = {};
 
         for (const blueprintRaw of blueprintsRaw) {
             const { targetEntity, ...props } = blueprintRaw;
 
             if (!targetEntity) throw new Error(`Missing targetEntity in file: ${file}`);
 
-            const EntityClass: EntityConstructor<ContentBase> = this._getBlueprintEntity(targetEntity);
-            const entity: ContentBase = new EntityClass();
+            const EntityClass: EntityConstructor<T> = this._getBlueprintEntity(targetEntity);
+            const entity: T = new EntityClass();
 
             // Populate entity properties
             for (const [propKey, propValue] of Object.entries(props)) {
@@ -77,8 +77,8 @@ export class PresetLoader {
     /**
      * Retrieves the constructor for the target entity.
      */
-    private static _getBlueprintEntity(targetEntity: string): EntityConstructor<ContentBase> {
-        const EntityClass: EntityConstructor<ContentBase> | undefined = cEM[targetEntity];
+    private static _getBlueprintEntity<T extends ContentBase>(targetEntity: string): EntityConstructor<T> {
+        const EntityClass: EntityConstructor<T> | undefined = cEM[targetEntity] as EntityConstructor<T> | undefined;
         if (!EntityClass) throw new Error(`Unknown targetEntity: ${targetEntity}`);
         return EntityClass;
     }

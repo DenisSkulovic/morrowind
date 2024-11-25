@@ -1,5 +1,4 @@
-import { BlueprintGenInstruction_Simple, CombinatorCondition, Probability_0_to_1 } from "../layer_1/types"
-import { GenerationInstruction } from "../types"
+import { BlueprintGenInstruction_Simple, CombinatorCondition, GenerationInstruction, Probability_0_to_1 } from "../types"
 
 export class IdAndQuant {
     blueprint_id: string

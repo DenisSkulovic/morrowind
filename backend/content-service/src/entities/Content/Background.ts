@@ -4,7 +4,6 @@ import { Campaign } from "../Campaign";
 import { User } from "../User";
 import { World } from "../World";
 import { randomUUID } from "crypto";
-import { BlueprintGenInstruction_Gaussian, ProbObject_Simple } from "../../layer_1/types";
 import { GenerationInstruction } from "../../types";
 
 

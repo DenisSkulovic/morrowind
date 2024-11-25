@@ -13,8 +13,11 @@ RUN npm install
 # Copy the rest of the code into the container
 COPY src/ ./src
 
-# Expose the backend port
-EXPOSE 5000
+# Generate gRPC code if needed (optional, for runtime generation)
+RUN npx protoc --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=. ./src/proto/*.proto
 
-# Start the backend server with hot reloading
+# Expose the gRPC server port
+EXPOSE 50051
+
+# Start the gRPC server
 CMD ["npx", "nodemon", "src/index.ts"]

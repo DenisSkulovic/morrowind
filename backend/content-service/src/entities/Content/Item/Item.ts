@@ -15,7 +15,7 @@ import { EquipmentSlot } from "../Slot/EquipmentSlot";
 export class Item extends TaggableContentBase {
     @PrimaryColumn()
     id?: string;
-    
+
     @BeforeInsert()
     generateId() {
         if (this.targetEntity) this.id = this.blueprint_id
@@ -29,7 +29,7 @@ export class Item extends TaggableContentBase {
     description?: string; // Item description or lore.
 
     // properties
-    @Column("json", { nullable: true })
+    @Column({ type: "jsonb", nullable: true })
     size!: [number, number]; // Grid size for grid-based inventories
     @Column({ default: 0 })
     weight!: number;
@@ -46,7 +46,7 @@ export class Item extends TaggableContentBase {
     @Column({ type: "enum", enum: ["ATTACK", "BLOCK", "USE"] })
     actions!: string[];
 
-    @Column("jsonb", { default: null, nullable: true })
+    @Column({ type: "jsonb", default: null, nullable: true })
     requirements!: ItemRequirements
 
     // flags
@@ -64,7 +64,7 @@ export class Item extends TaggableContentBase {
     // slots
     @ManyToOne(() => StorageSlot, storageSlot => storageSlot.parentItem)
     storageSlot?: StorageSlot; // the slot where this item is stored (in a backpack section, for e.g., for in a pocket)
-    @Column({ nullable: true })
+    @Column({ type: "jsonb", nullable: true })
     grid_position?: { x: number; y: number }; // Item's top-left corner on the grid inside a storage slot
     @OneToMany(() => StorageSlot, storageSlot => storageSlot.storedItems)
     storageSlots?: StorageSlot[]; // the storage slots this item itself has (this is a backpack and it has 3 sections, i.e. slots)

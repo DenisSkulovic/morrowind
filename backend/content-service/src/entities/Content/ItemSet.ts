@@ -1,10 +1,10 @@
 import { Entity, PrimaryColumn, Column, ManyToOne, PrimaryGeneratedColumn, BeforeInsert } from "typeorm";
 import { ContentBase } from "../../ContentBase";
-import { BlueprintSetCombinator } from "../../layer_1/types";
 import { Campaign } from "../Campaign";
 import { User } from "../User";
 import { World } from "../World";
 import { randomUUID } from "crypto";
+import { BlueprintSetCombinator } from "../../class/blueprint_id_and_prob";
 
 @Entity()
 export class ItemSet extends ContentBase {

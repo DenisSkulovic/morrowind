@@ -15,7 +15,7 @@ export class RepositoryServiceBase {
         this.settings = settings
     }
 
-    public getRepository(targetEntity: string, source: DataSourceEnum): Repository<ContentBase> {
+    protected getRepository(targetEntity: string, source: DataSourceEnum): Repository<ContentBase> {
         const dataSource: DataSource | undefined = this.settings.sourcesMap.get(source)
         if (!dataSource) throw new Error(`no data source found for "${source}"`)
         const entity: EntityConstructor<ContentBase> = contentEntityMap[targetEntity];

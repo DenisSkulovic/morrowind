@@ -4,7 +4,6 @@ import { User } from "../User";
 import { World } from "../World";
 import { randomUUID } from "crypto";
 import { ContentBase } from "../../ContentBase";
-import { IdAndQuant } from "../../layer_2_and_3/generator/AbstractProbGenerator";
 import { Background } from "./Background";
 
 

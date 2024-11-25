@@ -1,6 +1,10 @@
 import { TableInheritance, Entity, Column, PrimaryGeneratedColumn, OneToMany, BaseEntity, OneToOne, JoinColumn } from "typeorm";
 import { User } from "./User";
 
+export enum AccountRoleEnum {
+    PLAYER = "player",
+    ADMIN = "admin"
+}
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })

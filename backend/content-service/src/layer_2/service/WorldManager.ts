@@ -10,6 +10,8 @@ import { World } from "../../entities/World";
 import { PresetEnum } from "../../enum/PresetEnum";
 import { ContentBase } from "../../ContentBase";
 import { TemporarilyFreezeWorld } from "../../decorator/TemporarilyFreezeWorld";
+import { Repository } from "typeorm";
+import { User } from "../../entities/User";
 
 export class WorldService extends RepositoryServiceBase {
 
@@ -22,9 +24,13 @@ export class WorldService extends RepositoryServiceBase {
     /**
      * Creates a new world.
      */
-    public async createWorld(name: string, description: string): Promise<World> {
-        const worldRepository = WorldDataSource.getRepository(World)
-        const newWorld = worldRepository.create({ name, description });
+    public async createWorld(name: string, description: string, user: User): Promise<World> {
+        const worldRepository: Repository<World> = WorldDataSource.getRepository(World)
+        const newWorld: World = worldRepository.create({
+            name,
+            description,
+            user
+        });
         return await worldRepository.save(newWorld);
     }
 
@@ -34,7 +40,7 @@ export class WorldService extends RepositoryServiceBase {
      * Loads blueprints from a preset folder and upserts them into the database in batches.
      */
     @TemporarilyFreezeWorld("worldId")
-    public async loadPresetIntoWorld(
+    public async loadPresetIntoWorld<T extends ContentBase>(
         preset: PresetEnum,
         worldId: string,
         batchSize: number = 50,
@@ -44,10 +50,10 @@ export class WorldService extends RepositoryServiceBase {
         if (dropPreviousContent) await this.dropWorldContents(worldId)
 
         // Load blueprints from the preset folder
-        const allBlueprints: Record<string, Record<string, ContentBase>> = await PresetLoader.loadPreset(preset);
+        const allBlueprints: Record<string, Record<string, T>> = await PresetLoader.loadPreset(preset);
 
         for (const [targetEntity, blueprintMap] of Object.entries(allBlueprints)) {
-            const blueprintRepository = this.getContentRepository(targetEntity, DataSourceEnum.WORLD);
+            const blueprintRepository = this.getRepository(targetEntity, DataSourceEnum.WORLD);
 
             // Process blueprints in batches
             const blueprints = Object.values(blueprintMap);
@@ -74,19 +80,19 @@ export class WorldService extends RepositoryServiceBase {
     public async dropWorldContents(worldId: string): Promise<void> {
 
         await WorldDataSource.transaction(async (transactionManager) => {
-            const worldRepository = transactionManager.getRepository(cEM.World);
-            const world = await worldRepository.findOne({ where: { id: worldId } });
+            const worldRepository: Repository<World> = transactionManager.getRepository(World);
+            const world: World | null = await worldRepository.findOne({ where: { id: worldId } });
 
             if (!world) throw new Error(`World with ID ${worldId} not found.`);
 
             // Iterate over all entities in entityMap
             for (const [targetEntity, EntityClass] of Object.entries(cEM)) {
-                if (!isParentEntity(EntityClass)) continue; // Skip ChildEntity
+                if (!isParentEntity(EntityClass)) continue; // Skip ChildEntity, meaning only process entities that create tables
 
-                const repository = transactionManager.getRepository(EntityClass);
+                const repository: Repository<ContentBase> = transactionManager.getRepository(EntityClass);
 
                 // Delete all content related to the world
-                await repository.delete({ world: { id: worldId } });
+                await repository.delete({ world });
             }
 
             console.log(`All content for world ${worldId} has been deleted.`);
