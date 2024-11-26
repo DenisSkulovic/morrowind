@@ -9,6 +9,46 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 
 export const protobufPackage = "world";
 
+export enum PresetEnum {
+  /** UNKNOWN - Default value */
+  UNKNOWN = 0,
+  default = 1,
+  morrowind = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function presetEnumFromJSON(object: any): PresetEnum {
+  switch (object) {
+    case 0:
+    case "UNKNOWN":
+      return PresetEnum.UNKNOWN;
+    case 1:
+    case "default":
+      return PresetEnum.default;
+    case 2:
+    case "morrowind":
+      return PresetEnum.morrowind;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return PresetEnum.UNRECOGNIZED;
+  }
+}
+
+export function presetEnumToJSON(object: PresetEnum): string {
+  switch (object) {
+    case PresetEnum.UNKNOWN:
+      return "UNKNOWN";
+    case PresetEnum.default:
+      return "default";
+    case PresetEnum.morrowind:
+      return "morrowind";
+    case PresetEnum.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
 export interface CreateWorldRequest {
   name: string;
   description?: string | undefined;
@@ -25,6 +65,40 @@ export interface GetWorldRequest {
 
 export interface GetWorldResponse {
   world: World | undefined;
+}
+
+export interface GetWorldsForUserRequest {
+  userId: string;
+}
+
+export interface GetWorldsForUserResponse {
+  worlds: World[];
+}
+
+export interface DeleteWorldRequest {
+  worldId: string;
+}
+
+/** No fields required for a 200 status response */
+export interface DeleteWorldResponse {
+}
+
+export interface DropWorldContentRequest {
+  worldId: string;
+}
+
+/** No fields required for a 200 status response */
+export interface DropWorldContentResponse {
+}
+
+export interface LoadWorldPresetRequest {
+  worldId: string;
+  userId: string;
+  preset: PresetEnum;
+}
+
+/** No fields required for a 200 status response */
+export interface LoadWorldPresetResponse {
 }
 
 export interface World {
@@ -299,6 +373,459 @@ export const GetWorldResponse: MessageFns<GetWorldResponse> = {
   },
 };
 
+function createBaseGetWorldsForUserRequest(): GetWorldsForUserRequest {
+  return { userId: "" };
+}
+
+export const GetWorldsForUserRequest: MessageFns<GetWorldsForUserRequest> = {
+  encode(message: GetWorldsForUserRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.userId !== "") {
+      writer.uint32(10).string(message.userId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetWorldsForUserRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetWorldsForUserRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.userId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetWorldsForUserRequest {
+    return { userId: isSet(object.userId) ? globalThis.String(object.userId) : "" };
+  },
+
+  toJSON(message: GetWorldsForUserRequest): unknown {
+    const obj: any = {};
+    if (message.userId !== "") {
+      obj.userId = message.userId;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetWorldsForUserRequest>, I>>(base?: I): GetWorldsForUserRequest {
+    return GetWorldsForUserRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetWorldsForUserRequest>, I>>(object: I): GetWorldsForUserRequest {
+    const message = createBaseGetWorldsForUserRequest();
+    message.userId = object.userId ?? "";
+    return message;
+  },
+};
+
+function createBaseGetWorldsForUserResponse(): GetWorldsForUserResponse {
+  return { worlds: [] };
+}
+
+export const GetWorldsForUserResponse: MessageFns<GetWorldsForUserResponse> = {
+  encode(message: GetWorldsForUserResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.worlds) {
+      World.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetWorldsForUserResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetWorldsForUserResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.worlds.push(World.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetWorldsForUserResponse {
+    return { worlds: globalThis.Array.isArray(object?.worlds) ? object.worlds.map((e: any) => World.fromJSON(e)) : [] };
+  },
+
+  toJSON(message: GetWorldsForUserResponse): unknown {
+    const obj: any = {};
+    if (message.worlds?.length) {
+      obj.worlds = message.worlds.map((e) => World.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetWorldsForUserResponse>, I>>(base?: I): GetWorldsForUserResponse {
+    return GetWorldsForUserResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetWorldsForUserResponse>, I>>(object: I): GetWorldsForUserResponse {
+    const message = createBaseGetWorldsForUserResponse();
+    message.worlds = object.worlds?.map((e) => World.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseDeleteWorldRequest(): DeleteWorldRequest {
+  return { worldId: "" };
+}
+
+export const DeleteWorldRequest: MessageFns<DeleteWorldRequest> = {
+  encode(message: DeleteWorldRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.worldId !== "") {
+      writer.uint32(10).string(message.worldId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DeleteWorldRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteWorldRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.worldId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteWorldRequest {
+    return { worldId: isSet(object.worldId) ? globalThis.String(object.worldId) : "" };
+  },
+
+  toJSON(message: DeleteWorldRequest): unknown {
+    const obj: any = {};
+    if (message.worldId !== "") {
+      obj.worldId = message.worldId;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeleteWorldRequest>, I>>(base?: I): DeleteWorldRequest {
+    return DeleteWorldRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<DeleteWorldRequest>, I>>(object: I): DeleteWorldRequest {
+    const message = createBaseDeleteWorldRequest();
+    message.worldId = object.worldId ?? "";
+    return message;
+  },
+};
+
+function createBaseDeleteWorldResponse(): DeleteWorldResponse {
+  return {};
+}
+
+export const DeleteWorldResponse: MessageFns<DeleteWorldResponse> = {
+  encode(_: DeleteWorldResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DeleteWorldResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteWorldResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): DeleteWorldResponse {
+    return {};
+  },
+
+  toJSON(_: DeleteWorldResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeleteWorldResponse>, I>>(base?: I): DeleteWorldResponse {
+    return DeleteWorldResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<DeleteWorldResponse>, I>>(_: I): DeleteWorldResponse {
+    const message = createBaseDeleteWorldResponse();
+    return message;
+  },
+};
+
+function createBaseDropWorldContentRequest(): DropWorldContentRequest {
+  return { worldId: "" };
+}
+
+export const DropWorldContentRequest: MessageFns<DropWorldContentRequest> = {
+  encode(message: DropWorldContentRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.worldId !== "") {
+      writer.uint32(10).string(message.worldId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DropWorldContentRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDropWorldContentRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.worldId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DropWorldContentRequest {
+    return { worldId: isSet(object.worldId) ? globalThis.String(object.worldId) : "" };
+  },
+
+  toJSON(message: DropWorldContentRequest): unknown {
+    const obj: any = {};
+    if (message.worldId !== "") {
+      obj.worldId = message.worldId;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DropWorldContentRequest>, I>>(base?: I): DropWorldContentRequest {
+    return DropWorldContentRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<DropWorldContentRequest>, I>>(object: I): DropWorldContentRequest {
+    const message = createBaseDropWorldContentRequest();
+    message.worldId = object.worldId ?? "";
+    return message;
+  },
+};
+
+function createBaseDropWorldContentResponse(): DropWorldContentResponse {
+  return {};
+}
+
+export const DropWorldContentResponse: MessageFns<DropWorldContentResponse> = {
+  encode(_: DropWorldContentResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DropWorldContentResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDropWorldContentResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): DropWorldContentResponse {
+    return {};
+  },
+
+  toJSON(_: DropWorldContentResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DropWorldContentResponse>, I>>(base?: I): DropWorldContentResponse {
+    return DropWorldContentResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<DropWorldContentResponse>, I>>(_: I): DropWorldContentResponse {
+    const message = createBaseDropWorldContentResponse();
+    return message;
+  },
+};
+
+function createBaseLoadWorldPresetRequest(): LoadWorldPresetRequest {
+  return { worldId: "", userId: "", preset: 0 };
+}
+
+export const LoadWorldPresetRequest: MessageFns<LoadWorldPresetRequest> = {
+  encode(message: LoadWorldPresetRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.worldId !== "") {
+      writer.uint32(10).string(message.worldId);
+    }
+    if (message.userId !== "") {
+      writer.uint32(18).string(message.userId);
+    }
+    if (message.preset !== 0) {
+      writer.uint32(24).int32(message.preset);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): LoadWorldPresetRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseLoadWorldPresetRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.worldId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.userId = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.preset = reader.int32() as any;
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): LoadWorldPresetRequest {
+    return {
+      worldId: isSet(object.worldId) ? globalThis.String(object.worldId) : "",
+      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+      preset: isSet(object.preset) ? presetEnumFromJSON(object.preset) : 0,
+    };
+  },
+
+  toJSON(message: LoadWorldPresetRequest): unknown {
+    const obj: any = {};
+    if (message.worldId !== "") {
+      obj.worldId = message.worldId;
+    }
+    if (message.userId !== "") {
+      obj.userId = message.userId;
+    }
+    if (message.preset !== 0) {
+      obj.preset = presetEnumToJSON(message.preset);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<LoadWorldPresetRequest>, I>>(base?: I): LoadWorldPresetRequest {
+    return LoadWorldPresetRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<LoadWorldPresetRequest>, I>>(object: I): LoadWorldPresetRequest {
+    const message = createBaseLoadWorldPresetRequest();
+    message.worldId = object.worldId ?? "";
+    message.userId = object.userId ?? "";
+    message.preset = object.preset ?? 0;
+    return message;
+  },
+};
+
+function createBaseLoadWorldPresetResponse(): LoadWorldPresetResponse {
+  return {};
+}
+
+export const LoadWorldPresetResponse: MessageFns<LoadWorldPresetResponse> = {
+  encode(_: LoadWorldPresetResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): LoadWorldPresetResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseLoadWorldPresetResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): LoadWorldPresetResponse {
+    return {};
+  },
+
+  toJSON(_: LoadWorldPresetResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<LoadWorldPresetResponse>, I>>(base?: I): LoadWorldPresetResponse {
+    return LoadWorldPresetResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<LoadWorldPresetResponse>, I>>(_: I): LoadWorldPresetResponse {
+    const message = createBaseLoadWorldPresetResponse();
+    return message;
+  },
+};
+
 function createBaseWorld(): World {
   return { id: "", name: "", description: undefined };
 }
@@ -394,6 +921,10 @@ export const World: MessageFns<World> = {
 export interface WorldController {
   createWorld(request: CreateWorldRequest): Promise<CreateWorldResponse>;
   getWorld(request: GetWorldRequest): Promise<GetWorldResponse>;
+  getWorldsForUser(request: GetWorldsForUserRequest): Promise<GetWorldsForUserResponse>;
+  deleteWorld(request: DeleteWorldRequest): Promise<DeleteWorldResponse>;
+  dropWorldContent(request: DropWorldContentRequest): Promise<DropWorldContentResponse>;
+  loadWorldPreset(request: LoadWorldPresetRequest): Promise<LoadWorldPresetResponse>;
 }
 
 export const WorldControllerServiceName = "world.WorldController";
@@ -405,6 +936,10 @@ export class WorldControllerClientImpl implements WorldController {
     this.rpc = rpc;
     this.createWorld = this.createWorld.bind(this);
     this.getWorld = this.getWorld.bind(this);
+    this.getWorldsForUser = this.getWorldsForUser.bind(this);
+    this.deleteWorld = this.deleteWorld.bind(this);
+    this.dropWorldContent = this.dropWorldContent.bind(this);
+    this.loadWorldPreset = this.loadWorldPreset.bind(this);
   }
   createWorld(request: CreateWorldRequest): Promise<CreateWorldResponse> {
     const data = CreateWorldRequest.encode(request).finish();
@@ -416,6 +951,30 @@ export class WorldControllerClientImpl implements WorldController {
     const data = GetWorldRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "getWorld", data);
     return promise.then((data) => GetWorldResponse.decode(new BinaryReader(data)));
+  }
+
+  getWorldsForUser(request: GetWorldsForUserRequest): Promise<GetWorldsForUserResponse> {
+    const data = GetWorldsForUserRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "getWorldsForUser", data);
+    return promise.then((data) => GetWorldsForUserResponse.decode(new BinaryReader(data)));
+  }
+
+  deleteWorld(request: DeleteWorldRequest): Promise<DeleteWorldResponse> {
+    const data = DeleteWorldRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "deleteWorld", data);
+    return promise.then((data) => DeleteWorldResponse.decode(new BinaryReader(data)));
+  }
+
+  dropWorldContent(request: DropWorldContentRequest): Promise<DropWorldContentResponse> {
+    const data = DropWorldContentRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "dropWorldContent", data);
+    return promise.then((data) => DropWorldContentResponse.decode(new BinaryReader(data)));
+  }
+
+  loadWorldPreset(request: LoadWorldPresetRequest): Promise<LoadWorldPresetResponse> {
+    const data = LoadWorldPresetRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "loadWorldPreset", data);
+    return promise.then((data) => LoadWorldPresetResponse.decode(new BinaryReader(data)));
   }
 }
 

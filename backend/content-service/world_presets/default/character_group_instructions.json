@@ -11,7 +11,8 @@
                     "prob": 1,
                     "avg_quan": 5,
                     "st_dev": 1,
-                    "skew": 0
+                    "skew": 0,
+                    "clazz": "BlueprintGenInstruction_Gaussian"
                 }
             ]
         },
@@ -29,7 +30,8 @@
                     "prob": 1,
                     "avg_quan": 2,
                     "st_dev": 0,
-                    "skew": 0
+                    "skew": 0,
+                    "clazz": "BlueprintGenInstruction_Gaussian"
                 }
             ]
         },

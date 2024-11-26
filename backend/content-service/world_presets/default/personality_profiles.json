@@ -1,0 +1,191 @@
+[
+    {
+        "blueprint_id": "PROFILE_IDEALIST",
+        "name": "The Idealist",
+        "enneagramType": "1w9",
+        "traits": [
+            {
+                "cond": "ANY",
+                "prob": {
+                    "HOPEFUL": 0.9,
+                    "OPTIMISTIC": 0.8,
+                    "EMPATHETIC": 0.7,
+                    "VISIONARY": 0.8,
+                    "MOTIVATIONAL": 0.7,
+                    "UNREALISTIC": 0.6,
+                    "OVERLY_TRUSTING": 0.5
+                },
+                "clazz": "ProbObject_Simple"
+            }
+        ],
+        "targetEntitity": "PersonalityProfile"
+    },
+    {
+        "blueprint_id": "PROFILE_DIPLOMAT",
+        "name": "The Diplomat",
+        "enneagramType": "9w1",
+        "traits": [
+            {
+                "cond": "ANY",
+                "prob": {
+                    "PEACEFUL": 0.9,
+                    "COOPERATIVE": 0.8,
+                    "SKILLED_MEDIATOR": 0.7,
+                    "FAIR": 0.8,
+                    "COMPASSIONATE": 0.7,
+                    "AVOIDANT": 0.6,
+                    "INDECISIVE": 0.5
+                },
+                "clazz": "ProbObject_Simple"
+            }
+        ],
+        "targetEntitity": "PersonalityProfile"
+    },
+    {
+        "blueprint_id": "PROFILE_MENTOR",
+        "name": "The Mentor",
+        "enneagramType": "2w1",
+        "traits": [
+            {
+                "cond": "ANY",
+                "prob": {
+                    "WISE": 0.9,
+                    "NURTURING": 0.8,
+                    "PATIENT": 0.7,
+                    "INSIGHTFUL": 0.8,
+                    "SUPPORTIVE": 0.7,
+                    "OVERPROTECTIVE": 0.6,
+                    "DISMISSIVE_OF_INDEPENDENCE": 0.5
+                },
+                "clazz": "ProbObject_Simple"
+            }
+        ],
+        "targetEntitity": "PersonalityProfile"
+    },
+    {
+        "blueprint_id": "PROFILE_LOYAL_COMPANION",
+        "name": "The Loyal Companion",
+        "enneagramType": "6w5",
+        "traits": [
+            {
+                "cond": "ANY",
+                "prob": {
+                    "DEVOTED": 0.9,
+                    "STEADFAST": 0.8,
+                    "DEPENDABLE": 0.7,
+                    "PROTECTIVE": 0.8,
+                    "COURAGEOUS": 0.7,
+                    "CLINGY": 0.6,
+                    "OVERLY_CAUTIOUS": 0.5
+                },
+                "clazz": "ProbObject_Simple"
+            }
+        ],
+        "targetEntitity": "PersonalityProfile"
+    },
+    {
+        "blueprint_id": "PROFILE_CHARMER",
+        "name": "The Charmer",
+        "enneagramType": "3w2",
+        "traits": [
+            {
+                "cond": "ANY",
+                "prob": {
+                    "SOCIABLE": 0.9,
+                    "CHARISMATIC": 0.8,
+                    "QUICK_WITTED": 0.7,
+                    "DIPLOMATIC": 0.8,
+                    "ADAPTIVE": 0.7,
+                    "SUPERFICIAL": 0.6,
+                    "MANIPULATIVE": 0.5
+                },
+                "clazz": "ProbObject_Simple"
+            }
+        ],
+        "targetEntitity": "PersonalityProfile"
+    },
+    {
+        "blueprint_id": "PROFILE_DREAMER",
+        "name": "The Dreamer",
+        "enneagramType": "4w5",
+        "traits": [
+            {
+                "cond": "ANY",
+                "prob": {
+                    "IMAGINATIVE": 0.9,
+                    "CREATIVE": 0.8,
+                    "INTROSPECTIVE": 0.7,
+                    "INVENTIVE": 0.8,
+                    "INNOVATIVE": 0.7,
+                    "DISCONNECTED": 0.6,
+                    "IMPRACTICAL": 0.5
+                },
+                "clazz": "ProbObject_Simple"
+            }
+        ],
+        "targetEntitity": "PersonalityProfile"
+    },
+    {
+        "blueprint_id": "PROFILE_SURVIVOR",
+        "name": "The Survivor",
+        "enneagramType": "6w7",
+        "traits": [
+            {
+                "cond": "ANY",
+                "prob": {
+                    "RESILIENT": 0.9,
+                    "ADAPTABLE": 0.8,
+                    "PRAGMATIC": 0.7,
+                    "COURAGEOUS": 0.8,
+                    "WISE": 0.7,
+                    "CYNICAL": 0.6,
+                    "MISTRUSTFUL": 0.5
+                },
+                "clazz": "ProbObject_Simple"
+            }
+        ],
+        "targetEntitity": "PersonalityProfile"
+    },
+    {
+        "blueprint_id": "PROFILE_REBEL",
+        "name": "The Rebel",
+        "enneagramType": "8w7",
+        "traits": [
+            {
+                "cond": "ANY",
+                "prob": {
+                    "DEFIANT": 0.9,
+                    "INDEPENDENT": 0.8,
+                    "UNCONVENTIONAL": 0.7,
+                    "DETERMINED": 0.8,
+                    "RESILIENT": 0.7,
+                    "RECKLESS": 0.6,
+                    "CONFRONTATIONAL": 0.5
+                },
+                "clazz": "ProbObject_Simple"
+            }
+        ],
+        "targetEntitity": "PersonalityProfile"
+    },
+    {
+        "blueprint_id": "PROFILE_LONER",
+        "name": "The Loner",
+        "enneagramType": "5w4",
+        "traits": [
+            {
+                "cond": "ANY",
+                "prob": {
+                    "INDEPENDENT": 0.9,
+                    "RESERVED": 0.8,
+                    "INTROSPECTIVE": 0.7,
+                    "WISE": 0.8,
+                    "SELF_SUFFICIENT": 0.7,
+                    "ANTISOCIAL": 0.6,
+                    "DISTRUSTFUL": 0.5
+                },
+                "clazz": "ProbObject_Simple"
+            }
+        ],
+        "targetEntitity": "PersonalityProfile"
+    }
+]

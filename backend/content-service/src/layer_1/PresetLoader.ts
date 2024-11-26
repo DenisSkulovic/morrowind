@@ -5,19 +5,24 @@ import { contentEntityMap as cEM } from "../contentEntityMap";
 import { ContentBase } from "../ContentBase";
 import { PresetEnum } from "../enum/PresetEnum";
 
-export class PresetLoader {
-    private static basePath = "./world_presets"; // Base folder for presets
+export class Preset {
+    [entity: string]: {
+        [blueprint_id: string]: ContentBase
+    }
+}
 
+export class PresetLoader {
     /**
      * Loads all blueprints from a given preset folder and fills the database.
      */
-    public static async loadPreset<T extends ContentBase>(
-        preset: PresetEnum
-    ): Promise<Record<string, Record<string, T>>> {
-        const presetPath = join(__dirname, this.basePath, preset);
-        const files = this._getJSONFiles(presetPath);
+    public static async loadPreset(
+        preset: PresetEnum,
+        pathToPresetsFolder: string
+    ): Promise<Preset> {
+        const presetPath = join(__dirname, pathToPresetsFolder, preset);
+        const files: string[] = this._getJSONFiles(presetPath);
 
-        const allBlueprints: Record<string, Record<string, T>> = {};
+        const allBlueprints: Preset = {};
 
         for (const file of files) {
             const entities = this._loadBlueprintsFromFile(presetPath, file);
@@ -47,7 +52,7 @@ export class PresetLoader {
     ): Record<string, Record<string, T>> {
         const path = join(presetPath, file);
         const fileContent = readFileSync(path, "utf-8");
-        const blueprintsRaw: Array<{ targetEntity: string; [key: string]: any }> = JSON.parse(fileContent);
+        const blueprintsRaw: Array<{ targetEntity: string;[key: string]: any }> = JSON.parse(fileContent);
 
         const entitiesByType: Record<string, Record<string, T>> = {};
 

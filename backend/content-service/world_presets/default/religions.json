@@ -22,7 +22,8 @@
                 "name": "Reverence for Life",
                 "description": "All living things have intrinsic value and must be treated with respect."
             }
-        ]
+        ],
+        "targetEntity": "Religion"
     },
     {
         "blueprint_id": "ANCESTOR_WORSHIP",
@@ -47,7 +48,8 @@
                 "name": "Preserve Tradition",
                 "description": "Follow the customs and practices handed down through generations."
             }
-        ]
+        ],
+        "targetEntity": "Religion"
     },
     {
         "blueprint_id": "MONOTHEISTIC_FAITH",
@@ -72,6 +74,7 @@
                 "name": "Charity",
                 "description": "Help those in need as an expression of divine will."
             }
-        ]
+        ],
+        "targetEntity": "Religion"
     }
 ]

@@ -5,7 +5,8 @@
         "description": "Instantly reduces the target's health.",
         "target": "health",
         "mode": "instant",
-        "type": "damage"
+        "type": "damage",
+        "targetEntity": "Effect"
     },
     {
         "blueprint_id": "HEALTH_DRAIN",
@@ -13,7 +14,8 @@
         "description": "Gradually decreases the target's health over time.",
         "target": "health",
         "mode": "gradual",
-        "type": "damage"
+        "type": "damage",
+        "targetEntity": "Effect"
     },
     {
         "blueprint_id": "HEALTH_RESTORE",
@@ -21,7 +23,8 @@
         "description": "Instantly restores the target's health.",
         "target": "health",
         "mode": "instant",
-        "type": "healing"
+        "type": "healing",
+        "targetEntity": "Effect"
     },
     {
         "blueprint_id": "HEALTH_REGENERATION",
@@ -29,7 +32,8 @@
         "description": "Gradually restores the target's health over time.",
         "target": "health",
         "mode": "gradual",
-        "type": "healing"
+        "type": "healing",
+        "targetEntity": "Effect"
     },
     {
         "blueprint_id": "HEALTH_STEAL",
@@ -37,7 +41,8 @@
         "description": "Steals health from the target and adds it to the caster.",
         "target": "health",
         "mode": "gradual",
-        "type": "stealing"
+        "type": "stealing",
+        "targetEntity": "Effect"
     },
     {
         "blueprint_id": "STAMINA_DAMAGE",
@@ -45,7 +50,8 @@
         "description": "Instantly reduces the target's stamina.",
         "target": "stamina",
         "mode": "instant",
-        "type": "damage"
+        "type": "damage",
+        "targetEntity": "Effect"
     },
     {
         "blueprint_id": "STAMINA_DRAIN",
@@ -53,7 +59,8 @@
         "description": "Gradually decreases the target's stamina over time.",
         "target": "stamina",
         "mode": "gradual",
-        "type": "damage"
+        "type": "damage",
+        "targetEntity": "Effect"
     },
     {
         "blueprint_id": "STAMINA_RESTORE",
@@ -61,7 +68,8 @@
         "description": "Instantly restores the target's stamina.",
         "target": "stamina",
         "mode": "instant",
-        "type": "healing"
+        "type": "healing",
+        "targetEntity": "Effect"
     },
     {
         "blueprint_id": "STAMINA_REGENERATION",
@@ -69,7 +77,8 @@
         "description": "Gradually restores the target's stamina over time.",
         "target": "stamina",
         "mode": "gradual",
-        "type": "healing"
+        "type": "healing",
+        "targetEntity": "Effect"
     },
     {
         "blueprint_id": "STAMINA_STEAL",
@@ -77,7 +86,8 @@
         "description": "Steals stamina from the target and adds it to the caster.",
         "target": "stamina",
         "mode": "gradual",
-        "type": "stealing"
+        "type": "stealing",
+        "targetEntity": "Effect"
     },
     {
         "blueprint_id": "MAGIC_DAMAGE",
@@ -85,7 +95,8 @@
         "description": "Instantly reduces the target's magic.",
         "target": "magic",
         "mode": "instant",
-        "type": "damage"
+        "type": "damage",
+        "targetEntity": "Effect"
     },
     {
         "blueprint_id": "MAGIC_DRAIN",
@@ -93,7 +104,8 @@
         "description": "Gradually decreases the target's magic over time.",
         "target": "magic",
         "mode": "gradual",
-        "type": "damage"
+        "type": "damage",
+        "targetEntity": "Effect"
     },
     {
         "blueprint_id": "MAGIC_RESTORE",
@@ -101,7 +113,8 @@
         "description": "Instantly restores the target's magic.",
         "target": "magic",
         "mode": "instant",
-        "type": "healing"
+        "type": "healing",
+        "targetEntity": "Effect"
     },
     {
         "blueprint_id": "MAGIC_REGENERATION",
@@ -109,7 +122,8 @@
         "description": "Gradually restores the target's magic over time.",
         "target": "magic",
         "mode": "gradual",
-        "type": "healing"
+        "type": "healing",
+        "targetEntity": "Effect"
     },
     {
         "blueprint_id": "MAGIC_STEAL",
@@ -117,7 +131,8 @@
         "description": "Steals magic from the target and adds it to the caster.",
         "target": "magic",
         "mode": "gradual",
-        "type": "stealing"
+        "type": "stealing",
+        "targetEntity": "Effect"
     },
     {
         "blueprint_id": "FIRE_DAMAGE",
@@ -129,7 +144,8 @@
             "gradual"
         ],
         "type": "elemental",
-        "element": "fire"
+        "element": "fire",
+        "targetEntity": "Effect"
     },
     {
         "blueprint_id": "FROST_DAMAGE",
@@ -141,7 +157,8 @@
             "gradual"
         ],
         "type": "elemental",
-        "element": "frost"
+        "element": "frost",
+        "targetEntity": "Effect"
     },
     {
         "blueprint_id": "SHOCK_DAMAGE",
@@ -153,7 +170,8 @@
             "gradual"
         ],
         "type": "elemental",
-        "element": "shock"
+        "element": "shock",
+        "targetEntity": "Effect"
     },
     {
         "blueprint_id": "POISON",
@@ -162,6 +180,7 @@
         "target": "health",
         "mode": "gradual",
         "type": "debuff",
-        "element": "poison"
+        "element": "poison",
+        "targetEntity": "Effect"
     }
 ]

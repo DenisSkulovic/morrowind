@@ -8,7 +8,8 @@
             "BLOCK": 25,
             "HEAVY_ARMOR": 20,
             "LIGHT_ARMOR": 10
-        }
+        },
+        "targetEntity": "SkillSet"
     },
     {
         "blueprint_id": "COMBAT_ADVANCED_SWORDSMAN",
@@ -19,7 +20,8 @@
             "BLOCK": 50,
             "HEAVY_ARMOR": 40,
             "LIGHT_ARMOR": 30
-        }
+        },
+        "targetEntity": "SkillSet"
     },
     {
         "blueprint_id": "COMBAT_MASTER_SWORDSMAN",
@@ -30,7 +32,8 @@
             "BLOCK": 70,
             "HEAVY_ARMOR": 60,
             "LIGHT_ARMOR": 50
-        }
+        },
+        "targetEntity": "SkillSet"
     },
     {
         "blueprint_id": "COMBAT_COMMON_SKIRMISHER",
@@ -40,7 +43,8 @@
             "BLOCK": 15,
             "LIGHT_ARMOR": 20,
             "MARKSMAN": 20
-        }
+        },
+        "targetEntity": "SkillSet"
     },
     {
         "blueprint_id": "COMBAT_COMMON_SPEARMAN",
@@ -49,7 +53,8 @@
             "SPEAR": 20,
             "LIGHT_ARMOR": 10,
             "HEAVY_ARMOR": 20
-        }
+        },
+        "targetEntity": "SkillSet"
     },
     {
         "blueprint_id": "COMBAT_COMMON_ARCHER",
@@ -57,7 +62,8 @@
         "skill_improvement": {
             "MARKSMAN": 20,
             "LIGHT_ARMOR": 10
-        }
+        },
+        "targetEntity": "SkillSet"
     },
     {
         "blueprint_id": "COMBAT_ADVANCED_ARCHER",
@@ -65,7 +71,8 @@
         "skill_improvement": {
             "MARKSMAN": 40,
             "LIGHT_ARMOR": 30
-        }
+        },
+        "targetEntity": "SkillSet"
     },
     {
         "blueprint_id": "SOCIAL_COMMON_NEGOTIATOR",
@@ -73,7 +80,8 @@
         "skill_improvement": {
             "MERCHANTILE": 25,
             "SPEECHCRAFT": 25
-        }
+        },
+        "targetEntity": "SkillSet"
     },
     {
         "blueprint_id": "SOCIAL_ADVANCED_NEGOTIATOR",
@@ -81,6 +89,7 @@
         "skill_improvement": {
             "MERCHANTILE": 50,
             "SPEECHCRAFT": 50
-        }
+        },
+        "targetEntity": "SkillSet"
     }
 ]

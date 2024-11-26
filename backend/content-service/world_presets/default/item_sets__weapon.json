@@ -1,0 +1,56 @@
+[
+    {
+        "blueprint_id": "BARE_ARMS",
+        "set": [],
+        "targetEntity": "ItemSet"
+    },
+    {
+        "blueprint_id": "SHORTSWORD_SHIELD",
+        "set": [
+            {
+                "cond": "OR",
+                "prob": {
+                    "IRON_SHORT_SWORD": 0.8,
+                    "STEEL_SHORT_SWORD": 0.2
+                },
+                "clazz": "ProbObject_Simple"
+            },
+            "IRON_SHIELD"
+        ],
+        "targetEntity": "ItemSet"
+    },
+    {
+        "blueprint_id": "SHORTSWORD",
+        "set": [
+            {
+                "cond": "OR",
+                "prob": {
+                    "IRON_SHORT_SWORD": 0.8,
+                    "STEEL_SHORT_SWORD": 0.2
+                },
+                "clazz": "ProbObject_Simple"
+            }
+        ],
+        "targetEntity": "ItemSet"
+    },
+    {
+        "blueprint_id": "BOW_AND_ARROWS",
+        "set": [
+            {
+                "cond": "OR",
+                "prob": {
+                    "SHORT_BOW": 0.8,
+                    "LONG_BOW": 0.2
+                },
+                "clazz": "ProbObject_Simple"
+            },
+            {
+                "blueprint_id": "IRON_ARROW",
+                "avg_quan": 25,
+                "st_dev": 1,
+                "clazz": "BlueprintGenInstruction_Gaussian"
+            }
+        ],
+        "targetEntity": "ItemSet"
+    }
+]

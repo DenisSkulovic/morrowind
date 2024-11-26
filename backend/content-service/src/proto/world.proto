@@ -5,6 +5,10 @@ package world;
 service WorldController {
     rpc createWorld (CreateWorldRequest) returns (CreateWorldResponse);
     rpc getWorld (GetWorldRequest) returns (GetWorldResponse);
+    rpc getWorldsForUser (GetWorldsForUserRequest) returns (GetWorldsForUserResponse);
+    rpc deleteWorld (DeleteWorldRequest) returns (DeleteWorldResponse);
+    rpc dropWorldContent (DropWorldContentRequest) returns (DropWorldContentResponse);
+    rpc loadWorldPreset (LoadWorldPresetRequest) returns (LoadWorldPresetResponse);
 }
 
 message CreateWorldRequest {
@@ -25,8 +29,48 @@ message GetWorldResponse {
     World world = 1;
 }
 
+message GetWorldsForUserRequest {
+    string userId = 1;
+}
+
+message GetWorldsForUserResponse {
+    repeated World worlds = 1;
+}
+
+message DeleteWorldRequest {
+    string worldId = 1;
+}
+
+message DeleteWorldResponse {
+    // No fields required for a 200 status response
+}
+
+message DropWorldContentRequest {
+    string worldId = 1;
+}
+
+message DropWorldContentResponse {
+    // No fields required for a 200 status response
+}
+
+message LoadWorldPresetRequest {
+    string worldId = 1;
+    string userId = 2;
+    PresetEnum preset = 3;
+}
+
+message LoadWorldPresetResponse {
+    // No fields required for a 200 status response
+}
+
 message World {
     string id = 1;
     string name = 2;
     optional string description = 3;
+}
+
+enum PresetEnum {
+    UNKNOWN = 0; // Default value
+    default = 1;
+    morrowind = 2;
 }

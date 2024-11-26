@@ -1,3 +1,6 @@
+import { EntityConstructor } from "./types";
+import { getMetadataArgsStorage } from "typeorm";
+
 import { ItemAlcohol } from "./entities/Content/Item/ItemConsumable/ItemDrinkable/ItemAlcohol";
 import { ItemDrinkable } from "./entities/Content/Item/ItemConsumable/ItemDrinkable/ItemDrinkable";
 import { ItemPotion } from "./entities/Content/Item/ItemConsumable/ItemDrinkable/ItemPotion";
@@ -56,11 +59,16 @@ import { Religion } from "./entities/Content/Religion";
 import { Resistance } from "./entities/Content/Resistance";
 import { Status } from "./entities/Content/Status";
 import { Tag } from "./entities/Content/Tag";
-
-import { EntityConstructor } from "./types";
-
-import { getMetadataArgsStorage } from "typeorm";
 import { EntityTarget } from "typeorm/common/EntityTarget";
+import { Addiction } from "./entities/Content/Addiction";
+import { Background } from "./entities/Content/Background";
+import { CharacterGenInstruction } from "./entities/Content/CharacterGenInstruction";
+import { CharacterGroupGenInstruction } from "./entities/Content/CharacterGroupGenInstruction";
+import { Faction } from "./entities/Content/Faction";
+import { ItemWearableBackpack } from "./entities/Content/Item/ItemRepairable/ItemWearable/ItemWearableBackpack";
+import { SkillSet } from "./entities/Content/Skill/SkillSet";
+import { EquipmentSlot } from "./entities/Content/Slot/EquipmentSlot";
+import { StorageSlot } from "./entities/Content/Slot/StorageSlot";
 
 /**
  * Checks if the given entity is a parent entity with its own table.
@@ -89,6 +97,7 @@ export const contentEntityMap: {[name: string]: EntityConstructor<ContentBase>} 
     "ItemWeaponLongSword": ItemWeaponLongSword,
     "ItemWeaponShortSword": ItemWeaponShortSword,
     "ItemWearable": ItemWearable,
+    "ItemWearableBackpack": ItemWearableBackpack,
     "ItemWearableClothesPants": ItemWearableClothesPants,
     "ItemWearableClothesTorso": ItemWearableClothesTorso,
     "ItemWearableCuirass": ItemWearableCuirass,
@@ -98,14 +107,17 @@ export const contentEntityMap: {[name: string]: EntityConstructor<ContentBase>} 
     "ItemWearableShield": ItemWearableShield,
     "ItemRepairable": ItemRepairable,
     "Item": Item,
+    "PastExperience": PastExperience,
+    "PastExperienceAdult": PastExperienceAdult,
+    "PastExperienceChild": PastExperienceChild,
     "CharacterMemory": CharacterMemory,
     "Memory": Memory,
     "MemoryPool": MemoryPool,
     "MemoryPoolEntry": MemoryPoolEntry,
-    "PastExperience": PastExperience,
-    "PastExperienceChild": PastExperienceChild,
-    "PastExperienceAdult": PastExperienceAdult,
     "Skill": Skill,
+    "SkillSet": SkillSet,
+    "EquipmentSlot": EquipmentSlot,
+    "StorageSlot": StorageSlot,
     "Trait": Trait,
     "TraitCongenital": TraitCongenital,
     "TraitCoping": TraitCoping,
@@ -117,12 +129,17 @@ export const contentEntityMap: {[name: string]: EntityConstructor<ContentBase>} 
     "TraitLifestyle": TraitLifestyle,
     "TraitPersonality": TraitPersonality,
     "TraitPhysical": TraitPhysical,
+    "Addiction": Addiction,
+    "Background": Background,
     "Birthsign": Birthsign,
     "Character": Character,
+    "CharacterGenInstruction": CharacterGenInstruction,
+    "CharacterGroupGenInstruction": CharacterGroupGenInstruction,
     "CharacterProfession": CharacterProfession,
     "Disease": Disease,
     "Effect": Effect,
     "Fact": Fact,
+    "Faction": Faction,
     "ItemSet": ItemSet,
     "Mood": Mood,
     "Need": Need,

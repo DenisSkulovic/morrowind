@@ -6,7 +6,8 @@
         "effects": [
             "stamina_regen_boost",
             "mood_boost"
-        ]
+        ],
+        "targetEntity": "Status"
     },
     {
         "blueprint_id": "HUNGRY",
@@ -14,7 +15,8 @@
         "type": "debuff",
         "effects": [
             "stamina_regen_debuff"
-        ]
+        ],
+        "targetEntity": "Status"
     },
     {
         "blueprint_id": "STARVING",
@@ -23,7 +25,8 @@
         "effects": [
             "stamina_regen_debuff",
             "health_drain"
-        ]
+        ],
+        "targetEntity": "Status"
     },
     {
         "blueprint_id": "THIRSTY",
@@ -31,7 +34,8 @@
         "type": "debuff",
         "effects": [
             "stamina_regen_debuff"
-        ]
+        ],
+        "targetEntity": "Status"
     },
     {
         "blueprint_id": "DEHYDRATED",
@@ -40,7 +44,8 @@
         "effects": [
             "stamina_regen_debuff",
             "health_drain"
-        ]
+        ],
+        "targetEntity": "Status"
     },
     {
         "blueprint_id": "WELL_RESTED",
@@ -49,7 +54,8 @@
         "effects": [
             "stamina_boost",
             "mood_boost"
-        ]
+        ],
+        "targetEntity": "Status"
     },
     {
         "blueprint_id": "SLEEPY",
@@ -57,7 +63,8 @@
         "type": "debuff",
         "effects": [
             "reaction_speed_debuff"
-        ]
+        ],
+        "targetEntity": "Status"
     },
     {
         "blueprint_id": "EXHAUSTED",
@@ -66,7 +73,8 @@
         "effects": [
             "reaction_speed_debuff",
             "stamina_regen_debuff"
-        ]
+        ],
+        "targetEntity": "Status"
     },
     {
         "blueprint_id": "DRUNK",
@@ -76,7 +84,8 @@
             "agility_debuff",
             "charisma_buff",
             "confusion"
-        ]
+        ],
+        "targetEntity": "Status"
     },
     {
         "blueprint_id": "HUNGOVER",
@@ -85,7 +94,8 @@
         "effects": [
             "stamina_debuff",
             "reaction_speed_debuff"
-        ]
+        ],
+        "targetEntity": "Status"
     },
     {
         "blueprint_id": "CONFUSED",
@@ -93,7 +103,8 @@
         "type": "debuff",
         "effects": [
             "decision_accuracy_debuff"
-        ]
+        ],
+        "targetEntity": "Status"
     },
     {
         "blueprint_id": "PANICKING",
@@ -102,7 +113,8 @@
         "effects": [
             "reaction_speed_boost",
             "decision_accuracy_debuff"
-        ]
+        ],
+        "targetEntity": "Status"
     },
     {
         "blueprint_id": "IN_PAIN",
@@ -111,7 +123,8 @@
         "effects": [
             "stamina_regen_debuff",
             "reaction_speed_debuff"
-        ]
+        ],
+        "targetEntity": "Status"
     },
     {
         "blueprint_id": "POISONED",
@@ -119,7 +132,8 @@
         "type": "debuff",
         "effects": [
             "health_drain"
-        ]
+        ],
+        "targetEntity": "Status"
     },
     {
         "blueprint_id": "BURNING",
@@ -127,7 +141,8 @@
         "type": "debuff",
         "effects": [
             "health_drain"
-        ]
+        ],
+        "targetEntity": "Status"
     },
     {
         "blueprint_id": "FREEZING",
@@ -135,7 +150,8 @@
         "type": "debuff",
         "effects": [
             "stamina_drain"
-        ]
+        ],
+        "targetEntity": "Status"
     },
     {
         "blueprint_id": "WET",
@@ -143,7 +159,8 @@
         "type": "neutral",
         "effects": [
             "fire_resistance_boost"
-        ]
+        ],
+        "targetEntity": "Status"
     },
     {
         "blueprint_id": "OVERBURDENED",
@@ -152,7 +169,8 @@
         "effects": [
             "movement_speed_debuff",
             "stamina_drain"
-        ]
+        ],
+        "targetEntity": "Status"
     },
     {
         "blueprint_id": "WELL_HYDRATED",
@@ -160,7 +178,8 @@
         "type": "buff",
         "effects": [
             "stamina_regen_boost"
-        ]
+        ],
+        "targetEntity": "Status"
     },
     {
         "blueprint_id": "MOTIVATED",
@@ -169,7 +188,8 @@
         "effects": [
             "stamina_boost",
             "mood_boost"
-        ]
+        ],
+        "targetEntity": "Status"
     },
     {
         "blueprint_id": "DEMORALIZED",
@@ -178,7 +198,8 @@
         "effects": [
             "stamina_debuff",
             "reaction_speed_debuff"
-        ]
+        ],
+        "targetEntity": "Status"
     },
     {
         "blueprint_id": "FOCUSED",
@@ -186,7 +207,8 @@
         "type": "buff",
         "effects": [
             "decision_accuracy_boost"
-        ]
+        ],
+        "targetEntity": "Status"
     },
     {
         "blueprint_id": "DISTRACTED",
@@ -194,6 +216,7 @@
         "type": "debuff",
         "effects": [
             "decision_accuracy_debuff"
-        ]
+        ],
+        "targetEntity": "Status"
     }
 ]

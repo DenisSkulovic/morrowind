@@ -12,7 +12,8 @@
         "tags": [
             "survival",
             "physical"
-        ]
+        ],
+        "targetEntity": "Need"
     },
     {
         "blueprint_id": "THIRST",
@@ -27,7 +28,8 @@
         "tags": [
             "survival",
             "physical"
-        ]
+        ],
+        "targetEntity": "Need"
     },
     {
         "blueprint_id": "SLEEP",
@@ -42,7 +44,8 @@
         "tags": [
             "survival",
             "mental"
-        ]
+        ],
+        "targetEntity": "Need"
     },
     {
         "RECREATION": "RECREATION",
@@ -56,7 +59,8 @@
         "tags": [
             "mental",
             "emotional"
-        ]
+        ],
+        "targetEntity": "Need"
     },
     {
         "blueprint_id": "KNOWLEDGE",
@@ -70,7 +74,8 @@
         "tags": [
             "mental",
             "intellectual"
-        ]
+        ],
+        "targetEntity": "Need"
     },
     {
         "blueprint_id": "RELIGIOUS_FULFILLMENT",
@@ -85,7 +90,8 @@
         "tags": [
             "emotional",
             "spiritual"
-        ]
+        ],
+        "targetEntity": "Need"
     },
     {
         "blueprint_id": "SECURITY",
@@ -95,7 +101,8 @@
         "neglectEffects": [
             "panic",
             "mood_debuff"
-        ]
+        ],
+        "targetEntity": "Need"
     },
     {
         "blueprint_id": "FINANCIAL",
@@ -105,7 +112,8 @@
         "neglectEffects": [
             "demoralized",
             "motivation_debuff"
-        ]
+        ],
+        "targetEntity": "Need"
     },
     {
         "blueprint_id": "ALCOHOL",
@@ -119,7 +127,8 @@
         "tags": [
             "addiction",
             "mental"
-        ]
+        ],
+        "targetEntity": "Need"
     },
     {
         "blueprint_id": "DRUG",
@@ -133,6 +142,7 @@
         "tags": [
             "addiction",
             "mental"
-        ]
+        ],
+        "targetEntity": "Need"
     }
 ]

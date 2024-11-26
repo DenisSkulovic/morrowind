@@ -4,7 +4,7 @@ import { RepositoryServiceBase, RepositoryServiceSettings } from "./RepositorySe
 import { Item } from "../../entities/Content/Item/Item";
 import { ItemGenerator } from "../generator/ItemGenerator";
 import {  BlueprintSetInstruction } from "../../layer_1/types";
-import { BlueprintSetProcessor } from "./InstructionProcessor";
+import { InstructionProcessor } from "./InstructionProcessor";
 import { IdAndQuant, BlueprintGenInstruction_Gaussian } from "../../class/blueprint_id_and_prob";
 
 export class ItemService extends RepositoryServiceBase {
@@ -32,7 +32,7 @@ export class ItemService extends RepositoryServiceBase {
         const dataSource = this.settings.sourcesMap.get(source)
         if (!dataSource) throw new Error("dataSource cannot be undefined")
         const itemGenerator = new ItemGenerator(dataSource)
-        const items: Item[] = await itemGenerator.generateMany_probGaussian(instructions)
+        const items: Item[] = await itemGenerator.generateMany(instructions)
         const itemRepo: Repository<Item> = this._getItemRepo(source)
         const res: Item[] = await itemRepo.save(items)
         return res
@@ -40,11 +40,11 @@ export class ItemService extends RepositoryServiceBase {
 
     // TODO make this an overload of createItems
     public async createItemsFromSet(sets: BlueprintSetInstruction[], source: DataSourceEnum): Promise<Item[]> {
-        const dataSource = this.settings.sourcesMap.get(source)
+        const dataSource: DataSource | undefined = this.settings.sourcesMap.get(source)
         if (!dataSource) throw new Error("dataSource cannot be undefined")
-        const itemGenerator = new ItemGenerator(dataSource)
-        const instructions: BlueprintGenInstruction_Gaussian[] = sets.map((set) => BlueprintSetProcessor.getInstructionsFromSet(set)).flat()
-        const items: Item[] = await itemGenerator.generateMany_probGaussian(instructions)
+        const itemGenerator: ItemGenerator = new ItemGenerator(dataSource)
+        const instructions: IdAndQuant[] = sets.map((set) => InstructionProcessor.processInstruction(set)).flat()
+        const items: Item[] = await itemGenerator.generateMany(instructions)
         const itemRepo: Repository<Item> = this._getItemRepo(source)
         return await itemRepo.save(items)
     }

@@ -3,96 +3,112 @@
         "blueprint_id": "ALCHEMY",
         "name": "Alchemy",
         "description": "The skill of crafting potions and poisons.",
-        "category": "CRAFTING"
+        "category": "CRAFTING",
+        "targetEntity": "Skill"
     },
     {
         "blueprint_id": "ALTERATION",
         "name": "Alteration",
         "description": "The art of manipulating physical properties.",
-        "category": "MAGIC"
+        "category": "MAGIC",
+        "targetEntity": "Skill"
     },
     {
         "blueprint_id": "MARKSMAN",
         "name": "Marksman",
         "description": "The ability to use ranged weapons.",
-        "category": "COMBAT"
+        "category": "COMBAT",
+        "targetEntity": "Skill"
     },
     {
         "blueprint_id": "SHORT_SWORD",
         "name": "Short Sword",
         "description": "The ability to use a short sword.",
-        "category": "COMBAT"
+        "category": "COMBAT",
+        "targetEntity": "Skill"
     },
     {
         "blueprint_id": "LONG_SWORD",
         "name": "Long Sword",
         "description": "The ability to use a long sword.",
-        "category": "COMBAT"
+        "category": "COMBAT",
+        "targetEntity": "Skill"
     },
     {
         "blueprint_id": "SPEAR",
         "name": "Spear",
         "description": "The ability to use a spear.",
-        "category": "COMBAT"
+        "category": "COMBAT",
+        "targetEntity": "Skill"
     },
     {
         "blueprint_id": "BLOCK",
         "name": "Block",
         "description": "The ability to block attacks with a shield or weapon.",
-        "category": "COMBAT"
+        "category": "COMBAT",
+        "targetEntity": "Skill"
     },
     {
         "blueprint_id": "CONJURATION",
         "name": "Conjuration",
         "description": "The art of summoning creatures and weapons.",
-        "category": "MAGIC"
+        "category": "MAGIC",
+        "targetEntity": "Skill"
     },
     {
         "blueprint_id": "DESTRUCTION",
         "name": "Destruction",
         "description": "The skill of wielding destructive magical forces.",
-        "category": "MAGIC"
+        "category": "MAGIC",
+        "targetEntity": "Skill"
     },
     {
         "blueprint_id": "ENCHANTING",
         "name": "Enchanting",
         "description": "The art of imbuing items with magical properties.",
-        "category": "CRAFTING"
+        "category": "CRAFTING",
+        "targetEntity": "Skill"
     },
     {
         "blueprint_id": "ILLUSION",
         "name": "Illusion",
         "description": "The art of manipulating the minds of others.",
-        "category": "MAGIC"
+        "category": "MAGIC",
+        "targetEntity": "Skill"
     },
     {
         "blueprint_id": "LIGHT_ARMOR",
         "name": "Light Armor",
         "description": "Proficiency in wearing light armor.",
-        "category": "COMBAT"
+        "category": "COMBAT",
+        "targetEntity": "Skill"
     },
     {
         "blueprint_id": "HEAVY_ARMOR",
         "name": "Heavy Armor",
         "description": "Proficiency in wearing heavy armor.",
-        "category": "COMBAT"
+        "category": "COMBAT",
+        "targetEntity": "Skill"
     },
     {
         "blueprint_id": "SNEAK",
         "name": "Sneak",
         "description": "The ability to move silently and unseen.",
-        "category": "STEALTH"
+        "category": "STEALTH",
+        "targetEntity": "Skill"
     },
     {
         "blueprint_id": "SPEECHCRAFT",
         "name": "Speechcraft",
         "description": "The skill of persuasion.",
-        "category": "SOCIAL"
+        "category": "SOCIAL",
+        "targetEntity": "Skill"
     },
     {
         "blueprint_id": "MERCHANTILE",
         "name": "Merchantile",
         "description": "The skill of bartering.",
-        "category": "SOCIAL"
+        "category": "SOCIAL",
+        "targetEntity": "Skill"
     }
 ]

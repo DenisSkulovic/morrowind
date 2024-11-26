@@ -1,0 +1,108 @@
+[
+    {
+        "blueprint_id": "NAKED",
+        "set": [],
+        "targetEntity": "ItemSet"
+    },
+    {
+        "blueprint_id": "COMMON_SHIRT_PANTS",
+        "set": [
+            "COMMON_SHIRT",
+            "COMMON_PANTS"
+        ],
+        "targetEntity": "ItemSet"
+    },
+    {
+        "blueprint_id": "COMMON_SHIRT_PANTS_SHOES",
+        "set": [
+            "COMMON_SHIRT",
+            "COMMON_PANTS",
+            "COMMON_SHOES"
+        ],
+        "targetEntity": "ItemSet"
+    },
+    {
+        "blueprint_id": "FULL_COMMON_CLOTHES",
+        "set": [
+            "COMMON_SHIRT",
+            "COMMON_PANTS",
+            "COMMON_SHOES",
+            "COMMON_HAT"
+        ],
+        "targetEntity": "ItemSet"
+    },
+    {
+        "blueprint_id": "FULL_ARMOR",
+        "set": [
+            {
+                "cond": "OR",
+                "prob": {
+                    "IRON_CUIRASS": 0.8,
+                    "STEEL_CUIRASS": 0.2
+                },
+                "clazz": "ProbObject_Simple"
+            },
+            {
+                "cond": "OR",
+                "prob": {
+                    "IRON_HELMET": 0.8,
+                    "STEEL_HELMET": 0.2
+                },
+                "clazz": "ProbObject_Simple"
+            },
+            {
+                "cond": "OR",
+                "prob": {
+                    "IRON_GREAVES": 0.8,
+                    "STEEL_GREAVES": 0.2
+                },
+                "clazz": "ProbObject_Simple"
+            },
+            {
+                "cond": "OR",
+                "prob": {
+                    "IRON_BOOTS": 0.8,
+                    "STEEL_BOOTS": 0.2
+                },
+                "clazz": "ProbObject_Simple"
+            }
+        ],
+        "targetEntity": "ItemSet"
+    },
+    {
+        "blueprint_id": "CUIRASS_HELMET",
+        "set": [
+            {
+                "cond": "OR",
+                "prob": {
+                    "IRON_CUIRASS": 0.8,
+                    "STEEL_CUIRASS": 0.2
+                },
+                "clazz": "ProbObject_Simple"
+            },
+            {
+                "cond": "OR",
+                "prob": {
+                    "IRON_HELMET": 0.8,
+                    "STEEL_HELMET": 0.2
+                },
+                "clazz": "ProbObject_Simple"
+            }
+        ],
+        "targetEntity": "ItemSet"
+    },
+    {
+        "blueprint_id": "CUIRASS",
+        "set": [
+            {
+                "cond": "OR",
+                "prob": {
+                    "IRON_CUIRASS": 0.8,
+                    "STEEL_CUIRASS": 0.2
+                },
+                "clazz": "ProbObject_Simple"
+            }
+        ],
+        "targetEntity": "ItemSet"
+    }
+]
