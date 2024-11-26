@@ -13,11 +13,6 @@ export class Disease extends TaggableContentBase {
     @PrimaryColumn()
     id!: string;
     
-    @BeforeInsert()
-    generateId() {
-        if (this.targetEntity) this.id = this.blueprint_id
-        else this.id = `${this.id_prefix}_${randomUUID().replace(/-/g, "")}`;
-    }
     id_prefix = "DISEASE";
 
     @Column({ type: "varchar", length: 255 })

@@ -70,7 +70,6 @@ message World {
 }
 
 enum PresetEnum {
-    UNKNOWN = 0; // Default value
-    default = 1;
-    morrowind = 2;
+    default = 0;
+    morrowind = 1;
 }

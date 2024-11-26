@@ -7,6 +7,11 @@ export type EntityConstructor<T> = new () => T;
 
 export type ItemRequirements = { [type: string]: { [name: string]: number | boolean } }
 
+export type StorageSlotDefinition = {
+    "name": string,
+    "grid": [number, number],
+    "maxWeight": number
+}
 
 export type Context = {
     user: User,

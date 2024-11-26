@@ -15,11 +15,6 @@ export class PastExperience extends TaggableContentBase {
     @PrimaryColumn()
     id!: string;
     
-    @BeforeInsert()
-    generateId() {
-        if (this.targetEntity) this.id = this.blueprint_id
-        else this.id = `${this.id_prefix}_${randomUUID().replace(/-/g, "")}`;
-    }
     id_prefix = "PAST_EXPERIENCE"
 
     @ManyToMany(() => Tag, (tag) => tag.pastExperiences)

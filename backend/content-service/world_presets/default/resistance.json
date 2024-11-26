@@ -2,35 +2,35 @@
     {
         "blueprint_id": "FIRE_RESISTANCE",
         "name": "Fire Resistance",
-        "effectType": "elemental",
-        "targetEffect": "fire",
+        "effectType": "ELEMENTAL",
+        "targetEffect": "FIRE",
         "targetEntity": "Resistance"
     },
     {
         "blueprint_id": "FROST_RESISTANCE",
         "name": "Frost Resistance",
-        "effectType": "elemental",
-        "targetEffect": "frost",
+        "effectType": "ELEMENTAL",
+        "targetEffect": "FROST",
         "targetEntity": "Resistance"
     },
     {
         "blueprint_id": "POISON_RESISTANCE", 
         "name": "Poison Resistance",
-        "effectType": "status",
-        "targetEffect": "poison",
+        "effectType": "STATUS",
+        "targetEffect": "POISON",
         "targetEntity": "Resistance"
     },
     {
         "blueprint_id": "MAGIC_RESISTANCE",
         "name": "Magic Resistance",
-        "effectType": "magic",
+        "effectType": "MAGIC",
         "targetEntity": "Resistance"
     },
     {
         "blueprint_id": "DISEASE_RESISTANCE", 
         "name": "Disease Resistance",
-        "effectType": "status",
-        "targetEffect": "disease",
+        "effectType": "STATUS",
+        "targetEffect": "DISEASE",
         "targetEntity": "Resistance"
     }
 ]

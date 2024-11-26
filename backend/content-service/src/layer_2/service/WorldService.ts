@@ -7,14 +7,14 @@ import { Preset, PresetLoader } from "../../layer_1/PresetLoader";
 import { RepositoryServiceBase, RepositoryServiceSettings } from "../../layer_2_and_3/service/RepositoryServiceBase";
 import { DataSourceEnum } from "../../enum/DataSourceEnum";
 import { World } from "../../entities/World";
-import { PresetEnum } from "../../enum/PresetEnum";
 import { ContentBase } from "../../ContentBase";
 import { TemporarilyFreezeWorld } from "../../decorator/TemporarilyFreezeWorld";
 import { DeleteResult, FindManyOptions, FindOptionsWhere, Repository } from "typeorm";
 import { User } from "../../entities/User";
 import { UserService } from "../../layer_2_and_3/service/UserService";
+import { PresetEnum } from "../../proto/world";
 
-const pathToPresetsFolder = "../../../world_presets"
+const pathToPresetsFolder = "../../world_presets"
 
 export class WorldService extends RepositoryServiceBase {
     constructor(settings: RepositoryServiceSettings) {
@@ -40,7 +40,7 @@ export class WorldService extends RepositoryServiceBase {
     /**
      * Loads blueprints from a preset folder and upserts them into the database in batches.
      */
-    @TemporarilyFreezeWorld("worldId")
+    @TemporarilyFreezeWorld(1)
     public async loadPresetIntoWorld(
         presetName: PresetEnum,
         worldId: string,
@@ -67,7 +67,7 @@ export class WorldService extends RepositoryServiceBase {
         // Load blueprints from the preset folder
         console.log(`[WorldService - loadPresetIntoWorld] before load preset`)
         const preset: Preset = await PresetLoader.loadPreset(presetName, pathToPresetsFolder);
-        console.log(`[WorldService - loadPresetIntoWorld] after load preset`, preset)
+        console.log(`[WorldService - loadPresetIntoWorld] after load preset; Object.keys(preset).length: `, Object.keys(preset).length)
 
         for (const [targetEntity, blueprintMap] of Object.entries(preset)) {
             console.log(`[WorldService - loadPresetIntoWorld] -${targetEntity}- processing start`)
@@ -100,7 +100,7 @@ export class WorldService extends RepositoryServiceBase {
     /**
      * Drops all content from a world. Does not delete the world, only all ContentBase entities that are recorded in contentEntityMap.
      */
-    @TemporarilyFreezeWorld("worldId")
+    @TemporarilyFreezeWorld(0)
     public async dropWorldContents(worldId: string): Promise<void> {
 
         await WorldDataSource.transaction(async (transactionManager) => {
@@ -125,7 +125,7 @@ export class WorldService extends RepositoryServiceBase {
     /**
      * Drops all content from a world. Does not delete the world, only all ContentBase entities that are recorded in contentEntityMap.
      */
-    @TemporarilyFreezeWorld("worldId")
+    @TemporarilyFreezeWorld(0)
     public async deleteWorld(worldId: string): Promise<void> {
         const worldRepository: Repository<World> = WorldDataSource.getRepository(World);
         await worldRepository.delete(worldId)

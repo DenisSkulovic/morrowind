@@ -2,6 +2,7 @@
     {
         "blueprint_id": "COMMON_COLD",
         "name": "Common Cold",
+        "description": "Common Cold",
         "severity": "MILD",
         "effects": [
             "stamina_regen_debuff"
@@ -14,6 +15,7 @@
     {
         "blueprint_id": "PLAGUE",
         "name": "Plague",
+        "description": "Plague",
         "severity": "SEVERE",
         "effects": [
             "all_stats_debuff"

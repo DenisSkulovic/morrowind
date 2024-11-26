@@ -1,7 +1,7 @@
 import { Entity, TableInheritance, Column, ManyToOne, ManyToMany, PrimaryGeneratedColumn, BeforeInsert, PrimaryColumn, OneToMany } from "typeorm";
 import { TaggableContentBase } from "../../../TaggableContentBase";
 import { Skill } from "../Skill/Skill";
-import { ItemRequirements } from "../../../types";
+import { ItemRequirements, StorageSlotDefinition } from "../../../types";
 import { Tag } from "../Tag";
 import { Campaign } from "../../Campaign";
 import { User } from "../../User";
@@ -16,11 +16,6 @@ export class Item extends TaggableContentBase {
     @PrimaryColumn()
     id?: string;
 
-    @BeforeInsert()
-    generateId() {
-        if (this.targetEntity) this.id = this.blueprint_id
-        else this.id = `${this.id_prefix}_${randomUUID().replace(/-/g, "")}`;
-    }
     id_prefix = "ITEM";
 
     @Column({ default: "PLACEHOLDER" })
@@ -31,7 +26,7 @@ export class Item extends TaggableContentBase {
     // properties
     @Column({ type: "jsonb", nullable: true })
     size!: [number, number]; // Grid size for grid-based inventories
-    @Column({ default: 0 })
+    @Column({ default: 0, type: "float" })
     weight!: number;
     @Column({ default: 1 })
     quantity!: number;
@@ -40,14 +35,14 @@ export class Item extends TaggableContentBase {
     @Column({ default: 0 })
     base_value!: number; // Monetary value in gold coins. To be adjusted with skills, modifiers, attitude, etc.
 
-    @ManyToOne(() => Skill, skill => skill.items)
-    trained_skill?: Skill
+    @Column({nullable: true})
+    trained_skill?: string
 
-    @Column({ type: "enum", enum: ["ATTACK", "BLOCK", "USE"] })
-    actions!: string[];
+    @Column({ type: "enum", enum: ["ATTACK", "BLOCK", "USE"], nullable: true })
+    actions?: string[];
 
     @Column({ type: "jsonb", default: null, nullable: true })
-    requirements!: ItemRequirements
+    requirements?: ItemRequirements
 
     // flags
     @Column({ default: false })
@@ -68,6 +63,8 @@ export class Item extends TaggableContentBase {
     grid_position?: { x: number; y: number }; // Item's top-left corner on the grid inside a storage slot
     @OneToMany(() => StorageSlot, storageSlot => storageSlot.storedItems)
     storageSlots?: StorageSlot[]; // the storage slots this item itself has (this is a backpack and it has 3 sections, i.e. slots)
+    @Column("jsonb", { nullable: true })
+    storageSlotDefinition?: StorageSlotDefinition[]; // the storage slots this item itself has (this is a backpack and it has 3 sections, i.e. slots)
     @ManyToOne(() => EquipmentSlot, equipmentSlot => equipmentSlot.equippedItem)
     equipmentSlot?: EquipmentSlot; // the equipment slot where this item sits (sword in hand, for e.g.)
 

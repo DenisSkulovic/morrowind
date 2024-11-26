@@ -2,11 +2,10 @@ import { sourcesMap } from "../../data-source";
 import { sendUnaryData, ServerUnaryCall } from '@grpc/grpc-js';
 import { WorldService } from "../../layer_2/service/WorldService";
 import { User } from "../../entities/User";
-import { CreateWorldRequest, CreateWorldResponse, DeleteWorldRequest, DeleteWorldResponse, DropWorldContentRequest, DropWorldContentResponse, GetWorldRequest, GetWorldResponse, GetWorldsForUserRequest, GetWorldsForUserResponse, LoadWorldPresetRequest, LoadWorldPresetResponse } from "../../proto/world";
+import { CreateWorldRequest, CreateWorldResponse, DeleteWorldRequest, DeleteWorldResponse, DropWorldContentRequest, DropWorldContentResponse, GetWorldRequest, GetWorldResponse, GetWorldsForUserRequest, GetWorldsForUserResponse, LoadWorldPresetRequest, LoadWorldPresetResponse, PresetEnum } from "../../proto/world";
 import { World } from "../../entities/World";
 import { UserService } from "../../layer_2_and_3/service/UserService";
 import { DataSourceEnum } from "../../enum/DataSourceEnum";
-import { PresetEnum } from "../../enum/PresetEnum";
 
 export class WorldController {
     [key: string]: any
@@ -52,7 +51,7 @@ export class WorldController {
     };
 
 
-    public static async getWorldsForUser(
+    public async getWorldsForUser(
         call: ServerUnaryCall<GetWorldsForUserRequest, GetWorldsForUserResponse>,
         callback: sendUnaryData<GetWorldsForUserResponse>
     ): Promise<void> {
@@ -68,7 +67,7 @@ export class WorldController {
         }
     };
 
-    public static async deleteWorld(
+    public async deleteWorld(
         call: ServerUnaryCall<DeleteWorldRequest, DeleteWorldResponse>,
         callback: sendUnaryData<DeleteWorldResponse>
     ): Promise<void> {
@@ -85,7 +84,7 @@ export class WorldController {
         }
     };
 
-    public static async dropWorldContent(
+    public async dropWorldContent(
         call: ServerUnaryCall<DropWorldContentRequest, DropWorldContentResponse>,
         callback: sendUnaryData<DropWorldContentResponse>
     ): Promise<void> {
@@ -101,20 +100,17 @@ export class WorldController {
         }
     }
 
-    public static async loadWorldPreset(
+    public async loadWorldPreset(
         call: ServerUnaryCall<LoadWorldPresetRequest, LoadWorldPresetResponse>,
         callback: sendUnaryData<LoadWorldPresetResponse>
     ): Promise<void> {
         try {
-            const preset = call.request.preset
-            let presetName: PresetEnum | null = preset === 1 ? PresetEnum.default : preset === 2 ? PresetEnum.morrowind : null // TODO find an elegant solution to this issue
-            if (!presetName) throw new Error(`no preset found for preset identifier: ${preset}`)
+            if (!call.request.preset || call.request.preset=== PresetEnum.UNRECOGNIZED) throw new Error(`no preset found for preset identifier: ${call.request.preset}`)
             const worldId: string = call.request.worldId // TODO these fields should come from middleware
             const userId: string = call.request.userId // TODO these fields should come from middleware, especially this one
             // check preset for existence in the enum
-            if (!(preset in Object.values(PresetEnum))) throw new Error(`preset "${preset}" not recognized`)
             const worldService: WorldService = new WorldService({ sourcesMap })
-            await worldService.loadPresetIntoWorld(presetName, worldId, userId)
+            await worldService.loadPresetIntoWorld(call.request.preset, worldId, userId)
             const response = {} // status 200
             callback(null, response)
         }

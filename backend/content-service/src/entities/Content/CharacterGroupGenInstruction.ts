@@ -11,11 +11,6 @@ export class CharacterGroupGenInstruction extends ContentBase {
     @PrimaryColumn()
     id!: string;
     
-    @BeforeInsert()
-    generateId() {
-        if (this.targetEntity) this.id = this.blueprint_id
-        else this.id = `${this.id_prefix}_${randomUUID().replace(/-/g, "")}`;
-    }
     id_prefix = "CHARACTER_GROUP_GEN_INSTRUCTION"
     
     @Column({ type: "jsonb" })

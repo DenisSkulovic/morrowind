@@ -10,22 +10,17 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 export const protobufPackage = "world";
 
 export enum PresetEnum {
-  /** UNKNOWN - Default value */
-  UNKNOWN = 0,
-  default = 1,
-  morrowind = 2,
+  default = 0,
+  morrowind = 1,
   UNRECOGNIZED = -1,
 }
 
 export function presetEnumFromJSON(object: any): PresetEnum {
   switch (object) {
     case 0:
-    case "UNKNOWN":
-      return PresetEnum.UNKNOWN;
-    case 1:
     case "default":
       return PresetEnum.default;
-    case 2:
+    case 1:
     case "morrowind":
       return PresetEnum.morrowind;
     case -1:
@@ -37,8 +32,6 @@ export function presetEnumFromJSON(object: any): PresetEnum {
 
 export function presetEnumToJSON(object: PresetEnum): string {
   switch (object) {
-    case PresetEnum.UNKNOWN:
-      return "UNKNOWN";
     case PresetEnum.default:
       return "default";
     case PresetEnum.morrowind:

@@ -10,6 +10,6 @@
         "base_value": 1,
         "thirst_quenched": 30,
         "refills": 3,
-        "targetEntity": "ItemDrink"
+        "targetEntity": "ItemWater"
     }
 ]

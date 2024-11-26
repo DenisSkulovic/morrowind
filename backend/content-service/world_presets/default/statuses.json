@@ -2,220 +2,243 @@
     {
         "blueprint_id": "WELL_FED",
         "name": "Well-Fed",
-        "type": "buff",
+        "description": "Well-Fed",
+        "type": "BUFF",
         "effects": [
-            "stamina_regen_boost",
-            "mood_boost"
+            "STAMINA_REGEN_BOOST",
+            "MOOD_BOOST"
         ],
         "targetEntity": "Status"
     },
     {
         "blueprint_id": "HUNGRY",
         "name": "Hungry",
-        "type": "debuff",
+        "description": "Hungry",
+        "type": "DEBUFF",
         "effects": [
-            "stamina_regen_debuff"
+            "STAMINA_REGEN_DEBUFF"
         ],
         "targetEntity": "Status"
     },
     {
         "blueprint_id": "STARVING",
         "name": "Starving",
-        "type": "debuff",
+        "description": "Starving",
+        "type": "DEBUFF",
         "effects": [
-            "stamina_regen_debuff",
-            "health_drain"
+            "STAMINA_REGEN_DEBUFF",
+            "HEALTH_DRAIN"
         ],
         "targetEntity": "Status"
     },
     {
         "blueprint_id": "THIRSTY",
         "name": "Thirsty",
-        "type": "debuff",
+        "description": "Thirsty",
+        "type": "DEBUFF",
         "effects": [
-            "stamina_regen_debuff"
+            "STAMINA_REGEN_DEBUFF"
         ],
         "targetEntity": "Status"
     },
     {
         "blueprint_id": "DEHYDRATED",
         "name": "Dehydrated",
-        "type": "debuff",
+        "description": "Dehydrated",
+        "type": "DEBUFF",
         "effects": [
-            "stamina_regen_debuff",
-            "health_drain"
+            "STAMINA_REGEN_DEBUFF",
+            "HEALTH_DRAIN"
         ],
         "targetEntity": "Status"
     },
     {
         "blueprint_id": "WELL_RESTED",
         "name": "Well-Rested",
-        "type": "buff",
+        "description": "Well-Rested",
+        "type": "BUFF",
         "effects": [
-            "stamina_boost",
-            "mood_boost"
+            "STAMINA_BOOST",
+            "MOOD_BOOST"
         ],
         "targetEntity": "Status"
     },
     {
         "blueprint_id": "SLEEPY",
         "name": "Sleepy",
-        "type": "debuff",
+        "description": "Sleepy",
+        "type": "DEBUFF",
         "effects": [
-            "reaction_speed_debuff"
+            "REACTION_SPEED_DEBUFF"
         ],
         "targetEntity": "Status"
     },
     {
         "blueprint_id": "EXHAUSTED",
         "name": "Exhausted",
-        "type": "debuff",
+        "description": "Exhausted",
+        "type": "DEBUFF",
         "effects": [
-            "reaction_speed_debuff",
-            "stamina_regen_debuff"
+            "REACTION_SPEED_DEBUFF",
+            "STAMINA_REGEN_DEBUFF"
         ],
         "targetEntity": "Status"
     },
     {
         "blueprint_id": "DRUNK",
         "name": "Drunk",
-        "type": "neutral",
+        "description": "Drunk",
+        "type": "NEUTRAL",
         "effects": [
-            "agility_debuff",
-            "charisma_buff",
-            "confusion"
+            "AGILITY_DEBUFF",
+            "CHARISMA_BUFF",
+            "CONFUSION"
         ],
         "targetEntity": "Status"
     },
     {
         "blueprint_id": "HUNGOVER",
         "name": "Hungover",
-        "type": "debuff",
+        "description": "Hungover",
+        "type": "DEBUFF",
         "effects": [
-            "stamina_debuff",
-            "reaction_speed_debuff"
+            "STAMINA_DEBUFF",
+            "REACTION_SPEED_DEBUFF"
         ],
         "targetEntity": "Status"
     },
     {
         "blueprint_id": "CONFUSED",
         "name": "Confused",
-        "type": "debuff",
+        "description": "Confused",
+        "type": "DEBUFF",
         "effects": [
-            "decision_accuracy_debuff"
+            "DECISION_ACCURACY_DEBUFF"
         ],
         "targetEntity": "Status"
     },
     {
         "blueprint_id": "PANICKING",
         "name": "Panicking",
-        "type": "debuff",
+        "description": "Panicking",
+        "type": "DEBUFF",
         "effects": [
-            "reaction_speed_boost",
-            "decision_accuracy_debuff"
+            "REACTION_SPEED_BOOST",
+            "DECISION_ACCURACY_DEBUFF"
         ],
         "targetEntity": "Status"
     },
     {
         "blueprint_id": "IN_PAIN",
         "name": "In Pain",
-        "type": "debuff",
+        "description": "In Pain",
+        "type": "DEBUFF",
         "effects": [
-            "stamina_regen_debuff",
-            "reaction_speed_debuff"
+            "STAMINA_REGEN_DEBUFF",
+            "REACTION_SPEED_DEBUFF"
         ],
         "targetEntity": "Status"
     },
     {
         "blueprint_id": "POISONED",
         "name": "Poisoned",
-        "type": "debuff",
+        "description": "Poisoned",
+        "type": "DEBUFF",
         "effects": [
-            "health_drain"
+            "HEALTH_DRAIN"
         ],
         "targetEntity": "Status"
     },
     {
         "blueprint_id": "BURNING",
         "name": "Burning",
-        "type": "debuff",
+        "description": "Burning",
+        "type": "DEBUFF",
         "effects": [
-            "health_drain"
+            "HEALTH_DRAIN"
         ],
         "targetEntity": "Status"
     },
     {
         "blueprint_id": "FREEZING",
         "name": "Freezing",
-        "type": "debuff",
+        "description": "Freezing",
+        "type": "DEBUFF",
         "effects": [
-            "stamina_drain"
+            "STAMINA_DRAIN"
         ],
         "targetEntity": "Status"
     },
     {
         "blueprint_id": "WET",
         "name": "Wet",
-        "type": "neutral",
+        "description": "Wet",
+        "type": "NEUTRAL",
         "effects": [
-            "fire_resistance_boost"
+            "FIRE_RESISTANCE_BOOST"
         ],
         "targetEntity": "Status"
     },
     {
         "blueprint_id": "OVERBURDENED",
         "name": "Overburdened",
-        "type": "debuff",
+        "description": "Overburdened",
+        "type": "DEBUFF",
         "effects": [
-            "movement_speed_debuff",
-            "stamina_drain"
+            "MOVEMENT_SPEED_DEBUFF",
+            "STAMINA_DRAIN"
         ],
         "targetEntity": "Status"
     },
     {
         "blueprint_id": "WELL_HYDRATED",
         "name": "Well-Hydrated",
-        "type": "buff",
+        "description": "Well-Hydrated",
+        "type": "BUFF",
         "effects": [
-            "stamina_regen_boost"
+            "STAMINA_REGEN_BOOST"
         ],
         "targetEntity": "Status"
     },
     {
         "blueprint_id": "MOTIVATED",
         "name": "Motivated",
-        "type": "buff",
+        "description": "Motivated",
+        "type": "BUFF",
         "effects": [
-            "stamina_boost",
-            "mood_boost"
+            "STAMINA_BOOST",
+            "MOOD_BOOST"
         ],
         "targetEntity": "Status"
     },
     {
         "blueprint_id": "DEMORALIZED",
         "name": "Demoralized",
-        "type": "debuff",
+        "description": "Demoralized",
+        "type": "DEBUFF",
         "effects": [
-            "stamina_debuff",
-            "reaction_speed_debuff"
+            "STAMINA_DEBUFF",
+            "REACTION_SPEED_DEBUFF"
         ],
         "targetEntity": "Status"
     },
     {
         "blueprint_id": "FOCUSED",
         "name": "Focused",
-        "type": "buff",
+        "description": "Focused",
+        "type": "BUFF",
         "effects": [
-            "decision_accuracy_boost"
+            "DECISION_ACCURACY_BOOST"
         ],
         "targetEntity": "Status"
     },
     {
         "blueprint_id": "DISTRACTED",
         "name": "Distracted",
-        "type": "debuff",
+        "description": "Distracted",
+        "type": "DEBUFF",
         "effects": [
-            "decision_accuracy_debuff"
+            "DECISION_ACCURACY_DEBUFF"
         ],
         "targetEntity": "Status"
     }

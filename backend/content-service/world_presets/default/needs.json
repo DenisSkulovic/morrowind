@@ -3,7 +3,8 @@
         "blueprint_id": "HUNGER",
         "name": "Hunger",
         "description": "The need to consume food to maintain health and energy.",
-        "type": "basic",
+        "type": "DYNAMIC",
+        "layer": "PHYSIOLOGICAL",
         "decayRate": 0.05,
         "neglectEffects": [
             "health_drain",
@@ -19,7 +20,8 @@
         "blueprint_id": "THIRST",
         "name": "Thirst",
         "description": "The need to drink water to stay hydrated.",
-        "type": "basic",
+        "type": "DYNAMIC",
+        "layer": "PHYSIOLOGICAL",
         "decayRate": 0.1,
         "neglectEffects": [
             "stamina_drain",
@@ -35,7 +37,8 @@
         "blueprint_id": "SLEEP",
         "name": "Sleep",
         "description": "The need to rest and recover energy.",
-        "type": "basic",
+        "type": "DYNAMIC",
+        "layer": "PHYSIOLOGICAL",
         "decayRate": 0.02,
         "neglectEffects": [
             "reaction_speed_debuff",
@@ -48,10 +51,11 @@
         "targetEntity": "Need"
     },
     {
-        "RECREATION": "RECREATION",
+        "blueprint_id": "RECREATION",
         "name": "Recreation",
         "description": "The need to relax and engage in enjoyable activities.",
-        "type": "emotional",
+        "type": "DYNAMIC",
+        "layer": "BELONGING_AND_LOVE",
         "decayRate": 0.01,
         "neglectEffects": [
             "mood_debuff"
@@ -66,7 +70,8 @@
         "blueprint_id": "KNOWLEDGE",
         "name": "Knowledge",
         "description": "The desire to learn and satisfy curiosity.",
-        "type": "emotional",
+        "type": "DYNAMIC",
+        "layer": "COGNITIVE",
         "decayRate": 0.005,
         "neglectEffects": [
             "mood_debuff"
@@ -81,7 +86,8 @@
         "blueprint_id": "RELIGIOUS_FULFILLMENT",
         "name": "Religious Fulfillment",
         "description": "The need to connect with one's faith through prayer, rituals, or worship.",
-        "type": "emotional",
+        "type": "DYNAMIC",
+        "layer": "TRANSCENDENCE",
         "decayRate": 0.02,
         "neglectEffects": [
             "mood_debuff",
@@ -97,7 +103,8 @@
         "blueprint_id": "SECURITY",
         "name": "Security",
         "description": "The need to feel safe and free from harm.",
-        "type": "threshold",
+        "type": "EXTERNAL",
+        "layer": "SAFETY",
         "neglectEffects": [
             "panic",
             "mood_debuff"
@@ -108,7 +115,8 @@
         "blueprint_id": "FINANCIAL",
         "name": "Financial Stability",
         "description": "The need for wealth or stable income.",
-        "type": "threshold",
+        "type": "EXTERNAL",
+        "layer": "SAFETY",
         "neglectEffects": [
             "demoralized",
             "motivation_debuff"
@@ -119,7 +127,8 @@
         "blueprint_id": "ALCOHOL",
         "name": "Alcohol",
         "description": "The craving for alcoholic beverages.",
-        "type": "addiction",
+        "type": "DYNAMIC",
+        "layer": "PHYSIOLOGICAL",
         "decayRate": 0.05,
         "neglectEffects": [
             "withdrawal_effects"
@@ -134,7 +143,8 @@
         "blueprint_id": "DRUG",
         "name": "Drug",
         "description": "The craving for specific drugs.",
-        "type": "addiction",
+        "type": "DYNAMIC",
+        "layer": "PHYSIOLOGICAL",
         "decayRate": 0.07,
         "neglectEffects": [
             "withdrawal_effects"

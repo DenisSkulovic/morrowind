@@ -1,54 +1,54 @@
 [
     {
         "blueprint_id": "ORPHAN",
-        "target_entity": "PastExperienceChild"
+        "targetEntity": "PastExperienceChild"
     },
     {
         "blueprint_id": "BEGGAR_CHILD",
-        "target_entity": "PastExperienceChild"
+        "targetEntity": "PastExperienceChild"
     },
     {
         "blueprint_id": "SLAVE_CHILD",
-        "target_entity": "PastExperienceChild"
+        "targetEntity": "PastExperienceChild"
     },
     {
         "blueprint_id": "BLACKSMITH_APPRENTICE",
-        "target_entity": "PastExperienceChild"
+        "targetEntity": "PastExperienceChild"
     },
     {
         "blueprint_id": "FARM_CHILD",
-        "target_entity": "PastExperienceChild"
+        "targetEntity": "PastExperienceChild"
     },
     {
         "blueprint_id": "ORPHAN",
-        "target_entity": "PastExperienceChild"
+        "targetEntity": "PastExperienceChild"
     },
     {
         "blueprint_id": "WIDOW",
-        "target_entity": "PastExperienceAdult"
+        "targetEntity": "PastExperienceAdult"
     },
     {
         "blueprint_id": "RETIRED_ADVENTURER",
-        "target_entity": "PastExperienceAdult"
+        "targetEntity": "PastExperienceAdult"
     },
     {
         "blueprint_id": "RETIRED_SOLDIER",
-        "target_entity": "PastExperienceAdult"
+        "targetEntity": "PastExperienceAdult"
     },
     {
         "blueprint_id": "WAR_VETERAN",
-        "target_entity": "PastExperienceAdult"
+        "targetEntity": "PastExperienceAdult"
     },
     {
         "blueprint_id": "QUIET_VILLAGE_LIFE",
-        "target_entity": "PastExperienceAdult"
+        "targetEntity": "PastExperienceAdult"
     },
     {
         "blueprint_id": "QUIET_TOWN_LIFE",
-        "target_entity": "PastExperienceAdult"
+        "targetEntity": "PastExperienceAdult"
     },
     {
         "blueprint_id": "FREED_SLAVE",
-        "target_entity": "PastExperienceAdult"
+        "targetEntity": "PastExperienceAdult"
     }
 ]

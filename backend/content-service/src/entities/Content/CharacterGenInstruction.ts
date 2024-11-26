@@ -1,8 +1,7 @@
-import { Entity, Column, ManyToOne, BeforeInsert, PrimaryColumn } from "typeorm";
+import { Entity, Column, ManyToOne, PrimaryColumn } from "typeorm";
 import { Campaign } from "../Campaign";
 import { User } from "../User";
 import { World } from "../World";
-import { randomUUID } from "crypto";
 import { ContentBase } from "../../ContentBase";
 import { Background } from "./Background";
 
@@ -13,51 +12,46 @@ export class CharacterGenInstruction extends ContentBase {
     @PrimaryColumn()
     id!: string;
 
-    @BeforeInsert()
-    generateId() {
-        if (this.targetEntity) this.id = this.blueprint_id
-        else this.id = `${this.id_prefix}_${randomUUID().replace(/-/g, "")}`;
-    }
     id_prefix = "CHARACTER_GEN_INSTRUCTION"
 
     
-    @Column()
+    @Column({nullable: true})
     first_name?: string
     
-    @Column()
+    @Column({nullable: true})
     last_name?: string
 
-    @Column()
+    @Column({nullable: true})
     gender?: string
 
-    @Column()
+    @Column({nullable: true})
     birthsign?: string
     
-    @Column()
+    @Column({nullable: true})
     birthEra?: string
     
-    @Column()
+    @Column({nullable: true})
     birthYear?: number
 
-    @Column()
+    @Column({nullable: true})
     birthMonth?: string
     
-    @Column()
+    @Column({nullable: true})
     birthDay?: number
     
     @Column()
     background_blueprint_id!: string
 
-    @Column("jsonb")
+    @Column("jsonb", {nullable: true})
     background_customization?: Partial<Background>
 
-    @ManyToOne(() => User, { nullable: true })
+    @ManyToOne(() => User, { nullable: false })
     user!: User;
 
     @ManyToOne(() => Campaign, { nullable: true })
     campaign?: Campaign;
 
-    @ManyToOne(() => World, { nullable: true })
+    @ManyToOne(() => World, { nullable: false })
     world!: World;
 }
 

@@ -3,7 +3,7 @@ import { readdirSync, readFileSync } from "fs";
 import { EntityConstructor } from "../types";
 import { contentEntityMap as cEM } from "../contentEntityMap";
 import { ContentBase } from "../ContentBase";
-import { PresetEnum } from "../enum/PresetEnum";
+import { PresetEnum } from "../proto/world";
 
 export class Preset {
     [entity: string]: {
@@ -19,7 +19,7 @@ export class PresetLoader {
         preset: PresetEnum,
         pathToPresetsFolder: string
     ): Promise<Preset> {
-        const presetPath = join(__dirname, pathToPresetsFolder, preset);
+        const presetPath = join(__dirname, pathToPresetsFolder, preset.toString());
         const files: string[] = this._getJSONFiles(presetPath);
 
         const allBlueprints: Preset = {};
@@ -40,7 +40,10 @@ export class PresetLoader {
      * Reads all JSON files in the given directory.
      */
     private static _getJSONFiles(path: string): string[] {
-        return readdirSync(path).filter((file) => file.endsWith(".json"));
+        const fileNames: string[] = readdirSync(path)
+        console.log(`[PresetLoader - _getJSONFiles] fileNames`, fileNames)
+        const jsonFileNames = fileNames.filter((file) => file.endsWith(".json"));
+        return jsonFileNames
     }
 
     /**
@@ -49,10 +52,10 @@ export class PresetLoader {
     private static _loadBlueprintsFromFile<T extends ContentBase>(
         presetPath: string,
         file: string
-    ): Record<string, Record<string, T>> {
+    ): Record<string, Record<string, T>> { // TODO this reads ALL json files, so instead better use a generator method that spits out contents of each file one by one
         const path = join(presetPath, file);
         const fileContent = readFileSync(path, "utf-8");
-        const blueprintsRaw: Array<{ targetEntity: string;[key: string]: any }> = JSON.parse(fileContent);
+        const blueprintsRaw: { targetEntity: string;[key: string]: any }[] = JSON.parse(fileContent);
 
         const entitiesByType: Record<string, Record<string, T>> = {};
 
@@ -66,14 +69,15 @@ export class PresetLoader {
 
             // Populate entity properties
             for (const [propKey, propValue] of Object.entries(props)) {
-                if (propKey in entity) {
-                    (entity as any)[propKey] = propValue;
-                }
+                // if (propKey in entity) {
+                (entity as any)[propKey] = propValue;
+                // }
             }
 
             // Group entities by their target type
             if (!entitiesByType[targetEntity]) entitiesByType[targetEntity] = {};
             entitiesByType[targetEntity][blueprintRaw.blueprint_id] = entity;
+            console.log(`[PresetLoader - _loadBlueprintsFromFile] targetEntity: ${targetEntity}; processed blueprintRaw.id: ${blueprintRaw.blueprint_id};`)
         }
 
         return entitiesByType;

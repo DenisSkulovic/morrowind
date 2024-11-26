@@ -17,6 +17,7 @@ import { Campaign } from "../Campaign";
 import { User } from "../User";
 import { World } from "../World";
 import { randomUUID } from "crypto";
+import { TagSubtypeEnum } from "../../enum/TagSubtypeEnum";
 
 
 @Entity()
@@ -24,18 +25,13 @@ export class Tag extends ContentBase {
     @PrimaryColumn()
     id!: string;
     
-    @BeforeInsert()
-    generateId() {
-        if (this.targetEntity) this.id = this.blueprint_id
-        else this.id = `${this.id_prefix}_${randomUUID().replace(/-/g, "")}`;
-    }
     id_prefix = "TAG"
 
     @Column({ type: "varchar", length: 30, unique: true })
     label!: string; // The tag's name (e.g., "dunmeri", "rare")
 
-    @Column({ type: "enum", enum: ["CULTURE", "RELATION", "FACTION", "RELIGION", "WEAPON_QUALITY", "ARMOR_QUALITY"]})
-    subtype?: string; // TagSubtypeEnum
+    @Column({ type: "enum", enum: Object.values(TagSubtypeEnum)})
+    subtype?: string;
 
     @ManyToMany(() => Item, (i) => i.tags)
     @JoinTable()
