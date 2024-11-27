@@ -35,9 +35,6 @@ import { randomUUID } from "crypto";
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })
 export class User extends BaseEntity {
-    // @PrimaryGeneratedColumn("uuid")
-    // id!: string;
-
     @PrimaryColumn()
     id!: string;
 
@@ -47,7 +44,7 @@ export class User extends BaseEntity {
     }
     id_prefix = "USER";
 
-    @OneToOne(() => Account, (account) => account.user)
+    @OneToOne(() => Account, (account) => account.user, {lazy: true})
     account!: Account
 
     @OneToMany(() => World, (world) => world.user, { onDelete: "CASCADE", lazy: true })

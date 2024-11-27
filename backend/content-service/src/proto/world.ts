@@ -6,41 +6,9 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { PresetEnum, presetEnumFromJSON, presetEnumToJSON, World } from "./common";
 
 export const protobufPackage = "world";
-
-export enum PresetEnum {
-  default = 0,
-  morrowind = 1,
-  UNRECOGNIZED = -1,
-}
-
-export function presetEnumFromJSON(object: any): PresetEnum {
-  switch (object) {
-    case 0:
-    case "default":
-      return PresetEnum.default;
-    case 1:
-    case "morrowind":
-      return PresetEnum.morrowind;
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return PresetEnum.UNRECOGNIZED;
-  }
-}
-
-export function presetEnumToJSON(object: PresetEnum): string {
-  switch (object) {
-    case PresetEnum.default:
-      return "default";
-    case PresetEnum.morrowind:
-      return "morrowind";
-    case PresetEnum.UNRECOGNIZED:
-    default:
-      return "UNRECOGNIZED";
-  }
-}
 
 export interface CreateWorldRequest {
   name: string;
@@ -92,12 +60,6 @@ export interface LoadWorldPresetRequest {
 
 /** No fields required for a 200 status response */
 export interface LoadWorldPresetResponse {
-}
-
-export interface World {
-  id: string;
-  name: string;
-  description?: string | undefined;
 }
 
 function createBaseCreateWorldRequest(): CreateWorldRequest {
@@ -815,98 +777,6 @@ export const LoadWorldPresetResponse: MessageFns<LoadWorldPresetResponse> = {
   },
   fromPartial<I extends Exact<DeepPartial<LoadWorldPresetResponse>, I>>(_: I): LoadWorldPresetResponse {
     const message = createBaseLoadWorldPresetResponse();
-    return message;
-  },
-};
-
-function createBaseWorld(): World {
-  return { id: "", name: "", description: undefined };
-}
-
-export const World: MessageFns<World> = {
-  encode(message: World, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.id !== "") {
-      writer.uint32(10).string(message.id);
-    }
-    if (message.name !== "") {
-      writer.uint32(18).string(message.name);
-    }
-    if (message.description !== undefined) {
-      writer.uint32(26).string(message.description);
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): World {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseWorld();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1: {
-          if (tag !== 10) {
-            break;
-          }
-
-          message.id = reader.string();
-          continue;
-        }
-        case 2: {
-          if (tag !== 18) {
-            break;
-          }
-
-          message.name = reader.string();
-          continue;
-        }
-        case 3: {
-          if (tag !== 26) {
-            break;
-          }
-
-          message.description = reader.string();
-          continue;
-        }
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): World {
-    return {
-      id: isSet(object.id) ? globalThis.String(object.id) : "",
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
-      description: isSet(object.description) ? globalThis.String(object.description) : undefined,
-    };
-  },
-
-  toJSON(message: World): unknown {
-    const obj: any = {};
-    if (message.id !== "") {
-      obj.id = message.id;
-    }
-    if (message.name !== "") {
-      obj.name = message.name;
-    }
-    if (message.description !== undefined) {
-      obj.description = message.description;
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<World>, I>>(base?: I): World {
-    return World.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<World>, I>>(object: I): World {
-    const message = createBaseWorld();
-    message.id = object.id ?? "";
-    message.name = object.name ?? "";
-    message.description = object.description ?? undefined;
     return message;
   },
 };

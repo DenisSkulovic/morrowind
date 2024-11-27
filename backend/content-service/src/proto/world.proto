@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package world;
 
+import "src/proto/common.proto";
+
 service WorldController {
     rpc createWorld (CreateWorldRequest) returns (CreateWorldResponse);
     rpc getWorld (GetWorldRequest) returns (GetWorldResponse);
@@ -26,7 +28,7 @@ message GetWorldRequest {
 }
 
 message GetWorldResponse {
-    World world = 1;
+    common.World world = 1;
 }
 
 message GetWorldsForUserRequest {
@@ -34,7 +36,7 @@ message GetWorldsForUserRequest {
 }
 
 message GetWorldsForUserResponse {
-    repeated World worlds = 1;
+    repeated common.World worlds = 1;
 }
 
 message DeleteWorldRequest {
@@ -56,20 +58,9 @@ message DropWorldContentResponse {
 message LoadWorldPresetRequest {
     string worldId = 1;
     string userId = 2;
-    PresetEnum preset = 3;
+    common.PresetEnum preset = 3;
 }
 
 message LoadWorldPresetResponse {
     // No fields required for a 200 status response
-}
-
-message World {
-    string id = 1;
-    string name = 2;
-    optional string description = 3;
-}
-
-enum PresetEnum {
-    default = 0;
-    morrowind = 1;
 }

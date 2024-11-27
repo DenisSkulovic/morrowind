@@ -19,7 +19,7 @@ export class Effect extends TaggableContentBase {
     @Column({ type: "enum", enum: ["DAMAGE", "HEALING", "BUFF", "DEBUFF", "RESISTANCE", "STEALING"] })
     type!: string; // "damage", "healing", "buff", "debuff", "resistance", etc.
 
-    @Column({ type: "enum", enum: ["HEALTH", "STAMINA", "MAGIC"]})
+    @Column({ type: "enum", enum: ["HEALTH", "STAMINA", "MANA"]})
     target!: string; // "health", "stamina", "magic", etc.
 
     @Column({ type: "enum", enum: ["INSTANT", "GRADUAL", "PERSISTENT"]})

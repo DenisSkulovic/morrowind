@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package world;
+package generator;
 
-import "./common.proto";
+import "src/proto/common.proto";
 
 service GeneratorController {
     rpc generatItems(GenerateItemsRequest) returns (GenerateItemsResponse);
@@ -11,7 +11,7 @@ service GeneratorController {
 }
 
 message GenerateItemsRequest {
-    repeated common.BlueprintInstruction instructions = 1;
+    repeated common.GenerationInstruction instructions = 1;
 }
 message GenerateItemsResponse {
     repeated common.Item items = 1;
@@ -23,8 +23,8 @@ message GenerateCharactersResponse {
     repeated common.Character character = 1;
 }
 message GenerateCharacterGroupsRequest {
-    repeated common.CharacterGroupGenInstruction = 1;
+    repeated common.CharacterGroupGenInstruction instructions = 1;
 }
 message GenerateCharacterGroupsResponse {
-    repeated common.GenerateCharactersResponse characterGroups = 1;
+    repeated GenerateCharactersResponse characterGroups = 1;
 }

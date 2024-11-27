@@ -24,7 +24,7 @@ export class CharacterMemory extends TaggableContentBase {
     @Column("jsonb", { default: null, nullable: true })
     factStatus?: {
         [id: string]: {
-            status: "accessible" | "inaccessible",
+            status: "ACCESSIBLE" | "INACCESSIBLE",
         }
     }
 

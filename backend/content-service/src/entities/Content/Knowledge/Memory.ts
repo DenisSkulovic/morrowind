@@ -1,11 +1,10 @@
-import { Entity, TableInheritance, OneToMany, ManyToMany, Column, JoinTable, ManyToOne, PrimaryGeneratedColumn, BeforeInsert, PrimaryColumn } from "typeorm";
+import { Entity, TableInheritance, ManyToMany, Column, JoinTable, ManyToOne, PrimaryColumn } from "typeorm";
 import { Fact } from "../Fact";
 import { Tag } from "../Tag";
 import { TaggableContentBase } from "../../../TaggableContentBase";
 import { Campaign } from "../../Campaign";
 import { User } from "../../User";
 import { World } from "../../World";
-import { randomUUID } from "crypto";
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })

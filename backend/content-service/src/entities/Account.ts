@@ -36,7 +36,7 @@ export class Account extends BaseEntity {
     @Column({ type: "json", nullable: true })
     preferences?: any; // User-specific preferences/settings.
 
-    @OneToOne(() => User, (user) => user.account, { cascade: true })
+    @OneToOne(() => User, (user) => user.account, { cascade: true, lazy: true })
     @JoinColumn()
     user!: User
 
