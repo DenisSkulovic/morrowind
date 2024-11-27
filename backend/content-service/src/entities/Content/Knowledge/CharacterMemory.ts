@@ -1,4 +1,4 @@
-import { TableInheritance, Entity, Column, ManyToOne, JoinTable, ManyToMany, PrimaryGeneratedColumn, BeforeInsert, PrimaryColumn } from "typeorm";
+import { TableInheritance, Entity, Column, ManyToOne, ManyToMany, PrimaryColumn } from "typeorm";
 import { Memory } from "./Memory"
 import { Character } from "../Character"
 import { TaggableContentBase } from "../../../TaggableContentBase";
@@ -6,7 +6,6 @@ import { Tag } from "../Tag";
 import { Campaign } from "../../Campaign";
 import { User } from "../../User";
 import { World } from "../../World";
-import { randomUUID } from "crypto";
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })
@@ -44,7 +43,6 @@ export class CharacterMemory extends TaggableContentBase {
     @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
     lastUpdatedAt?: Date; // Last time the memory was reinforced/pruned
 
-    
     @ManyToMany(() => Tag, (tag) => tag.characterMemories)
     tags?: Tag[];
 

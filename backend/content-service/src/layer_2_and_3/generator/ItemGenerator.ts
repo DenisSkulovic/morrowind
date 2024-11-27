@@ -50,10 +50,12 @@ export class ItemGenerator extends AbstractProbGenerator<Item> {
             for (let i = 0; i < quantity; i++) {
                 const instance: Item = Item.create({ ...blueprint })
                 // FYI: I made a simple assumption that a stackable item cannot have storage slots... So it somewhat simplifies things
+                // assigning storage slots
                 if (blueprint.storageSlots) {
                     const storageSlots: StorageSlot[] = []
                     for (const storageSlotDefition of blueprint.storageSlots) {
                         const storageSlot = StorageSlot.create({ ...storageSlotDefition })
+                        storageSlot.parentItem = instance
                         storageSlots.push(storageSlot)
                     }
                     instance.storageSlots = storageSlots

@@ -1,11 +1,10 @@
-import { BeforeInsert, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, TableInheritance } from "typeorm";
+import { Column, Entity, ManyToMany, ManyToOne, PrimaryColumn, TableInheritance } from "typeorm";
 import { TaggableContentBase } from "../../../TaggableContentBase";
 import { Tag } from "../Tag";
-import { Item } from "../Item/Item";
 import { Campaign } from "../../Campaign";
 import { User } from "../../User";
 import { World } from "../../World";
-import { randomUUID } from "crypto";
+import { SkillCategoryEnum } from "../../../enum/SkillCategoryEnum";
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })
@@ -15,8 +14,14 @@ export class Skill extends TaggableContentBase {
     
     id_prefix = "SKILL"
 
-    @OneToMany(() => Item, item => item.trained_skill, { nullable: true })
-    items?: Item[]
+    @Column({type: "varchar", length: 50})
+    name!: string
+
+    @Column({type: "varchar", length: 255})
+    description!: string
+    
+    @Column({type: "enum", enum: Object.values(SkillCategoryEnum)})
+    category!: string
     
     @ManyToMany(() => Tag, (tag) => tag.skills)
     tags?: Tag[];

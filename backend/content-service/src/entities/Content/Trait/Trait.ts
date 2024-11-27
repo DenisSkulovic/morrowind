@@ -17,7 +17,6 @@ export class Trait extends TaggableContentBase {
     @Column({default: "PLACEHOLDER"})
     name!: string;
 
-    
     @ManyToMany(() => Tag, (tag) => tag.traits)
     tags?: Tag[];
 

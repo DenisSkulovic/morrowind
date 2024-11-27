@@ -19,16 +19,16 @@
             "race": [
                 "HUMAN"
             ],
-            "factions": [
+            "faction": [
                 "HIGHLAND_KINGDOM"
             ],
-            "diseases": [
+            "disease": [
                 "PLAGUE"
             ],
-            "addictions": [
+            "addiction": [
                 "ALCOHOLISM"
             ],
-            "professions": [
+            "profession": [
                 "TOWN_GUARD"
             ],
             "religion": [

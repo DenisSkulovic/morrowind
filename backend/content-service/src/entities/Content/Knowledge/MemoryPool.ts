@@ -1,4 +1,4 @@
-import { Entity, TableInheritance, Column, OneToMany, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn, BeforeInsert, PrimaryColumn } from "typeorm";
+import { Entity, Column, OneToMany, JoinTable, ManyToMany, ManyToOne, PrimaryColumn } from "typeorm";
 import {MemoryPoolEntry} from "./MemoryPoolEntry"
 import { TaggableContentBase } from "../../../TaggableContentBase";
 import { Tag } from "../Tag";
@@ -6,7 +6,6 @@ import { CharacterProfession } from "../CharacterProfession";
 import { Campaign } from "../../Campaign";
 import { User } from "../../User";
 import { World } from "../../World";
-import { randomUUID } from "crypto";
 
 @Entity()
 export class MemoryPool extends TaggableContentBase {

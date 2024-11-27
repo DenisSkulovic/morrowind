@@ -1,4 +1,4 @@
-import { Entity, TableInheritance, Column, ManyToOne, ManyToMany, JoinTable, PrimaryGeneratedColumn, BeforeInsert, PrimaryColumn } from "typeorm";
+import { Entity, Column, ManyToOne, ManyToMany, JoinTable, PrimaryColumn } from "typeorm";
 import { MemoryPool } from "./Knowledge/MemoryPool";
 import { Character } from "./Character";
 import { TaggableContentBase } from "../../TaggableContentBase";
@@ -6,7 +6,6 @@ import { Tag } from "./Tag";
 import { Campaign } from "../Campaign";
 import { User } from "../User";
 import { World } from "../World";
-import { randomUUID } from "crypto";
 
 @Entity()
 export class CharacterProfession extends TaggableContentBase {
@@ -15,26 +14,27 @@ export class CharacterProfession extends TaggableContentBase {
     
     id_prefix = "CHARACTER_PROFESSION"
 
-    @ManyToOne(() => Character, character => character.professions)
-    character?: Character;
+    @ManyToMany(() => Character, character => character.professions, {lazy: true})
+    @JoinTable()
+    characters?: Character[];
 
-    @ManyToMany(() => MemoryPool)
+    @ManyToMany(() => MemoryPool, {lazy: true})
     memoryPools!: MemoryPool[]
 
     @Column({ type: "varchar", length: 255, default: "PLACEHOLDER" })
     name!: string; // E.g., "Fisherman", "Kwama Egg Miner", "Imperial Soldier"
 
 
-    @ManyToMany(() => Tag, (tag) => tag.characterProfessions)
+    @ManyToMany(() => Tag, (tag) => tag.characterProfessions, {lazy: true})
     tags?: Tag[];
 
-    @ManyToOne(() => User, { nullable: true })
+    @ManyToOne(() => User, { nullable: true, lazy: true })
     user!: User;
 
-    @ManyToOne(() => Campaign, { nullable: true })
+    @ManyToOne(() => Campaign, { nullable: true, lazy: true })
     campaign?: Campaign;
 
-    @ManyToOne(() => World, { nullable: true })
+    @ManyToOne(() => World, { nullable: true, lazy: true })
     world!: World;
 }
 

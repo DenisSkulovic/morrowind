@@ -1,0 +1,307 @@
+syntax = "proto3";
+
+package common;
+
+message Item {
+    string blueprint_id
+    map<string, string> metadata
+    string targetEntity
+    string id
+    string name
+    string description
+    optional repeated int32 size
+    optional int32 quantity
+    optional int32 maxQuantity
+    optional int32 base_value
+    optional map<string, string> actions
+    optional map<string, map<string, int32>> requirements
+    optional bool stackable
+    optional bool repairable
+    optional bool drinkable
+    optional bool edible
+    optional GridPosition gridPosition
+    optional int32 durability
+    optional int32 maxDurability
+    optional string damage_pierce
+    optional int32 armor_class
+    optional bool stealth_disadvantage
+    optional string damage_slash
+    optional string damage_blunt
+    optional int32 range
+    optional bool two_handed
+    optional int32 nutrition
+    optional int32 spoilage
+    optional int32 thirst_quenched
+    optional string type
+    optional string storageSlotId
+    optional string equipmentSlotId
+    optional User user
+    optional Campaign campaign
+    optional World world
+    optional string trained_skill
+    optional repeated StorageSlotDefinition storageSlotDefinition
+    optional float weight
+}
+
+message Character {
+    string id = 1;
+    string blueprint_id = 2;
+    map<string, string> metadata = 3;
+    optional User user = 4;
+    optional Campaign campaign = 5;
+    optional World world = 6;
+    string first_name = 7;
+    string last_name = 8;
+    optional Race race =9;
+    string gender = 10;
+    optional Birthsign birthsign = 11;
+    int32 birthYear = 12;
+    int32 birthMonth = 13;
+    int32 birthDay = 14;
+    map<string, number> skills = 15;
+    optional repeated EquipmentSlot equipmentSlots = 16;
+    optional repeated CharacterProfession professions  = 17;
+    optional repeated MemoryPool memoryPools = 18;
+}
+message CharacterMemory {
+    string id = 1;
+    string blueprint_id = 2;
+    string name = 3;
+    map<string, string> metadata = 4;
+    optional User user = 5;
+    optional Campaign campaign = 6;
+    optional World world = 7;
+    optional Character chracter = 8;
+    optional map<string, map<string, repeated string>> factStatus = 9;
+    int32 importance = 10;
+    int32 resistance = 11;
+    int32 accumulator = 12;
+    int32 acquiredAt = 13;
+    int32 lastUpdatedAt = 14;
+    optional Tag tags = 15;
+}
+message Tag {
+    string id = 1;
+    string blueprint_id = 2;
+    map<string, string> metadata = 3;
+    string label = 4;
+    TagSubtypeEnum subtype = 5;
+    optional Item items = 6;
+    optional repeated PastExperience pastExperiences = 7;
+    optional repeated CharacterMemory characterMemories = 8;
+    optional repeated Memory memories = 9;
+    optional repeated MemoryPool memoryPools = 10;
+    optional repeated Skill skills = 11;
+    optional repeated Trait traits = 12;
+    optional repeated Character characters = 13;
+    optional repeated CharacterProfession characterProfessions = 14;
+    optional repeated Disease diseases = 15;
+    optional repeated Effect effects = 16;
+    optional repeated Fact facts = 17;
+    optional repeated Faction factions = 18;
+    optional User user = 19;
+    optional Campaign campaign = 20;
+    optional World world = 21;
+}
+message Skill {
+    string id = 1;
+    string blueprint_id = 2;
+    string name = 3;
+    map<string, string> metadata = 4;
+    optional User user = 5;
+    optional Campaign campaign = 6;
+    optional World world = 7;
+    optional Tag tags = 8;
+    string description = 9;
+    SkillCategoryEnum category = 10;
+}
+enum SkillCategoryEnum {
+    CRAFTING = 0;
+    MAGIC = 1;
+    COMBAT = 2;
+    STEALTH = 3;
+    SOCIAL = 4;
+}
+message Trait {
+    string id = 1;
+    string blueprint_id = 2;
+    string name = 3;
+    map<string, string> metadata = 4;
+    optional User user = 5;
+    optional Campaign campaign = 6;
+    optional World world = 7;
+    optional Tag tags = 8;
+}
+message Disease {
+
+}
+message Fact {
+
+}
+message Faction {
+
+}
+enum TagSubtypeEnum {
+    MATERIAL = 0;
+    CULTURE = 1;
+    RELATION = 2;
+    FACTION = 3;
+    RELIGION = 4;
+    WEAPON_QUALITY = 5;
+    ARMOR_QUALITY = 6;
+    WEAPON_TYPE = 7;
+    STATUS = 8;
+    QUEST = 9;
+}
+message MemoryPool {
+    string id = 1;
+    string blueprint_id = 2;
+    string name = 3;
+    map<string, string> metadata = 4;
+    optional User user = 5;
+    optional Campaign campaign = 6;
+    optional World world = 7;
+    string description = 8;
+    optional MemoryPoolEntry memoryPoolEntries = 9;
+    optional CharacterProfession characterProfessions = 10;
+    optional Tag tags = 11;
+}
+
+message MemoryPoolEntry {
+    string id = 1;
+    string blueprint_id = 2;
+    string name = 3;
+    map<string, string> metadata = 4;
+    optional User user = 5;
+    optional Campaign campaign = 6;
+    optional World world = 7;
+    optional MemoryPool memoryPool = 8;
+    Memory memory = 9;
+    int32 probability = 10;
+    int32 defaultClarity = 11;
+    int32 defaultImportance = 12;
+}
+message CharacterProfession {
+    string id = 1;
+    string blueprint_id = 2;
+    string name = 3;
+    map<string, string> metadata = 4;
+    optional User user = 5;
+    optional Campaign campaign = 6;
+    optional World world = 7;
+    optional Character character = 8;
+}
+message EquipmentSlot {
+    string id = 1;
+    string blueprint_id = 2;
+    string name = 3;
+    map<string, string> metadata = 4;
+    optional User user = 5;
+    optional Campaign campaign = 6;
+    optional World world = 7;
+    repeated string allowedEntities = 8;
+    optional Item equippedItem = 9;
+    optional Character character = 10;
+}
+message Birthsign {
+    string id = 1;
+    string blueprint_id = 2;
+    string name = 3;
+    map<string, string> metadata = 4;
+    optional User user = 5;
+    optional Campaign campaign = 6;
+    optional World world = 7;
+}
+message Race {
+    string id = 1;
+    string blueprint_id = 2;
+    string name = 3;
+    repeated EquipmentSlotDefinitions equipment_slot_definitions = 4;
+    optional User user = 5;
+    optional Campaign campaign = 6;
+    optional World world = 7;
+    map<string, string> metadata = 8;
+}
+
+message StorageSlotDefinition {
+    repeated int32 grid = 1;
+    string name = 2;
+    int32 maxWeight = 3;
+}
+
+message GridPosition {
+    int32 x = 1;
+    int32 y = 2;
+}
+
+message BlueprintInstruction {
+    oneof instruction {
+        string blueprint_id = 1;
+        repeated string blueprint_ids = 2;
+        repeated map<string, int32> idsAndQuants = 3;
+        repeated SimpleProb simpleProbs = 4;
+        repeated GaussianProb gaussianProbs = 5;
+        repeated Combinator combinators = 6
+    }
+}
+
+
+message CharacterGenInstruction {
+    string blueprint_id = 1;
+    string background_blueprint_id = 2;
+    string targetEntity = 3;
+    optional string first_name = 4;
+    optional string last_name = 5;
+    optional string gender = 6;
+    optional string birthEra = 7;
+    optional string birthYear = 8;
+    optional string birthMonth = 9;
+    optional string birthDay = 10;
+    optional BackgroundCustomization background_customization = 11;
+}
+
+message BackgroundCustomization {
+    optional repeated BlueprintInstruction race = 1;
+    optional repeated BlueprintInstruction faction = 2;
+    optional repeated BlueprintInstruction disease = 3;
+    optional repeated BlueprintInstruction addiction = 4;
+    optional repeated BlueprintInstruction profession = 5;
+    optional repeated BlueprintInstruction religion = 6;
+    optional repeated BlueprintInstruction item_sets = 7;
+    optional repeated BlueprintInstruction items = 8
+    optional repeated BlueprintInstruction past_exp_child = 9;
+    optional repeated BlueprintInstruction past_exp_adult = 10;
+    optional repeated BlueprintInstruction skill_sets = 11;
+    optional repeated map<string, int32> skill_adjustments = 12;
+    optional repeated BlueprintInstruction personality = 13;
+}
+ 
+message SimpleProb {
+    ConditionEnum cond = 1;
+    map<string, float> prob = 2;
+    string clazz = 3;
+}
+
+message GaussianProb {
+    string blueprint_id = 1;
+    float prob = 2
+    optional int32 avg_quan = 3;
+    optional float st_dev = 4;
+    optional float skew = 5;
+    string clazz = 6;
+}
+
+message Combinator {
+    optional string name = 1;
+    ConditionEnum cond = 2;
+    // prob must be a float value between 0 and 1 inclusive
+    float prob = 3;
+    repeated BlueprintInstruction instructions = 4;
+    string clazz = 5;
+}
+
+enum ConditionEnum {
+    OR = 0;
+    ANY = 1;
+    AND = 2;
+}

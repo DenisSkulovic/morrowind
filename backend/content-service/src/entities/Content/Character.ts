@@ -40,13 +40,13 @@ export class Character extends TaggableContentBase {
     @Column({ type: "varchar", length: 255 })
     last_name!: string;
 
-    @ManyToOne(() => Race)
+    @ManyToOne(() => Race, {lazy: true})
     race!: Race;
 
     @Column({ type: "enum", enum: ["MALE", "FEMALE"] })
     gender!: string;
 
-    @ManyToOne(() => Birthsign)
+    @ManyToOne(() => Birthsign, {lazy: true})
     birthsign?: Birthsign;
 
     @Column({ default: null, nullable: true })
@@ -61,11 +61,11 @@ export class Character extends TaggableContentBase {
     @Column("jsonb", { default: {} })
     skills!: { [skill: string]: number };
 
-    @OneToMany(() => EquipmentSlot, eqiupmentSlot => eqiupmentSlot.character)
+    @OneToMany(() => EquipmentSlot, eqiupmentSlot => eqiupmentSlot.character, {lazy: true})
     @JoinTable()
     equipmentSlots!: EquipmentSlot[];
 
-    @OneToMany(() => CharacterProfession, profession => profession.character, { lazy: true })
+    @ManyToMany(() => CharacterProfession, profession => profession.characters, { lazy: true })
     professions!: CharacterProfession[]; // Tracks current and past professions
 
     @ManyToMany(() => MemoryPool, { lazy: true })
@@ -100,12 +100,12 @@ export class Character extends TaggableContentBase {
     @JoinTable()
     tags?: Tag[];
 
-    @ManyToOne(() => User, { nullable: true })
+    @ManyToOne(() => User, { nullable: true, lazy: true })
     user!: User;
 
-    @ManyToOne(() => World, { nullable: true })
+    @ManyToOne(() => World, { nullable: true, lazy: true })
     world!: World;
 
-    @ManyToOne(() => Campaign, { nullable: true })
+    @ManyToOne(() => Campaign, { nullable: true, lazy: true })
     campaign?: Campaign;
 }

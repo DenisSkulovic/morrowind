@@ -21,19 +21,19 @@ export class EquipmentSlot extends ContentBase {
     @Column({type: "jsonb"})
     allowedEntities!: string[] // e.g. ["ItemWeapon", "ItemMiscFishingRod"] for hand, or ["ItemWearableHelmet"] for a head slot
 
-    @OneToOne(() => Item, { nullable: true })
+    @OneToOne(() => Item, { nullable: true, lazy: true })
     @JoinColumn()
     equippedItem?: Item;
 
-    @ManyToOne(() => Character, (character) => character.equipmentSlots, { nullable: true })
+    @ManyToOne(() => Character, (character) => character.equipmentSlots, { nullable: true, lazy: true })
     character?: Character; // The character owning this slot (i.e. left hand slot, right hand slot, head slot)
 
-    @ManyToOne(() => User, { nullable: true })
+    @ManyToOne(() => User, { nullable: true, lazy: true })
     user!: User;
 
-    @ManyToOne(() => Campaign, { nullable: true })
+    @ManyToOne(() => Campaign, { nullable: true, lazy: true })
     campaign?: Campaign;
 
-    @ManyToOne(() => World, { nullable: true })
+    @ManyToOne(() => World, { nullable: true, lazy: true })
     world!: World;
 }

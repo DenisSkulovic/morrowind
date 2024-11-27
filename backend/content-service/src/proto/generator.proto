@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package world;
+
+import "./common.proto";
+
+service GeneratorController {
+    rpc generatItems(GenerateItemsRequest) returns (GenerateItemsResponse);
+    rpc generateCharacters(GenerateCharactersRequest) returns (GenerateCharactersResponse);
+    rpc generateCharacterGroups(GenerateCharacterGroupsRequest) returns (GenerateCharacterGroupsResponse);
+}
+
+message GenerateItemsRequest {
+    repeated common.BlueprintInstruction instructions = 1;
+}
+message GenerateItemsResponse {
+    repeated common.Item items = 1;
+}
+message GenerateCharactersRequest {
+    repeated common.CharacterGenInstruction instructions = 1;
+}
+message GenerateCharactersResponse {
+    repeated common.Character character = 1;
+}
+message GenerateCharacterGroupsRequest {
+    repeated common.CharacterGroupGenInstruction = 1;
+}
+message GenerateCharacterGroupsResponse {
+    repeated common.GenerateCharactersResponse characterGroups = 1;
+}

@@ -1,4 +1,4 @@
-import { BeforeInsert, Entity, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn, TableInheritance } from "typeorm";
+import { BeforeInsert, Column, Entity, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn, TableInheritance } from "typeorm";
 import { ContentBase } from "../../ContentBase";
 import { Campaign } from "../Campaign";
 import { User } from "../User";
@@ -11,6 +11,9 @@ export class Birthsign extends ContentBase {
     id!: string;
     
     id_prefix = "BIRTHSIGN"
+
+    @Column({type:"varchar", length: 50})
+    name!: string
 
     @ManyToOne(() => User, { nullable: true })
     user!: User;
