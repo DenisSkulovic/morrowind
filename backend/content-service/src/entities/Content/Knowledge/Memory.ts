@@ -5,6 +5,7 @@ import { TaggableContentBase } from "../../../TaggableContentBase";
 import { Campaign } from "../../Campaign";
 import { User } from "../../User";
 import { World } from "../../World";
+import { MemoryDTO } from "../../../proto/common";
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })
@@ -36,4 +37,32 @@ export class Memory extends TaggableContentBase {
 
     @ManyToOne(() => World, { nullable: true })
     world!: World;
+
+    public toDTO(): MemoryDTO {
+        return {
+            id: this.id,
+            description: this.description,
+            type: this.type,
+            facts: this.facts ? { facts: this.facts.map(fact => fact.toDTO()) } : undefined,
+            tags: this.tags ? { tags: this.tags.map(tag => tag.toDTO()) } : undefined,
+            user: this.user?.toDTO(),
+            campaign: this.campaign?.toDTO(),
+            world: this.world?.toDTO(),
+            targetEntity: this.targetEntity
+        };
+    }
+    
+    public static fromDTO(dto: MemoryDTO, user: User, world: World, campaign?: Campaign): Memory {
+        const memory = new Memory();
+        memory.id = dto.id;
+        memory.description = dto.description;
+        memory.type = dto.type;
+        memory.facts = dto.facts?.facts?.map(i => Fact.fromDTO(i, user, world, campaign)) || [];
+        memory.tags = dto.tags?.tags?.map(i => Tag.fromDTO(i, user, world, campaign)) || [];
+        memory.user = user;
+        memory.campaign = campaign;
+        memory.world = world;
+        memory.targetEntity = dto.targetEntity
+        return memory;
+    }
 }

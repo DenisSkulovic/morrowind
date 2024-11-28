@@ -28,7 +28,7 @@ message GetWorldRequest {
 }
 
 message GetWorldResponse {
-    common.World world = 1;
+    common.WorldDTO world = 1;
 }
 
 message GetWorldsForUserRequest {
@@ -36,7 +36,7 @@ message GetWorldsForUserRequest {
 }
 
 message GetWorldsForUserResponse {
-    repeated common.World worlds = 1;
+    repeated common.WorldDTO worlds = 1;
 }
 
 message DeleteWorldRequest {

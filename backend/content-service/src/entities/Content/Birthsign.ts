@@ -1,9 +1,9 @@
-import { BeforeInsert, Column, Entity, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn, TableInheritance } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryColumn } from "typeorm";
 import { ContentBase } from "../../ContentBase";
 import { Campaign } from "../Campaign";
 import { User } from "../User";
 import { World } from "../World";
-import { randomUUID } from "crypto";
+import { BirthsignDTO } from "../../proto/common";
 
 @Entity()
 export class Birthsign extends ContentBase {
@@ -23,4 +23,27 @@ export class Birthsign extends ContentBase {
 
     @ManyToOne(() => World, { nullable: true })
     world!: World;
+
+    public toDTO(): BirthsignDTO {
+        return {
+            id: this.id,
+            blueprintId: this.blueprint_id,
+            name: this.name,
+            user: this.user?.toDTO(),
+            campaign: this.campaign?.toDTO(),
+            world: this.world?.toDTO(),
+            targetEntity: this.targetEntity
+        };
+    }
+    
+    public static fromDTO(dto: BirthsignDTO, user: User, world: World, campaign?: Campaign): Birthsign {
+        const birthsign = new Birthsign();
+        birthsign.id = dto.id;
+        birthsign.name = dto.name;
+        birthsign.user = user;
+        birthsign.campaign = campaign;
+        birthsign.world = world;
+        birthsign.targetEntity = dto.targetEntity
+        return birthsign;
+    }
 }

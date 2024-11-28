@@ -1,12 +1,13 @@
-import { Entity, Column, TableInheritance, ManyToOne, PrimaryGeneratedColumn, BeforeInsert, PrimaryColumn } from "typeorm";
+import { Entity, Column, ManyToOne, PrimaryColumn } from "typeorm";
 import { ContentBase } from "../../ContentBase";
 import { Campaign } from "../Campaign";
 import { User } from "../User";
 import { World } from "../World";
-import { randomUUID } from "crypto";
+import { ReligionDTO } from "../../proto/common";
 
 @Entity()
 export class Religion extends ContentBase {
+    
     @PrimaryColumn()
     id!: string;
     
@@ -44,4 +45,32 @@ export class Religion extends ContentBase {
 
     @ManyToOne(() => World, { nullable: true })
     world!: World;
+
+    public toDTO(): ReligionDTO {
+        return {
+            id: this.id,
+            name: this.name,
+            description: this.description,
+            rituals: this.rituals ? { rituals: this.rituals } : undefined,
+            tenets: this.tenets ? { tenets: this.tenets } : undefined,
+            user: this.user?.toDTO(),
+            campaign: this.campaign?.toDTO(),
+            world: this.world?.toDTO(),
+            targetEntity: this.targetEntity
+        };
+    }
+
+    public static fromDTO(dto: ReligionDTO, user: User, world: World, campaign?: Campaign): Religion {
+        const religion = new Religion();
+        religion.id = dto.id;
+        religion.name = dto.name;
+        religion.description = dto.description;
+        religion.rituals = dto.rituals?.rituals || [];
+        religion.tenets = dto.tenets?.tenets || [];
+        religion.user = user;
+        religion.campaign = campaign;
+        religion.world = world;
+        religion.targetEntity = dto.targetEntity
+        return religion;
+    }
 }

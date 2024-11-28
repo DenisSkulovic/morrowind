@@ -1,6 +1,7 @@
 import { TableInheritance, Entity, Column, PrimaryGeneratedColumn, OneToMany, BaseEntity, OneToOne, JoinColumn, BeforeInsert, PrimaryColumn } from "typeorm";
 import { User } from "./User";
 import { randomUUID } from "crypto";
+import { AccountDTO } from "../proto/account";
 
 export enum AccountRoleEnum {
     PLAYER = "player",
@@ -10,8 +11,28 @@ export enum AccountRoleEnum {
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })
 export class Account extends BaseEntity {
-    // @PrimaryGeneratedColumn("uuid")
-    // id!: string;
+    public toDTO(): AccountDTO {
+        return {
+            id: this.id,
+            username: this.username,
+            email: this.email,
+            role: this.role,
+            preferences: this.preferences,
+            user: this.user?.toDTO(),
+        };
+    }
+    
+    public static fromDTO(dto: AccountDTO, user: User): Account {
+        const account = new Account();
+        account.id = dto.id;
+        account.username = dto.username;
+        account.email = dto.email;
+        account.role = dto.role;
+        account.preferences = dto.preferences;
+        account.user = user;
+        return account;
+    }
+    
     @PrimaryColumn()
     id!: string;
 

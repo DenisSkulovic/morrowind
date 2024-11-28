@@ -6,6 +6,7 @@ import { Tag } from "./Tag";
 import { Campaign } from "../Campaign";
 import { User } from "../User";
 import { World } from "../World";
+import { CharacterProfessionDTO } from "../../proto/common";
 
 @Entity()
 export class CharacterProfession extends TaggableContentBase {
@@ -21,7 +22,7 @@ export class CharacterProfession extends TaggableContentBase {
     @ManyToMany(() => MemoryPool, {lazy: true})
     memoryPools!: MemoryPool[]
 
-    @Column({ type: "varchar", length: 255, default: "PLACEHOLDER" })
+    @Column({ type: "varchar", length: 60 })
     name!: string; // E.g., "Fisherman", "Kwama Egg Miner", "Imperial Soldier"
 
 
@@ -36,6 +37,39 @@ export class CharacterProfession extends TaggableContentBase {
 
     @ManyToOne(() => World, { nullable: true, lazy: true })
     world!: World;
+
+    public toDTO(): CharacterProfessionDTO {
+        return {
+            id: this.id,
+            characters: this.characters
+                ? { characters: this.characters.map(character => character.toDTO()) }
+                : undefined,
+            memoryPools: this.memoryPools
+                ? { memoryPools: this.memoryPools.map(pool => pool.toDTO()) }
+                : undefined,
+            name: this.name,
+            tags: this.tags ? { tags: this.tags.map(tag => tag.toDTO()) } : undefined,
+            user: this.user?.toDTO(),
+            campaign: this.campaign?.toDTO(),
+            world: this.world?.toDTO(),
+            targetEntity: this.targetEntity
+        };
+    }
+
+    public static fromDTO(dto: CharacterProfessionDTO, user: User, world: World, campaign?: Campaign): CharacterProfession {
+        const profession = new CharacterProfession();
+        profession.id = dto.id;
+        profession.characters = dto.characters?.characters?.map(i=>Character.fromDTO(i, user, world, campaign)) || [];
+        profession.memoryPools = dto.memoryPools?.memoryPools?.map(i=>MemoryPool.fromDTO(i, user, world, campaign)) || [];
+        profession.name = dto.name;
+        profession.tags = dto.tags?.tags?.map(tag => Tag.fromDTO(tag, user, world, campaign)) || [];
+        profession.user = user;
+        profession.campaign = campaign;
+        profession.world = world;
+        profession.targetEntity = dto.targetEntity
+        return profession;
+    }
+    
 }
 
 // example: Fisherman (Beginner). Beginner here would be represented by a tag, and specific memory pools will be connected. On generation, certain memories will be created, but after generation memories begin a free float.

@@ -5,7 +5,11 @@ import { World } from "../entities/World";
 
 export type EntityConstructor<T> = new () => T;
 
-export type ItemRequirements = { [type: string]: { [name: string]: number | boolean } }
+export type ItemRequirements = {
+    type: string;
+    name: string;
+    value: number | boolean;
+}[];
 
 export type StorageSlotDefinition = {
     "name": string,

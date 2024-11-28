@@ -6,6 +6,7 @@ import { Tag } from "../Tag";
 import { Campaign } from "../../Campaign";
 import { User } from "../../User";
 import { World } from "../../World";
+import { CharacterMemoryDTO } from "../../../proto/common";
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })
@@ -38,10 +39,10 @@ export class CharacterMemory extends TaggableContentBase {
     accumulator!: number; // from 0 to
 
     @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
-    acquiredAt?: Date; // Date memory was gained
+    acquiredAt?: number; // Date memory was gained
 
     @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
-    lastUpdatedAt?: Date; // Last time the memory was reinforced/pruned
+    lastUpdatedAt?: number; // Last time the memory was reinforced/pruned
 
     @ManyToMany(() => Tag, (tag) => tag.characterMemories)
     tags?: Tag[];
@@ -54,4 +55,44 @@ export class CharacterMemory extends TaggableContentBase {
 
     @ManyToOne(() => World, { nullable: true })
     world!: World;
+
+    public toDTO(): CharacterMemoryDTO {
+        return {
+            id: this.id,
+            character: this.character?.toDTO(),
+            memory: this.memory?.toDTO(),
+            factStatus: this.factStatus,
+            importance: this.importance,
+            resistance: this.resistance,
+            accumulator: this.accumulator,
+            acquiredAt: this.acquiredAt,
+            lastUpdatedAt: this.lastUpdatedAt,
+            tags: this.tags ? { tags: this.tags.map(tag => tag.toDTO()) } : undefined,
+            user: this.user?.toDTO(),
+            campaign: this.campaign?.toDTO(),
+            world: this.world?.toDTO(),
+            targetEntity: this.targetEntity
+        };
+    }
+    
+    public static fromDTO(dto: CharacterMemoryDTO, user: User, world: World, campaign?: Campaign): CharacterMemory {
+        if (!dto.character) throw new Error("character on CharacterMemoryDTO cannot be undefined")
+        if (!dto.memory) throw new Error("memory on CharacterMemoryDTO cannot be undefined")
+        const characterMemory = new CharacterMemory();
+        characterMemory.id = dto.id;
+        characterMemory.character = Character.fromDTO(dto.character, user, world, campaign);
+        characterMemory.memory = Memory.fromDTO(dto.memory, user, world, campaign);
+        characterMemory.factStatus = dto.factStatus;
+        characterMemory.importance = dto.importance;
+        characterMemory.resistance = dto.resistance;
+        characterMemory.accumulator = dto.accumulator;
+        characterMemory.acquiredAt = dto.acquiredAt;
+        characterMemory.lastUpdatedAt = dto.lastUpdatedAt;
+        characterMemory.tags = dto.tags?.tags?.map(tag => Tag.fromDTO(tag, user, world, campaign)) || [];
+        characterMemory.user = user;
+        characterMemory.campaign = campaign;
+        characterMemory.world = world;
+        characterMemory.targetEntity = dto.targetEntity;
+        return characterMemory;
+    }
 }

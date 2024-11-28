@@ -1,12 +1,41 @@
-import { TableInheritance, Entity, Column, ManyToOne, PrimaryGeneratedColumn, BeforeInsert, PrimaryColumn } from "typeorm";
+import { Entity, Column, ManyToOne, PrimaryColumn } from "typeorm";
 import { ContentBase } from "../../ContentBase";
 import { Campaign } from "../Campaign";
 import { User } from "../User";
 import { World } from "../World";
-import { randomUUID } from "crypto";
+import { NeedDTO } from "../../proto/common";
 
 @Entity()
 export class Need extends ContentBase {
+
+    public toDTO(): NeedDTO {
+        return {
+            id: this.id,
+            name: this.name,
+            description: this.description,
+            type: this.type,
+            layer: this.layer,
+            user: this.user?.toDTO(),
+            campaign: this.campaign?.toDTO(),
+            world: this.world?.toDTO(),
+            targetEntity: this.targetEntity
+        };
+    }
+
+    public static fromDTO(dto: NeedDTO, user: User, world: World, campaign?: Campaign): Need {
+        const need = new Need();
+        need.id = dto.id;
+        need.name = dto.name;
+        need.description = dto.description;
+        need.type = dto.type;
+        need.layer = dto.layer;
+        need.user = user;
+        need.campaign = campaign;
+        need.world = world;
+        need.targetEntity
+        return need;
+    }
+    
     @PrimaryColumn()
     id!: string;
     

@@ -6,7 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { PresetEnum, presetEnumFromJSON, presetEnumToJSON, World } from "./common";
+import { PresetEnum, presetEnumFromJSON, presetEnumToJSON, WorldDTO } from "./common";
 
 export const protobufPackage = "world";
 
@@ -25,7 +25,7 @@ export interface GetWorldRequest {
 }
 
 export interface GetWorldResponse {
-  world: World | undefined;
+  world: WorldDTO | undefined;
 }
 
 export interface GetWorldsForUserRequest {
@@ -33,7 +33,7 @@ export interface GetWorldsForUserRequest {
 }
 
 export interface GetWorldsForUserResponse {
-  worlds: World[];
+  worlds: WorldDTO[];
 }
 
 export interface DeleteWorldRequest {
@@ -277,7 +277,7 @@ function createBaseGetWorldResponse(): GetWorldResponse {
 export const GetWorldResponse: MessageFns<GetWorldResponse> = {
   encode(message: GetWorldResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.world !== undefined) {
-      World.encode(message.world, writer.uint32(10).fork()).join();
+      WorldDTO.encode(message.world, writer.uint32(10).fork()).join();
     }
     return writer;
   },
@@ -294,7 +294,7 @@ export const GetWorldResponse: MessageFns<GetWorldResponse> = {
             break;
           }
 
-          message.world = World.decode(reader, reader.uint32());
+          message.world = WorldDTO.decode(reader, reader.uint32());
           continue;
         }
       }
@@ -307,13 +307,13 @@ export const GetWorldResponse: MessageFns<GetWorldResponse> = {
   },
 
   fromJSON(object: any): GetWorldResponse {
-    return { world: isSet(object.world) ? World.fromJSON(object.world) : undefined };
+    return { world: isSet(object.world) ? WorldDTO.fromJSON(object.world) : undefined };
   },
 
   toJSON(message: GetWorldResponse): unknown {
     const obj: any = {};
     if (message.world !== undefined) {
-      obj.world = World.toJSON(message.world);
+      obj.world = WorldDTO.toJSON(message.world);
     }
     return obj;
   },
@@ -323,7 +323,9 @@ export const GetWorldResponse: MessageFns<GetWorldResponse> = {
   },
   fromPartial<I extends Exact<DeepPartial<GetWorldResponse>, I>>(object: I): GetWorldResponse {
     const message = createBaseGetWorldResponse();
-    message.world = (object.world !== undefined && object.world !== null) ? World.fromPartial(object.world) : undefined;
+    message.world = (object.world !== undefined && object.world !== null)
+      ? WorldDTO.fromPartial(object.world)
+      : undefined;
     return message;
   },
 };
@@ -393,7 +395,7 @@ function createBaseGetWorldsForUserResponse(): GetWorldsForUserResponse {
 export const GetWorldsForUserResponse: MessageFns<GetWorldsForUserResponse> = {
   encode(message: GetWorldsForUserResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     for (const v of message.worlds) {
-      World.encode(v!, writer.uint32(10).fork()).join();
+      WorldDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
   },
@@ -410,7 +412,7 @@ export const GetWorldsForUserResponse: MessageFns<GetWorldsForUserResponse> = {
             break;
           }
 
-          message.worlds.push(World.decode(reader, reader.uint32()));
+          message.worlds.push(WorldDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -423,13 +425,15 @@ export const GetWorldsForUserResponse: MessageFns<GetWorldsForUserResponse> = {
   },
 
   fromJSON(object: any): GetWorldsForUserResponse {
-    return { worlds: globalThis.Array.isArray(object?.worlds) ? object.worlds.map((e: any) => World.fromJSON(e)) : [] };
+    return {
+      worlds: globalThis.Array.isArray(object?.worlds) ? object.worlds.map((e: any) => WorldDTO.fromJSON(e)) : [],
+    };
   },
 
   toJSON(message: GetWorldsForUserResponse): unknown {
     const obj: any = {};
     if (message.worlds?.length) {
-      obj.worlds = message.worlds.map((e) => World.toJSON(e));
+      obj.worlds = message.worlds.map((e) => WorldDTO.toJSON(e));
     }
     return obj;
   },
@@ -439,7 +443,7 @@ export const GetWorldsForUserResponse: MessageFns<GetWorldsForUserResponse> = {
   },
   fromPartial<I extends Exact<DeepPartial<GetWorldsForUserResponse>, I>>(object: I): GetWorldsForUserResponse {
     const message = createBaseGetWorldsForUserResponse();
-    message.worlds = object.worlds?.map((e) => World.fromPartial(e)) || [];
+    message.worlds = object.worlds?.map((e) => WorldDTO.fromPartial(e)) || [];
     return message;
   },
 };

@@ -30,12 +30,12 @@ import { Background } from "./Content/Background";
 import { EquipmentSlot } from "./Content/Slot/EquipmentSlot";
 import { StorageSlot } from "./Content/Slot/StorageSlot";
 import { randomUUID } from "crypto";
+import { WorldDTO } from "../proto/common";
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })
 export class World extends BaseEntity {
-    // @PrimaryGeneratedColumn("uuid")
-    // id!: string;
+
 
     @PrimaryColumn()
     id!: string;
@@ -147,4 +147,84 @@ export class World extends BaseEntity {
 
     @OneToMany(() => Background, background => background.world, { onDelete: "CASCADE", lazy: true })
     backgrounds!: Background[]
+
+    public toDTO(): WorldDTO {
+        return {
+            id: this.id,
+            name: this.name,
+            description: this.description,
+            settings: this.settings,
+            frozen: this.frozen,
+            user: this.user?.toDTO(),
+            campaigns: this.campaigns ? { campaigns: this.campaigns.map(campaign => campaign.toDTO()) } : undefined,
+            items: this.items ? { items: this.items.map(item => item.toDTO()) } : undefined,
+            pastExperiences: this.pastExperiences ? { pastExperiences: this.pastExperiences.map(exp => exp.toDTO()) } : undefined,
+            characterMemories: this.characterMemories ? { characterMemories: this.characterMemories.map(mem => mem.toDTO()) } : undefined,
+            memories: this.memories ? { memories: this.memories.map(mem => mem.toDTO()) } : undefined,
+            memoryPools: this.memoryPools ? { memoryPools: this.memoryPools.map(pool => pool.toDTO()) } : undefined,
+            memoryPoolEntries: this.memoryPoolEntries ? { memoryPoolEntries: this.memoryPoolEntries.map(entry => entry.toDTO()) } : undefined,
+            skills: this.skills ? { skills: this.skills.map(skill => skill.toDTO()) } : undefined,
+            traits: this.traits ? { traits: this.traits.map(trait => trait.toDTO()) } : undefined,
+            addictions: this.addictions ? { addictions: this.addictions.map(addiction => addiction.toDTO()) } : undefined,
+            birthsigns: this.birthsigns ? { birthSigns: this.birthsigns.map(birthsign => birthsign.toDTO()) } : undefined,
+            characters: this.characters ? { characters: this.characters.map(character => character.toDTO()) } : undefined,
+            characterProfessions: this.characterProfessions ? { professions: this.characterProfessions.map(profession => profession.toDTO()) } : undefined,
+            diseases: this.diseases ? { diseases: this.diseases.map(disease => disease.toDTO()) } : undefined,
+            effects: this.effects ? { effects: this.effects.map(effect => effect.toDTO()) } : undefined,
+            facts: this.facts ? { facts: this.facts.map(fact => fact.toDTO()) } : undefined,
+            factions: this.factions ? { factions: this.factions.map(faction => faction.toDTO()) } : undefined,
+            storageSlots: this.storageSlots ? { storageSlots: this.storageSlots.map(slot => slot.toDTO()) } : undefined,
+            equipmentSlots: this.equipmentSlots ? { equipmentSlots: this.equipmentSlots.map(slot => slot.toDTO()) } : undefined,
+            itemSets: this.itemSets ? { itemSets: this.itemSets.map(set => set.toDTO()) } : undefined,
+            moods: this.moods ? { moods: this.moods.map(mood => mood.toDTO()) } : undefined,
+            needs: this.needs ? { needs: this.needs.map(need => need.toDTO()) } : undefined,
+            personalityProfiles: this.personalityProfiles ? { personalityProfiles: this.personalityProfiles.map(profile => profile.toDTO()) } : undefined,
+            races: this.races ? { races: this.races.map(race => race.toDTO()) } : undefined,
+            religions: this.religions ? { moods: this.religions.map(religion => religion.toDTO()) } : undefined,
+            resistances: this.resistances ? { resistances: this.resistances.map(resistance => resistance.toDTO()) } : undefined,
+            statuses: this.statuses ? { statuses: this.statuses.map(status => status.toDTO()) } : undefined,
+            tags: this.tags ? { tags: this.tags.map(tag => tag.toDTO()) } : undefined,
+            backgrounds: this.backgrounds ? { backgrounds: this.backgrounds.map(background => background.toDTO()) } : undefined,
+        };
+    }
+    
+    public static fromDTO(dto: WorldDTO, user: User, campaign?: Campaign): World {
+        const world = new World();
+        world.id = dto.id;
+        world.name = dto.name;
+        world.description = dto.description;
+        world.settings = dto.settings;
+        world.frozen = dto.frozen;
+        world.user = user;
+        world.campaigns = dto.campaigns?.campaigns?.map(Campaign.fromDTO) || [];
+        world.items = dto.items?.items?.map(i => Item.fromDTO(i, user, world, campaign)) || [];
+        world.pastExperiences = dto.pastExperiences?.pastExperiences?.map(i=>PastExperience.fromDTO(i, user, world, campaign)) || [];
+        world.characterMemories = dto.characterMemories?.characterMemories?.map(i=>CharacterMemory.fromDTO(i, user, world, campaign)) || [];
+        world.memories = dto.memories?.memories?.map(i=>Memory.fromDTO(i, user, world, campaign)) || [];
+        world.memoryPools = dto.memoryPools?.memoryPools?.map(i=>MemoryPool.fromDTO(i, user, world, campaign)) || [];
+        world.memoryPoolEntries = dto.memoryPoolEntries?.memoryPoolEntries?.map(i=>MemoryPoolEntry.fromDTO(i, user, world, campaign)) || [];
+        world.skills = dto.skills?.skills?.map(i=>Skill.fromDTO(i, user, world, campaign)) || [];
+        world.traits = dto.traits?.traits?.map(i=>Trait.fromDTO(i, user, world, campaign)) || [];
+        world.addictions = dto.addictions?.addictions?.map(i=>Addiction.fromDTO(i, user, world, campaign)) || [];
+        world.birthsigns = dto.birthsigns?.birthSigns?.map(i=>Birthsign.fromDTO(i, user, world, campaign)) || [];
+        world.characters = dto.characters?.characters?.map(i=>Character.fromDTO(i, user, world, campaign)) || [];
+        world.characterProfessions = dto.characterProfessions?.professions?.map(i=>CharacterProfession.fromDTO(i, user, world, campaign)) || [];
+        world.diseases = dto.diseases?.diseases?.map(i=>Disease.fromDTO(i, user, world, campaign)) || [];
+        world.effects = dto.effects?.effects?.map(i=>Effect.fromDTO(i, user, world, campaign)) || [];
+        world.facts = dto.facts?.facts?.map(i=>Fact.fromDTO(i, user, world, campaign)) || [];
+        world.factions = dto.factions?.factions?.map(i=>Faction.fromDTO(i, user, world, campaign)) || [];
+        world.storageSlots = dto.storageSlots?.storageSlots?.map(i=>StorageSlot.fromDTO(i, user, world, campaign)) || [];
+        world.equipmentSlots = dto.equipmentSlots?.equipmentSlots?.map(i=>EquipmentSlot.fromDTO(i, user, world, campaign)) || [];
+        world.itemSets = dto.itemSets?.itemSets?.map(i=>ItemSet.fromDTO(i, user, world, campaign)) || [];
+        world.moods = dto.moods?.moods?.map(i=>Mood.fromDTO(i, user, world, campaign)) || [];
+        world.needs = dto.needs?.needs?.map(i=>Need.fromDTO(i, user, world, campaign)) || [];
+        world.personalityProfiles = dto.personalityProfiles?.personalityProfiles?.map(i=>PersonalityProfile.fromDTO(i, user, world, campaign)) || [];
+        world.races = dto.races?.races?.map(i=>Race.fromDTO(i, user, world, campaign)) || [];
+        world.religions = dto.religions?.moods?.map(i=>Religion.fromDTO(i, user, world, campaign)) || [];
+        world.resistances = dto.resistances?.resistances?.map(i=>Resistance.fromDTO(i, user, world, campaign)) || [];
+        world.statuses = dto.statuses?.statuses?.map(i=>Status.fromDTO(i, user, world, campaign)) || [];
+        world.tags = dto.tags?.tags?.map(i=>Tag.fromDTO(i, user, world, campaign)) || [];
+        world.backgrounds = dto.backgrounds?.backgrounds?.map(i=>Background.fromDTO(i, user, world, campaign)) || [];
+        return world;
+    }
 }

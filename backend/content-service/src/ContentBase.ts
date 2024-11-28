@@ -8,6 +8,7 @@ export abstract class ContentBase extends BaseEntity {
 
     id?: string
     id_prefix?: string
+    type?: string
 
     @BeforeInsert()
     generateId() {

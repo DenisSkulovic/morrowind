@@ -2,12 +2,12 @@
 // The mood is a result of personality traits and fulfillment of needs(?).
 // A depressed person will most likely be always in a bad mood.
 
-import { TableInheritance, Entity, Column, ManyToOne, PrimaryGeneratedColumn, BeforeInsert, PrimaryColumn } from "typeorm";
+import { Entity, Column, ManyToOne, PrimaryColumn } from "typeorm";
 import { ContentBase } from "../../ContentBase";
 import { Campaign } from "../Campaign";
 import { User } from "../User";
 import { World } from "../World";
-import { randomUUID } from "crypto";
+import { MoodDTO } from "../../proto/common";
 
 @Entity()
 export class Mood extends ContentBase {
@@ -30,4 +30,30 @@ export class Mood extends ContentBase {
 
     @ManyToOne(() => World, { nullable: true })
     world!: World;
+
+
+    public toDTO(): MoodDTO {
+        return {
+            id: this.id,
+            blueprintId: this.blueprint_id,
+            name: this.name,
+            description: this.description,
+            user: this.user?.toDTO(),
+            campaign: this.campaign?.toDTO(),
+            world: this.world?.toDTO(),
+            targetEntity: this.targetEntity
+        };
+    }
+
+    public static fromDTO(dto: MoodDTO, user: User, world: World, campaign?: Campaign): Mood {
+        const mood = new Mood();
+        mood.id = dto.id;
+        mood.name = dto.name;
+        mood.description = dto.description;
+        mood.user = user;
+        mood.campaign = campaign;
+        mood.world = world;
+        mood.targetEntity = dto.targetEntity
+        return mood;
+    }
 }

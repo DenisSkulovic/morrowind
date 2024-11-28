@@ -1,0 +1,10 @@
+export enum EffectTypeEnum {
+    DAMAGE = "DAMAGE",
+    HEALING = "HEALING",
+    BUFF = "BUFF",
+    DEBUFF = "DEBUFF",
+    RESISTANCE = "RESISTANCE",
+    STEALING = "STEALING",
+    NEUTRAL = "NEUTRAL",
+    UNRECOGNIZED = "UNRECOGNIZED",
+}

@@ -6,13 +6,17 @@ import { User } from "../User";
 import { World } from "../World";
 import { Memory } from "./Knowledge/Memory";
 import { randomUUID } from "crypto";
+import { FactDTO } from "../../proto/common";
 
 @Entity()
 export class Fact extends TaggableContentBase {
     @PrimaryColumn()
     id!: string;
-    
+
     id_prefix = "FACT"
+
+    @Column()
+    name!: string
 
     @Column({ type: "text" })
     description!: string
@@ -34,4 +38,34 @@ export class Fact extends TaggableContentBase {
 
     @ManyToOne(() => World, { nullable: true })
     world!: World;
+
+    public toDTO(): FactDTO {
+        return {
+            id: this.id,
+            name: this.name, 
+            blueprintId: this.blueprint_id,
+            description: this.description,
+            weight: this.weight,
+            memories: this.memories ? { memories: this.memories.map(memory => memory.toDTO()) } : undefined,
+            tags: this.tags ? { tags: this.tags.map(tag => tag.toDTO()) } : undefined,
+            user: this.user?.toDTO(),
+            campaign: this.campaign?.toDTO(),
+            world: this.world?.toDTO(),
+            targetEntity: this.targetEntity
+        };
+    }
+
+    public static fromDTO(dto: FactDTO, user: User, world: World, campaign?: Campaign): Fact {
+        const fact = new Fact();
+        fact.id = dto.id;
+        fact.description = dto.description;
+        fact.weight = dto.weight;
+        fact.memories = dto.memories?.memories?.map(memory => Memory.fromDTO(memory, user, world, campaign)) || [];
+        fact.tags = dto.tags?.tags?.map(tag => Tag.fromDTO(tag, user, world, campaign)) || [];
+        fact.user = user;
+        fact.campaign = campaign;
+        fact.world = world;
+        fact.targetEntity = dto.targetEntity
+        return fact;
+    }
 }

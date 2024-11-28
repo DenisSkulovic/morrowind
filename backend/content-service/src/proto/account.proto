@@ -24,16 +24,16 @@ message GetAccountRequest {
 }
 
 message GetAccountResponse {
-    Account account = 1;
+    AccountDTO account = 1;
 }
 
-message Account {
+message AccountDTO {
     string id = 1;
     string username = 2;
     string email = 3;
     string role = 4;
-    User user = 5;
+    UserDTO user = 5;
 }
-message User {
+message UserDTO {
     string id = 1;
 }

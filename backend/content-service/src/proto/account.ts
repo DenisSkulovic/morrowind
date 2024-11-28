@@ -26,18 +26,18 @@ export interface GetAccountRequest {
 }
 
 export interface GetAccountResponse {
-  account: Account | undefined;
+  account: AccountDTO | undefined;
 }
 
-export interface Account {
+export interface AccountDTO {
   id: string;
   username: string;
   email: string;
   role: string;
-  user: User | undefined;
+  user: UserDTO | undefined;
 }
 
-export interface User {
+export interface UserDTO {
   id: string;
 }
 
@@ -290,7 +290,7 @@ function createBaseGetAccountResponse(): GetAccountResponse {
 export const GetAccountResponse: MessageFns<GetAccountResponse> = {
   encode(message: GetAccountResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.account !== undefined) {
-      Account.encode(message.account, writer.uint32(10).fork()).join();
+      AccountDTO.encode(message.account, writer.uint32(10).fork()).join();
     }
     return writer;
   },
@@ -307,7 +307,7 @@ export const GetAccountResponse: MessageFns<GetAccountResponse> = {
             break;
           }
 
-          message.account = Account.decode(reader, reader.uint32());
+          message.account = AccountDTO.decode(reader, reader.uint32());
           continue;
         }
       }
@@ -320,13 +320,13 @@ export const GetAccountResponse: MessageFns<GetAccountResponse> = {
   },
 
   fromJSON(object: any): GetAccountResponse {
-    return { account: isSet(object.account) ? Account.fromJSON(object.account) : undefined };
+    return { account: isSet(object.account) ? AccountDTO.fromJSON(object.account) : undefined };
   },
 
   toJSON(message: GetAccountResponse): unknown {
     const obj: any = {};
     if (message.account !== undefined) {
-      obj.account = Account.toJSON(message.account);
+      obj.account = AccountDTO.toJSON(message.account);
     }
     return obj;
   },
@@ -337,18 +337,18 @@ export const GetAccountResponse: MessageFns<GetAccountResponse> = {
   fromPartial<I extends Exact<DeepPartial<GetAccountResponse>, I>>(object: I): GetAccountResponse {
     const message = createBaseGetAccountResponse();
     message.account = (object.account !== undefined && object.account !== null)
-      ? Account.fromPartial(object.account)
+      ? AccountDTO.fromPartial(object.account)
       : undefined;
     return message;
   },
 };
 
-function createBaseAccount(): Account {
+function createBaseAccountDTO(): AccountDTO {
   return { id: "", username: "", email: "", role: "", user: undefined };
 }
 
-export const Account: MessageFns<Account> = {
-  encode(message: Account, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+export const AccountDTO: MessageFns<AccountDTO> = {
+  encode(message: AccountDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
     }
@@ -362,15 +362,15 @@ export const Account: MessageFns<Account> = {
       writer.uint32(34).string(message.role);
     }
     if (message.user !== undefined) {
-      User.encode(message.user, writer.uint32(42).fork()).join();
+      UserDTO.encode(message.user, writer.uint32(42).fork()).join();
     }
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): Account {
+  decode(input: BinaryReader | Uint8Array, length?: number): AccountDTO {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseAccount();
+    const message = createBaseAccountDTO();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -411,7 +411,7 @@ export const Account: MessageFns<Account> = {
             break;
           }
 
-          message.user = User.decode(reader, reader.uint32());
+          message.user = UserDTO.decode(reader, reader.uint32());
           continue;
         }
       }
@@ -423,17 +423,17 @@ export const Account: MessageFns<Account> = {
     return message;
   },
 
-  fromJSON(object: any): Account {
+  fromJSON(object: any): AccountDTO {
     return {
       id: isSet(object.id) ? globalThis.String(object.id) : "",
       username: isSet(object.username) ? globalThis.String(object.username) : "",
       email: isSet(object.email) ? globalThis.String(object.email) : "",
       role: isSet(object.role) ? globalThis.String(object.role) : "",
-      user: isSet(object.user) ? User.fromJSON(object.user) : undefined,
+      user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
     };
   },
 
-  toJSON(message: Account): unknown {
+  toJSON(message: AccountDTO): unknown {
     const obj: any = {};
     if (message.id !== "") {
       obj.id = message.id;
@@ -448,41 +448,41 @@ export const Account: MessageFns<Account> = {
       obj.role = message.role;
     }
     if (message.user !== undefined) {
-      obj.user = User.toJSON(message.user);
+      obj.user = UserDTO.toJSON(message.user);
     }
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<Account>, I>>(base?: I): Account {
-    return Account.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<AccountDTO>, I>>(base?: I): AccountDTO {
+    return AccountDTO.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<Account>, I>>(object: I): Account {
-    const message = createBaseAccount();
+  fromPartial<I extends Exact<DeepPartial<AccountDTO>, I>>(object: I): AccountDTO {
+    const message = createBaseAccountDTO();
     message.id = object.id ?? "";
     message.username = object.username ?? "";
     message.email = object.email ?? "";
     message.role = object.role ?? "";
-    message.user = (object.user !== undefined && object.user !== null) ? User.fromPartial(object.user) : undefined;
+    message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
     return message;
   },
 };
 
-function createBaseUser(): User {
+function createBaseUserDTO(): UserDTO {
   return { id: "" };
 }
 
-export const User: MessageFns<User> = {
-  encode(message: User, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+export const UserDTO: MessageFns<UserDTO> = {
+  encode(message: UserDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
     }
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): User {
+  decode(input: BinaryReader | Uint8Array, length?: number): UserDTO {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseUser();
+    const message = createBaseUserDTO();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -503,11 +503,11 @@ export const User: MessageFns<User> = {
     return message;
   },
 
-  fromJSON(object: any): User {
+  fromJSON(object: any): UserDTO {
     return { id: isSet(object.id) ? globalThis.String(object.id) : "" };
   },
 
-  toJSON(message: User): unknown {
+  toJSON(message: UserDTO): unknown {
     const obj: any = {};
     if (message.id !== "") {
       obj.id = message.id;
@@ -515,11 +515,11 @@ export const User: MessageFns<User> = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<User>, I>>(base?: I): User {
-    return User.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<UserDTO>, I>>(base?: I): UserDTO {
+    return UserDTO.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<User>, I>>(object: I): User {
-    const message = createBaseUser();
+  fromPartial<I extends Exact<DeepPartial<UserDTO>, I>>(object: I): UserDTO {
+    const message = createBaseUserDTO();
     message.id = object.id ?? "";
     return message;
   },

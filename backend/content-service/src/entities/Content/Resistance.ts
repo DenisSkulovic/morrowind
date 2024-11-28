@@ -4,6 +4,7 @@ import { Campaign } from "../Campaign";
 import { User } from "../User";
 import { World } from "../World";
 import { randomUUID } from "crypto";
+import { ResistanceDTO } from "../../proto/common";
 
 @Entity()
 export class Resistance extends ContentBase {
@@ -29,4 +30,31 @@ export class Resistance extends ContentBase {
 
     @ManyToOne(() => World, { nullable: true })
     world!: World;
+
+
+    public toDTO(): ResistanceDTO {
+        return {
+            id: this.id,
+            name: this.name,
+            effectType: this.effectType,
+            targetEffect: this.targetEffect,
+            user: this.user?.toDTO(),
+            campaign: this.campaign?.toDTO(),
+            world: this.world?.toDTO(),
+            targetEntity: this.targetEntity
+        };
+    }
+
+    public static fromDTO(dto: ResistanceDTO, user: User, world: World, campaign?: Campaign): Resistance {
+        const resistance = new Resistance();
+        resistance.id = dto.id;
+        resistance.name = dto.name;
+        resistance.effectType = dto.effectType;
+        resistance.targetEffect = dto.targetEffect;
+        resistance.user = user;
+        resistance.campaign = campaign;
+        resistance.world = world;
+        resistance.targetEntity = dto.targetEntity
+        return resistance;
+    }
 }

@@ -5,10 +5,39 @@ import { Campaign } from "../../Campaign";
 import { User } from "../../User";
 import { World } from "../../World";
 import { SkillCategoryEnum } from "../../../enum/SkillCategoryEnum";
+import { SkillDTO } from "../../../proto/common";
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })
 export class Skill extends TaggableContentBase {
+    public toDTO(): SkillDTO {
+        return {
+            id: this.id,
+            name: this.name,
+            description: this.description,
+            category: this.category,
+            tags: this.tags ? {tags: this.tags?.map(tag => tag.toDTO())} : undefined,
+            user: this.user?.toDTO(),
+            campaign: this.campaign?.toDTO(),
+            world: this.world?.toDTO(),
+            targetEntity: this.targetEntity
+        };
+    }
+    
+    public static fromDTO(dto: SkillDTO, user: User, world: World, campaign?: Campaign): Skill {
+        const skill = new Skill();
+        skill.id = dto.id;
+        skill.name = dto.name;
+        skill.description = dto.description;
+        skill.category = dto.category;
+        skill.tags = dto.tags?.tags.map(i=>Tag.fromDTO(i, user, world, campaign));
+        skill.user = user;
+        skill.campaign = campaign;
+        skill.world = world;
+        skill.targetEntity = dto.targetEntity
+        return skill;
+    }
+    
     @PrimaryColumn()
     id!: string;
     

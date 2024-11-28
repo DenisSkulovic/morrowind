@@ -6,6 +6,7 @@ import { randomUUID } from "crypto";
 import { Campaign } from "../../Campaign";
 import { User } from "../../User";
 import { World } from "../../World";
+import { EquipmentSlotDTO } from "../../../proto/common";
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })
@@ -36,4 +37,33 @@ export class EquipmentSlot extends ContentBase {
 
     @ManyToOne(() => World, { nullable: true, lazy: true })
     world!: World;
+
+    public toDTO(): EquipmentSlotDTO {
+        return {
+            id: this.id,
+            blueprintId: this.blueprint_id,
+            name: this.name,
+            allowedEntities: this.allowedEntities,
+            equippedItem: this.equippedItem?.toDTO(),
+            character: this.character?.toDTO(),
+            user: this.user?.toDTO(),
+            campaign: this.campaign?.toDTO(),
+            world: this.world?.toDTO(),
+            targetEntity: this.targetEntity
+        };
+    }
+    
+    public static fromDTO(dto: EquipmentSlotDTO, user: User, world: World, campaign?: Campaign): EquipmentSlot {
+        const equipmentSlot = new EquipmentSlot();
+        equipmentSlot.id = dto.id;
+        equipmentSlot.name = dto.name;
+        equipmentSlot.allowedEntities = dto.allowedEntities;
+        equipmentSlot.equippedItem = dto.equippedItem ? Item.fromDTO(dto.equippedItem, user, world, campaign) : undefined;
+        equipmentSlot.character = dto.character ? Character.fromDTO(dto.character, user, world, campaign) : undefined;
+        equipmentSlot.user = user;
+        equipmentSlot.campaign = campaign;
+        equipmentSlot.world = world;
+        equipmentSlot.targetEntity = dto.targetEntity
+        return equipmentSlot;
+    }
 }

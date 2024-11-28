@@ -11,19 +11,19 @@ service GeneratorController {
 }
 
 message GenerateItemsRequest {
-    repeated common.GenerationInstruction instructions = 1;
+    repeated common.GenerationInstructionDTO instructions = 1;
 }
 message GenerateItemsResponse {
-    repeated common.Item items = 1;
+    repeated common.ItemDTO items = 1;
 }
 message GenerateCharactersRequest {
-    repeated common.CharacterGenInstruction instructions = 1;
+    repeated common.CharacterGenInstructionDTO instructions = 1;
 }
 message GenerateCharactersResponse {
-    repeated common.Character character = 1;
+    repeated common.CharacterDTO character = 1;
 }
 message GenerateCharacterGroupsRequest {
-    repeated common.CharacterGroupGenInstruction instructions = 1;
+    repeated common.CharacterGroupGenInstructionDTO instructions = 1;
 }
 message GenerateCharacterGroupsResponse {
     repeated GenerateCharactersResponse characterGroups = 1;

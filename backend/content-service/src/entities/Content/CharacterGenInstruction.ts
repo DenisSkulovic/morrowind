@@ -4,11 +4,56 @@ import { User } from "../User";
 import { World } from "../World";
 import { ContentBase } from "../../ContentBase";
 import { Background } from "./Background";
+import { CharacterGenInstructionDTO } from "../../proto/common";
 
 
 
 @Entity()
 export class CharacterGenInstruction extends ContentBase {
+    public toDTO(): CharacterGenInstructionDTO {
+        return {
+            id: this.id,
+            firstName: this.first_name,
+            lastName: this.last_name,
+            gender: this.gender,
+            birthsign: this.birthsign,
+            birthEra: this.birthEra,
+            birthYear: this.birthYear,
+            birthMonth: this.birthMonth,
+            birthDay: this.birthDay,
+            backgroundBlueprintId: this.background_blueprint_id,
+            backgroundCustomization: this.background_customization
+                ? Background.fromPartial(this.background_customization).toDTO()
+                : undefined,
+            user: this.user?.toDTO(),
+            campaign: this.campaign?.toDTO(),
+            world: this.world?.toDTO(),
+            targetEntity: this.targetEntity
+        };
+    }
+
+    public static fromDTO(dto: CharacterGenInstructionDTO, user: User, world: World, campaign?: Campaign): CharacterGenInstruction {
+        const instruction = new CharacterGenInstruction();
+        instruction.id = dto.id;
+        instruction.first_name = dto.firstName;
+        instruction.last_name = dto.lastName;
+        instruction.gender = dto.gender;
+        instruction.birthsign = dto.birthSign;
+        instruction.birthEra = dto.birthEra;
+        instruction.birthYear = dto.birthYear;
+        instruction.birthMonth = dto.birthMonth;
+        instruction.birthDay = dto.birthDay;
+        instruction.background_blueprint_id = dto.backgroundBlueprintId;
+        instruction.background_customization = dto.backgroundCustomization
+            ? Background.fromDTO(dto.backgroundCustomization, user, world, campaign)
+            : undefined;
+        instruction.user = user;
+        instruction.campaign = campaign;
+        instruction.world = world;
+        instruction.targetEntity = dto.targetEntity
+        return instruction;
+    }
+    
     @PrimaryColumn()
     id!: string;
 

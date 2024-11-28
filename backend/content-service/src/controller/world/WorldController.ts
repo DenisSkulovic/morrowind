@@ -2,10 +2,16 @@ import { sourcesMap } from "../../data-source";
 import { sendUnaryData, ServerUnaryCall } from '@grpc/grpc-js';
 import { WorldService } from "../../layer_2/service/WorldService";
 import { User } from "../../entities/User";
-import { CreateWorldRequest, CreateWorldResponse, DeleteWorldRequest, DeleteWorldResponse, DropWorldContentRequest, DropWorldContentResponse, GetWorldRequest, GetWorldResponse, GetWorldsForUserRequest, GetWorldsForUserResponse, LoadWorldPresetRequest, LoadWorldPresetResponse, PresetEnum } from "../../proto/world";
+import {
+    CreateWorldRequest, CreateWorldResponse, DeleteWorldRequest,
+    DeleteWorldResponse, DropWorldContentRequest, DropWorldContentResponse,
+    GetWorldRequest, GetWorldResponse, GetWorldsForUserRequest,
+    GetWorldsForUserResponse, LoadWorldPresetRequest, LoadWorldPresetResponse
+} from "../../proto/world";
 import { World } from "../../entities/World";
 import { UserService } from "../../layer_2_and_3/service/UserService";
 import { DataSourceEnum } from "../../enum/DataSourceEnum";
+import { PresetEnum } from "../../proto/common";
 
 export class WorldController {
     [key: string]: any
@@ -59,6 +65,7 @@ export class WorldController {
             const { userId } = call.request
             const worldService: WorldService = new WorldService({ sourcesMap })
             const worlds: World[] = await worldService.searchWorlds({ userId })
+            const 
             const response = { worlds } // TODO I need to introduce pagination later
             callback(null, response)
         } catch (err: any) {
@@ -105,7 +112,7 @@ export class WorldController {
         callback: sendUnaryData<LoadWorldPresetResponse>
     ): Promise<void> {
         try {
-            if (!call.request.preset || call.request.preset=== PresetEnum.UNRECOGNIZED) throw new Error(`no preset found for preset identifier: ${call.request.preset}`)
+            if (!call.request.preset || call.request.preset === PresetEnum.UNRECOGNIZED) throw new Error(`no preset found for preset identifier: ${call.request.preset}`)
             const worldId: string = call.request.worldId // TODO these fields should come from middleware
             const userId: string = call.request.userId // TODO these fields should come from middleware, especially this one
             // check preset for existence in the enum

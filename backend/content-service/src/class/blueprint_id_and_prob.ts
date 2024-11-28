@@ -1,3 +1,4 @@
+import { GenerationInstructionDTO, GenerationInstructionsDTO } from "../proto/common"
 import { BlueprintGenInstruction_Simple, CombinatorCondition, GenerationInstruction, Probability_0_to_1 } from "../types"
 
 export class IdAndQuant {
@@ -61,3 +62,55 @@ export class BlueprintSetCombinator {
         return new BlueprintSetCombinator(obj.name, obj.prob, obj.cond, obj.items)
     }
 }
+
+
+export function serializeInstruction(instruction: GenerationInstruction): GenerationInstructionDTO {
+    if (instruction instanceof IdAndQuant) {
+        return { idsAndQuant: { idAndQuant: { [instruction.blueprint_id]: instruction.quantity || 1 } } };
+    }
+    if (instruction instanceof BlueprintGenInstruction_Gaussian) {
+        return {
+            gaussianProb: {
+                blueprint_id: instruction.blueprint_id,
+                prob: instruction.prob,
+                avg_quan: instruction.avg_quan,
+                st_dev: instruction.st_dev,
+                skew: instruction.skew,
+            },
+        };
+    }
+    if (instruction instanceof BlueprintSetCombinator) {
+        return {
+            combinator: {
+                name: instruction.name,
+                prob: instruction.prob,
+                cond: instruction.cond,
+                instructions: instruction.items.map(serializeInstruction),
+            },
+        };
+    }
+    throw new Error("Unknown GenerationInstruction type");
+}
+
+export function deserializeInstruction(dto: GenerationInstructionDTO): GenerationInstruction {
+    if (dto.idsAndQuant) {
+        const [blueprint_id, quantity] = Object.entries(dto.idsAndQuant.idAndQuant)[0];
+        return new IdAndQuant(blueprint_id, quantity);
+    }
+    if (dto.gaussianProb) {
+        return BlueprintGenInstruction_Gaussian.build(dto.gaussianProb);
+    }
+    if (dto.combinator) {
+        const { name, prob, cond, instructions } = dto.combinator;
+        return BlueprintSetCombinator.build({
+            name,
+            prob,
+            cond,
+            items: instructions.map(deserializeInstruction),
+        });
+    }
+    throw new Error("Unknown GenerationInstructionDTO type");
+}
+
+export const serializeGenerationInstructions = (instructions: GenerationInstruction[]) => { return { instructions: instructions.map(serializeInstruction) } };
+export const deserializeGenerationInstructions = (dtoInstructions: GenerationInstructionsDTO) => {return dtoInstructions.instructions.map(deserializeInstruction)};
