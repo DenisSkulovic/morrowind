@@ -9,7 +9,7 @@ import { World } from "../../World";
 import { StorageSlot } from "../Slot/StorageSlot";
 import { EquipmentSlot } from "../Slot/EquipmentSlot";
 import { ItemDTO, ItemRequirementsDTO } from "../../../proto/common";
-import { ItemActionEnum } from "../../../enum/ItemActionEnum";
+import { ItemActionEnum } from "../../../enum/entityEnums";
 
 
 const serializeRequirements = (req: ItemRequirements): ItemRequirementsDTO => ({
@@ -23,7 +23,7 @@ const deserializeRequirements = (dtoReq: ItemRequirementsDTO): ItemRequirements 
     return dtoReq.requirements.map(r => ({
         type: r.type,
         name: r.name,
-        value: r.number !== undefined ? r.number : r.flag,
+        value: r.number !== undefined ? r.number : r.flag || false,
     }));
 }
 
@@ -101,14 +101,14 @@ export class Item extends TaggableContentBase {
         if (!this.id) throw new Error("item cannot be without id");
         return {
             id: this.id,
-            blueprint_id: this.blueprint_id,
+            blueprintId: this.blueprint_id,
             name: this.name,
             description: this.description || "",
             size: this.size,
             quantity: this.quantity,
             maxQuantity: this.maxQuantity,
-            base_value: this.base_value,
-            actions: this.actions,
+            baseValue: this.base_value,
+            actions: this.actions && {actions: this.actions},
             requirements: this.requirements ? serializeRequirements(this.requirements) : undefined,
             stackable: this.stackable,
             repairable: this.repairable,
@@ -134,7 +134,7 @@ export class Item extends TaggableContentBase {
             user: this.user?.toDTO(),
             campaign: this.campaign?.toDTO(),
             world: this.world?.toDTO(),
-            trained_skill: this.trained_skill,
+            trainedSkill: this.trained_skill,
             weight: this.weight,
             targetEntity: this.targetEntity
         };
@@ -149,7 +149,7 @@ export class Item extends TaggableContentBase {
         item.quantity = dto.quantity || 1;
         item.maxQuantity = dto.maxQuantity || 64;
         item.base_value = dto.baseValue || 0;
-        item.actions = dto.actions;
+        item.actions = dto.actions?.actions;
         item.requirements = dto.requirements ? deserializeRequirements(dto.requirements) : undefined;
         item.stackable = dto.stackable || false;
         item.repairable = dto.repairable || false;
@@ -159,7 +159,7 @@ export class Item extends TaggableContentBase {
         item.storageSlot = dto.storageSlot ? StorageSlot.fromDTO(dto.storageSlot, user, world, campaign) : undefined;
         item.storageSlots = dto.storageSlots?.storageSlots?.map(i => StorageSlot.fromDTO(i, user, world, campaign));
         item.storageSlotDefinition = dto.storageSlotDefinition?.definitions?.map(def => ({
-            grid: def.grid,
+            grid: def.grid as [number, number],
             name: def.name,
             maxWeight: def.maxWeight,
         }));

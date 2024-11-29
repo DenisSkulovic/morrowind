@@ -26,18 +26,11 @@ export type Context = {
 export type GenerationInstruction = string | IdAndQuant | BlueprintGenInstruction_Gaussian | BlueprintSetCombinator
 
 
-export type CombinatorCondition = "AND" | "OR" | "ANY";
-
-// simple id and quantity
-
 
 // working with simple probabilities here, nothing fancy
 export type Probability_0_to_1 = number
 export type BlueprintGenInstruction_Simple = { [blueprint_id: string]: Probability_0_to_1 };
 
-
-
-// working with Gaussian bell curves here - mean, standard deviation and skewness
 
 export type BlueprintSetInstruction = {
     blueprint_id: string,

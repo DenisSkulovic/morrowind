@@ -41,7 +41,7 @@ export class SkillSet extends TaggableContentBase {
             id: this.id,
             blueprintId: this.blueprint_id,
             name: this.name,
-            metadata: this.metadata,
+            metadata: this.metadata && {metadata: this.metadata},
             user: this.user?.toDTO(),
             campaign: this.campaign?.toDTO(),
             world: this.world?.toDTO(),

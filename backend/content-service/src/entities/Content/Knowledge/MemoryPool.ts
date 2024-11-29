@@ -43,15 +43,20 @@ export class MemoryPool extends TaggableContentBase {
     public toDTO(): MemoryPoolDTO {
         return {
             id: this.id,
+            blueprintId: this.blueprint_id,
             name: this.name,
             description: this.description,
-            memoryPoolEntries: this.memoryPoolEntries && { memoryPoolEntries: this.memoryPoolEntries.map(entry => entry.toDTO()) },
-            characterProfessions: this.characterProfessions && { professions: this.characterProfessions.map(profession => profession.toDTO()) },
-            tags: this.tags ? { tags: this.tags.map(tag => tag.toDTO()) } : undefined,
+            memoryPoolEntries: this.memoryPoolEntries
+                ? { memoryPoolEntries: this.memoryPoolEntries.map((entry) => entry.toDTO()) }
+                : undefined,
+            characterProfessions: this.characterProfessions
+                ? { professions: this.characterProfessions.map((profession) => profession.toDTO()) }
+                : undefined,
+            tags: this.tags ? { tags: this.tags.map((tag) => tag.toDTO()) } : undefined,
             user: this.user?.toDTO(),
             campaign: this.campaign?.toDTO(),
             world: this.world?.toDTO(),
-            targetEntity: this.targetEntity
+            targetEntity: this.targetEntity,
         };
     }
 
@@ -61,14 +66,16 @@ export class MemoryPool extends TaggableContentBase {
         memoryPool.name = dto.name;
         memoryPool.description = dto.description;
         memoryPool.memoryPoolEntries =
-            dto.memoryPoolEntries?.memoryPoolEntries?.map(i => MemoryPoolEntry.fromDTO(i, user, world, campaign)) || [];
+            dto.memoryPoolEntries?.memoryPoolEntries.map(i => MemoryPoolEntry.fromDTO(i, user, world, campaign)) || [];
         memoryPool.characterProfessions =
-            dto.characterProfessions?.professions?.map(i => CharacterProfession.fromDTO(i, user, world, campaign)) || [];
-        memoryPool.tags = dto.tags?.tags?.map(tag => Tag.fromDTO(tag, user, world, campaign)) || [];
+            dto.characterProfessions?.professions.map((profession) =>
+                CharacterProfession.fromDTO(profession, user, world, campaign)
+            ) || [];
+        memoryPool.tags = dto.tags?.tags.map((tag) => Tag.fromDTO(tag, user, world, campaign)) || [];
         memoryPool.user = user;
         memoryPool.campaign = campaign;
         memoryPool.world = world;
-        memoryPool.targetEntity = dto.targetEntity
+        memoryPool.targetEntity = dto.targetEntity;
         return memoryPool;
     }
 

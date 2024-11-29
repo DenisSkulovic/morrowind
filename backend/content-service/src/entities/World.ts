@@ -196,7 +196,7 @@ export class World extends BaseEntity {
         world.settings = dto.settings;
         world.frozen = dto.frozen;
         world.user = user;
-        world.campaigns = dto.campaigns?.campaigns?.map(Campaign.fromDTO) || [];
+        world.campaigns = dto.campaigns?.campaigns?.map(i => Campaign.fromDTO(i, user, world)) || [];
         world.items = dto.items?.items?.map(i => Item.fromDTO(i, user, world, campaign)) || [];
         world.pastExperiences = dto.pastExperiences?.pastExperiences?.map(i=>PastExperience.fromDTO(i, user, world, campaign)) || [];
         world.characterMemories = dto.characterMemories?.characterMemories?.map(i=>CharacterMemory.fromDTO(i, user, world, campaign)) || [];

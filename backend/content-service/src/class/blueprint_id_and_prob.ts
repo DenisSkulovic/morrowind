@@ -1,5 +1,7 @@
+import { CombinatorConditionEnum } from "../enum/CombinatorConditionEnum"
+import { serializeEnum } from "../enum/util"
 import { GenerationInstructionDTO, GenerationInstructionsDTO } from "../proto/common"
-import { BlueprintGenInstruction_Simple, CombinatorCondition, GenerationInstruction, Probability_0_to_1 } from "../types"
+import { BlueprintGenInstruction_Simple, Probability_0_to_1, GenerationInstruction } from "../types"
 
 export class IdAndQuant {
     blueprint_id: string
@@ -15,10 +17,10 @@ export class IdAndQuant {
 }
 
 export class ProbObject_Simple {
-    cond: CombinatorCondition
+    cond: CombinatorConditionEnum
     prob: BlueprintGenInstruction_Simple
     clazz = "ProbObject_Simple"
-    constructor(cond: CombinatorCondition, prob: BlueprintGenInstruction_Simple) {
+    constructor(cond: CombinatorConditionEnum, prob: BlueprintGenInstruction_Simple) {
         this.cond = cond
         this.prob = prob
     }
@@ -49,10 +51,10 @@ export class BlueprintGenInstruction_Gaussian {
 export class BlueprintSetCombinator {
     name: string
     prob: Probability_0_to_1 // 0-1, default 1
-    cond: CombinatorCondition
+    cond: CombinatorConditionEnum
     items: GenerationInstruction[]
     clazz = "BlueprintSetCombinator"
-    constructor(name: string, prob: Probability_0_to_1, cond: CombinatorCondition, items: GenerationInstruction[]) {
+    constructor(name: string, prob: Probability_0_to_1, cond: CombinatorConditionEnum, items: GenerationInstruction[]) {
         this.name = name
         this.prob = prob
         this.cond = cond
@@ -71,11 +73,12 @@ export function serializeInstruction(instruction: GenerationInstruction): Genera
     if (instruction instanceof BlueprintGenInstruction_Gaussian) {
         return {
             gaussianProb: {
-                blueprint_id: instruction.blueprint_id,
-                prob: instruction.prob,
-                avg_quan: instruction.avg_quan,
-                st_dev: instruction.st_dev,
+                blueprintId: instruction.blueprint_id,
+                prob: instruction.prob || 1,
+                avgQuan: instruction.avg_quan,
+                stDev: instruction.st_dev,
                 skew: instruction.skew,
+                clazz: "BlueprintGenInstruction_Gaussian"
             },
         };
     }
@@ -84,8 +87,9 @@ export function serializeInstruction(instruction: GenerationInstruction): Genera
             combinator: {
                 name: instruction.name,
                 prob: instruction.prob,
-                cond: instruction.cond,
+                cond: serializeEnum(CombinatorConditionEnum, instruction.cond),
                 instructions: instruction.items.map(serializeInstruction),
+                clazz: "BlueprintSetCombinator"
             },
         };
     }

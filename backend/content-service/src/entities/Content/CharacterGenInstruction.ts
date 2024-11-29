@@ -3,13 +3,59 @@ import { Campaign } from "../Campaign";
 import { User } from "../User";
 import { World } from "../World";
 import { ContentBase } from "../../ContentBase";
-import { Background } from "./Background";
+import { Background, BackgroundCustomization } from "./Background";
 import { CharacterGenInstructionDTO } from "../../proto/common";
 
 
 
 @Entity()
 export class CharacterGenInstruction extends ContentBase {
+    @PrimaryColumn()
+    id!: string;
+
+    id_prefix = "CHARACTER_GEN_INSTRUCTION"
+
+
+    @Column({ nullable: true })
+    first_name?: string
+
+    @Column({ nullable: true })
+    last_name?: string
+
+    @Column({ nullable: true })
+    gender?: string
+
+    @Column({ nullable: true })
+    birthsign?: string
+
+    @Column({ nullable: true })
+    birthEra?: string
+
+    @Column({ nullable: true })
+    birthYear?: number
+
+    @Column({ nullable: true })
+    birthMonth?: string
+
+    @Column({ nullable: true })
+    birthDay?: number
+
+    @Column()
+    background_blueprint_id!: string
+
+    @Column("jsonb", { nullable: true })
+    background_customization?: BackgroundCustomization
+
+    @ManyToOne(() => User, { nullable: false })
+    user!: User;
+
+    @ManyToOne(() => Campaign, { nullable: true })
+    campaign?: Campaign;
+
+    @ManyToOne(() => World, { nullable: false })
+    world!: World;
+
+
     public toDTO(): CharacterGenInstructionDTO {
         return {
             id: this.id,
@@ -23,9 +69,7 @@ export class CharacterGenInstruction extends ContentBase {
             birthMonth: this.birthMonth,
             birthDay: this.birthDay,
             backgroundBlueprintId: this.background_blueprint_id,
-            backgroundCustomization: this.background_customization
-                ? Background.fromPartial(this.background_customization).toDTO()
-                : undefined,
+            backgroundCustomization: this.background_customization && this.background_customization.toDTO(),
             user: this.user?.toDTO(),
             campaign: this.campaign?.toDTO(),
             world: this.world?.toDTO(),
@@ -45,60 +89,13 @@ export class CharacterGenInstruction extends ContentBase {
         instruction.birthMonth = dto.birthMonth;
         instruction.birthDay = dto.birthDay;
         instruction.background_blueprint_id = dto.backgroundBlueprintId;
-        instruction.background_customization = dto.backgroundCustomization
-            ? Background.fromDTO(dto.backgroundCustomization, user, world, campaign)
-            : undefined;
+        instruction.background_customization = dto.backgroundCustomization && BackgroundCustomization.fromDTO(dto.backgroundCustomization);
         instruction.user = user;
         instruction.campaign = campaign;
         instruction.world = world;
         instruction.targetEntity = dto.targetEntity
         return instruction;
     }
-    
-    @PrimaryColumn()
-    id!: string;
-
-    id_prefix = "CHARACTER_GEN_INSTRUCTION"
-
-    
-    @Column({nullable: true})
-    first_name?: string
-    
-    @Column({nullable: true})
-    last_name?: string
-
-    @Column({nullable: true})
-    gender?: string
-
-    @Column({nullable: true})
-    birthsign?: string
-    
-    @Column({nullable: true})
-    birthEra?: string
-    
-    @Column({nullable: true})
-    birthYear?: number
-
-    @Column({nullable: true})
-    birthMonth?: string
-    
-    @Column({nullable: true})
-    birthDay?: number
-    
-    @Column()
-    background_blueprint_id!: string
-
-    @Column("jsonb", {nullable: true})
-    background_customization?: Partial<Background>
-
-    @ManyToOne(() => User, { nullable: false })
-    user!: User;
-
-    @ManyToOne(() => Campaign, { nullable: true })
-    campaign?: Campaign;
-
-    @ManyToOne(() => World, { nullable: false })
-    world!: World;
 }
 
 // example: Fisherman (Beginner). Beginner here would be represented by a tag, and specific memory pools will be connected. On generation, certain memories will be created, but after generation memories begin a free float.

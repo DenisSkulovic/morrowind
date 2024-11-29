@@ -4,7 +4,8 @@ import { Campaign } from "../Campaign";
 import { User } from "../User";
 import { World } from "../World";
 import { EffectTargetEnumDTO, EffectTypeEnumDTO, ResistanceDTO } from "../../proto/common";
-import { deserializeEnum, EffectTypeEnum, serializeEnum } from "../../enum/entityEnums";
+import { EffectTypeEnum } from "../../enum/entityEnums";
+import { serializeEnum, deserializeEnum } from "../../enum/util";
 
 @Entity()
 export class Resistance extends ContentBase {

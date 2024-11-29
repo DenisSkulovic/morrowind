@@ -7,7 +7,8 @@ import { Campaign } from "../../Campaign";
 import { User } from "../../User";
 import { World } from "../../World";
 import { CharacterMemoryDTO, FactStatusDTO, FactStatusEnumDTO } from "../../../proto/common";
-import { deserializeEnum, FactStatusEnum, serializeEnum } from "../../../enum/entityEnums";
+import { FactStatusEnum } from "../../../enum/entityEnums";
+import { serializeEnum, deserializeEnum } from "../../../enum/util";
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })

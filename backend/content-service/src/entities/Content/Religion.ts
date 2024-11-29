@@ -49,10 +49,11 @@ export class Religion extends ContentBase {
     public toDTO(): ReligionDTO {
         return {
             id: this.id,
+            blueprintId: this.blueprint_id,
             name: this.name,
             description: this.description,
-            rituals: this.rituals ? { rituals: this.rituals } : undefined,
-            tenets: this.tenets ? { tenets: this.tenets } : undefined,
+            rituals: this.rituals ? { religionRituals: this.rituals } : undefined,
+            tenets: this.tenets ? { religionTenets: this.tenets } : undefined,
             user: this.user?.toDTO(),
             campaign: this.campaign?.toDTO(),
             world: this.world?.toDTO(),
@@ -65,8 +66,8 @@ export class Religion extends ContentBase {
         religion.id = dto.id;
         religion.name = dto.name;
         religion.description = dto.description;
-        religion.rituals = dto.rituals?.rituals || [];
-        religion.tenets = dto.tenets?.tenets || [];
+        religion.rituals = dto.rituals?.religionRituals || [];
+        religion.tenets = dto.tenets?.religionTenets || [];
         religion.user = user;
         religion.campaign = campaign;
         religion.world = world;

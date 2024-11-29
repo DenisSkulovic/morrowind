@@ -1,10 +1,11 @@
-import { BeforeInsert, Column, Entity, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryColumn } from "typeorm";
 import { ContentBase } from "../../ContentBase";
 import { Campaign } from "../Campaign";
 import { User } from "../User";
 import { World } from "../World";
-import { randomUUID } from "crypto";
-import { EffectTypeEnum, StatusDTO } from "../../proto/common";
+import { EffectTypeEnum } from "../../enum/entityEnums";
+import { EffectTypeEnumDTO, StatusDTO } from "../../proto/common";
+import { deserializeEnum, serializeEnum } from "../../enum/util";
 
 
 @Entity()
@@ -43,9 +44,10 @@ export class Status extends ContentBase {
     public toDTO(): StatusDTO {
         return {
             id: this.id,
+            blueprintId: this.blueprint_id,
             name: this.name,
             description: this.description,
-            type: this.type,
+            type: serializeEnum(EffectTypeEnum, this.type),
             effects: this.effects,
             duration: this.duration,
             user: this.user?.toDTO(),
@@ -60,7 +62,7 @@ export class Status extends ContentBase {
         status.id = dto.id;
         status.name = dto.name;
         status.description = dto.description;
-        status.type = dto.type;
+        status.type = deserializeEnum(EffectTypeEnumDTO, dto.type);
         status.effects = dto.effects || [];
         status.duration = dto.duration;
         status.user = user;

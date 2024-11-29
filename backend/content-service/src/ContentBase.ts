@@ -20,7 +20,7 @@ export abstract class ContentBase extends BaseEntity {
 
 
     @Column({ type: "json", nullable: true })
-    metadata?: Record<string, any>;
+    metadata?: {[key: string]: string};
 
     @Column({ name: "targetEntity", type: "varchar" })
     targetEntity!: string;

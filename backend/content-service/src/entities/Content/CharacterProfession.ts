@@ -41,6 +41,7 @@ export class CharacterProfession extends TaggableContentBase {
     public toDTO(): CharacterProfessionDTO {
         return {
             id: this.id,
+            blueprintId: this.blueprint_id,
             characters: this.characters
                 ? { characters: this.characters.map(character => character.toDTO()) }
                 : undefined,

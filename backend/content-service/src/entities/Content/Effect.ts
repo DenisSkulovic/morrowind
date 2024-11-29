@@ -5,7 +5,8 @@ import { Campaign } from "../Campaign";
 import { User } from "../User";
 import { World } from "../World";
 import { EffectDTO, EffectElementEnumDTO, EffectModeEnumDTO, EffectTargetEnumDTO, EffectTypeEnumDTO } from "../../proto/common";
-import { EffectTypeEnum, EffectTargetEnum, EffectModeEnum, EffectElementEnum, serializeEnum, deserializeEnum } from "../../enum/entityEnums";
+import { EffectTypeEnum, EffectTargetEnum, EffectModeEnum, EffectElementEnum } from "../../enum/entityEnums";
+import { serializeEnum, deserializeEnum } from "../../enum/util";
 
 @Entity()
 export class Effect extends TaggableContentBase {

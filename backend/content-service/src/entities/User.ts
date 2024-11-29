@@ -156,17 +156,17 @@ export class User extends BaseEntity {
             addictions: this.addictions ? { addictions: this.addictions.map(addiction => addiction.toDTO()) } : undefined,
             birthsigns: this.birthsigns ? { birthSigns: this.birthsigns.map(birthsign => birthsign.toDTO()) } : undefined,
             characters: this.characters ? { characters: this.characters.map(character => character.toDTO()) } : undefined,
-            character_professions: this.characterProfessions ? { professions: this.characterProfessions.map(profession => profession.toDTO()) } : undefined,
+            characterProfessions: this.characterProfessions ? { professions: this.characterProfessions.map(profession => profession.toDTO()) } : undefined,
             diseases: this.diseases ? { diseases: this.diseases.map(disease => disease.toDTO()) } : undefined,
             effects: this.effects ? { effects: this.effects.map(effect => effect.toDTO()) } : undefined,
             facts: this.facts ? { facts: this.facts.map(fact => fact.toDTO()) } : undefined,
             factions: this.factions ? { factions: this.factions.map(faction => faction.toDTO()) } : undefined,
-            storage_slots: this.storageSlots ? { storageSlots: this.storageSlots.map(slot => slot.toDTO()) } : undefined,
-            equipment_slots: this.equipmentSlots ? { equipmentSlots: this.equipmentSlots.map(slot => slot.toDTO()) } : undefined,
-            item_sets: this.itemSets ? { itemSets: this.itemSets.map(set => set.toDTO()) } : undefined,
+            storageSlots: this.storageSlots ? { storageSlots: this.storageSlots.map(slot => slot.toDTO()) } : undefined,
+            equipmentSlots: this.equipmentSlots ? { equipmentSlots: this.equipmentSlots.map(slot => slot.toDTO()) } : undefined,
+            itemSets: this.itemSets ? { itemSets: this.itemSets.map(set => set.toDTO()) } : undefined,
             moods: this.moods ? { moods: this.moods.map(mood => mood.toDTO()) } : undefined,
             needs: this.needs ? { needs: this.needs.map(need => need.toDTO()) } : undefined,
-            personality_profiles: this.personalityProfiles ? { personalityProfiles: this.personalityProfiles.map(profile => profile.toDTO()) } : undefined,
+            personalityProfiles: this.personalityProfiles ? { personalityProfiles: this.personalityProfiles.map(profile => profile.toDTO()) } : undefined,
             races: this.races ? { races: this.races.map(race => race.toDTO()) } : undefined,
             religions: this.religions ? { moods: this.religions.map(religion => religion.toDTO()) } : undefined,
             resistances: this.resistances ? { resistances: this.resistances.map(resistance => resistance.toDTO()) } : undefined,
@@ -179,8 +179,8 @@ export class User extends BaseEntity {
     public static fromDTO(dto: UserDTO, world: World, campaign?: Campaign): User {
         const user = new User();
         user.id = dto.id;
-        user.worlds = dto.worlds?.worlds?.map(i => World.fromDTO(i, user, world, campaign)) || [];
-        user.campaigns = dto.campaigns?.campaigns?.map(i => Campaign.fromDTO(i, user, world, campaign)) || [];
+        user.worlds = dto.worlds?.worlds?.map(i => World.fromDTO(i, user, campaign)) || [];
+        user.campaigns = dto.campaigns?.campaigns?.map(i => Campaign.fromDTO(i, user, world)) || [];
         user.items = dto.items?.items?.map(i => Item.fromDTO(i, user, world, campaign)) || [];
         user.pastExperiences = dto.pastExperiences?.pastExperiences?.map(i => PastExperience.fromDTO(i, user, world, campaign)) || [];
         user.characterMemories = dto.characterMemories?.characterMemories?.map(i => CharacterMemory.fromDTO(i, user, world, campaign)) || [];

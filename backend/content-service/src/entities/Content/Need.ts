@@ -4,7 +4,8 @@ import { Campaign } from "../Campaign";
 import { User } from "../User";
 import { World } from "../World";
 import { NeedDTO, NeedLayerEnumDTO, NeedTypeEnumDTO } from "../../proto/common";
-import { NeedTypeEnum, NeedLayerEnum, serializeEnum, deserializeEnum } from "../../enum/entityEnums";
+import { NeedTypeEnum, NeedLayerEnum } from "../../enum/entityEnums";
+import { serializeEnum, deserializeEnum } from "../../enum/util";
 
 @Entity()
 export class Need extends ContentBase {

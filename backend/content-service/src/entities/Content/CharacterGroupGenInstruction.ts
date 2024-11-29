@@ -5,6 +5,8 @@ import { User } from "../User";
 import { World } from "../World";
 import { BlueprintSetCombinator, deserializeInstruction, serializeInstruction } from "../../class/blueprint_id_and_prob";
 import { CharacterGroupGenInstructionDTO } from "../../proto/common";
+import { serializeEnum } from "../../enum/util";
+import { CombinatorConditionEnum } from "../../enum/CombinatorConditionEnum";
 
 @Entity()
 export class CharacterGroupGenInstruction extends ContentBase {
@@ -12,6 +14,9 @@ export class CharacterGroupGenInstruction extends ContentBase {
     id!: string;
 
     id_prefix = "CHARACTER_GROUP_GEN_INSTRUCTION"
+
+    @Column()
+    name!: string
 
     @Column({ type: "jsonb" })
     set!: BlueprintSetCombinator; // JSON structure for the set, stored as jsonb
@@ -28,10 +33,12 @@ export class CharacterGroupGenInstruction extends ContentBase {
     public toDTO(): CharacterGroupGenInstructionDTO {
         return {
             id: this.id,
+            blueprintId: this.blueprint_id,
+            name: this.name,
             set: {
                 name: this.set.name,
                 prob: this.set.prob,
-                cond: this.set.cond,
+                cond: serializeEnum(CombinatorConditionEnum, this.set.cond),
                 clazz: this.set.clazz,
                 instructions: this.set.items.map(serializeInstruction),
             },

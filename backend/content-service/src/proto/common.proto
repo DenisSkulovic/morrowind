@@ -19,7 +19,7 @@ message BackgroundDTO {
     GenerationInstructionsDTO past_exp_child = 11;
     GenerationInstructionsDTO past_exp_adult = 12;
     GenerationInstructionsDTO memory_pools = 13;
-    repeated string skill_sets = 14;
+    GenerationInstructionsDTO skill_sets = 14;
     map<string, int32> skill_adjustments = 15;
     optional UserDTO user = 16;
     optional CampaignDTO campaign = 17;
@@ -509,7 +509,7 @@ message MemoryPoolEntryDTO {
     string targetEntity = 13;
 }
 message MemoryPoolEntriesDTO {
-    repeated MemoryPoolEntriesDTO memoryPoolEntries = 1;
+    repeated MemoryPoolEntryDTO memoryPoolEntries = 1;
 }
 // #######################################################################################
 
@@ -945,9 +945,9 @@ message NeedsDTO {
 // #######################################################################################
 message UserDTO {
     string id = 1;
-    string name = 2;
 
     // relations
+    optional BackgroundsDTO backgrounds = 2;
     optional WorldsDTO worlds = 3;
     optional CampaignsDTO campaigns = 4;
     optional ItemsDTO items = 5;
@@ -977,7 +977,6 @@ message UserDTO {
     optional ResistancesDTO resistances = 29;
     optional StatusesDTO statuses = 30;
     optional TagsDTO tags = 31;
-    optional BackgroundsDTO backgrounds = 32;
 }
 message UsersDTO {
     repeated UserDTO users = 1;
@@ -998,7 +997,7 @@ message WorldSettings {
 message WorldDTO {
     string id = 1;
     string name = 2;
-    string description = 3;
+    optional string description = 3;
     optional WorldSettings settings = 4;
     bool frozen = 5;
 
@@ -1045,7 +1044,7 @@ message WorldsDTO {
 message CampaignDTO {
     string id = 1;                     
     string name = 2;                   
-    string description = 3;            
+    optional string description = 3;            
     map<string, string> dynamic_state = 4; 
     string created_at = 5;             
     optional WorldDTO world = 6;                   
