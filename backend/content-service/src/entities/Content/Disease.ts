@@ -6,6 +6,7 @@ import { User } from "../User";
 import { World } from "../World";
 import { Character } from "./Character";
 import { DiseaseDTO } from "../../proto/common";
+import { DiseaseSeverityEnum } from "../../enum/entityEnums";
 
 
 @Entity()
@@ -21,14 +22,8 @@ export class Disease extends TaggableContentBase {
     @Column({ type: "text" })
     description!: string;
 
-    @Column({ type: "enum", enum: ["MILD", "MODERATE", "SEVERE"] })
+    @Column({ type: "enum", enum: Object.values(DiseaseSeverityEnum) })
     severity!: string;
-
-    @Column("jsonb", { nullable: true, default: null })
-    effects!: string[]; // Links to associated Effect IDs.
-
-    @Column("jsonb", { nullable: true, default: null })
-    resistances!: string[]; // Links to associated Resistance IDs.
 
     @ManyToMany(() => Character)
     characters?: Character[];
@@ -48,11 +43,10 @@ export class Disease extends TaggableContentBase {
     public toDTO(): DiseaseDTO {
         return {
             id: this.id,
+            blueprintId: this.blueprint_id,
             name: this.name,
             description: this.description,
             severity: this.severity,
-            effects: this.effects,
-            resistances: this.resistances,
             characters: this.characters
                 ? { characters: this.characters.map(character => character.toDTO()) }
                 : undefined,
@@ -70,8 +64,6 @@ export class Disease extends TaggableContentBase {
         disease.name = dto.name;
         disease.description = dto.description;
         disease.severity = dto.severity;
-        disease.effects = dto.effects;
-        disease.resistances = dto.resistances;
         disease.characters = dto.characters?.characters?.map(i=>Character.fromDTO(i, user ,world, campaign)) || [];
         disease.tags = dto.tags?.tags?.map(tag => Tag.fromDTO(tag, user, world, campaign)) || [];
         disease.user = user;

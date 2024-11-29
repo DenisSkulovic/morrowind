@@ -2,11 +2,9 @@ import { TableInheritance, Entity, Column, PrimaryGeneratedColumn, OneToMany, Ba
 import { User } from "./User";
 import { randomUUID } from "crypto";
 import { AccountDTO } from "../proto/account";
+import { AccountRoleEnum } from "../enum/AccountRoleEnum";
 
-export enum AccountRoleEnum {
-    PLAYER = "player",
-    ADMIN = "admin"
-}
+
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })
@@ -51,7 +49,7 @@ export class Account extends BaseEntity {
     @Column({ type: "varchar", length: 255, nullable: true })
     email!: string; // Optional email for communication and recovery.
 
-    @Column({ type: "enum", enum: [AccountRoleEnum.ADMIN, AccountRoleEnum.PLAYER], nullable:true}) // TODO remove nullable because this is temporary. I need to add a value for entries that appear to be missing this
+    @Column({ type: "enum", enum: Object.values(AccountRoleEnum), nullable:true}) // TODO remove nullable because this is temporary. I need to add a value for entries that appear to be missing this
     role!: string;
 
     @Column({ type: "json", nullable: true })

@@ -32,8 +32,9 @@ export class Trait extends TaggableContentBase {
     public toDTO(): TraitDTO {
         return {
             id: this.id,
+            blueprintId: this.blueprint_id,
             name: this.name,
-            tags: this.tags?.map(tag => tag.toDTO()),
+            tags: this.tags && {tags: this.tags.map(tag => tag.toDTO())},
             user: this.user?.toDTO(),
             campaign: this.campaign?.toDTO(),
             world: this.world?.toDTO(),

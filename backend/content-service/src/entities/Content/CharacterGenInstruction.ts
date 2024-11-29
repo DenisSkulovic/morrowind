@@ -13,10 +13,11 @@ export class CharacterGenInstruction extends ContentBase {
     public toDTO(): CharacterGenInstructionDTO {
         return {
             id: this.id,
+            blueprintId: this.blueprint_id,
             firstName: this.first_name,
             lastName: this.last_name,
             gender: this.gender,
-            birthsign: this.birthsign,
+            birthSign: this.birthsign,
             birthEra: this.birthEra,
             birthYear: this.birthYear,
             birthMonth: this.birthMonth,

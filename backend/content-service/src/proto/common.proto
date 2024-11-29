@@ -51,10 +51,10 @@ message EffectDTO {
     optional CampaignDTO campaign = 6;
     optional WorldDTO world = 7;
     optional TagsDTO tags = 8;
-    EffectTypeEnum type = 9;
-    EffectTargetEnum target = 10;
-    EffectModeEnum mode = 11;
-    EffectElementEnum element = 12;
+    EffectTypeEnumDTO type = 9;
+    EffectTargetEnumDTO target = 10;
+    EffectModeEnumDTO mode = 11;
+    optional EffectElementEnumDTO element = 12;
     string targetEntity = 13;
 }
 message EffectsDTO {
@@ -73,8 +73,8 @@ message ResistanceDTO {
     optional UserDTO user = 5;
     optional CampaignDTO campaign = 6;
     optional WorldDTO world = 7;
-    EffectTypeEnum effectType = 8;
-    EffectTargetEnum targetEffect = 9;
+    EffectTypeEnumDTO effectType = 8;
+    optional string targetEffect = 9;
     string targetEntity = 10;
 }
 message ResistancesDTO {
@@ -93,7 +93,7 @@ message StatusDTO {
     optional UserDTO user = 5;
     optional CampaignDTO campaign = 6;
     optional WorldDTO world = 7;
-    EffectTypeEnum type = 8;
+    EffectTypeEnumDTO type = 8;
     repeated string effects = 9;
     int32 duration = 10;
     string description = 11;
@@ -251,9 +251,9 @@ message CharacterDTO {
     RaceDTO race = 9;
     string gender = 10;
     BirthsignDTO birthsign = 11;
-    int32 birthYear = 12;
-    string birthMonth = 13;
-    int32 birthDay = 14;
+    optional int32 birthYear = 12;
+    optional string birthMonth = 13;
+    optional int32 birthDay = 14;
     map<string, int32> skills = 15;
     optional EquipmentSlotsDTO equipmentSlots = 16;
     optional CharacterProfessionsDTO professions  = 17;
@@ -304,7 +304,7 @@ message CharacterMemoryDTO {
     optional CampaignDTO campaign = 6;
     optional WorldDTO world = 7;
     optional CharacterDTO character = 8;
-    map<string, FactStatusDTO> factStatus = 9;
+    repeated FactStatusDTO factStatus = 9;
     int32 importance = 10;
     int32 resistance = 11;
     int32 accumulator = 12;
@@ -324,7 +324,7 @@ message CharacterMemoriesDTO {
 // #######################################################################################
 message FactStatusDTO {
     string factId = 1;
-    FactStatusEnum status = 2;
+    FactStatusEnumDTO status = 2;
 }
 message FactStatusesDTO {
     repeated FactStatusDTO factStatuses = 1;
@@ -339,7 +339,7 @@ message TagDTO {
     string blueprint_id = 2;
     optional Metadata metadata = 3;
     string label = 4;
-    TagSubtypeEnum subtype = 5;
+    TagSubtypeEnumDTO subtype = 5;
     optional ItemsDTO items = 6;
     optional PastExperiencesDTO pastExperiences = 7;
     optional CharacterMemoriesDTO characterMemories = 8;
@@ -376,7 +376,7 @@ message SkillDTO {
     optional WorldDTO world = 7;
     optional TagsDTO tags = 8;
     string description = 9;
-    SkillCategoryEnum category = 10;
+    SkillCategoryEnumDTO category = 10;
     string targetEntity = 11;
 }
 message SkillsDTO {
@@ -417,9 +417,8 @@ message DiseaseDTO {
     optional TagsDTO tags = 8;
     string description = 9;
     string severity = 10;
-    repeated string effects = 11;
-    optional CharactersDTO characters = 12;
-    string targetEntity = 13;
+    optional CharactersDTO characters = 11;
+    string targetEntity = 12;
 }
 message DiseasesDTO { 
     repeated DiseaseDTO diseases = 1;
@@ -736,6 +735,10 @@ message CharacterGenInstructionDTO {
     optional BackgroundCustomizationDTO background_customization = 11;
     optional string birthSign = 12;
     string id = 13;
+    optional Metadata metadata = 14;
+    optional UserDTO user = 15;
+    optional CampaignDTO campaign = 16;
+    optional WorldDTO world = 17;
 }
 message CharacterGenInstructions {
     repeated CharacterGenInstructionDTO characterGenInstructions = 1;
@@ -794,7 +797,7 @@ message SkillAdjustmentsDTO {
 
 // #######################################################################################
 message SimpleProbDTO {
-    ConditionEnum cond = 1;
+    ConditionEnumDTO cond = 1;
     map<string, float> prob = 2;
     string clazz = 3;
 }
@@ -818,7 +821,7 @@ message GaussianProbDTO {
 // #######################################################################################
 message CombinatorDTO {
     optional string name = 1;
-    ConditionEnum cond = 2;
+    ConditionEnumDTO cond = 2;
     // prob must be a float value between 0 and 1 inclusive
     float prob = 3;
     repeated GenerationInstructionDTO instructions = 4;
@@ -859,7 +862,7 @@ message MemoryDTO {
     optional WorldDTO world = 7;
     optional TagsDTO tags = 8;
     optional FactsDTO facts = 9;
-    MemoryTypeEnum type = 10;
+    MemoryTypeEnumDTO type = 10;
     string description = 11;
     string targetEntity = 12;
 }
@@ -928,8 +931,8 @@ message NeedDTO {
     optional CampaignDTO campaign = 6;
     optional WorldDTO world = 7;
     string description = 8;
-    NeedTypeEnum type = 9;
-    NeedLayerEnum layer = 10;
+    NeedTypeEnumDTO type = 9;
+    NeedLayerEnumDTO layer = 10;
     string targetEntity = 11;
 }
 message NeedsDTO {
@@ -1090,7 +1093,7 @@ message CampaignsDTO {
 
 
 // #######################################################################################
-enum EffectTypeEnum {
+enum EffectTypeEnumDTO {
     DAMAGE = 0;
     HEALING = 1;
     BUFF = 2;
@@ -1099,28 +1102,28 @@ enum EffectTypeEnum {
     STEALING = 5;
     NEUTRAL = 6;
 }
-enum EffectTargetEnum {
+enum EffectTargetEnumDTO {
     HEALTH = 0;
     STAMINA = 1;
     MANA = 2;
 }
-enum EffectModeEnum {
+enum EffectModeEnumDTO {
     INSTANT = 0;
     GRADUAL = 1;
     PERSISTENT = 2;
 }
-enum EffectElementEnum {
+enum EffectElementEnumDTO {
     FIRE = 0;
     FROST = 1;
     POISON = 2;
     SHOCK = 3;
 }
-enum NeedTypeEnum {
+enum NeedTypeEnumDTO {
     DYNAMIC = 0;
     THRESHOLD = 1;
     EXTERNAL = 2;
 }
-enum NeedLayerEnum {
+enum NeedLayerEnumDTO {
     PHYSIOLOGICAL = 0;
     SAFETY = 1;
     BELONGING_AND_LOVE = 2;
@@ -1130,23 +1133,23 @@ enum NeedLayerEnum {
     SELF_ACTUALIZATION = 6;
     TRANSCENDENCE = 7;
 }
-enum MemoryTypeEnum {
+enum MemoryTypeEnumDTO {
     GLOBAL = 0;
     REGIONAL = 1;
     EVENT_RELATED = 2;
     HISTORIC = 3;
     PERSONAL = 4;
 } 
-enum ConditionEnum {
+enum ConditionEnumDTO {
     OR = 0;
     ANY = 1;
     AND = 2;
 }
-enum PresetEnum {
+enum PresetEnumDTO {
     default = 0;
     morrowind = 1;
 }
-enum TagSubtypeEnum {
+enum TagSubtypeEnumDTO {
     MATERIAL = 0;
     CULTURE = 1;
     RELATION = 2;
@@ -1158,11 +1161,11 @@ enum TagSubtypeEnum {
     STATUS = 8;
     QUEST = 9;
 }
-enum FactStatusEnum {
+enum FactStatusEnumDTO {
     ACCESSIBLE = 0;
     INACCESSIBLE = 1;
 }
-enum SkillCategoryEnum {
+enum SkillCategoryEnumDTO {
     CRAFTING = 0;
     MAGIC = 1;
     COMBAT = 2;

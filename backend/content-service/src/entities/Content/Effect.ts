@@ -4,7 +4,8 @@ import { Tag } from "./Tag";
 import { Campaign } from "../Campaign";
 import { User } from "../User";
 import { World } from "../World";
-import { EffectDTO } from "../../proto/common";
+import { EffectDTO, EffectElementEnumDTO, EffectModeEnumDTO, EffectTargetEnumDTO, EffectTypeEnumDTO } from "../../proto/common";
+import { EffectTypeEnum, EffectTargetEnum, EffectModeEnum, EffectElementEnum, serializeEnum, deserializeEnum } from "../../enum/entityEnums";
 
 @Entity()
 export class Effect extends TaggableContentBase {
@@ -16,16 +17,16 @@ export class Effect extends TaggableContentBase {
     @Column({ default: "PLACEHOLDER" })
     name!: string;
 
-    @Column({ type: "enum", enum: ["DAMAGE", "HEALING", "BUFF", "DEBUFF", "RESISTANCE", "STEALING"] })
+    @Column({ type: "enum", enum: Object.values(EffectTypeEnum) })
     type!: string; // "damage", "healing", "buff", "debuff", "resistance", etc.
 
-    @Column({ type: "enum", enum: ["HEALTH", "STAMINA", "MANA"]})
+    @Column({ type: "enum", enum: Object.values(EffectTargetEnum)})
     target!: string; // "health", "stamina", "magic", etc.
 
-    @Column({ type: "enum", enum: ["INSTANT", "GRADUAL", "PERSISTENT"]})
+    @Column({ type: "enum", enum: Object.values(EffectModeEnum)})
     mode!: string; // "instant", "gradual", "persistent"
 
-    @Column({ type: "enum", enum: ["FIRE", "FROST", "POISON", "SHOCK"], nullable: true})
+    @Column({ type: "enum", enum: Object.values(EffectElementEnum), nullable: true})
     element?: string;
 
 
@@ -44,11 +45,12 @@ export class Effect extends TaggableContentBase {
     public toDTO(): EffectDTO {
         return {
             id: this.id,
+            blueprintId: this.blueprint_id,
             name: this.name,
-            type: this.type,
-            target: this.target,
-            mode: this.mode,
-            element: this.element,
+            type: serializeEnum(EffectTypeEnumDTO, this.type),
+            target: serializeEnum(EffectTargetEnumDTO, this.target),
+            mode: serializeEnum(EffectModeEnumDTO, this.mode),
+            element: this.element ? serializeEnum(EffectElementEnumDTO, this.element) : undefined,
             tags: this.tags ? { tags: this.tags.map(tag => tag.toDTO()) } : undefined,
             user: this.user?.toDTO(),
             campaign: this.campaign?.toDTO(),
@@ -61,10 +63,10 @@ export class Effect extends TaggableContentBase {
         const effect = new Effect();
         effect.id = dto.id;
         effect.name = dto.name;
-        effect.type = dto.type;
-        effect.target = dto.target;
-        effect.mode = dto.mode;
-        effect.element = dto.element || undefined;
+        effect.type = deserializeEnum(EffectTypeEnum, dto.type);
+        effect.target = deserializeEnum(EffectTargetEnum, dto.target);
+        effect.mode = deserializeEnum(EffectModeEnum, dto.mode);
+        effect.element = dto.element ? deserializeEnum(EffectElementEnum, dto.element) : undefined;
         effect.tags = dto.tags?.tags?.map(tag => Tag.fromDTO(tag, user, world, campaign)) || [];
         effect.user = user;
         effect.campaign = campaign;

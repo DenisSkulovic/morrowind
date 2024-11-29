@@ -6,7 +6,8 @@ import { Tag } from "../Tag";
 import { Campaign } from "../../Campaign";
 import { User } from "../../User";
 import { World } from "../../World";
-import { CharacterMemoryDTO } from "../../../proto/common";
+import { CharacterMemoryDTO, FactStatusDTO, FactStatusEnumDTO } from "../../../proto/common";
+import { deserializeEnum, FactStatusEnum, serializeEnum } from "../../../enum/entityEnums";
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })
@@ -16,6 +17,9 @@ export class CharacterMemory extends TaggableContentBase {
     
     id_prefix = "CHARACTER_MEMORY"
 
+    @Column()
+    name!: string;
+
     @ManyToOne(() => Character, character => character.characterMemories)
     character!: Character;
 
@@ -24,10 +28,9 @@ export class CharacterMemory extends TaggableContentBase {
 
     @Column("jsonb", { default: null, nullable: true })
     factStatus?: {
-        [id: string]: {
-            status: "ACCESSIBLE" | "INACCESSIBLE",
-        }
-    }
+        factId: string;
+        status: FactStatusEnum;
+    }[];
 
     @Column({ default: 1 })
     importance!: number; // How significant this memory is (affects reinforcement)
@@ -59,36 +62,52 @@ export class CharacterMemory extends TaggableContentBase {
     public toDTO(): CharacterMemoryDTO {
         return {
             id: this.id,
+            blueprintId: this.blueprint_id,
+            name: this.name,
             character: this.character?.toDTO(),
             memory: this.memory?.toDTO(),
-            factStatus: this.factStatus,
+            factStatus: this.factStatus
+            ? this.factStatus.map((entry) => ({
+                factId: entry.factId,
+                status: serializeEnum(FactStatusEnumDTO, entry.status),
+            }))
+            : [],
             importance: this.importance,
             resistance: this.resistance,
             accumulator: this.accumulator,
             acquiredAt: this.acquiredAt,
             lastUpdatedAt: this.lastUpdatedAt,
-            tags: this.tags ? { tags: this.tags.map(tag => tag.toDTO()) } : undefined,
+            tags: this.tags ? { tags: this.tags.map((tag) => tag.toDTO()) } : undefined,
             user: this.user?.toDTO(),
             campaign: this.campaign?.toDTO(),
             world: this.world?.toDTO(),
-            targetEntity: this.targetEntity
+            targetEntity: this.targetEntity,
         };
     }
     
-    public static fromDTO(dto: CharacterMemoryDTO, user: User, world: World, campaign?: Campaign): CharacterMemory {
-        if (!dto.character) throw new Error("character on CharacterMemoryDTO cannot be undefined")
-        if (!dto.memory) throw new Error("memory on CharacterMemoryDTO cannot be undefined")
+    public static fromDTO(
+        dto: CharacterMemoryDTO,
+        user: User,
+        world: World,
+        campaign?: Campaign
+    ): CharacterMemory {
+        if (!dto.character) throw new Error("character on CharacterMemoryDTO cannot be undefined");
+        if (!dto.memory) throw new Error("memory on CharacterMemoryDTO cannot be undefined");
+    
         const characterMemory = new CharacterMemory();
         characterMemory.id = dto.id;
         characterMemory.character = Character.fromDTO(dto.character, user, world, campaign);
         characterMemory.memory = Memory.fromDTO(dto.memory, user, world, campaign);
-        characterMemory.factStatus = dto.factStatus;
+        characterMemory.factStatus = dto.factStatus?.map((entry) => ({
+            factId: entry.factId,
+            status: deserializeEnum(FactStatusEnumDTO, entry.status) as FactStatusEnum,
+        })) || [];
         characterMemory.importance = dto.importance;
         characterMemory.resistance = dto.resistance;
         characterMemory.accumulator = dto.accumulator;
         characterMemory.acquiredAt = dto.acquiredAt;
         characterMemory.lastUpdatedAt = dto.lastUpdatedAt;
-        characterMemory.tags = dto.tags?.tags?.map(tag => Tag.fromDTO(tag, user, world, campaign)) || [];
+        characterMemory.tags = dto.tags?.tags?.map((tag) => Tag.fromDTO(tag, user, world, campaign)) || [];
         characterMemory.user = user;
         characterMemory.campaign = campaign;
         characterMemory.world = world;

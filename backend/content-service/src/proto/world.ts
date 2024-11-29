@@ -6,7 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { PresetEnum, presetEnumFromJSON, presetEnumToJSON, WorldDTO } from "./common";
+import { PresetEnumDTO, presetEnumDTOFromJSON, presetEnumDTOToJSON, WorldDTO } from "./common";
 
 export const protobufPackage = "world";
 
@@ -55,7 +55,7 @@ export interface DropWorldContentResponse {
 export interface LoadWorldPresetRequest {
   worldId: string;
   userId: string;
-  preset: PresetEnum;
+  preset: PresetEnumDTO;
 }
 
 /** No fields required for a 200 status response */
@@ -712,7 +712,7 @@ export const LoadWorldPresetRequest: MessageFns<LoadWorldPresetRequest> = {
     return {
       worldId: isSet(object.worldId) ? globalThis.String(object.worldId) : "",
       userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
-      preset: isSet(object.preset) ? presetEnumFromJSON(object.preset) : 0,
+      preset: isSet(object.preset) ? presetEnumDTOFromJSON(object.preset) : 0,
     };
   },
 
@@ -725,7 +725,7 @@ export const LoadWorldPresetRequest: MessageFns<LoadWorldPresetRequest> = {
       obj.userId = message.userId;
     }
     if (message.preset !== 0) {
-      obj.preset = presetEnumToJSON(message.preset);
+      obj.preset = presetEnumDTOToJSON(message.preset);
     }
     return obj;
   },

@@ -9,6 +9,7 @@ import { World } from "../../World";
 import { StorageSlot } from "../Slot/StorageSlot";
 import { EquipmentSlot } from "../Slot/EquipmentSlot";
 import { ItemDTO, ItemRequirementsDTO } from "../../../proto/common";
+import { ItemActionEnum } from "../../../enum/ItemActionEnum";
 
 
 const serializeRequirements = (req: ItemRequirements): ItemRequirementsDTO => ({
@@ -54,7 +55,7 @@ export class Item extends TaggableContentBase {
     @Column({ nullable: true })
     trained_skill?: string
 
-    @Column({ type: "enum", enum: ["ATTACK", "BLOCK", "USE"], nullable: true })
+    @Column({ type: "enum", enum: Object.values(ItemActionEnum), nullable: true })
     actions?: string[];
 
     @Column({ type: "jsonb", default: null, nullable: true })

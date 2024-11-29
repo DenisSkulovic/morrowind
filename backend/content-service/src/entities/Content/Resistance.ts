@@ -1,10 +1,10 @@
-import { Entity, Column, ManyToOne, PrimaryGeneratedColumn, BeforeInsert, PrimaryColumn } from "typeorm";
+import { Entity, Column, ManyToOne, PrimaryColumn } from "typeorm";
 import { ContentBase } from "../../ContentBase";
 import { Campaign } from "../Campaign";
 import { User } from "../User";
 import { World } from "../World";
-import { randomUUID } from "crypto";
-import { ResistanceDTO } from "../../proto/common";
+import { EffectTargetEnumDTO, EffectTypeEnumDTO, ResistanceDTO } from "../../proto/common";
+import { deserializeEnum, EffectTypeEnum, serializeEnum } from "../../enum/entityEnums";
 
 @Entity()
 export class Resistance extends ContentBase {
@@ -16,7 +16,7 @@ export class Resistance extends ContentBase {
     @Column({ type: "varchar", length: 255 })
     name!: string;
 
-    @Column({ type: "enum", enum: ["ELEMENTAL", "STATUS", "DISEASE", "MAGIC"]})
+    @Column({ type: "enum", enum: Object.values(EffectTypeEnum)})
     effectType!: string; // Matches Effect.type
 
     @Column({ nullable: true })
@@ -35,8 +35,9 @@ export class Resistance extends ContentBase {
     public toDTO(): ResistanceDTO {
         return {
             id: this.id,
+            blueprintId: this.blueprint_id,
             name: this.name,
-            effectType: this.effectType,
+            effectType: serializeEnum(EffectTypeEnumDTO, this.effectType),
             targetEffect: this.targetEffect,
             user: this.user?.toDTO(),
             campaign: this.campaign?.toDTO(),
@@ -49,7 +50,7 @@ export class Resistance extends ContentBase {
         const resistance = new Resistance();
         resistance.id = dto.id;
         resistance.name = dto.name;
-        resistance.effectType = dto.effectType;
+        resistance.effectType = deserializeEnum(EffectTypeEnum, dto.effectType);
         resistance.targetEffect = dto.targetEffect;
         resistance.user = user;
         resistance.campaign = campaign;

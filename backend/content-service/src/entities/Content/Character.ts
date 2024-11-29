@@ -17,6 +17,7 @@ import { Disease } from "./Disease";
 import { Addiction } from "./Addiction";
 import { EquipmentSlot } from "./Slot/EquipmentSlot";
 import { CharacterDTO } from "../../proto/common";
+import { GenderEnum } from "../../enum/GenderEnum";
 
 
 // lazy loading means when I need to access traits of a character, it will perform 2 queries. 
@@ -44,7 +45,7 @@ export class Character extends TaggableContentBase {
     @ManyToOne(() => Race, {lazy: true})
     race!: Race;
 
-    @Column({ type: "enum", enum: ["MALE", "FEMALE"] })
+    @Column({ type: "enum", enum: Object.values(GenderEnum) })
     gender!: string;
 
     @ManyToOne(() => Birthsign, {lazy: true})
@@ -54,7 +55,7 @@ export class Character extends TaggableContentBase {
     birthYear?: number;
 
     @Column({ default: null, nullable: true })
-    birthMonth?: number;
+    birthMonth?: string;
 
     @Column({ default: null, nullable: true })
     birthDay?: number;
@@ -113,8 +114,9 @@ export class Character extends TaggableContentBase {
     public toDTO(): CharacterDTO {
         return {
             id: this.id,
-            first_name: this.first_name,
-            last_name: this.last_name,
+            blueprintId: this.blueprint_id,
+            firstName: this.first_name,
+            lastName: this.last_name,
             race: this.race?.toDTO(),
             gender: this.gender,
             birthsign: this.birthsign?.toDTO(),

@@ -35,6 +35,10 @@ export interface AccountDTO {
   email: string;
   role: string;
   user: UserDTO | undefined;
+  preferences?: PreferencesDTO | undefined;
+}
+
+export interface PreferencesDTO {
 }
 
 export interface UserDTO {
@@ -344,7 +348,7 @@ export const GetAccountResponse: MessageFns<GetAccountResponse> = {
 };
 
 function createBaseAccountDTO(): AccountDTO {
-  return { id: "", username: "", email: "", role: "", user: undefined };
+  return { id: "", username: "", email: "", role: "", user: undefined, preferences: undefined };
 }
 
 export const AccountDTO: MessageFns<AccountDTO> = {
@@ -363,6 +367,9 @@ export const AccountDTO: MessageFns<AccountDTO> = {
     }
     if (message.user !== undefined) {
       UserDTO.encode(message.user, writer.uint32(42).fork()).join();
+    }
+    if (message.preferences !== undefined) {
+      PreferencesDTO.encode(message.preferences, writer.uint32(50).fork()).join();
     }
     return writer;
   },
@@ -414,6 +421,14 @@ export const AccountDTO: MessageFns<AccountDTO> = {
           message.user = UserDTO.decode(reader, reader.uint32());
           continue;
         }
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
+          message.preferences = PreferencesDTO.decode(reader, reader.uint32());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -430,6 +445,7 @@ export const AccountDTO: MessageFns<AccountDTO> = {
       email: isSet(object.email) ? globalThis.String(object.email) : "",
       role: isSet(object.role) ? globalThis.String(object.role) : "",
       user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
+      preferences: isSet(object.preferences) ? PreferencesDTO.fromJSON(object.preferences) : undefined,
     };
   },
 
@@ -450,6 +466,9 @@ export const AccountDTO: MessageFns<AccountDTO> = {
     if (message.user !== undefined) {
       obj.user = UserDTO.toJSON(message.user);
     }
+    if (message.preferences !== undefined) {
+      obj.preferences = PreferencesDTO.toJSON(message.preferences);
+    }
     return obj;
   },
 
@@ -463,6 +482,52 @@ export const AccountDTO: MessageFns<AccountDTO> = {
     message.email = object.email ?? "";
     message.role = object.role ?? "";
     message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
+    message.preferences = (object.preferences !== undefined && object.preferences !== null)
+      ? PreferencesDTO.fromPartial(object.preferences)
+      : undefined;
+    return message;
+  },
+};
+
+function createBasePreferencesDTO(): PreferencesDTO {
+  return {};
+}
+
+export const PreferencesDTO: MessageFns<PreferencesDTO> = {
+  encode(_: PreferencesDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PreferencesDTO {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePreferencesDTO();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): PreferencesDTO {
+    return {};
+  },
+
+  toJSON(_: PreferencesDTO): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PreferencesDTO>, I>>(base?: I): PreferencesDTO {
+    return PreferencesDTO.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<PreferencesDTO>, I>>(_: I): PreferencesDTO {
+    const message = createBasePreferencesDTO();
     return message;
   },
 };

@@ -5,7 +5,8 @@ import { TaggableContentBase } from "../../../TaggableContentBase";
 import { Campaign } from "../../Campaign";
 import { User } from "../../User";
 import { World } from "../../World";
-import { MemoryDTO } from "../../../proto/common";
+import { MemoryDTO, MemoryTypeEnumDTO } from "../../../proto/common";
+import { deserializeEnum, MemoryTypeEnum, serializeEnum } from "../../../enum/entityEnums";
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })
@@ -15,10 +16,13 @@ export class Memory extends TaggableContentBase {
     
     id_prefix = "MEMORY"
 
+    @Column()
+    name!: string;
+
     @Column({ nullable: true, default: null })
     description!: string
 
-    @Column({ type: "enum", enum: ["GLOBAL", "REGIONAL", "EVENT_RELATED", "HISTORIC", "PERSONAL"]}) // bad to have this default, but I dont have a better idea yet, need to come back to the types later
+    @Column({ type: "enum", enum: Object.values(MemoryTypeEnum)}) // bad to have this default, but I dont have a better idea yet, need to come back to the types later
     type!: string // TODO need to properly conceptualize types of memories and what that means. Maybe better to do it with tags?
 
     @ManyToMany(() => Fact, fact => fact.memories)
@@ -41,8 +45,10 @@ export class Memory extends TaggableContentBase {
     public toDTO(): MemoryDTO {
         return {
             id: this.id,
+            blueprintId: this.blueprint_id,
+            name: this.name, 
             description: this.description,
-            type: this.type,
+            type: serializeEnum(MemoryTypeEnum, this.type),
             facts: this.facts ? { facts: this.facts.map(fact => fact.toDTO()) } : undefined,
             tags: this.tags ? { tags: this.tags.map(tag => tag.toDTO()) } : undefined,
             user: this.user?.toDTO(),
@@ -56,7 +62,7 @@ export class Memory extends TaggableContentBase {
         const memory = new Memory();
         memory.id = dto.id;
         memory.description = dto.description;
-        memory.type = dto.type;
+        memory.type = deserializeEnum(MemoryTypeEnumDTO, dto.type);
         memory.facts = dto.facts?.facts?.map(i => Fact.fromDTO(i, user, world, campaign)) || [];
         memory.tags = dto.tags?.tags?.map(i => Tag.fromDTO(i, user, world, campaign)) || [];
         memory.user = user;

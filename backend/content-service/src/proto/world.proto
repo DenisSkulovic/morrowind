@@ -58,7 +58,7 @@ message DropWorldContentResponse {
 message LoadWorldPresetRequest {
     string worldId = 1;
     string userId = 2;
-    common.PresetEnum preset = 3;
+    common.PresetEnumDTO preset = 3;
 }
 
 message LoadWorldPresetResponse {

@@ -1,12 +1,11 @@
-import { Entity, Column, ManyToOne, BeforeInsert, PrimaryColumn } from "typeorm";
+import { Entity, Column, ManyToOne, PrimaryColumn } from "typeorm";
 import { ContentBase } from "../../ContentBase";
 import { Campaign } from "../Campaign";
 import { User } from "../User";
 import { World } from "../World";
-import { randomUUID } from "crypto";
 import { GenerationInstruction } from "../../types";
-import { BackgroundDTO, GenerationInstructionDTO, GenerationInstructionsDTO } from "../../proto/common";
-import { IdAndQuant, BlueprintGenInstruction_Gaussian, BlueprintSetCombinator, serializeGenerationInstructions, deserializeGenerationInstructions } from "../../class/blueprint_id_and_prob";
+import { BackgroundDTO } from "../../proto/common";
+import { serializeGenerationInstructions, deserializeGenerationInstructions } from "../../class/blueprint_id_and_prob";
 
 
 @Entity()
