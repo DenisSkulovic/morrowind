@@ -4,7 +4,7 @@ services:
   # Backend Microservices
   content-service:
     build:
-      context: /home/denis/CODE/morrowind2/backend/content-service
+      context: ./backend/content-service
       dockerfile: Dockerfile.dev
     container_name: content_service
     restart: always
@@ -20,7 +20,7 @@ services:
       - DATABASE_PORT__CAMPAIGN=5432
       - DATABASE_NAME__CAMPAIGN=${POSTGRES_DB__CAMPAIGN}
     volumes:
-      - /home/denis/CODE/morrowind2/backend/content-service:/usr/src/app
+      - ./backend/content-service:/usr/src/app
     depends_on:
       - world-db
       - campaign-db
@@ -31,7 +31,7 @@ services:
   # Uncomment the other services as they become ready
   # ai-service:
   #   build:
-  #     context: /home/denis/CODE/morrowind2/backend/ai-service
+  #     context: ./backend/ai-service
   #     dockerfile: Dockerfile.dev
   #   container_name: ai_service
   #   restart: always
@@ -44,7 +44,7 @@ services:
 
   # campaign-service:
   #   build:
-  #     context: /home/denis/CODE/morrowind2/backend/campaign-service
+  #     context: ./backend/campaign-service
   #     dockerfile: Dockerfile.dev
   #   container_name: campaign_service
   #   restart: always
@@ -57,7 +57,7 @@ services:
 
   # combat-service:
   #   build:
-  #     context: /home/denis/CODE/morrowind2/backend/combat-service
+  #     context: ./backend/combat-service
   #     dockerfile: Dockerfile.dev
   #   container_name: combat_service
   #   restart: always
@@ -70,7 +70,7 @@ services:
 
   # dialogue-service:
   #   build:
-  #     context: /home/denis/CODE/morrowind2/backend/dialogue-service
+  #     context: ./backend/dialogue-service
   #     dockerfile: Dockerfile.dev
   #   container_name: dialogue_service
   #   restart: always
@@ -83,7 +83,7 @@ services:
 
   # trade-service:
   #   build:
-  #     context: /home/denis/CODE/morrowind2/backend/trade-service
+  #     context: ./backend/trade-service
   #     dockerfile: Dockerfile.dev
   #   container_name: trade_service
   #   restart: always
@@ -132,13 +132,13 @@ services:
   # # Frontends
   # world-building-ui:
   #   build:
-  #     context: /home/denis/CODE/morrowind2/frontend/world-building-ui
+  #     context: ./frontend/world-building-ui
   #   container_name: world_building_ui
   #   restart: always
   #   ports:
   #     - "3001:3000"
   #   volumes:
-  #     - /home/denis/CODE/morrowind2/frontend/world-building-ui:/usr/src/app
+  #     - ./frontend/world-building-ui:/usr/src/app
   #   depends_on:
   #     - content-service
   #   profiles:
@@ -147,7 +147,7 @@ services:
 
   # campaign-ui:
   #   build:
-  #     context: /home/denis/CODE/morrowind2/frontend/campaign-ui
+  #     context: ./frontend/campaign-ui
   #   container_name: campaign_ui
   #   restart: always
   #   ports:

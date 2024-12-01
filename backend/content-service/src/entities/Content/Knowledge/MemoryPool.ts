@@ -7,6 +7,7 @@ import { Campaign } from "../../Campaign";
 import { User } from "../../User";
 import { World } from "../../World";
 import { MemoryPoolDTO } from "../../../proto/common";
+import { Context } from "../../../types";
 
 @Entity()
 export class MemoryPool extends TaggableContentBase {
@@ -40,41 +41,33 @@ export class MemoryPool extends TaggableContentBase {
     @ManyToOne(() => World, { nullable: true })
     world!: World;
 
-    public toDTO(): MemoryPoolDTO {
+    public static toDTO(memPool: MemoryPool): MemoryPoolDTO {
         return {
-            id: this.id,
-            blueprintId: this.blueprint_id,
-            name: this.name,
-            description: this.description,
-            memoryPoolEntries: this.memoryPoolEntries
-                ? { memoryPoolEntries: this.memoryPoolEntries.map((entry) => entry.toDTO()) }
-                : undefined,
-            characterProfessions: this.characterProfessions
-                ? { professions: this.characterProfessions.map((profession) => profession.toDTO()) }
-                : undefined,
-            tags: this.tags ? { tags: this.tags.map((tag) => tag.toDTO()) } : undefined,
-            user: this.user?.toDTO(),
-            campaign: this.campaign?.toDTO(),
-            world: this.world?.toDTO(),
-            targetEntity: this.targetEntity,
+            id: memPool.id,
+            blueprintId: memPool.blueprint_id,
+            name: memPool.name,
+            description: memPool.description,
+            memoryPoolEntries: MemoryPool.serializeEntityArray(memPool.memoryPoolEntries, i => MemoryPoolEntry.toDTO(i)),
+            characterProfessions: MemoryPool.serializeEntityArray(memPool.characterProfessions, i => CharacterProfession.toDTO(i)),
+            tags: MemoryPool.serializeEntityArray(memPool.tags, i => Tag.toDTO(i)),
+            user: MemoryPool.serializeEntity(memPool.user, i => User.toDTO(i)),
+            campaign: MemoryPool.serializeEntity(memPool.campaign, i => Campaign.toDTO(i)),
+            world: MemoryPool.serializeEntity(memPool.world, i => World.toDTO(i)),
+            targetEntity: memPool.targetEntity,
         };
     }
 
-    public static fromDTO(dto: MemoryPoolDTO, user: User, world: World, campaign?: Campaign): MemoryPool {
+    public static fromDTO(dto: MemoryPoolDTO, context: Context): MemoryPool {
         const memoryPool = new MemoryPool();
         memoryPool.id = dto.id;
         memoryPool.name = dto.name;
         memoryPool.description = dto.description;
-        memoryPool.memoryPoolEntries =
-            dto.memoryPoolEntries?.memoryPoolEntries.map(i => MemoryPoolEntry.fromDTO(i, user, world, campaign)) || [];
-        memoryPool.characterProfessions =
-            dto.characterProfessions?.professions.map((profession) =>
-                CharacterProfession.fromDTO(profession, user, world, campaign)
-            ) || [];
-        memoryPool.tags = dto.tags?.tags.map((tag) => Tag.fromDTO(tag, user, world, campaign)) || [];
-        memoryPool.user = user;
-        memoryPool.campaign = campaign;
-        memoryPool.world = world;
+        memoryPool.memoryPoolEntries = MemoryPool.deserializeEntityArray(dto.memoryPoolEntries, i => MemoryPoolEntry.fromDTO(i, context));
+        memoryPool.characterProfessions = MemoryPool.deserializeEntityArray(dto.characterProfessions, (i) => CharacterProfession.fromDTO(i, context));
+        memoryPool.tags = MemoryPool.deserializeEntityArray(dto.tags, (i) => Tag.fromDTO(i, context));
+        memoryPool.user = context.user;
+        memoryPool.campaign = context.campaign;
+        memoryPool.world = context.world;
         memoryPool.targetEntity = dto.targetEntity;
         return memoryPool;
     }

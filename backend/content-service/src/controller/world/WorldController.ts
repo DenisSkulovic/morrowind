@@ -1,4 +1,4 @@
-import { sourcesMap } from "../../data-source";
+import { sourcesMap, WorldDataSource } from "../../data-source";
 import { sendUnaryData, ServerUnaryCall } from '@grpc/grpc-js';
 import { WorldService } from "../../layer_2/service/WorldService";
 import { User } from "../../entities/User";
@@ -11,7 +11,9 @@ import {
 import { World } from "../../entities/World";
 import { UserService } from "../../layer_2_and_3/service/UserService";
 import { DataSourceEnum } from "../../enum/DataSourceEnum";
-import { PresetEnum } from "../../proto/common";
+import { PresetEnum } from "../../enum/entityEnums";
+import { PresetEnumDTO } from "../../proto/common";
+import { deserializeEnum } from "../../enum/util";
 
 export class WorldController {
     [key: string]: any
@@ -45,10 +47,13 @@ export class WorldController {
         try {
             console.log(`[WorldController - getWorld] request:`, call.request)
             const { worldId } = call.request
-            const worldService: WorldService = new WorldService({ sourcesMap })
-            const world: World | null = await worldService.getWorld(worldId)
+            const worldRepository = WorldDataSource.getRepository(World)
+            const world = await worldRepository.findOne({
+                where: { id: worldId },
+                relations: ['user']
+            })
             if (!world) throw new Error(`failed to find World for dowldId: "${world}"`)
-            const response: GetWorldResponse = { world }
+            const response: GetWorldResponse = { world: World.toDTO(world) }
             callback(null, response)
         } catch (err: any) {
             console.error(`[WorldController - getWorld] error:`, err)
@@ -65,8 +70,7 @@ export class WorldController {
             const { userId } = call.request
             const worldService: WorldService = new WorldService({ sourcesMap })
             const worlds: World[] = await worldService.searchWorlds({ userId })
-            const 
-            const response = { worlds } // TODO I need to introduce pagination later
+            const response = { worlds: worlds.map((world) => World.toDTO(world)) } // TODO I need to introduce pagination later
             callback(null, response)
         } catch (err: any) {
             console.error(`[WorldController - getWorldsForUser] error:`, err)
@@ -112,12 +116,13 @@ export class WorldController {
         callback: sendUnaryData<LoadWorldPresetResponse>
     ): Promise<void> {
         try {
-            if (!call.request.preset || call.request.preset === PresetEnum.UNRECOGNIZED) throw new Error(`no preset found for preset identifier: ${call.request.preset}`)
+            if (!call.request.preset || call.request.preset === PresetEnumDTO.UNRECOGNIZED) throw new Error(`no preset found for preset identifier: ${call.request.preset}`)
             const worldId: string = call.request.worldId // TODO these fields should come from middleware
             const userId: string = call.request.userId // TODO these fields should come from middleware, especially this one
+            const preset: PresetEnum = deserializeEnum(PresetEnumDTO, call.request.preset) as PresetEnum
             // check preset for existence in the enum
             const worldService: WorldService = new WorldService({ sourcesMap })
-            await worldService.loadPresetIntoWorld(call.request.preset, worldId, userId)
+            await worldService.loadPresetIntoWorld(preset, worldId, userId)
             const response = {} // status 200
             callback(null, response)
         }

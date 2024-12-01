@@ -3,7 +3,7 @@ import { ContentBase } from "../../ContentBase";
 import { Campaign } from "../Campaign";
 import { User } from "../User";
 import { World } from "../World";
-import { GenerationInstruction } from "../../types";
+import { Context, GenerationInstruction } from "../../types";
 import { serializeInstruction, deserializeInstruction } from "../../class/blueprint_id_and_prob";
 import { PersonalityProfileDTO } from "../../proto/common";
 
@@ -12,7 +12,7 @@ import { PersonalityProfileDTO } from "../../proto/common";
 export class PersonalityProfile extends ContentBase {
     @PrimaryColumn()
     id!: string;
-    
+
     id_prefix = "PROFILE";
 
     @Column({ type: "varchar", length: 255 })
@@ -33,29 +33,29 @@ export class PersonalityProfile extends ContentBase {
     @ManyToOne(() => World, { nullable: true })
     world!: World;
 
-    public toDTO(): PersonalityProfileDTO {
+    public static toDTO(persProfile: PersonalityProfile): PersonalityProfileDTO {
         return {
-            id: this.id,
-            blueprintId: this.blueprint_id,
-            name: this.name,
-            enneagramType: this.enneagramType,
-            traits: this.traits.map(serializeInstruction),
-            user: this.user?.toDTO(),
-            campaign: this.campaign?.toDTO(),
-            world: this.world?.toDTO(),
-            targetEntity: this.targetEntity
+            id: persProfile.id,
+            blueprintId: persProfile.blueprint_id,
+            name: persProfile.name,
+            enneagramType: persProfile.enneagramType,
+            traits: persProfile.traits.map(serializeInstruction),
+            user: PersonalityProfile.serializeEntity(persProfile.user, i => User.toDTO(i)),
+            campaign: PersonalityProfile.serializeEntity(persProfile.campaign, i => Campaign.toDTO(i)),
+            world: PersonalityProfile.serializeEntity(persProfile.world, i => World.toDTO(i)),
+            targetEntity: persProfile.targetEntity
         };
     }
 
-    public static fromDTO(dto: PersonalityProfileDTO, user: User, world: World, campaign?: Campaign): PersonalityProfile {
+    public static fromDTO(dto: PersonalityProfileDTO, context: Context): PersonalityProfile {
         const profile = new PersonalityProfile();
         profile.id = dto.id;
         profile.name = dto.name;
         profile.enneagramType = dto.enneagramType;
         profile.traits = dto.traits.map(deserializeInstruction);
-        profile.user = user;
-        profile.campaign = campaign;
-        profile.world = world;
+        profile.user = context.user;
+        profile.campaign = context.campaign;
+        profile.world = context.world;
         profile.targetEntity = dto.targetEntity
         return profile;
     }

@@ -6,15 +6,16 @@ import { World } from "../World";
 import { EffectTypeEnum } from "../../enum/entityEnums";
 import { EffectTypeEnumDTO, StatusDTO } from "../../proto/common";
 import { deserializeEnum, serializeEnum } from "../../enum/util";
+import { Context } from "../../types";
 
 
 @Entity()
 export class Status extends ContentBase {
 
-    
+
     @PrimaryColumn()
     id!: string;
-    
+
     id_prefix = "STATUS";
 
     @Column({ type: "varchar", length: 255 })
@@ -23,7 +24,7 @@ export class Status extends ContentBase {
     @Column({ type: "text" })
     description!: string;
 
-    @Column({ type: "enum", enum: Object.values(EffectTypeEnum)})
+    @Column({ type: "enum", enum: Object.values(EffectTypeEnum) })
     type!: string;
 
     @Column("jsonb", { nullable: true })
@@ -41,23 +42,23 @@ export class Status extends ContentBase {
     @ManyToOne(() => World, { nullable: true })
     world!: World;
 
-    public toDTO(): StatusDTO {
+    public static toDTO(status: Status): StatusDTO {
         return {
-            id: this.id,
-            blueprintId: this.blueprint_id,
-            name: this.name,
-            description: this.description,
-            type: serializeEnum(EffectTypeEnum, this.type),
-            effects: this.effects,
-            duration: this.duration,
-            user: this.user?.toDTO(),
-            campaign: this.campaign?.toDTO(),
-            world: this.world?.toDTO(),
-            targetEntity: this.targetEntity
+            id: status.id,
+            blueprintId: status.blueprint_id,
+            name: status.name,
+            description: status.description,
+            type: serializeEnum(EffectTypeEnum, status.type),
+            effects: status.effects,
+            duration: status.duration,
+            user: Status.serializeEntity(status.user, i => User.toDTO(i)),
+            campaign: Status.serializeEntity(status.campaign, i => Campaign.toDTO(i)),
+            world: Status.serializeEntity(status.world, i => World.toDTO(i)),
+            targetEntity: status.targetEntity
         };
     }
 
-    public static fromDTO(dto: StatusDTO, user: User, world: World, campaign?: Campaign): Status {
+    public static fromDTO(dto: StatusDTO, context: Context): Status {
         const status = new Status();
         status.id = dto.id;
         status.name = dto.name;
@@ -65,9 +66,9 @@ export class Status extends ContentBase {
         status.type = deserializeEnum(EffectTypeEnumDTO, dto.type);
         status.effects = dto.effects || [];
         status.duration = dto.duration;
-        status.user = user;
-        status.campaign = campaign;
-        status.world = world;
+        status.user = context.user;
+        status.campaign = context.campaign;
+        status.world = context.world;
         status.targetEntity = dto.targetEntity
         return status;
     }

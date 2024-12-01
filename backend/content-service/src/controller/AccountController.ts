@@ -3,7 +3,8 @@ import { sourcesMap } from "../data-source";
 import { DataSourceEnum } from "../enum/DataSourceEnum";
 import { sendUnaryData, ServerUnaryCall } from '@grpc/grpc-js';
 import { CreateAccountRequest, CreateAccountResponse, GetAccountRequest, GetAccountResponse } from '../proto/account';
-import { Account, AccountRoleEnum } from "../entities/Account";
+import { Account } from "../entities/Account";
+import { AccountRoleEnum } from "../enum/AccountRoleEnum";
 
 export class AccountController {
     [key: string]: any
@@ -48,7 +49,7 @@ export class AccountController {
             console.log(`[AccountController - createAccount] accounts:`, accounts)
 
             const response: GetAccountResponse = {
-                account: accounts[0]
+                account: accounts[0] ? Account.toDTO(accounts[0]) : undefined
             }
             console.log(`[AccountController - createAccount] response:`, response)
             callback(null, response)

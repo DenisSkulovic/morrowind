@@ -4,9 +4,9 @@ import { Campaign } from "../Campaign";
 import { User } from "../User";
 import { World } from "../World";
 import { BlueprintSetCombinator, deserializeInstruction, serializeInstruction } from "../../class/blueprint_id_and_prob";
-import { CharacterGroupGenInstructionDTO } from "../../proto/common";
-import { serializeEnum } from "../../enum/util";
-import { CombinatorConditionEnum } from "../../enum/CombinatorConditionEnum";
+import { CharacterGroupGenInstructionDTO, ConditionEnumDTO } from "../../proto/common";
+import { deserializeEnum, serializeEnum } from "../../enum/util";
+import { Context } from "../../types"; import { ConditionEnum } from "../../enum/ConditionEnum";
 
 @Entity()
 export class CharacterGroupGenInstruction extends ContentBase {
@@ -19,7 +19,7 @@ export class CharacterGroupGenInstruction extends ContentBase {
     name!: string
 
     @Column({ type: "jsonb" })
-    set!: BlueprintSetCombinator; // JSON structure for the set, stored as jsonb
+    set!: BlueprintSetCombinator;
 
     @ManyToOne(() => User, { nullable: true })
     user!: User;
@@ -30,30 +30,28 @@ export class CharacterGroupGenInstruction extends ContentBase {
     @ManyToOne(() => World, { nullable: true })
     world!: World;
 
-    public toDTO(): CharacterGroupGenInstructionDTO {
+    public static toDTO(charGrpGen: CharacterGroupGenInstruction): CharacterGroupGenInstructionDTO {
         return {
-            id: this.id,
-            blueprintId: this.blueprint_id,
-            name: this.name,
+            id: charGrpGen.id,
+            blueprintId: charGrpGen.blueprint_id,
+            name: charGrpGen.name,
             set: {
-                name: this.set.name,
-                prob: this.set.prob,
-                cond: serializeEnum(CombinatorConditionEnum, this.set.cond),
-                clazz: this.set.clazz,
-                instructions: this.set.items.map(serializeInstruction),
+                name: charGrpGen.set.name,
+                prob: charGrpGen.set.prob,
+                cond: serializeEnum(ConditionEnum, charGrpGen.set.cond),
+                clazz: charGrpGen.set.clazz,
+                instructions: charGrpGen.set.items.map(serializeInstruction),
             },
-            user: this.user?.toDTO(),
-            campaign: this.campaign?.toDTO(),
-            world: this.world?.toDTO(),
-            targetEntity: this.targetEntity
+            user: CharacterGroupGenInstruction.serializeEntity(charGrpGen.user, i => User.toDTO(i)),
+            campaign: CharacterGroupGenInstruction.serializeEntity(charGrpGen.campaign, i => Campaign.toDTO(i)),
+            world: CharacterGroupGenInstruction.serializeEntity(charGrpGen.world, i => World.toDTO(i)),
+            targetEntity: charGrpGen.targetEntity
         };
     }
 
     public static fromDTO(
         dto: CharacterGroupGenInstructionDTO,
-        user: User,
-        world: World,
-        campaign?: Campaign
+        context: Context
     ): CharacterGroupGenInstruction {
         if (!dto.set) throw new Error("did not receive field 'set' on CharacterGroupGenInstructionDTO, but it is mandatory")
         const instruction = new CharacterGroupGenInstruction();
@@ -61,12 +59,12 @@ export class CharacterGroupGenInstruction extends ContentBase {
         instruction.set = BlueprintSetCombinator.build({
             name: dto.set.name,
             prob: dto.set.prob,
-            cond: dto.set.cond,
+            cond: deserializeEnum(ConditionEnumDTO, dto.set.cond),
             items: dto.set.instructions.map(deserializeInstruction),
         });
-        instruction.user = user;
-        instruction.campaign = campaign;
-        instruction.world = world;
+        instruction.user = context.user;
+        instruction.campaign = context.campaign;
+        instruction.world = context.world;
         instruction.targetEntity = dto.targetEntity
         return instruction;
     }

@@ -31,10 +31,14 @@ import { EquipmentSlot } from "./Content/Slot/EquipmentSlot";
 import { StorageSlot } from "./Content/Slot/StorageSlot";
 import { randomUUID } from "crypto";
 import { WorldDTO } from "../proto/common";
+import { Base } from "../Base";
+import { Context } from "../types";
+
+
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })
-export class World extends BaseEntity {
+export class World extends Base {
 
 
     @PrimaryColumn()
@@ -46,8 +50,8 @@ export class World extends BaseEntity {
     }
     id_prefix = "WORLD";
 
-    @ManyToOne(() => User, { lazy: true })
-    user!: User; // User who created this campaign.
+    @ManyToOne(() => User)
+    user!: User;
 
     @Column({ type: "varchar", length: 255 })
     name!: string; // Name of the world, e.g., "Morrowind", "Middle-earth".
@@ -61,170 +65,177 @@ export class World extends BaseEntity {
     @Column({ default: false })
     frozen!: boolean;
 
-    @OneToMany(() => Campaign, (campaign) => campaign.world, { lazy: true })
-    campaigns!: Campaign[]; // Associated campaigns created from this world.
+    @OneToMany(() => Campaign, (campaign) => campaign.world, {})
+    campaigns!: Campaign[]
 
-    @OneToMany(() => Item, item => item.world, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => Item, item => item.world, { onDelete: "CASCADE", })
     items!: Item[]
 
-    @OneToMany(() => PastExperience, pastExperience => pastExperience.world, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => PastExperience, pastExperience => pastExperience.world, { onDelete: "CASCADE", })
     pastExperiences!: PastExperience[]
 
-    @OneToMany(() => CharacterMemory, characterMemory => characterMemory.world, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => CharacterMemory, characterMemory => characterMemory.world, { onDelete: "CASCADE", })
     characterMemories!: CharacterMemory[]
 
-    @OneToMany(() => Memory, memory => memory.world, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => Memory, memory => memory.world, { onDelete: "CASCADE", })
     memories!: Memory[]
 
-    @OneToMany(() => MemoryPool, memoryPool => memoryPool.world, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => MemoryPool, memoryPool => memoryPool.world, { onDelete: "CASCADE", })
     memoryPools!: MemoryPool[]
 
-    @OneToMany(() => MemoryPoolEntry, memoryPoolEntry => memoryPoolEntry.world, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => MemoryPoolEntry, memoryPoolEntry => memoryPoolEntry.world, { onDelete: "CASCADE", })
     memoryPoolEntries!: MemoryPoolEntry[]
 
-    @OneToMany(() => Skill, skill => skill.world, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => Skill, skill => skill.world, { onDelete: "CASCADE", })
     skills!: Skill[]
 
-    @OneToMany(() => Trait, trait => trait.world, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => Trait, trait => trait.world, { onDelete: "CASCADE", })
     traits!: Trait[]
 
-    @OneToMany(() => Addiction, addiction => addiction.world, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => Addiction, addiction => addiction.world, { onDelete: "CASCADE", })
     addictions!: Addiction[]
 
-    @OneToMany(() => Birthsign, birthsign => birthsign.world, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => Birthsign, birthsign => birthsign.world, { onDelete: "CASCADE", })
     birthsigns!: Birthsign[]
 
-    @OneToMany(() => Character, character => character.world, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => Character, character => character.world, { onDelete: "CASCADE", })
     characters!: Character[]
 
-    @OneToMany(() => CharacterProfession, characterProfession => characterProfession.world, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => CharacterProfession, characterProfession => characterProfession.world, { onDelete: "CASCADE", })
     characterProfessions!: CharacterProfession[]
 
-    @OneToMany(() => Disease, disease => disease.world, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => Disease, disease => disease.world, { onDelete: "CASCADE", })
     diseases!: Disease[]
 
-    @OneToMany(() => Effect, effect => effect.world, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => Effect, effect => effect.world, { onDelete: "CASCADE", })
     effects!: Effect[]
 
-    @OneToMany(() => Fact, fact => fact.world, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => Fact, fact => fact.world, { onDelete: "CASCADE", })
     facts!: Fact[]
 
-    @OneToMany(() => Faction, faction => faction.world, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => Faction, faction => faction.world, { onDelete: "CASCADE", })
     factions!: Faction[]
 
-    @OneToMany(() => StorageSlot, storageSlot => storageSlot.world, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => StorageSlot, storageSlot => storageSlot.world, { onDelete: "CASCADE", })
     storageSlots!: StorageSlot[]
 
-    @OneToMany(() => EquipmentSlot, equipmentSlot => equipmentSlot.world, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => EquipmentSlot, equipmentSlot => equipmentSlot.world, { onDelete: "CASCADE", })
     equipmentSlots!: EquipmentSlot[]
 
-    @OneToMany(() => ItemSet, itemSet => itemSet.world, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => ItemSet, itemSet => itemSet.world, { onDelete: "CASCADE", })
     itemSets!: ItemSet[]
 
-    @OneToMany(() => Mood, mood => mood.world, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => Mood, mood => mood.world, { onDelete: "CASCADE", })
     moods!: Mood[]
 
-    @OneToMany(() => Need, need => need.world, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => Need, need => need.world, { onDelete: "CASCADE", })
     needs!: Need[]
 
-    @OneToMany(() => PersonalityProfile, personalityProfile => personalityProfile.world, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => PersonalityProfile, personalityProfile => personalityProfile.world, { onDelete: "CASCADE", })
     personalityProfiles!: PersonalityProfile[]
 
-    @OneToMany(() => Race, race => race.world, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => Race, race => race.world, { onDelete: "CASCADE", })
     races!: Race[]
 
-    @OneToMany(() => Religion, religion => religion.world, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => Religion, religion => religion.world, { onDelete: "CASCADE", })
     religions!: Religion[]
 
-    @OneToMany(() => Resistance, resistance => resistance.world, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => Resistance, resistance => resistance.world, { onDelete: "CASCADE", })
     resistances!: Resistance[]
 
-    @OneToMany(() => Status, status => status.world, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => Status, status => status.world, { onDelete: "CASCADE", })
     statuses!: Status[]
 
-    @OneToMany(() => Tag, tag => tag.world, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => Tag, tag => tag.world, { onDelete: "CASCADE", })
     tags!: Tag[]
 
-    @OneToMany(() => Background, background => background.world, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => Background, background => background.world, { onDelete: "CASCADE", })
     backgrounds!: Background[]
 
-    public toDTO(): WorldDTO {
+    public static toDTO(world: World): WorldDTO {
         return {
-            id: this.id,
-            name: this.name,
-            description: this.description,
-            settings: this.settings,
-            frozen: this.frozen,
-            user: this.user?.toDTO(),
-            campaigns: this.campaigns ? { campaigns: this.campaigns.map(campaign => campaign.toDTO()) } : undefined,
-            items: this.items ? { items: this.items.map(item => item.toDTO()) } : undefined,
-            pastExperiences: this.pastExperiences ? { pastExperiences: this.pastExperiences.map(exp => exp.toDTO()) } : undefined,
-            characterMemories: this.characterMemories ? { characterMemories: this.characterMemories.map(mem => mem.toDTO()) } : undefined,
-            memories: this.memories ? { memories: this.memories.map(mem => mem.toDTO()) } : undefined,
-            memoryPools: this.memoryPools ? { memoryPools: this.memoryPools.map(pool => pool.toDTO()) } : undefined,
-            memoryPoolEntries: this.memoryPoolEntries ? { memoryPoolEntries: this.memoryPoolEntries.map(entry => entry.toDTO()) } : undefined,
-            skills: this.skills ? { skills: this.skills.map(skill => skill.toDTO()) } : undefined,
-            traits: this.traits ? { traits: this.traits.map(trait => trait.toDTO()) } : undefined,
-            addictions: this.addictions ? { addictions: this.addictions.map(addiction => addiction.toDTO()) } : undefined,
-            birthsigns: this.birthsigns ? { birthSigns: this.birthsigns.map(birthsign => birthsign.toDTO()) } : undefined,
-            characters: this.characters ? { characters: this.characters.map(character => character.toDTO()) } : undefined,
-            characterProfessions: this.characterProfessions ? { professions: this.characterProfessions.map(profession => profession.toDTO()) } : undefined,
-            diseases: this.diseases ? { diseases: this.diseases.map(disease => disease.toDTO()) } : undefined,
-            effects: this.effects ? { effects: this.effects.map(effect => effect.toDTO()) } : undefined,
-            facts: this.facts ? { facts: this.facts.map(fact => fact.toDTO()) } : undefined,
-            factions: this.factions ? { factions: this.factions.map(faction => faction.toDTO()) } : undefined,
-            storageSlots: this.storageSlots ? { storageSlots: this.storageSlots.map(slot => slot.toDTO()) } : undefined,
-            equipmentSlots: this.equipmentSlots ? { equipmentSlots: this.equipmentSlots.map(slot => slot.toDTO()) } : undefined,
-            itemSets: this.itemSets ? { itemSets: this.itemSets.map(set => set.toDTO()) } : undefined,
-            moods: this.moods ? { moods: this.moods.map(mood => mood.toDTO()) } : undefined,
-            needs: this.needs ? { needs: this.needs.map(need => need.toDTO()) } : undefined,
-            personalityProfiles: this.personalityProfiles ? { personalityProfiles: this.personalityProfiles.map(profile => profile.toDTO()) } : undefined,
-            races: this.races ? { races: this.races.map(race => race.toDTO()) } : undefined,
-            religions: this.religions ? { moods: this.religions.map(religion => religion.toDTO()) } : undefined,
-            resistances: this.resistances ? { resistances: this.resistances.map(resistance => resistance.toDTO()) } : undefined,
-            statuses: this.statuses ? { statuses: this.statuses.map(status => status.toDTO()) } : undefined,
-            tags: this.tags ? { tags: this.tags.map(tag => tag.toDTO()) } : undefined,
-            backgrounds: this.backgrounds ? { backgrounds: this.backgrounds.map(background => background.toDTO()) } : undefined,
+            id: world.id,
+            name: world.name,
+            description: world.description,
+            settings: world.settings,
+            frozen: world.frozen,
+            user: World.serializeEntity(world.user, i => User.toDTO(i)),
+            campaigns: World.serializeEntityArray(world.campaigns, i => Campaign.toDTO(i)),
+            items: World.serializeEntityArray(world.items, i => Item.toDTO(i)),
+            pastExperiences: World.serializeEntityArray(world.pastExperiences, i => PastExperience.toDTO(i)),
+            characterMemories: World.serializeEntityArray(world.characterMemories, i => CharacterMemory.toDTO(i)),
+            memories: World.serializeEntityArray(world.memories, i => Memory.toDTO(i)),
+            memoryPools: World.serializeEntityArray(world.memoryPools, i => MemoryPool.toDTO(i)),
+            memoryPoolEntries: World.serializeEntityArray(world.memoryPoolEntries, i => MemoryPoolEntry.toDTO(i)),
+            skills: World.serializeEntityArray(world.skills, i => Skill.toDTO(i)),
+            traits: World.serializeEntityArray(world.traits, i => Trait.toDTO(i)),
+            addictions: World.serializeEntityArray(world.addictions, i => Addiction.toDTO(i)),
+            birthsigns: World.serializeEntityArray(world.birthsigns, i => Birthsign.toDTO(i)),
+            characters: World.serializeEntityArray(world.characters, i => Character.toDTO(i)),
+            characterProfessions: World.serializeEntityArray(world.characterProfessions, i => CharacterProfession.toDTO(i)),
+            diseases: World.serializeEntityArray(world.diseases, i => Disease.toDTO(i)),
+            effects: World.serializeEntityArray(world.effects, i => Effect.toDTO(i)),
+            facts: World.serializeEntityArray(world.facts, i => Fact.toDTO(i)),
+            factions: World.serializeEntityArray(world.factions, i => Faction.toDTO(i)),
+            storageSlots: World.serializeEntityArray(world.storageSlots, i => StorageSlot.toDTO(i)),
+            equipmentSlots: World.serializeEntityArray(world.equipmentSlots, i => EquipmentSlot.toDTO(i)),
+            itemSets: World.serializeEntityArray(world.itemSets, i => ItemSet.toDTO(i)),
+            moods: World.serializeEntityArray(world.moods, i => Mood.toDTO(i)),
+            needs: World.serializeEntityArray(world.needs, i => Need.toDTO(i)),
+            personalityProfiles: World.serializeEntityArray(world.personalityProfiles, i => PersonalityProfile.toDTO(i)),
+            races: World.serializeEntityArray(world.races, i => Race.toDTO(i)),
+            religions: World.serializeEntityArray(world.religions, i => Religion.toDTO(i)),
+            resistances: World.serializeEntityArray(world.resistances, i => Resistance.toDTO(i)),
+            statuses: World.serializeEntityArray(world.statuses, i => Status.toDTO(i)),
+            tags: World.serializeEntityArray(world.tags, i => Tag.toDTO(i)),
+            backgrounds: World.serializeEntityArray(world.backgrounds, i => Background.toDTO(i)),
         };
     }
-    
-    public static fromDTO(dto: WorldDTO, user: User, campaign?: Campaign): World {
+
+
+
+
+    public static fromDTO(dto: WorldDTO, context: Context): World {
         const world = new World();
+        context.world = world;
+
         world.id = dto.id;
         world.name = dto.name;
         world.description = dto.description;
         world.settings = dto.settings;
         world.frozen = dto.frozen;
-        world.user = user;
-        world.campaigns = dto.campaigns?.campaigns?.map(i => Campaign.fromDTO(i, user, world)) || [];
-        world.items = dto.items?.items?.map(i => Item.fromDTO(i, user, world, campaign)) || [];
-        world.pastExperiences = dto.pastExperiences?.pastExperiences?.map(i=>PastExperience.fromDTO(i, user, world, campaign)) || [];
-        world.characterMemories = dto.characterMemories?.characterMemories?.map(i=>CharacterMemory.fromDTO(i, user, world, campaign)) || [];
-        world.memories = dto.memories?.memories?.map(i=>Memory.fromDTO(i, user, world, campaign)) || [];
-        world.memoryPools = dto.memoryPools?.memoryPools?.map(i=>MemoryPool.fromDTO(i, user, world, campaign)) || [];
-        world.memoryPoolEntries = dto.memoryPoolEntries?.memoryPoolEntries?.map(i=>MemoryPoolEntry.fromDTO(i, user, world, campaign)) || [];
-        world.skills = dto.skills?.skills?.map(i=>Skill.fromDTO(i, user, world, campaign)) || [];
-        world.traits = dto.traits?.traits?.map(i=>Trait.fromDTO(i, user, world, campaign)) || [];
-        world.addictions = dto.addictions?.addictions?.map(i=>Addiction.fromDTO(i, user, world, campaign)) || [];
-        world.birthsigns = dto.birthsigns?.birthSigns?.map(i=>Birthsign.fromDTO(i, user, world, campaign)) || [];
-        world.characters = dto.characters?.characters?.map(i=>Character.fromDTO(i, user, world, campaign)) || [];
-        world.characterProfessions = dto.characterProfessions?.professions?.map(i=>CharacterProfession.fromDTO(i, user, world, campaign)) || [];
-        world.diseases = dto.diseases?.diseases?.map(i=>Disease.fromDTO(i, user, world, campaign)) || [];
-        world.effects = dto.effects?.effects?.map(i=>Effect.fromDTO(i, user, world, campaign)) || [];
-        world.facts = dto.facts?.facts?.map(i=>Fact.fromDTO(i, user, world, campaign)) || [];
-        world.factions = dto.factions?.factions?.map(i=>Faction.fromDTO(i, user, world, campaign)) || [];
-        world.storageSlots = dto.storageSlots?.storageSlots?.map(i=>StorageSlot.fromDTO(i, user, world, campaign)) || [];
-        world.equipmentSlots = dto.equipmentSlots?.equipmentSlots?.map(i=>EquipmentSlot.fromDTO(i, user, world, campaign)) || [];
-        world.itemSets = dto.itemSets?.itemSets?.map(i=>ItemSet.fromDTO(i, user, world, campaign)) || [];
-        world.moods = dto.moods?.moods?.map(i=>Mood.fromDTO(i, user, world, campaign)) || [];
-        world.needs = dto.needs?.needs?.map(i=>Need.fromDTO(i, user, world, campaign)) || [];
-        world.personalityProfiles = dto.personalityProfiles?.personalityProfiles?.map(i=>PersonalityProfile.fromDTO(i, user, world, campaign)) || [];
-        world.races = dto.races?.races?.map(i=>Race.fromDTO(i, user, world, campaign)) || [];
-        world.religions = dto.religions?.moods?.map(i=>Religion.fromDTO(i, user, world, campaign)) || [];
-        world.resistances = dto.resistances?.resistances?.map(i=>Resistance.fromDTO(i, user, world, campaign)) || [];
-        world.statuses = dto.statuses?.statuses?.map(i=>Status.fromDTO(i, user, world, campaign)) || [];
-        world.tags = dto.tags?.tags?.map(i=>Tag.fromDTO(i, user, world, campaign)) || [];
-        world.backgrounds = dto.backgrounds?.backgrounds?.map(i=>Background.fromDTO(i, user, world, campaign)) || [];
+        world.user = context.user;
+
+        world.campaigns = this.deserializeEntityArray(dto.campaigns, (i) => Campaign.fromDTO(i, context));
+        world.items = this.deserializeEntityArray(dto.items, (i) => Item.fromDTO(i, context));
+        world.pastExperiences = this.deserializeEntityArray(dto.pastExperiences, (i) => PastExperience.fromDTO(i, context));
+        world.characterMemories = this.deserializeEntityArray(dto.characterMemories, (i) => CharacterMemory.fromDTO(i, context));
+        world.memories = this.deserializeEntityArray(dto.memories, (i) => Memory.fromDTO(i, context));
+        world.memoryPools = this.deserializeEntityArray(dto.memoryPools, (i) => MemoryPool.fromDTO(i, context));
+        world.memoryPoolEntries = this.deserializeEntityArray(dto.memoryPoolEntries, (i) => MemoryPoolEntry.fromDTO(i, context));
+        world.skills = this.deserializeEntityArray(dto.skills, (i) => Skill.fromDTO(i, context));
+        world.traits = this.deserializeEntityArray(dto.traits, (i) => Trait.fromDTO(i, context));
+        world.addictions = this.deserializeEntityArray(dto.addictions, (i) => Addiction.fromDTO(i, context));
+        world.birthsigns = this.deserializeEntityArray(dto.birthsigns, (i) => Birthsign.fromDTO(i, context));
+        world.characters = this.deserializeEntityArray(dto.characters, (i) => Character.fromDTO(i, context));
+        world.characterProfessions = this.deserializeEntityArray(dto.characterProfessions, (i) => CharacterProfession.fromDTO(i, context));
+        world.diseases = this.deserializeEntityArray(dto.diseases, (i) => Disease.fromDTO(i, context));
+        world.effects = this.deserializeEntityArray(dto.effects, (i) => Effect.fromDTO(i, context));
+        world.facts = this.deserializeEntityArray(dto.facts, (i) => Fact.fromDTO(i, context));
+        world.factions = this.deserializeEntityArray(dto.factions, (i) => Faction.fromDTO(i, context));
+        world.storageSlots = this.deserializeEntityArray(dto.storageSlots, (i) => StorageSlot.fromDTO(i, context));
+        world.equipmentSlots = this.deserializeEntityArray(dto.equipmentSlots, (i) => EquipmentSlot.fromDTO(i, context));
+        world.itemSets = this.deserializeEntityArray(dto.itemSets, (i) => ItemSet.fromDTO(i, context));
+        world.moods = this.deserializeEntityArray(dto.moods, (i) => Mood.fromDTO(i, context));
+        world.needs = this.deserializeEntityArray(dto.needs, (i) => Need.fromDTO(i, context));
+        world.personalityProfiles = this.deserializeEntityArray(dto.personalityProfiles, (i) => PersonalityProfile.fromDTO(i, context));
+        world.races = this.deserializeEntityArray(dto.races, (i) => Race.fromDTO(i, context));
+        world.religions = this.deserializeEntityArray(dto.religions, (i) => Religion.fromDTO(i, context));
+        world.resistances = this.deserializeEntityArray(dto.resistances, (i) => Resistance.fromDTO(i, context));
+        world.statuses = this.deserializeEntityArray(dto.statuses, (i) => Status.fromDTO(i, context));
+        world.tags = this.deserializeEntityArray(dto.tags, (i) => Tag.fromDTO(i, context));
+        world.backgrounds = this.deserializeEntityArray(dto.backgrounds, (i) => Background.fromDTO(i, context));
+
         return world;
     }
 }

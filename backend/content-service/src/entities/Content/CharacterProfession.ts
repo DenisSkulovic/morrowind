@@ -7,70 +7,67 @@ import { Campaign } from "../Campaign";
 import { User } from "../User";
 import { World } from "../World";
 import { CharacterProfessionDTO } from "../../proto/common";
+import { Context } from "../../types";
 
 @Entity()
 export class CharacterProfession extends TaggableContentBase {
     @PrimaryColumn()
     id!: string;
-    
+
     id_prefix = "CHARACTER_PROFESSION"
 
-    @ManyToMany(() => Character, character => character.professions, {lazy: true})
+    @ManyToMany(() => Character, character => character.professions, {})
     @JoinTable()
     characters?: Character[];
 
-    @ManyToMany(() => MemoryPool, {lazy: true})
+    @ManyToMany(() => MemoryPool, {})
     memoryPools!: MemoryPool[]
 
     @Column({ type: "varchar", length: 60 })
     name!: string; // E.g., "Fisherman", "Kwama Egg Miner", "Imperial Soldier"
 
 
-    @ManyToMany(() => Tag, (tag) => tag.characterProfessions, {lazy: true})
+    @ManyToMany(() => Tag, (tag) => tag.characterProfessions, {})
     tags?: Tag[];
 
-    @ManyToOne(() => User, { nullable: true, lazy: true })
+    @ManyToOne(() => User, { nullable: true, })
     user!: User;
 
-    @ManyToOne(() => Campaign, { nullable: true, lazy: true })
+    @ManyToOne(() => Campaign, { nullable: true, })
     campaign?: Campaign;
 
-    @ManyToOne(() => World, { nullable: true, lazy: true })
+    @ManyToOne(() => World, { nullable: true, })
     world!: World;
 
-    public toDTO(): CharacterProfessionDTO {
+    public static toDTO(charProf: CharacterProfession): CharacterProfessionDTO {
         return {
-            id: this.id,
-            blueprintId: this.blueprint_id,
-            characters: this.characters
-                ? { characters: this.characters.map(character => character.toDTO()) }
-                : undefined,
-            memoryPools: this.memoryPools
-                ? { memoryPools: this.memoryPools.map(pool => pool.toDTO()) }
-                : undefined,
-            name: this.name,
-            tags: this.tags ? { tags: this.tags.map(tag => tag.toDTO()) } : undefined,
-            user: this.user?.toDTO(),
-            campaign: this.campaign?.toDTO(),
-            world: this.world?.toDTO(),
-            targetEntity: this.targetEntity
+            id: charProf.id,
+            blueprintId: charProf.blueprint_id,
+            characters: CharacterProfession.serializeEntityArray(charProf.characters, i => Character.toDTO(i)),
+            memoryPools: CharacterProfession.serializeEntityArray(charProf.memoryPools, i => MemoryPool.toDTO(i)),
+            name: charProf.name,
+            tags: CharacterProfession.serializeEntityArray(charProf.tags, i => Tag.toDTO(i)),
+            user: CharacterProfession.serializeEntity(charProf.user, i => User.toDTO(i)),
+            campaign: CharacterProfession.serializeEntity(charProf.campaign, i => Campaign.toDTO(i)),
+            world: CharacterProfession.serializeEntity(charProf.world, i => World.toDTO(i)),
+            targetEntity: charProf.targetEntity
         };
     }
 
-    public static fromDTO(dto: CharacterProfessionDTO, user: User, world: World, campaign?: Campaign): CharacterProfession {
+    public static fromDTO(dto: CharacterProfessionDTO, context: Context): CharacterProfession {
         const profession = new CharacterProfession();
         profession.id = dto.id;
-        profession.characters = dto.characters?.characters?.map(i=>Character.fromDTO(i, user, world, campaign)) || [];
-        profession.memoryPools = dto.memoryPools?.memoryPools?.map(i=>MemoryPool.fromDTO(i, user, world, campaign)) || [];
+        profession.characters = CharacterProfession.deserializeEntityArray(dto.characters, i => Character.fromDTO(i, context));
+        profession.memoryPools = CharacterProfession.deserializeEntityArray(dto.memoryPools, i => MemoryPool.fromDTO(i, context));
         profession.name = dto.name;
-        profession.tags = dto.tags?.tags?.map(tag => Tag.fromDTO(tag, user, world, campaign)) || [];
-        profession.user = user;
-        profession.campaign = campaign;
-        profession.world = world;
+        profession.tags = CharacterProfession.deserializeEntityArray(dto.tags, i => Tag.fromDTO(i, context));
+        profession.user = context.user;
+        profession.campaign = context.campaign;
+        profession.world = context.world;
         profession.targetEntity = dto.targetEntity
         return profession;
     }
-    
+
 }
 
 // example: Fisherman (Beginner). Beginner here would be represented by a tag, and specific memory pools will be connected. On generation, certain memories will be created, but after generation memories begin a free float.

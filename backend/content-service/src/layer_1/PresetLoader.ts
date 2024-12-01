@@ -3,7 +3,7 @@ import { readdirSync, readFileSync } from "fs";
 import { EntityConstructor } from "../types";
 import { contentEntityMap as cEM } from "../contentEntityMap";
 import { ContentBase } from "../ContentBase";
-import { PresetEnum } from "../proto/world";
+import { PresetEnum } from "../enum/entityEnums";
 
 export class Preset {
     [entity: string]: {

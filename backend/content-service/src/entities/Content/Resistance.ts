@@ -6,18 +6,19 @@ import { World } from "../World";
 import { EffectTargetEnumDTO, EffectTypeEnumDTO, ResistanceDTO } from "../../proto/common";
 import { EffectTypeEnum } from "../../enum/entityEnums";
 import { serializeEnum, deserializeEnum } from "../../enum/util";
+import { Context } from "../../types";
 
 @Entity()
 export class Resistance extends ContentBase {
     @PrimaryColumn()
     id!: string;
-    
+
     id_prefix = "RESISTANCE";
 
     @Column({ type: "varchar", length: 255 })
     name!: string;
 
-    @Column({ type: "enum", enum: Object.values(EffectTypeEnum)})
+    @Column({ type: "enum", enum: Object.values(EffectTypeEnum) })
     effectType!: string; // Matches Effect.type
 
     @Column({ nullable: true })
@@ -33,29 +34,29 @@ export class Resistance extends ContentBase {
     world!: World;
 
 
-    public toDTO(): ResistanceDTO {
+    public static toDTO(resis: Resistance): ResistanceDTO {
         return {
-            id: this.id,
-            blueprintId: this.blueprint_id,
-            name: this.name,
-            effectType: serializeEnum(EffectTypeEnumDTO, this.effectType),
-            targetEffect: this.targetEffect,
-            user: this.user?.toDTO(),
-            campaign: this.campaign?.toDTO(),
-            world: this.world?.toDTO(),
-            targetEntity: this.targetEntity
+            id: resis.id,
+            blueprintId: resis.blueprint_id,
+            name: resis.name,
+            effectType: serializeEnum(EffectTypeEnumDTO, resis.effectType),
+            targetEffect: resis.targetEffect,
+            user: Resistance.serializeEntity(resis.user, i => User.toDTO(i)),
+            campaign: Resistance.serializeEntity(resis.campaign, i => Campaign.toDTO(i)),
+            world: Resistance.serializeEntity(resis.world, i => World.toDTO(i)),
+            targetEntity: resis.targetEntity
         };
     }
 
-    public static fromDTO(dto: ResistanceDTO, user: User, world: World, campaign?: Campaign): Resistance {
+    public static fromDTO(dto: ResistanceDTO, context: Context): Resistance {
         const resistance = new Resistance();
         resistance.id = dto.id;
         resistance.name = dto.name;
         resistance.effectType = deserializeEnum(EffectTypeEnum, dto.effectType);
         resistance.targetEffect = dto.targetEffect;
-        resistance.user = user;
-        resistance.campaign = campaign;
-        resistance.world = world;
+        resistance.user = context.user;
+        resistance.campaign = context.campaign;
+        resistance.world = context.world;
         resistance.targetEntity = dto.targetEntity
         return resistance;
     }

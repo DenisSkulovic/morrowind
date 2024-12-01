@@ -8,13 +8,14 @@ import { World } from "../../World";
 import { MemoryDTO, MemoryTypeEnumDTO } from "../../../proto/common";
 import { MemoryTypeEnum } from "../../../enum/entityEnums";
 import { serializeEnum, deserializeEnum } from "../../../enum/util";
+import { Context } from "../../../types";
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })
 export class Memory extends TaggableContentBase {
     @PrimaryColumn()
     id!: string;
-    
+
     id_prefix = "MEMORY"
 
     @Column()
@@ -23,14 +24,14 @@ export class Memory extends TaggableContentBase {
     @Column({ nullable: true, default: null })
     description!: string
 
-    @Column({ type: "enum", enum: Object.values(MemoryTypeEnum)}) // bad to have this default, but I dont have a better idea yet, need to come back to the types later
+    @Column({ type: "enum", enum: Object.values(MemoryTypeEnum) }) // bad to have this default, but I dont have a better idea yet, need to come back to the types later
     type!: string // TODO need to properly conceptualize types of memories and what that means. Maybe better to do it with tags?
 
     @ManyToMany(() => Fact, fact => fact.memories)
     @JoinTable()
     facts!: Fact[]
 
-        
+
     @ManyToMany(() => Tag, (tag) => tag.memories)
     tags?: Tag[];
 
@@ -43,32 +44,32 @@ export class Memory extends TaggableContentBase {
     @ManyToOne(() => World, { nullable: true })
     world!: World;
 
-    public toDTO(): MemoryDTO {
+    public static toDTO(mem: Memory): MemoryDTO {
         return {
-            id: this.id,
-            blueprintId: this.blueprint_id,
-            name: this.name, 
-            description: this.description,
-            type: serializeEnum(MemoryTypeEnum, this.type),
-            facts: this.facts ? { facts: this.facts.map(fact => fact.toDTO()) } : undefined,
-            tags: this.tags ? { tags: this.tags.map(tag => tag.toDTO()) } : undefined,
-            user: this.user?.toDTO(),
-            campaign: this.campaign?.toDTO(),
-            world: this.world?.toDTO(),
-            targetEntity: this.targetEntity
+            id: mem.id,
+            blueprintId: mem.blueprint_id,
+            name: mem.name,
+            description: mem.description,
+            type: serializeEnum(MemoryTypeEnum, mem.type),
+            facts: Memory.serializeEntityArray(mem.facts, i => Fact.toDTO(i)),
+            tags: Memory.serializeEntityArray(mem.tags, i => Tag.toDTO(i)),
+            user: Memory.serializeEntity(mem.user, i => User.toDTO(i)),
+            campaign: Memory.serializeEntity(mem.campaign, i => Campaign.toDTO(i)),
+            world: Memory.serializeEntity(mem.world, i => World.toDTO(i)),
+            targetEntity: mem.targetEntity
         };
     }
-    
-    public static fromDTO(dto: MemoryDTO, user: User, world: World, campaign?: Campaign): Memory {
+
+    public static fromDTO(dto: MemoryDTO, context: Context): Memory {
         const memory = new Memory();
         memory.id = dto.id;
         memory.description = dto.description;
         memory.type = deserializeEnum(MemoryTypeEnumDTO, dto.type);
-        memory.facts = dto.facts?.facts?.map(i => Fact.fromDTO(i, user, world, campaign)) || [];
-        memory.tags = dto.tags?.tags?.map(i => Tag.fromDTO(i, user, world, campaign)) || [];
-        memory.user = user;
-        memory.campaign = campaign;
-        memory.world = world;
+        memory.facts = Memory.deserializeEntityArray(dto.facts, i => Fact.fromDTO(i, context));
+        memory.tags = Memory.deserializeEntityArray(dto.tags, i => Tag.fromDTO(i, context));
+        memory.user = context.user;
+        memory.campaign = context.campaign;
+        memory.world = context.world;
         memory.targetEntity = dto.targetEntity
         return memory;
     }

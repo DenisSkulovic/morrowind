@@ -9,13 +9,14 @@ import { User } from "../../../User";
 import { World } from "../../../World";
 import { randomUUID } from "crypto";
 import { PastExperienceDTO } from "../../../../proto/common";
+import { Context } from "../../../../types";
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })
 export class PastExperience extends TaggableContentBase {
     @PrimaryColumn()
     id!: string;
-    
+
     id_prefix = "PAST_EXPERIENCE"
 
     @Column()
@@ -33,27 +34,27 @@ export class PastExperience extends TaggableContentBase {
     @ManyToOne(() => World, { nullable: true })
     world!: World;
 
-    public toDTO(): PastExperienceDTO {
+    public static toDTO(pastExp: PastExperience): PastExperienceDTO {
         return {
-            id: this.id,
-            type: this.type,
-            blueprintId: this.blueprint_id,
-            name: this.name,
-            tags: this.tags ? { tags: this.tags.map(tag => tag.toDTO()) } : undefined,
-            user: this.user?.toDTO(),
-            campaign: this.campaign?.toDTO(),
-            world: this.world?.toDTO(),
-            targetEntity: this.targetEntity
+            id: pastExp.id,
+            type: pastExp.type,
+            blueprintId: pastExp.blueprint_id,
+            name: pastExp.name,
+            tags: PastExperience.serializeEntityArray(pastExp.tags, i => Tag.toDTO(i)),
+            user: PastExperience.serializeEntity(pastExp.user, i => User.toDTO(i)),
+            campaign: PastExperience.serializeEntity(pastExp.campaign, i => Campaign.toDTO(i)),
+            world: PastExperience.serializeEntity(pastExp.world, i => World.toDTO(i)),
+            targetEntity: pastExp.targetEntity
         };
     }
-    
-    public static fromDTO(dto: PastExperienceDTO, user: User, world: World, campaign?: Campaign): PastExperience {
+
+    public static fromDTO(dto: PastExperienceDTO, context: Context): PastExperience {
         const pastExperience = new PastExperience();
         pastExperience.id = dto.id;
-        pastExperience.tags = dto.tags?.tags?.map(tag => Tag.fromDTO(tag, user, world, campaign)) || [];
-        pastExperience.user = user;
-        pastExperience.campaign = campaign;
-        pastExperience.world = world;
+        pastExperience.tags = PastExperience.deserializeEntityArray(dto.tags, i => Tag.fromDTO(i, context));
+        pastExperience.user = context.user;
+        pastExperience.campaign = context.campaign;
+        pastExperience.world = context.world;
         pastExperience.targetEntity = dto.targetEntity
         return pastExperience;
     }

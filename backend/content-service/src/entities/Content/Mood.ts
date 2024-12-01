@@ -8,12 +8,13 @@ import { Campaign } from "../Campaign";
 import { User } from "../User";
 import { World } from "../World";
 import { MoodDTO } from "../../proto/common";
+import { Context } from "../../types";
 
 @Entity()
 export class Mood extends ContentBase {
     @PrimaryColumn()
     id!: string;
-    
+
     id_prefix = "MOOD";
 
     @Column({ type: "varchar", length: 255 })
@@ -32,27 +33,27 @@ export class Mood extends ContentBase {
     world!: World;
 
 
-    public toDTO(): MoodDTO {
+    public static toDTO(mood: Mood): MoodDTO {
         return {
-            id: this.id,
-            blueprintId: this.blueprint_id,
-            name: this.name,
-            description: this.description,
-            user: this.user?.toDTO(),
-            campaign: this.campaign?.toDTO(),
-            world: this.world?.toDTO(),
-            targetEntity: this.targetEntity
+            id: mood.id,
+            blueprintId: mood.blueprint_id,
+            name: mood.name,
+            description: mood.description,
+            user: Mood.serializeEntity(mood.user, i => User.toDTO(i)),
+            campaign: Mood.serializeEntity(mood.campaign, i => Campaign.toDTO(i)),
+            world: Mood.serializeEntity(mood.world, i => World.toDTO(i)),
+            targetEntity: mood.targetEntity
         };
     }
 
-    public static fromDTO(dto: MoodDTO, user: User, world: World, campaign?: Campaign): Mood {
+    public static fromDTO(dto: MoodDTO, context: Context): Mood {
         const mood = new Mood();
         mood.id = dto.id;
         mood.name = dto.name;
         mood.description = dto.description;
-        mood.user = user;
-        mood.campaign = campaign;
-        mood.world = world;
+        mood.user = context.user;
+        mood.campaign = context.campaign;
+        mood.world = context.world;
         mood.targetEntity = dto.targetEntity
         return mood;
     }

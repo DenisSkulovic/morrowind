@@ -1,4 +1,4 @@
-import { CombinatorConditionEnum } from "../enum/CombinatorConditionEnum"
+import { ConditionEnum } from "../enum/ConditionEnum"
 import { serializeEnum } from "../enum/util"
 import { GenerationInstructionDTO, GenerationInstructionsDTO } from "../proto/common"
 import { BlueprintGenInstruction_Simple, Probability_0_to_1, GenerationInstruction } from "../types"
@@ -17,10 +17,10 @@ export class IdAndQuant {
 }
 
 export class ProbObject_Simple {
-    cond: CombinatorConditionEnum
+    cond: ConditionEnum
     prob: BlueprintGenInstruction_Simple
     clazz = "ProbObject_Simple"
-    constructor(cond: CombinatorConditionEnum, prob: BlueprintGenInstruction_Simple) {
+    constructor(cond: ConditionEnum, prob: BlueprintGenInstruction_Simple) {
         this.cond = cond
         this.prob = prob
     }
@@ -51,10 +51,10 @@ export class BlueprintGenInstruction_Gaussian {
 export class BlueprintSetCombinator {
     name: string
     prob: Probability_0_to_1 // 0-1, default 1
-    cond: CombinatorConditionEnum
+    cond: ConditionEnum
     items: GenerationInstruction[]
     clazz = "BlueprintSetCombinator"
-    constructor(name: string, prob: Probability_0_to_1, cond: CombinatorConditionEnum, items: GenerationInstruction[]) {
+    constructor(name: string, prob: Probability_0_to_1, cond: ConditionEnum, items: GenerationInstruction[]) {
         this.name = name
         this.prob = prob
         this.cond = cond
@@ -87,7 +87,7 @@ export function serializeInstruction(instruction: GenerationInstruction): Genera
             combinator: {
                 name: instruction.name,
                 prob: instruction.prob,
-                cond: serializeEnum(CombinatorConditionEnum, instruction.cond),
+                cond: serializeEnum(ConditionEnum, instruction.cond),
                 instructions: instruction.items.map(serializeInstruction),
                 clazz: "BlueprintSetCombinator"
             },
@@ -116,5 +116,5 @@ export function deserializeInstruction(dto: GenerationInstructionDTO): Generatio
     throw new Error("Unknown GenerationInstructionDTO type");
 }
 
-export const serializeGenerationInstructions = (instructions: GenerationInstruction[]) => { return { instructions: instructions.map(serializeInstruction) } };
-export const deserializeGenerationInstructions = (dtoInstructions: GenerationInstructionsDTO) => {return dtoInstructions.instructions.map(deserializeInstruction)};
+export const serializeGenerationInstructions = (instructions: GenerationInstruction[]): GenerationInstructionsDTO => { return { arr: instructions.map(serializeInstruction) } };
+export const deserializeGenerationInstructions = (dtoInstructions: GenerationInstructionsDTO): GenerationInstruction[] => { return dtoInstructions.arr.map(deserializeInstruction) };

@@ -27,7 +27,7 @@ message BackgroundDTO {
     string targetEntity = 19;
 }
 message BackgroundsDTO {
-    repeated BackgroundDTO backgrounds = 1;
+    repeated BackgroundDTO arr = 1;
 }
 // #######################################################################################
 
@@ -58,7 +58,7 @@ message EffectDTO {
     string targetEntity = 13;
 }
 message EffectsDTO {
-    repeated EffectDTO effects = 1;
+    repeated EffectDTO arr = 1;
 }
 // #######################################################################################
 
@@ -78,7 +78,7 @@ message ResistanceDTO {
     string targetEntity = 10;
 }
 message ResistancesDTO {
-    repeated ResistanceDTO resistances = 1;
+    repeated ResistanceDTO arr = 1;
 }
 // #######################################################################################
 
@@ -100,7 +100,7 @@ message StatusDTO {
     string targetEntity = 12;
 }
 message StatusesDTO {
-    repeated StatusDTO statuses = 1;
+    repeated StatusDTO arr = 1;
 }
 // #######################################################################################
 
@@ -118,7 +118,7 @@ message ItemSetDTO {
     string targetEntity = 8;
 }
 message ItemSetsDTO {
-    repeated ItemSetDTO itemSets = 1;
+    repeated ItemSetDTO arr = 1;
 }
 // #######################################################################################
 
@@ -167,7 +167,7 @@ message ItemDTO {
     optional float weight = 39;
 }
 message ItemsDTO {
-    repeated ItemDTO items = 1;
+    repeated ItemDTO arr = 1;
 }
 // #######################################################################################
 
@@ -198,7 +198,7 @@ message StorageSlotDTO {
     string targetEntity = 13;
 }
 message StorageSlotsDTO {
-    repeated StorageSlotDTO storageSlots = 1;
+    repeated StorageSlotDTO arr = 1;
 }
 // #######################################################################################
 
@@ -232,7 +232,7 @@ message ItemRequirementDTO {
     }
 }
 message ItemRequirementsDTO {
-    repeated ItemRequirementDTO requirements = 1;
+    repeated ItemRequirementDTO arr = 1;
 }
 // #######################################################################################
 
@@ -268,7 +268,7 @@ message CharacterDTO {
     string targetEntity = 26;
 }
 message CharactersDTO {
-    repeated CharacterDTO characters = 1;
+    repeated CharacterDTO arr = 1;
 }
 // #######################################################################################
 
@@ -288,7 +288,7 @@ message AddictionDTO {
     string targetEntity = 10;
 }
 message AddictionsDTO {
-    repeated AddictionDTO addictions = 1;
+    repeated AddictionDTO arr = 1;
 }
 // #######################################################################################
 
@@ -315,7 +315,7 @@ message CharacterMemoryDTO {
     string targetEntity = 17;
 }
 message CharacterMemoriesDTO {
-    repeated CharacterMemoryDTO characterMemories = 1;
+    repeated CharacterMemoryDTO arr = 1;
 }
 // #######################################################################################
 
@@ -327,7 +327,7 @@ message FactStatusDTO {
     FactStatusEnumDTO status = 2;
 }
 message FactStatusesDTO {
-    repeated FactStatusDTO factStatuses = 1;
+    repeated FactStatusDTO arr = 1;
 }
 // #######################################################################################
 
@@ -359,7 +359,7 @@ message TagDTO {
     string targetEntity = 22;
 }
 message TagsDTO {
-    repeated TagDTO tags = 1;
+    repeated TagDTO arr = 1;
 }
 // #######################################################################################
 
@@ -380,7 +380,7 @@ message SkillDTO {
     string targetEntity = 11;
 }
 message SkillsDTO {
-    repeated SkillDTO skills = 1;
+    repeated SkillDTO arr = 1;
 }
 // #######################################################################################
 
@@ -399,7 +399,7 @@ message TraitDTO {
     string targetEntity = 9;
 }
 message TraitsDTO {
-    repeated TraitDTO traits = 1;
+    repeated TraitDTO arr = 1;
 }
 // #######################################################################################
 
@@ -421,7 +421,7 @@ message DiseaseDTO {
     string targetEntity = 12;
 }
 message DiseasesDTO { 
-    repeated DiseaseDTO diseases = 1;
+    repeated DiseaseDTO arr = 1;
 }
 // #######################################################################################
 
@@ -444,7 +444,7 @@ message FactDTO {
     string targetEntity = 13;
 }
 message FactsDTO {
-    repeated FactDTO facts = 1;
+    repeated FactDTO arr = 1;
 }
 // #######################################################################################
 
@@ -464,7 +464,7 @@ message FactionDTO {
     string targetEntity = 10;
 }
 message FactionsDTO {
-    repeated FactionDTO factions = 1;
+    repeated FactionDTO arr = 1;
 }
 // #######################################################################################
 
@@ -486,7 +486,7 @@ message MemoryPoolDTO {
     string targetEntity = 12;
 }
 message MemoryPoolsDTO {
-    repeated MemoryPoolDTO memoryPools = 1;
+    repeated MemoryPoolDTO arr = 1;
 }
 // #######################################################################################
 
@@ -509,7 +509,7 @@ message MemoryPoolEntryDTO {
     string targetEntity = 13;
 }
 message MemoryPoolEntriesDTO {
-    repeated MemoryPoolEntryDTO memoryPoolEntries = 1;
+    repeated MemoryPoolEntryDTO arr = 1;
 }
 // #######################################################################################
 
@@ -530,7 +530,7 @@ message CharacterProfessionDTO {
     string targetEntity = 11;
 }
 message CharacterProfessionsDTO {
-    repeated CharacterProfessionDTO professions = 1;
+    repeated CharacterProfessionDTO arr = 1;
 }
 // #######################################################################################
 
@@ -551,7 +551,7 @@ message EquipmentSlotDTO {
     string targetEntity = 11;
 }
 message EquipmentSlotsDTO {
-    repeated EquipmentSlotDTO equipmentSlots = 1;
+    repeated EquipmentSlotDTO arr = 1;
 }
 // #######################################################################################
 
@@ -569,7 +569,7 @@ message BirthsignDTO {
     string targetEntity = 8;
 }
 message BirthsignsDTO {
-    repeated BirthsignDTO birthSigns = 1;
+    repeated BirthsignDTO arr = 1;
 }
 // #######################################################################################
 
@@ -588,7 +588,7 @@ message RaceDTO {
     string targetEntity = 9;
 }
 message RacesDTO {
-    repeated RaceDTO races = 1;
+    repeated RaceDTO arr = 1;
 }
 // #######################################################################################
 
@@ -600,7 +600,7 @@ message EquipmentSlotDefinitionDTO {
     repeated string allowedEntities = 2;
 }
 message EquipmentSlotDefinitionsDTO {
-    repeated EquipmentSlotDefinitionDTO equipmentSlotDefinition = 1;
+    repeated EquipmentSlotDefinitionDTO arr = 1;
 }
 // #######################################################################################
 
@@ -613,7 +613,7 @@ message StorageSlotDefinitionDTO {
     int32 maxWeight = 3;
 }
 message StorageSlotDefinitionsDTO {
-    repeated StorageSlotDefinitionDTO definitions = 1;
+    repeated StorageSlotDefinitionDTO arr = 1;
 }
 // #######################################################################################
 
@@ -632,7 +632,7 @@ message MoodDTO {
     string targetEntity = 9;
 }
 message MoodsDTO {
-    repeated MoodDTO moods = 1;
+    repeated MoodDTO arr = 1;
 }
 // #######################################################################################
 
@@ -653,7 +653,7 @@ message ReligionDTO {
     string targetEntity = 11;
 }
 message ReligionsDTO {
-    repeated ReligionDTO moods = 1;
+    repeated ReligionDTO arr = 1;
 }
 // #######################################################################################
 
@@ -665,7 +665,7 @@ message ReligionRitualDTO {
     string description = 2;
 }
 message ReligionRitualsDTO {
-    repeated ReligionRitualDTO religionRituals = 1;
+    repeated ReligionRitualDTO arr = 1;
 }
 // #######################################################################################
 
@@ -677,7 +677,7 @@ message ReligionTenetDTO {
     string description = 2;
 }
 message ReligionTenetsDTO {
-    repeated ReligionTenetDTO religionTenets = 1;
+    repeated ReligionTenetDTO arr = 1;
 }
 // #######################################################################################
 
@@ -703,7 +703,7 @@ message GenerationInstructionDTO {
     }
 }
 message GenerationInstructionsDTO {
-    repeated GenerationInstructionDTO instructions = 1;
+    repeated GenerationInstructionDTO arr = 1;
 }
 // #######################################################################################
 
@@ -714,7 +714,7 @@ message IdAndQuantDTO {
     map<string, int32> idAndQuant = 1;
 }
 message IdsAndQuantsDTO {
-    repeated IdAndQuantDTO idsAndQuants = 1;
+    repeated IdAndQuantDTO arr = 1;
 }
 // #######################################################################################
 
@@ -741,7 +741,7 @@ message CharacterGenInstructionDTO {
     optional WorldDTO world = 17;
 }
 message CharacterGenInstructions {
-    repeated CharacterGenInstructionDTO characterGenInstructions = 1;
+    repeated CharacterGenInstructionDTO arr = 1;
 }
 // #######################################################################################
 
@@ -760,7 +760,7 @@ message CharacterGroupGenInstructionDTO {
     string targetEntity = 9;
 }
 message CharacterGroupGenInstructionsDTO {
-    repeated CharacterGroupGenInstructionDTO characterGroupGenInstructions = 1;
+    repeated CharacterGroupGenInstructionDTO arr = 1;
 }
 // #######################################################################################
 
@@ -845,7 +845,7 @@ message PastExperienceDTO {
     string targetEntity = 10;
 }
 message PastExperiencesDTO {
-    repeated PastExperienceDTO pastExperiences = 1;
+    repeated PastExperienceDTO arr = 1;
 }
 // #######################################################################################
 
@@ -867,7 +867,7 @@ message MemoryDTO {
     string targetEntity = 12;
 }
 message MemoriesDTO {
-    repeated MemoryDTO memories = 1;
+    repeated MemoryDTO arr = 1;
 }
 // #######################################################################################
 
@@ -887,7 +887,7 @@ message SkillSetDTO {
     string targetEntity = 10;
 }
 message SkillSetsDTO {
-    repeated SkillSetDTO skillSets = 1;
+    repeated SkillSetDTO arr = 1;
 }
 // #######################################################################################
 
@@ -915,7 +915,7 @@ message PersonalityProfileDTO {
     string targetEntity = 10;
 }
 message PersonalityProfilesDTO {
-    repeated PersonalityProfileDTO personalityProfiles = 1;
+    repeated PersonalityProfileDTO arr = 1;
 }
 // #######################################################################################
 
@@ -936,7 +936,7 @@ message NeedDTO {
     string targetEntity = 11;
 }
 message NeedsDTO {
-    repeated NeedDTO needs = 1;
+    repeated NeedDTO arr = 1;
 }
 // #######################################################################################
 
@@ -977,9 +977,31 @@ message UserDTO {
     optional ResistancesDTO resistances = 29;
     optional StatusesDTO statuses = 30;
     optional TagsDTO tags = 31;
+    optional AccountDTO account = 32;
 }
 message UsersDTO {
-    repeated UserDTO users = 1;
+    repeated UserDTO arr = 1;
+}
+// #######################################################################################
+
+
+
+// #######################################################################################
+message AccountDTO {
+    string id = 1;
+    string username = 2;
+    string email = 3;
+    string role = 4;
+    optional UserDTO user = 5;
+    optional PreferencesDTO preferences = 6;
+}
+// #######################################################################################
+
+
+
+// #######################################################################################
+message PreferencesDTO {
+
 }
 // #######################################################################################
 
@@ -1034,7 +1056,7 @@ message WorldDTO {
     optional BackgroundsDTO backgrounds = 35;
 }
 message WorldsDTO {
-    repeated WorldDTO worlds = 1;
+    repeated WorldDTO arr = 1;
 }
 // #######################################################################################
 
@@ -1081,7 +1103,7 @@ message CampaignDTO {
     optional BackgroundsDTO backgrounds = 35;               
 }
 message CampaignsDTO {
-    repeated CampaignDTO campaigns = 1;
+    repeated CampaignDTO arr = 1;
 }
 // #######################################################################################
 

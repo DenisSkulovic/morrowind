@@ -1,9 +1,10 @@
 import { DataSource, Repository } from "typeorm";
 import { sourcesMap } from "../../data-source";
-import { Account, AccountRoleEnum } from "../../entities/Account";
 import { User } from "../../entities/User";
 import { DataSourceEnum } from "../../enum/DataSourceEnum";
 import { RepositoryServiceBase, RepositoryServiceSettings } from "./RepositoryServiceBase";
+import { Account } from "../../entities/Account";
+import { AccountRoleEnum } from "../../enum/AccountRoleEnum";
 
 export class AccountService extends RepositoryServiceBase {
 

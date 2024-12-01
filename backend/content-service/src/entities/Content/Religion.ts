@@ -4,13 +4,14 @@ import { Campaign } from "../Campaign";
 import { User } from "../User";
 import { World } from "../World";
 import { ReligionDTO } from "../../proto/common";
+import { Context } from "../../types";
 
 @Entity()
 export class Religion extends ContentBase {
-    
+
     @PrimaryColumn()
     id!: string;
-    
+
     id_prefix = "RELIGION";
 
     /**
@@ -22,7 +23,7 @@ export class Religion extends ContentBase {
     /**
      * A description of the religion, outlining its beliefs and core philosophy.
      */
-    @Column({type: "text"})
+    @Column({ type: "text" })
     description!: string;
 
     /**
@@ -46,31 +47,31 @@ export class Religion extends ContentBase {
     @ManyToOne(() => World, { nullable: true })
     world!: World;
 
-    public toDTO(): ReligionDTO {
+    public static toDTO(religion: Religion): ReligionDTO {
         return {
-            id: this.id,
-            blueprintId: this.blueprint_id,
-            name: this.name,
-            description: this.description,
-            rituals: this.rituals ? { religionRituals: this.rituals } : undefined,
-            tenets: this.tenets ? { religionTenets: this.tenets } : undefined,
-            user: this.user?.toDTO(),
-            campaign: this.campaign?.toDTO(),
-            world: this.world?.toDTO(),
-            targetEntity: this.targetEntity
+            id: religion.id,
+            blueprintId: religion.blueprint_id,
+            name: religion.name,
+            description: religion.description,
+            rituals: religion.rituals ? { arr: religion.rituals } : undefined,
+            tenets: religion.tenets ? { arr: religion.tenets } : undefined,
+            user: Religion.serializeEntity(religion.user, i => User.toDTO(i)),
+            campaign: Religion.serializeEntity(religion.campaign, i => Campaign.toDTO(i)),
+            world: Religion.serializeEntity(religion.world, i => World.toDTO(i)),
+            targetEntity: religion.targetEntity
         };
     }
 
-    public static fromDTO(dto: ReligionDTO, user: User, world: World, campaign?: Campaign): Religion {
+    public static fromDTO(dto: ReligionDTO, context: Context): Religion {
         const religion = new Religion();
         religion.id = dto.id;
         religion.name = dto.name;
         religion.description = dto.description;
-        religion.rituals = dto.rituals?.religionRituals || [];
-        religion.tenets = dto.tenets?.religionTenets || [];
-        religion.user = user;
-        religion.campaign = campaign;
-        religion.world = world;
+        religion.rituals = dto.rituals?.arr || [];
+        religion.tenets = dto.tenets?.arr || [];
+        religion.user = context.user;
+        religion.campaign = context.campaign;
+        religion.world = context.world;
         religion.targetEntity = dto.targetEntity
         return religion;
     }

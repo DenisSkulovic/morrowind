@@ -32,10 +32,13 @@ import { EquipmentSlot } from "./Content/Slot/EquipmentSlot";
 import { StorageSlot } from "./Content/Slot/StorageSlot";
 import { randomUUID } from "crypto";
 import { UserDTO } from "../proto/common";
+import { Base } from "../Base";
+import { Context } from "../types";
+
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })
-export class User extends BaseEntity {
+export class User extends Base {
 
 
     @PrimaryColumn()
@@ -47,168 +50,170 @@ export class User extends BaseEntity {
     }
     id_prefix = "USER";
 
-    @OneToOne(() => Account, (account) => account.user, { lazy: true })
+    @OneToOne(() => Account, (account) => account.user, {})
     account!: Account
 
-    @OneToMany(() => World, (world) => world.user, { onDelete: "CASCADE", lazy: true })
-    worlds?: World[]; // Worlds created by this user.
+    @OneToMany(() => World, (world) => world.user, { onDelete: "CASCADE", })
+    worlds?: World[];
 
-    @OneToMany(() => Campaign, (campaign) => campaign.user, { onDelete: "CASCADE", lazy: true })
-    campaigns?: Campaign[]; // Campaigns created or managed by this user.
+    @OneToMany(() => Campaign, (campaign) => campaign.user, { onDelete: "CASCADE", })
+    campaigns?: Campaign[];
 
-    @OneToMany(() => Item, item => item.user, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => Item, item => item.user, { onDelete: "CASCADE", })
     items?: Item[]
 
-    @OneToMany(() => PastExperience, pastExperience => pastExperience.user, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => PastExperience, pastExperience => pastExperience.user, { onDelete: "CASCADE", })
     pastExperiences?: PastExperience[]
 
-    @OneToMany(() => CharacterMemory, characterMemory => characterMemory.user, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => CharacterMemory, characterMemory => characterMemory.user, { onDelete: "CASCADE", })
     characterMemories?: CharacterMemory[]
 
-    @OneToMany(() => Memory, memory => memory.user, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => Memory, memory => memory.user, { onDelete: "CASCADE", })
     memories?: Memory[]
 
-    @OneToMany(() => MemoryPool, memoryPool => memoryPool.user, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => MemoryPool, memoryPool => memoryPool.user, { onDelete: "CASCADE", })
     memoryPools?: MemoryPool[]
 
-    @OneToMany(() => MemoryPoolEntry, memoryPoolEntry => memoryPoolEntry.user, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => MemoryPoolEntry, memoryPoolEntry => memoryPoolEntry.user, { onDelete: "CASCADE", })
     memoryPoolEntries?: MemoryPoolEntry[]
 
-    @OneToMany(() => Skill, skill => skill.user, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => Skill, skill => skill.user, { onDelete: "CASCADE", })
     skills?: Skill[]
 
-    @OneToMany(() => Trait, trait => trait.user, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => Trait, trait => trait.user, { onDelete: "CASCADE", })
     traits?: Trait[]
 
-    @OneToMany(() => Addiction, addiction => addiction.user, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => Addiction, addiction => addiction.user, { onDelete: "CASCADE", })
     addictions?: Addiction[]
 
-    @OneToMany(() => Birthsign, birthsign => birthsign.user, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => Birthsign, birthsign => birthsign.user, { onDelete: "CASCADE", })
     birthsigns?: Birthsign[]
 
-    @OneToMany(() => Character, character => character.user, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => Character, character => character.user, { onDelete: "CASCADE", })
     characters?: Character[]
 
-    @OneToMany(() => CharacterProfession, characterProfession => characterProfession.user, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => CharacterProfession, characterProfession => characterProfession.user, { onDelete: "CASCADE", })
     characterProfessions?: CharacterProfession[]
 
-    @OneToMany(() => Disease, disease => disease.user, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => Disease, disease => disease.user, { onDelete: "CASCADE", })
     diseases?: Disease[]
 
-    @OneToMany(() => Effect, effect => effect.user, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => Effect, effect => effect.user, { onDelete: "CASCADE", })
     effects?: Effect[]
 
-    @OneToMany(() => Fact, fact => fact.user, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => Fact, fact => fact.user, { onDelete: "CASCADE", })
     facts?: Fact[]
 
-    @OneToMany(() => Faction, faction => faction.user, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => Faction, faction => faction.user, { onDelete: "CASCADE", })
     factions?: Faction[]
 
-    @OneToMany(() => StorageSlot, storageSlot => storageSlot.user, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => StorageSlot, storageSlot => storageSlot.user, { onDelete: "CASCADE", })
     storageSlots!: StorageSlot[]
 
-    @OneToMany(() => EquipmentSlot, equipmentSlot => equipmentSlot.user, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => EquipmentSlot, equipmentSlot => equipmentSlot.user, { onDelete: "CASCADE", })
     equipmentSlots!: EquipmentSlot[]
 
-    @OneToMany(() => ItemSet, itemSet => itemSet.user, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => ItemSet, itemSet => itemSet.user, { onDelete: "CASCADE", })
     itemSets?: ItemSet[]
 
-    @OneToMany(() => Mood, mood => mood.user, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => Mood, mood => mood.user, { onDelete: "CASCADE", })
     moods?: Mood[]
 
-    @OneToMany(() => Need, need => need.user, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => Need, need => need.user, { onDelete: "CASCADE", })
     needs?: Need[]
 
-    @OneToMany(() => PersonalityProfile, personalityProfile => personalityProfile.user, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => PersonalityProfile, personalityProfile => personalityProfile.user, { onDelete: "CASCADE", })
     personalityProfiles?: PersonalityProfile[]
 
-    @OneToMany(() => Race, race => race.user, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => Race, race => race.user, { onDelete: "CASCADE", })
     races?: Race[]
 
-    @OneToMany(() => Religion, religion => religion.user, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => Religion, religion => religion.user, { onDelete: "CASCADE", })
     religions?: Religion[]
 
-    @OneToMany(() => Resistance, resistance => resistance.user, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => Resistance, resistance => resistance.user, { onDelete: "CASCADE", })
     resistances?: Resistance[]
 
-    @OneToMany(() => Status, status => status.user, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => Status, status => status.user, { onDelete: "CASCADE", })
     statuses?: Status[]
 
-    @OneToMany(() => Tag, tag => tag.user, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => Tag, tag => tag.user, { onDelete: "CASCADE", })
     tags?: Tag[]
 
-    @OneToMany(() => Background, background => background.user, { onDelete: "CASCADE", lazy: true })
+    @OneToMany(() => Background, background => background.user, { onDelete: "CASCADE", })
     backgrounds!: Background[]
 
-    public toDTO(): UserDTO {
+    public static toDTO(user: User): UserDTO {
         return {
-            id: this.id,
-            worlds: this.worlds ? { worlds: this.worlds.map(world => world.toDTO()) } : undefined,
-            campaigns: this.campaigns ? { campaigns: this.campaigns.map(campaign => campaign.toDTO()) } : undefined,
-            items: this.items ? { items: this.items.map(item => item.toDTO()) } : undefined,
-            pastExperiences: this.pastExperiences ? { pastExperiences: this.pastExperiences.map(exp => exp.toDTO()) } : undefined,
-            characterMemories: this.characterMemories ? { characterMemories: this.characterMemories.map(mem => mem.toDTO()) } : undefined,
-            memories: this.memories ? { memories: this.memories.map(mem => mem.toDTO()) } : undefined,
-            memoryPools: this.memoryPools ? { memoryPools: this.memoryPools.map(pool => pool.toDTO()) } : undefined,
-            memoryPoolEntries: this.memoryPoolEntries ? { memoryPoolEntries: this.memoryPoolEntries.map(entry => entry.toDTO()) } : undefined,
-            skills: this.skills ? { skills: this.skills.map(skill => skill.toDTO()) } : undefined,
-            traits: this.traits ? { traits: this.traits.map(trait => trait.toDTO()) } : undefined,
-            addictions: this.addictions ? { addictions: this.addictions.map(addiction => addiction.toDTO()) } : undefined,
-            birthsigns: this.birthsigns ? { birthSigns: this.birthsigns.map(birthsign => birthsign.toDTO()) } : undefined,
-            characters: this.characters ? { characters: this.characters.map(character => character.toDTO()) } : undefined,
-            characterProfessions: this.characterProfessions ? { professions: this.characterProfessions.map(profession => profession.toDTO()) } : undefined,
-            diseases: this.diseases ? { diseases: this.diseases.map(disease => disease.toDTO()) } : undefined,
-            effects: this.effects ? { effects: this.effects.map(effect => effect.toDTO()) } : undefined,
-            facts: this.facts ? { facts: this.facts.map(fact => fact.toDTO()) } : undefined,
-            factions: this.factions ? { factions: this.factions.map(faction => faction.toDTO()) } : undefined,
-            storageSlots: this.storageSlots ? { storageSlots: this.storageSlots.map(slot => slot.toDTO()) } : undefined,
-            equipmentSlots: this.equipmentSlots ? { equipmentSlots: this.equipmentSlots.map(slot => slot.toDTO()) } : undefined,
-            itemSets: this.itemSets ? { itemSets: this.itemSets.map(set => set.toDTO()) } : undefined,
-            moods: this.moods ? { moods: this.moods.map(mood => mood.toDTO()) } : undefined,
-            needs: this.needs ? { needs: this.needs.map(need => need.toDTO()) } : undefined,
-            personalityProfiles: this.personalityProfiles ? { personalityProfiles: this.personalityProfiles.map(profile => profile.toDTO()) } : undefined,
-            races: this.races ? { races: this.races.map(race => race.toDTO()) } : undefined,
-            religions: this.religions ? { moods: this.religions.map(religion => religion.toDTO()) } : undefined,
-            resistances: this.resistances ? { resistances: this.resistances.map(resistance => resistance.toDTO()) } : undefined,
-            statuses: this.statuses ? { statuses: this.statuses.map(status => status.toDTO()) } : undefined,
-            tags: this.tags ? { tags: this.tags.map(tag => tag.toDTO()) } : undefined,
-            backgrounds: this.backgrounds ? { backgrounds: this.backgrounds.map(background => background.toDTO()) } : undefined,
+            id: user.id,
+            worlds: User.serializeEntityArray(user.worlds, i => World.toDTO(i)),
+            campaigns: User.serializeEntityArray(user.campaigns, i => Campaign.toDTO(i)),
+            items: User.serializeEntityArray(user.items, i => Item.toDTO(i)),
+            pastExperiences: User.serializeEntityArray(user.pastExperiences, i => PastExperience.toDTO(i)),
+            characterMemories: User.serializeEntityArray(user.characterMemories, i => CharacterMemory.toDTO(i)),
+            memories: User.serializeEntityArray(user.memories, i => Memory.toDTO(i)),
+            memoryPools: User.serializeEntityArray(user.memoryPools, i => MemoryPool.toDTO(i)),
+            memoryPoolEntries: User.serializeEntityArray(user.memoryPoolEntries, i => MemoryPoolEntry.toDTO(i)),
+            skills: User.serializeEntityArray(user.skills, i => Skill.toDTO(i)),
+            traits: User.serializeEntityArray(user.traits, i => Trait.toDTO(i)),
+            addictions: User.serializeEntityArray(user.addictions, i => Addiction.toDTO(i)),
+            birthsigns: User.serializeEntityArray(user.birthsigns, i => Birthsign.toDTO(i)),
+            characters: User.serializeEntityArray(user.characters, i => Character.toDTO(i)),
+            characterProfessions: User.serializeEntityArray(user.characterProfessions, i => CharacterProfession.toDTO(i)),
+            diseases: User.serializeEntityArray(user.diseases, i => Disease.toDTO(i)),
+            effects: User.serializeEntityArray(user.effects, i => Effect.toDTO(i)),
+            facts: User.serializeEntityArray(user.facts, i => Fact.toDTO(i)),
+            factions: User.serializeEntityArray(user.factions, i => Faction.toDTO(i)),
+            storageSlots: User.serializeEntityArray(user.storageSlots, i => StorageSlot.toDTO(i)),
+            equipmentSlots: User.serializeEntityArray(user.equipmentSlots, i => EquipmentSlot.toDTO(i)),
+            itemSets: User.serializeEntityArray(user.itemSets, i => ItemSet.toDTO(i)),
+            moods: User.serializeEntityArray(user.moods, i => Mood.toDTO(i)),
+            needs: User.serializeEntityArray(user.needs, i => Need.toDTO(i)),
+            personalityProfiles: User.serializeEntityArray(user.personalityProfiles, i => PersonalityProfile.toDTO(i)),
+            races: User.serializeEntityArray(user.races, i => Race.toDTO(i)),
+            religions: User.serializeEntityArray(user.religions, i => Religion.toDTO(i)),
+            resistances: User.serializeEntityArray(user.resistances, i => Resistance.toDTO(i)),
+            statuses: User.serializeEntityArray(user.statuses, i => Status.toDTO(i)),
+            tags: User.serializeEntityArray(user.tags, i => Tag.toDTO(i)),
+            backgrounds: User.serializeEntityArray(user.backgrounds, i => Background.toDTO(i)),
         };
     }
 
-    public static fromDTO(dto: UserDTO, world: World, campaign?: Campaign): User {
+
+    public static fromDTO(dto: UserDTO, context: Context): User {
         const user = new User();
+        context.user = user
         user.id = dto.id;
-        user.worlds = dto.worlds?.worlds?.map(i => World.fromDTO(i, user, campaign)) || [];
-        user.campaigns = dto.campaigns?.campaigns?.map(i => Campaign.fromDTO(i, user, world)) || [];
-        user.items = dto.items?.items?.map(i => Item.fromDTO(i, user, world, campaign)) || [];
-        user.pastExperiences = dto.pastExperiences?.pastExperiences?.map(i => PastExperience.fromDTO(i, user, world, campaign)) || [];
-        user.characterMemories = dto.characterMemories?.characterMemories?.map(i => CharacterMemory.fromDTO(i, user, world, campaign)) || [];
-        user.memories = dto.memories?.memories?.map(i => Memory.fromDTO(i, user, world, campaign)) || [];
-        user.memoryPools = dto.memoryPools?.memoryPools?.map(i => MemoryPool.fromDTO(i, user, world, campaign)) || [];
-        user.memoryPoolEntries = dto.memoryPoolEntries?.memoryPoolEntries?.map(i => MemoryPoolEntry.fromDTO(i, user, world, campaign)) || [];
-        user.skills = dto.skills?.skills?.map(i => Skill.fromDTO(i, user, world, campaign)) || [];
-        user.traits = dto.traits?.traits?.map(i => Trait.fromDTO(i, user, world, campaign)) || [];
-        user.addictions = dto.addictions?.addictions?.map(i => Addiction.fromDTO(i, user, world, campaign)) || [];
-        user.birthsigns = dto.birthsigns?.birthSigns?.map(i => Birthsign.fromDTO(i, user, world, campaign)) || [];
-        user.characters = dto.characters?.characters?.map(i => Character.fromDTO(i, user, world, campaign)) || [];
-        user.characterProfessions = dto.characterProfessions?.professions?.map(i => CharacterProfession.fromDTO(i, user, world, campaign)) || [];
-        user.diseases = dto.diseases?.diseases?.map(i => Disease.fromDTO(i, user, world, campaign)) || [];
-        user.effects = dto.effects?.effects?.map(i => Effect.fromDTO(i, user, world, campaign)) || [];
-        user.facts = dto.facts?.facts?.map(i => Fact.fromDTO(i, user, world, campaign)) || [];
-        user.factions = dto.factions?.factions?.map(i => Faction.fromDTO(i, user, world, campaign)) || [];
-        user.storageSlots = dto.storageSlots?.storageSlots?.map(i => StorageSlot.fromDTO(i, user, world, campaign)) || [];
-        user.equipmentSlots = dto.equipmentSlots?.equipmentSlots?.map(i => EquipmentSlot.fromDTO(i, user, world, campaign)) || [];
-        user.itemSets = dto.itemSets?.itemSets?.map(i => ItemSet.fromDTO(i, user, world, campaign)) || [];
-        user.moods = dto.moods?.moods?.map(i => Mood.fromDTO(i, user, world, campaign)) || [];
-        user.needs = dto.needs?.needs?.map(i => Need.fromDTO(i, user, world, campaign)) || [];
-        user.personalityProfiles = dto.personalityProfiles?.personalityProfiles?.map(i => PersonalityProfile.fromDTO(i, user, world, campaign)) || [];
-        user.races = dto.races?.races?.map(i => Race.fromDTO(i, user, world, campaign)) || [];
-        user.religions = dto.religions?.moods?.map(i => Religion.fromDTO(i, user, world, campaign)) || [];
-        user.resistances = dto.resistances?.resistances?.map(i => Resistance.fromDTO(i, user, world, campaign)) || [];
-        user.statuses = dto.statuses?.statuses?.map(i => Status.fromDTO(i, user, world, campaign)) || [];
-        user.tags = dto.tags?.tags?.map(i => Tag.fromDTO(i, user, world, campaign)) || [];
-        user.backgrounds = dto.backgrounds?.backgrounds?.map(i => Background.fromDTO(i, user, world, campaign)) || [];
+        user.worlds = User.deserializeEntityArray(dto.worlds, (i) => World.fromDTO(i, context));
+        user.campaigns = User.deserializeEntityArray(dto.campaigns, (i) => Campaign.fromDTO(i, context));
+        user.items = User.deserializeEntityArray(dto.items, (i) => Item.fromDTO(i, context));
+        user.pastExperiences = User.deserializeEntityArray(dto.pastExperiences, (i) => PastExperience.fromDTO(i, context));
+        user.characterMemories = User.deserializeEntityArray(dto.characterMemories, (i) => CharacterMemory.fromDTO(i, context));
+        user.memories = User.deserializeEntityArray(dto.memories, (i) => Memory.fromDTO(i, context));
+        user.memoryPools = User.deserializeEntityArray(dto.memoryPools, (i) => MemoryPool.fromDTO(i, context));
+        user.memoryPoolEntries = User.deserializeEntityArray(dto.memoryPoolEntries, (i) => MemoryPoolEntry.fromDTO(i, context));
+        user.skills = User.deserializeEntityArray(dto.skills, (i) => Skill.fromDTO(i, context));
+        user.traits = User.deserializeEntityArray(dto.traits, (i) => Trait.fromDTO(i, context));
+        user.addictions = User.deserializeEntityArray(dto.addictions, (i) => Addiction.fromDTO(i, context));
+        user.birthsigns = User.deserializeEntityArray(dto.birthsigns, (i) => Birthsign.fromDTO(i, context));
+        user.characters = User.deserializeEntityArray(dto.characters, (i) => Character.fromDTO(i, context));
+        user.characterProfessions = User.deserializeEntityArray(dto.characterProfessions, (i) => CharacterProfession.fromDTO(i, context));
+        user.diseases = User.deserializeEntityArray(dto.diseases, (i) => Disease.fromDTO(i, context));
+        user.effects = User.deserializeEntityArray(dto.effects, (i) => Effect.fromDTO(i, context));
+        user.facts = User.deserializeEntityArray(dto.facts, (i) => Fact.fromDTO(i, context));
+        user.factions = User.deserializeEntityArray(dto.factions, (i) => Faction.fromDTO(i, context));
+        user.storageSlots = User.deserializeEntityArray(dto.storageSlots, (i) => StorageSlot.fromDTO(i, context));
+        user.equipmentSlots = User.deserializeEntityArray(dto.equipmentSlots, (i) => EquipmentSlot.fromDTO(i, context));
+        user.itemSets = User.deserializeEntityArray(dto.itemSets, (i) => ItemSet.fromDTO(i, context));
+        user.moods = User.deserializeEntityArray(dto.moods, (i) => Mood.fromDTO(i, context));
+        user.needs = User.deserializeEntityArray(dto.needs, (i) => Need.fromDTO(i, context));
+        user.personalityProfiles = User.deserializeEntityArray(dto.personalityProfiles, (i) => PersonalityProfile.fromDTO(i, context));
+        user.races = User.deserializeEntityArray(dto.races, (i) => Race.fromDTO(i, context));
+        user.religions = User.deserializeEntityArray(dto.religions, (i) => Religion.fromDTO(i, context));
+        user.resistances = User.deserializeEntityArray(dto.resistances, (i) => Resistance.fromDTO(i, context));
+        user.statuses = User.deserializeEntityArray(dto.statuses, (i) => Status.fromDTO(i, context));
+        user.tags = User.deserializeEntityArray(dto.tags, (i) => Tag.fromDTO(i, context));
+        user.backgrounds = User.deserializeEntityArray(dto.backgrounds, (i) => Background.fromDTO(i, context));
         return user;
     }
 

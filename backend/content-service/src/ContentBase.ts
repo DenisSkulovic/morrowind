@@ -1,10 +1,11 @@
-import { BaseEntity, BeforeInsert, BeforeUpdate, Column, PrimaryColumn } from "typeorm";
+import { BeforeInsert, BeforeUpdate, Column } from "typeorm";
 import { randomUUID } from "crypto";
 import { Campaign } from "./entities/Campaign";
 import { User } from "./entities/User";
 import { World } from "./entities/World";
+import { Base } from "./Base";
 
-export abstract class ContentBase extends BaseEntity {
+export abstract class ContentBase extends Base {
 
     id?: string
     id_prefix?: string
@@ -20,7 +21,7 @@ export abstract class ContentBase extends BaseEntity {
 
 
     @Column({ type: "json", nullable: true })
-    metadata?: {[key: string]: string};
+    metadata?: { [key: string]: string };
 
     @Column({ name: "targetEntity", type: "varchar" })
     targetEntity!: string;
@@ -34,7 +35,7 @@ export abstract class ContentBase extends BaseEntity {
     stackable = false
     maxQuantity = 1
 
-    user!: User;
-    campaign?: Campaign;
-    world!: World;
+    user!: Promise<User> | User;
+    campaign?: Promise<Campaign> | Campaign;
+    world!: Promise<World> | World;
 }

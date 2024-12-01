@@ -5,6 +5,8 @@ import { World } from "../World";
 import { ContentBase } from "../../ContentBase";
 import { Background, BackgroundCustomization } from "./Background";
 import { CharacterGenInstructionDTO } from "../../proto/common";
+import { Context } from "../../types";
+import { CharacterMemory } from "./Knowledge/CharacterMemory";
 
 
 
@@ -46,38 +48,38 @@ export class CharacterGenInstruction extends ContentBase {
     @Column("jsonb", { nullable: true })
     background_customization?: BackgroundCustomization
 
-    @ManyToOne(() => User, { nullable: false })
+    @ManyToOne(() => User, { nullable: true })
     user!: User;
 
     @ManyToOne(() => Campaign, { nullable: true })
     campaign?: Campaign;
 
-    @ManyToOne(() => World, { nullable: false })
+    @ManyToOne(() => World, { nullable: true })
     world!: World;
 
 
-    public toDTO(): CharacterGenInstructionDTO {
+    public static toDTO(charGen: CharacterGenInstruction): CharacterGenInstructionDTO {
         return {
-            id: this.id,
-            blueprintId: this.blueprint_id,
-            firstName: this.first_name,
-            lastName: this.last_name,
-            gender: this.gender,
-            birthSign: this.birthsign,
-            birthEra: this.birthEra,
-            birthYear: this.birthYear,
-            birthMonth: this.birthMonth,
-            birthDay: this.birthDay,
-            backgroundBlueprintId: this.background_blueprint_id,
-            backgroundCustomization: this.background_customization && this.background_customization.toDTO(),
-            user: this.user?.toDTO(),
-            campaign: this.campaign?.toDTO(),
-            world: this.world?.toDTO(),
-            targetEntity: this.targetEntity
+            id: charGen.id,
+            blueprintId: charGen.blueprint_id,
+            firstName: charGen.first_name,
+            lastName: charGen.last_name,
+            gender: charGen.gender,
+            birthSign: charGen.birthsign,
+            birthEra: charGen.birthEra,
+            birthYear: charGen.birthYear,
+            birthMonth: charGen.birthMonth,
+            birthDay: charGen.birthDay,
+            backgroundBlueprintId: charGen.background_blueprint_id,
+            backgroundCustomization: charGen.background_customization && BackgroundCustomization.toDTO(charGen.background_customization),
+            user: CharacterGenInstruction.serializeEntity(charGen.user, i => User.toDTO(i)),
+            campaign: CharacterGenInstruction.serializeEntity(charGen.campaign, i => Campaign.toDTO(i)),
+            world: CharacterGenInstruction.serializeEntity(charGen.world, i => World.toDTO(i)),
+            targetEntity: charGen.targetEntity
         };
     }
 
-    public static fromDTO(dto: CharacterGenInstructionDTO, user: User, world: World, campaign?: Campaign): CharacterGenInstruction {
+    public static fromDTO(dto: CharacterGenInstructionDTO, context: Context): CharacterGenInstruction {
         const instruction = new CharacterGenInstruction();
         instruction.id = dto.id;
         instruction.first_name = dto.firstName;
@@ -90,9 +92,9 @@ export class CharacterGenInstruction extends ContentBase {
         instruction.birthDay = dto.birthDay;
         instruction.background_blueprint_id = dto.backgroundBlueprintId;
         instruction.background_customization = dto.backgroundCustomization && BackgroundCustomization.fromDTO(dto.backgroundCustomization);
-        instruction.user = user;
-        instruction.campaign = campaign;
-        instruction.world = world;
+        instruction.user = context.user;
+        instruction.campaign = context.campaign;
+        instruction.world = context.world;
         instruction.targetEntity = dto.targetEntity
         return instruction;
     }

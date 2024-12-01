@@ -18,6 +18,7 @@ import { Addiction } from "./Addiction";
 import { EquipmentSlot } from "./Slot/EquipmentSlot";
 import { CharacterDTO } from "../../proto/common";
 import { GenderEnum } from "../../enum/GenderEnum";
+import { Context } from "../../types";
 
 
 // lazy loading means when I need to access traits of a character, it will perform 2 queries. 
@@ -42,13 +43,13 @@ export class Character extends TaggableContentBase {
     @Column({ type: "varchar", length: 255 })
     last_name!: string;
 
-    @ManyToOne(() => Race, {lazy: true})
+    @ManyToOne(() => Race, {})
     race!: Race;
 
     @Column({ type: "enum", enum: Object.values(GenderEnum) })
     gender!: string;
 
-    @ManyToOne(() => Birthsign, {lazy: true})
+    @ManyToOne(() => Birthsign, {})
     birthsign?: Birthsign;
 
     @Column({ default: null, nullable: true })
@@ -63,110 +64,110 @@ export class Character extends TaggableContentBase {
     @Column("jsonb", { default: {} })
     skills!: { [skill: string]: number };
 
-    @OneToMany(() => EquipmentSlot, eqiupmentSlot => eqiupmentSlot.character, {lazy: true})
+    @OneToMany(() => EquipmentSlot, eqiupmentSlot => eqiupmentSlot.character, {})
     @JoinTable()
     equipmentSlots!: EquipmentSlot[];
 
-    @ManyToMany(() => CharacterProfession, profession => profession.characters, { lazy: true })
-    professions!: CharacterProfession[]; // Tracks current and past professions
+    @ManyToMany(() => CharacterProfession, profession => profession.characters, {})
+    professions!: CharacterProfession[];
 
-    @ManyToMany(() => MemoryPool, { lazy: true })
+    @ManyToMany(() => MemoryPool, {})
     @JoinTable()
-    memoryPools!: MemoryPool[]; // Assigned during generation, or as the person expands their knowledge as their personality develops
+    memoryPools!: MemoryPool[];
 
-    @OneToMany(() => CharacterMemory, charMemory => charMemory.character, { lazy: true })
+    @OneToMany(() => CharacterMemory, charMemory => charMemory.character, {})
     characterMemories!: CharacterMemory[];
 
     @Column({ type: "varchar", length: 3 })
     enneagramType!: string;
 
-    @ManyToMany(() => Trait, { lazy: true })
+    @ManyToMany(() => Trait, {})
     @JoinTable()
     traits!: Trait[];
 
-    @ManyToMany(() => Disease, { lazy: true })
+    @ManyToMany(() => Disease, {})
     @JoinTable()
     diseases?: Disease[];
 
-    @ManyToMany(() => Addiction, { lazy: true })
+    @ManyToMany(() => Addiction, {})
     @JoinTable()
     addictions?: Addiction[];
 
 
-    @ManyToMany(() => Faction, (faction) => faction.characters, { lazy: true })
+    @ManyToMany(() => Faction, (faction) => faction.characters, {})
     @JoinTable()
     factions?: Faction[];
 
 
-    @ManyToMany(() => Tag, (tag) => tag.characters, { lazy: true })
+    @ManyToMany(() => Tag, (tag) => tag.characters, {})
     @JoinTable()
     tags?: Tag[];
 
-    @ManyToOne(() => User, { nullable: true, lazy: true })
+    @ManyToOne(() => User, { nullable: true, })
     user!: User;
 
-    @ManyToOne(() => World, { nullable: true, lazy: true })
-    world!: World;
-
-    @ManyToOne(() => Campaign, { nullable: true, lazy: true })
+    @ManyToOne(() => Campaign, { nullable: true, })
     campaign?: Campaign;
 
-    public toDTO(): CharacterDTO {
+    @ManyToOne(() => World, { nullable: true, })
+    world!: World;
+
+    public static toDTO(chr: Character): CharacterDTO {
         return {
-            id: this.id,
-            blueprintId: this.blueprint_id,
-            firstName: this.first_name,
-            lastName: this.last_name,
-            race: this.race?.toDTO(),
-            gender: this.gender,
-            birthsign: this.birthsign?.toDTO(),
-            birthYear: this.birthYear,
-            birthMonth: this.birthMonth,
-            birthDay: this.birthDay,
-            skills: this.skills,
-            equipmentSlots: this.equipmentSlots ? { equipmentSlots: this.equipmentSlots.map(slot => slot.toDTO()) } : undefined,
-            professions: this.professions ? { professions: this.professions.map(profession => profession.toDTO()) } : undefined,
-            memoryPools: this.memoryPools ? { memoryPools: this.memoryPools.map(pool => pool.toDTO()) } : undefined,
-            characterMemories: this.characterMemories ? { characterMemories: this.characterMemories.map(mem => mem.toDTO()) } : undefined,
-            enneagramType: this.enneagramType,
-            traits: this.traits ? { traits: this.traits.map(trait => trait.toDTO()) } : undefined,
-            diseases: this.diseases ? { diseases: this.diseases.map(disease => disease.toDTO()) } : undefined,
-            addictions: this.addictions ? { addictions: this.addictions.map(addiction => addiction.toDTO()) } : undefined,
-            factions: this.factions ? { factions: this.factions.map(faction => faction.toDTO()) } : undefined,
-            tags: this.tags ? { tags: this.tags.map(tag => tag.toDTO()) } : undefined,
-            user: this.user?.toDTO(),
-            campaign: this.campaign?.toDTO(),
-            world: this.world?.toDTO(),
-            targetEntity: this.targetEntity
+            id: chr.id,
+            blueprintId: chr.blueprint_id,
+            firstName: chr.first_name,
+            lastName: chr.last_name,
+            race: chr.race && Race.toDTO(chr.race),
+            gender: chr.gender,
+            birthsign: Character.serializeEntity(chr.birthsign, i => Birthsign.toDTO(i)),
+            birthYear: chr.birthYear,
+            birthMonth: chr.birthMonth,
+            birthDay: chr.birthDay,
+            skills: chr.skills,
+            equipmentSlots: Character.serializeEntityArray(chr.equipmentSlots, i => EquipmentSlot.toDTO(i)),
+            professions: Character.serializeEntityArray(chr.professions, i => CharacterProfession.toDTO(i)),
+            memoryPools: Character.serializeEntityArray(chr.memoryPools, i => MemoryPool.toDTO(i)),
+            characterMemories: Character.serializeEntityArray(chr.characterMemories, i => CharacterMemory.toDTO(i)),
+            traits: Character.serializeEntityArray(chr.traits, i => Trait.toDTO(i)),
+            diseases: Character.serializeEntityArray(chr.diseases, i => Disease.toDTO(i)),
+            addictions: Character.serializeEntityArray(chr.addictions, i => Addiction.toDTO(i)),
+            factions: Character.serializeEntityArray(chr.factions, i => Faction.toDTO(i)),
+            tags: Character.serializeEntityArray(chr.tags, i => Tag.toDTO(i)),
+            enneagramType: chr.enneagramType,
+            user: Character.serializeEntity(chr.user, i => User.toDTO(i)),
+            campaign: Character.serializeEntity(chr.campaign, i => Campaign.toDTO(i)),
+            world: Character.serializeEntity(chr.world, i => World.toDTO(i)),
+            targetEntity: chr.targetEntity
         };
     }
-    
-    public static fromDTO(dto: CharacterDTO, user: User, world: World, campaign?: Campaign): Character {
+
+    public static fromDTO(dto: CharacterDTO, context: Context): Character {
         if (!dto.race) throw new Error("character race cannot be undefined")
         const character = new Character();
         character.id = dto.id;
         character.first_name = dto.firstName;
         character.last_name = dto.lastName;
-        character.race = Race.fromDTO(dto.race, user, world, campaign);
+        character.race = Race.fromDTO(dto.race, context);
         character.gender = dto.gender;
-        character.birthsign = dto.birthsign ? Birthsign.fromDTO(dto.birthsign, user, world, campaign) : undefined;
+        character.birthsign = dto.birthsign ? Birthsign.fromDTO(dto.birthsign, context) : undefined;
         character.birthYear = dto.birthYear;
         character.birthMonth = dto.birthMonth;
         character.birthDay = dto.birthDay;
         character.skills = dto.skills;
-        character.equipmentSlots = dto.equipmentSlots?.equipmentSlots?.map(i=> EquipmentSlot.fromDTO(i, user, world, campaign)) || [];
-        character.professions = dto.professions?.professions?.map(i=> CharacterProfession.fromDTO(i, user, world, campaign)) || [];
-        character.memoryPools = dto.memoryPools?.memoryPools?.map(i=> MemoryPool.fromDTO(i, user, world, campaign)) || [];
-        character.characterMemories = dto.characterMemories?.characterMemories?.map(i=> CharacterMemory.fromDTO(i, user, world, campaign)) || [];
+        character.equipmentSlots = Character.deserializeEntityArray(dto.equipmentSlots, i => EquipmentSlot.fromDTO(i, context));
+        character.professions = Character.deserializeEntityArray(dto.professions, i => CharacterProfession.fromDTO(i, context));
+        character.memoryPools = Character.deserializeEntityArray(dto.memoryPools, i => MemoryPool.fromDTO(i, context));
+        character.characterMemories = Character.deserializeEntityArray(dto.characterMemories, i => CharacterMemory.fromDTO(i, context));
         character.enneagramType = dto.enneagramType;
-        character.traits = dto.traits?.traits?.map(i=>Trait.fromDTO(i, user, world, campaign)) || [];
-        character.diseases = dto.diseases?.diseases?.map(i=>Disease.fromDTO(i, user, world, campaign)) || [];
-        character.addictions = dto.addictions?.addictions?.map(i=>Addiction.fromDTO(i, user, world, campaign)) || [];
-        character.factions = dto.factions?.factions?.map(faction => Faction.fromDTO(faction, user, world, campaign)) || [];
-        character.tags = dto.tags?.tags?.map(tag => Tag.fromDTO(tag, user, world, campaign)) || [];
-        character.user = user;
-        character.campaign = campaign;
-        character.world = world;
+        character.traits = Character.deserializeEntityArray(dto.traits, i => Trait.fromDTO(i, context));
+        character.diseases = Character.deserializeEntityArray(dto.diseases, i => Disease.fromDTO(i, context));
+        character.addictions = Character.deserializeEntityArray(dto.addictions, i => Addiction.fromDTO(i, context));
+        character.factions = Character.deserializeEntityArray(dto.factions, i => Faction.fromDTO(i, context));
+        character.tags = Character.deserializeEntityArray(dto.tags, i => Tag.fromDTO(i, context));
+        character.user = context.user;
+        character.campaign = context.campaign;
+        character.world = context.world;
         character.targetEntity = dto.targetEntity
         return character;
     }

@@ -2,7 +2,7 @@
 // versions:
 //   protoc-gen-ts_proto  v2.4.2
 //   protoc               v3.20.3
-// source: src/proto/common.proto
+// source: common.proto
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
@@ -621,7 +621,7 @@ export interface BackgroundDTO_SkillAdjustmentsEntry {
 }
 
 export interface BackgroundsDTO {
-  backgrounds: BackgroundDTO[];
+  arr: BackgroundDTO[];
 }
 
 /** ####################################################################################### */
@@ -652,7 +652,7 @@ export interface EffectDTO {
 }
 
 export interface EffectsDTO {
-  effects: EffectDTO[];
+  arr: EffectDTO[];
 }
 
 /** ####################################################################################### */
@@ -670,7 +670,7 @@ export interface ResistanceDTO {
 }
 
 export interface ResistancesDTO {
-  resistances: ResistanceDTO[];
+  arr: ResistanceDTO[];
 }
 
 /** ####################################################################################### */
@@ -690,7 +690,7 @@ export interface StatusDTO {
 }
 
 export interface StatusesDTO {
-  statuses: StatusDTO[];
+  arr: StatusDTO[];
 }
 
 /** ####################################################################################### */
@@ -706,7 +706,7 @@ export interface ItemSetDTO {
 }
 
 export interface ItemSetsDTO {
-  itemSets: ItemSetDTO[];
+  arr: ItemSetDTO[];
 }
 
 /** ####################################################################################### */
@@ -753,7 +753,7 @@ export interface ItemDTO {
 }
 
 export interface ItemsDTO {
-  items: ItemDTO[];
+  arr: ItemDTO[];
 }
 
 /** ####################################################################################### */
@@ -779,7 +779,7 @@ export interface StorageSlotDTO {
 }
 
 export interface StorageSlotsDTO {
-  storageSlots: StorageSlotDTO[];
+  arr: StorageSlotDTO[];
 }
 
 /** ####################################################################################### */
@@ -809,7 +809,7 @@ export interface ItemRequirementDTO {
 }
 
 export interface ItemRequirementsDTO {
-  requirements: ItemRequirementDTO[];
+  arr: ItemRequirementDTO[];
 }
 
 /** ####################################################################################### */
@@ -848,7 +848,7 @@ export interface CharacterDTO_SkillsEntry {
 }
 
 export interface CharactersDTO {
-  characters: CharacterDTO[];
+  arr: CharacterDTO[];
 }
 
 /** ####################################################################################### */
@@ -866,7 +866,7 @@ export interface AddictionDTO {
 }
 
 export interface AddictionsDTO {
-  addictions: AddictionDTO[];
+  arr: AddictionDTO[];
 }
 
 /** ####################################################################################### */
@@ -891,7 +891,7 @@ export interface CharacterMemoryDTO {
 }
 
 export interface CharacterMemoriesDTO {
-  characterMemories: CharacterMemoryDTO[];
+  arr: CharacterMemoryDTO[];
 }
 
 /** ####################################################################################### */
@@ -901,7 +901,7 @@ export interface FactStatusDTO {
 }
 
 export interface FactStatusesDTO {
-  factStatuses: FactStatusDTO[];
+  arr: FactStatusDTO[];
 }
 
 /** ####################################################################################### */
@@ -931,7 +931,7 @@ export interface TagDTO {
 }
 
 export interface TagsDTO {
-  tags: TagDTO[];
+  arr: TagDTO[];
 }
 
 /** ####################################################################################### */
@@ -950,7 +950,7 @@ export interface SkillDTO {
 }
 
 export interface SkillsDTO {
-  skills: SkillDTO[];
+  arr: SkillDTO[];
 }
 
 /** ####################################################################################### */
@@ -967,7 +967,7 @@ export interface TraitDTO {
 }
 
 export interface TraitsDTO {
-  traits: TraitDTO[];
+  arr: TraitDTO[];
 }
 
 /** ####################################################################################### */
@@ -987,7 +987,7 @@ export interface DiseaseDTO {
 }
 
 export interface DiseasesDTO {
-  diseases: DiseaseDTO[];
+  arr: DiseaseDTO[];
 }
 
 /** ####################################################################################### */
@@ -1008,7 +1008,7 @@ export interface FactDTO {
 }
 
 export interface FactsDTO {
-  facts: FactDTO[];
+  arr: FactDTO[];
 }
 
 /** ####################################################################################### */
@@ -1026,7 +1026,7 @@ export interface FactionDTO {
 }
 
 export interface FactionsDTO {
-  factions: FactionDTO[];
+  arr: FactionDTO[];
 }
 
 /** ####################################################################################### */
@@ -1046,7 +1046,7 @@ export interface MemoryPoolDTO {
 }
 
 export interface MemoryPoolsDTO {
-  memoryPools: MemoryPoolDTO[];
+  arr: MemoryPoolDTO[];
 }
 
 /** ####################################################################################### */
@@ -1067,7 +1067,7 @@ export interface MemoryPoolEntryDTO {
 }
 
 export interface MemoryPoolEntriesDTO {
-  memoryPoolEntries: MemoryPoolEntryDTO[];
+  arr: MemoryPoolEntryDTO[];
 }
 
 /** ####################################################################################### */
@@ -1086,7 +1086,7 @@ export interface CharacterProfessionDTO {
 }
 
 export interface CharacterProfessionsDTO {
-  professions: CharacterProfessionDTO[];
+  arr: CharacterProfessionDTO[];
 }
 
 /** ####################################################################################### */
@@ -1105,7 +1105,7 @@ export interface EquipmentSlotDTO {
 }
 
 export interface EquipmentSlotsDTO {
-  equipmentSlots: EquipmentSlotDTO[];
+  arr: EquipmentSlotDTO[];
 }
 
 /** ####################################################################################### */
@@ -1121,7 +1121,7 @@ export interface BirthsignDTO {
 }
 
 export interface BirthsignsDTO {
-  birthSigns: BirthsignDTO[];
+  arr: BirthsignDTO[];
 }
 
 /** ####################################################################################### */
@@ -1138,7 +1138,7 @@ export interface RaceDTO {
 }
 
 export interface RacesDTO {
-  races: RaceDTO[];
+  arr: RaceDTO[];
 }
 
 /** ####################################################################################### */
@@ -1148,7 +1148,7 @@ export interface EquipmentSlotDefinitionDTO {
 }
 
 export interface EquipmentSlotDefinitionsDTO {
-  equipmentSlotDefinition: EquipmentSlotDefinitionDTO[];
+  arr: EquipmentSlotDefinitionDTO[];
 }
 
 /** ####################################################################################### */
@@ -1159,7 +1159,7 @@ export interface StorageSlotDefinitionDTO {
 }
 
 export interface StorageSlotDefinitionsDTO {
-  definitions: StorageSlotDefinitionDTO[];
+  arr: StorageSlotDefinitionDTO[];
 }
 
 /** ####################################################################################### */
@@ -1176,7 +1176,7 @@ export interface MoodDTO {
 }
 
 export interface MoodsDTO {
-  moods: MoodDTO[];
+  arr: MoodDTO[];
 }
 
 /** ####################################################################################### */
@@ -1195,7 +1195,7 @@ export interface ReligionDTO {
 }
 
 export interface ReligionsDTO {
-  moods: ReligionDTO[];
+  arr: ReligionDTO[];
 }
 
 /** ####################################################################################### */
@@ -1205,7 +1205,7 @@ export interface ReligionRitualDTO {
 }
 
 export interface ReligionRitualsDTO {
-  religionRituals: ReligionRitualDTO[];
+  arr: ReligionRitualDTO[];
 }
 
 /** ####################################################################################### */
@@ -1215,7 +1215,7 @@ export interface ReligionTenetDTO {
 }
 
 export interface ReligionTenetsDTO {
-  religionTenets: ReligionTenetDTO[];
+  arr: ReligionTenetDTO[];
 }
 
 /** ####################################################################################### */
@@ -1234,7 +1234,7 @@ export interface GenerationInstructionDTO {
 }
 
 export interface GenerationInstructionsDTO {
-  instructions: GenerationInstructionDTO[];
+  arr: GenerationInstructionDTO[];
 }
 
 /** ####################################################################################### */
@@ -1248,7 +1248,7 @@ export interface IdAndQuantDTO_IdAndQuantEntry {
 }
 
 export interface IdsAndQuantsDTO {
-  idsAndQuants: IdAndQuantDTO[];
+  arr: IdAndQuantDTO[];
 }
 
 /** ####################################################################################### */
@@ -1273,7 +1273,7 @@ export interface CharacterGenInstructionDTO {
 }
 
 export interface CharacterGenInstructions {
-  characterGenInstructions: CharacterGenInstructionDTO[];
+  arr: CharacterGenInstructionDTO[];
 }
 
 /** ####################################################################################### */
@@ -1290,7 +1290,7 @@ export interface CharacterGroupGenInstructionDTO {
 }
 
 export interface CharacterGroupGenInstructionsDTO {
-  characterGroupGenInstructions: CharacterGroupGenInstructionDTO[];
+  arr: CharacterGroupGenInstructionDTO[];
 }
 
 /** ####################################################################################### */
@@ -1367,7 +1367,7 @@ export interface PastExperienceDTO {
 }
 
 export interface PastExperiencesDTO {
-  pastExperiences: PastExperienceDTO[];
+  arr: PastExperienceDTO[];
 }
 
 /** ####################################################################################### */
@@ -1387,7 +1387,7 @@ export interface MemoryDTO {
 }
 
 export interface MemoriesDTO {
-  memories: MemoryDTO[];
+  arr: MemoryDTO[];
 }
 
 /** ####################################################################################### */
@@ -1405,7 +1405,7 @@ export interface SkillSetDTO {
 }
 
 export interface SkillSetsDTO {
-  skillSets: SkillSetDTO[];
+  arr: SkillSetDTO[];
 }
 
 /** ####################################################################################### */
@@ -1433,7 +1433,7 @@ export interface PersonalityProfileDTO {
 }
 
 export interface PersonalityProfilesDTO {
-  personalityProfiles: PersonalityProfileDTO[];
+  arr: PersonalityProfileDTO[];
 }
 
 /** ####################################################################################### */
@@ -1452,7 +1452,7 @@ export interface NeedDTO {
 }
 
 export interface NeedsDTO {
-  needs: NeedDTO[];
+  arr: NeedDTO[];
 }
 
 /** ####################################################################################### */
@@ -1489,10 +1489,25 @@ export interface UserDTO {
   resistances?: ResistancesDTO | undefined;
   statuses?: StatusesDTO | undefined;
   tags?: TagsDTO | undefined;
+  account?: AccountDTO | undefined;
 }
 
 export interface UsersDTO {
-  users: UserDTO[];
+  arr: UserDTO[];
+}
+
+/** ####################################################################################### */
+export interface AccountDTO {
+  id: string;
+  username: string;
+  email: string;
+  role: string;
+  user?: UserDTO | undefined;
+  preferences?: PreferencesDTO | undefined;
+}
+
+/** ####################################################################################### */
+export interface PreferencesDTO {
 }
 
 /** ####################################################################################### */
@@ -1546,7 +1561,7 @@ export interface WorldDTO {
 }
 
 export interface WorldsDTO {
-  worlds: WorldDTO[];
+  arr: WorldDTO[];
 }
 
 /** ####################################################################################### */
@@ -1597,7 +1612,7 @@ export interface CampaignDTO_DynamicStateEntry {
 }
 
 export interface CampaignsDTO {
-  campaigns: CampaignDTO[];
+  arr: CampaignDTO[];
 }
 
 function createBaseBackgroundDTO(): BackgroundDTO {
@@ -2099,12 +2114,12 @@ export const BackgroundDTO_SkillAdjustmentsEntry: MessageFns<BackgroundDTO_Skill
 };
 
 function createBaseBackgroundsDTO(): BackgroundsDTO {
-  return { backgrounds: [] };
+  return { arr: [] };
 }
 
 export const BackgroundsDTO: MessageFns<BackgroundsDTO> = {
   encode(message: BackgroundsDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.backgrounds) {
+    for (const v of message.arr) {
       BackgroundDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -2122,7 +2137,7 @@ export const BackgroundsDTO: MessageFns<BackgroundsDTO> = {
             break;
           }
 
-          message.backgrounds.push(BackgroundDTO.decode(reader, reader.uint32()));
+          message.arr.push(BackgroundDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -2135,17 +2150,13 @@ export const BackgroundsDTO: MessageFns<BackgroundsDTO> = {
   },
 
   fromJSON(object: any): BackgroundsDTO {
-    return {
-      backgrounds: globalThis.Array.isArray(object?.backgrounds)
-        ? object.backgrounds.map((e: any) => BackgroundDTO.fromJSON(e))
-        : [],
-    };
+    return { arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => BackgroundDTO.fromJSON(e)) : [] };
   },
 
   toJSON(message: BackgroundsDTO): unknown {
     const obj: any = {};
-    if (message.backgrounds?.length) {
-      obj.backgrounds = message.backgrounds.map((e) => BackgroundDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => BackgroundDTO.toJSON(e));
     }
     return obj;
   },
@@ -2155,7 +2166,7 @@ export const BackgroundsDTO: MessageFns<BackgroundsDTO> = {
   },
   fromPartial<I extends Exact<DeepPartial<BackgroundsDTO>, I>>(object: I): BackgroundsDTO {
     const message = createBaseBackgroundsDTO();
-    message.backgrounds = object.backgrounds?.map((e) => BackgroundDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => BackgroundDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -2588,12 +2599,12 @@ export const EffectDTO: MessageFns<EffectDTO> = {
 };
 
 function createBaseEffectsDTO(): EffectsDTO {
-  return { effects: [] };
+  return { arr: [] };
 }
 
 export const EffectsDTO: MessageFns<EffectsDTO> = {
   encode(message: EffectsDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.effects) {
+    for (const v of message.arr) {
       EffectDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -2611,7 +2622,7 @@ export const EffectsDTO: MessageFns<EffectsDTO> = {
             break;
           }
 
-          message.effects.push(EffectDTO.decode(reader, reader.uint32()));
+          message.arr.push(EffectDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -2624,15 +2635,13 @@ export const EffectsDTO: MessageFns<EffectsDTO> = {
   },
 
   fromJSON(object: any): EffectsDTO {
-    return {
-      effects: globalThis.Array.isArray(object?.effects) ? object.effects.map((e: any) => EffectDTO.fromJSON(e)) : [],
-    };
+    return { arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => EffectDTO.fromJSON(e)) : [] };
   },
 
   toJSON(message: EffectsDTO): unknown {
     const obj: any = {};
-    if (message.effects?.length) {
-      obj.effects = message.effects.map((e) => EffectDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => EffectDTO.toJSON(e));
     }
     return obj;
   },
@@ -2642,7 +2651,7 @@ export const EffectsDTO: MessageFns<EffectsDTO> = {
   },
   fromPartial<I extends Exact<DeepPartial<EffectsDTO>, I>>(object: I): EffectsDTO {
     const message = createBaseEffectsDTO();
-    message.effects = object.effects?.map((e) => EffectDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => EffectDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -2869,12 +2878,12 @@ export const ResistanceDTO: MessageFns<ResistanceDTO> = {
 };
 
 function createBaseResistancesDTO(): ResistancesDTO {
-  return { resistances: [] };
+  return { arr: [] };
 }
 
 export const ResistancesDTO: MessageFns<ResistancesDTO> = {
   encode(message: ResistancesDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.resistances) {
+    for (const v of message.arr) {
       ResistanceDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -2892,7 +2901,7 @@ export const ResistancesDTO: MessageFns<ResistancesDTO> = {
             break;
           }
 
-          message.resistances.push(ResistanceDTO.decode(reader, reader.uint32()));
+          message.arr.push(ResistanceDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -2905,17 +2914,13 @@ export const ResistancesDTO: MessageFns<ResistancesDTO> = {
   },
 
   fromJSON(object: any): ResistancesDTO {
-    return {
-      resistances: globalThis.Array.isArray(object?.resistances)
-        ? object.resistances.map((e: any) => ResistanceDTO.fromJSON(e))
-        : [],
-    };
+    return { arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => ResistanceDTO.fromJSON(e)) : [] };
   },
 
   toJSON(message: ResistancesDTO): unknown {
     const obj: any = {};
-    if (message.resistances?.length) {
-      obj.resistances = message.resistances.map((e) => ResistanceDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => ResistanceDTO.toJSON(e));
     }
     return obj;
   },
@@ -2925,7 +2930,7 @@ export const ResistancesDTO: MessageFns<ResistancesDTO> = {
   },
   fromPartial<I extends Exact<DeepPartial<ResistancesDTO>, I>>(object: I): ResistancesDTO {
     const message = createBaseResistancesDTO();
-    message.resistances = object.resistances?.map((e) => ResistanceDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => ResistanceDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -3186,12 +3191,12 @@ export const StatusDTO: MessageFns<StatusDTO> = {
 };
 
 function createBaseStatusesDTO(): StatusesDTO {
-  return { statuses: [] };
+  return { arr: [] };
 }
 
 export const StatusesDTO: MessageFns<StatusesDTO> = {
   encode(message: StatusesDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.statuses) {
+    for (const v of message.arr) {
       StatusDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -3209,7 +3214,7 @@ export const StatusesDTO: MessageFns<StatusesDTO> = {
             break;
           }
 
-          message.statuses.push(StatusDTO.decode(reader, reader.uint32()));
+          message.arr.push(StatusDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -3222,17 +3227,13 @@ export const StatusesDTO: MessageFns<StatusesDTO> = {
   },
 
   fromJSON(object: any): StatusesDTO {
-    return {
-      statuses: globalThis.Array.isArray(object?.statuses)
-        ? object.statuses.map((e: any) => StatusDTO.fromJSON(e))
-        : [],
-    };
+    return { arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => StatusDTO.fromJSON(e)) : [] };
   },
 
   toJSON(message: StatusesDTO): unknown {
     const obj: any = {};
-    if (message.statuses?.length) {
-      obj.statuses = message.statuses.map((e) => StatusDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => StatusDTO.toJSON(e));
     }
     return obj;
   },
@@ -3242,7 +3243,7 @@ export const StatusesDTO: MessageFns<StatusesDTO> = {
   },
   fromPartial<I extends Exact<DeepPartial<StatusesDTO>, I>>(object: I): StatusesDTO {
     const message = createBaseStatusesDTO();
-    message.statuses = object.statuses?.map((e) => StatusDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => StatusDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -3437,12 +3438,12 @@ export const ItemSetDTO: MessageFns<ItemSetDTO> = {
 };
 
 function createBaseItemSetsDTO(): ItemSetsDTO {
-  return { itemSets: [] };
+  return { arr: [] };
 }
 
 export const ItemSetsDTO: MessageFns<ItemSetsDTO> = {
   encode(message: ItemSetsDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.itemSets) {
+    for (const v of message.arr) {
       ItemSetDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -3460,7 +3461,7 @@ export const ItemSetsDTO: MessageFns<ItemSetsDTO> = {
             break;
           }
 
-          message.itemSets.push(ItemSetDTO.decode(reader, reader.uint32()));
+          message.arr.push(ItemSetDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -3473,17 +3474,13 @@ export const ItemSetsDTO: MessageFns<ItemSetsDTO> = {
   },
 
   fromJSON(object: any): ItemSetsDTO {
-    return {
-      itemSets: globalThis.Array.isArray(object?.itemSets)
-        ? object.itemSets.map((e: any) => ItemSetDTO.fromJSON(e))
-        : [],
-    };
+    return { arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => ItemSetDTO.fromJSON(e)) : [] };
   },
 
   toJSON(message: ItemSetsDTO): unknown {
     const obj: any = {};
-    if (message.itemSets?.length) {
-      obj.itemSets = message.itemSets.map((e) => ItemSetDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => ItemSetDTO.toJSON(e));
     }
     return obj;
   },
@@ -3493,7 +3490,7 @@ export const ItemSetsDTO: MessageFns<ItemSetsDTO> = {
   },
   fromPartial<I extends Exact<DeepPartial<ItemSetsDTO>, I>>(object: I): ItemSetsDTO {
     const message = createBaseItemSetsDTO();
-    message.itemSets = object.itemSets?.map((e) => ItemSetDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => ItemSetDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -4244,12 +4241,12 @@ export const ItemDTO: MessageFns<ItemDTO> = {
 };
 
 function createBaseItemsDTO(): ItemsDTO {
-  return { items: [] };
+  return { arr: [] };
 }
 
 export const ItemsDTO: MessageFns<ItemsDTO> = {
   encode(message: ItemsDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.items) {
+    for (const v of message.arr) {
       ItemDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -4267,7 +4264,7 @@ export const ItemsDTO: MessageFns<ItemsDTO> = {
             break;
           }
 
-          message.items.push(ItemDTO.decode(reader, reader.uint32()));
+          message.arr.push(ItemDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -4280,13 +4277,13 @@ export const ItemsDTO: MessageFns<ItemsDTO> = {
   },
 
   fromJSON(object: any): ItemsDTO {
-    return { items: globalThis.Array.isArray(object?.items) ? object.items.map((e: any) => ItemDTO.fromJSON(e)) : [] };
+    return { arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => ItemDTO.fromJSON(e)) : [] };
   },
 
   toJSON(message: ItemsDTO): unknown {
     const obj: any = {};
-    if (message.items?.length) {
-      obj.items = message.items.map((e) => ItemDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => ItemDTO.toJSON(e));
     }
     return obj;
   },
@@ -4296,7 +4293,7 @@ export const ItemsDTO: MessageFns<ItemsDTO> = {
   },
   fromPartial<I extends Exact<DeepPartial<ItemsDTO>, I>>(object: I): ItemsDTO {
     const message = createBaseItemsDTO();
-    message.items = object.items?.map((e) => ItemDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => ItemDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -4652,12 +4649,12 @@ export const StorageSlotDTO: MessageFns<StorageSlotDTO> = {
 };
 
 function createBaseStorageSlotsDTO(): StorageSlotsDTO {
-  return { storageSlots: [] };
+  return { arr: [] };
 }
 
 export const StorageSlotsDTO: MessageFns<StorageSlotsDTO> = {
   encode(message: StorageSlotsDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.storageSlots) {
+    for (const v of message.arr) {
       StorageSlotDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -4675,7 +4672,7 @@ export const StorageSlotsDTO: MessageFns<StorageSlotsDTO> = {
             break;
           }
 
-          message.storageSlots.push(StorageSlotDTO.decode(reader, reader.uint32()));
+          message.arr.push(StorageSlotDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -4688,17 +4685,13 @@ export const StorageSlotsDTO: MessageFns<StorageSlotsDTO> = {
   },
 
   fromJSON(object: any): StorageSlotsDTO {
-    return {
-      storageSlots: globalThis.Array.isArray(object?.storageSlots)
-        ? object.storageSlots.map((e: any) => StorageSlotDTO.fromJSON(e))
-        : [],
-    };
+    return { arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => StorageSlotDTO.fromJSON(e)) : [] };
   },
 
   toJSON(message: StorageSlotsDTO): unknown {
     const obj: any = {};
-    if (message.storageSlots?.length) {
-      obj.storageSlots = message.storageSlots.map((e) => StorageSlotDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => StorageSlotDTO.toJSON(e));
     }
     return obj;
   },
@@ -4708,7 +4701,7 @@ export const StorageSlotsDTO: MessageFns<StorageSlotsDTO> = {
   },
   fromPartial<I extends Exact<DeepPartial<StorageSlotsDTO>, I>>(object: I): StorageSlotsDTO {
     const message = createBaseStorageSlotsDTO();
-    message.storageSlots = object.storageSlots?.map((e) => StorageSlotDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => StorageSlotDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -4976,12 +4969,12 @@ export const ItemRequirementDTO: MessageFns<ItemRequirementDTO> = {
 };
 
 function createBaseItemRequirementsDTO(): ItemRequirementsDTO {
-  return { requirements: [] };
+  return { arr: [] };
 }
 
 export const ItemRequirementsDTO: MessageFns<ItemRequirementsDTO> = {
   encode(message: ItemRequirementsDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.requirements) {
+    for (const v of message.arr) {
       ItemRequirementDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -4999,7 +4992,7 @@ export const ItemRequirementsDTO: MessageFns<ItemRequirementsDTO> = {
             break;
           }
 
-          message.requirements.push(ItemRequirementDTO.decode(reader, reader.uint32()));
+          message.arr.push(ItemRequirementDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -5013,16 +5006,14 @@ export const ItemRequirementsDTO: MessageFns<ItemRequirementsDTO> = {
 
   fromJSON(object: any): ItemRequirementsDTO {
     return {
-      requirements: globalThis.Array.isArray(object?.requirements)
-        ? object.requirements.map((e: any) => ItemRequirementDTO.fromJSON(e))
-        : [],
+      arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => ItemRequirementDTO.fromJSON(e)) : [],
     };
   },
 
   toJSON(message: ItemRequirementsDTO): unknown {
     const obj: any = {};
-    if (message.requirements?.length) {
-      obj.requirements = message.requirements.map((e) => ItemRequirementDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => ItemRequirementDTO.toJSON(e));
     }
     return obj;
   },
@@ -5032,7 +5023,7 @@ export const ItemRequirementsDTO: MessageFns<ItemRequirementsDTO> = {
   },
   fromPartial<I extends Exact<DeepPartial<ItemRequirementsDTO>, I>>(object: I): ItemRequirementsDTO {
     const message = createBaseItemRequirementsDTO();
-    message.requirements = object.requirements?.map((e) => ItemRequirementDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => ItemRequirementDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -5646,12 +5637,12 @@ export const CharacterDTO_SkillsEntry: MessageFns<CharacterDTO_SkillsEntry> = {
 };
 
 function createBaseCharactersDTO(): CharactersDTO {
-  return { characters: [] };
+  return { arr: [] };
 }
 
 export const CharactersDTO: MessageFns<CharactersDTO> = {
   encode(message: CharactersDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.characters) {
+    for (const v of message.arr) {
       CharacterDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -5669,7 +5660,7 @@ export const CharactersDTO: MessageFns<CharactersDTO> = {
             break;
           }
 
-          message.characters.push(CharacterDTO.decode(reader, reader.uint32()));
+          message.arr.push(CharacterDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -5682,17 +5673,13 @@ export const CharactersDTO: MessageFns<CharactersDTO> = {
   },
 
   fromJSON(object: any): CharactersDTO {
-    return {
-      characters: globalThis.Array.isArray(object?.characters)
-        ? object.characters.map((e: any) => CharacterDTO.fromJSON(e))
-        : [],
-    };
+    return { arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => CharacterDTO.fromJSON(e)) : [] };
   },
 
   toJSON(message: CharactersDTO): unknown {
     const obj: any = {};
-    if (message.characters?.length) {
-      obj.characters = message.characters.map((e) => CharacterDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => CharacterDTO.toJSON(e));
     }
     return obj;
   },
@@ -5702,7 +5689,7 @@ export const CharactersDTO: MessageFns<CharactersDTO> = {
   },
   fromPartial<I extends Exact<DeepPartial<CharactersDTO>, I>>(object: I): CharactersDTO {
     const message = createBaseCharactersDTO();
-    message.characters = object.characters?.map((e) => CharacterDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => CharacterDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -5933,12 +5920,12 @@ export const AddictionDTO: MessageFns<AddictionDTO> = {
 };
 
 function createBaseAddictionsDTO(): AddictionsDTO {
-  return { addictions: [] };
+  return { arr: [] };
 }
 
 export const AddictionsDTO: MessageFns<AddictionsDTO> = {
   encode(message: AddictionsDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.addictions) {
+    for (const v of message.arr) {
       AddictionDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -5956,7 +5943,7 @@ export const AddictionsDTO: MessageFns<AddictionsDTO> = {
             break;
           }
 
-          message.addictions.push(AddictionDTO.decode(reader, reader.uint32()));
+          message.arr.push(AddictionDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -5969,17 +5956,13 @@ export const AddictionsDTO: MessageFns<AddictionsDTO> = {
   },
 
   fromJSON(object: any): AddictionsDTO {
-    return {
-      addictions: globalThis.Array.isArray(object?.addictions)
-        ? object.addictions.map((e: any) => AddictionDTO.fromJSON(e))
-        : [],
-    };
+    return { arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => AddictionDTO.fromJSON(e)) : [] };
   },
 
   toJSON(message: AddictionsDTO): unknown {
     const obj: any = {};
-    if (message.addictions?.length) {
-      obj.addictions = message.addictions.map((e) => AddictionDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => AddictionDTO.toJSON(e));
     }
     return obj;
   },
@@ -5989,7 +5972,7 @@ export const AddictionsDTO: MessageFns<AddictionsDTO> = {
   },
   fromPartial<I extends Exact<DeepPartial<AddictionsDTO>, I>>(object: I): AddictionsDTO {
     const message = createBaseAddictionsDTO();
-    message.addictions = object.addictions?.map((e) => AddictionDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => AddictionDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -6341,12 +6324,12 @@ export const CharacterMemoryDTO: MessageFns<CharacterMemoryDTO> = {
 };
 
 function createBaseCharacterMemoriesDTO(): CharacterMemoriesDTO {
-  return { characterMemories: [] };
+  return { arr: [] };
 }
 
 export const CharacterMemoriesDTO: MessageFns<CharacterMemoriesDTO> = {
   encode(message: CharacterMemoriesDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.characterMemories) {
+    for (const v of message.arr) {
       CharacterMemoryDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -6364,7 +6347,7 @@ export const CharacterMemoriesDTO: MessageFns<CharacterMemoriesDTO> = {
             break;
           }
 
-          message.characterMemories.push(CharacterMemoryDTO.decode(reader, reader.uint32()));
+          message.arr.push(CharacterMemoryDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -6378,16 +6361,14 @@ export const CharacterMemoriesDTO: MessageFns<CharacterMemoriesDTO> = {
 
   fromJSON(object: any): CharacterMemoriesDTO {
     return {
-      characterMemories: globalThis.Array.isArray(object?.characterMemories)
-        ? object.characterMemories.map((e: any) => CharacterMemoryDTO.fromJSON(e))
-        : [],
+      arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => CharacterMemoryDTO.fromJSON(e)) : [],
     };
   },
 
   toJSON(message: CharacterMemoriesDTO): unknown {
     const obj: any = {};
-    if (message.characterMemories?.length) {
-      obj.characterMemories = message.characterMemories.map((e) => CharacterMemoryDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => CharacterMemoryDTO.toJSON(e));
     }
     return obj;
   },
@@ -6397,7 +6378,7 @@ export const CharacterMemoriesDTO: MessageFns<CharacterMemoriesDTO> = {
   },
   fromPartial<I extends Exact<DeepPartial<CharacterMemoriesDTO>, I>>(object: I): CharacterMemoriesDTO {
     const message = createBaseCharacterMemoriesDTO();
-    message.characterMemories = object.characterMemories?.map((e) => CharacterMemoryDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => CharacterMemoryDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -6479,12 +6460,12 @@ export const FactStatusDTO: MessageFns<FactStatusDTO> = {
 };
 
 function createBaseFactStatusesDTO(): FactStatusesDTO {
-  return { factStatuses: [] };
+  return { arr: [] };
 }
 
 export const FactStatusesDTO: MessageFns<FactStatusesDTO> = {
   encode(message: FactStatusesDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.factStatuses) {
+    for (const v of message.arr) {
       FactStatusDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -6502,7 +6483,7 @@ export const FactStatusesDTO: MessageFns<FactStatusesDTO> = {
             break;
           }
 
-          message.factStatuses.push(FactStatusDTO.decode(reader, reader.uint32()));
+          message.arr.push(FactStatusDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -6515,17 +6496,13 @@ export const FactStatusesDTO: MessageFns<FactStatusesDTO> = {
   },
 
   fromJSON(object: any): FactStatusesDTO {
-    return {
-      factStatuses: globalThis.Array.isArray(object?.factStatuses)
-        ? object.factStatuses.map((e: any) => FactStatusDTO.fromJSON(e))
-        : [],
-    };
+    return { arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => FactStatusDTO.fromJSON(e)) : [] };
   },
 
   toJSON(message: FactStatusesDTO): unknown {
     const obj: any = {};
-    if (message.factStatuses?.length) {
-      obj.factStatuses = message.factStatuses.map((e) => FactStatusDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => FactStatusDTO.toJSON(e));
     }
     return obj;
   },
@@ -6535,7 +6512,7 @@ export const FactStatusesDTO: MessageFns<FactStatusesDTO> = {
   },
   fromPartial<I extends Exact<DeepPartial<FactStatusesDTO>, I>>(object: I): FactStatusesDTO {
     const message = createBaseFactStatusesDTO();
-    message.factStatuses = object.factStatuses?.map((e) => FactStatusDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => FactStatusDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -6996,12 +6973,12 @@ export const TagDTO: MessageFns<TagDTO> = {
 };
 
 function createBaseTagsDTO(): TagsDTO {
-  return { tags: [] };
+  return { arr: [] };
 }
 
 export const TagsDTO: MessageFns<TagsDTO> = {
   encode(message: TagsDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.tags) {
+    for (const v of message.arr) {
       TagDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -7019,7 +6996,7 @@ export const TagsDTO: MessageFns<TagsDTO> = {
             break;
           }
 
-          message.tags.push(TagDTO.decode(reader, reader.uint32()));
+          message.arr.push(TagDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -7032,13 +7009,13 @@ export const TagsDTO: MessageFns<TagsDTO> = {
   },
 
   fromJSON(object: any): TagsDTO {
-    return { tags: globalThis.Array.isArray(object?.tags) ? object.tags.map((e: any) => TagDTO.fromJSON(e)) : [] };
+    return { arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => TagDTO.fromJSON(e)) : [] };
   },
 
   toJSON(message: TagsDTO): unknown {
     const obj: any = {};
-    if (message.tags?.length) {
-      obj.tags = message.tags.map((e) => TagDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => TagDTO.toJSON(e));
     }
     return obj;
   },
@@ -7048,7 +7025,7 @@ export const TagsDTO: MessageFns<TagsDTO> = {
   },
   fromPartial<I extends Exact<DeepPartial<TagsDTO>, I>>(object: I): TagsDTO {
     const message = createBaseTagsDTO();
-    message.tags = object.tags?.map((e) => TagDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => TagDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -7292,12 +7269,12 @@ export const SkillDTO: MessageFns<SkillDTO> = {
 };
 
 function createBaseSkillsDTO(): SkillsDTO {
-  return { skills: [] };
+  return { arr: [] };
 }
 
 export const SkillsDTO: MessageFns<SkillsDTO> = {
   encode(message: SkillsDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.skills) {
+    for (const v of message.arr) {
       SkillDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -7315,7 +7292,7 @@ export const SkillsDTO: MessageFns<SkillsDTO> = {
             break;
           }
 
-          message.skills.push(SkillDTO.decode(reader, reader.uint32()));
+          message.arr.push(SkillDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -7328,15 +7305,13 @@ export const SkillsDTO: MessageFns<SkillsDTO> = {
   },
 
   fromJSON(object: any): SkillsDTO {
-    return {
-      skills: globalThis.Array.isArray(object?.skills) ? object.skills.map((e: any) => SkillDTO.fromJSON(e)) : [],
-    };
+    return { arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => SkillDTO.fromJSON(e)) : [] };
   },
 
   toJSON(message: SkillsDTO): unknown {
     const obj: any = {};
-    if (message.skills?.length) {
-      obj.skills = message.skills.map((e) => SkillDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => SkillDTO.toJSON(e));
     }
     return obj;
   },
@@ -7346,7 +7321,7 @@ export const SkillsDTO: MessageFns<SkillsDTO> = {
   },
   fromPartial<I extends Exact<DeepPartial<SkillsDTO>, I>>(object: I): SkillsDTO {
     const message = createBaseSkillsDTO();
-    message.skills = object.skills?.map((e) => SkillDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => SkillDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -7556,12 +7531,12 @@ export const TraitDTO: MessageFns<TraitDTO> = {
 };
 
 function createBaseTraitsDTO(): TraitsDTO {
-  return { traits: [] };
+  return { arr: [] };
 }
 
 export const TraitsDTO: MessageFns<TraitsDTO> = {
   encode(message: TraitsDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.traits) {
+    for (const v of message.arr) {
       TraitDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -7579,7 +7554,7 @@ export const TraitsDTO: MessageFns<TraitsDTO> = {
             break;
           }
 
-          message.traits.push(TraitDTO.decode(reader, reader.uint32()));
+          message.arr.push(TraitDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -7592,15 +7567,13 @@ export const TraitsDTO: MessageFns<TraitsDTO> = {
   },
 
   fromJSON(object: any): TraitsDTO {
-    return {
-      traits: globalThis.Array.isArray(object?.traits) ? object.traits.map((e: any) => TraitDTO.fromJSON(e)) : [],
-    };
+    return { arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => TraitDTO.fromJSON(e)) : [] };
   },
 
   toJSON(message: TraitsDTO): unknown {
     const obj: any = {};
-    if (message.traits?.length) {
-      obj.traits = message.traits.map((e) => TraitDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => TraitDTO.toJSON(e));
     }
     return obj;
   },
@@ -7610,7 +7583,7 @@ export const TraitsDTO: MessageFns<TraitsDTO> = {
   },
   fromPartial<I extends Exact<DeepPartial<TraitsDTO>, I>>(object: I): TraitsDTO {
     const message = createBaseTraitsDTO();
-    message.traits = object.traits?.map((e) => TraitDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => TraitDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -7873,12 +7846,12 @@ export const DiseaseDTO: MessageFns<DiseaseDTO> = {
 };
 
 function createBaseDiseasesDTO(): DiseasesDTO {
-  return { diseases: [] };
+  return { arr: [] };
 }
 
 export const DiseasesDTO: MessageFns<DiseasesDTO> = {
   encode(message: DiseasesDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.diseases) {
+    for (const v of message.arr) {
       DiseaseDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -7896,7 +7869,7 @@ export const DiseasesDTO: MessageFns<DiseasesDTO> = {
             break;
           }
 
-          message.diseases.push(DiseaseDTO.decode(reader, reader.uint32()));
+          message.arr.push(DiseaseDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -7909,17 +7882,13 @@ export const DiseasesDTO: MessageFns<DiseasesDTO> = {
   },
 
   fromJSON(object: any): DiseasesDTO {
-    return {
-      diseases: globalThis.Array.isArray(object?.diseases)
-        ? object.diseases.map((e: any) => DiseaseDTO.fromJSON(e))
-        : [],
-    };
+    return { arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => DiseaseDTO.fromJSON(e)) : [] };
   },
 
   toJSON(message: DiseasesDTO): unknown {
     const obj: any = {};
-    if (message.diseases?.length) {
-      obj.diseases = message.diseases.map((e) => DiseaseDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => DiseaseDTO.toJSON(e));
     }
     return obj;
   },
@@ -7929,7 +7898,7 @@ export const DiseasesDTO: MessageFns<DiseasesDTO> = {
   },
   fromPartial<I extends Exact<DeepPartial<DiseasesDTO>, I>>(object: I): DiseasesDTO {
     const message = createBaseDiseasesDTO();
-    message.diseases = object.diseases?.map((e) => DiseaseDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => DiseaseDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -8211,12 +8180,12 @@ export const FactDTO: MessageFns<FactDTO> = {
 };
 
 function createBaseFactsDTO(): FactsDTO {
-  return { facts: [] };
+  return { arr: [] };
 }
 
 export const FactsDTO: MessageFns<FactsDTO> = {
   encode(message: FactsDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.facts) {
+    for (const v of message.arr) {
       FactDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -8234,7 +8203,7 @@ export const FactsDTO: MessageFns<FactsDTO> = {
             break;
           }
 
-          message.facts.push(FactDTO.decode(reader, reader.uint32()));
+          message.arr.push(FactDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -8247,13 +8216,13 @@ export const FactsDTO: MessageFns<FactsDTO> = {
   },
 
   fromJSON(object: any): FactsDTO {
-    return { facts: globalThis.Array.isArray(object?.facts) ? object.facts.map((e: any) => FactDTO.fromJSON(e)) : [] };
+    return { arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => FactDTO.fromJSON(e)) : [] };
   },
 
   toJSON(message: FactsDTO): unknown {
     const obj: any = {};
-    if (message.facts?.length) {
-      obj.facts = message.facts.map((e) => FactDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => FactDTO.toJSON(e));
     }
     return obj;
   },
@@ -8263,7 +8232,7 @@ export const FactsDTO: MessageFns<FactsDTO> = {
   },
   fromPartial<I extends Exact<DeepPartial<FactsDTO>, I>>(object: I): FactsDTO {
     const message = createBaseFactsDTO();
-    message.facts = object.facts?.map((e) => FactDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => FactDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -8492,12 +8461,12 @@ export const FactionDTO: MessageFns<FactionDTO> = {
 };
 
 function createBaseFactionsDTO(): FactionsDTO {
-  return { factions: [] };
+  return { arr: [] };
 }
 
 export const FactionsDTO: MessageFns<FactionsDTO> = {
   encode(message: FactionsDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.factions) {
+    for (const v of message.arr) {
       FactionDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -8515,7 +8484,7 @@ export const FactionsDTO: MessageFns<FactionsDTO> = {
             break;
           }
 
-          message.factions.push(FactionDTO.decode(reader, reader.uint32()));
+          message.arr.push(FactionDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -8528,17 +8497,13 @@ export const FactionsDTO: MessageFns<FactionsDTO> = {
   },
 
   fromJSON(object: any): FactionsDTO {
-    return {
-      factions: globalThis.Array.isArray(object?.factions)
-        ? object.factions.map((e: any) => FactionDTO.fromJSON(e))
-        : [],
-    };
+    return { arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => FactionDTO.fromJSON(e)) : [] };
   },
 
   toJSON(message: FactionsDTO): unknown {
     const obj: any = {};
-    if (message.factions?.length) {
-      obj.factions = message.factions.map((e) => FactionDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => FactionDTO.toJSON(e));
     }
     return obj;
   },
@@ -8548,7 +8513,7 @@ export const FactionsDTO: MessageFns<FactionsDTO> = {
   },
   fromPartial<I extends Exact<DeepPartial<FactionsDTO>, I>>(object: I): FactionsDTO {
     const message = createBaseFactionsDTO();
-    message.factions = object.factions?.map((e) => FactionDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => FactionDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -8817,12 +8782,12 @@ export const MemoryPoolDTO: MessageFns<MemoryPoolDTO> = {
 };
 
 function createBaseMemoryPoolsDTO(): MemoryPoolsDTO {
-  return { memoryPools: [] };
+  return { arr: [] };
 }
 
 export const MemoryPoolsDTO: MessageFns<MemoryPoolsDTO> = {
   encode(message: MemoryPoolsDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.memoryPools) {
+    for (const v of message.arr) {
       MemoryPoolDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -8840,7 +8805,7 @@ export const MemoryPoolsDTO: MessageFns<MemoryPoolsDTO> = {
             break;
           }
 
-          message.memoryPools.push(MemoryPoolDTO.decode(reader, reader.uint32()));
+          message.arr.push(MemoryPoolDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -8853,17 +8818,13 @@ export const MemoryPoolsDTO: MessageFns<MemoryPoolsDTO> = {
   },
 
   fromJSON(object: any): MemoryPoolsDTO {
-    return {
-      memoryPools: globalThis.Array.isArray(object?.memoryPools)
-        ? object.memoryPools.map((e: any) => MemoryPoolDTO.fromJSON(e))
-        : [],
-    };
+    return { arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => MemoryPoolDTO.fromJSON(e)) : [] };
   },
 
   toJSON(message: MemoryPoolsDTO): unknown {
     const obj: any = {};
-    if (message.memoryPools?.length) {
-      obj.memoryPools = message.memoryPools.map((e) => MemoryPoolDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => MemoryPoolDTO.toJSON(e));
     }
     return obj;
   },
@@ -8873,7 +8834,7 @@ export const MemoryPoolsDTO: MessageFns<MemoryPoolsDTO> = {
   },
   fromPartial<I extends Exact<DeepPartial<MemoryPoolsDTO>, I>>(object: I): MemoryPoolsDTO {
     const message = createBaseMemoryPoolsDTO();
-    message.memoryPools = object.memoryPools?.map((e) => MemoryPoolDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => MemoryPoolDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -9155,12 +9116,12 @@ export const MemoryPoolEntryDTO: MessageFns<MemoryPoolEntryDTO> = {
 };
 
 function createBaseMemoryPoolEntriesDTO(): MemoryPoolEntriesDTO {
-  return { memoryPoolEntries: [] };
+  return { arr: [] };
 }
 
 export const MemoryPoolEntriesDTO: MessageFns<MemoryPoolEntriesDTO> = {
   encode(message: MemoryPoolEntriesDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.memoryPoolEntries) {
+    for (const v of message.arr) {
       MemoryPoolEntryDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -9178,7 +9139,7 @@ export const MemoryPoolEntriesDTO: MessageFns<MemoryPoolEntriesDTO> = {
             break;
           }
 
-          message.memoryPoolEntries.push(MemoryPoolEntryDTO.decode(reader, reader.uint32()));
+          message.arr.push(MemoryPoolEntryDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -9192,16 +9153,14 @@ export const MemoryPoolEntriesDTO: MessageFns<MemoryPoolEntriesDTO> = {
 
   fromJSON(object: any): MemoryPoolEntriesDTO {
     return {
-      memoryPoolEntries: globalThis.Array.isArray(object?.memoryPoolEntries)
-        ? object.memoryPoolEntries.map((e: any) => MemoryPoolEntryDTO.fromJSON(e))
-        : [],
+      arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => MemoryPoolEntryDTO.fromJSON(e)) : [],
     };
   },
 
   toJSON(message: MemoryPoolEntriesDTO): unknown {
     const obj: any = {};
-    if (message.memoryPoolEntries?.length) {
-      obj.memoryPoolEntries = message.memoryPoolEntries.map((e) => MemoryPoolEntryDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => MemoryPoolEntryDTO.toJSON(e));
     }
     return obj;
   },
@@ -9211,7 +9170,7 @@ export const MemoryPoolEntriesDTO: MessageFns<MemoryPoolEntriesDTO> = {
   },
   fromPartial<I extends Exact<DeepPartial<MemoryPoolEntriesDTO>, I>>(object: I): MemoryPoolEntriesDTO {
     const message = createBaseMemoryPoolEntriesDTO();
-    message.memoryPoolEntries = object.memoryPoolEntries?.map((e) => MemoryPoolEntryDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => MemoryPoolEntryDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -9459,12 +9418,12 @@ export const CharacterProfessionDTO: MessageFns<CharacterProfessionDTO> = {
 };
 
 function createBaseCharacterProfessionsDTO(): CharacterProfessionsDTO {
-  return { professions: [] };
+  return { arr: [] };
 }
 
 export const CharacterProfessionsDTO: MessageFns<CharacterProfessionsDTO> = {
   encode(message: CharacterProfessionsDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.professions) {
+    for (const v of message.arr) {
       CharacterProfessionDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -9482,7 +9441,7 @@ export const CharacterProfessionsDTO: MessageFns<CharacterProfessionsDTO> = {
             break;
           }
 
-          message.professions.push(CharacterProfessionDTO.decode(reader, reader.uint32()));
+          message.arr.push(CharacterProfessionDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -9496,16 +9455,14 @@ export const CharacterProfessionsDTO: MessageFns<CharacterProfessionsDTO> = {
 
   fromJSON(object: any): CharacterProfessionsDTO {
     return {
-      professions: globalThis.Array.isArray(object?.professions)
-        ? object.professions.map((e: any) => CharacterProfessionDTO.fromJSON(e))
-        : [],
+      arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => CharacterProfessionDTO.fromJSON(e)) : [],
     };
   },
 
   toJSON(message: CharacterProfessionsDTO): unknown {
     const obj: any = {};
-    if (message.professions?.length) {
-      obj.professions = message.professions.map((e) => CharacterProfessionDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => CharacterProfessionDTO.toJSON(e));
     }
     return obj;
   },
@@ -9515,7 +9472,7 @@ export const CharacterProfessionsDTO: MessageFns<CharacterProfessionsDTO> = {
   },
   fromPartial<I extends Exact<DeepPartial<CharacterProfessionsDTO>, I>>(object: I): CharacterProfessionsDTO {
     const message = createBaseCharacterProfessionsDTO();
-    message.professions = object.professions?.map((e) => CharacterProfessionDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => CharacterProfessionDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -9765,12 +9722,12 @@ export const EquipmentSlotDTO: MessageFns<EquipmentSlotDTO> = {
 };
 
 function createBaseEquipmentSlotsDTO(): EquipmentSlotsDTO {
-  return { equipmentSlots: [] };
+  return { arr: [] };
 }
 
 export const EquipmentSlotsDTO: MessageFns<EquipmentSlotsDTO> = {
   encode(message: EquipmentSlotsDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.equipmentSlots) {
+    for (const v of message.arr) {
       EquipmentSlotDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -9788,7 +9745,7 @@ export const EquipmentSlotsDTO: MessageFns<EquipmentSlotsDTO> = {
             break;
           }
 
-          message.equipmentSlots.push(EquipmentSlotDTO.decode(reader, reader.uint32()));
+          message.arr.push(EquipmentSlotDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -9802,16 +9759,14 @@ export const EquipmentSlotsDTO: MessageFns<EquipmentSlotsDTO> = {
 
   fromJSON(object: any): EquipmentSlotsDTO {
     return {
-      equipmentSlots: globalThis.Array.isArray(object?.equipmentSlots)
-        ? object.equipmentSlots.map((e: any) => EquipmentSlotDTO.fromJSON(e))
-        : [],
+      arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => EquipmentSlotDTO.fromJSON(e)) : [],
     };
   },
 
   toJSON(message: EquipmentSlotsDTO): unknown {
     const obj: any = {};
-    if (message.equipmentSlots?.length) {
-      obj.equipmentSlots = message.equipmentSlots.map((e) => EquipmentSlotDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => EquipmentSlotDTO.toJSON(e));
     }
     return obj;
   },
@@ -9821,7 +9776,7 @@ export const EquipmentSlotsDTO: MessageFns<EquipmentSlotsDTO> = {
   },
   fromPartial<I extends Exact<DeepPartial<EquipmentSlotsDTO>, I>>(object: I): EquipmentSlotsDTO {
     const message = createBaseEquipmentSlotsDTO();
-    message.equipmentSlots = object.equipmentSlots?.map((e) => EquipmentSlotDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => EquipmentSlotDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -10014,12 +9969,12 @@ export const BirthsignDTO: MessageFns<BirthsignDTO> = {
 };
 
 function createBaseBirthsignsDTO(): BirthsignsDTO {
-  return { birthSigns: [] };
+  return { arr: [] };
 }
 
 export const BirthsignsDTO: MessageFns<BirthsignsDTO> = {
   encode(message: BirthsignsDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.birthSigns) {
+    for (const v of message.arr) {
       BirthsignDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -10037,7 +9992,7 @@ export const BirthsignsDTO: MessageFns<BirthsignsDTO> = {
             break;
           }
 
-          message.birthSigns.push(BirthsignDTO.decode(reader, reader.uint32()));
+          message.arr.push(BirthsignDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -10050,17 +10005,13 @@ export const BirthsignsDTO: MessageFns<BirthsignsDTO> = {
   },
 
   fromJSON(object: any): BirthsignsDTO {
-    return {
-      birthSigns: globalThis.Array.isArray(object?.birthSigns)
-        ? object.birthSigns.map((e: any) => BirthsignDTO.fromJSON(e))
-        : [],
-    };
+    return { arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => BirthsignDTO.fromJSON(e)) : [] };
   },
 
   toJSON(message: BirthsignsDTO): unknown {
     const obj: any = {};
-    if (message.birthSigns?.length) {
-      obj.birthSigns = message.birthSigns.map((e) => BirthsignDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => BirthsignDTO.toJSON(e));
     }
     return obj;
   },
@@ -10070,7 +10021,7 @@ export const BirthsignsDTO: MessageFns<BirthsignsDTO> = {
   },
   fromPartial<I extends Exact<DeepPartial<BirthsignsDTO>, I>>(object: I): BirthsignsDTO {
     const message = createBaseBirthsignsDTO();
-    message.birthSigns = object.birthSigns?.map((e) => BirthsignDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => BirthsignDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -10285,12 +10236,12 @@ export const RaceDTO: MessageFns<RaceDTO> = {
 };
 
 function createBaseRacesDTO(): RacesDTO {
-  return { races: [] };
+  return { arr: [] };
 }
 
 export const RacesDTO: MessageFns<RacesDTO> = {
   encode(message: RacesDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.races) {
+    for (const v of message.arr) {
       RaceDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -10308,7 +10259,7 @@ export const RacesDTO: MessageFns<RacesDTO> = {
             break;
           }
 
-          message.races.push(RaceDTO.decode(reader, reader.uint32()));
+          message.arr.push(RaceDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -10321,13 +10272,13 @@ export const RacesDTO: MessageFns<RacesDTO> = {
   },
 
   fromJSON(object: any): RacesDTO {
-    return { races: globalThis.Array.isArray(object?.races) ? object.races.map((e: any) => RaceDTO.fromJSON(e)) : [] };
+    return { arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => RaceDTO.fromJSON(e)) : [] };
   },
 
   toJSON(message: RacesDTO): unknown {
     const obj: any = {};
-    if (message.races?.length) {
-      obj.races = message.races.map((e) => RaceDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => RaceDTO.toJSON(e));
     }
     return obj;
   },
@@ -10337,7 +10288,7 @@ export const RacesDTO: MessageFns<RacesDTO> = {
   },
   fromPartial<I extends Exact<DeepPartial<RacesDTO>, I>>(object: I): RacesDTO {
     const message = createBaseRacesDTO();
-    message.races = object.races?.map((e) => RaceDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => RaceDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -10421,12 +10372,12 @@ export const EquipmentSlotDefinitionDTO: MessageFns<EquipmentSlotDefinitionDTO> 
 };
 
 function createBaseEquipmentSlotDefinitionsDTO(): EquipmentSlotDefinitionsDTO {
-  return { equipmentSlotDefinition: [] };
+  return { arr: [] };
 }
 
 export const EquipmentSlotDefinitionsDTO: MessageFns<EquipmentSlotDefinitionsDTO> = {
   encode(message: EquipmentSlotDefinitionsDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.equipmentSlotDefinition) {
+    for (const v of message.arr) {
       EquipmentSlotDefinitionDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -10444,7 +10395,7 @@ export const EquipmentSlotDefinitionsDTO: MessageFns<EquipmentSlotDefinitionsDTO
             break;
           }
 
-          message.equipmentSlotDefinition.push(EquipmentSlotDefinitionDTO.decode(reader, reader.uint32()));
+          message.arr.push(EquipmentSlotDefinitionDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -10458,16 +10409,16 @@ export const EquipmentSlotDefinitionsDTO: MessageFns<EquipmentSlotDefinitionsDTO
 
   fromJSON(object: any): EquipmentSlotDefinitionsDTO {
     return {
-      equipmentSlotDefinition: globalThis.Array.isArray(object?.equipmentSlotDefinition)
-        ? object.equipmentSlotDefinition.map((e: any) => EquipmentSlotDefinitionDTO.fromJSON(e))
+      arr: globalThis.Array.isArray(object?.arr)
+        ? object.arr.map((e: any) => EquipmentSlotDefinitionDTO.fromJSON(e))
         : [],
     };
   },
 
   toJSON(message: EquipmentSlotDefinitionsDTO): unknown {
     const obj: any = {};
-    if (message.equipmentSlotDefinition?.length) {
-      obj.equipmentSlotDefinition = message.equipmentSlotDefinition.map((e) => EquipmentSlotDefinitionDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => EquipmentSlotDefinitionDTO.toJSON(e));
     }
     return obj;
   },
@@ -10477,8 +10428,7 @@ export const EquipmentSlotDefinitionsDTO: MessageFns<EquipmentSlotDefinitionsDTO
   },
   fromPartial<I extends Exact<DeepPartial<EquipmentSlotDefinitionsDTO>, I>>(object: I): EquipmentSlotDefinitionsDTO {
     const message = createBaseEquipmentSlotDefinitionsDTO();
-    message.equipmentSlotDefinition =
-      object.equipmentSlotDefinition?.map((e) => EquipmentSlotDefinitionDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => EquipmentSlotDefinitionDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -10588,12 +10538,12 @@ export const StorageSlotDefinitionDTO: MessageFns<StorageSlotDefinitionDTO> = {
 };
 
 function createBaseStorageSlotDefinitionsDTO(): StorageSlotDefinitionsDTO {
-  return { definitions: [] };
+  return { arr: [] };
 }
 
 export const StorageSlotDefinitionsDTO: MessageFns<StorageSlotDefinitionsDTO> = {
   encode(message: StorageSlotDefinitionsDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.definitions) {
+    for (const v of message.arr) {
       StorageSlotDefinitionDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -10611,7 +10561,7 @@ export const StorageSlotDefinitionsDTO: MessageFns<StorageSlotDefinitionsDTO> = 
             break;
           }
 
-          message.definitions.push(StorageSlotDefinitionDTO.decode(reader, reader.uint32()));
+          message.arr.push(StorageSlotDefinitionDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -10625,16 +10575,16 @@ export const StorageSlotDefinitionsDTO: MessageFns<StorageSlotDefinitionsDTO> = 
 
   fromJSON(object: any): StorageSlotDefinitionsDTO {
     return {
-      definitions: globalThis.Array.isArray(object?.definitions)
-        ? object.definitions.map((e: any) => StorageSlotDefinitionDTO.fromJSON(e))
+      arr: globalThis.Array.isArray(object?.arr)
+        ? object.arr.map((e: any) => StorageSlotDefinitionDTO.fromJSON(e))
         : [],
     };
   },
 
   toJSON(message: StorageSlotDefinitionsDTO): unknown {
     const obj: any = {};
-    if (message.definitions?.length) {
-      obj.definitions = message.definitions.map((e) => StorageSlotDefinitionDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => StorageSlotDefinitionDTO.toJSON(e));
     }
     return obj;
   },
@@ -10644,7 +10594,7 @@ export const StorageSlotDefinitionsDTO: MessageFns<StorageSlotDefinitionsDTO> = 
   },
   fromPartial<I extends Exact<DeepPartial<StorageSlotDefinitionsDTO>, I>>(object: I): StorageSlotDefinitionsDTO {
     const message = createBaseStorageSlotDefinitionsDTO();
-    message.definitions = object.definitions?.map((e) => StorageSlotDefinitionDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => StorageSlotDefinitionDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -10854,12 +10804,12 @@ export const MoodDTO: MessageFns<MoodDTO> = {
 };
 
 function createBaseMoodsDTO(): MoodsDTO {
-  return { moods: [] };
+  return { arr: [] };
 }
 
 export const MoodsDTO: MessageFns<MoodsDTO> = {
   encode(message: MoodsDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.moods) {
+    for (const v of message.arr) {
       MoodDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -10877,7 +10827,7 @@ export const MoodsDTO: MessageFns<MoodsDTO> = {
             break;
           }
 
-          message.moods.push(MoodDTO.decode(reader, reader.uint32()));
+          message.arr.push(MoodDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -10890,13 +10840,13 @@ export const MoodsDTO: MessageFns<MoodsDTO> = {
   },
 
   fromJSON(object: any): MoodsDTO {
-    return { moods: globalThis.Array.isArray(object?.moods) ? object.moods.map((e: any) => MoodDTO.fromJSON(e)) : [] };
+    return { arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => MoodDTO.fromJSON(e)) : [] };
   },
 
   toJSON(message: MoodsDTO): unknown {
     const obj: any = {};
-    if (message.moods?.length) {
-      obj.moods = message.moods.map((e) => MoodDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => MoodDTO.toJSON(e));
     }
     return obj;
   },
@@ -10906,7 +10856,7 @@ export const MoodsDTO: MessageFns<MoodsDTO> = {
   },
   fromPartial<I extends Exact<DeepPartial<MoodsDTO>, I>>(object: I): MoodsDTO {
     const message = createBaseMoodsDTO();
-    message.moods = object.moods?.map((e) => MoodDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => MoodDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -11154,12 +11104,12 @@ export const ReligionDTO: MessageFns<ReligionDTO> = {
 };
 
 function createBaseReligionsDTO(): ReligionsDTO {
-  return { moods: [] };
+  return { arr: [] };
 }
 
 export const ReligionsDTO: MessageFns<ReligionsDTO> = {
   encode(message: ReligionsDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.moods) {
+    for (const v of message.arr) {
       ReligionDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -11177,7 +11127,7 @@ export const ReligionsDTO: MessageFns<ReligionsDTO> = {
             break;
           }
 
-          message.moods.push(ReligionDTO.decode(reader, reader.uint32()));
+          message.arr.push(ReligionDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -11190,15 +11140,13 @@ export const ReligionsDTO: MessageFns<ReligionsDTO> = {
   },
 
   fromJSON(object: any): ReligionsDTO {
-    return {
-      moods: globalThis.Array.isArray(object?.moods) ? object.moods.map((e: any) => ReligionDTO.fromJSON(e)) : [],
-    };
+    return { arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => ReligionDTO.fromJSON(e)) : [] };
   },
 
   toJSON(message: ReligionsDTO): unknown {
     const obj: any = {};
-    if (message.moods?.length) {
-      obj.moods = message.moods.map((e) => ReligionDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => ReligionDTO.toJSON(e));
     }
     return obj;
   },
@@ -11208,7 +11156,7 @@ export const ReligionsDTO: MessageFns<ReligionsDTO> = {
   },
   fromPartial<I extends Exact<DeepPartial<ReligionsDTO>, I>>(object: I): ReligionsDTO {
     const message = createBaseReligionsDTO();
-    message.moods = object.moods?.map((e) => ReligionDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => ReligionDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -11290,12 +11238,12 @@ export const ReligionRitualDTO: MessageFns<ReligionRitualDTO> = {
 };
 
 function createBaseReligionRitualsDTO(): ReligionRitualsDTO {
-  return { religionRituals: [] };
+  return { arr: [] };
 }
 
 export const ReligionRitualsDTO: MessageFns<ReligionRitualsDTO> = {
   encode(message: ReligionRitualsDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.religionRituals) {
+    for (const v of message.arr) {
       ReligionRitualDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -11313,7 +11261,7 @@ export const ReligionRitualsDTO: MessageFns<ReligionRitualsDTO> = {
             break;
           }
 
-          message.religionRituals.push(ReligionRitualDTO.decode(reader, reader.uint32()));
+          message.arr.push(ReligionRitualDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -11327,16 +11275,14 @@ export const ReligionRitualsDTO: MessageFns<ReligionRitualsDTO> = {
 
   fromJSON(object: any): ReligionRitualsDTO {
     return {
-      religionRituals: globalThis.Array.isArray(object?.religionRituals)
-        ? object.religionRituals.map((e: any) => ReligionRitualDTO.fromJSON(e))
-        : [],
+      arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => ReligionRitualDTO.fromJSON(e)) : [],
     };
   },
 
   toJSON(message: ReligionRitualsDTO): unknown {
     const obj: any = {};
-    if (message.religionRituals?.length) {
-      obj.religionRituals = message.religionRituals.map((e) => ReligionRitualDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => ReligionRitualDTO.toJSON(e));
     }
     return obj;
   },
@@ -11346,7 +11292,7 @@ export const ReligionRitualsDTO: MessageFns<ReligionRitualsDTO> = {
   },
   fromPartial<I extends Exact<DeepPartial<ReligionRitualsDTO>, I>>(object: I): ReligionRitualsDTO {
     const message = createBaseReligionRitualsDTO();
-    message.religionRituals = object.religionRituals?.map((e) => ReligionRitualDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => ReligionRitualDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -11428,12 +11374,12 @@ export const ReligionTenetDTO: MessageFns<ReligionTenetDTO> = {
 };
 
 function createBaseReligionTenetsDTO(): ReligionTenetsDTO {
-  return { religionTenets: [] };
+  return { arr: [] };
 }
 
 export const ReligionTenetsDTO: MessageFns<ReligionTenetsDTO> = {
   encode(message: ReligionTenetsDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.religionTenets) {
+    for (const v of message.arr) {
       ReligionTenetDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -11451,7 +11397,7 @@ export const ReligionTenetsDTO: MessageFns<ReligionTenetsDTO> = {
             break;
           }
 
-          message.religionTenets.push(ReligionTenetDTO.decode(reader, reader.uint32()));
+          message.arr.push(ReligionTenetDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -11465,16 +11411,14 @@ export const ReligionTenetsDTO: MessageFns<ReligionTenetsDTO> = {
 
   fromJSON(object: any): ReligionTenetsDTO {
     return {
-      religionTenets: globalThis.Array.isArray(object?.religionTenets)
-        ? object.religionTenets.map((e: any) => ReligionTenetDTO.fromJSON(e))
-        : [],
+      arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => ReligionTenetDTO.fromJSON(e)) : [],
     };
   },
 
   toJSON(message: ReligionTenetsDTO): unknown {
     const obj: any = {};
-    if (message.religionTenets?.length) {
-      obj.religionTenets = message.religionTenets.map((e) => ReligionTenetDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => ReligionTenetDTO.toJSON(e));
     }
     return obj;
   },
@@ -11484,7 +11428,7 @@ export const ReligionTenetsDTO: MessageFns<ReligionTenetsDTO> = {
   },
   fromPartial<I extends Exact<DeepPartial<ReligionTenetsDTO>, I>>(object: I): ReligionTenetsDTO {
     const message = createBaseReligionTenetsDTO();
-    message.religionTenets = object.religionTenets?.map((e) => ReligionTenetDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => ReligionTenetDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -11704,12 +11648,12 @@ export const GenerationInstructionDTO: MessageFns<GenerationInstructionDTO> = {
 };
 
 function createBaseGenerationInstructionsDTO(): GenerationInstructionsDTO {
-  return { instructions: [] };
+  return { arr: [] };
 }
 
 export const GenerationInstructionsDTO: MessageFns<GenerationInstructionsDTO> = {
   encode(message: GenerationInstructionsDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.instructions) {
+    for (const v of message.arr) {
       GenerationInstructionDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -11727,7 +11671,7 @@ export const GenerationInstructionsDTO: MessageFns<GenerationInstructionsDTO> = 
             break;
           }
 
-          message.instructions.push(GenerationInstructionDTO.decode(reader, reader.uint32()));
+          message.arr.push(GenerationInstructionDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -11741,16 +11685,16 @@ export const GenerationInstructionsDTO: MessageFns<GenerationInstructionsDTO> = 
 
   fromJSON(object: any): GenerationInstructionsDTO {
     return {
-      instructions: globalThis.Array.isArray(object?.instructions)
-        ? object.instructions.map((e: any) => GenerationInstructionDTO.fromJSON(e))
+      arr: globalThis.Array.isArray(object?.arr)
+        ? object.arr.map((e: any) => GenerationInstructionDTO.fromJSON(e))
         : [],
     };
   },
 
   toJSON(message: GenerationInstructionsDTO): unknown {
     const obj: any = {};
-    if (message.instructions?.length) {
-      obj.instructions = message.instructions.map((e) => GenerationInstructionDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => GenerationInstructionDTO.toJSON(e));
     }
     return obj;
   },
@@ -11760,7 +11704,7 @@ export const GenerationInstructionsDTO: MessageFns<GenerationInstructionsDTO> = 
   },
   fromPartial<I extends Exact<DeepPartial<GenerationInstructionsDTO>, I>>(object: I): GenerationInstructionsDTO {
     const message = createBaseGenerationInstructionsDTO();
-    message.instructions = object.instructions?.map((e) => GenerationInstructionDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => GenerationInstructionDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -11926,12 +11870,12 @@ export const IdAndQuantDTO_IdAndQuantEntry: MessageFns<IdAndQuantDTO_IdAndQuantE
 };
 
 function createBaseIdsAndQuantsDTO(): IdsAndQuantsDTO {
-  return { idsAndQuants: [] };
+  return { arr: [] };
 }
 
 export const IdsAndQuantsDTO: MessageFns<IdsAndQuantsDTO> = {
   encode(message: IdsAndQuantsDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.idsAndQuants) {
+    for (const v of message.arr) {
       IdAndQuantDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -11949,7 +11893,7 @@ export const IdsAndQuantsDTO: MessageFns<IdsAndQuantsDTO> = {
             break;
           }
 
-          message.idsAndQuants.push(IdAndQuantDTO.decode(reader, reader.uint32()));
+          message.arr.push(IdAndQuantDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -11962,17 +11906,13 @@ export const IdsAndQuantsDTO: MessageFns<IdsAndQuantsDTO> = {
   },
 
   fromJSON(object: any): IdsAndQuantsDTO {
-    return {
-      idsAndQuants: globalThis.Array.isArray(object?.idsAndQuants)
-        ? object.idsAndQuants.map((e: any) => IdAndQuantDTO.fromJSON(e))
-        : [],
-    };
+    return { arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => IdAndQuantDTO.fromJSON(e)) : [] };
   },
 
   toJSON(message: IdsAndQuantsDTO): unknown {
     const obj: any = {};
-    if (message.idsAndQuants?.length) {
-      obj.idsAndQuants = message.idsAndQuants.map((e) => IdAndQuantDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => IdAndQuantDTO.toJSON(e));
     }
     return obj;
   },
@@ -11982,7 +11922,7 @@ export const IdsAndQuantsDTO: MessageFns<IdsAndQuantsDTO> = {
   },
   fromPartial<I extends Exact<DeepPartial<IdsAndQuantsDTO>, I>>(object: I): IdsAndQuantsDTO {
     const message = createBaseIdsAndQuantsDTO();
-    message.idsAndQuants = object.idsAndQuants?.map((e) => IdAndQuantDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => IdAndQuantDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -12333,12 +12273,12 @@ export const CharacterGenInstructionDTO: MessageFns<CharacterGenInstructionDTO> 
 };
 
 function createBaseCharacterGenInstructions(): CharacterGenInstructions {
-  return { characterGenInstructions: [] };
+  return { arr: [] };
 }
 
 export const CharacterGenInstructions: MessageFns<CharacterGenInstructions> = {
   encode(message: CharacterGenInstructions, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.characterGenInstructions) {
+    for (const v of message.arr) {
       CharacterGenInstructionDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -12356,7 +12296,7 @@ export const CharacterGenInstructions: MessageFns<CharacterGenInstructions> = {
             break;
           }
 
-          message.characterGenInstructions.push(CharacterGenInstructionDTO.decode(reader, reader.uint32()));
+          message.arr.push(CharacterGenInstructionDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -12370,16 +12310,16 @@ export const CharacterGenInstructions: MessageFns<CharacterGenInstructions> = {
 
   fromJSON(object: any): CharacterGenInstructions {
     return {
-      characterGenInstructions: globalThis.Array.isArray(object?.characterGenInstructions)
-        ? object.characterGenInstructions.map((e: any) => CharacterGenInstructionDTO.fromJSON(e))
+      arr: globalThis.Array.isArray(object?.arr)
+        ? object.arr.map((e: any) => CharacterGenInstructionDTO.fromJSON(e))
         : [],
     };
   },
 
   toJSON(message: CharacterGenInstructions): unknown {
     const obj: any = {};
-    if (message.characterGenInstructions?.length) {
-      obj.characterGenInstructions = message.characterGenInstructions.map((e) => CharacterGenInstructionDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => CharacterGenInstructionDTO.toJSON(e));
     }
     return obj;
   },
@@ -12389,8 +12329,7 @@ export const CharacterGenInstructions: MessageFns<CharacterGenInstructions> = {
   },
   fromPartial<I extends Exact<DeepPartial<CharacterGenInstructions>, I>>(object: I): CharacterGenInstructions {
     const message = createBaseCharacterGenInstructions();
-    message.characterGenInstructions =
-      object.characterGenInstructions?.map((e) => CharacterGenInstructionDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => CharacterGenInstructionDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -12602,12 +12541,12 @@ export const CharacterGroupGenInstructionDTO: MessageFns<CharacterGroupGenInstru
 };
 
 function createBaseCharacterGroupGenInstructionsDTO(): CharacterGroupGenInstructionsDTO {
-  return { characterGroupGenInstructions: [] };
+  return { arr: [] };
 }
 
 export const CharacterGroupGenInstructionsDTO: MessageFns<CharacterGroupGenInstructionsDTO> = {
   encode(message: CharacterGroupGenInstructionsDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.characterGroupGenInstructions) {
+    for (const v of message.arr) {
       CharacterGroupGenInstructionDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -12625,7 +12564,7 @@ export const CharacterGroupGenInstructionsDTO: MessageFns<CharacterGroupGenInstr
             break;
           }
 
-          message.characterGroupGenInstructions.push(CharacterGroupGenInstructionDTO.decode(reader, reader.uint32()));
+          message.arr.push(CharacterGroupGenInstructionDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -12639,18 +12578,16 @@ export const CharacterGroupGenInstructionsDTO: MessageFns<CharacterGroupGenInstr
 
   fromJSON(object: any): CharacterGroupGenInstructionsDTO {
     return {
-      characterGroupGenInstructions: globalThis.Array.isArray(object?.characterGroupGenInstructions)
-        ? object.characterGroupGenInstructions.map((e: any) => CharacterGroupGenInstructionDTO.fromJSON(e))
+      arr: globalThis.Array.isArray(object?.arr)
+        ? object.arr.map((e: any) => CharacterGroupGenInstructionDTO.fromJSON(e))
         : [],
     };
   },
 
   toJSON(message: CharacterGroupGenInstructionsDTO): unknown {
     const obj: any = {};
-    if (message.characterGroupGenInstructions?.length) {
-      obj.characterGroupGenInstructions = message.characterGroupGenInstructions.map((e) =>
-        CharacterGroupGenInstructionDTO.toJSON(e)
-      );
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => CharacterGroupGenInstructionDTO.toJSON(e));
     }
     return obj;
   },
@@ -12664,8 +12601,7 @@ export const CharacterGroupGenInstructionsDTO: MessageFns<CharacterGroupGenInstr
     object: I,
   ): CharacterGroupGenInstructionsDTO {
     const message = createBaseCharacterGroupGenInstructionsDTO();
-    message.characterGroupGenInstructions =
-      object.characterGroupGenInstructions?.map((e) => CharacterGroupGenInstructionDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => CharacterGroupGenInstructionDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -13801,12 +13737,12 @@ export const PastExperienceDTO: MessageFns<PastExperienceDTO> = {
 };
 
 function createBasePastExperiencesDTO(): PastExperiencesDTO {
-  return { pastExperiences: [] };
+  return { arr: [] };
 }
 
 export const PastExperiencesDTO: MessageFns<PastExperiencesDTO> = {
   encode(message: PastExperiencesDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.pastExperiences) {
+    for (const v of message.arr) {
       PastExperienceDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -13824,7 +13760,7 @@ export const PastExperiencesDTO: MessageFns<PastExperiencesDTO> = {
             break;
           }
 
-          message.pastExperiences.push(PastExperienceDTO.decode(reader, reader.uint32()));
+          message.arr.push(PastExperienceDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -13838,16 +13774,14 @@ export const PastExperiencesDTO: MessageFns<PastExperiencesDTO> = {
 
   fromJSON(object: any): PastExperiencesDTO {
     return {
-      pastExperiences: globalThis.Array.isArray(object?.pastExperiences)
-        ? object.pastExperiences.map((e: any) => PastExperienceDTO.fromJSON(e))
-        : [],
+      arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => PastExperienceDTO.fromJSON(e)) : [],
     };
   },
 
   toJSON(message: PastExperiencesDTO): unknown {
     const obj: any = {};
-    if (message.pastExperiences?.length) {
-      obj.pastExperiences = message.pastExperiences.map((e) => PastExperienceDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => PastExperienceDTO.toJSON(e));
     }
     return obj;
   },
@@ -13857,7 +13791,7 @@ export const PastExperiencesDTO: MessageFns<PastExperiencesDTO> = {
   },
   fromPartial<I extends Exact<DeepPartial<PastExperiencesDTO>, I>>(object: I): PastExperiencesDTO {
     const message = createBasePastExperiencesDTO();
-    message.pastExperiences = object.pastExperiences?.map((e) => PastExperienceDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => PastExperienceDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -14120,12 +14054,12 @@ export const MemoryDTO: MessageFns<MemoryDTO> = {
 };
 
 function createBaseMemoriesDTO(): MemoriesDTO {
-  return { memories: [] };
+  return { arr: [] };
 }
 
 export const MemoriesDTO: MessageFns<MemoriesDTO> = {
   encode(message: MemoriesDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.memories) {
+    for (const v of message.arr) {
       MemoryDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -14143,7 +14077,7 @@ export const MemoriesDTO: MessageFns<MemoriesDTO> = {
             break;
           }
 
-          message.memories.push(MemoryDTO.decode(reader, reader.uint32()));
+          message.arr.push(MemoryDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -14156,17 +14090,13 @@ export const MemoriesDTO: MessageFns<MemoriesDTO> = {
   },
 
   fromJSON(object: any): MemoriesDTO {
-    return {
-      memories: globalThis.Array.isArray(object?.memories)
-        ? object.memories.map((e: any) => MemoryDTO.fromJSON(e))
-        : [],
-    };
+    return { arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => MemoryDTO.fromJSON(e)) : [] };
   },
 
   toJSON(message: MemoriesDTO): unknown {
     const obj: any = {};
-    if (message.memories?.length) {
-      obj.memories = message.memories.map((e) => MemoryDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => MemoryDTO.toJSON(e));
     }
     return obj;
   },
@@ -14176,7 +14106,7 @@ export const MemoriesDTO: MessageFns<MemoriesDTO> = {
   },
   fromPartial<I extends Exact<DeepPartial<MemoriesDTO>, I>>(object: I): MemoriesDTO {
     const message = createBaseMemoriesDTO();
-    message.memories = object.memories?.map((e) => MemoryDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => MemoryDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -14407,12 +14337,12 @@ export const SkillSetDTO: MessageFns<SkillSetDTO> = {
 };
 
 function createBaseSkillSetsDTO(): SkillSetsDTO {
-  return { skillSets: [] };
+  return { arr: [] };
 }
 
 export const SkillSetsDTO: MessageFns<SkillSetsDTO> = {
   encode(message: SkillSetsDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.skillSets) {
+    for (const v of message.arr) {
       SkillSetDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -14430,7 +14360,7 @@ export const SkillSetsDTO: MessageFns<SkillSetsDTO> = {
             break;
           }
 
-          message.skillSets.push(SkillSetDTO.decode(reader, reader.uint32()));
+          message.arr.push(SkillSetDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -14443,17 +14373,13 @@ export const SkillSetsDTO: MessageFns<SkillSetsDTO> = {
   },
 
   fromJSON(object: any): SkillSetsDTO {
-    return {
-      skillSets: globalThis.Array.isArray(object?.skillSets)
-        ? object.skillSets.map((e: any) => SkillSetDTO.fromJSON(e))
-        : [],
-    };
+    return { arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => SkillSetDTO.fromJSON(e)) : [] };
   },
 
   toJSON(message: SkillSetsDTO): unknown {
     const obj: any = {};
-    if (message.skillSets?.length) {
-      obj.skillSets = message.skillSets.map((e) => SkillSetDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => SkillSetDTO.toJSON(e));
     }
     return obj;
   },
@@ -14463,7 +14389,7 @@ export const SkillSetsDTO: MessageFns<SkillSetsDTO> = {
   },
   fromPartial<I extends Exact<DeepPartial<SkillSetsDTO>, I>>(object: I): SkillSetsDTO {
     const message = createBaseSkillSetsDTO();
-    message.skillSets = object.skillSets?.map((e) => SkillSetDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => SkillSetDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -14854,12 +14780,12 @@ export const PersonalityProfileDTO: MessageFns<PersonalityProfileDTO> = {
 };
 
 function createBasePersonalityProfilesDTO(): PersonalityProfilesDTO {
-  return { personalityProfiles: [] };
+  return { arr: [] };
 }
 
 export const PersonalityProfilesDTO: MessageFns<PersonalityProfilesDTO> = {
   encode(message: PersonalityProfilesDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.personalityProfiles) {
+    for (const v of message.arr) {
       PersonalityProfileDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -14877,7 +14803,7 @@ export const PersonalityProfilesDTO: MessageFns<PersonalityProfilesDTO> = {
             break;
           }
 
-          message.personalityProfiles.push(PersonalityProfileDTO.decode(reader, reader.uint32()));
+          message.arr.push(PersonalityProfileDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -14891,16 +14817,14 @@ export const PersonalityProfilesDTO: MessageFns<PersonalityProfilesDTO> = {
 
   fromJSON(object: any): PersonalityProfilesDTO {
     return {
-      personalityProfiles: globalThis.Array.isArray(object?.personalityProfiles)
-        ? object.personalityProfiles.map((e: any) => PersonalityProfileDTO.fromJSON(e))
-        : [],
+      arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => PersonalityProfileDTO.fromJSON(e)) : [],
     };
   },
 
   toJSON(message: PersonalityProfilesDTO): unknown {
     const obj: any = {};
-    if (message.personalityProfiles?.length) {
-      obj.personalityProfiles = message.personalityProfiles.map((e) => PersonalityProfileDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => PersonalityProfileDTO.toJSON(e));
     }
     return obj;
   },
@@ -14910,7 +14834,7 @@ export const PersonalityProfilesDTO: MessageFns<PersonalityProfilesDTO> = {
   },
   fromPartial<I extends Exact<DeepPartial<PersonalityProfilesDTO>, I>>(object: I): PersonalityProfilesDTO {
     const message = createBasePersonalityProfilesDTO();
-    message.personalityProfiles = object.personalityProfiles?.map((e) => PersonalityProfileDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => PersonalityProfileDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -15154,12 +15078,12 @@ export const NeedDTO: MessageFns<NeedDTO> = {
 };
 
 function createBaseNeedsDTO(): NeedsDTO {
-  return { needs: [] };
+  return { arr: [] };
 }
 
 export const NeedsDTO: MessageFns<NeedsDTO> = {
   encode(message: NeedsDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.needs) {
+    for (const v of message.arr) {
       NeedDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -15177,7 +15101,7 @@ export const NeedsDTO: MessageFns<NeedsDTO> = {
             break;
           }
 
-          message.needs.push(NeedDTO.decode(reader, reader.uint32()));
+          message.arr.push(NeedDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -15190,13 +15114,13 @@ export const NeedsDTO: MessageFns<NeedsDTO> = {
   },
 
   fromJSON(object: any): NeedsDTO {
-    return { needs: globalThis.Array.isArray(object?.needs) ? object.needs.map((e: any) => NeedDTO.fromJSON(e)) : [] };
+    return { arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => NeedDTO.fromJSON(e)) : [] };
   },
 
   toJSON(message: NeedsDTO): unknown {
     const obj: any = {};
-    if (message.needs?.length) {
-      obj.needs = message.needs.map((e) => NeedDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => NeedDTO.toJSON(e));
     }
     return obj;
   },
@@ -15206,7 +15130,7 @@ export const NeedsDTO: MessageFns<NeedsDTO> = {
   },
   fromPartial<I extends Exact<DeepPartial<NeedsDTO>, I>>(object: I): NeedsDTO {
     const message = createBaseNeedsDTO();
-    message.needs = object.needs?.map((e) => NeedDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => NeedDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -15244,6 +15168,7 @@ function createBaseUserDTO(): UserDTO {
     resistances: undefined,
     statuses: undefined,
     tags: undefined,
+    account: undefined,
   };
 }
 
@@ -15341,6 +15266,9 @@ export const UserDTO: MessageFns<UserDTO> = {
     }
     if (message.tags !== undefined) {
       TagsDTO.encode(message.tags, writer.uint32(250).fork()).join();
+    }
+    if (message.account !== undefined) {
+      AccountDTO.encode(message.account, writer.uint32(258).fork()).join();
     }
     return writer;
   },
@@ -15600,6 +15528,14 @@ export const UserDTO: MessageFns<UserDTO> = {
           message.tags = TagsDTO.decode(reader, reader.uint32());
           continue;
         }
+        case 32: {
+          if (tag !== 258) {
+            break;
+          }
+
+          message.account = AccountDTO.decode(reader, reader.uint32());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -15650,6 +15586,7 @@ export const UserDTO: MessageFns<UserDTO> = {
       resistances: isSet(object.resistances) ? ResistancesDTO.fromJSON(object.resistances) : undefined,
       statuses: isSet(object.statuses) ? StatusesDTO.fromJSON(object.statuses) : undefined,
       tags: isSet(object.tags) ? TagsDTO.fromJSON(object.tags) : undefined,
+      account: isSet(object.account) ? AccountDTO.fromJSON(object.account) : undefined,
     };
   },
 
@@ -15748,6 +15685,9 @@ export const UserDTO: MessageFns<UserDTO> = {
     if (message.tags !== undefined) {
       obj.tags = TagsDTO.toJSON(message.tags);
     }
+    if (message.account !== undefined) {
+      obj.account = AccountDTO.toJSON(message.account);
+    }
     return obj;
   },
 
@@ -15845,17 +15785,20 @@ export const UserDTO: MessageFns<UserDTO> = {
       ? StatusesDTO.fromPartial(object.statuses)
       : undefined;
     message.tags = (object.tags !== undefined && object.tags !== null) ? TagsDTO.fromPartial(object.tags) : undefined;
+    message.account = (object.account !== undefined && object.account !== null)
+      ? AccountDTO.fromPartial(object.account)
+      : undefined;
     return message;
   },
 };
 
 function createBaseUsersDTO(): UsersDTO {
-  return { users: [] };
+  return { arr: [] };
 }
 
 export const UsersDTO: MessageFns<UsersDTO> = {
   encode(message: UsersDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.users) {
+    for (const v of message.arr) {
       UserDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -15873,7 +15816,7 @@ export const UsersDTO: MessageFns<UsersDTO> = {
             break;
           }
 
-          message.users.push(UserDTO.decode(reader, reader.uint32()));
+          message.arr.push(UserDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -15886,13 +15829,13 @@ export const UsersDTO: MessageFns<UsersDTO> = {
   },
 
   fromJSON(object: any): UsersDTO {
-    return { users: globalThis.Array.isArray(object?.users) ? object.users.map((e: any) => UserDTO.fromJSON(e)) : [] };
+    return { arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => UserDTO.fromJSON(e)) : [] };
   },
 
   toJSON(message: UsersDTO): unknown {
     const obj: any = {};
-    if (message.users?.length) {
-      obj.users = message.users.map((e) => UserDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => UserDTO.toJSON(e));
     }
     return obj;
   },
@@ -15902,7 +15845,192 @@ export const UsersDTO: MessageFns<UsersDTO> = {
   },
   fromPartial<I extends Exact<DeepPartial<UsersDTO>, I>>(object: I): UsersDTO {
     const message = createBaseUsersDTO();
-    message.users = object.users?.map((e) => UserDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => UserDTO.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseAccountDTO(): AccountDTO {
+  return { id: "", username: "", email: "", role: "", user: undefined, preferences: undefined };
+}
+
+export const AccountDTO: MessageFns<AccountDTO> = {
+  encode(message: AccountDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.username !== "") {
+      writer.uint32(18).string(message.username);
+    }
+    if (message.email !== "") {
+      writer.uint32(26).string(message.email);
+    }
+    if (message.role !== "") {
+      writer.uint32(34).string(message.role);
+    }
+    if (message.user !== undefined) {
+      UserDTO.encode(message.user, writer.uint32(42).fork()).join();
+    }
+    if (message.preferences !== undefined) {
+      PreferencesDTO.encode(message.preferences, writer.uint32(50).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): AccountDTO {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAccountDTO();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.username = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.email = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.role = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.user = UserDTO.decode(reader, reader.uint32());
+          continue;
+        }
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
+          message.preferences = PreferencesDTO.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AccountDTO {
+    return {
+      id: isSet(object.id) ? globalThis.String(object.id) : "",
+      username: isSet(object.username) ? globalThis.String(object.username) : "",
+      email: isSet(object.email) ? globalThis.String(object.email) : "",
+      role: isSet(object.role) ? globalThis.String(object.role) : "",
+      user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
+      preferences: isSet(object.preferences) ? PreferencesDTO.fromJSON(object.preferences) : undefined,
+    };
+  },
+
+  toJSON(message: AccountDTO): unknown {
+    const obj: any = {};
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    if (message.username !== "") {
+      obj.username = message.username;
+    }
+    if (message.email !== "") {
+      obj.email = message.email;
+    }
+    if (message.role !== "") {
+      obj.role = message.role;
+    }
+    if (message.user !== undefined) {
+      obj.user = UserDTO.toJSON(message.user);
+    }
+    if (message.preferences !== undefined) {
+      obj.preferences = PreferencesDTO.toJSON(message.preferences);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<AccountDTO>, I>>(base?: I): AccountDTO {
+    return AccountDTO.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<AccountDTO>, I>>(object: I): AccountDTO {
+    const message = createBaseAccountDTO();
+    message.id = object.id ?? "";
+    message.username = object.username ?? "";
+    message.email = object.email ?? "";
+    message.role = object.role ?? "";
+    message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
+    message.preferences = (object.preferences !== undefined && object.preferences !== null)
+      ? PreferencesDTO.fromPartial(object.preferences)
+      : undefined;
+    return message;
+  },
+};
+
+function createBasePreferencesDTO(): PreferencesDTO {
+  return {};
+}
+
+export const PreferencesDTO: MessageFns<PreferencesDTO> = {
+  encode(_: PreferencesDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PreferencesDTO {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePreferencesDTO();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): PreferencesDTO {
+    return {};
+  },
+
+  toJSON(_: PreferencesDTO): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PreferencesDTO>, I>>(base?: I): PreferencesDTO {
+    return PreferencesDTO.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<PreferencesDTO>, I>>(_: I): PreferencesDTO {
+    const message = createBasePreferencesDTO();
     return message;
   },
 };
@@ -16769,12 +16897,12 @@ export const WorldDTO: MessageFns<WorldDTO> = {
 };
 
 function createBaseWorldsDTO(): WorldsDTO {
-  return { worlds: [] };
+  return { arr: [] };
 }
 
 export const WorldsDTO: MessageFns<WorldsDTO> = {
   encode(message: WorldsDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.worlds) {
+    for (const v of message.arr) {
       WorldDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -16792,7 +16920,7 @@ export const WorldsDTO: MessageFns<WorldsDTO> = {
             break;
           }
 
-          message.worlds.push(WorldDTO.decode(reader, reader.uint32()));
+          message.arr.push(WorldDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -16805,15 +16933,13 @@ export const WorldsDTO: MessageFns<WorldsDTO> = {
   },
 
   fromJSON(object: any): WorldsDTO {
-    return {
-      worlds: globalThis.Array.isArray(object?.worlds) ? object.worlds.map((e: any) => WorldDTO.fromJSON(e)) : [],
-    };
+    return { arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => WorldDTO.fromJSON(e)) : [] };
   },
 
   toJSON(message: WorldsDTO): unknown {
     const obj: any = {};
-    if (message.worlds?.length) {
-      obj.worlds = message.worlds.map((e) => WorldDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => WorldDTO.toJSON(e));
     }
     return obj;
   },
@@ -16823,7 +16949,7 @@ export const WorldsDTO: MessageFns<WorldsDTO> = {
   },
   fromPartial<I extends Exact<DeepPartial<WorldsDTO>, I>>(object: I): WorldsDTO {
     const message = createBaseWorldsDTO();
-    message.worlds = object.worlds?.map((e) => WorldDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => WorldDTO.fromPartial(e)) || [];
     return message;
   },
 };
@@ -17633,12 +17759,12 @@ export const CampaignDTO_DynamicStateEntry: MessageFns<CampaignDTO_DynamicStateE
 };
 
 function createBaseCampaignsDTO(): CampaignsDTO {
-  return { campaigns: [] };
+  return { arr: [] };
 }
 
 export const CampaignsDTO: MessageFns<CampaignsDTO> = {
   encode(message: CampaignsDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.campaigns) {
+    for (const v of message.arr) {
       CampaignDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -17656,7 +17782,7 @@ export const CampaignsDTO: MessageFns<CampaignsDTO> = {
             break;
           }
 
-          message.campaigns.push(CampaignDTO.decode(reader, reader.uint32()));
+          message.arr.push(CampaignDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -17669,17 +17795,13 @@ export const CampaignsDTO: MessageFns<CampaignsDTO> = {
   },
 
   fromJSON(object: any): CampaignsDTO {
-    return {
-      campaigns: globalThis.Array.isArray(object?.campaigns)
-        ? object.campaigns.map((e: any) => CampaignDTO.fromJSON(e))
-        : [],
-    };
+    return { arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => CampaignDTO.fromJSON(e)) : [] };
   },
 
   toJSON(message: CampaignsDTO): unknown {
     const obj: any = {};
-    if (message.campaigns?.length) {
-      obj.campaigns = message.campaigns.map((e) => CampaignDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => CampaignDTO.toJSON(e));
     }
     return obj;
   },
@@ -17689,7 +17811,7 @@ export const CampaignsDTO: MessageFns<CampaignsDTO> = {
   },
   fromPartial<I extends Exact<DeepPartial<CampaignsDTO>, I>>(object: I): CampaignsDTO {
     const message = createBaseCampaignsDTO();
-    message.campaigns = object.campaigns?.map((e) => CampaignDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => CampaignDTO.fromPartial(e)) || [];
     return message;
   },
 };

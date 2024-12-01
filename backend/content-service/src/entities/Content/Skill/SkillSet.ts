@@ -7,23 +7,24 @@ import { User } from "../../User";
 import { World } from "../../World";
 import { randomUUID } from "crypto";
 import { SkillSetDTO } from "../../../proto/common";
+import { Context } from "../../../types";
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })
 export class SkillSet extends TaggableContentBase {
     @PrimaryColumn()
     id!: string;
-    
+
     id_prefix = "SKILL_SET"
 
-    @Column({type: "varchar", length: 64})
+    @Column({ type: "varchar", length: 64 })
     name!: string
 
     @Column("jsonb")
     skill_improvement!: {
         [skill_blueprint_id: string]: number // number by which the base skill from race gets increased
     }
-    
+
     @ManyToMany(() => Tag, (tag) => tag.skills)
     tags?: Tag[];
 
@@ -36,32 +37,32 @@ export class SkillSet extends TaggableContentBase {
     @ManyToOne(() => World, { nullable: true })
     world!: World;
 
-    public toDTO(): SkillSetDTO {
+    public static toDTO(skillSet: SkillSet): SkillSetDTO {
         return {
-            id: this.id,
-            blueprintId: this.blueprint_id,
-            name: this.name,
-            metadata: this.metadata && {metadata: this.metadata},
-            user: this.user?.toDTO(),
-            campaign: this.campaign?.toDTO(),
-            world: this.world?.toDTO(),
-            tags: this.tags ? { tags: this.tags.map(tag => tag.toDTO()) } : undefined,
+            id: skillSet.id,
+            blueprintId: skillSet.blueprint_id,
+            name: skillSet.name,
+            metadata: skillSet.metadata && { metadata: skillSet.metadata },
+            user: SkillSet.serializeEntity(skillSet.user, i => User.toDTO(i)),
+            campaign: SkillSet.serializeEntity(skillSet.campaign, i => Campaign.toDTO(i)),
+            world: SkillSet.serializeEntity(skillSet.world, i => World.toDTO(i)),
+            tags: SkillSet.serializeEntityArray(skillSet.tags, i => Tag.toDTO(i)),
             skillImprovement: {
-                skillImprovement: this.skill_improvement,
+                skillImprovement: skillSet.skill_improvement,
             },
-            targetEntity: this.targetEntity
+            targetEntity: skillSet.targetEntity
         };
     }
-    
-    public static fromDTO(dto: SkillSetDTO, user: User, world: World, campaign?: Campaign): SkillSet {
+
+    public static fromDTO(dto: SkillSetDTO, context: Context): SkillSet {
         const skillSet = new SkillSet();
         skillSet.id = dto.id;
         skillSet.name = dto.name;
         skillSet.skill_improvement = dto.skillImprovement?.skillImprovement || {};
-        skillSet.tags = dto.tags?.tags?.map(i=>Tag.fromDTO(i, user, world, campaign));
-        skillSet.user = user;
-        skillSet.campaign = campaign;
-        skillSet.world = world;
+        skillSet.tags = SkillSet.deserializeEntityArray(dto.tags, i => Tag.fromDTO(i, context));
+        skillSet.user = context.user;
+        skillSet.campaign = context.campaign;
+        skillSet.world = context.world;
         skillSet.targetEntity = dto.targetEntity
         return skillSet;
     }

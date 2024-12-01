@@ -20,5 +20,6 @@ COPY world_presets/ ./world_presets
 EXPOSE 50051
 
 # Start the gRPC server
-CMD ["sh", "-c", "npm run proto:generate && npm start"]
-# CMD ["sh", "-c", "npm run proto:generate && npm run migrate:generate && npm run migrate:run && npm start"]
+# CMD ["sh", "-c", "npm run proto:generate:docker"]
+# CMD ["sh", "-c", "npm run proto:generate:docker && npm start"]
+CMD ["sh", "-c", "npm run proto:generate:docker && npm run migrate:generate && npm run migrate:run && npm start"]

@@ -105,3 +105,8 @@ export enum RelationEnum {
     PARTNER = "PARTNER",
     NEIGHBOR = "NEIGHBOR",
 }
+
+export enum PresetEnum {
+    DEFAULT = "default",
+    MORROWIND = "morrowind"
+}

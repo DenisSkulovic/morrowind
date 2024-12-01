@@ -6,9 +6,10 @@ import { Campaign } from "../../Campaign";
 import { User } from "../../User";
 import { World } from "../../World";
 import { StorageGridDTO, StorageSlotDTO } from "../../../proto/common";
+import { Context } from "../../../types";
 
-export type StorageGridCell = string | null; // Item ID or empty
-export type StorageGrid = StorageGridCell[][]; // 2D grid array
+export type StorageGridCell = string | null;
+export type StorageGrid = StorageGridCell[][];
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })
@@ -22,19 +23,19 @@ export class StorageSlot extends ContentBase {
     name!: string
 
     @Column({ type: "jsonb", nullable: true })
-    grid!: [number, number]; // Grid configuration for storage slots
+    grid!: [number, number];
 
     @Column({ type: "jsonb", default: [] })
-    gridState!: StorageGrid; // 2D array representing the grid's current state
+    gridState!: StorageGrid;
 
     @Column({ nullable: true })
-    maxWeight!: number; // Weight limitation for storage slots
+    maxWeight!: number;
 
     @ManyToOne(() => Item, (parentItem) => parentItem.storageSlot, { nullable: true })
-    parentItem!: Item; // The item owning this slot (for storage slots)
+    parentItem!: Item;
 
     @OneToMany(() => Item, (storedItem) => storedItem.storageSlot, { cascade: true })
-    storedItems?: Item[]; // For storage slots
+    storedItems?: Item[];
 
     @ManyToOne(() => User, { nullable: true })
     user!: User;
@@ -45,38 +46,38 @@ export class StorageSlot extends ContentBase {
     @ManyToOne(() => World, { nullable: true })
     world!: World;
 
-    public toDTO(): StorageSlotDTO {
-        if (!this.id) throw new Error("cannot serialize StorageSlot entity when it does not have an id");
+    public static toDTO(stSlot: StorageSlot): StorageSlotDTO {
+        if (!stSlot.id) throw new Error("cannot serialize StorageSlot entity when it does not have an id");
         return {
-            id: this.id,
-            blueprintId: this.blueprint_id,
-            name: this.name,
-            grid: serializeGrid(this.grid), // Use helper to serialize grid
-            gridState: serializeGridState(this.gridState), // Use helper to serialize gridState
-            maxWeight: this.maxWeight,
-            parentItem: this.parentItem?.toDTO(),
-            storedItems: this.storedItems ? { items: this.storedItems.map(item => item.toDTO()) } : undefined,
-            user: this.user?.toDTO(),
-            campaign: this.campaign?.toDTO(),
-            world: this.world?.toDTO(),
-            targetEntity: this.targetEntity
+            id: stSlot.id,
+            blueprintId: stSlot.blueprint_id,
+            name: stSlot.name,
+            grid: serializeGrid(stSlot.grid),
+            gridState: serializeGridState(stSlot.gridState),
+            maxWeight: stSlot.maxWeight,
+            parentItem: StorageSlot.serializeEntity(stSlot.parentItem, i => Item.toDTO(i)),
+            storedItems: StorageSlot.serializeEntityArray(stSlot.storedItems, i => Item.toDTO(i)),
+            user: StorageSlot.serializeEntity(stSlot.user, i => User.toDTO(i)),
+            campaign: StorageSlot.serializeEntity(stSlot.campaign, i => Campaign.toDTO(i)),
+            world: StorageSlot.serializeEntity(stSlot.world, i => World.toDTO(i)),
+            targetEntity: stSlot.targetEntity
         };
     }
 
-    public static fromDTO(dto: StorageSlotDTO, user: User, world: World, campaign?: Campaign): StorageSlot {
+    public static fromDTO(dto: StorageSlotDTO, context: Context): StorageSlot {
         if (!dto.gridState) throw new Error("StorageStolDTO cannot be with gridState undefined")
         if (!dto.parentItem) throw new Error("StorageSlotDTO cannot have no parentItem")
         const storageSlot = new StorageSlot();
         storageSlot.id = dto.id;
         storageSlot.name = dto.name;
-        storageSlot.grid = deserializeGrid(dto.grid); // Use helper to deserialize grid
-        storageSlot.gridState = deserializeGridState(dto.gridState); // Use helper to deserialize gridState
+        storageSlot.grid = deserializeGrid(dto.grid);
+        storageSlot.gridState = deserializeGridState(dto.gridState);
         storageSlot.maxWeight = dto.maxWeight;
-        storageSlot.parentItem = Item.fromDTO(dto.parentItem, user, world, campaign);
-        storageSlot.storedItems = dto.storedItems?.items.map(item => Item.fromDTO(item, user, world, campaign));
-        storageSlot.user = user;
-        storageSlot.campaign = campaign;
-        storageSlot.world = world;
+        storageSlot.parentItem = Item.fromDTO(dto.parentItem, context);
+        storageSlot.storedItems = StorageSlot.deserializeEntityArray(dto.storedItems, i => Item.fromDTO(i, context));
+        storageSlot.user = context.user;
+        storageSlot.campaign = context.campaign;
+        storageSlot.world = context.world;
         storageSlot.targetEntity = dto.targetEntity
         return storageSlot;
     }
@@ -95,7 +96,7 @@ export function serializeGridState(gridState: StorageGrid): StorageGridDTO {
             row.map((value, columnIndex) => ({
                 row: rowIndex,
                 column: columnIndex,
-                value: value || "", // Null becomes empty string for Proto compatibility
+                value: value || "",
             }))
         ),
     };
@@ -113,7 +114,7 @@ export function deserializeGridState(gridState: StorageGridDTO): StorageGrid {
     const grid: StorageGrid = Array.from({ length: maxRow }, () => Array(maxColumn).fill(null));
 
     gridState.cells.forEach(cell => {
-        grid[cell.row][cell.column] = cell.value || null; // Empty string becomes null
+        grid[cell.row][cell.column] = cell.value || null;
     });
 
     return grid;

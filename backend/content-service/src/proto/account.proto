@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package account;
 
+import "common.proto";
+
 service AccountController {
     rpc createAccount (CreateAccountRequest) returns (CreateAccountResponse);
     rpc getAccount (GetAccountRequest) returns (GetAccountResponse);
@@ -24,20 +26,5 @@ message GetAccountRequest {
 }
 
 message GetAccountResponse {
-    AccountDTO account = 1;
-}
-
-message AccountDTO {
-    string id = 1;
-    string username = 2;
-    string email = 3;
-    string role = 4;
-    UserDTO user = 5;
-    optional PreferencesDTO preferences = 6;
-}
-message PreferencesDTO {
-
-}
-message UserDTO {
-    string id = 1;
+    common.AccountDTO account = 1;
 }

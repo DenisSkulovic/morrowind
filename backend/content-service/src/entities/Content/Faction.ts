@@ -6,54 +6,55 @@ import { User } from "../User";
 import { World } from "../World";
 import { Character } from "./Character";
 import { FactionDTO } from "../../proto/common";
+import { Context } from "../../types";
 
 @Entity()
 export class Faction extends TaggableContentBase {
     @PrimaryColumn()
     id!: string;
-    
+
     id_prefix = "FACTION"
 
     @Column()
     name!: string
 
-    @ManyToMany(() => Character, (character) => character.factions)
+    @ManyToMany(() => Character, (character) => character.factions, {})
     characters?: Character[];
-    
-    @ManyToMany(() => Tag, (tag) => tag.factions)
+
+    @ManyToMany(() => Tag, (tag) => tag.factions, {})
     tags?: Tag[];
 
-    @ManyToOne(() => User, { nullable: true })
+    @ManyToOne(() => User, { nullable: true, })
     user!: User;
 
-    @ManyToOne(() => Campaign, { nullable: true })
+    @ManyToOne(() => Campaign, { nullable: true, })
     campaign?: Campaign;
 
-    @ManyToOne(() => World, { nullable: true })
+    @ManyToOne(() => World, { nullable: true, })
     world!: World;
 
-    public toDTO(): FactionDTO {
+    public static toDTO(faction: Faction): FactionDTO {
         return {
-            id: this.id,
-            name: this.name,
-            blueprintId: this.blueprint_id,
-            characters: this.characters ? { characters: this.characters.map(character => character.toDTO()) } : undefined,
-            tags: this.tags ? { tags: this.tags.map(tag => tag.toDTO()) } : undefined,
-            user: this.user?.toDTO(),
-            campaign: this.campaign?.toDTO(),
-            world: this.world?.toDTO(),
-            targetEntity: this.targetEntity
+            id: faction.id,
+            name: faction.name,
+            blueprintId: faction.blueprint_id,
+            characters: Faction.serializeEntityArray(faction.characters, i => Character.toDTO(i)),
+            tags: Faction.serializeEntityArray(faction.tags, i => Tag.toDTO(i)),
+            user: Faction.serializeEntity(faction.user, i => User.toDTO(i)),
+            campaign: Faction.serializeEntity(faction.campaign, i => Campaign.toDTO(i)),
+            world: Faction.serializeEntity(faction.world, i => World.toDTO(i)),
+            targetEntity: faction.targetEntity
         };
     }
 
-    public static fromDTO(dto: FactionDTO, user: User, world: World, campaign?: Campaign): Faction {
+    public static fromDTO(dto: FactionDTO, context: Context): Faction {
         const faction = new Faction();
         faction.id = dto.id;
-        faction.characters = dto.characters?.characters?.map(i=>Character.fromDTO(i, user, world, campaign)) || [];
-        faction.tags = dto.tags?.tags?.map(tag => Tag.fromDTO(tag, user, world, campaign)) || [];
-        faction.user = user;
-        faction.campaign = campaign;
-        faction.world = world;
+        faction.characters = Faction.deserializeEntityArray(dto.characters, i => Character.fromDTO(i, context));
+        faction.tags = Faction.deserializeEntityArray(dto.tags, i => Tag.fromDTO(i, context));
+        faction.user = context.user;
+        faction.campaign = context.campaign;
+        faction.world = context.world;
         faction.targetEntity = dto.targetEntity
         return faction;
     }

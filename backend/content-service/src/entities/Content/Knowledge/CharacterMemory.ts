@@ -9,13 +9,14 @@ import { World } from "../../World";
 import { CharacterMemoryDTO, FactStatusDTO, FactStatusEnumDTO } from "../../../proto/common";
 import { FactStatusEnum } from "../../../enum/entityEnums";
 import { serializeEnum, deserializeEnum } from "../../../enum/util";
+import { Context } from "../../../types";
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })
 export class CharacterMemory extends TaggableContentBase {
     @PrimaryColumn()
     id!: string;
-    
+
     id_prefix = "CHARACTER_MEMORY"
 
     @Column()
@@ -60,45 +61,43 @@ export class CharacterMemory extends TaggableContentBase {
     @ManyToOne(() => World, { nullable: true })
     world!: World;
 
-    public toDTO(): CharacterMemoryDTO {
+    public static toDTO(charMem: CharacterMemory): CharacterMemoryDTO {
         return {
-            id: this.id,
-            blueprintId: this.blueprint_id,
-            name: this.name,
-            character: this.character?.toDTO(),
-            memory: this.memory?.toDTO(),
-            factStatus: this.factStatus
-            ? this.factStatus.map((entry) => ({
-                factId: entry.factId,
-                status: serializeEnum(FactStatusEnumDTO, entry.status),
-            }))
-            : [],
-            importance: this.importance,
-            resistance: this.resistance,
-            accumulator: this.accumulator,
-            acquiredAt: this.acquiredAt,
-            lastUpdatedAt: this.lastUpdatedAt,
-            tags: this.tags ? { tags: this.tags.map((tag) => tag.toDTO()) } : undefined,
-            user: this.user?.toDTO(),
-            campaign: this.campaign?.toDTO(),
-            world: this.world?.toDTO(),
-            targetEntity: this.targetEntity,
+            id: charMem.id,
+            blueprintId: charMem.blueprint_id,
+            name: charMem.name,
+            character: CharacterMemory.serializeEntity(charMem.character, i => Character.toDTO(i)),
+            memory: CharacterMemory.serializeEntity(charMem.memory, i => Memory.toDTO(i)),
+            factStatus: charMem.factStatus
+                ? charMem.factStatus.map((entry) => ({
+                    factId: entry.factId,
+                    status: serializeEnum(FactStatusEnumDTO, entry.status),
+                }))
+                : [],
+            importance: charMem.importance,
+            resistance: charMem.resistance,
+            accumulator: charMem.accumulator,
+            acquiredAt: charMem.acquiredAt,
+            lastUpdatedAt: charMem.lastUpdatedAt,
+            tags: CharacterMemory.serializeEntityArray(charMem.tags, i => Tag.toDTO(i)),
+            user: CharacterMemory.serializeEntity(charMem.user, i => User.toDTO(i)),
+            campaign: CharacterMemory.serializeEntity(charMem.campaign, i => Campaign.toDTO(i)),
+            world: CharacterMemory.serializeEntity(charMem.world, i => World.toDTO(i)),
+            targetEntity: charMem.targetEntity,
         };
     }
-    
+
     public static fromDTO(
         dto: CharacterMemoryDTO,
-        user: User,
-        world: World,
-        campaign?: Campaign
+        context: Context
     ): CharacterMemory {
         if (!dto.character) throw new Error("character on CharacterMemoryDTO cannot be undefined");
         if (!dto.memory) throw new Error("memory on CharacterMemoryDTO cannot be undefined");
-    
+
         const characterMemory = new CharacterMemory();
         characterMemory.id = dto.id;
-        characterMemory.character = Character.fromDTO(dto.character, user, world, campaign);
-        characterMemory.memory = Memory.fromDTO(dto.memory, user, world, campaign);
+        characterMemory.character = Character.fromDTO(dto.character, context);
+        characterMemory.memory = Memory.fromDTO(dto.memory, context);
         characterMemory.factStatus = dto.factStatus?.map((entry) => ({
             factId: entry.factId,
             status: deserializeEnum(FactStatusEnumDTO, entry.status) as FactStatusEnum,
@@ -108,10 +107,10 @@ export class CharacterMemory extends TaggableContentBase {
         characterMemory.accumulator = dto.accumulator;
         characterMemory.acquiredAt = dto.acquiredAt;
         characterMemory.lastUpdatedAt = dto.lastUpdatedAt;
-        characterMemory.tags = dto.tags?.tags?.map((tag) => Tag.fromDTO(tag, user, world, campaign)) || [];
-        characterMemory.user = user;
-        characterMemory.campaign = campaign;
-        characterMemory.world = world;
+        characterMemory.tags = CharacterMemory.deserializeEntityArray(dto.tags, i => Tag.fromDTO(i, context)) || [];
+        characterMemory.user = context.user;
+        characterMemory.campaign = context.campaign;
+        characterMemory.world = context.world;
         characterMemory.targetEntity = dto.targetEntity;
         return characterMemory;
     }

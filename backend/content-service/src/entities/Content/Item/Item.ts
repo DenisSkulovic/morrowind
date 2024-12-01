@@ -1,7 +1,7 @@
 import { Entity, TableInheritance, Column, ManyToOne, ManyToMany, PrimaryGeneratedColumn, BeforeInsert, PrimaryColumn, OneToMany } from "typeorm";
 import { TaggableContentBase } from "../../../TaggableContentBase";
 import { Skill } from "../Skill/Skill";
-import { ItemRequirements, StorageSlotDefinition } from "../../../types";
+import { Context, ItemRequirements, StorageSlotDefinition } from "../../../types";
 import { Tag } from "../Tag";
 import { Campaign } from "../../Campaign";
 import { User } from "../../User";
@@ -12,20 +12,7 @@ import { ItemDTO, ItemRequirementsDTO } from "../../../proto/common";
 import { ItemActionEnum } from "../../../enum/entityEnums";
 
 
-const serializeRequirements = (req: ItemRequirements): ItemRequirementsDTO => ({
-    requirements: req.map(r => ({
-        type: r.type,
-        name: r.name,
-        ...(typeof r.value === "number" ? { number: r.value } : { flag: r.value }),
-    })),
-});
-const deserializeRequirements = (dtoReq: ItemRequirementsDTO): ItemRequirements => {
-    return dtoReq.requirements.map(r => ({
-        type: r.type,
-        name: r.name,
-        value: r.number !== undefined ? r.number : r.flag || false,
-    }));
-}
+
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })
@@ -79,7 +66,7 @@ export class Item extends TaggableContentBase {
     @Column({ type: "jsonb", nullable: true })
     grid_position?: { x: number; y: number }; // Item's top-left corner on the grid inside a storage slot
     @OneToMany(() => StorageSlot, storageSlot => storageSlot.storedItems)
-    storageSlots?: StorageSlot[]; // the storage slots this item itself has (this is a backpack and it has 3 sections, i.e. slots)
+    storageSlots?: | StorageSlot[]; // the storage slots this item itself has (this is a backpack and it has 3 sections, i.e. slots)
     @Column("jsonb", { nullable: true })
     storageSlotDefinition?: StorageSlotDefinition[]; // the storage slots this item itself has (this is a backpack and it has 3 sections, i.e. slots)
     @ManyToOne(() => EquipmentSlot, equipmentSlot => equipmentSlot.equippedItem)
@@ -87,7 +74,7 @@ export class Item extends TaggableContentBase {
 
 
     @ManyToMany(() => Tag, (tag) => tag.items)
-    tags?: Tag[];
+    tags?: | Tag[];
 
     // context
     @ManyToOne(() => User, { nullable: true })
@@ -97,50 +84,48 @@ export class Item extends TaggableContentBase {
     @ManyToOne(() => World, { nullable: true })
     world!: World;
 
-    public toDTO(): ItemDTO {
-        if (!this.id) throw new Error("item cannot be without id");
+    public static toDTO(item: Item): ItemDTO {
+        if (!item.id) throw new Error("item cannot be without id");
         return {
-            id: this.id,
-            blueprintId: this.blueprint_id,
-            name: this.name,
-            description: this.description || "",
-            size: this.size,
-            quantity: this.quantity,
-            maxQuantity: this.maxQuantity,
-            baseValue: this.base_value,
-            actions: this.actions && {actions: this.actions},
-            requirements: this.requirements ? serializeRequirements(this.requirements) : undefined,
-            stackable: this.stackable,
-            repairable: this.repairable,
-            drinkable: this.drinkable,
-            edible: this.edible,
-            gridPosition: this.grid_position
-                ? { x: this.grid_position.x, y: this.grid_position.y }
+            id: item.id,
+            blueprintId: item.blueprint_id,
+            name: item.name,
+            description: item.description || "",
+            size: item.size,
+            quantity: item.quantity,
+            maxQuantity: item.maxQuantity,
+            baseValue: item.base_value,
+            actions: item.actions && { actions: item.actions },
+            requirements: item.requirements ? Item.serializeRequirements(item.requirements) : undefined,
+            stackable: item.stackable,
+            repairable: item.repairable,
+            drinkable: item.drinkable,
+            edible: item.edible,
+            gridPosition: item.grid_position
+                ? { x: item.grid_position.x, y: item.grid_position.y }
                 : undefined,
-            storageSlot: this.storageSlot?.toDTO(),
-            storageSlots: this.storageSlots
-                ? { storageSlots: this.storageSlots.map(slot => slot.toDTO()) }
-                : undefined,
-            storageSlotDefinition: this.storageSlotDefinition
+            storageSlot: Item.serializeEntity(item.storageSlot, i => StorageSlot.toDTO(i)),
+            storageSlots: Item.serializeEntityArray(item.storageSlots, i => StorageSlot.toDTO(i)),
+            storageSlotDefinition: item.storageSlotDefinition
                 ? {
-                    definitions: this.storageSlotDefinition.map(def => ({
+                    arr: item.storageSlotDefinition.map(def => ({
                         grid: def.grid,
                         name: def.name,
                         maxWeight: def.maxWeight,
                     })),
                 }
                 : undefined,
-            equipmentSlot: this.equipmentSlot?.toDTO(),
-            user: this.user?.toDTO(),
-            campaign: this.campaign?.toDTO(),
-            world: this.world?.toDTO(),
-            trainedSkill: this.trained_skill,
-            weight: this.weight,
-            targetEntity: this.targetEntity
+            equipmentSlot: Item.serializeEntity(item.equipmentSlot, i => EquipmentSlot.toDTO(i)),
+            user: Item.serializeEntity(item.user, i => User.toDTO(i)),
+            campaign: Item.serializeEntity(item.campaign, i => Campaign.toDTO(i)),
+            world: Item.serializeEntity(item.world, i => World.toDTO(i)),
+            trainedSkill: item.trained_skill,
+            weight: item.weight,
+            targetEntity: item.targetEntity
         };
     }
 
-    public static fromDTO(dto: ItemDTO, user: User, world: World, campaign?: Campaign): Item {
+    public static fromDTO(dto: ItemDTO, context: Context): Item {
         const item = new Item();
         item.id = dto.id;
         item.name = dto.name;
@@ -150,29 +135,47 @@ export class Item extends TaggableContentBase {
         item.maxQuantity = dto.maxQuantity || 64;
         item.base_value = dto.baseValue || 0;
         item.actions = dto.actions?.actions;
-        item.requirements = dto.requirements ? deserializeRequirements(dto.requirements) : undefined;
+        item.requirements = dto.requirements ? Item.deserializeRequirements(dto.requirements) : undefined;
         item.stackable = dto.stackable || false;
         item.repairable = dto.repairable || false;
         item.drinkable = dto.drinkable || false;
         item.edible = dto.edible || false;
         item.grid_position = dto.gridPosition && { x: dto.gridPosition.x, y: dto.gridPosition.y };
-        item.storageSlot = dto.storageSlot ? StorageSlot.fromDTO(dto.storageSlot, user, world, campaign) : undefined;
-        item.storageSlots = dto.storageSlots?.storageSlots?.map(i => StorageSlot.fromDTO(i, user, world, campaign));
-        item.storageSlotDefinition = dto.storageSlotDefinition?.definitions?.map(def => ({
+        item.storageSlot = dto.storageSlot ? StorageSlot.fromDTO(dto.storageSlot, context) : undefined;
+        item.storageSlots = Item.deserializeEntityArray(dto.storageSlots, i => StorageSlot.fromDTO(i, context));
+        item.storageSlotDefinition = dto.storageSlotDefinition?.arr?.map(def => ({
             grid: def.grid as [number, number],
             name: def.name,
             maxWeight: def.maxWeight,
         }));
         item.equipmentSlot = dto.equipmentSlot
-            ? EquipmentSlot.fromDTO(dto.equipmentSlot, user, world, campaign)
+            ? EquipmentSlot.fromDTO(dto.equipmentSlot, context)
             : undefined;
-        item.user = user;
-        item.campaign = campaign;
-        item.world = world;
+        item.user = context.user;
+        item.campaign = context.campaign;
+        item.world = context.world;
         item.trained_skill = dto.trainedSkill || undefined;
         item.weight = dto.weight || 0;
         item.targetEntity = dto.targetEntity
         return item;
+    }
+
+
+    public static serializeRequirements(req: ItemRequirements): ItemRequirementsDTO {
+        return {
+            arr: req.map(r => ({
+                type: r.type,
+                name: r.name,
+                ...(typeof r.value === "number" ? { number: r.value } : { flag: r.value }),
+            }))
+        }
+    };
+    public static deserializeRequirements(dtoReq: ItemRequirementsDTO): ItemRequirements {
+        return dtoReq.arr.map(r => ({
+            type: r.type,
+            name: r.name,
+            value: r.number !== undefined ? r.number : r.flag || false,
+        }));
     }
 
 }

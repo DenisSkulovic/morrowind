@@ -12,7 +12,7 @@ import { TemporarilyFreezeWorld } from "../../decorator/TemporarilyFreezeWorld";
 import { DeleteResult, FindManyOptions, FindOptionsWhere, Repository } from "typeorm";
 import { User } from "../../entities/User";
 import { UserService } from "../../layer_2_and_3/service/UserService";
-import { PresetEnum } from "../../proto/world";
+import { PresetEnum } from "../../enum/entityEnums";
 
 const pathToPresetsFolder = "../../world_presets"
 
@@ -86,7 +86,7 @@ export class WorldService extends RepositoryServiceBase {
                     blueprint.user = user;
                     return blueprintRepository.create(blueprint);
                 });
-                
+
                 // Save the batch to the database
                 console.log(`[WorldService - loadPresetIntoWorld] -${targetEntity}- saving ${entitiesToSave.length} entities`)
                 await blueprintRepository.save(entitiesToSave);
