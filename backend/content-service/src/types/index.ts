@@ -1,4 +1,4 @@
-import { IdAndQuant, BlueprintGenInstruction_Gaussian, BlueprintSetCombinator } from "../class/blueprint_id_and_prob";
+import { IdAndQuant, BlueprintGenInstruction_Gaussian, BlueprintSetCombinator, ProbObject_Simple } from "../class/blueprint_id_and_prob";
 import { Campaign } from "../entities/Campaign";
 import { User } from "../entities/User";
 import { World } from "../entities/World";
@@ -23,7 +23,7 @@ export type Context = {
     campaign?: Campaign,
 }
 
-export type GenerationInstruction = string | IdAndQuant | BlueprintGenInstruction_Gaussian | BlueprintSetCombinator
+export type GenerationInstruction = string | IdAndQuant | ProbObject_Simple | BlueprintGenInstruction_Gaussian | BlueprintSetCombinator
 
 
 

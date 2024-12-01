@@ -119,7 +119,7 @@ export class WorldController {
             if (!call.request.preset || call.request.preset === PresetEnumDTO.UNRECOGNIZED) throw new Error(`no preset found for preset identifier: ${call.request.preset}`)
             const worldId: string = call.request.worldId // TODO these fields should come from middleware
             const userId: string = call.request.userId // TODO these fields should come from middleware, especially this one
-            const preset: PresetEnum = deserializeEnum(PresetEnumDTO, call.request.preset) as PresetEnum
+            const preset: PresetEnum = deserializeEnum(PresetEnum, call.request.preset) as PresetEnum
             // check preset for existence in the enum
             const worldService: WorldService = new WorldService({ sourcesMap })
             await worldService.loadPresetIntoWorld(preset, worldId, userId)

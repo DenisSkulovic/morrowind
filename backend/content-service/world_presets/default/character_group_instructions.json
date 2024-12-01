@@ -1,6 +1,7 @@
 [
     {
         "blueprint_id": "SMALL_GROUP__HIGHLAND_TOWN_GUARDS",
+        "name": "SMALL_GROUP__HIGHLAND_TOWN_GUARDS",
         "set": [
             {
                 "blueprint_id": "GENERIC_HIGHLAND_GUARD",
@@ -15,6 +16,7 @@
     },
     {
         "blueprint_id": "TWINS_CAIUS_COSSADES",
+        "name": "TWINS_CAIUS_COSSADES",
         "set": [
             {
                 "blueprint_id": "SPECIFIC_CAIUS_COSSADES",

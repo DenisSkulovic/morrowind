@@ -592,6 +592,39 @@ export function skillCategoryEnumDTOToJSON(object: SkillCategoryEnumDTO): string
   }
 }
 
+export enum DataSourceEnumDTO {
+  WORLD = 0,
+  CAMPAIGN = 1,
+  UNRECOGNIZED = -1,
+}
+
+export function dataSourceEnumDTOFromJSON(object: any): DataSourceEnumDTO {
+  switch (object) {
+    case 0:
+    case "WORLD":
+      return DataSourceEnumDTO.WORLD;
+    case 1:
+    case "CAMPAIGN":
+      return DataSourceEnumDTO.CAMPAIGN;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return DataSourceEnumDTO.UNRECOGNIZED;
+  }
+}
+
+export function dataSourceEnumDTOToJSON(object: DataSourceEnumDTO): string {
+  switch (object) {
+    case DataSourceEnumDTO.WORLD:
+      return "WORLD";
+    case DataSourceEnumDTO.CAMPAIGN:
+      return "CAMPAIGN";
+    case DataSourceEnumDTO.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
 /** ####################################################################################### */
 export interface BackgroundDTO {
   id: string;
@@ -1227,7 +1260,7 @@ export interface GridPositionDTO {
 /** ####################################################################################### */
 export interface GenerationInstructionDTO {
   blueprintId?: string | undefined;
-  idsAndQuant?: IdAndQuantDTO | undefined;
+  idAndQuant?: IdAndQuantDTO | undefined;
   simpleProb?: SimpleProbDTO | undefined;
   gaussianProb?: GaussianProbDTO | undefined;
   combinator?: CombinatorDTO | undefined;
@@ -1239,12 +1272,8 @@ export interface GenerationInstructionsDTO {
 
 /** ####################################################################################### */
 export interface IdAndQuantDTO {
-  idAndQuant: { [key: string]: number };
-}
-
-export interface IdAndQuantDTO_IdAndQuantEntry {
-  key: string;
-  value: number;
+  blueprintId: string;
+  quantity?: number | undefined;
 }
 
 export interface IdsAndQuantsDTO {
@@ -1335,7 +1364,7 @@ export interface SimpleProbDTO_ProbEntry {
 /** ####################################################################################### */
 export interface GaussianProbDTO {
   blueprintId: string;
-  prob: number;
+  prob?: number | undefined;
   avgQuan?: number | undefined;
   stDev?: number | undefined;
   skew?: number | undefined;
@@ -11512,7 +11541,7 @@ export const GridPositionDTO: MessageFns<GridPositionDTO> = {
 function createBaseGenerationInstructionDTO(): GenerationInstructionDTO {
   return {
     blueprintId: undefined,
-    idsAndQuant: undefined,
+    idAndQuant: undefined,
     simpleProb: undefined,
     gaussianProb: undefined,
     combinator: undefined,
@@ -11524,8 +11553,8 @@ export const GenerationInstructionDTO: MessageFns<GenerationInstructionDTO> = {
     if (message.blueprintId !== undefined) {
       writer.uint32(10).string(message.blueprintId);
     }
-    if (message.idsAndQuant !== undefined) {
-      IdAndQuantDTO.encode(message.idsAndQuant, writer.uint32(18).fork()).join();
+    if (message.idAndQuant !== undefined) {
+      IdAndQuantDTO.encode(message.idAndQuant, writer.uint32(18).fork()).join();
     }
     if (message.simpleProb !== undefined) {
       SimpleProbDTO.encode(message.simpleProb, writer.uint32(26).fork()).join();
@@ -11559,7 +11588,7 @@ export const GenerationInstructionDTO: MessageFns<GenerationInstructionDTO> = {
             break;
           }
 
-          message.idsAndQuant = IdAndQuantDTO.decode(reader, reader.uint32());
+          message.idAndQuant = IdAndQuantDTO.decode(reader, reader.uint32());
           continue;
         }
         case 3: {
@@ -11598,7 +11627,7 @@ export const GenerationInstructionDTO: MessageFns<GenerationInstructionDTO> = {
   fromJSON(object: any): GenerationInstructionDTO {
     return {
       blueprintId: isSet(object.blueprintId) ? globalThis.String(object.blueprintId) : undefined,
-      idsAndQuant: isSet(object.idsAndQuant) ? IdAndQuantDTO.fromJSON(object.idsAndQuant) : undefined,
+      idAndQuant: isSet(object.idAndQuant) ? IdAndQuantDTO.fromJSON(object.idAndQuant) : undefined,
       simpleProb: isSet(object.simpleProb) ? SimpleProbDTO.fromJSON(object.simpleProb) : undefined,
       gaussianProb: isSet(object.gaussianProb) ? GaussianProbDTO.fromJSON(object.gaussianProb) : undefined,
       combinator: isSet(object.combinator) ? CombinatorDTO.fromJSON(object.combinator) : undefined,
@@ -11610,8 +11639,8 @@ export const GenerationInstructionDTO: MessageFns<GenerationInstructionDTO> = {
     if (message.blueprintId !== undefined) {
       obj.blueprintId = message.blueprintId;
     }
-    if (message.idsAndQuant !== undefined) {
-      obj.idsAndQuant = IdAndQuantDTO.toJSON(message.idsAndQuant);
+    if (message.idAndQuant !== undefined) {
+      obj.idAndQuant = IdAndQuantDTO.toJSON(message.idAndQuant);
     }
     if (message.simpleProb !== undefined) {
       obj.simpleProb = SimpleProbDTO.toJSON(message.simpleProb);
@@ -11631,8 +11660,8 @@ export const GenerationInstructionDTO: MessageFns<GenerationInstructionDTO> = {
   fromPartial<I extends Exact<DeepPartial<GenerationInstructionDTO>, I>>(object: I): GenerationInstructionDTO {
     const message = createBaseGenerationInstructionDTO();
     message.blueprintId = object.blueprintId ?? undefined;
-    message.idsAndQuant = (object.idsAndQuant !== undefined && object.idsAndQuant !== null)
-      ? IdAndQuantDTO.fromPartial(object.idsAndQuant)
+    message.idAndQuant = (object.idAndQuant !== undefined && object.idAndQuant !== null)
+      ? IdAndQuantDTO.fromPartial(object.idAndQuant)
       : undefined;
     message.simpleProb = (object.simpleProb !== undefined && object.simpleProb !== null)
       ? SimpleProbDTO.fromPartial(object.simpleProb)
@@ -11710,14 +11739,17 @@ export const GenerationInstructionsDTO: MessageFns<GenerationInstructionsDTO> = 
 };
 
 function createBaseIdAndQuantDTO(): IdAndQuantDTO {
-  return { idAndQuant: {} };
+  return { blueprintId: "", quantity: undefined };
 }
 
 export const IdAndQuantDTO: MessageFns<IdAndQuantDTO> = {
   encode(message: IdAndQuantDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    Object.entries(message.idAndQuant).forEach(([key, value]) => {
-      IdAndQuantDTO_IdAndQuantEntry.encode({ key: key as any, value }, writer.uint32(10).fork()).join();
-    });
+    if (message.blueprintId !== "") {
+      writer.uint32(10).string(message.blueprintId);
+    }
+    if (message.quantity !== undefined) {
+      writer.uint32(16).int32(message.quantity);
+    }
     return writer;
   },
 
@@ -11733,10 +11765,15 @@ export const IdAndQuantDTO: MessageFns<IdAndQuantDTO> = {
             break;
           }
 
-          const entry1 = IdAndQuantDTO_IdAndQuantEntry.decode(reader, reader.uint32());
-          if (entry1.value !== undefined) {
-            message.idAndQuant[entry1.key] = entry1.value;
+          message.blueprintId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
           }
+
+          message.quantity = reader.int32();
           continue;
         }
       }
@@ -11750,25 +11787,18 @@ export const IdAndQuantDTO: MessageFns<IdAndQuantDTO> = {
 
   fromJSON(object: any): IdAndQuantDTO {
     return {
-      idAndQuant: isObject(object.idAndQuant)
-        ? Object.entries(object.idAndQuant).reduce<{ [key: string]: number }>((acc, [key, value]) => {
-          acc[key] = Number(value);
-          return acc;
-        }, {})
-        : {},
+      blueprintId: isSet(object.blueprintId) ? globalThis.String(object.blueprintId) : "",
+      quantity: isSet(object.quantity) ? globalThis.Number(object.quantity) : undefined,
     };
   },
 
   toJSON(message: IdAndQuantDTO): unknown {
     const obj: any = {};
-    if (message.idAndQuant) {
-      const entries = Object.entries(message.idAndQuant);
-      if (entries.length > 0) {
-        obj.idAndQuant = {};
-        entries.forEach(([k, v]) => {
-          obj.idAndQuant[k] = Math.round(v);
-        });
-      }
+    if (message.blueprintId !== "") {
+      obj.blueprintId = message.blueprintId;
+    }
+    if (message.quantity !== undefined) {
+      obj.quantity = Math.round(message.quantity);
     }
     return obj;
   },
@@ -11778,93 +11808,8 @@ export const IdAndQuantDTO: MessageFns<IdAndQuantDTO> = {
   },
   fromPartial<I extends Exact<DeepPartial<IdAndQuantDTO>, I>>(object: I): IdAndQuantDTO {
     const message = createBaseIdAndQuantDTO();
-    message.idAndQuant = Object.entries(object.idAndQuant ?? {}).reduce<{ [key: string]: number }>(
-      (acc, [key, value]) => {
-        if (value !== undefined) {
-          acc[key] = globalThis.Number(value);
-        }
-        return acc;
-      },
-      {},
-    );
-    return message;
-  },
-};
-
-function createBaseIdAndQuantDTO_IdAndQuantEntry(): IdAndQuantDTO_IdAndQuantEntry {
-  return { key: "", value: 0 };
-}
-
-export const IdAndQuantDTO_IdAndQuantEntry: MessageFns<IdAndQuantDTO_IdAndQuantEntry> = {
-  encode(message: IdAndQuantDTO_IdAndQuantEntry, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.key !== "") {
-      writer.uint32(10).string(message.key);
-    }
-    if (message.value !== 0) {
-      writer.uint32(16).int32(message.value);
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): IdAndQuantDTO_IdAndQuantEntry {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseIdAndQuantDTO_IdAndQuantEntry();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1: {
-          if (tag !== 10) {
-            break;
-          }
-
-          message.key = reader.string();
-          continue;
-        }
-        case 2: {
-          if (tag !== 16) {
-            break;
-          }
-
-          message.value = reader.int32();
-          continue;
-        }
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): IdAndQuantDTO_IdAndQuantEntry {
-    return {
-      key: isSet(object.key) ? globalThis.String(object.key) : "",
-      value: isSet(object.value) ? globalThis.Number(object.value) : 0,
-    };
-  },
-
-  toJSON(message: IdAndQuantDTO_IdAndQuantEntry): unknown {
-    const obj: any = {};
-    if (message.key !== "") {
-      obj.key = message.key;
-    }
-    if (message.value !== 0) {
-      obj.value = Math.round(message.value);
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<IdAndQuantDTO_IdAndQuantEntry>, I>>(base?: I): IdAndQuantDTO_IdAndQuantEntry {
-    return IdAndQuantDTO_IdAndQuantEntry.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<IdAndQuantDTO_IdAndQuantEntry>, I>>(
-    object: I,
-  ): IdAndQuantDTO_IdAndQuantEntry {
-    const message = createBaseIdAndQuantDTO_IdAndQuantEntry();
-    message.key = object.key ?? "";
-    message.value = object.value ?? 0;
+    message.blueprintId = object.blueprintId ?? "";
+    message.quantity = object.quantity ?? undefined;
     return message;
   },
 };
@@ -13250,7 +13195,7 @@ export const SimpleProbDTO_ProbEntry: MessageFns<SimpleProbDTO_ProbEntry> = {
 };
 
 function createBaseGaussianProbDTO(): GaussianProbDTO {
-  return { blueprintId: "", prob: 0, avgQuan: undefined, stDev: undefined, skew: undefined, clazz: "" };
+  return { blueprintId: "", prob: undefined, avgQuan: undefined, stDev: undefined, skew: undefined, clazz: "" };
 }
 
 export const GaussianProbDTO: MessageFns<GaussianProbDTO> = {
@@ -13258,7 +13203,7 @@ export const GaussianProbDTO: MessageFns<GaussianProbDTO> = {
     if (message.blueprintId !== "") {
       writer.uint32(10).string(message.blueprintId);
     }
-    if (message.prob !== 0) {
+    if (message.prob !== undefined) {
       writer.uint32(21).float(message.prob);
     }
     if (message.avgQuan !== undefined) {
@@ -13343,7 +13288,7 @@ export const GaussianProbDTO: MessageFns<GaussianProbDTO> = {
   fromJSON(object: any): GaussianProbDTO {
     return {
       blueprintId: isSet(object.blueprintId) ? globalThis.String(object.blueprintId) : "",
-      prob: isSet(object.prob) ? globalThis.Number(object.prob) : 0,
+      prob: isSet(object.prob) ? globalThis.Number(object.prob) : undefined,
       avgQuan: isSet(object.avgQuan) ? globalThis.Number(object.avgQuan) : undefined,
       stDev: isSet(object.stDev) ? globalThis.Number(object.stDev) : undefined,
       skew: isSet(object.skew) ? globalThis.Number(object.skew) : undefined,
@@ -13356,7 +13301,7 @@ export const GaussianProbDTO: MessageFns<GaussianProbDTO> = {
     if (message.blueprintId !== "") {
       obj.blueprintId = message.blueprintId;
     }
-    if (message.prob !== 0) {
+    if (message.prob !== undefined) {
       obj.prob = message.prob;
     }
     if (message.avgQuan !== undefined) {
@@ -13380,7 +13325,7 @@ export const GaussianProbDTO: MessageFns<GaussianProbDTO> = {
   fromPartial<I extends Exact<DeepPartial<GaussianProbDTO>, I>>(object: I): GaussianProbDTO {
     const message = createBaseGaussianProbDTO();
     message.blueprintId = object.blueprintId ?? "";
-    message.prob = object.prob ?? 0;
+    message.prob = object.prob ?? undefined;
     message.avgQuan = object.avgQuan ?? undefined;
     message.stDev = object.stDev ?? undefined;
     message.skew = object.skew ?? undefined;

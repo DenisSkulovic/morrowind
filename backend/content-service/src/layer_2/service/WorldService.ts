@@ -60,14 +60,15 @@ export class WorldService extends RepositoryServiceBase {
         console.log(`[WorldService - loadPresetIntoWorld] after extract World and User: `, world, user)
 
         // remove any previous content
-        console.log(`[WorldService - loadPresetIntoWorld] before drop world contents`)
-        if (dropPreviousContent) await this.dropWorldContents(world.id)
-        console.log(`[WorldService - loadPresetIntoWorld] after drop world contents`)
+        if (dropPreviousContent) {
+            console.log(`[WorldService - loadPresetIntoWorld] dropping world contents`)
+            await this.dropWorldContents(world.id)
+        }
 
         // Load blueprints from the preset folder
-        console.log(`[WorldService - loadPresetIntoWorld] before load preset`)
+        console.log(`[WorldService - loadPresetIntoWorld] loading preset`)
         const preset: Preset = await PresetLoader.loadPreset(presetName, pathToPresetsFolder);
-        console.log(`[WorldService - loadPresetIntoWorld] after load preset; Object.keys(preset).length: `, Object.keys(preset).length)
+        console.log(`[WorldService - loadPresetIntoWorld] loaded preset of length: `, Object.keys(preset).length)
 
         for (const [targetEntity, blueprintMap] of Object.entries(preset)) {
             console.log(`[WorldService - loadPresetIntoWorld] -${targetEntity}- processing start`)
@@ -82,9 +83,11 @@ export class WorldService extends RepositoryServiceBase {
                 // Upsert each batch
                 const entitiesToSave = batch.map((blueprint) => {
                     console.log(`[WorldService - loadPresetIntoWorld] -${targetEntity}- creating blueprint for id: ${blueprint.blueprint_id}`)
-                    blueprint.world = world;
-                    blueprint.user = user;
-                    return blueprintRepository.create(blueprint);
+                    const entity: ContentBase = blueprintRepository.create(blueprint);
+                    entity.world = world;
+                    entity.user = user;
+                    entity.id = blueprint.blueprint_id;
+                    return entity
                 });
 
                 // Save the batch to the database
@@ -107,7 +110,7 @@ export class WorldService extends RepositoryServiceBase {
             const worldRepository: Repository<World> = transactionManager.getRepository(World);
             const world: World | null = await worldRepository.findOne({ where: { id: worldId } });
 
-            if (!world) throw new Error(`World with ID ${worldId} not found.`);
+            if (!world) throw new Error(`[WorldService - dropWorldContents] world with ID ${worldId} not found.`);
 
             // Iterate over all entities in entityMap
             for (const [targetEntity, EntityClass] of Object.entries(cEM)) {
@@ -119,7 +122,7 @@ export class WorldService extends RepositoryServiceBase {
                 await repository.delete({ world });
             }
 
-            console.log(`All content for world ${worldId} has been deleted.`);
+            console.log(`[WorldService - dropWorldContents] All content for world ${worldId} has been deleted.`);
         });
     }
     /**

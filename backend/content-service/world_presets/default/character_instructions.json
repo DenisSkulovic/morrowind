@@ -1,11 +1,13 @@
 [
     {
         "blueprint_id": "GENERIC_HIGHLAND_GUARD",
+        "name": "GENERIC_HIGHLAND_GUARD",
         "background_blueprint_id": "BACKGROUND_HIGHLAND_TOWN_GUARD",
         "targetEntity": "CharacterGenInstruction"
     },
     {
         "blueprint_id": "SPECIFIC_CAIUS_COSSADES",
+        "name": "SPECIFIC_CAIUS_COSSADES",
         "first_name": "Caius",
         "last_name": "Cossades",
         "gender": "MALE",

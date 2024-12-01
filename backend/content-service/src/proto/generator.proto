@@ -5,26 +5,29 @@ package generator;
 import "common.proto";
 
 service GeneratorController {
-    rpc generatItems(GenerateItemsRequest) returns (GenerateItemsResponse);
+    rpc generateItems(GenerateItemsRequest) returns (GenerateItemsResponse);
     rpc generateCharacters(GenerateCharactersRequest) returns (GenerateCharactersResponse);
     rpc generateCharacterGroups(GenerateCharacterGroupsRequest) returns (GenerateCharacterGroupsResponse);
 }
 
 message GenerateItemsRequest {
-    repeated common.GenerationInstructionDTO instructions = 1;
+    common.DataSourceEnumDTO source = 1;
+    repeated common.GenerationInstructionDTO arr = 2;
 }
 message GenerateItemsResponse {
-    repeated common.ItemDTO items = 1;
+    repeated common.ItemDTO arr = 1;
 }
 message GenerateCharactersRequest {
-    repeated common.CharacterGenInstructionDTO instructions = 1;
+    common.DataSourceEnumDTO source = 1;
+    repeated common.CharacterGenInstructionDTO arr = 2;
 }
 message GenerateCharactersResponse {
-    repeated common.CharacterDTO character = 1;
+    repeated common.CharacterDTO arr = 1;
 }
 message GenerateCharacterGroupsRequest {
-    repeated common.CharacterGroupGenInstructionDTO instructions = 1;
+    common.DataSourceEnumDTO source = 1;
+    repeated common.CharacterGroupGenInstructionDTO arr = 2;
 }
 message GenerateCharacterGroupsResponse {
-    repeated GenerateCharactersResponse characterGroups = 1;
+    repeated GenerateCharactersResponse arr = 1;
 }

@@ -85,9 +85,8 @@ export class Item extends TaggableContentBase {
     world!: World;
 
     public static toDTO(item: Item): ItemDTO {
-        if (!item.id) throw new Error("item cannot be without id");
         return {
-            id: item.id,
+            id: item.id || "",
             blueprintId: item.blueprint_id,
             name: item.name,
             description: item.description || "",

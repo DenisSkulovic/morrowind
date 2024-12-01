@@ -93,7 +93,7 @@
         "blueprint_id": "MAGIC_DAMAGE",
         "name": "Magic Damage",
         "description": "Instantly reduces the target's magic.",
-        "target": "MAGIC",
+        "target": "MANA",
         "mode": "INSTANT",
         "type": "DAMAGE",
         "targetEntity": "Effect"
@@ -102,7 +102,7 @@
         "blueprint_id": "MAGIC_DRAIN",
         "name": "Magic Drain",
         "description": "Gradually decreases the target's magic over time.",
-        "target": "MAGIC",
+        "target": "MANA",
         "mode": "GRADUAL",
         "type": "DAMAGE",
         "targetEntity": "Effect"
@@ -111,7 +111,7 @@
         "blueprint_id": "MAGIC_RESTORE",
         "name": "Magic Restore",
         "description": "Instantly restores the target's magic.",
-        "target": "MAGIC",
+        "target": "MANA",
         "mode": "INSTANT",
         "type": "HEALING",
         "targetEntity": "Effect"
@@ -120,7 +120,7 @@
         "blueprint_id": "MAGIC_REGENERATION",
         "name": "Magic Regeneration",
         "description": "Gradually restores the target's magic over time.",
-        "target": "MAGIC",
+        "target": "MANA",
         "mode": "GRADUAL",
         "type": "HEALING",
         "targetEntity": "Effect"
@@ -129,7 +129,7 @@
         "blueprint_id": "MAGIC_STEAL",
         "name": "Magic Steal",
         "description": "Steals magic from the target and adds it to the caster.",
-        "target": "MAGIC",
+        "target": "MANA",
         "mode": "GRADUAL",
         "type": "STEALING",
         "targetEntity": "Effect"

@@ -10,14 +10,18 @@
         "damage_pierce": "1d8",
         "trained_skill": "SHORT_SWORD",
         "two_handed": false,
-        "requirements": {
-            "skill": {
-                "SHORT_SWORD": 10
+        "requirements": [
+            {
+                "type": "skill",
+                "name": "SHORT_SWORD",
+                "value":  10
             },
-            "attribute": {
-                "STRENGTH": 5
+            {
+                "type": "attribute",
+                "name": "STRENGTH",
+                "value":  5
             }
-        },
+        ],
         "tags": [
             "ITEM_MATERIAL_IRON",
             "WEAPON_BLADE"
@@ -35,14 +39,18 @@
         "damage_pierce": "1d8",
         "trained_skill": "SHORT_SWORD",
         "two_handed": false,
-        "requirements": {
-            "skill": {
-                "SHORT_SWORD": 10
+        "requirements": [
+            {
+                "type": "skill",
+                "name": "SHORT_SWORD",
+                "value":  10
             },
-            "attribute": {
-                "STRENGTH": 5
+            {
+                "type": "attribute",
+                "name": "STRENGTH",
+                "value":  5
             }
-        },
+        ],
         "targetEntity": "ItemWeaponShortSword"
     },
     {
@@ -56,14 +64,18 @@
         "damage_pierce": "1d6",
         "trained_skill": "LONG_SWORD",
         "two_handed": false,
-        "requirements": {
-            "skill": {
-                "LONG_SWORD": 10
+        "requirements": [
+            {
+                "type": "skill",
+                "name": "LONG_SWORD",
+                "value":  10
             },
-            "attribute": {
-                "STRENGTH": 5
+            {
+                "type": "attribute",
+                "name": "STRENGTH",
+                "value":  5
             }
-        },
+        ],
         "targetEntity": "ItemWeaponLongSword"
     },
     {
@@ -77,14 +89,66 @@
         "damage_pierce": "1d6",
         "trained_skill": "LONG_SWORD",
         "two_handed": false,
-        "requirements": {
-            "skill": {
-                "LONG_SWORD": 10
+        "requirements": [
+            {
+                "type": "skill",
+                "name": "LONG_SWORD",
+                "value":  10
             },
-            "attribute": {
-                "STRENGTH": 5
+            {
+                "type": "attribute",
+                "name": "STRENGTH",
+                "value":  5
             }
-        },
+        ],
         "targetEntity": "ItemWeaponLongSword"
+    },
+    {
+        "blueprint_id": "SHORT_BOW",
+        "name": "Short Bow",
+        "description": "A short bow.",
+        "weight": 1,
+        "size": [1, 4],
+        "base_value": 40,
+        "damage_pierce": "1d6",
+        "trained_skill": "MARKSMAN",
+        "two_handed": true,
+        "requirements": [
+            {
+                "type": "skill",
+                "name": "MARKSMAN",
+                "value":  8
+            },
+            {
+                "type": "attribute",
+                "name": "STRENGTH",
+                "value":  3
+            }
+        ],
+        "targetEntity": "ItemWeaponRanged"
+    },
+    {
+        "blueprint_id": "LONG_BOW",
+        "name": "Long Bow",
+        "description": "A long bow.",
+        "weight": 1,
+        "size": [1, 5],
+        "base_value": 50,
+        "damage_pierce": "1d8",
+        "trained_skill": "MARKSMAN",
+        "two_handed": true,
+        "requirements": [
+            {
+                "type": "skill",
+                "name": "MARKSMAN",
+                "value":  10
+            },
+            {
+                "type": "attribute",
+                "name": "STRENGTH",
+                "value":  5
+            }
+        ],
+        "targetEntity": "ItemWeaponRanged"
     }
 ]

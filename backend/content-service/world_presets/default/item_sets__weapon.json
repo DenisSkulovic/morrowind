@@ -1,11 +1,13 @@
 [
     {
         "blueprint_id": "BARE_ARMS",
+        "name": "BARE_ARMS",
         "set": [],
         "targetEntity": "ItemSet"
     },
     {
         "blueprint_id": "SHORTSWORD_SHIELD",
+        "name": "SHORTSWORD_SHIELD",
         "set": [
             {
                 "cond": "OR",
@@ -21,6 +23,7 @@
     },
     {
         "blueprint_id": "SHORTSWORD",
+        "name": "SHORTSWORD",
         "set": [
             {
                 "cond": "OR",
@@ -35,6 +38,7 @@
     },
     {
         "blueprint_id": "BOW_AND_ARROWS",
+        "name": "BOW_AND_ARROWS",
         "set": [
             {
                 "cond": "OR",

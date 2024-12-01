@@ -1,6 +1,6 @@
 import { randomUUID } from "crypto";
 import { ContentBase } from "../../ContentBase";
-import { DataSource, Repository } from "typeorm";
+import { DataSource, FindOptionsWhere, Repository } from "typeorm";
 import { BlueprintSetInstruction, EntityConstructor, GenerationInstruction } from "../../types";
 import { IdAndQuant, BlueprintGenInstruction_Gaussian, ProbObject_Simple, BlueprintSetCombinator } from "../../class/blueprint_id_and_prob";
 import { InstructionProcessor } from "../service/InstructionProcessor";
@@ -55,9 +55,11 @@ export abstract class AbstractProbGenerator<T extends ContentBase> {
     // If there is a lot of common data, generation of many will be speeding up as the cache will be utilized more and more.
     // The implementation of generateOne must (or is heavily advisable) use a data cache for the data it is requesting
     public async generateMany(instructions: GenerationInstruction[]): Promise<T[]> {
+        console.log(`[AbstractProbGenerator - generateMany] instructions`, instructions)
         const res: T[] = []
         for (const instruction of instructions) {
             const idAndQuants: IdAndQuant[] = InstructionProcessor.processInstruction(instruction)
+            console.log(`[AbstractProbGenerator - generateMany] idAndQuants`, idAndQuants)
             for (const idAndQuant of idAndQuants) {
                 const items: T[] = await this.generateOne(idAndQuant)
                 items.forEach((item) => res.push(item))
@@ -76,6 +78,7 @@ export abstract class AbstractProbGenerator<T extends ContentBase> {
         key: string,
         blueprint: E,
     ): void {
+        if (!this.blueprintsCache[type]) this.blueprintsCache[type] = {}
         this.blueprintsCache[type][key] = blueprint
     }
 
@@ -91,11 +94,12 @@ export abstract class AbstractProbGenerator<T extends ContentBase> {
     ): Promise<E[]> {
         const promises: Promise<E>[] = blueprint_ids.map(async (blueprint_id) => {
             // try to find background in the cache
-            const cached = this.blueprintsCache[type][blueprint_id]
+            const typeCache: { [key: string]: any } | undefined = this.blueprintsCache[type]
+            const cached = typeCache && typeCache[blueprint_id]
             if (cached) return cached
             // try to extract background from db
             const repo: Repository<E> = this.dataSource.getRepository(entity)
-            const fetched: E | null = await repo.findOne({ where: { id: blueprint_id } });
+            const fetched: E | null = await repo.findOne({ where: { id: blueprint_id } as FindOptionsWhere<E> });
             if (!fetched) throw new Error(`failed to fetch blueprint: "${blueprint_id}" for entity type: "${type}"`)
             this.cacheBlueprint(type, blueprint_id, fetched)
             return fetched

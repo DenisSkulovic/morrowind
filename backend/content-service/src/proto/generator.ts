@@ -10,6 +10,9 @@ import {
   CharacterDTO,
   CharacterGenInstructionDTO,
   CharacterGroupGenInstructionDTO,
+  DataSourceEnumDTO,
+  dataSourceEnumDTOFromJSON,
+  dataSourceEnumDTOToJSON,
   GenerationInstructionDTO,
   ItemDTO,
 } from "./common";
@@ -17,37 +20,43 @@ import {
 export const protobufPackage = "generator";
 
 export interface GenerateItemsRequest {
-  instructions: GenerationInstructionDTO[];
+  source: DataSourceEnumDTO;
+  arr: GenerationInstructionDTO[];
 }
 
 export interface GenerateItemsResponse {
-  items: ItemDTO[];
+  arr: ItemDTO[];
 }
 
 export interface GenerateCharactersRequest {
-  instructions: CharacterGenInstructionDTO[];
+  source: DataSourceEnumDTO;
+  arr: CharacterGenInstructionDTO[];
 }
 
 export interface GenerateCharactersResponse {
-  character: CharacterDTO[];
+  arr: CharacterDTO[];
 }
 
 export interface GenerateCharacterGroupsRequest {
-  instructions: CharacterGroupGenInstructionDTO[];
+  source: DataSourceEnumDTO;
+  arr: CharacterGroupGenInstructionDTO[];
 }
 
 export interface GenerateCharacterGroupsResponse {
-  characterGroups: GenerateCharactersResponse[];
+  arr: GenerateCharactersResponse[];
 }
 
 function createBaseGenerateItemsRequest(): GenerateItemsRequest {
-  return { instructions: [] };
+  return { source: 0, arr: [] };
 }
 
 export const GenerateItemsRequest: MessageFns<GenerateItemsRequest> = {
   encode(message: GenerateItemsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.instructions) {
-      GenerationInstructionDTO.encode(v!, writer.uint32(10).fork()).join();
+    if (message.source !== 0) {
+      writer.uint32(8).int32(message.source);
+    }
+    for (const v of message.arr) {
+      GenerationInstructionDTO.encode(v!, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -60,11 +69,19 @@ export const GenerateItemsRequest: MessageFns<GenerateItemsRequest> = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1: {
-          if (tag !== 10) {
+          if (tag !== 8) {
             break;
           }
 
-          message.instructions.push(GenerationInstructionDTO.decode(reader, reader.uint32()));
+          message.source = reader.int32() as any;
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.arr.push(GenerationInstructionDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -78,16 +95,20 @@ export const GenerateItemsRequest: MessageFns<GenerateItemsRequest> = {
 
   fromJSON(object: any): GenerateItemsRequest {
     return {
-      instructions: globalThis.Array.isArray(object?.instructions)
-        ? object.instructions.map((e: any) => GenerationInstructionDTO.fromJSON(e))
+      source: isSet(object.source) ? dataSourceEnumDTOFromJSON(object.source) : 0,
+      arr: globalThis.Array.isArray(object?.arr)
+        ? object.arr.map((e: any) => GenerationInstructionDTO.fromJSON(e))
         : [],
     };
   },
 
   toJSON(message: GenerateItemsRequest): unknown {
     const obj: any = {};
-    if (message.instructions?.length) {
-      obj.instructions = message.instructions.map((e) => GenerationInstructionDTO.toJSON(e));
+    if (message.source !== 0) {
+      obj.source = dataSourceEnumDTOToJSON(message.source);
+    }
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => GenerationInstructionDTO.toJSON(e));
     }
     return obj;
   },
@@ -97,18 +118,19 @@ export const GenerateItemsRequest: MessageFns<GenerateItemsRequest> = {
   },
   fromPartial<I extends Exact<DeepPartial<GenerateItemsRequest>, I>>(object: I): GenerateItemsRequest {
     const message = createBaseGenerateItemsRequest();
-    message.instructions = object.instructions?.map((e) => GenerationInstructionDTO.fromPartial(e)) || [];
+    message.source = object.source ?? 0;
+    message.arr = object.arr?.map((e) => GenerationInstructionDTO.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseGenerateItemsResponse(): GenerateItemsResponse {
-  return { items: [] };
+  return { arr: [] };
 }
 
 export const GenerateItemsResponse: MessageFns<GenerateItemsResponse> = {
   encode(message: GenerateItemsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.items) {
+    for (const v of message.arr) {
       ItemDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -126,7 +148,7 @@ export const GenerateItemsResponse: MessageFns<GenerateItemsResponse> = {
             break;
           }
 
-          message.items.push(ItemDTO.decode(reader, reader.uint32()));
+          message.arr.push(ItemDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -139,13 +161,13 @@ export const GenerateItemsResponse: MessageFns<GenerateItemsResponse> = {
   },
 
   fromJSON(object: any): GenerateItemsResponse {
-    return { items: globalThis.Array.isArray(object?.items) ? object.items.map((e: any) => ItemDTO.fromJSON(e)) : [] };
+    return { arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => ItemDTO.fromJSON(e)) : [] };
   },
 
   toJSON(message: GenerateItemsResponse): unknown {
     const obj: any = {};
-    if (message.items?.length) {
-      obj.items = message.items.map((e) => ItemDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => ItemDTO.toJSON(e));
     }
     return obj;
   },
@@ -155,19 +177,22 @@ export const GenerateItemsResponse: MessageFns<GenerateItemsResponse> = {
   },
   fromPartial<I extends Exact<DeepPartial<GenerateItemsResponse>, I>>(object: I): GenerateItemsResponse {
     const message = createBaseGenerateItemsResponse();
-    message.items = object.items?.map((e) => ItemDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => ItemDTO.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseGenerateCharactersRequest(): GenerateCharactersRequest {
-  return { instructions: [] };
+  return { source: 0, arr: [] };
 }
 
 export const GenerateCharactersRequest: MessageFns<GenerateCharactersRequest> = {
   encode(message: GenerateCharactersRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.instructions) {
-      CharacterGenInstructionDTO.encode(v!, writer.uint32(10).fork()).join();
+    if (message.source !== 0) {
+      writer.uint32(8).int32(message.source);
+    }
+    for (const v of message.arr) {
+      CharacterGenInstructionDTO.encode(v!, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -180,11 +205,19 @@ export const GenerateCharactersRequest: MessageFns<GenerateCharactersRequest> = 
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1: {
-          if (tag !== 10) {
+          if (tag !== 8) {
             break;
           }
 
-          message.instructions.push(CharacterGenInstructionDTO.decode(reader, reader.uint32()));
+          message.source = reader.int32() as any;
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.arr.push(CharacterGenInstructionDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -198,16 +231,20 @@ export const GenerateCharactersRequest: MessageFns<GenerateCharactersRequest> = 
 
   fromJSON(object: any): GenerateCharactersRequest {
     return {
-      instructions: globalThis.Array.isArray(object?.instructions)
-        ? object.instructions.map((e: any) => CharacterGenInstructionDTO.fromJSON(e))
+      source: isSet(object.source) ? dataSourceEnumDTOFromJSON(object.source) : 0,
+      arr: globalThis.Array.isArray(object?.arr)
+        ? object.arr.map((e: any) => CharacterGenInstructionDTO.fromJSON(e))
         : [],
     };
   },
 
   toJSON(message: GenerateCharactersRequest): unknown {
     const obj: any = {};
-    if (message.instructions?.length) {
-      obj.instructions = message.instructions.map((e) => CharacterGenInstructionDTO.toJSON(e));
+    if (message.source !== 0) {
+      obj.source = dataSourceEnumDTOToJSON(message.source);
+    }
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => CharacterGenInstructionDTO.toJSON(e));
     }
     return obj;
   },
@@ -217,18 +254,19 @@ export const GenerateCharactersRequest: MessageFns<GenerateCharactersRequest> = 
   },
   fromPartial<I extends Exact<DeepPartial<GenerateCharactersRequest>, I>>(object: I): GenerateCharactersRequest {
     const message = createBaseGenerateCharactersRequest();
-    message.instructions = object.instructions?.map((e) => CharacterGenInstructionDTO.fromPartial(e)) || [];
+    message.source = object.source ?? 0;
+    message.arr = object.arr?.map((e) => CharacterGenInstructionDTO.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseGenerateCharactersResponse(): GenerateCharactersResponse {
-  return { character: [] };
+  return { arr: [] };
 }
 
 export const GenerateCharactersResponse: MessageFns<GenerateCharactersResponse> = {
   encode(message: GenerateCharactersResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.character) {
+    for (const v of message.arr) {
       CharacterDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -246,7 +284,7 @@ export const GenerateCharactersResponse: MessageFns<GenerateCharactersResponse> 
             break;
           }
 
-          message.character.push(CharacterDTO.decode(reader, reader.uint32()));
+          message.arr.push(CharacterDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -259,17 +297,13 @@ export const GenerateCharactersResponse: MessageFns<GenerateCharactersResponse> 
   },
 
   fromJSON(object: any): GenerateCharactersResponse {
-    return {
-      character: globalThis.Array.isArray(object?.character)
-        ? object.character.map((e: any) => CharacterDTO.fromJSON(e))
-        : [],
-    };
+    return { arr: globalThis.Array.isArray(object?.arr) ? object.arr.map((e: any) => CharacterDTO.fromJSON(e)) : [] };
   },
 
   toJSON(message: GenerateCharactersResponse): unknown {
     const obj: any = {};
-    if (message.character?.length) {
-      obj.character = message.character.map((e) => CharacterDTO.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => CharacterDTO.toJSON(e));
     }
     return obj;
   },
@@ -279,19 +313,22 @@ export const GenerateCharactersResponse: MessageFns<GenerateCharactersResponse> 
   },
   fromPartial<I extends Exact<DeepPartial<GenerateCharactersResponse>, I>>(object: I): GenerateCharactersResponse {
     const message = createBaseGenerateCharactersResponse();
-    message.character = object.character?.map((e) => CharacterDTO.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => CharacterDTO.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseGenerateCharacterGroupsRequest(): GenerateCharacterGroupsRequest {
-  return { instructions: [] };
+  return { source: 0, arr: [] };
 }
 
 export const GenerateCharacterGroupsRequest: MessageFns<GenerateCharacterGroupsRequest> = {
   encode(message: GenerateCharacterGroupsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.instructions) {
-      CharacterGroupGenInstructionDTO.encode(v!, writer.uint32(10).fork()).join();
+    if (message.source !== 0) {
+      writer.uint32(8).int32(message.source);
+    }
+    for (const v of message.arr) {
+      CharacterGroupGenInstructionDTO.encode(v!, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -304,11 +341,19 @@ export const GenerateCharacterGroupsRequest: MessageFns<GenerateCharacterGroupsR
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1: {
-          if (tag !== 10) {
+          if (tag !== 8) {
             break;
           }
 
-          message.instructions.push(CharacterGroupGenInstructionDTO.decode(reader, reader.uint32()));
+          message.source = reader.int32() as any;
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.arr.push(CharacterGroupGenInstructionDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -322,16 +367,20 @@ export const GenerateCharacterGroupsRequest: MessageFns<GenerateCharacterGroupsR
 
   fromJSON(object: any): GenerateCharacterGroupsRequest {
     return {
-      instructions: globalThis.Array.isArray(object?.instructions)
-        ? object.instructions.map((e: any) => CharacterGroupGenInstructionDTO.fromJSON(e))
+      source: isSet(object.source) ? dataSourceEnumDTOFromJSON(object.source) : 0,
+      arr: globalThis.Array.isArray(object?.arr)
+        ? object.arr.map((e: any) => CharacterGroupGenInstructionDTO.fromJSON(e))
         : [],
     };
   },
 
   toJSON(message: GenerateCharacterGroupsRequest): unknown {
     const obj: any = {};
-    if (message.instructions?.length) {
-      obj.instructions = message.instructions.map((e) => CharacterGroupGenInstructionDTO.toJSON(e));
+    if (message.source !== 0) {
+      obj.source = dataSourceEnumDTOToJSON(message.source);
+    }
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => CharacterGroupGenInstructionDTO.toJSON(e));
     }
     return obj;
   },
@@ -343,18 +392,19 @@ export const GenerateCharacterGroupsRequest: MessageFns<GenerateCharacterGroupsR
     object: I,
   ): GenerateCharacterGroupsRequest {
     const message = createBaseGenerateCharacterGroupsRequest();
-    message.instructions = object.instructions?.map((e) => CharacterGroupGenInstructionDTO.fromPartial(e)) || [];
+    message.source = object.source ?? 0;
+    message.arr = object.arr?.map((e) => CharacterGroupGenInstructionDTO.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseGenerateCharacterGroupsResponse(): GenerateCharacterGroupsResponse {
-  return { characterGroups: [] };
+  return { arr: [] };
 }
 
 export const GenerateCharacterGroupsResponse: MessageFns<GenerateCharacterGroupsResponse> = {
   encode(message: GenerateCharacterGroupsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.characterGroups) {
+    for (const v of message.arr) {
       GenerateCharactersResponse.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -372,7 +422,7 @@ export const GenerateCharacterGroupsResponse: MessageFns<GenerateCharacterGroups
             break;
           }
 
-          message.characterGroups.push(GenerateCharactersResponse.decode(reader, reader.uint32()));
+          message.arr.push(GenerateCharactersResponse.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -386,16 +436,16 @@ export const GenerateCharacterGroupsResponse: MessageFns<GenerateCharacterGroups
 
   fromJSON(object: any): GenerateCharacterGroupsResponse {
     return {
-      characterGroups: globalThis.Array.isArray(object?.characterGroups)
-        ? object.characterGroups.map((e: any) => GenerateCharactersResponse.fromJSON(e))
+      arr: globalThis.Array.isArray(object?.arr)
+        ? object.arr.map((e: any) => GenerateCharactersResponse.fromJSON(e))
         : [],
     };
   },
 
   toJSON(message: GenerateCharacterGroupsResponse): unknown {
     const obj: any = {};
-    if (message.characterGroups?.length) {
-      obj.characterGroups = message.characterGroups.map((e) => GenerateCharactersResponse.toJSON(e));
+    if (message.arr?.length) {
+      obj.arr = message.arr.map((e) => GenerateCharactersResponse.toJSON(e));
     }
     return obj;
   },
@@ -407,13 +457,13 @@ export const GenerateCharacterGroupsResponse: MessageFns<GenerateCharacterGroups
     object: I,
   ): GenerateCharacterGroupsResponse {
     const message = createBaseGenerateCharacterGroupsResponse();
-    message.characterGroups = object.characterGroups?.map((e) => GenerateCharactersResponse.fromPartial(e)) || [];
+    message.arr = object.arr?.map((e) => GenerateCharactersResponse.fromPartial(e)) || [];
     return message;
   },
 };
 
 export interface GeneratorController {
-  generatItems(request: GenerateItemsRequest): Promise<GenerateItemsResponse>;
+  generateItems(request: GenerateItemsRequest): Promise<GenerateItemsResponse>;
   generateCharacters(request: GenerateCharactersRequest): Promise<GenerateCharactersResponse>;
   generateCharacterGroups(request: GenerateCharacterGroupsRequest): Promise<GenerateCharacterGroupsResponse>;
 }
@@ -425,13 +475,13 @@ export class GeneratorControllerClientImpl implements GeneratorController {
   constructor(rpc: Rpc, opts?: { service?: string }) {
     this.service = opts?.service || GeneratorControllerServiceName;
     this.rpc = rpc;
-    this.generatItems = this.generatItems.bind(this);
+    this.generateItems = this.generateItems.bind(this);
     this.generateCharacters = this.generateCharacters.bind(this);
     this.generateCharacterGroups = this.generateCharacterGroups.bind(this);
   }
-  generatItems(request: GenerateItemsRequest): Promise<GenerateItemsResponse> {
+  generateItems(request: GenerateItemsRequest): Promise<GenerateItemsResponse> {
     const data = GenerateItemsRequest.encode(request).finish();
-    const promise = this.rpc.request(this.service, "generatItems", data);
+    const promise = this.rpc.request(this.service, "generateItems", data);
     return promise.then((data) => GenerateItemsResponse.decode(new BinaryReader(data)));
   }
 
@@ -463,6 +513,10 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function isSet(value: any): boolean {
+  return value !== null && value !== undefined;
+}
 
 export interface MessageFns<T> {
   encode(message: T, writer?: BinaryWriter): BinaryWriter;

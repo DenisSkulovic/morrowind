@@ -1,4 +1,4 @@
 export enum DataSourceEnum {
-    WORLD = "worldDataSource",
-    CAMPAIGN = "campaignDataSource"
+    WORLD = "WORLD",
+    CAMPAIGN = "CAMPAIGN"
 }

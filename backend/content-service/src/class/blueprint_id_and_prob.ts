@@ -1,6 +1,6 @@
 import { ConditionEnum } from "../enum/ConditionEnum"
-import { serializeEnum } from "../enum/util"
-import { GenerationInstructionDTO, GenerationInstructionsDTO } from "../proto/common"
+import { deserializeEnum, serializeEnum } from "../enum/util"
+import { ConditionEnumDTO, GenerationInstructionDTO, GenerationInstructionsDTO } from "../proto/common"
 import { BlueprintGenInstruction_Simple, Probability_0_to_1, GenerationInstruction } from "../types"
 
 export class IdAndQuant {
@@ -49,12 +49,12 @@ export class BlueprintGenInstruction_Gaussian {
 }
 
 export class BlueprintSetCombinator {
-    name: string
+    name?: string
     prob: Probability_0_to_1 // 0-1, default 1
     cond: ConditionEnum
     items: GenerationInstruction[]
     clazz = "BlueprintSetCombinator"
-    constructor(name: string, prob: Probability_0_to_1, cond: ConditionEnum, items: GenerationInstruction[]) {
+    constructor(name: string | undefined, prob: Probability_0_to_1, cond: ConditionEnum, items: GenerationInstruction[]) {
         this.name = name
         this.prob = prob
         this.cond = cond
@@ -68,7 +68,12 @@ export class BlueprintSetCombinator {
 
 export function serializeInstruction(instruction: GenerationInstruction): GenerationInstructionDTO {
     if (instruction instanceof IdAndQuant) {
-        return { idsAndQuant: { idAndQuant: { [instruction.blueprint_id]: instruction.quantity || 1 } } };
+        return {
+            idAndQuant: {
+                blueprintId: instruction.blueprint_id,
+                quantity: instruction.quantity || 1
+            }
+        };
     }
     if (instruction instanceof BlueprintGenInstruction_Gaussian) {
         return {
@@ -97,21 +102,36 @@ export function serializeInstruction(instruction: GenerationInstruction): Genera
 }
 
 export function deserializeInstruction(dto: GenerationInstructionDTO): GenerationInstruction {
-    if (dto.idsAndQuant) {
-        const [blueprint_id, quantity] = Object.entries(dto.idsAndQuant.idAndQuant)[0];
-        return new IdAndQuant(blueprint_id, quantity);
+    console.log(`[deserializeInstruction] instruction: `, dto)
+    if (dto.blueprintId) {
+        return dto.blueprintId
+    }
+    if (dto.idAndQuant) {
+        return new IdAndQuant(dto.idAndQuant.blueprintId, dto.idAndQuant.quantity);
+    }
+    if (dto.simpleProb) {
+        return new ProbObject_Simple(
+            deserializeEnum(ConditionEnumDTO, dto.simpleProb.cond) as ConditionEnum,
+            dto.simpleProb.prob
+        )
     }
     if (dto.gaussianProb) {
-        return BlueprintGenInstruction_Gaussian.build(dto.gaussianProb);
+        return new BlueprintGenInstruction_Gaussian(
+            dto.gaussianProb.blueprintId,
+            dto.gaussianProb.prob,
+            dto.gaussianProb.avgQuan,
+            dto.gaussianProb.stDev,
+            dto.gaussianProb.skew
+        );
     }
     if (dto.combinator) {
         const { name, prob, cond, instructions } = dto.combinator;
-        return BlueprintSetCombinator.build({
+        return new BlueprintSetCombinator(
             name,
             prob,
-            cond,
-            items: instructions.map(deserializeInstruction),
-        });
+            deserializeEnum(ConditionEnumDTO, cond) as ConditionEnum,
+            instructions.map(deserializeInstruction),
+        );
     }
     throw new Error("Unknown GenerationInstructionDTO type");
 }

@@ -4,8 +4,9 @@ export function serializeEnum<T extends object>(enumObj: T, value: string): numb
     return entry[1] as number; // Enum values in Protobuf are numeric
 }
 
-export function deserializeEnum<T extends object>(enumObj: T, protoValue: number): string {
-    const entry = Object.entries(enumObj).find(([_, val]) => val === protoValue);
-    if (!entry) throw new Error(`Enum deserialization failed: ${protoValue} not found in ${JSON.stringify(enumObj)}`);
-    return entry[0]; // Enum keys in TypeScript are string
+export function deserializeEnum<T extends object>(fromEnum: T, protoValue: number): string {
+    const entry = Object.entries(fromEnum).find(([, val]) => val === protoValue);
+    console.log(`entry`, entry)
+    if (!entry) throw new Error(`Enum deserialization failed: ${protoValue} not found in ${JSON.stringify(fromEnum)}`);
+    return entry[1];
 }

@@ -65,14 +65,18 @@
         "protection": 8,
         "stealth_disadvantage": true,
         "trained_skill": "HEAVY_ARMOR",
-        "requirements": {
-            "skill": {
-                "HEAVY_ARMOR": 10
+        "requirements": [
+            {
+                "type": "skill",
+                "name": "HEAVY_ARMOR",
+                "value":  10
             },
-            "attribute": {
-                "STRENGTH": 5
+            {
+                "type": "attribute",
+                "name": "STRENGTH",
+                "value":  5
             }
-        },
+        ],
         "targetEntity": "ItemWearableGreaves"
     },
     {
@@ -85,14 +89,18 @@
         "protection": 11,
         "stealth_disadvantage": true,
         "trained_skill": "HEAVY_ARMOR",
-        "requirements": {
-            "skill": {
-                "HEAVY_ARMOR": 10
+        "requirements": [
+            {
+                "type": "skill",
+                "name": "HEAVY_ARMOR",
+                "value":  10
             },
-            "attribute": {
-                "STRENGTH": 5
+            {
+                "type": "attribute",
+                "name": "STRENGTH",
+                "value":  5
             }
-        },
+        ],
         "targetEntity": "ItemWearableGreaves"
     },
     {
@@ -105,14 +113,18 @@
         "protection": 12,
         "stealth_disadvantage": true,
         "trained_skill": "HEAVY_ARMOR",
-        "requirements": {
-            "skill": {
-                "HEAVY_ARMOR": 10
+        "requirements": [
+            {
+                "type": "skill",
+                "name": "HEAVY_ARMOR",
+                "value":  10
             },
-            "attribute": {
-                "STRENGTH": 5
+            {
+                "type": "attribute",
+                "name": "STRENGTH",
+                "value":  5
             }
-        },
+        ],
         "targetEntity": "ItemWearableCuirass"
     },
     {
@@ -125,14 +137,18 @@
         "protection": 15,
         "stealth_disadvantage": true,
         "trained_skill": "HEAVY_ARMOR",
-        "requirements": {
-            "skill": {
-                "HEAVY_ARMOR": 10
+        "requirements": [
+            {
+                "type": "skill",
+                "name": "HEAVY_ARMOR",
+                "value":  10
             },
-            "attribute": {
-                "STRENGTH": 5
+            {
+                "type": "attribute",
+                "name": "STRENGTH",
+                "value":  5
             }
-        },
+        ],
         "targetEntity": "ItemWearableCuirass"
     },
     {
@@ -144,14 +160,18 @@
         "base_value": 10,
         "protection": 2,
         "trained_skill": "HEAVY_ARMOR",
-        "requirements": {
-            "skill": {
-                "HEAVY_ARMOR": 10
+        "requirements": [
+            {
+                "type": "skill",
+                "name": "HEAVY_ARMOR",
+                "value":  10
             },
-            "attribute": {
-                "STRENGTH": 5
+            {
+                "type": "attribute",
+                "name": "STRENGTH",
+                "value":  5
             }
-        },
+        ],
         "targetEntity": "ItemWearableHead"
     },
     {
@@ -163,14 +183,18 @@
         "base_value": 25,
         "protection": 3,
         "trained_skill": "HEAVY_ARMOR",
-        "requirements": {
-            "skill": {
-                "HEAVY_ARMOR": 10
+        "requirements": [
+            {
+                "type": "skill",
+                "name": "HEAVY_ARMOR",
+                "value":  10
             },
-            "attribute": {
-                "STRENGTH": 5
+            {
+                "type": "attribute",
+                "name": "STRENGTH",
+                "value":  5
             }
-        },
+        ],
         "targetEntity": "ItemWearableHead"
     },
     {
@@ -182,14 +206,18 @@
         "base_value": 15,
         "protection": 3,
         "trained_skill": "HEAVY_ARMOR",
-        "requirements": {
-            "skill": {
-                "HEAVY_ARMOR": 10
+        "requirements": [
+            {
+                "type": "skill",
+                "name": "HEAVY_ARMOR",
+                "value":  10
             },
-            "attribute": {
-                "STRENGTH": 5
+            {
+                "type": "attribute",
+                "name": "STRENGTH",
+                "value":  5
             }
-        },
+        ],
         "targetEntity": "ItemWearableFeet"
     },
     {
@@ -201,14 +229,18 @@
         "base_value": 35,
         "protection": 4,
         "trained_skill": "HEAVY_ARMOR",
-        "requirements": {
-            "skill": {
-                "HEAVY_ARMOR": 10
+        "requirements": [
+            {
+                "type": "skill",
+                "name": "HEAVY_ARMOR",
+                "value":  10
             },
-            "attribute": {
-                "STRENGTH": 5
+            {
+                "type": "attribute",
+                "name": "STRENGTH",
+                "value":  5
             }
-        },
+        ],
         "stealth_disadvantage": true,
         "targetEntity": "ItemWearableFeet"
     },
@@ -221,14 +253,18 @@
         "base_value": 70,
         "protection": 50,
         "trained_skill": "HEAVY_ARMOR",
-        "requirements": {
-            "skill": {
-                "HEAVY_ARMOR": 10
+        "requirements": [
+            {
+                "type": "skill",
+                "name": "HEAVY_ARMOR",
+                "value":  10
             },
-            "attribute": {
-                "STRENGTH": 5
+            {
+                "type": "attribute",
+                "name": "STRENGTH",
+                "value":  5
             }
-        },
+        ],
         "targetEntity": "ItemWearableShield"
     },
     {
@@ -240,14 +276,18 @@
         "base_value": 140,
         "protection": 60,
         "trained_skill": "HEAVY_ARMOR",
-        "requirements": {
-            "skill": {
-                "HEAVY_ARMOR": 10
+        "requirements": [
+            {
+                "type": "skill",
+                "name": "HEAVY_ARMOR",
+                "value":  10
             },
-            "attribute": {
-                "STRENGTH": 5
+            {
+                "type": "attribute",
+                "name": "STRENGTH",
+                "value":  5
             }
-        },
+        ],
         "stealth_disadvantage": true,
         "targetEntity": "ItemWearableShield"
     },

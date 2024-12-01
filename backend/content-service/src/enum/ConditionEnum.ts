@@ -1,5 +1,5 @@
 export enum ConditionEnum {
-    AND = "AND",
     OR = "OR",
-    ANY = "ANY"
+    ANY = "ANY",
+    AND = "AND",
 }

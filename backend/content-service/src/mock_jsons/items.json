@@ -1,0 +1,68 @@
+{
+    "source": 0,
+    "instructions": [
+        {
+            "blueprintId": "COIN"
+        },
+        {
+            "idAndQuant": {
+                "blueprintId": "COIN",
+                "quantity": 20,
+                "clazz": "IdAndQuant"
+            }
+        },
+        {
+            "simpleProb": {
+                "cond": 0,
+                "prob": {
+                    "IRON_SHORT_SWORD": 0.8,
+                    "STEEL_SHORT_SWORD": 0.2
+                },
+                "clazz": "ProbObject_Simple"
+            }
+        },
+        {
+            "gaussianProb": {
+                "blueprintId": "IRON_ARROW",
+                "avgQuan": 25,
+                "stDev": 3,
+                "clazz": "BlueprintGenInstruction_Gaussian"
+            }
+        },
+        {
+            "combinator": {
+                "cond": 1,
+                "prob": 1,
+                "instructions": [
+                    {
+                        "combinator": {
+                            "name": "some_name",
+                            "prob": 1,
+                            "cond": 1,
+                            "instructions": [
+                                {"gaussianProb": {
+                                    "blueprintId": "IRON_HELMET",
+                                    "prob": 0.50,
+                                    "clazz": "BlueprintGenInstruction_Gaussian"
+                                }
+                                },
+                                {"gaussianProb": {
+                                    "blueprintId": "IRON_CUIRASS",
+                                    "prob": 0.33,
+                                    "clazz": "BlueprintGenInstruction_Gaussian"
+                                }},
+                                {"gaussianProb": {
+                                    "blueprintId": "IRON_GREAVES",
+                                    "prob": 0.80,
+                                    "clazz": "BlueprintGenInstruction_Gaussian"
+                                }}
+                            ],
+                            "clazz": "BlueprintSetCombinator"
+                        }
+                    }
+                ],
+                "clazz": "BlueprintSetCombinator"
+            }
+        }
+    ]
+}
