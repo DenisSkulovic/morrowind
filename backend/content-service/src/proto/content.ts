@@ -48,6 +48,7 @@ export const protobufPackage = "content";
 export interface CreateContentRequest {
   source: DataSourceEnumDTO;
   contentBody: ContentBodyDTO | undefined;
+  entityName: string;
 }
 
 export interface CreateContentResponse {
@@ -88,7 +89,7 @@ export interface ContentBodyDTO {
 }
 
 function createBaseCreateContentRequest(): CreateContentRequest {
-  return { source: 0, contentBody: undefined };
+  return { source: 0, contentBody: undefined, entityName: "" };
 }
 
 export const CreateContentRequest: MessageFns<CreateContentRequest> = {
@@ -98,6 +99,9 @@ export const CreateContentRequest: MessageFns<CreateContentRequest> = {
     }
     if (message.contentBody !== undefined) {
       ContentBodyDTO.encode(message.contentBody, writer.uint32(18).fork()).join();
+    }
+    if (message.entityName !== "") {
+      writer.uint32(26).string(message.entityName);
     }
     return writer;
   },
@@ -125,6 +129,14 @@ export const CreateContentRequest: MessageFns<CreateContentRequest> = {
           message.contentBody = ContentBodyDTO.decode(reader, reader.uint32());
           continue;
         }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.entityName = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -138,6 +150,7 @@ export const CreateContentRequest: MessageFns<CreateContentRequest> = {
     return {
       source: isSet(object.source) ? dataSourceEnumDTOFromJSON(object.source) : 0,
       contentBody: isSet(object.contentBody) ? ContentBodyDTO.fromJSON(object.contentBody) : undefined,
+      entityName: isSet(object.entityName) ? globalThis.String(object.entityName) : "",
     };
   },
 
@@ -148,6 +161,9 @@ export const CreateContentRequest: MessageFns<CreateContentRequest> = {
     }
     if (message.contentBody !== undefined) {
       obj.contentBody = ContentBodyDTO.toJSON(message.contentBody);
+    }
+    if (message.entityName !== "") {
+      obj.entityName = message.entityName;
     }
     return obj;
   },
@@ -161,6 +177,7 @@ export const CreateContentRequest: MessageFns<CreateContentRequest> = {
     message.contentBody = (object.contentBody !== undefined && object.contentBody !== null)
       ? ContentBodyDTO.fromPartial(object.contentBody)
       : undefined;
+    message.entityName = object.entityName ?? "";
     return message;
   },
 };

@@ -21,7 +21,6 @@ export class CharacterProfession extends TaggableContentBase {
 
     @ManyToMany(() => Character, character => character.professions, {})
     @JoinTable()
-    @Serializable({ strategy: 'id' })
     characters?: Character[];
 
     @ManyToMany(() => MemoryPool, {})

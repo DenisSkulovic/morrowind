@@ -23,7 +23,6 @@ export class Faction extends TaggableContentBase {
     name!: string
 
     @ManyToMany(() => Character, (character) => character.factions, {})
-    @Serializable({ strategy: 'id' })
     characters?: Character[];
 
     @ManyToMany(() => Tag, (tag) => tag.factions, {})

@@ -4,7 +4,6 @@ import { TaggableContentBase } from "../../../TaggableContentBase";
 import { Tag } from "./Tag";
 import { CharacterProfession } from "./CharacterProfession";
 import { MemoryPoolDTO } from "../../../proto/common";
-import { Context } from "../../../types";
 import { Campaign } from "../../campaign/entities/Campaign";
 import { User } from "../../user/entities/User";
 import { World } from "../../world/entities/World";
@@ -29,11 +28,10 @@ export class MemoryPool extends TaggableContentBase {
 
     @OneToMany(() => MemoryPoolEntry, (memoryPoolEntry) => memoryPoolEntry.memory)
     @Serializable({ strategy: 'id' })
-    memoryPoolEntries!: MemoryPoolEntry[]; // Probabilities for each memory in the pool
+    memoryPoolEntries!: MemoryPoolEntry[];
 
     @ManyToMany(() => CharacterProfession)
     @JoinTable()
-    @Serializable({ strategy: 'id' })
     characterProfessions!: CharacterProfession[]
 
     @ManyToMany(() => Tag, (tag) => tag.memoryPools)

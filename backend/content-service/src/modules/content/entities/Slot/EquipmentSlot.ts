@@ -30,7 +30,7 @@ export class EquipmentSlot extends ContentBase {
 
     @OneToOne(() => Item, { nullable: true })
     @JoinColumn()
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: 'full' })
     equippedItem?: Item;
 
     @ManyToOne(() => Character, (character) => character.equipmentSlots, { nullable: true })

@@ -39,9 +39,8 @@ export class Memory extends TaggableContentBase {
 
     @ManyToMany(() => Fact, fact => fact.memories)
     @JoinTable()
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: 'full' })
     facts!: Fact[]
-
 
     @ManyToMany(() => Tag, (tag) => tag.memories)
     @Serializable({ strategy: 'id' })

@@ -59,7 +59,7 @@ export class Item extends TaggableContentBase {
     @Serializable()
     trained_skill?: string
 
-    @Column({ type: "simple-array", nullable: true })
+    @Column({ type: "jsonb", nullable: true })
     @Serializable({
         serialize: (actions: ItemActionEnum[]) => actions.map(action => serializeEnum(ItemActionEnumDTO, action)),
         deserialize: (actions: number[]) => actions.map(action => deserializeEnum(ItemActionEnum, action)),

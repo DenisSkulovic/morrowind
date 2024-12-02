@@ -11,6 +11,7 @@ service ContentController {
 message CreateContentRequest {
     common.DataSourceEnumDTO source = 1;
     ContentBodyDTO contentBody = 2;
+    string entityName = 3;
 }
 
 message CreateContentResponse {

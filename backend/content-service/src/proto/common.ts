@@ -828,9 +828,9 @@ export interface BackgroundDTO {
   memoryPools: GenerationInstructionsDTO | undefined;
   skillSets: GenerationInstructionsDTO | undefined;
   skillAdjustments: { [key: string]: number };
-  user?: UserDTO | undefined;
-  campaign?: CampaignDTO | undefined;
-  world?: WorldDTO | undefined;
+  user?: string | undefined;
+  campaign?: string | undefined;
+  world?: string | undefined;
   targetEntity: string;
   gender: GenerationInstructionDTO | undefined;
 }
@@ -860,10 +860,10 @@ export interface EffectDTO {
   blueprintId: string;
   name: string;
   metadata?: Metadata | undefined;
-  user?: UserDTO | undefined;
-  campaign?: CampaignDTO | undefined;
-  world?: WorldDTO | undefined;
-  tags?: TagsDTO | undefined;
+  user?: string | undefined;
+  campaign?: string | undefined;
+  world?: string | undefined;
+  tags: string[];
   type: EffectTypeEnumDTO;
   target: EffectTargetEnumDTO;
   mode: EffectModeEnumDTO;
@@ -881,9 +881,9 @@ export interface ResistanceDTO {
   blueprintId: string;
   name: string;
   metadata?: Metadata | undefined;
-  user?: UserDTO | undefined;
-  campaign?: CampaignDTO | undefined;
-  world?: WorldDTO | undefined;
+  user?: string | undefined;
+  campaign?: string | undefined;
+  world?: string | undefined;
   effectType: EffectTypeEnumDTO;
   targetEffect?: string | undefined;
   targetEntity: string;
@@ -899,9 +899,9 @@ export interface StatusDTO {
   blueprintId: string;
   name: string;
   metadata?: Metadata | undefined;
-  user?: UserDTO | undefined;
-  campaign?: CampaignDTO | undefined;
-  world?: WorldDTO | undefined;
+  user?: string | undefined;
+  campaign?: string | undefined;
+  world?: string | undefined;
   type: EffectTypeEnumDTO;
   effects: string[];
   duration: number;
@@ -918,9 +918,9 @@ export interface ItemSetDTO {
   id: string;
   blueprintId: string;
   metadata?: Metadata | undefined;
-  user?: UserDTO | undefined;
-  campaign?: CampaignDTO | undefined;
-  world?: WorldDTO | undefined;
+  user?: string | undefined;
+  campaign?: string | undefined;
+  world?: string | undefined;
   set: GenerationInstructionDTO | undefined;
   targetEntity: string;
 }
@@ -961,12 +961,12 @@ export interface ItemDTO {
   spoilage?: number | undefined;
   thirstQuenched?: number | undefined;
   type?: string | undefined;
-  storageSlot?: StorageSlotDTO | undefined;
+  storageSlot: string[];
   storageSlots?: StorageSlotsDTO | undefined;
-  equipmentSlot?: EquipmentSlotDTO | undefined;
-  user?: UserDTO | undefined;
-  campaign?: CampaignDTO | undefined;
-  world?: WorldDTO | undefined;
+  equipmentSlot: string[];
+  user?: string | undefined;
+  campaign?: string | undefined;
+  world?: string | undefined;
   trainedSkill?: string | undefined;
   storageSlotDefinition?: StorageSlotDefinitionsDTO | undefined;
   weight?: number | undefined;
@@ -987,13 +987,13 @@ export interface StorageSlotDTO {
   blueprintId: string;
   name: string;
   metadata?: Metadata | undefined;
-  user?: UserDTO | undefined;
-  campaign?: CampaignDTO | undefined;
-  world?: WorldDTO | undefined;
+  user?: string | undefined;
+  campaign?: string | undefined;
+  world?: string | undefined;
   grid: number[];
   gridState: StorageGridDTO | undefined;
   maxWeight: number;
-  parentItem?: ItemDTO | undefined;
+  parentItem?: string | undefined;
   storedItems?: ItemsDTO | undefined;
   targetEntity: string;
 }
@@ -1037,9 +1037,9 @@ export interface CharacterDTO {
   id: string;
   blueprintId: string;
   metadata?: Metadata | undefined;
-  user?: UserDTO | undefined;
-  campaign?: CampaignDTO | undefined;
-  world?: WorldDTO | undefined;
+  user?: string | undefined;
+  campaign?: string | undefined;
+  world?: string | undefined;
   firstName: string;
   lastName: string;
   race: string;
@@ -1050,19 +1050,18 @@ export interface CharacterDTO {
   birthDay?: number | undefined;
   skills: { [key: string]: number };
   equipmentSlots?: EquipmentSlotsDTO | undefined;
-  professions?: CharacterProfessionsDTO | undefined;
-  memoryPools?: MemoryPoolsDTO | undefined;
-  characterMemories?: CharacterMemoriesDTO | undefined;
+  professions: string[];
+  memoryPools: string[];
+  characterMemories: string[];
   enneagramType: string;
-  traits?: TraitsDTO | undefined;
-  diseases?: DiseasesDTO | undefined;
-  addictions?: AddictionsDTO | undefined;
-  factions?: FactionsDTO | undefined;
-  tags?: TagsDTO | undefined;
+  traits: string[];
+  diseases: string[];
+  addictions: string[];
+  factions: string[];
+  tags: string[];
   targetEntity: string;
   birthEra?: string | undefined;
-  pastExperiencesChild?: PastExperiencesDTO | undefined;
-  pastExperiencesAdult?: PastExperiencesDTO | undefined;
+  pastExperiences: string[];
 }
 
 export interface CharacterDTO_SkillsEntry {
@@ -1080,11 +1079,10 @@ export interface AddictionDTO {
   blueprintId: string;
   name: string;
   metadata?: Metadata | undefined;
-  user?: UserDTO | undefined;
-  campaign?: CampaignDTO | undefined;
-  world?: WorldDTO | undefined;
-  character?: CharacterDTO | undefined;
-  characters?: CharactersDTO | undefined;
+  user?: string | undefined;
+  campaign?: string | undefined;
+  world?: string | undefined;
+  characters: string[];
   targetEntity: string;
 }
 
@@ -1098,18 +1096,18 @@ export interface CharacterMemoryDTO {
   blueprintId: string;
   name: string;
   metadata?: Metadata | undefined;
-  user?: UserDTO | undefined;
-  campaign?: CampaignDTO | undefined;
-  world?: WorldDTO | undefined;
-  character?: CharacterDTO | undefined;
+  user?: string | undefined;
+  campaign?: string | undefined;
+  world?: string | undefined;
+  character?: string | undefined;
   factStatus: FactStatusDTO[];
   importance: number;
   resistance: number;
   accumulator: number;
   acquiredAt?: number | undefined;
   lastUpdatedAt?: number | undefined;
-  tags?: TagsDTO | undefined;
-  memory: MemoryDTO | undefined;
+  tags: string[];
+  memory: string;
   targetEntity: string;
 }
 
@@ -1134,22 +1132,9 @@ export interface TagDTO {
   metadata?: Metadata | undefined;
   label: string;
   subtype: TagSubtypeEnumDTO;
-  items?: ItemsDTO | undefined;
-  pastExperiences?: PastExperiencesDTO | undefined;
-  characterMemories?: CharacterMemoriesDTO | undefined;
-  memories?: MemoriesDTO | undefined;
-  memoryPools?: MemoryPoolsDTO | undefined;
-  skills?: SkillsDTO | undefined;
-  traits?: TraitsDTO | undefined;
-  characters?: CharactersDTO | undefined;
-  characterProfessions?: CharacterProfessionsDTO | undefined;
-  diseases?: DiseasesDTO | undefined;
-  effects?: EffectsDTO | undefined;
-  facts?: FactsDTO | undefined;
-  factions?: FactionsDTO | undefined;
-  user?: UserDTO | undefined;
-  campaign?: CampaignDTO | undefined;
-  world?: WorldDTO | undefined;
+  user?: string | undefined;
+  campaign?: string | undefined;
+  world?: string | undefined;
   targetEntity: string;
 }
 
@@ -1163,10 +1148,10 @@ export interface SkillDTO {
   blueprintId: string;
   name: string;
   metadata?: Metadata | undefined;
-  user?: UserDTO | undefined;
-  campaign?: CampaignDTO | undefined;
-  world?: WorldDTO | undefined;
-  tags?: TagsDTO | undefined;
+  user?: string | undefined;
+  campaign?: string | undefined;
+  world?: string | undefined;
+  tags: string[];
   description: string;
   category: SkillCategoryEnumDTO;
   targetEntity: string;
@@ -1182,10 +1167,10 @@ export interface TraitDTO {
   blueprintId: string;
   name: string;
   metadata?: Metadata | undefined;
-  user?: UserDTO | undefined;
-  campaign?: CampaignDTO | undefined;
-  world?: WorldDTO | undefined;
-  tags?: TagsDTO | undefined;
+  user?: string | undefined;
+  campaign?: string | undefined;
+  world?: string | undefined;
+  tags: string[];
   targetEntity: string;
   type: TraitTypeEnumDTO;
 }
@@ -1200,13 +1185,13 @@ export interface DiseaseDTO {
   blueprintId: string;
   name: string;
   metadata?: Metadata | undefined;
-  user?: UserDTO | undefined;
-  campaign?: CampaignDTO | undefined;
-  world?: WorldDTO | undefined;
-  tags?: TagsDTO | undefined;
+  user?: string | undefined;
+  campaign?: string | undefined;
+  world?: string | undefined;
+  tags: string[];
   description: string;
   severity: string;
-  characters?: CharactersDTO | undefined;
+  characters: string[];
   targetEntity: string;
 }
 
@@ -1220,14 +1205,12 @@ export interface FactDTO {
   blueprintId: string;
   name: string;
   metadata?: Metadata | undefined;
-  user?: UserDTO | undefined;
-  campaign?: CampaignDTO | undefined;
-  world?: WorldDTO | undefined;
-  tags?: TagsDTO | undefined;
+  user?: string | undefined;
+  campaign?: string | undefined;
+  world?: string | undefined;
+  tags: string[];
   description: string;
   weight: number;
-  memories?: MemoriesDTO | undefined;
-  characters?: CharactersDTO | undefined;
   targetEntity: string;
 }
 
@@ -1241,11 +1224,10 @@ export interface FactionDTO {
   blueprintId: string;
   name: string;
   metadata?: Metadata | undefined;
-  user?: UserDTO | undefined;
-  campaign?: CampaignDTO | undefined;
-  world?: WorldDTO | undefined;
-  tags?: TagsDTO | undefined;
-  characters?: CharactersDTO | undefined;
+  user?: string | undefined;
+  campaign?: string | undefined;
+  world?: string | undefined;
+  tags: string[];
   targetEntity: string;
 }
 
@@ -1259,13 +1241,12 @@ export interface MemoryPoolDTO {
   blueprintId: string;
   name: string;
   metadata?: Metadata | undefined;
-  user?: UserDTO | undefined;
-  campaign?: CampaignDTO | undefined;
-  world?: WorldDTO | undefined;
+  user?: string | undefined;
+  campaign?: string | undefined;
+  world?: string | undefined;
   description?: string | undefined;
-  memoryPoolEntries?: MemoryPoolEntriesDTO | undefined;
-  characterProfessions?: CharacterProfessionsDTO | undefined;
-  tags?: TagsDTO | undefined;
+  memoryPoolEntries: string[];
+  tags: string[];
   targetEntity: string;
 }
 
@@ -1279,11 +1260,11 @@ export interface MemoryPoolEntryDTO {
   blueprintId: string;
   name: string;
   metadata?: Metadata | undefined;
-  user?: UserDTO | undefined;
-  campaign?: CampaignDTO | undefined;
-  world?: WorldDTO | undefined;
-  memoryPool?: MemoryPoolDTO | undefined;
-  memory?: MemoryDTO | undefined;
+  user?: string | undefined;
+  campaign?: string | undefined;
+  world?: string | undefined;
+  memoryPool?: string | undefined;
+  memory?: string | undefined;
   probability: number;
   defaultClarity: number;
   defaultImportance: number;
@@ -1300,12 +1281,11 @@ export interface CharacterProfessionDTO {
   blueprintId: string;
   name: string;
   metadata?: Metadata | undefined;
-  user?: UserDTO | undefined;
-  campaign?: CampaignDTO | undefined;
-  world?: WorldDTO | undefined;
-  characters?: CharactersDTO | undefined;
-  tags?: TagsDTO | undefined;
-  memoryPools?: MemoryPoolsDTO | undefined;
+  user?: string | undefined;
+  campaign?: string | undefined;
+  world?: string | undefined;
+  tags: string[];
+  memoryPools: string[];
   targetEntity: string;
 }
 
@@ -1319,12 +1299,12 @@ export interface EquipmentSlotDTO {
   blueprintId: string;
   name: string;
   metadata?: Metadata | undefined;
-  user?: UserDTO | undefined;
-  campaign?: CampaignDTO | undefined;
-  world?: WorldDTO | undefined;
+  user?: string | undefined;
+  campaign?: string | undefined;
+  world?: string | undefined;
   allowedEntities: string[];
   equippedItem?: ItemDTO | undefined;
-  character?: CharacterDTO | undefined;
+  character?: string | undefined;
   targetEntity: string;
 }
 
@@ -1338,9 +1318,9 @@ export interface BirthsignDTO {
   blueprintId: string;
   name: string;
   metadata?: Metadata | undefined;
-  user?: UserDTO | undefined;
-  campaign?: CampaignDTO | undefined;
-  world?: WorldDTO | undefined;
+  user?: string | undefined;
+  campaign?: string | undefined;
+  world?: string | undefined;
   targetEntity: string;
 }
 
@@ -1354,9 +1334,9 @@ export interface RaceDTO {
   blueprintId: string;
   name: string;
   equipmentSlotDefinitions?: EquipmentSlotDefinitionsDTO | undefined;
-  user?: UserDTO | undefined;
-  campaign?: CampaignDTO | undefined;
-  world?: WorldDTO | undefined;
+  user?: string | undefined;
+  campaign?: string | undefined;
+  world?: string | undefined;
   metadata?: Metadata | undefined;
   targetEntity: string;
 }
@@ -1392,9 +1372,9 @@ export interface MoodDTO {
   blueprintId: string;
   name: string;
   metadata?: Metadata | undefined;
-  user?: UserDTO | undefined;
-  campaign?: CampaignDTO | undefined;
-  world?: WorldDTO | undefined;
+  user?: string | undefined;
+  campaign?: string | undefined;
+  world?: string | undefined;
   description: string;
   targetEntity: string;
 }
@@ -1409,9 +1389,9 @@ export interface ReligionDTO {
   blueprintId: string;
   name: string;
   metadata?: Metadata | undefined;
-  user?: UserDTO | undefined;
-  campaign?: CampaignDTO | undefined;
-  world?: WorldDTO | undefined;
+  user?: string | undefined;
+  campaign?: string | undefined;
+  world?: string | undefined;
   description: string;
   rituals?: ReligionRitualsDTO | undefined;
   tenets?: ReligionTenetsDTO | undefined;
@@ -1487,9 +1467,9 @@ export interface CharacterGenInstructionDTO {
   birthSign?: string | undefined;
   id: string;
   metadata?: Metadata | undefined;
-  user?: UserDTO | undefined;
-  campaign?: CampaignDTO | undefined;
-  world?: WorldDTO | undefined;
+  user?: string | undefined;
+  campaign?: string | undefined;
+  world?: string | undefined;
 }
 
 export interface CharacterGenInstructions {
@@ -1502,9 +1482,9 @@ export interface CharacterGroupGenInstructionDTO {
   blueprintId: string;
   name: string;
   metadata?: Metadata | undefined;
-  user?: UserDTO | undefined;
-  campaign?: CampaignDTO | undefined;
-  world?: WorldDTO | undefined;
+  user?: string | undefined;
+  campaign?: string | undefined;
+  world?: string | undefined;
   set: CombinatorDTO | undefined;
   targetEntity: string;
 }
@@ -1579,10 +1559,10 @@ export interface PastExperienceDTO {
   blueprintId: string;
   name: string;
   metadata?: Metadata | undefined;
-  user?: UserDTO | undefined;
-  campaign?: CampaignDTO | undefined;
-  world?: WorldDTO | undefined;
-  tags?: TagsDTO | undefined;
+  user?: string | undefined;
+  campaign?: string | undefined;
+  world?: string | undefined;
+  tags: string[];
   type: PastExperienceTypeEnumDTO;
   targetEntity: string;
 }
@@ -1597,10 +1577,10 @@ export interface MemoryDTO {
   blueprintId: string;
   name: string;
   metadata?: Metadata | undefined;
-  user?: UserDTO | undefined;
-  campaign?: CampaignDTO | undefined;
-  world?: WorldDTO | undefined;
-  tags?: TagsDTO | undefined;
+  user?: string | undefined;
+  campaign?: string | undefined;
+  world?: string | undefined;
+  tags: string[];
   facts?: FactsDTO | undefined;
   type: MemoryTypeEnumDTO;
   description: string;
@@ -1617,10 +1597,10 @@ export interface SkillSetDTO {
   blueprintId: string;
   name: string;
   metadata?: Metadata | undefined;
-  user?: UserDTO | undefined;
-  campaign?: CampaignDTO | undefined;
-  world?: WorldDTO | undefined;
-  tags?: TagsDTO | undefined;
+  user?: string | undefined;
+  campaign?: string | undefined;
+  world?: string | undefined;
+  tags: string[];
   skillImprovement: SkillImprovementDTO | undefined;
   targetEntity: string;
 }
@@ -1645,9 +1625,9 @@ export interface PersonalityProfileDTO {
   blueprintId: string;
   name: string;
   metadata?: Metadata | undefined;
-  user?: UserDTO | undefined;
-  campaign?: CampaignDTO | undefined;
-  world?: WorldDTO | undefined;
+  user?: string | undefined;
+  campaign?: string | undefined;
+  world?: string | undefined;
   enneagramType: string;
   traits: GenerationInstructionDTO[];
   targetEntity: string;
@@ -1663,9 +1643,9 @@ export interface NeedDTO {
   blueprintId: string;
   name: string;
   metadata?: Metadata | undefined;
-  user?: UserDTO | undefined;
-  campaign?: CampaignDTO | undefined;
-  world?: WorldDTO | undefined;
+  user?: string | undefined;
+  campaign?: string | undefined;
+  world?: string | undefined;
   description: string;
   type: NeedTypeEnumDTO;
   layer: NeedLayerEnumDTO;
@@ -1683,33 +1663,6 @@ export interface UserDTO {
   backgrounds?: BackgroundsDTO | undefined;
   worlds?: WorldsDTO | undefined;
   campaigns?: CampaignsDTO | undefined;
-  items?: ItemsDTO | undefined;
-  pastExperiences?: PastExperiencesDTO | undefined;
-  characterMemories?: CharacterMemoriesDTO | undefined;
-  memories?: MemoriesDTO | undefined;
-  memoryPools?: MemoryPoolsDTO | undefined;
-  memoryPoolEntries?: MemoryPoolEntriesDTO | undefined;
-  skills?: SkillsDTO | undefined;
-  traits?: TraitsDTO | undefined;
-  addictions?: AddictionsDTO | undefined;
-  birthsigns?: BirthsignsDTO | undefined;
-  characters?: CharactersDTO | undefined;
-  characterProfessions?: CharacterProfessionsDTO | undefined;
-  diseases?: DiseasesDTO | undefined;
-  effects?: EffectsDTO | undefined;
-  facts?: FactsDTO | undefined;
-  factions?: FactionsDTO | undefined;
-  storageSlots?: StorageSlotsDTO | undefined;
-  equipmentSlots?: EquipmentSlotsDTO | undefined;
-  itemSets?: ItemSetsDTO | undefined;
-  moods?: MoodsDTO | undefined;
-  needs?: NeedsDTO | undefined;
-  personalityProfiles?: PersonalityProfilesDTO | undefined;
-  races?: RacesDTO | undefined;
-  religions?: ReligionsDTO | undefined;
-  resistances?: ResistancesDTO | undefined;
-  statuses?: StatusesDTO | undefined;
-  tags?: TagsDTO | undefined;
   account?: AccountDTO | undefined;
 }
 
@@ -1723,7 +1676,7 @@ export interface AccountDTO {
   username: string;
   email: string;
   role: string;
-  user?: UserDTO | undefined;
+  user?: string | undefined;
   preferences?: PreferencesDTO | undefined;
 }
 
@@ -1749,36 +1702,8 @@ export interface WorldDTO {
   settings?: WorldSettings | undefined;
   frozen: boolean;
   /** relations */
-  user?: UserDTO | undefined;
+  user?: string | undefined;
   campaigns?: CampaignsDTO | undefined;
-  items?: ItemsDTO | undefined;
-  pastExperiences?: PastExperiencesDTO | undefined;
-  characterMemories?: CharacterMemoriesDTO | undefined;
-  memories?: MemoriesDTO | undefined;
-  memoryPools?: MemoryPoolsDTO | undefined;
-  memoryPoolEntries?: MemoryPoolEntriesDTO | undefined;
-  skills?: SkillsDTO | undefined;
-  traits?: TraitsDTO | undefined;
-  addictions?: AddictionsDTO | undefined;
-  birthsigns?: BirthsignsDTO | undefined;
-  characters?: CharactersDTO | undefined;
-  characterProfessions?: CharacterProfessionsDTO | undefined;
-  diseases?: DiseasesDTO | undefined;
-  effects?: EffectsDTO | undefined;
-  facts?: FactsDTO | undefined;
-  factions?: FactionsDTO | undefined;
-  storageSlots?: StorageSlotsDTO | undefined;
-  equipmentSlots?: EquipmentSlotsDTO | undefined;
-  itemSets?: ItemSetsDTO | undefined;
-  moods?: MoodsDTO | undefined;
-  needs?: NeedsDTO | undefined;
-  personalityProfiles?: PersonalityProfilesDTO | undefined;
-  races?: RacesDTO | undefined;
-  religions?: ReligionsDTO | undefined;
-  resistances?: ResistancesDTO | undefined;
-  statuses?: StatusesDTO | undefined;
-  tags?: TagsDTO | undefined;
-  backgrounds?: BackgroundsDTO | undefined;
 }
 
 export interface WorldsDTO {
@@ -1792,39 +1717,8 @@ export interface CampaignDTO {
   description?: string | undefined;
   dynamicState: { [key: string]: string };
   createdAt: string;
-  world?: WorldDTO | undefined;
-  user?:
-    | UserDTO
-    | undefined;
-  /** relations */
-  items?: ItemsDTO | undefined;
-  pastExperiences?: PastExperiencesDTO | undefined;
-  characterMemories?: CharacterMemoriesDTO | undefined;
-  memories?: MemoriesDTO | undefined;
-  memoryPools?: MemoryPoolsDTO | undefined;
-  memoryPoolEntries?: MemoryPoolEntriesDTO | undefined;
-  skills?: SkillsDTO | undefined;
-  traits?: TraitsDTO | undefined;
-  addictions?: AddictionsDTO | undefined;
-  birthsigns?: BirthsignsDTO | undefined;
-  characters?: CharactersDTO | undefined;
-  characterProfessions?: CharacterProfessionsDTO | undefined;
-  diseases?: DiseasesDTO | undefined;
-  effects?: EffectsDTO | undefined;
-  facts?: FactsDTO | undefined;
-  factions?: FactionsDTO | undefined;
-  storageSlots?: StorageSlotsDTO | undefined;
-  equipmentSlots?: EquipmentSlotsDTO | undefined;
-  itemSets?: ItemSetsDTO | undefined;
-  moods?: MoodsDTO | undefined;
-  needs?: NeedsDTO | undefined;
-  personalityProfiles?: PersonalityProfilesDTO | undefined;
-  races?: RacesDTO | undefined;
-  religions?: ReligionsDTO | undefined;
-  resistances?: ResistancesDTO | undefined;
-  statuses?: StatusesDTO | undefined;
-  tags?: TagsDTO | undefined;
-  backgrounds?: BackgroundsDTO | undefined;
+  world?: string | undefined;
+  user?: string | undefined;
 }
 
 export interface CampaignDTO_DynamicStateEntry {
@@ -1909,13 +1803,13 @@ export const BackgroundDTO: MessageFns<BackgroundDTO> = {
       BackgroundDTO_SkillAdjustmentsEntry.encode({ key: key as any, value }, writer.uint32(122).fork()).join();
     });
     if (message.user !== undefined) {
-      UserDTO.encode(message.user, writer.uint32(130).fork()).join();
+      writer.uint32(130).string(message.user);
     }
     if (message.campaign !== undefined) {
-      CampaignDTO.encode(message.campaign, writer.uint32(138).fork()).join();
+      writer.uint32(138).string(message.campaign);
     }
     if (message.world !== undefined) {
-      WorldDTO.encode(message.world, writer.uint32(146).fork()).join();
+      writer.uint32(146).string(message.world);
     }
     if (message.targetEntity !== "") {
       writer.uint32(154).string(message.targetEntity);
@@ -2061,7 +1955,7 @@ export const BackgroundDTO: MessageFns<BackgroundDTO> = {
             break;
           }
 
-          message.user = UserDTO.decode(reader, reader.uint32());
+          message.user = reader.string();
           continue;
         }
         case 17: {
@@ -2069,7 +1963,7 @@ export const BackgroundDTO: MessageFns<BackgroundDTO> = {
             break;
           }
 
-          message.campaign = CampaignDTO.decode(reader, reader.uint32());
+          message.campaign = reader.string();
           continue;
         }
         case 18: {
@@ -2077,7 +1971,7 @@ export const BackgroundDTO: MessageFns<BackgroundDTO> = {
             break;
           }
 
-          message.world = WorldDTO.decode(reader, reader.uint32());
+          message.world = reader.string();
           continue;
         }
         case 19: {
@@ -2127,9 +2021,9 @@ export const BackgroundDTO: MessageFns<BackgroundDTO> = {
           return acc;
         }, {})
         : {},
-      user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
-      campaign: isSet(object.campaign) ? CampaignDTO.fromJSON(object.campaign) : undefined,
-      world: isSet(object.world) ? WorldDTO.fromJSON(object.world) : undefined,
+      user: isSet(object.user) ? globalThis.String(object.user) : undefined,
+      campaign: isSet(object.campaign) ? globalThis.String(object.campaign) : undefined,
+      world: isSet(object.world) ? globalThis.String(object.world) : undefined,
       targetEntity: isSet(object.targetEntity) ? globalThis.String(object.targetEntity) : "",
       gender: isSet(object.gender) ? GenerationInstructionDTO.fromJSON(object.gender) : undefined,
     };
@@ -2189,13 +2083,13 @@ export const BackgroundDTO: MessageFns<BackgroundDTO> = {
       }
     }
     if (message.user !== undefined) {
-      obj.user = UserDTO.toJSON(message.user);
+      obj.user = message.user;
     }
     if (message.campaign !== undefined) {
-      obj.campaign = CampaignDTO.toJSON(message.campaign);
+      obj.campaign = message.campaign;
     }
     if (message.world !== undefined) {
-      obj.world = WorldDTO.toJSON(message.world);
+      obj.world = message.world;
     }
     if (message.targetEntity !== "") {
       obj.targetEntity = message.targetEntity;
@@ -2258,13 +2152,9 @@ export const BackgroundDTO: MessageFns<BackgroundDTO> = {
       },
       {},
     );
-    message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
-    message.campaign = (object.campaign !== undefined && object.campaign !== null)
-      ? CampaignDTO.fromPartial(object.campaign)
-      : undefined;
-    message.world = (object.world !== undefined && object.world !== null)
-      ? WorldDTO.fromPartial(object.world)
-      : undefined;
+    message.user = object.user ?? undefined;
+    message.campaign = object.campaign ?? undefined;
+    message.world = object.world ?? undefined;
     message.targetEntity = object.targetEntity ?? "";
     message.gender = (object.gender !== undefined && object.gender !== null)
       ? GenerationInstructionDTO.fromPartial(object.gender)
@@ -2575,7 +2465,7 @@ function createBaseEffectDTO(): EffectDTO {
     user: undefined,
     campaign: undefined,
     world: undefined,
-    tags: undefined,
+    tags: [],
     type: 0,
     target: 0,
     mode: 0,
@@ -2599,16 +2489,16 @@ export const EffectDTO: MessageFns<EffectDTO> = {
       Metadata.encode(message.metadata, writer.uint32(34).fork()).join();
     }
     if (message.user !== undefined) {
-      UserDTO.encode(message.user, writer.uint32(42).fork()).join();
+      writer.uint32(42).string(message.user);
     }
     if (message.campaign !== undefined) {
-      CampaignDTO.encode(message.campaign, writer.uint32(50).fork()).join();
+      writer.uint32(50).string(message.campaign);
     }
     if (message.world !== undefined) {
-      WorldDTO.encode(message.world, writer.uint32(58).fork()).join();
+      writer.uint32(58).string(message.world);
     }
-    if (message.tags !== undefined) {
-      TagsDTO.encode(message.tags, writer.uint32(66).fork()).join();
+    for (const v of message.tags) {
+      writer.uint32(66).string(v!);
     }
     if (message.type !== 0) {
       writer.uint32(72).int32(message.type);
@@ -2672,7 +2562,7 @@ export const EffectDTO: MessageFns<EffectDTO> = {
             break;
           }
 
-          message.user = UserDTO.decode(reader, reader.uint32());
+          message.user = reader.string();
           continue;
         }
         case 6: {
@@ -2680,7 +2570,7 @@ export const EffectDTO: MessageFns<EffectDTO> = {
             break;
           }
 
-          message.campaign = CampaignDTO.decode(reader, reader.uint32());
+          message.campaign = reader.string();
           continue;
         }
         case 7: {
@@ -2688,7 +2578,7 @@ export const EffectDTO: MessageFns<EffectDTO> = {
             break;
           }
 
-          message.world = WorldDTO.decode(reader, reader.uint32());
+          message.world = reader.string();
           continue;
         }
         case 8: {
@@ -2696,7 +2586,7 @@ export const EffectDTO: MessageFns<EffectDTO> = {
             break;
           }
 
-          message.tags = TagsDTO.decode(reader, reader.uint32());
+          message.tags.push(reader.string());
           continue;
         }
         case 9: {
@@ -2754,10 +2644,10 @@ export const EffectDTO: MessageFns<EffectDTO> = {
       blueprintId: isSet(object.blueprintId) ? globalThis.String(object.blueprintId) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       metadata: isSet(object.metadata) ? Metadata.fromJSON(object.metadata) : undefined,
-      user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
-      campaign: isSet(object.campaign) ? CampaignDTO.fromJSON(object.campaign) : undefined,
-      world: isSet(object.world) ? WorldDTO.fromJSON(object.world) : undefined,
-      tags: isSet(object.tags) ? TagsDTO.fromJSON(object.tags) : undefined,
+      user: isSet(object.user) ? globalThis.String(object.user) : undefined,
+      campaign: isSet(object.campaign) ? globalThis.String(object.campaign) : undefined,
+      world: isSet(object.world) ? globalThis.String(object.world) : undefined,
+      tags: globalThis.Array.isArray(object?.tags) ? object.tags.map((e: any) => globalThis.String(e)) : [],
       type: isSet(object.type) ? effectTypeEnumDTOFromJSON(object.type) : 0,
       target: isSet(object.target) ? effectTargetEnumDTOFromJSON(object.target) : 0,
       mode: isSet(object.mode) ? effectModeEnumDTOFromJSON(object.mode) : 0,
@@ -2781,16 +2671,16 @@ export const EffectDTO: MessageFns<EffectDTO> = {
       obj.metadata = Metadata.toJSON(message.metadata);
     }
     if (message.user !== undefined) {
-      obj.user = UserDTO.toJSON(message.user);
+      obj.user = message.user;
     }
     if (message.campaign !== undefined) {
-      obj.campaign = CampaignDTO.toJSON(message.campaign);
+      obj.campaign = message.campaign;
     }
     if (message.world !== undefined) {
-      obj.world = WorldDTO.toJSON(message.world);
+      obj.world = message.world;
     }
-    if (message.tags !== undefined) {
-      obj.tags = TagsDTO.toJSON(message.tags);
+    if (message.tags?.length) {
+      obj.tags = message.tags;
     }
     if (message.type !== 0) {
       obj.type = effectTypeEnumDTOToJSON(message.type);
@@ -2821,14 +2711,10 @@ export const EffectDTO: MessageFns<EffectDTO> = {
     message.metadata = (object.metadata !== undefined && object.metadata !== null)
       ? Metadata.fromPartial(object.metadata)
       : undefined;
-    message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
-    message.campaign = (object.campaign !== undefined && object.campaign !== null)
-      ? CampaignDTO.fromPartial(object.campaign)
-      : undefined;
-    message.world = (object.world !== undefined && object.world !== null)
-      ? WorldDTO.fromPartial(object.world)
-      : undefined;
-    message.tags = (object.tags !== undefined && object.tags !== null) ? TagsDTO.fromPartial(object.tags) : undefined;
+    message.user = object.user ?? undefined;
+    message.campaign = object.campaign ?? undefined;
+    message.world = object.world ?? undefined;
+    message.tags = object.tags?.map((e) => e) || [];
     message.type = object.type ?? 0;
     message.target = object.target ?? 0;
     message.mode = object.mode ?? 0;
@@ -2926,13 +2812,13 @@ export const ResistanceDTO: MessageFns<ResistanceDTO> = {
       Metadata.encode(message.metadata, writer.uint32(34).fork()).join();
     }
     if (message.user !== undefined) {
-      UserDTO.encode(message.user, writer.uint32(42).fork()).join();
+      writer.uint32(42).string(message.user);
     }
     if (message.campaign !== undefined) {
-      CampaignDTO.encode(message.campaign, writer.uint32(50).fork()).join();
+      writer.uint32(50).string(message.campaign);
     }
     if (message.world !== undefined) {
-      WorldDTO.encode(message.world, writer.uint32(58).fork()).join();
+      writer.uint32(58).string(message.world);
     }
     if (message.effectType !== 0) {
       writer.uint32(64).int32(message.effectType);
@@ -2990,7 +2876,7 @@ export const ResistanceDTO: MessageFns<ResistanceDTO> = {
             break;
           }
 
-          message.user = UserDTO.decode(reader, reader.uint32());
+          message.user = reader.string();
           continue;
         }
         case 6: {
@@ -2998,7 +2884,7 @@ export const ResistanceDTO: MessageFns<ResistanceDTO> = {
             break;
           }
 
-          message.campaign = CampaignDTO.decode(reader, reader.uint32());
+          message.campaign = reader.string();
           continue;
         }
         case 7: {
@@ -3006,7 +2892,7 @@ export const ResistanceDTO: MessageFns<ResistanceDTO> = {
             break;
           }
 
-          message.world = WorldDTO.decode(reader, reader.uint32());
+          message.world = reader.string();
           continue;
         }
         case 8: {
@@ -3048,9 +2934,9 @@ export const ResistanceDTO: MessageFns<ResistanceDTO> = {
       blueprintId: isSet(object.blueprintId) ? globalThis.String(object.blueprintId) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       metadata: isSet(object.metadata) ? Metadata.fromJSON(object.metadata) : undefined,
-      user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
-      campaign: isSet(object.campaign) ? CampaignDTO.fromJSON(object.campaign) : undefined,
-      world: isSet(object.world) ? WorldDTO.fromJSON(object.world) : undefined,
+      user: isSet(object.user) ? globalThis.String(object.user) : undefined,
+      campaign: isSet(object.campaign) ? globalThis.String(object.campaign) : undefined,
+      world: isSet(object.world) ? globalThis.String(object.world) : undefined,
       effectType: isSet(object.effectType) ? effectTypeEnumDTOFromJSON(object.effectType) : 0,
       targetEffect: isSet(object.targetEffect) ? globalThis.String(object.targetEffect) : undefined,
       targetEntity: isSet(object.targetEntity) ? globalThis.String(object.targetEntity) : "",
@@ -3072,13 +2958,13 @@ export const ResistanceDTO: MessageFns<ResistanceDTO> = {
       obj.metadata = Metadata.toJSON(message.metadata);
     }
     if (message.user !== undefined) {
-      obj.user = UserDTO.toJSON(message.user);
+      obj.user = message.user;
     }
     if (message.campaign !== undefined) {
-      obj.campaign = CampaignDTO.toJSON(message.campaign);
+      obj.campaign = message.campaign;
     }
     if (message.world !== undefined) {
-      obj.world = WorldDTO.toJSON(message.world);
+      obj.world = message.world;
     }
     if (message.effectType !== 0) {
       obj.effectType = effectTypeEnumDTOToJSON(message.effectType);
@@ -3103,13 +2989,9 @@ export const ResistanceDTO: MessageFns<ResistanceDTO> = {
     message.metadata = (object.metadata !== undefined && object.metadata !== null)
       ? Metadata.fromPartial(object.metadata)
       : undefined;
-    message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
-    message.campaign = (object.campaign !== undefined && object.campaign !== null)
-      ? CampaignDTO.fromPartial(object.campaign)
-      : undefined;
-    message.world = (object.world !== undefined && object.world !== null)
-      ? WorldDTO.fromPartial(object.world)
-      : undefined;
+    message.user = object.user ?? undefined;
+    message.campaign = object.campaign ?? undefined;
+    message.world = object.world ?? undefined;
     message.effectType = object.effectType ?? 0;
     message.targetEffect = object.targetEffect ?? undefined;
     message.targetEntity = object.targetEntity ?? "";
@@ -3207,13 +3089,13 @@ export const StatusDTO: MessageFns<StatusDTO> = {
       Metadata.encode(message.metadata, writer.uint32(34).fork()).join();
     }
     if (message.user !== undefined) {
-      UserDTO.encode(message.user, writer.uint32(42).fork()).join();
+      writer.uint32(42).string(message.user);
     }
     if (message.campaign !== undefined) {
-      CampaignDTO.encode(message.campaign, writer.uint32(50).fork()).join();
+      writer.uint32(50).string(message.campaign);
     }
     if (message.world !== undefined) {
-      WorldDTO.encode(message.world, writer.uint32(58).fork()).join();
+      writer.uint32(58).string(message.world);
     }
     if (message.type !== 0) {
       writer.uint32(64).int32(message.type);
@@ -3277,7 +3159,7 @@ export const StatusDTO: MessageFns<StatusDTO> = {
             break;
           }
 
-          message.user = UserDTO.decode(reader, reader.uint32());
+          message.user = reader.string();
           continue;
         }
         case 6: {
@@ -3285,7 +3167,7 @@ export const StatusDTO: MessageFns<StatusDTO> = {
             break;
           }
 
-          message.campaign = CampaignDTO.decode(reader, reader.uint32());
+          message.campaign = reader.string();
           continue;
         }
         case 7: {
@@ -3293,7 +3175,7 @@ export const StatusDTO: MessageFns<StatusDTO> = {
             break;
           }
 
-          message.world = WorldDTO.decode(reader, reader.uint32());
+          message.world = reader.string();
           continue;
         }
         case 8: {
@@ -3351,9 +3233,9 @@ export const StatusDTO: MessageFns<StatusDTO> = {
       blueprintId: isSet(object.blueprintId) ? globalThis.String(object.blueprintId) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       metadata: isSet(object.metadata) ? Metadata.fromJSON(object.metadata) : undefined,
-      user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
-      campaign: isSet(object.campaign) ? CampaignDTO.fromJSON(object.campaign) : undefined,
-      world: isSet(object.world) ? WorldDTO.fromJSON(object.world) : undefined,
+      user: isSet(object.user) ? globalThis.String(object.user) : undefined,
+      campaign: isSet(object.campaign) ? globalThis.String(object.campaign) : undefined,
+      world: isSet(object.world) ? globalThis.String(object.world) : undefined,
       type: isSet(object.type) ? effectTypeEnumDTOFromJSON(object.type) : 0,
       effects: globalThis.Array.isArray(object?.effects) ? object.effects.map((e: any) => globalThis.String(e)) : [],
       duration: isSet(object.duration) ? globalThis.Number(object.duration) : 0,
@@ -3377,13 +3259,13 @@ export const StatusDTO: MessageFns<StatusDTO> = {
       obj.metadata = Metadata.toJSON(message.metadata);
     }
     if (message.user !== undefined) {
-      obj.user = UserDTO.toJSON(message.user);
+      obj.user = message.user;
     }
     if (message.campaign !== undefined) {
-      obj.campaign = CampaignDTO.toJSON(message.campaign);
+      obj.campaign = message.campaign;
     }
     if (message.world !== undefined) {
-      obj.world = WorldDTO.toJSON(message.world);
+      obj.world = message.world;
     }
     if (message.type !== 0) {
       obj.type = effectTypeEnumDTOToJSON(message.type);
@@ -3414,13 +3296,9 @@ export const StatusDTO: MessageFns<StatusDTO> = {
     message.metadata = (object.metadata !== undefined && object.metadata !== null)
       ? Metadata.fromPartial(object.metadata)
       : undefined;
-    message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
-    message.campaign = (object.campaign !== undefined && object.campaign !== null)
-      ? CampaignDTO.fromPartial(object.campaign)
-      : undefined;
-    message.world = (object.world !== undefined && object.world !== null)
-      ? WorldDTO.fromPartial(object.world)
-      : undefined;
+    message.user = object.user ?? undefined;
+    message.campaign = object.campaign ?? undefined;
+    message.world = object.world ?? undefined;
     message.type = object.type ?? 0;
     message.effects = object.effects?.map((e) => e) || [];
     message.duration = object.duration ?? 0;
@@ -3513,13 +3391,13 @@ export const ItemSetDTO: MessageFns<ItemSetDTO> = {
       Metadata.encode(message.metadata, writer.uint32(26).fork()).join();
     }
     if (message.user !== undefined) {
-      UserDTO.encode(message.user, writer.uint32(34).fork()).join();
+      writer.uint32(34).string(message.user);
     }
     if (message.campaign !== undefined) {
-      CampaignDTO.encode(message.campaign, writer.uint32(42).fork()).join();
+      writer.uint32(42).string(message.campaign);
     }
     if (message.world !== undefined) {
-      WorldDTO.encode(message.world, writer.uint32(50).fork()).join();
+      writer.uint32(50).string(message.world);
     }
     if (message.set !== undefined) {
       GenerationInstructionDTO.encode(message.set, writer.uint32(58).fork()).join();
@@ -3566,7 +3444,7 @@ export const ItemSetDTO: MessageFns<ItemSetDTO> = {
             break;
           }
 
-          message.user = UserDTO.decode(reader, reader.uint32());
+          message.user = reader.string();
           continue;
         }
         case 5: {
@@ -3574,7 +3452,7 @@ export const ItemSetDTO: MessageFns<ItemSetDTO> = {
             break;
           }
 
-          message.campaign = CampaignDTO.decode(reader, reader.uint32());
+          message.campaign = reader.string();
           continue;
         }
         case 6: {
@@ -3582,7 +3460,7 @@ export const ItemSetDTO: MessageFns<ItemSetDTO> = {
             break;
           }
 
-          message.world = WorldDTO.decode(reader, reader.uint32());
+          message.world = reader.string();
           continue;
         }
         case 7: {
@@ -3615,9 +3493,9 @@ export const ItemSetDTO: MessageFns<ItemSetDTO> = {
       id: isSet(object.id) ? globalThis.String(object.id) : "",
       blueprintId: isSet(object.blueprintId) ? globalThis.String(object.blueprintId) : "",
       metadata: isSet(object.metadata) ? Metadata.fromJSON(object.metadata) : undefined,
-      user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
-      campaign: isSet(object.campaign) ? CampaignDTO.fromJSON(object.campaign) : undefined,
-      world: isSet(object.world) ? WorldDTO.fromJSON(object.world) : undefined,
+      user: isSet(object.user) ? globalThis.String(object.user) : undefined,
+      campaign: isSet(object.campaign) ? globalThis.String(object.campaign) : undefined,
+      world: isSet(object.world) ? globalThis.String(object.world) : undefined,
       set: isSet(object.set) ? GenerationInstructionDTO.fromJSON(object.set) : undefined,
       targetEntity: isSet(object.targetEntity) ? globalThis.String(object.targetEntity) : "",
     };
@@ -3635,13 +3513,13 @@ export const ItemSetDTO: MessageFns<ItemSetDTO> = {
       obj.metadata = Metadata.toJSON(message.metadata);
     }
     if (message.user !== undefined) {
-      obj.user = UserDTO.toJSON(message.user);
+      obj.user = message.user;
     }
     if (message.campaign !== undefined) {
-      obj.campaign = CampaignDTO.toJSON(message.campaign);
+      obj.campaign = message.campaign;
     }
     if (message.world !== undefined) {
-      obj.world = WorldDTO.toJSON(message.world);
+      obj.world = message.world;
     }
     if (message.set !== undefined) {
       obj.set = GenerationInstructionDTO.toJSON(message.set);
@@ -3662,13 +3540,9 @@ export const ItemSetDTO: MessageFns<ItemSetDTO> = {
     message.metadata = (object.metadata !== undefined && object.metadata !== null)
       ? Metadata.fromPartial(object.metadata)
       : undefined;
-    message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
-    message.campaign = (object.campaign !== undefined && object.campaign !== null)
-      ? CampaignDTO.fromPartial(object.campaign)
-      : undefined;
-    message.world = (object.world !== undefined && object.world !== null)
-      ? WorldDTO.fromPartial(object.world)
-      : undefined;
+    message.user = object.user ?? undefined;
+    message.campaign = object.campaign ?? undefined;
+    message.world = object.world ?? undefined;
     message.set = (object.set !== undefined && object.set !== null)
       ? GenerationInstructionDTO.fromPartial(object.set)
       : undefined;
@@ -3767,9 +3641,9 @@ function createBaseItemDTO(): ItemDTO {
     spoilage: undefined,
     thirstQuenched: undefined,
     type: undefined,
-    storageSlot: undefined,
+    storageSlot: [],
     storageSlots: undefined,
-    equipmentSlot: undefined,
+    equipmentSlot: [],
     user: undefined,
     campaign: undefined,
     world: undefined,
@@ -3873,23 +3747,23 @@ export const ItemDTO: MessageFns<ItemDTO> = {
     if (message.type !== undefined) {
       writer.uint32(242).string(message.type);
     }
-    if (message.storageSlot !== undefined) {
-      StorageSlotDTO.encode(message.storageSlot, writer.uint32(250).fork()).join();
+    for (const v of message.storageSlot) {
+      writer.uint32(250).string(v!);
     }
     if (message.storageSlots !== undefined) {
       StorageSlotsDTO.encode(message.storageSlots, writer.uint32(258).fork()).join();
     }
-    if (message.equipmentSlot !== undefined) {
-      EquipmentSlotDTO.encode(message.equipmentSlot, writer.uint32(266).fork()).join();
+    for (const v of message.equipmentSlot) {
+      writer.uint32(266).string(v!);
     }
     if (message.user !== undefined) {
-      UserDTO.encode(message.user, writer.uint32(274).fork()).join();
+      writer.uint32(274).string(message.user);
     }
     if (message.campaign !== undefined) {
-      CampaignDTO.encode(message.campaign, writer.uint32(282).fork()).join();
+      writer.uint32(282).string(message.campaign);
     }
     if (message.world !== undefined) {
-      WorldDTO.encode(message.world, writer.uint32(290).fork()).join();
+      writer.uint32(290).string(message.world);
     }
     if (message.trainedSkill !== undefined) {
       writer.uint32(298).string(message.trainedSkill);
@@ -4165,7 +4039,7 @@ export const ItemDTO: MessageFns<ItemDTO> = {
             break;
           }
 
-          message.storageSlot = StorageSlotDTO.decode(reader, reader.uint32());
+          message.storageSlot.push(reader.string());
           continue;
         }
         case 32: {
@@ -4181,7 +4055,7 @@ export const ItemDTO: MessageFns<ItemDTO> = {
             break;
           }
 
-          message.equipmentSlot = EquipmentSlotDTO.decode(reader, reader.uint32());
+          message.equipmentSlot.push(reader.string());
           continue;
         }
         case 34: {
@@ -4189,7 +4063,7 @@ export const ItemDTO: MessageFns<ItemDTO> = {
             break;
           }
 
-          message.user = UserDTO.decode(reader, reader.uint32());
+          message.user = reader.string();
           continue;
         }
         case 35: {
@@ -4197,7 +4071,7 @@ export const ItemDTO: MessageFns<ItemDTO> = {
             break;
           }
 
-          message.campaign = CampaignDTO.decode(reader, reader.uint32());
+          message.campaign = reader.string();
           continue;
         }
         case 36: {
@@ -4205,7 +4079,7 @@ export const ItemDTO: MessageFns<ItemDTO> = {
             break;
           }
 
-          message.world = WorldDTO.decode(reader, reader.uint32());
+          message.world = reader.string();
           continue;
         }
         case 37: {
@@ -4275,12 +4149,16 @@ export const ItemDTO: MessageFns<ItemDTO> = {
       spoilage: isSet(object.spoilage) ? globalThis.Number(object.spoilage) : undefined,
       thirstQuenched: isSet(object.thirstQuenched) ? globalThis.Number(object.thirstQuenched) : undefined,
       type: isSet(object.type) ? globalThis.String(object.type) : undefined,
-      storageSlot: isSet(object.storageSlot) ? StorageSlotDTO.fromJSON(object.storageSlot) : undefined,
+      storageSlot: globalThis.Array.isArray(object?.storageSlot)
+        ? object.storageSlot.map((e: any) => globalThis.String(e))
+        : [],
       storageSlots: isSet(object.storageSlots) ? StorageSlotsDTO.fromJSON(object.storageSlots) : undefined,
-      equipmentSlot: isSet(object.equipmentSlot) ? EquipmentSlotDTO.fromJSON(object.equipmentSlot) : undefined,
-      user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
-      campaign: isSet(object.campaign) ? CampaignDTO.fromJSON(object.campaign) : undefined,
-      world: isSet(object.world) ? WorldDTO.fromJSON(object.world) : undefined,
+      equipmentSlot: globalThis.Array.isArray(object?.equipmentSlot)
+        ? object.equipmentSlot.map((e: any) => globalThis.String(e))
+        : [],
+      user: isSet(object.user) ? globalThis.String(object.user) : undefined,
+      campaign: isSet(object.campaign) ? globalThis.String(object.campaign) : undefined,
+      world: isSet(object.world) ? globalThis.String(object.world) : undefined,
       trainedSkill: isSet(object.trainedSkill) ? globalThis.String(object.trainedSkill) : undefined,
       storageSlotDefinition: isSet(object.storageSlotDefinition)
         ? StorageSlotDefinitionsDTO.fromJSON(object.storageSlotDefinition)
@@ -4381,23 +4259,23 @@ export const ItemDTO: MessageFns<ItemDTO> = {
     if (message.type !== undefined) {
       obj.type = message.type;
     }
-    if (message.storageSlot !== undefined) {
-      obj.storageSlot = StorageSlotDTO.toJSON(message.storageSlot);
+    if (message.storageSlot?.length) {
+      obj.storageSlot = message.storageSlot;
     }
     if (message.storageSlots !== undefined) {
       obj.storageSlots = StorageSlotsDTO.toJSON(message.storageSlots);
     }
-    if (message.equipmentSlot !== undefined) {
-      obj.equipmentSlot = EquipmentSlotDTO.toJSON(message.equipmentSlot);
+    if (message.equipmentSlot?.length) {
+      obj.equipmentSlot = message.equipmentSlot;
     }
     if (message.user !== undefined) {
-      obj.user = UserDTO.toJSON(message.user);
+      obj.user = message.user;
     }
     if (message.campaign !== undefined) {
-      obj.campaign = CampaignDTO.toJSON(message.campaign);
+      obj.campaign = message.campaign;
     }
     if (message.world !== undefined) {
-      obj.world = WorldDTO.toJSON(message.world);
+      obj.world = message.world;
     }
     if (message.trainedSkill !== undefined) {
       obj.trainedSkill = message.trainedSkill;
@@ -4454,22 +4332,14 @@ export const ItemDTO: MessageFns<ItemDTO> = {
     message.spoilage = object.spoilage ?? undefined;
     message.thirstQuenched = object.thirstQuenched ?? undefined;
     message.type = object.type ?? undefined;
-    message.storageSlot = (object.storageSlot !== undefined && object.storageSlot !== null)
-      ? StorageSlotDTO.fromPartial(object.storageSlot)
-      : undefined;
+    message.storageSlot = object.storageSlot?.map((e) => e) || [];
     message.storageSlots = (object.storageSlots !== undefined && object.storageSlots !== null)
       ? StorageSlotsDTO.fromPartial(object.storageSlots)
       : undefined;
-    message.equipmentSlot = (object.equipmentSlot !== undefined && object.equipmentSlot !== null)
-      ? EquipmentSlotDTO.fromPartial(object.equipmentSlot)
-      : undefined;
-    message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
-    message.campaign = (object.campaign !== undefined && object.campaign !== null)
-      ? CampaignDTO.fromPartial(object.campaign)
-      : undefined;
-    message.world = (object.world !== undefined && object.world !== null)
-      ? WorldDTO.fromPartial(object.world)
-      : undefined;
+    message.equipmentSlot = object.equipmentSlot?.map((e) => e) || [];
+    message.user = object.user ?? undefined;
+    message.campaign = object.campaign ?? undefined;
+    message.world = object.world ?? undefined;
     message.trainedSkill = object.trainedSkill ?? undefined;
     message.storageSlotDefinition =
       (object.storageSlotDefinition !== undefined && object.storageSlotDefinition !== null)
@@ -4645,13 +4515,13 @@ export const StorageSlotDTO: MessageFns<StorageSlotDTO> = {
       Metadata.encode(message.metadata, writer.uint32(34).fork()).join();
     }
     if (message.user !== undefined) {
-      UserDTO.encode(message.user, writer.uint32(42).fork()).join();
+      writer.uint32(42).string(message.user);
     }
     if (message.campaign !== undefined) {
-      CampaignDTO.encode(message.campaign, writer.uint32(50).fork()).join();
+      writer.uint32(50).string(message.campaign);
     }
     if (message.world !== undefined) {
-      WorldDTO.encode(message.world, writer.uint32(58).fork()).join();
+      writer.uint32(58).string(message.world);
     }
     writer.uint32(66).fork();
     for (const v of message.grid) {
@@ -4665,7 +4535,7 @@ export const StorageSlotDTO: MessageFns<StorageSlotDTO> = {
       writer.uint32(80).int32(message.maxWeight);
     }
     if (message.parentItem !== undefined) {
-      ItemDTO.encode(message.parentItem, writer.uint32(90).fork()).join();
+      writer.uint32(90).string(message.parentItem);
     }
     if (message.storedItems !== undefined) {
       ItemsDTO.encode(message.storedItems, writer.uint32(98).fork()).join();
@@ -4720,7 +4590,7 @@ export const StorageSlotDTO: MessageFns<StorageSlotDTO> = {
             break;
           }
 
-          message.user = UserDTO.decode(reader, reader.uint32());
+          message.user = reader.string();
           continue;
         }
         case 6: {
@@ -4728,7 +4598,7 @@ export const StorageSlotDTO: MessageFns<StorageSlotDTO> = {
             break;
           }
 
-          message.campaign = CampaignDTO.decode(reader, reader.uint32());
+          message.campaign = reader.string();
           continue;
         }
         case 7: {
@@ -4736,7 +4606,7 @@ export const StorageSlotDTO: MessageFns<StorageSlotDTO> = {
             break;
           }
 
-          message.world = WorldDTO.decode(reader, reader.uint32());
+          message.world = reader.string();
           continue;
         }
         case 8: {
@@ -4778,7 +4648,7 @@ export const StorageSlotDTO: MessageFns<StorageSlotDTO> = {
             break;
           }
 
-          message.parentItem = ItemDTO.decode(reader, reader.uint32());
+          message.parentItem = reader.string();
           continue;
         }
         case 12: {
@@ -4812,13 +4682,13 @@ export const StorageSlotDTO: MessageFns<StorageSlotDTO> = {
       blueprintId: isSet(object.blueprintId) ? globalThis.String(object.blueprintId) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       metadata: isSet(object.metadata) ? Metadata.fromJSON(object.metadata) : undefined,
-      user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
-      campaign: isSet(object.campaign) ? CampaignDTO.fromJSON(object.campaign) : undefined,
-      world: isSet(object.world) ? WorldDTO.fromJSON(object.world) : undefined,
+      user: isSet(object.user) ? globalThis.String(object.user) : undefined,
+      campaign: isSet(object.campaign) ? globalThis.String(object.campaign) : undefined,
+      world: isSet(object.world) ? globalThis.String(object.world) : undefined,
       grid: globalThis.Array.isArray(object?.grid) ? object.grid.map((e: any) => globalThis.Number(e)) : [],
       gridState: isSet(object.gridState) ? StorageGridDTO.fromJSON(object.gridState) : undefined,
       maxWeight: isSet(object.maxWeight) ? globalThis.Number(object.maxWeight) : 0,
-      parentItem: isSet(object.parentItem) ? ItemDTO.fromJSON(object.parentItem) : undefined,
+      parentItem: isSet(object.parentItem) ? globalThis.String(object.parentItem) : undefined,
       storedItems: isSet(object.storedItems) ? ItemsDTO.fromJSON(object.storedItems) : undefined,
       targetEntity: isSet(object.targetEntity) ? globalThis.String(object.targetEntity) : "",
     };
@@ -4839,13 +4709,13 @@ export const StorageSlotDTO: MessageFns<StorageSlotDTO> = {
       obj.metadata = Metadata.toJSON(message.metadata);
     }
     if (message.user !== undefined) {
-      obj.user = UserDTO.toJSON(message.user);
+      obj.user = message.user;
     }
     if (message.campaign !== undefined) {
-      obj.campaign = CampaignDTO.toJSON(message.campaign);
+      obj.campaign = message.campaign;
     }
     if (message.world !== undefined) {
-      obj.world = WorldDTO.toJSON(message.world);
+      obj.world = message.world;
     }
     if (message.grid?.length) {
       obj.grid = message.grid.map((e) => Math.round(e));
@@ -4857,7 +4727,7 @@ export const StorageSlotDTO: MessageFns<StorageSlotDTO> = {
       obj.maxWeight = Math.round(message.maxWeight);
     }
     if (message.parentItem !== undefined) {
-      obj.parentItem = ItemDTO.toJSON(message.parentItem);
+      obj.parentItem = message.parentItem;
     }
     if (message.storedItems !== undefined) {
       obj.storedItems = ItemsDTO.toJSON(message.storedItems);
@@ -4879,21 +4749,15 @@ export const StorageSlotDTO: MessageFns<StorageSlotDTO> = {
     message.metadata = (object.metadata !== undefined && object.metadata !== null)
       ? Metadata.fromPartial(object.metadata)
       : undefined;
-    message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
-    message.campaign = (object.campaign !== undefined && object.campaign !== null)
-      ? CampaignDTO.fromPartial(object.campaign)
-      : undefined;
-    message.world = (object.world !== undefined && object.world !== null)
-      ? WorldDTO.fromPartial(object.world)
-      : undefined;
+    message.user = object.user ?? undefined;
+    message.campaign = object.campaign ?? undefined;
+    message.world = object.world ?? undefined;
     message.grid = object.grid?.map((e) => e) || [];
     message.gridState = (object.gridState !== undefined && object.gridState !== null)
       ? StorageGridDTO.fromPartial(object.gridState)
       : undefined;
     message.maxWeight = object.maxWeight ?? 0;
-    message.parentItem = (object.parentItem !== undefined && object.parentItem !== null)
-      ? ItemDTO.fromPartial(object.parentItem)
-      : undefined;
+    message.parentItem = object.parentItem ?? undefined;
     message.storedItems = (object.storedItems !== undefined && object.storedItems !== null)
       ? ItemsDTO.fromPartial(object.storedItems)
       : undefined;
@@ -5300,19 +5164,18 @@ function createBaseCharacterDTO(): CharacterDTO {
     birthDay: undefined,
     skills: {},
     equipmentSlots: undefined,
-    professions: undefined,
-    memoryPools: undefined,
-    characterMemories: undefined,
+    professions: [],
+    memoryPools: [],
+    characterMemories: [],
     enneagramType: "",
-    traits: undefined,
-    diseases: undefined,
-    addictions: undefined,
-    factions: undefined,
-    tags: undefined,
+    traits: [],
+    diseases: [],
+    addictions: [],
+    factions: [],
+    tags: [],
     targetEntity: "",
     birthEra: undefined,
-    pastExperiencesChild: undefined,
-    pastExperiencesAdult: undefined,
+    pastExperiences: [],
   };
 }
 
@@ -5328,13 +5191,13 @@ export const CharacterDTO: MessageFns<CharacterDTO> = {
       Metadata.encode(message.metadata, writer.uint32(26).fork()).join();
     }
     if (message.user !== undefined) {
-      UserDTO.encode(message.user, writer.uint32(34).fork()).join();
+      writer.uint32(34).string(message.user);
     }
     if (message.campaign !== undefined) {
-      CampaignDTO.encode(message.campaign, writer.uint32(42).fork()).join();
+      writer.uint32(42).string(message.campaign);
     }
     if (message.world !== undefined) {
-      WorldDTO.encode(message.world, writer.uint32(50).fork()).join();
+      writer.uint32(50).string(message.world);
     }
     if (message.firstName !== "") {
       writer.uint32(58).string(message.firstName);
@@ -5366,32 +5229,32 @@ export const CharacterDTO: MessageFns<CharacterDTO> = {
     if (message.equipmentSlots !== undefined) {
       EquipmentSlotsDTO.encode(message.equipmentSlots, writer.uint32(130).fork()).join();
     }
-    if (message.professions !== undefined) {
-      CharacterProfessionsDTO.encode(message.professions, writer.uint32(138).fork()).join();
+    for (const v of message.professions) {
+      writer.uint32(138).string(v!);
     }
-    if (message.memoryPools !== undefined) {
-      MemoryPoolsDTO.encode(message.memoryPools, writer.uint32(146).fork()).join();
+    for (const v of message.memoryPools) {
+      writer.uint32(146).string(v!);
     }
-    if (message.characterMemories !== undefined) {
-      CharacterMemoriesDTO.encode(message.characterMemories, writer.uint32(154).fork()).join();
+    for (const v of message.characterMemories) {
+      writer.uint32(154).string(v!);
     }
     if (message.enneagramType !== "") {
       writer.uint32(162).string(message.enneagramType);
     }
-    if (message.traits !== undefined) {
-      TraitsDTO.encode(message.traits, writer.uint32(170).fork()).join();
+    for (const v of message.traits) {
+      writer.uint32(170).string(v!);
     }
-    if (message.diseases !== undefined) {
-      DiseasesDTO.encode(message.diseases, writer.uint32(178).fork()).join();
+    for (const v of message.diseases) {
+      writer.uint32(178).string(v!);
     }
-    if (message.addictions !== undefined) {
-      AddictionsDTO.encode(message.addictions, writer.uint32(186).fork()).join();
+    for (const v of message.addictions) {
+      writer.uint32(186).string(v!);
     }
-    if (message.factions !== undefined) {
-      FactionsDTO.encode(message.factions, writer.uint32(194).fork()).join();
+    for (const v of message.factions) {
+      writer.uint32(194).string(v!);
     }
-    if (message.tags !== undefined) {
-      TagsDTO.encode(message.tags, writer.uint32(202).fork()).join();
+    for (const v of message.tags) {
+      writer.uint32(202).string(v!);
     }
     if (message.targetEntity !== "") {
       writer.uint32(210).string(message.targetEntity);
@@ -5399,11 +5262,8 @@ export const CharacterDTO: MessageFns<CharacterDTO> = {
     if (message.birthEra !== undefined) {
       writer.uint32(218).string(message.birthEra);
     }
-    if (message.pastExperiencesChild !== undefined) {
-      PastExperiencesDTO.encode(message.pastExperiencesChild, writer.uint32(226).fork()).join();
-    }
-    if (message.pastExperiencesAdult !== undefined) {
-      PastExperiencesDTO.encode(message.pastExperiencesAdult, writer.uint32(234).fork()).join();
+    for (const v of message.pastExperiences) {
+      writer.uint32(226).string(v!);
     }
     return writer;
   },
@@ -5444,7 +5304,7 @@ export const CharacterDTO: MessageFns<CharacterDTO> = {
             break;
           }
 
-          message.user = UserDTO.decode(reader, reader.uint32());
+          message.user = reader.string();
           continue;
         }
         case 5: {
@@ -5452,7 +5312,7 @@ export const CharacterDTO: MessageFns<CharacterDTO> = {
             break;
           }
 
-          message.campaign = CampaignDTO.decode(reader, reader.uint32());
+          message.campaign = reader.string();
           continue;
         }
         case 6: {
@@ -5460,7 +5320,7 @@ export const CharacterDTO: MessageFns<CharacterDTO> = {
             break;
           }
 
-          message.world = WorldDTO.decode(reader, reader.uint32());
+          message.world = reader.string();
           continue;
         }
         case 7: {
@@ -5551,7 +5411,7 @@ export const CharacterDTO: MessageFns<CharacterDTO> = {
             break;
           }
 
-          message.professions = CharacterProfessionsDTO.decode(reader, reader.uint32());
+          message.professions.push(reader.string());
           continue;
         }
         case 18: {
@@ -5559,7 +5419,7 @@ export const CharacterDTO: MessageFns<CharacterDTO> = {
             break;
           }
 
-          message.memoryPools = MemoryPoolsDTO.decode(reader, reader.uint32());
+          message.memoryPools.push(reader.string());
           continue;
         }
         case 19: {
@@ -5567,7 +5427,7 @@ export const CharacterDTO: MessageFns<CharacterDTO> = {
             break;
           }
 
-          message.characterMemories = CharacterMemoriesDTO.decode(reader, reader.uint32());
+          message.characterMemories.push(reader.string());
           continue;
         }
         case 20: {
@@ -5583,7 +5443,7 @@ export const CharacterDTO: MessageFns<CharacterDTO> = {
             break;
           }
 
-          message.traits = TraitsDTO.decode(reader, reader.uint32());
+          message.traits.push(reader.string());
           continue;
         }
         case 22: {
@@ -5591,7 +5451,7 @@ export const CharacterDTO: MessageFns<CharacterDTO> = {
             break;
           }
 
-          message.diseases = DiseasesDTO.decode(reader, reader.uint32());
+          message.diseases.push(reader.string());
           continue;
         }
         case 23: {
@@ -5599,7 +5459,7 @@ export const CharacterDTO: MessageFns<CharacterDTO> = {
             break;
           }
 
-          message.addictions = AddictionsDTO.decode(reader, reader.uint32());
+          message.addictions.push(reader.string());
           continue;
         }
         case 24: {
@@ -5607,7 +5467,7 @@ export const CharacterDTO: MessageFns<CharacterDTO> = {
             break;
           }
 
-          message.factions = FactionsDTO.decode(reader, reader.uint32());
+          message.factions.push(reader.string());
           continue;
         }
         case 25: {
@@ -5615,7 +5475,7 @@ export const CharacterDTO: MessageFns<CharacterDTO> = {
             break;
           }
 
-          message.tags = TagsDTO.decode(reader, reader.uint32());
+          message.tags.push(reader.string());
           continue;
         }
         case 26: {
@@ -5639,15 +5499,7 @@ export const CharacterDTO: MessageFns<CharacterDTO> = {
             break;
           }
 
-          message.pastExperiencesChild = PastExperiencesDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 29: {
-          if (tag !== 234) {
-            break;
-          }
-
-          message.pastExperiencesAdult = PastExperiencesDTO.decode(reader, reader.uint32());
+          message.pastExperiences.push(reader.string());
           continue;
         }
       }
@@ -5664,9 +5516,9 @@ export const CharacterDTO: MessageFns<CharacterDTO> = {
       id: isSet(object.id) ? globalThis.String(object.id) : "",
       blueprintId: isSet(object.blueprintId) ? globalThis.String(object.blueprintId) : "",
       metadata: isSet(object.metadata) ? Metadata.fromJSON(object.metadata) : undefined,
-      user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
-      campaign: isSet(object.campaign) ? CampaignDTO.fromJSON(object.campaign) : undefined,
-      world: isSet(object.world) ? WorldDTO.fromJSON(object.world) : undefined,
+      user: isSet(object.user) ? globalThis.String(object.user) : undefined,
+      campaign: isSet(object.campaign) ? globalThis.String(object.campaign) : undefined,
+      world: isSet(object.world) ? globalThis.String(object.world) : undefined,
       firstName: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
       lastName: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
       race: isSet(object.race) ? globalThis.String(object.race) : "",
@@ -5682,25 +5534,30 @@ export const CharacterDTO: MessageFns<CharacterDTO> = {
         }, {})
         : {},
       equipmentSlots: isSet(object.equipmentSlots) ? EquipmentSlotsDTO.fromJSON(object.equipmentSlots) : undefined,
-      professions: isSet(object.professions) ? CharacterProfessionsDTO.fromJSON(object.professions) : undefined,
-      memoryPools: isSet(object.memoryPools) ? MemoryPoolsDTO.fromJSON(object.memoryPools) : undefined,
-      characterMemories: isSet(object.characterMemories)
-        ? CharacterMemoriesDTO.fromJSON(object.characterMemories)
-        : undefined,
+      professions: globalThis.Array.isArray(object?.professions)
+        ? object.professions.map((e: any) => globalThis.String(e))
+        : [],
+      memoryPools: globalThis.Array.isArray(object?.memoryPools)
+        ? object.memoryPools.map((e: any) => globalThis.String(e))
+        : [],
+      characterMemories: globalThis.Array.isArray(object?.characterMemories)
+        ? object.characterMemories.map((e: any) => globalThis.String(e))
+        : [],
       enneagramType: isSet(object.enneagramType) ? globalThis.String(object.enneagramType) : "",
-      traits: isSet(object.traits) ? TraitsDTO.fromJSON(object.traits) : undefined,
-      diseases: isSet(object.diseases) ? DiseasesDTO.fromJSON(object.diseases) : undefined,
-      addictions: isSet(object.addictions) ? AddictionsDTO.fromJSON(object.addictions) : undefined,
-      factions: isSet(object.factions) ? FactionsDTO.fromJSON(object.factions) : undefined,
-      tags: isSet(object.tags) ? TagsDTO.fromJSON(object.tags) : undefined,
+      traits: globalThis.Array.isArray(object?.traits)
+        ? object.traits.map((e: any) => globalThis.String(e))
+        : [],
+      diseases: globalThis.Array.isArray(object?.diseases) ? object.diseases.map((e: any) => globalThis.String(e)) : [],
+      addictions: globalThis.Array.isArray(object?.addictions)
+        ? object.addictions.map((e: any) => globalThis.String(e))
+        : [],
+      factions: globalThis.Array.isArray(object?.factions) ? object.factions.map((e: any) => globalThis.String(e)) : [],
+      tags: globalThis.Array.isArray(object?.tags) ? object.tags.map((e: any) => globalThis.String(e)) : [],
       targetEntity: isSet(object.targetEntity) ? globalThis.String(object.targetEntity) : "",
       birthEra: isSet(object.birthEra) ? globalThis.String(object.birthEra) : undefined,
-      pastExperiencesChild: isSet(object.pastExperiencesChild)
-        ? PastExperiencesDTO.fromJSON(object.pastExperiencesChild)
-        : undefined,
-      pastExperiencesAdult: isSet(object.pastExperiencesAdult)
-        ? PastExperiencesDTO.fromJSON(object.pastExperiencesAdult)
-        : undefined,
+      pastExperiences: globalThis.Array.isArray(object?.pastExperiences)
+        ? object.pastExperiences.map((e: any) => globalThis.String(e))
+        : [],
     };
   },
 
@@ -5716,13 +5573,13 @@ export const CharacterDTO: MessageFns<CharacterDTO> = {
       obj.metadata = Metadata.toJSON(message.metadata);
     }
     if (message.user !== undefined) {
-      obj.user = UserDTO.toJSON(message.user);
+      obj.user = message.user;
     }
     if (message.campaign !== undefined) {
-      obj.campaign = CampaignDTO.toJSON(message.campaign);
+      obj.campaign = message.campaign;
     }
     if (message.world !== undefined) {
-      obj.world = WorldDTO.toJSON(message.world);
+      obj.world = message.world;
     }
     if (message.firstName !== "") {
       obj.firstName = message.firstName;
@@ -5760,32 +5617,32 @@ export const CharacterDTO: MessageFns<CharacterDTO> = {
     if (message.equipmentSlots !== undefined) {
       obj.equipmentSlots = EquipmentSlotsDTO.toJSON(message.equipmentSlots);
     }
-    if (message.professions !== undefined) {
-      obj.professions = CharacterProfessionsDTO.toJSON(message.professions);
+    if (message.professions?.length) {
+      obj.professions = message.professions;
     }
-    if (message.memoryPools !== undefined) {
-      obj.memoryPools = MemoryPoolsDTO.toJSON(message.memoryPools);
+    if (message.memoryPools?.length) {
+      obj.memoryPools = message.memoryPools;
     }
-    if (message.characterMemories !== undefined) {
-      obj.characterMemories = CharacterMemoriesDTO.toJSON(message.characterMemories);
+    if (message.characterMemories?.length) {
+      obj.characterMemories = message.characterMemories;
     }
     if (message.enneagramType !== "") {
       obj.enneagramType = message.enneagramType;
     }
-    if (message.traits !== undefined) {
-      obj.traits = TraitsDTO.toJSON(message.traits);
+    if (message.traits?.length) {
+      obj.traits = message.traits;
     }
-    if (message.diseases !== undefined) {
-      obj.diseases = DiseasesDTO.toJSON(message.diseases);
+    if (message.diseases?.length) {
+      obj.diseases = message.diseases;
     }
-    if (message.addictions !== undefined) {
-      obj.addictions = AddictionsDTO.toJSON(message.addictions);
+    if (message.addictions?.length) {
+      obj.addictions = message.addictions;
     }
-    if (message.factions !== undefined) {
-      obj.factions = FactionsDTO.toJSON(message.factions);
+    if (message.factions?.length) {
+      obj.factions = message.factions;
     }
-    if (message.tags !== undefined) {
-      obj.tags = TagsDTO.toJSON(message.tags);
+    if (message.tags?.length) {
+      obj.tags = message.tags;
     }
     if (message.targetEntity !== "") {
       obj.targetEntity = message.targetEntity;
@@ -5793,11 +5650,8 @@ export const CharacterDTO: MessageFns<CharacterDTO> = {
     if (message.birthEra !== undefined) {
       obj.birthEra = message.birthEra;
     }
-    if (message.pastExperiencesChild !== undefined) {
-      obj.pastExperiencesChild = PastExperiencesDTO.toJSON(message.pastExperiencesChild);
-    }
-    if (message.pastExperiencesAdult !== undefined) {
-      obj.pastExperiencesAdult = PastExperiencesDTO.toJSON(message.pastExperiencesAdult);
+    if (message.pastExperiences?.length) {
+      obj.pastExperiences = message.pastExperiences;
     }
     return obj;
   },
@@ -5812,13 +5666,9 @@ export const CharacterDTO: MessageFns<CharacterDTO> = {
     message.metadata = (object.metadata !== undefined && object.metadata !== null)
       ? Metadata.fromPartial(object.metadata)
       : undefined;
-    message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
-    message.campaign = (object.campaign !== undefined && object.campaign !== null)
-      ? CampaignDTO.fromPartial(object.campaign)
-      : undefined;
-    message.world = (object.world !== undefined && object.world !== null)
-      ? WorldDTO.fromPartial(object.world)
-      : undefined;
+    message.user = object.user ?? undefined;
+    message.campaign = object.campaign ?? undefined;
+    message.world = object.world ?? undefined;
     message.firstName = object.firstName ?? "";
     message.lastName = object.lastName ?? "";
     message.race = object.race ?? "";
@@ -5836,37 +5686,18 @@ export const CharacterDTO: MessageFns<CharacterDTO> = {
     message.equipmentSlots = (object.equipmentSlots !== undefined && object.equipmentSlots !== null)
       ? EquipmentSlotsDTO.fromPartial(object.equipmentSlots)
       : undefined;
-    message.professions = (object.professions !== undefined && object.professions !== null)
-      ? CharacterProfessionsDTO.fromPartial(object.professions)
-      : undefined;
-    message.memoryPools = (object.memoryPools !== undefined && object.memoryPools !== null)
-      ? MemoryPoolsDTO.fromPartial(object.memoryPools)
-      : undefined;
-    message.characterMemories = (object.characterMemories !== undefined && object.characterMemories !== null)
-      ? CharacterMemoriesDTO.fromPartial(object.characterMemories)
-      : undefined;
+    message.professions = object.professions?.map((e) => e) || [];
+    message.memoryPools = object.memoryPools?.map((e) => e) || [];
+    message.characterMemories = object.characterMemories?.map((e) => e) || [];
     message.enneagramType = object.enneagramType ?? "";
-    message.traits = (object.traits !== undefined && object.traits !== null)
-      ? TraitsDTO.fromPartial(object.traits)
-      : undefined;
-    message.diseases = (object.diseases !== undefined && object.diseases !== null)
-      ? DiseasesDTO.fromPartial(object.diseases)
-      : undefined;
-    message.addictions = (object.addictions !== undefined && object.addictions !== null)
-      ? AddictionsDTO.fromPartial(object.addictions)
-      : undefined;
-    message.factions = (object.factions !== undefined && object.factions !== null)
-      ? FactionsDTO.fromPartial(object.factions)
-      : undefined;
-    message.tags = (object.tags !== undefined && object.tags !== null) ? TagsDTO.fromPartial(object.tags) : undefined;
+    message.traits = object.traits?.map((e) => e) || [];
+    message.diseases = object.diseases?.map((e) => e) || [];
+    message.addictions = object.addictions?.map((e) => e) || [];
+    message.factions = object.factions?.map((e) => e) || [];
+    message.tags = object.tags?.map((e) => e) || [];
     message.targetEntity = object.targetEntity ?? "";
     message.birthEra = object.birthEra ?? undefined;
-    message.pastExperiencesChild = (object.pastExperiencesChild !== undefined && object.pastExperiencesChild !== null)
-      ? PastExperiencesDTO.fromPartial(object.pastExperiencesChild)
-      : undefined;
-    message.pastExperiencesAdult = (object.pastExperiencesAdult !== undefined && object.pastExperiencesAdult !== null)
-      ? PastExperiencesDTO.fromPartial(object.pastExperiencesAdult)
-      : undefined;
+    message.pastExperiences = object.pastExperiences?.map((e) => e) || [];
     return message;
   },
 };
@@ -6014,8 +5845,7 @@ function createBaseAddictionDTO(): AddictionDTO {
     user: undefined,
     campaign: undefined,
     world: undefined,
-    character: undefined,
-    characters: undefined,
+    characters: [],
     targetEntity: "",
   };
 }
@@ -6035,22 +5865,19 @@ export const AddictionDTO: MessageFns<AddictionDTO> = {
       Metadata.encode(message.metadata, writer.uint32(34).fork()).join();
     }
     if (message.user !== undefined) {
-      UserDTO.encode(message.user, writer.uint32(42).fork()).join();
+      writer.uint32(42).string(message.user);
     }
     if (message.campaign !== undefined) {
-      CampaignDTO.encode(message.campaign, writer.uint32(50).fork()).join();
+      writer.uint32(50).string(message.campaign);
     }
     if (message.world !== undefined) {
-      WorldDTO.encode(message.world, writer.uint32(58).fork()).join();
+      writer.uint32(58).string(message.world);
     }
-    if (message.character !== undefined) {
-      CharacterDTO.encode(message.character, writer.uint32(66).fork()).join();
-    }
-    if (message.characters !== undefined) {
-      CharactersDTO.encode(message.characters, writer.uint32(74).fork()).join();
+    for (const v of message.characters) {
+      writer.uint32(66).string(v!);
     }
     if (message.targetEntity !== "") {
-      writer.uint32(82).string(message.targetEntity);
+      writer.uint32(74).string(message.targetEntity);
     }
     return writer;
   },
@@ -6099,7 +5926,7 @@ export const AddictionDTO: MessageFns<AddictionDTO> = {
             break;
           }
 
-          message.user = UserDTO.decode(reader, reader.uint32());
+          message.user = reader.string();
           continue;
         }
         case 6: {
@@ -6107,7 +5934,7 @@ export const AddictionDTO: MessageFns<AddictionDTO> = {
             break;
           }
 
-          message.campaign = CampaignDTO.decode(reader, reader.uint32());
+          message.campaign = reader.string();
           continue;
         }
         case 7: {
@@ -6115,7 +5942,7 @@ export const AddictionDTO: MessageFns<AddictionDTO> = {
             break;
           }
 
-          message.world = WorldDTO.decode(reader, reader.uint32());
+          message.world = reader.string();
           continue;
         }
         case 8: {
@@ -6123,19 +5950,11 @@ export const AddictionDTO: MessageFns<AddictionDTO> = {
             break;
           }
 
-          message.character = CharacterDTO.decode(reader, reader.uint32());
+          message.characters.push(reader.string());
           continue;
         }
         case 9: {
           if (tag !== 74) {
-            break;
-          }
-
-          message.characters = CharactersDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 10: {
-          if (tag !== 82) {
             break;
           }
 
@@ -6157,11 +5976,12 @@ export const AddictionDTO: MessageFns<AddictionDTO> = {
       blueprintId: isSet(object.blueprintId) ? globalThis.String(object.blueprintId) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       metadata: isSet(object.metadata) ? Metadata.fromJSON(object.metadata) : undefined,
-      user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
-      campaign: isSet(object.campaign) ? CampaignDTO.fromJSON(object.campaign) : undefined,
-      world: isSet(object.world) ? WorldDTO.fromJSON(object.world) : undefined,
-      character: isSet(object.character) ? CharacterDTO.fromJSON(object.character) : undefined,
-      characters: isSet(object.characters) ? CharactersDTO.fromJSON(object.characters) : undefined,
+      user: isSet(object.user) ? globalThis.String(object.user) : undefined,
+      campaign: isSet(object.campaign) ? globalThis.String(object.campaign) : undefined,
+      world: isSet(object.world) ? globalThis.String(object.world) : undefined,
+      characters: globalThis.Array.isArray(object?.characters)
+        ? object.characters.map((e: any) => globalThis.String(e))
+        : [],
       targetEntity: isSet(object.targetEntity) ? globalThis.String(object.targetEntity) : "",
     };
   },
@@ -6181,19 +6001,16 @@ export const AddictionDTO: MessageFns<AddictionDTO> = {
       obj.metadata = Metadata.toJSON(message.metadata);
     }
     if (message.user !== undefined) {
-      obj.user = UserDTO.toJSON(message.user);
+      obj.user = message.user;
     }
     if (message.campaign !== undefined) {
-      obj.campaign = CampaignDTO.toJSON(message.campaign);
+      obj.campaign = message.campaign;
     }
     if (message.world !== undefined) {
-      obj.world = WorldDTO.toJSON(message.world);
+      obj.world = message.world;
     }
-    if (message.character !== undefined) {
-      obj.character = CharacterDTO.toJSON(message.character);
-    }
-    if (message.characters !== undefined) {
-      obj.characters = CharactersDTO.toJSON(message.characters);
+    if (message.characters?.length) {
+      obj.characters = message.characters;
     }
     if (message.targetEntity !== "") {
       obj.targetEntity = message.targetEntity;
@@ -6212,19 +6029,10 @@ export const AddictionDTO: MessageFns<AddictionDTO> = {
     message.metadata = (object.metadata !== undefined && object.metadata !== null)
       ? Metadata.fromPartial(object.metadata)
       : undefined;
-    message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
-    message.campaign = (object.campaign !== undefined && object.campaign !== null)
-      ? CampaignDTO.fromPartial(object.campaign)
-      : undefined;
-    message.world = (object.world !== undefined && object.world !== null)
-      ? WorldDTO.fromPartial(object.world)
-      : undefined;
-    message.character = (object.character !== undefined && object.character !== null)
-      ? CharacterDTO.fromPartial(object.character)
-      : undefined;
-    message.characters = (object.characters !== undefined && object.characters !== null)
-      ? CharactersDTO.fromPartial(object.characters)
-      : undefined;
+    message.user = object.user ?? undefined;
+    message.campaign = object.campaign ?? undefined;
+    message.world = object.world ?? undefined;
+    message.characters = object.characters?.map((e) => e) || [];
     message.targetEntity = object.targetEntity ?? "";
     return message;
   },
@@ -6304,8 +6112,8 @@ function createBaseCharacterMemoryDTO(): CharacterMemoryDTO {
     accumulator: 0,
     acquiredAt: undefined,
     lastUpdatedAt: undefined,
-    tags: undefined,
-    memory: undefined,
+    tags: [],
+    memory: "",
     targetEntity: "",
   };
 }
@@ -6325,16 +6133,16 @@ export const CharacterMemoryDTO: MessageFns<CharacterMemoryDTO> = {
       Metadata.encode(message.metadata, writer.uint32(34).fork()).join();
     }
     if (message.user !== undefined) {
-      UserDTO.encode(message.user, writer.uint32(42).fork()).join();
+      writer.uint32(42).string(message.user);
     }
     if (message.campaign !== undefined) {
-      CampaignDTO.encode(message.campaign, writer.uint32(50).fork()).join();
+      writer.uint32(50).string(message.campaign);
     }
     if (message.world !== undefined) {
-      WorldDTO.encode(message.world, writer.uint32(58).fork()).join();
+      writer.uint32(58).string(message.world);
     }
     if (message.character !== undefined) {
-      CharacterDTO.encode(message.character, writer.uint32(66).fork()).join();
+      writer.uint32(66).string(message.character);
     }
     for (const v of message.factStatus) {
       FactStatusDTO.encode(v!, writer.uint32(74).fork()).join();
@@ -6354,11 +6162,11 @@ export const CharacterMemoryDTO: MessageFns<CharacterMemoryDTO> = {
     if (message.lastUpdatedAt !== undefined) {
       writer.uint32(112).int32(message.lastUpdatedAt);
     }
-    if (message.tags !== undefined) {
-      TagsDTO.encode(message.tags, writer.uint32(122).fork()).join();
+    for (const v of message.tags) {
+      writer.uint32(122).string(v!);
     }
-    if (message.memory !== undefined) {
-      MemoryDTO.encode(message.memory, writer.uint32(130).fork()).join();
+    if (message.memory !== "") {
+      writer.uint32(130).string(message.memory);
     }
     if (message.targetEntity !== "") {
       writer.uint32(138).string(message.targetEntity);
@@ -6410,7 +6218,7 @@ export const CharacterMemoryDTO: MessageFns<CharacterMemoryDTO> = {
             break;
           }
 
-          message.user = UserDTO.decode(reader, reader.uint32());
+          message.user = reader.string();
           continue;
         }
         case 6: {
@@ -6418,7 +6226,7 @@ export const CharacterMemoryDTO: MessageFns<CharacterMemoryDTO> = {
             break;
           }
 
-          message.campaign = CampaignDTO.decode(reader, reader.uint32());
+          message.campaign = reader.string();
           continue;
         }
         case 7: {
@@ -6426,7 +6234,7 @@ export const CharacterMemoryDTO: MessageFns<CharacterMemoryDTO> = {
             break;
           }
 
-          message.world = WorldDTO.decode(reader, reader.uint32());
+          message.world = reader.string();
           continue;
         }
         case 8: {
@@ -6434,7 +6242,7 @@ export const CharacterMemoryDTO: MessageFns<CharacterMemoryDTO> = {
             break;
           }
 
-          message.character = CharacterDTO.decode(reader, reader.uint32());
+          message.character = reader.string();
           continue;
         }
         case 9: {
@@ -6490,7 +6298,7 @@ export const CharacterMemoryDTO: MessageFns<CharacterMemoryDTO> = {
             break;
           }
 
-          message.tags = TagsDTO.decode(reader, reader.uint32());
+          message.tags.push(reader.string());
           continue;
         }
         case 16: {
@@ -6498,7 +6306,7 @@ export const CharacterMemoryDTO: MessageFns<CharacterMemoryDTO> = {
             break;
           }
 
-          message.memory = MemoryDTO.decode(reader, reader.uint32());
+          message.memory = reader.string();
           continue;
         }
         case 17: {
@@ -6524,10 +6332,10 @@ export const CharacterMemoryDTO: MessageFns<CharacterMemoryDTO> = {
       blueprintId: isSet(object.blueprintId) ? globalThis.String(object.blueprintId) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       metadata: isSet(object.metadata) ? Metadata.fromJSON(object.metadata) : undefined,
-      user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
-      campaign: isSet(object.campaign) ? CampaignDTO.fromJSON(object.campaign) : undefined,
-      world: isSet(object.world) ? WorldDTO.fromJSON(object.world) : undefined,
-      character: isSet(object.character) ? CharacterDTO.fromJSON(object.character) : undefined,
+      user: isSet(object.user) ? globalThis.String(object.user) : undefined,
+      campaign: isSet(object.campaign) ? globalThis.String(object.campaign) : undefined,
+      world: isSet(object.world) ? globalThis.String(object.world) : undefined,
+      character: isSet(object.character) ? globalThis.String(object.character) : undefined,
       factStatus: globalThis.Array.isArray(object?.factStatus)
         ? object.factStatus.map((e: any) => FactStatusDTO.fromJSON(e))
         : [],
@@ -6536,8 +6344,8 @@ export const CharacterMemoryDTO: MessageFns<CharacterMemoryDTO> = {
       accumulator: isSet(object.accumulator) ? globalThis.Number(object.accumulator) : 0,
       acquiredAt: isSet(object.acquiredAt) ? globalThis.Number(object.acquiredAt) : undefined,
       lastUpdatedAt: isSet(object.lastUpdatedAt) ? globalThis.Number(object.lastUpdatedAt) : undefined,
-      tags: isSet(object.tags) ? TagsDTO.fromJSON(object.tags) : undefined,
-      memory: isSet(object.memory) ? MemoryDTO.fromJSON(object.memory) : undefined,
+      tags: globalThis.Array.isArray(object?.tags) ? object.tags.map((e: any) => globalThis.String(e)) : [],
+      memory: isSet(object.memory) ? globalThis.String(object.memory) : "",
       targetEntity: isSet(object.targetEntity) ? globalThis.String(object.targetEntity) : "",
     };
   },
@@ -6557,16 +6365,16 @@ export const CharacterMemoryDTO: MessageFns<CharacterMemoryDTO> = {
       obj.metadata = Metadata.toJSON(message.metadata);
     }
     if (message.user !== undefined) {
-      obj.user = UserDTO.toJSON(message.user);
+      obj.user = message.user;
     }
     if (message.campaign !== undefined) {
-      obj.campaign = CampaignDTO.toJSON(message.campaign);
+      obj.campaign = message.campaign;
     }
     if (message.world !== undefined) {
-      obj.world = WorldDTO.toJSON(message.world);
+      obj.world = message.world;
     }
     if (message.character !== undefined) {
-      obj.character = CharacterDTO.toJSON(message.character);
+      obj.character = message.character;
     }
     if (message.factStatus?.length) {
       obj.factStatus = message.factStatus.map((e) => FactStatusDTO.toJSON(e));
@@ -6586,11 +6394,11 @@ export const CharacterMemoryDTO: MessageFns<CharacterMemoryDTO> = {
     if (message.lastUpdatedAt !== undefined) {
       obj.lastUpdatedAt = Math.round(message.lastUpdatedAt);
     }
-    if (message.tags !== undefined) {
-      obj.tags = TagsDTO.toJSON(message.tags);
+    if (message.tags?.length) {
+      obj.tags = message.tags;
     }
-    if (message.memory !== undefined) {
-      obj.memory = MemoryDTO.toJSON(message.memory);
+    if (message.memory !== "") {
+      obj.memory = message.memory;
     }
     if (message.targetEntity !== "") {
       obj.targetEntity = message.targetEntity;
@@ -6609,26 +6417,18 @@ export const CharacterMemoryDTO: MessageFns<CharacterMemoryDTO> = {
     message.metadata = (object.metadata !== undefined && object.metadata !== null)
       ? Metadata.fromPartial(object.metadata)
       : undefined;
-    message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
-    message.campaign = (object.campaign !== undefined && object.campaign !== null)
-      ? CampaignDTO.fromPartial(object.campaign)
-      : undefined;
-    message.world = (object.world !== undefined && object.world !== null)
-      ? WorldDTO.fromPartial(object.world)
-      : undefined;
-    message.character = (object.character !== undefined && object.character !== null)
-      ? CharacterDTO.fromPartial(object.character)
-      : undefined;
+    message.user = object.user ?? undefined;
+    message.campaign = object.campaign ?? undefined;
+    message.world = object.world ?? undefined;
+    message.character = object.character ?? undefined;
     message.factStatus = object.factStatus?.map((e) => FactStatusDTO.fromPartial(e)) || [];
     message.importance = object.importance ?? 0;
     message.resistance = object.resistance ?? 0;
     message.accumulator = object.accumulator ?? 0;
     message.acquiredAt = object.acquiredAt ?? undefined;
     message.lastUpdatedAt = object.lastUpdatedAt ?? undefined;
-    message.tags = (object.tags !== undefined && object.tags !== null) ? TagsDTO.fromPartial(object.tags) : undefined;
-    message.memory = (object.memory !== undefined && object.memory !== null)
-      ? MemoryDTO.fromPartial(object.memory)
-      : undefined;
+    message.tags = object.tags?.map((e) => e) || [];
+    message.memory = object.memory ?? "";
     message.targetEntity = object.targetEntity ?? "";
     return message;
   },
@@ -6835,19 +6635,6 @@ function createBaseTagDTO(): TagDTO {
     metadata: undefined,
     label: "",
     subtype: 0,
-    items: undefined,
-    pastExperiences: undefined,
-    characterMemories: undefined,
-    memories: undefined,
-    memoryPools: undefined,
-    skills: undefined,
-    traits: undefined,
-    characters: undefined,
-    characterProfessions: undefined,
-    diseases: undefined,
-    effects: undefined,
-    facts: undefined,
-    factions: undefined,
     user: undefined,
     campaign: undefined,
     world: undefined,
@@ -6872,56 +6659,17 @@ export const TagDTO: MessageFns<TagDTO> = {
     if (message.subtype !== 0) {
       writer.uint32(40).int32(message.subtype);
     }
-    if (message.items !== undefined) {
-      ItemsDTO.encode(message.items, writer.uint32(50).fork()).join();
-    }
-    if (message.pastExperiences !== undefined) {
-      PastExperiencesDTO.encode(message.pastExperiences, writer.uint32(58).fork()).join();
-    }
-    if (message.characterMemories !== undefined) {
-      CharacterMemoriesDTO.encode(message.characterMemories, writer.uint32(66).fork()).join();
-    }
-    if (message.memories !== undefined) {
-      MemoriesDTO.encode(message.memories, writer.uint32(74).fork()).join();
-    }
-    if (message.memoryPools !== undefined) {
-      MemoryPoolsDTO.encode(message.memoryPools, writer.uint32(82).fork()).join();
-    }
-    if (message.skills !== undefined) {
-      SkillsDTO.encode(message.skills, writer.uint32(90).fork()).join();
-    }
-    if (message.traits !== undefined) {
-      TraitsDTO.encode(message.traits, writer.uint32(98).fork()).join();
-    }
-    if (message.characters !== undefined) {
-      CharactersDTO.encode(message.characters, writer.uint32(106).fork()).join();
-    }
-    if (message.characterProfessions !== undefined) {
-      CharacterProfessionsDTO.encode(message.characterProfessions, writer.uint32(114).fork()).join();
-    }
-    if (message.diseases !== undefined) {
-      DiseasesDTO.encode(message.diseases, writer.uint32(122).fork()).join();
-    }
-    if (message.effects !== undefined) {
-      EffectsDTO.encode(message.effects, writer.uint32(130).fork()).join();
-    }
-    if (message.facts !== undefined) {
-      FactsDTO.encode(message.facts, writer.uint32(138).fork()).join();
-    }
-    if (message.factions !== undefined) {
-      FactionsDTO.encode(message.factions, writer.uint32(146).fork()).join();
-    }
     if (message.user !== undefined) {
-      UserDTO.encode(message.user, writer.uint32(154).fork()).join();
+      writer.uint32(50).string(message.user);
     }
     if (message.campaign !== undefined) {
-      CampaignDTO.encode(message.campaign, writer.uint32(162).fork()).join();
+      writer.uint32(58).string(message.campaign);
     }
     if (message.world !== undefined) {
-      WorldDTO.encode(message.world, writer.uint32(170).fork()).join();
+      writer.uint32(66).string(message.world);
     }
     if (message.targetEntity !== "") {
-      writer.uint32(178).string(message.targetEntity);
+      writer.uint32(74).string(message.targetEntity);
     }
     return writer;
   },
@@ -6978,7 +6726,7 @@ export const TagDTO: MessageFns<TagDTO> = {
             break;
           }
 
-          message.items = ItemsDTO.decode(reader, reader.uint32());
+          message.user = reader.string();
           continue;
         }
         case 7: {
@@ -6986,7 +6734,7 @@ export const TagDTO: MessageFns<TagDTO> = {
             break;
           }
 
-          message.pastExperiences = PastExperiencesDTO.decode(reader, reader.uint32());
+          message.campaign = reader.string();
           continue;
         }
         case 8: {
@@ -6994,115 +6742,11 @@ export const TagDTO: MessageFns<TagDTO> = {
             break;
           }
 
-          message.characterMemories = CharacterMemoriesDTO.decode(reader, reader.uint32());
+          message.world = reader.string();
           continue;
         }
         case 9: {
           if (tag !== 74) {
-            break;
-          }
-
-          message.memories = MemoriesDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 10: {
-          if (tag !== 82) {
-            break;
-          }
-
-          message.memoryPools = MemoryPoolsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 11: {
-          if (tag !== 90) {
-            break;
-          }
-
-          message.skills = SkillsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 12: {
-          if (tag !== 98) {
-            break;
-          }
-
-          message.traits = TraitsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 13: {
-          if (tag !== 106) {
-            break;
-          }
-
-          message.characters = CharactersDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 14: {
-          if (tag !== 114) {
-            break;
-          }
-
-          message.characterProfessions = CharacterProfessionsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 15: {
-          if (tag !== 122) {
-            break;
-          }
-
-          message.diseases = DiseasesDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 16: {
-          if (tag !== 130) {
-            break;
-          }
-
-          message.effects = EffectsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 17: {
-          if (tag !== 138) {
-            break;
-          }
-
-          message.facts = FactsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 18: {
-          if (tag !== 146) {
-            break;
-          }
-
-          message.factions = FactionsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 19: {
-          if (tag !== 154) {
-            break;
-          }
-
-          message.user = UserDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 20: {
-          if (tag !== 162) {
-            break;
-          }
-
-          message.campaign = CampaignDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 21: {
-          if (tag !== 170) {
-            break;
-          }
-
-          message.world = WorldDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 22: {
-          if (tag !== 178) {
             break;
           }
 
@@ -7125,26 +6769,9 @@ export const TagDTO: MessageFns<TagDTO> = {
       metadata: isSet(object.metadata) ? Metadata.fromJSON(object.metadata) : undefined,
       label: isSet(object.label) ? globalThis.String(object.label) : "",
       subtype: isSet(object.subtype) ? tagSubtypeEnumDTOFromJSON(object.subtype) : 0,
-      items: isSet(object.items) ? ItemsDTO.fromJSON(object.items) : undefined,
-      pastExperiences: isSet(object.pastExperiences) ? PastExperiencesDTO.fromJSON(object.pastExperiences) : undefined,
-      characterMemories: isSet(object.characterMemories)
-        ? CharacterMemoriesDTO.fromJSON(object.characterMemories)
-        : undefined,
-      memories: isSet(object.memories) ? MemoriesDTO.fromJSON(object.memories) : undefined,
-      memoryPools: isSet(object.memoryPools) ? MemoryPoolsDTO.fromJSON(object.memoryPools) : undefined,
-      skills: isSet(object.skills) ? SkillsDTO.fromJSON(object.skills) : undefined,
-      traits: isSet(object.traits) ? TraitsDTO.fromJSON(object.traits) : undefined,
-      characters: isSet(object.characters) ? CharactersDTO.fromJSON(object.characters) : undefined,
-      characterProfessions: isSet(object.characterProfessions)
-        ? CharacterProfessionsDTO.fromJSON(object.characterProfessions)
-        : undefined,
-      diseases: isSet(object.diseases) ? DiseasesDTO.fromJSON(object.diseases) : undefined,
-      effects: isSet(object.effects) ? EffectsDTO.fromJSON(object.effects) : undefined,
-      facts: isSet(object.facts) ? FactsDTO.fromJSON(object.facts) : undefined,
-      factions: isSet(object.factions) ? FactionsDTO.fromJSON(object.factions) : undefined,
-      user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
-      campaign: isSet(object.campaign) ? CampaignDTO.fromJSON(object.campaign) : undefined,
-      world: isSet(object.world) ? WorldDTO.fromJSON(object.world) : undefined,
+      user: isSet(object.user) ? globalThis.String(object.user) : undefined,
+      campaign: isSet(object.campaign) ? globalThis.String(object.campaign) : undefined,
+      world: isSet(object.world) ? globalThis.String(object.world) : undefined,
       targetEntity: isSet(object.targetEntity) ? globalThis.String(object.targetEntity) : "",
     };
   },
@@ -7166,53 +6793,14 @@ export const TagDTO: MessageFns<TagDTO> = {
     if (message.subtype !== 0) {
       obj.subtype = tagSubtypeEnumDTOToJSON(message.subtype);
     }
-    if (message.items !== undefined) {
-      obj.items = ItemsDTO.toJSON(message.items);
-    }
-    if (message.pastExperiences !== undefined) {
-      obj.pastExperiences = PastExperiencesDTO.toJSON(message.pastExperiences);
-    }
-    if (message.characterMemories !== undefined) {
-      obj.characterMemories = CharacterMemoriesDTO.toJSON(message.characterMemories);
-    }
-    if (message.memories !== undefined) {
-      obj.memories = MemoriesDTO.toJSON(message.memories);
-    }
-    if (message.memoryPools !== undefined) {
-      obj.memoryPools = MemoryPoolsDTO.toJSON(message.memoryPools);
-    }
-    if (message.skills !== undefined) {
-      obj.skills = SkillsDTO.toJSON(message.skills);
-    }
-    if (message.traits !== undefined) {
-      obj.traits = TraitsDTO.toJSON(message.traits);
-    }
-    if (message.characters !== undefined) {
-      obj.characters = CharactersDTO.toJSON(message.characters);
-    }
-    if (message.characterProfessions !== undefined) {
-      obj.characterProfessions = CharacterProfessionsDTO.toJSON(message.characterProfessions);
-    }
-    if (message.diseases !== undefined) {
-      obj.diseases = DiseasesDTO.toJSON(message.diseases);
-    }
-    if (message.effects !== undefined) {
-      obj.effects = EffectsDTO.toJSON(message.effects);
-    }
-    if (message.facts !== undefined) {
-      obj.facts = FactsDTO.toJSON(message.facts);
-    }
-    if (message.factions !== undefined) {
-      obj.factions = FactionsDTO.toJSON(message.factions);
-    }
     if (message.user !== undefined) {
-      obj.user = UserDTO.toJSON(message.user);
+      obj.user = message.user;
     }
     if (message.campaign !== undefined) {
-      obj.campaign = CampaignDTO.toJSON(message.campaign);
+      obj.campaign = message.campaign;
     }
     if (message.world !== undefined) {
-      obj.world = WorldDTO.toJSON(message.world);
+      obj.world = message.world;
     }
     if (message.targetEntity !== "") {
       obj.targetEntity = message.targetEntity;
@@ -7232,52 +6820,9 @@ export const TagDTO: MessageFns<TagDTO> = {
       : undefined;
     message.label = object.label ?? "";
     message.subtype = object.subtype ?? 0;
-    message.items = (object.items !== undefined && object.items !== null)
-      ? ItemsDTO.fromPartial(object.items)
-      : undefined;
-    message.pastExperiences = (object.pastExperiences !== undefined && object.pastExperiences !== null)
-      ? PastExperiencesDTO.fromPartial(object.pastExperiences)
-      : undefined;
-    message.characterMemories = (object.characterMemories !== undefined && object.characterMemories !== null)
-      ? CharacterMemoriesDTO.fromPartial(object.characterMemories)
-      : undefined;
-    message.memories = (object.memories !== undefined && object.memories !== null)
-      ? MemoriesDTO.fromPartial(object.memories)
-      : undefined;
-    message.memoryPools = (object.memoryPools !== undefined && object.memoryPools !== null)
-      ? MemoryPoolsDTO.fromPartial(object.memoryPools)
-      : undefined;
-    message.skills = (object.skills !== undefined && object.skills !== null)
-      ? SkillsDTO.fromPartial(object.skills)
-      : undefined;
-    message.traits = (object.traits !== undefined && object.traits !== null)
-      ? TraitsDTO.fromPartial(object.traits)
-      : undefined;
-    message.characters = (object.characters !== undefined && object.characters !== null)
-      ? CharactersDTO.fromPartial(object.characters)
-      : undefined;
-    message.characterProfessions = (object.characterProfessions !== undefined && object.characterProfessions !== null)
-      ? CharacterProfessionsDTO.fromPartial(object.characterProfessions)
-      : undefined;
-    message.diseases = (object.diseases !== undefined && object.diseases !== null)
-      ? DiseasesDTO.fromPartial(object.diseases)
-      : undefined;
-    message.effects = (object.effects !== undefined && object.effects !== null)
-      ? EffectsDTO.fromPartial(object.effects)
-      : undefined;
-    message.facts = (object.facts !== undefined && object.facts !== null)
-      ? FactsDTO.fromPartial(object.facts)
-      : undefined;
-    message.factions = (object.factions !== undefined && object.factions !== null)
-      ? FactionsDTO.fromPartial(object.factions)
-      : undefined;
-    message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
-    message.campaign = (object.campaign !== undefined && object.campaign !== null)
-      ? CampaignDTO.fromPartial(object.campaign)
-      : undefined;
-    message.world = (object.world !== undefined && object.world !== null)
-      ? WorldDTO.fromPartial(object.world)
-      : undefined;
+    message.user = object.user ?? undefined;
+    message.campaign = object.campaign ?? undefined;
+    message.world = object.world ?? undefined;
     message.targetEntity = object.targetEntity ?? "";
     return message;
   },
@@ -7350,7 +6895,7 @@ function createBaseSkillDTO(): SkillDTO {
     user: undefined,
     campaign: undefined,
     world: undefined,
-    tags: undefined,
+    tags: [],
     description: "",
     category: 0,
     targetEntity: "",
@@ -7372,16 +6917,16 @@ export const SkillDTO: MessageFns<SkillDTO> = {
       Metadata.encode(message.metadata, writer.uint32(34).fork()).join();
     }
     if (message.user !== undefined) {
-      UserDTO.encode(message.user, writer.uint32(42).fork()).join();
+      writer.uint32(42).string(message.user);
     }
     if (message.campaign !== undefined) {
-      CampaignDTO.encode(message.campaign, writer.uint32(50).fork()).join();
+      writer.uint32(50).string(message.campaign);
     }
     if (message.world !== undefined) {
-      WorldDTO.encode(message.world, writer.uint32(58).fork()).join();
+      writer.uint32(58).string(message.world);
     }
-    if (message.tags !== undefined) {
-      TagsDTO.encode(message.tags, writer.uint32(66).fork()).join();
+    for (const v of message.tags) {
+      writer.uint32(66).string(v!);
     }
     if (message.description !== "") {
       writer.uint32(74).string(message.description);
@@ -7439,7 +6984,7 @@ export const SkillDTO: MessageFns<SkillDTO> = {
             break;
           }
 
-          message.user = UserDTO.decode(reader, reader.uint32());
+          message.user = reader.string();
           continue;
         }
         case 6: {
@@ -7447,7 +6992,7 @@ export const SkillDTO: MessageFns<SkillDTO> = {
             break;
           }
 
-          message.campaign = CampaignDTO.decode(reader, reader.uint32());
+          message.campaign = reader.string();
           continue;
         }
         case 7: {
@@ -7455,7 +7000,7 @@ export const SkillDTO: MessageFns<SkillDTO> = {
             break;
           }
 
-          message.world = WorldDTO.decode(reader, reader.uint32());
+          message.world = reader.string();
           continue;
         }
         case 8: {
@@ -7463,7 +7008,7 @@ export const SkillDTO: MessageFns<SkillDTO> = {
             break;
           }
 
-          message.tags = TagsDTO.decode(reader, reader.uint32());
+          message.tags.push(reader.string());
           continue;
         }
         case 9: {
@@ -7505,10 +7050,10 @@ export const SkillDTO: MessageFns<SkillDTO> = {
       blueprintId: isSet(object.blueprintId) ? globalThis.String(object.blueprintId) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       metadata: isSet(object.metadata) ? Metadata.fromJSON(object.metadata) : undefined,
-      user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
-      campaign: isSet(object.campaign) ? CampaignDTO.fromJSON(object.campaign) : undefined,
-      world: isSet(object.world) ? WorldDTO.fromJSON(object.world) : undefined,
-      tags: isSet(object.tags) ? TagsDTO.fromJSON(object.tags) : undefined,
+      user: isSet(object.user) ? globalThis.String(object.user) : undefined,
+      campaign: isSet(object.campaign) ? globalThis.String(object.campaign) : undefined,
+      world: isSet(object.world) ? globalThis.String(object.world) : undefined,
+      tags: globalThis.Array.isArray(object?.tags) ? object.tags.map((e: any) => globalThis.String(e)) : [],
       description: isSet(object.description) ? globalThis.String(object.description) : "",
       category: isSet(object.category) ? skillCategoryEnumDTOFromJSON(object.category) : 0,
       targetEntity: isSet(object.targetEntity) ? globalThis.String(object.targetEntity) : "",
@@ -7530,16 +7075,16 @@ export const SkillDTO: MessageFns<SkillDTO> = {
       obj.metadata = Metadata.toJSON(message.metadata);
     }
     if (message.user !== undefined) {
-      obj.user = UserDTO.toJSON(message.user);
+      obj.user = message.user;
     }
     if (message.campaign !== undefined) {
-      obj.campaign = CampaignDTO.toJSON(message.campaign);
+      obj.campaign = message.campaign;
     }
     if (message.world !== undefined) {
-      obj.world = WorldDTO.toJSON(message.world);
+      obj.world = message.world;
     }
-    if (message.tags !== undefined) {
-      obj.tags = TagsDTO.toJSON(message.tags);
+    if (message.tags?.length) {
+      obj.tags = message.tags;
     }
     if (message.description !== "") {
       obj.description = message.description;
@@ -7564,14 +7109,10 @@ export const SkillDTO: MessageFns<SkillDTO> = {
     message.metadata = (object.metadata !== undefined && object.metadata !== null)
       ? Metadata.fromPartial(object.metadata)
       : undefined;
-    message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
-    message.campaign = (object.campaign !== undefined && object.campaign !== null)
-      ? CampaignDTO.fromPartial(object.campaign)
-      : undefined;
-    message.world = (object.world !== undefined && object.world !== null)
-      ? WorldDTO.fromPartial(object.world)
-      : undefined;
-    message.tags = (object.tags !== undefined && object.tags !== null) ? TagsDTO.fromPartial(object.tags) : undefined;
+    message.user = object.user ?? undefined;
+    message.campaign = object.campaign ?? undefined;
+    message.world = object.world ?? undefined;
+    message.tags = object.tags?.map((e) => e) || [];
     message.description = object.description ?? "";
     message.category = object.category ?? 0;
     message.targetEntity = object.targetEntity ?? "";
@@ -7646,7 +7187,7 @@ function createBaseTraitDTO(): TraitDTO {
     user: undefined,
     campaign: undefined,
     world: undefined,
-    tags: undefined,
+    tags: [],
     targetEntity: "",
     type: 0,
   };
@@ -7667,16 +7208,16 @@ export const TraitDTO: MessageFns<TraitDTO> = {
       Metadata.encode(message.metadata, writer.uint32(34).fork()).join();
     }
     if (message.user !== undefined) {
-      UserDTO.encode(message.user, writer.uint32(42).fork()).join();
+      writer.uint32(42).string(message.user);
     }
     if (message.campaign !== undefined) {
-      CampaignDTO.encode(message.campaign, writer.uint32(50).fork()).join();
+      writer.uint32(50).string(message.campaign);
     }
     if (message.world !== undefined) {
-      WorldDTO.encode(message.world, writer.uint32(58).fork()).join();
+      writer.uint32(58).string(message.world);
     }
-    if (message.tags !== undefined) {
-      TagsDTO.encode(message.tags, writer.uint32(66).fork()).join();
+    for (const v of message.tags) {
+      writer.uint32(66).string(v!);
     }
     if (message.targetEntity !== "") {
       writer.uint32(74).string(message.targetEntity);
@@ -7731,7 +7272,7 @@ export const TraitDTO: MessageFns<TraitDTO> = {
             break;
           }
 
-          message.user = UserDTO.decode(reader, reader.uint32());
+          message.user = reader.string();
           continue;
         }
         case 6: {
@@ -7739,7 +7280,7 @@ export const TraitDTO: MessageFns<TraitDTO> = {
             break;
           }
 
-          message.campaign = CampaignDTO.decode(reader, reader.uint32());
+          message.campaign = reader.string();
           continue;
         }
         case 7: {
@@ -7747,7 +7288,7 @@ export const TraitDTO: MessageFns<TraitDTO> = {
             break;
           }
 
-          message.world = WorldDTO.decode(reader, reader.uint32());
+          message.world = reader.string();
           continue;
         }
         case 8: {
@@ -7755,7 +7296,7 @@ export const TraitDTO: MessageFns<TraitDTO> = {
             break;
           }
 
-          message.tags = TagsDTO.decode(reader, reader.uint32());
+          message.tags.push(reader.string());
           continue;
         }
         case 9: {
@@ -7789,10 +7330,10 @@ export const TraitDTO: MessageFns<TraitDTO> = {
       blueprintId: isSet(object.blueprintId) ? globalThis.String(object.blueprintId) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       metadata: isSet(object.metadata) ? Metadata.fromJSON(object.metadata) : undefined,
-      user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
-      campaign: isSet(object.campaign) ? CampaignDTO.fromJSON(object.campaign) : undefined,
-      world: isSet(object.world) ? WorldDTO.fromJSON(object.world) : undefined,
-      tags: isSet(object.tags) ? TagsDTO.fromJSON(object.tags) : undefined,
+      user: isSet(object.user) ? globalThis.String(object.user) : undefined,
+      campaign: isSet(object.campaign) ? globalThis.String(object.campaign) : undefined,
+      world: isSet(object.world) ? globalThis.String(object.world) : undefined,
+      tags: globalThis.Array.isArray(object?.tags) ? object.tags.map((e: any) => globalThis.String(e)) : [],
       targetEntity: isSet(object.targetEntity) ? globalThis.String(object.targetEntity) : "",
       type: isSet(object.type) ? traitTypeEnumDTOFromJSON(object.type) : 0,
     };
@@ -7813,16 +7354,16 @@ export const TraitDTO: MessageFns<TraitDTO> = {
       obj.metadata = Metadata.toJSON(message.metadata);
     }
     if (message.user !== undefined) {
-      obj.user = UserDTO.toJSON(message.user);
+      obj.user = message.user;
     }
     if (message.campaign !== undefined) {
-      obj.campaign = CampaignDTO.toJSON(message.campaign);
+      obj.campaign = message.campaign;
     }
     if (message.world !== undefined) {
-      obj.world = WorldDTO.toJSON(message.world);
+      obj.world = message.world;
     }
-    if (message.tags !== undefined) {
-      obj.tags = TagsDTO.toJSON(message.tags);
+    if (message.tags?.length) {
+      obj.tags = message.tags;
     }
     if (message.targetEntity !== "") {
       obj.targetEntity = message.targetEntity;
@@ -7844,14 +7385,10 @@ export const TraitDTO: MessageFns<TraitDTO> = {
     message.metadata = (object.metadata !== undefined && object.metadata !== null)
       ? Metadata.fromPartial(object.metadata)
       : undefined;
-    message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
-    message.campaign = (object.campaign !== undefined && object.campaign !== null)
-      ? CampaignDTO.fromPartial(object.campaign)
-      : undefined;
-    message.world = (object.world !== undefined && object.world !== null)
-      ? WorldDTO.fromPartial(object.world)
-      : undefined;
-    message.tags = (object.tags !== undefined && object.tags !== null) ? TagsDTO.fromPartial(object.tags) : undefined;
+    message.user = object.user ?? undefined;
+    message.campaign = object.campaign ?? undefined;
+    message.world = object.world ?? undefined;
+    message.tags = object.tags?.map((e) => e) || [];
     message.targetEntity = object.targetEntity ?? "";
     message.type = object.type ?? 0;
     return message;
@@ -7925,10 +7462,10 @@ function createBaseDiseaseDTO(): DiseaseDTO {
     user: undefined,
     campaign: undefined,
     world: undefined,
-    tags: undefined,
+    tags: [],
     description: "",
     severity: "",
-    characters: undefined,
+    characters: [],
     targetEntity: "",
   };
 }
@@ -7948,16 +7485,16 @@ export const DiseaseDTO: MessageFns<DiseaseDTO> = {
       Metadata.encode(message.metadata, writer.uint32(34).fork()).join();
     }
     if (message.user !== undefined) {
-      UserDTO.encode(message.user, writer.uint32(42).fork()).join();
+      writer.uint32(42).string(message.user);
     }
     if (message.campaign !== undefined) {
-      CampaignDTO.encode(message.campaign, writer.uint32(50).fork()).join();
+      writer.uint32(50).string(message.campaign);
     }
     if (message.world !== undefined) {
-      WorldDTO.encode(message.world, writer.uint32(58).fork()).join();
+      writer.uint32(58).string(message.world);
     }
-    if (message.tags !== undefined) {
-      TagsDTO.encode(message.tags, writer.uint32(66).fork()).join();
+    for (const v of message.tags) {
+      writer.uint32(66).string(v!);
     }
     if (message.description !== "") {
       writer.uint32(74).string(message.description);
@@ -7965,8 +7502,8 @@ export const DiseaseDTO: MessageFns<DiseaseDTO> = {
     if (message.severity !== "") {
       writer.uint32(82).string(message.severity);
     }
-    if (message.characters !== undefined) {
-      CharactersDTO.encode(message.characters, writer.uint32(90).fork()).join();
+    for (const v of message.characters) {
+      writer.uint32(90).string(v!);
     }
     if (message.targetEntity !== "") {
       writer.uint32(98).string(message.targetEntity);
@@ -8018,7 +7555,7 @@ export const DiseaseDTO: MessageFns<DiseaseDTO> = {
             break;
           }
 
-          message.user = UserDTO.decode(reader, reader.uint32());
+          message.user = reader.string();
           continue;
         }
         case 6: {
@@ -8026,7 +7563,7 @@ export const DiseaseDTO: MessageFns<DiseaseDTO> = {
             break;
           }
 
-          message.campaign = CampaignDTO.decode(reader, reader.uint32());
+          message.campaign = reader.string();
           continue;
         }
         case 7: {
@@ -8034,7 +7571,7 @@ export const DiseaseDTO: MessageFns<DiseaseDTO> = {
             break;
           }
 
-          message.world = WorldDTO.decode(reader, reader.uint32());
+          message.world = reader.string();
           continue;
         }
         case 8: {
@@ -8042,7 +7579,7 @@ export const DiseaseDTO: MessageFns<DiseaseDTO> = {
             break;
           }
 
-          message.tags = TagsDTO.decode(reader, reader.uint32());
+          message.tags.push(reader.string());
           continue;
         }
         case 9: {
@@ -8066,7 +7603,7 @@ export const DiseaseDTO: MessageFns<DiseaseDTO> = {
             break;
           }
 
-          message.characters = CharactersDTO.decode(reader, reader.uint32());
+          message.characters.push(reader.string());
           continue;
         }
         case 12: {
@@ -8092,13 +7629,15 @@ export const DiseaseDTO: MessageFns<DiseaseDTO> = {
       blueprintId: isSet(object.blueprintId) ? globalThis.String(object.blueprintId) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       metadata: isSet(object.metadata) ? Metadata.fromJSON(object.metadata) : undefined,
-      user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
-      campaign: isSet(object.campaign) ? CampaignDTO.fromJSON(object.campaign) : undefined,
-      world: isSet(object.world) ? WorldDTO.fromJSON(object.world) : undefined,
-      tags: isSet(object.tags) ? TagsDTO.fromJSON(object.tags) : undefined,
+      user: isSet(object.user) ? globalThis.String(object.user) : undefined,
+      campaign: isSet(object.campaign) ? globalThis.String(object.campaign) : undefined,
+      world: isSet(object.world) ? globalThis.String(object.world) : undefined,
+      tags: globalThis.Array.isArray(object?.tags) ? object.tags.map((e: any) => globalThis.String(e)) : [],
       description: isSet(object.description) ? globalThis.String(object.description) : "",
       severity: isSet(object.severity) ? globalThis.String(object.severity) : "",
-      characters: isSet(object.characters) ? CharactersDTO.fromJSON(object.characters) : undefined,
+      characters: globalThis.Array.isArray(object?.characters)
+        ? object.characters.map((e: any) => globalThis.String(e))
+        : [],
       targetEntity: isSet(object.targetEntity) ? globalThis.String(object.targetEntity) : "",
     };
   },
@@ -8118,16 +7657,16 @@ export const DiseaseDTO: MessageFns<DiseaseDTO> = {
       obj.metadata = Metadata.toJSON(message.metadata);
     }
     if (message.user !== undefined) {
-      obj.user = UserDTO.toJSON(message.user);
+      obj.user = message.user;
     }
     if (message.campaign !== undefined) {
-      obj.campaign = CampaignDTO.toJSON(message.campaign);
+      obj.campaign = message.campaign;
     }
     if (message.world !== undefined) {
-      obj.world = WorldDTO.toJSON(message.world);
+      obj.world = message.world;
     }
-    if (message.tags !== undefined) {
-      obj.tags = TagsDTO.toJSON(message.tags);
+    if (message.tags?.length) {
+      obj.tags = message.tags;
     }
     if (message.description !== "") {
       obj.description = message.description;
@@ -8135,8 +7674,8 @@ export const DiseaseDTO: MessageFns<DiseaseDTO> = {
     if (message.severity !== "") {
       obj.severity = message.severity;
     }
-    if (message.characters !== undefined) {
-      obj.characters = CharactersDTO.toJSON(message.characters);
+    if (message.characters?.length) {
+      obj.characters = message.characters;
     }
     if (message.targetEntity !== "") {
       obj.targetEntity = message.targetEntity;
@@ -8155,19 +7694,13 @@ export const DiseaseDTO: MessageFns<DiseaseDTO> = {
     message.metadata = (object.metadata !== undefined && object.metadata !== null)
       ? Metadata.fromPartial(object.metadata)
       : undefined;
-    message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
-    message.campaign = (object.campaign !== undefined && object.campaign !== null)
-      ? CampaignDTO.fromPartial(object.campaign)
-      : undefined;
-    message.world = (object.world !== undefined && object.world !== null)
-      ? WorldDTO.fromPartial(object.world)
-      : undefined;
-    message.tags = (object.tags !== undefined && object.tags !== null) ? TagsDTO.fromPartial(object.tags) : undefined;
+    message.user = object.user ?? undefined;
+    message.campaign = object.campaign ?? undefined;
+    message.world = object.world ?? undefined;
+    message.tags = object.tags?.map((e) => e) || [];
     message.description = object.description ?? "";
     message.severity = object.severity ?? "";
-    message.characters = (object.characters !== undefined && object.characters !== null)
-      ? CharactersDTO.fromPartial(object.characters)
-      : undefined;
+    message.characters = object.characters?.map((e) => e) || [];
     message.targetEntity = object.targetEntity ?? "";
     return message;
   },
@@ -8240,11 +7773,9 @@ function createBaseFactDTO(): FactDTO {
     user: undefined,
     campaign: undefined,
     world: undefined,
-    tags: undefined,
+    tags: [],
     description: "",
     weight: 0,
-    memories: undefined,
-    characters: undefined,
     targetEntity: "",
   };
 }
@@ -8264,16 +7795,16 @@ export const FactDTO: MessageFns<FactDTO> = {
       Metadata.encode(message.metadata, writer.uint32(34).fork()).join();
     }
     if (message.user !== undefined) {
-      UserDTO.encode(message.user, writer.uint32(42).fork()).join();
+      writer.uint32(42).string(message.user);
     }
     if (message.campaign !== undefined) {
-      CampaignDTO.encode(message.campaign, writer.uint32(50).fork()).join();
+      writer.uint32(50).string(message.campaign);
     }
     if (message.world !== undefined) {
-      WorldDTO.encode(message.world, writer.uint32(58).fork()).join();
+      writer.uint32(58).string(message.world);
     }
-    if (message.tags !== undefined) {
-      TagsDTO.encode(message.tags, writer.uint32(66).fork()).join();
+    for (const v of message.tags) {
+      writer.uint32(66).string(v!);
     }
     if (message.description !== "") {
       writer.uint32(74).string(message.description);
@@ -8281,14 +7812,8 @@ export const FactDTO: MessageFns<FactDTO> = {
     if (message.weight !== 0) {
       writer.uint32(80).int32(message.weight);
     }
-    if (message.memories !== undefined) {
-      MemoriesDTO.encode(message.memories, writer.uint32(90).fork()).join();
-    }
-    if (message.characters !== undefined) {
-      CharactersDTO.encode(message.characters, writer.uint32(98).fork()).join();
-    }
     if (message.targetEntity !== "") {
-      writer.uint32(106).string(message.targetEntity);
+      writer.uint32(90).string(message.targetEntity);
     }
     return writer;
   },
@@ -8337,7 +7862,7 @@ export const FactDTO: MessageFns<FactDTO> = {
             break;
           }
 
-          message.user = UserDTO.decode(reader, reader.uint32());
+          message.user = reader.string();
           continue;
         }
         case 6: {
@@ -8345,7 +7870,7 @@ export const FactDTO: MessageFns<FactDTO> = {
             break;
           }
 
-          message.campaign = CampaignDTO.decode(reader, reader.uint32());
+          message.campaign = reader.string();
           continue;
         }
         case 7: {
@@ -8353,7 +7878,7 @@ export const FactDTO: MessageFns<FactDTO> = {
             break;
           }
 
-          message.world = WorldDTO.decode(reader, reader.uint32());
+          message.world = reader.string();
           continue;
         }
         case 8: {
@@ -8361,7 +7886,7 @@ export const FactDTO: MessageFns<FactDTO> = {
             break;
           }
 
-          message.tags = TagsDTO.decode(reader, reader.uint32());
+          message.tags.push(reader.string());
           continue;
         }
         case 9: {
@@ -8385,22 +7910,6 @@ export const FactDTO: MessageFns<FactDTO> = {
             break;
           }
 
-          message.memories = MemoriesDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 12: {
-          if (tag !== 98) {
-            break;
-          }
-
-          message.characters = CharactersDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 13: {
-          if (tag !== 106) {
-            break;
-          }
-
           message.targetEntity = reader.string();
           continue;
         }
@@ -8419,14 +7928,12 @@ export const FactDTO: MessageFns<FactDTO> = {
       blueprintId: isSet(object.blueprintId) ? globalThis.String(object.blueprintId) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       metadata: isSet(object.metadata) ? Metadata.fromJSON(object.metadata) : undefined,
-      user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
-      campaign: isSet(object.campaign) ? CampaignDTO.fromJSON(object.campaign) : undefined,
-      world: isSet(object.world) ? WorldDTO.fromJSON(object.world) : undefined,
-      tags: isSet(object.tags) ? TagsDTO.fromJSON(object.tags) : undefined,
+      user: isSet(object.user) ? globalThis.String(object.user) : undefined,
+      campaign: isSet(object.campaign) ? globalThis.String(object.campaign) : undefined,
+      world: isSet(object.world) ? globalThis.String(object.world) : undefined,
+      tags: globalThis.Array.isArray(object?.tags) ? object.tags.map((e: any) => globalThis.String(e)) : [],
       description: isSet(object.description) ? globalThis.String(object.description) : "",
       weight: isSet(object.weight) ? globalThis.Number(object.weight) : 0,
-      memories: isSet(object.memories) ? MemoriesDTO.fromJSON(object.memories) : undefined,
-      characters: isSet(object.characters) ? CharactersDTO.fromJSON(object.characters) : undefined,
       targetEntity: isSet(object.targetEntity) ? globalThis.String(object.targetEntity) : "",
     };
   },
@@ -8446,28 +7953,22 @@ export const FactDTO: MessageFns<FactDTO> = {
       obj.metadata = Metadata.toJSON(message.metadata);
     }
     if (message.user !== undefined) {
-      obj.user = UserDTO.toJSON(message.user);
+      obj.user = message.user;
     }
     if (message.campaign !== undefined) {
-      obj.campaign = CampaignDTO.toJSON(message.campaign);
+      obj.campaign = message.campaign;
     }
     if (message.world !== undefined) {
-      obj.world = WorldDTO.toJSON(message.world);
+      obj.world = message.world;
     }
-    if (message.tags !== undefined) {
-      obj.tags = TagsDTO.toJSON(message.tags);
+    if (message.tags?.length) {
+      obj.tags = message.tags;
     }
     if (message.description !== "") {
       obj.description = message.description;
     }
     if (message.weight !== 0) {
       obj.weight = Math.round(message.weight);
-    }
-    if (message.memories !== undefined) {
-      obj.memories = MemoriesDTO.toJSON(message.memories);
-    }
-    if (message.characters !== undefined) {
-      obj.characters = CharactersDTO.toJSON(message.characters);
     }
     if (message.targetEntity !== "") {
       obj.targetEntity = message.targetEntity;
@@ -8486,22 +7987,12 @@ export const FactDTO: MessageFns<FactDTO> = {
     message.metadata = (object.metadata !== undefined && object.metadata !== null)
       ? Metadata.fromPartial(object.metadata)
       : undefined;
-    message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
-    message.campaign = (object.campaign !== undefined && object.campaign !== null)
-      ? CampaignDTO.fromPartial(object.campaign)
-      : undefined;
-    message.world = (object.world !== undefined && object.world !== null)
-      ? WorldDTO.fromPartial(object.world)
-      : undefined;
-    message.tags = (object.tags !== undefined && object.tags !== null) ? TagsDTO.fromPartial(object.tags) : undefined;
+    message.user = object.user ?? undefined;
+    message.campaign = object.campaign ?? undefined;
+    message.world = object.world ?? undefined;
+    message.tags = object.tags?.map((e) => e) || [];
     message.description = object.description ?? "";
     message.weight = object.weight ?? 0;
-    message.memories = (object.memories !== undefined && object.memories !== null)
-      ? MemoriesDTO.fromPartial(object.memories)
-      : undefined;
-    message.characters = (object.characters !== undefined && object.characters !== null)
-      ? CharactersDTO.fromPartial(object.characters)
-      : undefined;
     message.targetEntity = object.targetEntity ?? "";
     return message;
   },
@@ -8574,8 +8065,7 @@ function createBaseFactionDTO(): FactionDTO {
     user: undefined,
     campaign: undefined,
     world: undefined,
-    tags: undefined,
-    characters: undefined,
+    tags: [],
     targetEntity: "",
   };
 }
@@ -8595,22 +8085,19 @@ export const FactionDTO: MessageFns<FactionDTO> = {
       Metadata.encode(message.metadata, writer.uint32(34).fork()).join();
     }
     if (message.user !== undefined) {
-      UserDTO.encode(message.user, writer.uint32(42).fork()).join();
+      writer.uint32(42).string(message.user);
     }
     if (message.campaign !== undefined) {
-      CampaignDTO.encode(message.campaign, writer.uint32(50).fork()).join();
+      writer.uint32(50).string(message.campaign);
     }
     if (message.world !== undefined) {
-      WorldDTO.encode(message.world, writer.uint32(58).fork()).join();
+      writer.uint32(58).string(message.world);
     }
-    if (message.tags !== undefined) {
-      TagsDTO.encode(message.tags, writer.uint32(66).fork()).join();
-    }
-    if (message.characters !== undefined) {
-      CharactersDTO.encode(message.characters, writer.uint32(74).fork()).join();
+    for (const v of message.tags) {
+      writer.uint32(66).string(v!);
     }
     if (message.targetEntity !== "") {
-      writer.uint32(82).string(message.targetEntity);
+      writer.uint32(74).string(message.targetEntity);
     }
     return writer;
   },
@@ -8659,7 +8146,7 @@ export const FactionDTO: MessageFns<FactionDTO> = {
             break;
           }
 
-          message.user = UserDTO.decode(reader, reader.uint32());
+          message.user = reader.string();
           continue;
         }
         case 6: {
@@ -8667,7 +8154,7 @@ export const FactionDTO: MessageFns<FactionDTO> = {
             break;
           }
 
-          message.campaign = CampaignDTO.decode(reader, reader.uint32());
+          message.campaign = reader.string();
           continue;
         }
         case 7: {
@@ -8675,7 +8162,7 @@ export const FactionDTO: MessageFns<FactionDTO> = {
             break;
           }
 
-          message.world = WorldDTO.decode(reader, reader.uint32());
+          message.world = reader.string();
           continue;
         }
         case 8: {
@@ -8683,19 +8170,11 @@ export const FactionDTO: MessageFns<FactionDTO> = {
             break;
           }
 
-          message.tags = TagsDTO.decode(reader, reader.uint32());
+          message.tags.push(reader.string());
           continue;
         }
         case 9: {
           if (tag !== 74) {
-            break;
-          }
-
-          message.characters = CharactersDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 10: {
-          if (tag !== 82) {
             break;
           }
 
@@ -8717,11 +8196,10 @@ export const FactionDTO: MessageFns<FactionDTO> = {
       blueprintId: isSet(object.blueprintId) ? globalThis.String(object.blueprintId) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       metadata: isSet(object.metadata) ? Metadata.fromJSON(object.metadata) : undefined,
-      user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
-      campaign: isSet(object.campaign) ? CampaignDTO.fromJSON(object.campaign) : undefined,
-      world: isSet(object.world) ? WorldDTO.fromJSON(object.world) : undefined,
-      tags: isSet(object.tags) ? TagsDTO.fromJSON(object.tags) : undefined,
-      characters: isSet(object.characters) ? CharactersDTO.fromJSON(object.characters) : undefined,
+      user: isSet(object.user) ? globalThis.String(object.user) : undefined,
+      campaign: isSet(object.campaign) ? globalThis.String(object.campaign) : undefined,
+      world: isSet(object.world) ? globalThis.String(object.world) : undefined,
+      tags: globalThis.Array.isArray(object?.tags) ? object.tags.map((e: any) => globalThis.String(e)) : [],
       targetEntity: isSet(object.targetEntity) ? globalThis.String(object.targetEntity) : "",
     };
   },
@@ -8741,19 +8219,16 @@ export const FactionDTO: MessageFns<FactionDTO> = {
       obj.metadata = Metadata.toJSON(message.metadata);
     }
     if (message.user !== undefined) {
-      obj.user = UserDTO.toJSON(message.user);
+      obj.user = message.user;
     }
     if (message.campaign !== undefined) {
-      obj.campaign = CampaignDTO.toJSON(message.campaign);
+      obj.campaign = message.campaign;
     }
     if (message.world !== undefined) {
-      obj.world = WorldDTO.toJSON(message.world);
+      obj.world = message.world;
     }
-    if (message.tags !== undefined) {
-      obj.tags = TagsDTO.toJSON(message.tags);
-    }
-    if (message.characters !== undefined) {
-      obj.characters = CharactersDTO.toJSON(message.characters);
+    if (message.tags?.length) {
+      obj.tags = message.tags;
     }
     if (message.targetEntity !== "") {
       obj.targetEntity = message.targetEntity;
@@ -8772,17 +8247,10 @@ export const FactionDTO: MessageFns<FactionDTO> = {
     message.metadata = (object.metadata !== undefined && object.metadata !== null)
       ? Metadata.fromPartial(object.metadata)
       : undefined;
-    message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
-    message.campaign = (object.campaign !== undefined && object.campaign !== null)
-      ? CampaignDTO.fromPartial(object.campaign)
-      : undefined;
-    message.world = (object.world !== undefined && object.world !== null)
-      ? WorldDTO.fromPartial(object.world)
-      : undefined;
-    message.tags = (object.tags !== undefined && object.tags !== null) ? TagsDTO.fromPartial(object.tags) : undefined;
-    message.characters = (object.characters !== undefined && object.characters !== null)
-      ? CharactersDTO.fromPartial(object.characters)
-      : undefined;
+    message.user = object.user ?? undefined;
+    message.campaign = object.campaign ?? undefined;
+    message.world = object.world ?? undefined;
+    message.tags = object.tags?.map((e) => e) || [];
     message.targetEntity = object.targetEntity ?? "";
     return message;
   },
@@ -8856,9 +8324,8 @@ function createBaseMemoryPoolDTO(): MemoryPoolDTO {
     campaign: undefined,
     world: undefined,
     description: undefined,
-    memoryPoolEntries: undefined,
-    characterProfessions: undefined,
-    tags: undefined,
+    memoryPoolEntries: [],
+    tags: [],
     targetEntity: "",
   };
 }
@@ -8878,28 +8345,25 @@ export const MemoryPoolDTO: MessageFns<MemoryPoolDTO> = {
       Metadata.encode(message.metadata, writer.uint32(34).fork()).join();
     }
     if (message.user !== undefined) {
-      UserDTO.encode(message.user, writer.uint32(42).fork()).join();
+      writer.uint32(42).string(message.user);
     }
     if (message.campaign !== undefined) {
-      CampaignDTO.encode(message.campaign, writer.uint32(50).fork()).join();
+      writer.uint32(50).string(message.campaign);
     }
     if (message.world !== undefined) {
-      WorldDTO.encode(message.world, writer.uint32(58).fork()).join();
+      writer.uint32(58).string(message.world);
     }
     if (message.description !== undefined) {
       writer.uint32(66).string(message.description);
     }
-    if (message.memoryPoolEntries !== undefined) {
-      MemoryPoolEntriesDTO.encode(message.memoryPoolEntries, writer.uint32(74).fork()).join();
+    for (const v of message.memoryPoolEntries) {
+      writer.uint32(74).string(v!);
     }
-    if (message.characterProfessions !== undefined) {
-      CharacterProfessionsDTO.encode(message.characterProfessions, writer.uint32(82).fork()).join();
-    }
-    if (message.tags !== undefined) {
-      TagsDTO.encode(message.tags, writer.uint32(90).fork()).join();
+    for (const v of message.tags) {
+      writer.uint32(82).string(v!);
     }
     if (message.targetEntity !== "") {
-      writer.uint32(98).string(message.targetEntity);
+      writer.uint32(90).string(message.targetEntity);
     }
     return writer;
   },
@@ -8948,7 +8412,7 @@ export const MemoryPoolDTO: MessageFns<MemoryPoolDTO> = {
             break;
           }
 
-          message.user = UserDTO.decode(reader, reader.uint32());
+          message.user = reader.string();
           continue;
         }
         case 6: {
@@ -8956,7 +8420,7 @@ export const MemoryPoolDTO: MessageFns<MemoryPoolDTO> = {
             break;
           }
 
-          message.campaign = CampaignDTO.decode(reader, reader.uint32());
+          message.campaign = reader.string();
           continue;
         }
         case 7: {
@@ -8964,7 +8428,7 @@ export const MemoryPoolDTO: MessageFns<MemoryPoolDTO> = {
             break;
           }
 
-          message.world = WorldDTO.decode(reader, reader.uint32());
+          message.world = reader.string();
           continue;
         }
         case 8: {
@@ -8980,7 +8444,7 @@ export const MemoryPoolDTO: MessageFns<MemoryPoolDTO> = {
             break;
           }
 
-          message.memoryPoolEntries = MemoryPoolEntriesDTO.decode(reader, reader.uint32());
+          message.memoryPoolEntries.push(reader.string());
           continue;
         }
         case 10: {
@@ -8988,19 +8452,11 @@ export const MemoryPoolDTO: MessageFns<MemoryPoolDTO> = {
             break;
           }
 
-          message.characterProfessions = CharacterProfessionsDTO.decode(reader, reader.uint32());
+          message.tags.push(reader.string());
           continue;
         }
         case 11: {
           if (tag !== 90) {
-            break;
-          }
-
-          message.tags = TagsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 12: {
-          if (tag !== 98) {
             break;
           }
 
@@ -9022,17 +8478,14 @@ export const MemoryPoolDTO: MessageFns<MemoryPoolDTO> = {
       blueprintId: isSet(object.blueprintId) ? globalThis.String(object.blueprintId) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       metadata: isSet(object.metadata) ? Metadata.fromJSON(object.metadata) : undefined,
-      user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
-      campaign: isSet(object.campaign) ? CampaignDTO.fromJSON(object.campaign) : undefined,
-      world: isSet(object.world) ? WorldDTO.fromJSON(object.world) : undefined,
+      user: isSet(object.user) ? globalThis.String(object.user) : undefined,
+      campaign: isSet(object.campaign) ? globalThis.String(object.campaign) : undefined,
+      world: isSet(object.world) ? globalThis.String(object.world) : undefined,
       description: isSet(object.description) ? globalThis.String(object.description) : undefined,
-      memoryPoolEntries: isSet(object.memoryPoolEntries)
-        ? MemoryPoolEntriesDTO.fromJSON(object.memoryPoolEntries)
-        : undefined,
-      characterProfessions: isSet(object.characterProfessions)
-        ? CharacterProfessionsDTO.fromJSON(object.characterProfessions)
-        : undefined,
-      tags: isSet(object.tags) ? TagsDTO.fromJSON(object.tags) : undefined,
+      memoryPoolEntries: globalThis.Array.isArray(object?.memoryPoolEntries)
+        ? object.memoryPoolEntries.map((e: any) => globalThis.String(e))
+        : [],
+      tags: globalThis.Array.isArray(object?.tags) ? object.tags.map((e: any) => globalThis.String(e)) : [],
       targetEntity: isSet(object.targetEntity) ? globalThis.String(object.targetEntity) : "",
     };
   },
@@ -9052,25 +8505,22 @@ export const MemoryPoolDTO: MessageFns<MemoryPoolDTO> = {
       obj.metadata = Metadata.toJSON(message.metadata);
     }
     if (message.user !== undefined) {
-      obj.user = UserDTO.toJSON(message.user);
+      obj.user = message.user;
     }
     if (message.campaign !== undefined) {
-      obj.campaign = CampaignDTO.toJSON(message.campaign);
+      obj.campaign = message.campaign;
     }
     if (message.world !== undefined) {
-      obj.world = WorldDTO.toJSON(message.world);
+      obj.world = message.world;
     }
     if (message.description !== undefined) {
       obj.description = message.description;
     }
-    if (message.memoryPoolEntries !== undefined) {
-      obj.memoryPoolEntries = MemoryPoolEntriesDTO.toJSON(message.memoryPoolEntries);
+    if (message.memoryPoolEntries?.length) {
+      obj.memoryPoolEntries = message.memoryPoolEntries;
     }
-    if (message.characterProfessions !== undefined) {
-      obj.characterProfessions = CharacterProfessionsDTO.toJSON(message.characterProfessions);
-    }
-    if (message.tags !== undefined) {
-      obj.tags = TagsDTO.toJSON(message.tags);
+    if (message.tags?.length) {
+      obj.tags = message.tags;
     }
     if (message.targetEntity !== "") {
       obj.targetEntity = message.targetEntity;
@@ -9089,21 +8539,12 @@ export const MemoryPoolDTO: MessageFns<MemoryPoolDTO> = {
     message.metadata = (object.metadata !== undefined && object.metadata !== null)
       ? Metadata.fromPartial(object.metadata)
       : undefined;
-    message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
-    message.campaign = (object.campaign !== undefined && object.campaign !== null)
-      ? CampaignDTO.fromPartial(object.campaign)
-      : undefined;
-    message.world = (object.world !== undefined && object.world !== null)
-      ? WorldDTO.fromPartial(object.world)
-      : undefined;
+    message.user = object.user ?? undefined;
+    message.campaign = object.campaign ?? undefined;
+    message.world = object.world ?? undefined;
     message.description = object.description ?? undefined;
-    message.memoryPoolEntries = (object.memoryPoolEntries !== undefined && object.memoryPoolEntries !== null)
-      ? MemoryPoolEntriesDTO.fromPartial(object.memoryPoolEntries)
-      : undefined;
-    message.characterProfessions = (object.characterProfessions !== undefined && object.characterProfessions !== null)
-      ? CharacterProfessionsDTO.fromPartial(object.characterProfessions)
-      : undefined;
-    message.tags = (object.tags !== undefined && object.tags !== null) ? TagsDTO.fromPartial(object.tags) : undefined;
+    message.memoryPoolEntries = object.memoryPoolEntries?.map((e) => e) || [];
+    message.tags = object.tags?.map((e) => e) || [];
     message.targetEntity = object.targetEntity ?? "";
     return message;
   },
@@ -9200,19 +8641,19 @@ export const MemoryPoolEntryDTO: MessageFns<MemoryPoolEntryDTO> = {
       Metadata.encode(message.metadata, writer.uint32(34).fork()).join();
     }
     if (message.user !== undefined) {
-      UserDTO.encode(message.user, writer.uint32(42).fork()).join();
+      writer.uint32(42).string(message.user);
     }
     if (message.campaign !== undefined) {
-      CampaignDTO.encode(message.campaign, writer.uint32(50).fork()).join();
+      writer.uint32(50).string(message.campaign);
     }
     if (message.world !== undefined) {
-      WorldDTO.encode(message.world, writer.uint32(58).fork()).join();
+      writer.uint32(58).string(message.world);
     }
     if (message.memoryPool !== undefined) {
-      MemoryPoolDTO.encode(message.memoryPool, writer.uint32(66).fork()).join();
+      writer.uint32(66).string(message.memoryPool);
     }
     if (message.memory !== undefined) {
-      MemoryDTO.encode(message.memory, writer.uint32(74).fork()).join();
+      writer.uint32(74).string(message.memory);
     }
     if (message.probability !== 0) {
       writer.uint32(80).int32(message.probability);
@@ -9273,7 +8714,7 @@ export const MemoryPoolEntryDTO: MessageFns<MemoryPoolEntryDTO> = {
             break;
           }
 
-          message.user = UserDTO.decode(reader, reader.uint32());
+          message.user = reader.string();
           continue;
         }
         case 6: {
@@ -9281,7 +8722,7 @@ export const MemoryPoolEntryDTO: MessageFns<MemoryPoolEntryDTO> = {
             break;
           }
 
-          message.campaign = CampaignDTO.decode(reader, reader.uint32());
+          message.campaign = reader.string();
           continue;
         }
         case 7: {
@@ -9289,7 +8730,7 @@ export const MemoryPoolEntryDTO: MessageFns<MemoryPoolEntryDTO> = {
             break;
           }
 
-          message.world = WorldDTO.decode(reader, reader.uint32());
+          message.world = reader.string();
           continue;
         }
         case 8: {
@@ -9297,7 +8738,7 @@ export const MemoryPoolEntryDTO: MessageFns<MemoryPoolEntryDTO> = {
             break;
           }
 
-          message.memoryPool = MemoryPoolDTO.decode(reader, reader.uint32());
+          message.memoryPool = reader.string();
           continue;
         }
         case 9: {
@@ -9305,7 +8746,7 @@ export const MemoryPoolEntryDTO: MessageFns<MemoryPoolEntryDTO> = {
             break;
           }
 
-          message.memory = MemoryDTO.decode(reader, reader.uint32());
+          message.memory = reader.string();
           continue;
         }
         case 10: {
@@ -9355,11 +8796,11 @@ export const MemoryPoolEntryDTO: MessageFns<MemoryPoolEntryDTO> = {
       blueprintId: isSet(object.blueprintId) ? globalThis.String(object.blueprintId) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       metadata: isSet(object.metadata) ? Metadata.fromJSON(object.metadata) : undefined,
-      user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
-      campaign: isSet(object.campaign) ? CampaignDTO.fromJSON(object.campaign) : undefined,
-      world: isSet(object.world) ? WorldDTO.fromJSON(object.world) : undefined,
-      memoryPool: isSet(object.memoryPool) ? MemoryPoolDTO.fromJSON(object.memoryPool) : undefined,
-      memory: isSet(object.memory) ? MemoryDTO.fromJSON(object.memory) : undefined,
+      user: isSet(object.user) ? globalThis.String(object.user) : undefined,
+      campaign: isSet(object.campaign) ? globalThis.String(object.campaign) : undefined,
+      world: isSet(object.world) ? globalThis.String(object.world) : undefined,
+      memoryPool: isSet(object.memoryPool) ? globalThis.String(object.memoryPool) : undefined,
+      memory: isSet(object.memory) ? globalThis.String(object.memory) : undefined,
       probability: isSet(object.probability) ? globalThis.Number(object.probability) : 0,
       defaultClarity: isSet(object.defaultClarity) ? globalThis.Number(object.defaultClarity) : 0,
       defaultImportance: isSet(object.defaultImportance) ? globalThis.Number(object.defaultImportance) : 0,
@@ -9382,19 +8823,19 @@ export const MemoryPoolEntryDTO: MessageFns<MemoryPoolEntryDTO> = {
       obj.metadata = Metadata.toJSON(message.metadata);
     }
     if (message.user !== undefined) {
-      obj.user = UserDTO.toJSON(message.user);
+      obj.user = message.user;
     }
     if (message.campaign !== undefined) {
-      obj.campaign = CampaignDTO.toJSON(message.campaign);
+      obj.campaign = message.campaign;
     }
     if (message.world !== undefined) {
-      obj.world = WorldDTO.toJSON(message.world);
+      obj.world = message.world;
     }
     if (message.memoryPool !== undefined) {
-      obj.memoryPool = MemoryPoolDTO.toJSON(message.memoryPool);
+      obj.memoryPool = message.memoryPool;
     }
     if (message.memory !== undefined) {
-      obj.memory = MemoryDTO.toJSON(message.memory);
+      obj.memory = message.memory;
     }
     if (message.probability !== 0) {
       obj.probability = Math.round(message.probability);
@@ -9422,19 +8863,11 @@ export const MemoryPoolEntryDTO: MessageFns<MemoryPoolEntryDTO> = {
     message.metadata = (object.metadata !== undefined && object.metadata !== null)
       ? Metadata.fromPartial(object.metadata)
       : undefined;
-    message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
-    message.campaign = (object.campaign !== undefined && object.campaign !== null)
-      ? CampaignDTO.fromPartial(object.campaign)
-      : undefined;
-    message.world = (object.world !== undefined && object.world !== null)
-      ? WorldDTO.fromPartial(object.world)
-      : undefined;
-    message.memoryPool = (object.memoryPool !== undefined && object.memoryPool !== null)
-      ? MemoryPoolDTO.fromPartial(object.memoryPool)
-      : undefined;
-    message.memory = (object.memory !== undefined && object.memory !== null)
-      ? MemoryDTO.fromPartial(object.memory)
-      : undefined;
+    message.user = object.user ?? undefined;
+    message.campaign = object.campaign ?? undefined;
+    message.world = object.world ?? undefined;
+    message.memoryPool = object.memoryPool ?? undefined;
+    message.memory = object.memory ?? undefined;
     message.probability = object.probability ?? 0;
     message.defaultClarity = object.defaultClarity ?? 0;
     message.defaultImportance = object.defaultImportance ?? 0;
@@ -9512,9 +8945,8 @@ function createBaseCharacterProfessionDTO(): CharacterProfessionDTO {
     user: undefined,
     campaign: undefined,
     world: undefined,
-    characters: undefined,
-    tags: undefined,
-    memoryPools: undefined,
+    tags: [],
+    memoryPools: [],
     targetEntity: "",
   };
 }
@@ -9534,25 +8966,22 @@ export const CharacterProfessionDTO: MessageFns<CharacterProfessionDTO> = {
       Metadata.encode(message.metadata, writer.uint32(34).fork()).join();
     }
     if (message.user !== undefined) {
-      UserDTO.encode(message.user, writer.uint32(42).fork()).join();
+      writer.uint32(42).string(message.user);
     }
     if (message.campaign !== undefined) {
-      CampaignDTO.encode(message.campaign, writer.uint32(50).fork()).join();
+      writer.uint32(50).string(message.campaign);
     }
     if (message.world !== undefined) {
-      WorldDTO.encode(message.world, writer.uint32(58).fork()).join();
+      writer.uint32(58).string(message.world);
     }
-    if (message.characters !== undefined) {
-      CharactersDTO.encode(message.characters, writer.uint32(66).fork()).join();
+    for (const v of message.tags) {
+      writer.uint32(66).string(v!);
     }
-    if (message.tags !== undefined) {
-      TagsDTO.encode(message.tags, writer.uint32(74).fork()).join();
-    }
-    if (message.memoryPools !== undefined) {
-      MemoryPoolsDTO.encode(message.memoryPools, writer.uint32(82).fork()).join();
+    for (const v of message.memoryPools) {
+      writer.uint32(74).string(v!);
     }
     if (message.targetEntity !== "") {
-      writer.uint32(90).string(message.targetEntity);
+      writer.uint32(82).string(message.targetEntity);
     }
     return writer;
   },
@@ -9601,7 +9030,7 @@ export const CharacterProfessionDTO: MessageFns<CharacterProfessionDTO> = {
             break;
           }
 
-          message.user = UserDTO.decode(reader, reader.uint32());
+          message.user = reader.string();
           continue;
         }
         case 6: {
@@ -9609,7 +9038,7 @@ export const CharacterProfessionDTO: MessageFns<CharacterProfessionDTO> = {
             break;
           }
 
-          message.campaign = CampaignDTO.decode(reader, reader.uint32());
+          message.campaign = reader.string();
           continue;
         }
         case 7: {
@@ -9617,7 +9046,7 @@ export const CharacterProfessionDTO: MessageFns<CharacterProfessionDTO> = {
             break;
           }
 
-          message.world = WorldDTO.decode(reader, reader.uint32());
+          message.world = reader.string();
           continue;
         }
         case 8: {
@@ -9625,7 +9054,7 @@ export const CharacterProfessionDTO: MessageFns<CharacterProfessionDTO> = {
             break;
           }
 
-          message.characters = CharactersDTO.decode(reader, reader.uint32());
+          message.tags.push(reader.string());
           continue;
         }
         case 9: {
@@ -9633,19 +9062,11 @@ export const CharacterProfessionDTO: MessageFns<CharacterProfessionDTO> = {
             break;
           }
 
-          message.tags = TagsDTO.decode(reader, reader.uint32());
+          message.memoryPools.push(reader.string());
           continue;
         }
         case 10: {
           if (tag !== 82) {
-            break;
-          }
-
-          message.memoryPools = MemoryPoolsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 11: {
-          if (tag !== 90) {
             break;
           }
 
@@ -9667,12 +9088,13 @@ export const CharacterProfessionDTO: MessageFns<CharacterProfessionDTO> = {
       blueprintId: isSet(object.blueprintId) ? globalThis.String(object.blueprintId) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       metadata: isSet(object.metadata) ? Metadata.fromJSON(object.metadata) : undefined,
-      user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
-      campaign: isSet(object.campaign) ? CampaignDTO.fromJSON(object.campaign) : undefined,
-      world: isSet(object.world) ? WorldDTO.fromJSON(object.world) : undefined,
-      characters: isSet(object.characters) ? CharactersDTO.fromJSON(object.characters) : undefined,
-      tags: isSet(object.tags) ? TagsDTO.fromJSON(object.tags) : undefined,
-      memoryPools: isSet(object.memoryPools) ? MemoryPoolsDTO.fromJSON(object.memoryPools) : undefined,
+      user: isSet(object.user) ? globalThis.String(object.user) : undefined,
+      campaign: isSet(object.campaign) ? globalThis.String(object.campaign) : undefined,
+      world: isSet(object.world) ? globalThis.String(object.world) : undefined,
+      tags: globalThis.Array.isArray(object?.tags) ? object.tags.map((e: any) => globalThis.String(e)) : [],
+      memoryPools: globalThis.Array.isArray(object?.memoryPools)
+        ? object.memoryPools.map((e: any) => globalThis.String(e))
+        : [],
       targetEntity: isSet(object.targetEntity) ? globalThis.String(object.targetEntity) : "",
     };
   },
@@ -9692,22 +9114,19 @@ export const CharacterProfessionDTO: MessageFns<CharacterProfessionDTO> = {
       obj.metadata = Metadata.toJSON(message.metadata);
     }
     if (message.user !== undefined) {
-      obj.user = UserDTO.toJSON(message.user);
+      obj.user = message.user;
     }
     if (message.campaign !== undefined) {
-      obj.campaign = CampaignDTO.toJSON(message.campaign);
+      obj.campaign = message.campaign;
     }
     if (message.world !== undefined) {
-      obj.world = WorldDTO.toJSON(message.world);
+      obj.world = message.world;
     }
-    if (message.characters !== undefined) {
-      obj.characters = CharactersDTO.toJSON(message.characters);
+    if (message.tags?.length) {
+      obj.tags = message.tags;
     }
-    if (message.tags !== undefined) {
-      obj.tags = TagsDTO.toJSON(message.tags);
-    }
-    if (message.memoryPools !== undefined) {
-      obj.memoryPools = MemoryPoolsDTO.toJSON(message.memoryPools);
+    if (message.memoryPools?.length) {
+      obj.memoryPools = message.memoryPools;
     }
     if (message.targetEntity !== "") {
       obj.targetEntity = message.targetEntity;
@@ -9726,20 +9145,11 @@ export const CharacterProfessionDTO: MessageFns<CharacterProfessionDTO> = {
     message.metadata = (object.metadata !== undefined && object.metadata !== null)
       ? Metadata.fromPartial(object.metadata)
       : undefined;
-    message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
-    message.campaign = (object.campaign !== undefined && object.campaign !== null)
-      ? CampaignDTO.fromPartial(object.campaign)
-      : undefined;
-    message.world = (object.world !== undefined && object.world !== null)
-      ? WorldDTO.fromPartial(object.world)
-      : undefined;
-    message.characters = (object.characters !== undefined && object.characters !== null)
-      ? CharactersDTO.fromPartial(object.characters)
-      : undefined;
-    message.tags = (object.tags !== undefined && object.tags !== null) ? TagsDTO.fromPartial(object.tags) : undefined;
-    message.memoryPools = (object.memoryPools !== undefined && object.memoryPools !== null)
-      ? MemoryPoolsDTO.fromPartial(object.memoryPools)
-      : undefined;
+    message.user = object.user ?? undefined;
+    message.campaign = object.campaign ?? undefined;
+    message.world = object.world ?? undefined;
+    message.tags = object.tags?.map((e) => e) || [];
+    message.memoryPools = object.memoryPools?.map((e) => e) || [];
     message.targetEntity = object.targetEntity ?? "";
     return message;
   },
@@ -9836,13 +9246,13 @@ export const EquipmentSlotDTO: MessageFns<EquipmentSlotDTO> = {
       Metadata.encode(message.metadata, writer.uint32(34).fork()).join();
     }
     if (message.user !== undefined) {
-      UserDTO.encode(message.user, writer.uint32(42).fork()).join();
+      writer.uint32(42).string(message.user);
     }
     if (message.campaign !== undefined) {
-      CampaignDTO.encode(message.campaign, writer.uint32(50).fork()).join();
+      writer.uint32(50).string(message.campaign);
     }
     if (message.world !== undefined) {
-      WorldDTO.encode(message.world, writer.uint32(58).fork()).join();
+      writer.uint32(58).string(message.world);
     }
     for (const v of message.allowedEntities) {
       writer.uint32(66).string(v!);
@@ -9851,7 +9261,7 @@ export const EquipmentSlotDTO: MessageFns<EquipmentSlotDTO> = {
       ItemDTO.encode(message.equippedItem, writer.uint32(74).fork()).join();
     }
     if (message.character !== undefined) {
-      CharacterDTO.encode(message.character, writer.uint32(82).fork()).join();
+      writer.uint32(82).string(message.character);
     }
     if (message.targetEntity !== "") {
       writer.uint32(90).string(message.targetEntity);
@@ -9903,7 +9313,7 @@ export const EquipmentSlotDTO: MessageFns<EquipmentSlotDTO> = {
             break;
           }
 
-          message.user = UserDTO.decode(reader, reader.uint32());
+          message.user = reader.string();
           continue;
         }
         case 6: {
@@ -9911,7 +9321,7 @@ export const EquipmentSlotDTO: MessageFns<EquipmentSlotDTO> = {
             break;
           }
 
-          message.campaign = CampaignDTO.decode(reader, reader.uint32());
+          message.campaign = reader.string();
           continue;
         }
         case 7: {
@@ -9919,7 +9329,7 @@ export const EquipmentSlotDTO: MessageFns<EquipmentSlotDTO> = {
             break;
           }
 
-          message.world = WorldDTO.decode(reader, reader.uint32());
+          message.world = reader.string();
           continue;
         }
         case 8: {
@@ -9943,7 +9353,7 @@ export const EquipmentSlotDTO: MessageFns<EquipmentSlotDTO> = {
             break;
           }
 
-          message.character = CharacterDTO.decode(reader, reader.uint32());
+          message.character = reader.string();
           continue;
         }
         case 11: {
@@ -9969,14 +9379,14 @@ export const EquipmentSlotDTO: MessageFns<EquipmentSlotDTO> = {
       blueprintId: isSet(object.blueprintId) ? globalThis.String(object.blueprintId) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       metadata: isSet(object.metadata) ? Metadata.fromJSON(object.metadata) : undefined,
-      user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
-      campaign: isSet(object.campaign) ? CampaignDTO.fromJSON(object.campaign) : undefined,
-      world: isSet(object.world) ? WorldDTO.fromJSON(object.world) : undefined,
+      user: isSet(object.user) ? globalThis.String(object.user) : undefined,
+      campaign: isSet(object.campaign) ? globalThis.String(object.campaign) : undefined,
+      world: isSet(object.world) ? globalThis.String(object.world) : undefined,
       allowedEntities: globalThis.Array.isArray(object?.allowedEntities)
         ? object.allowedEntities.map((e: any) => globalThis.String(e))
         : [],
       equippedItem: isSet(object.equippedItem) ? ItemDTO.fromJSON(object.equippedItem) : undefined,
-      character: isSet(object.character) ? CharacterDTO.fromJSON(object.character) : undefined,
+      character: isSet(object.character) ? globalThis.String(object.character) : undefined,
       targetEntity: isSet(object.targetEntity) ? globalThis.String(object.targetEntity) : "",
     };
   },
@@ -9996,13 +9406,13 @@ export const EquipmentSlotDTO: MessageFns<EquipmentSlotDTO> = {
       obj.metadata = Metadata.toJSON(message.metadata);
     }
     if (message.user !== undefined) {
-      obj.user = UserDTO.toJSON(message.user);
+      obj.user = message.user;
     }
     if (message.campaign !== undefined) {
-      obj.campaign = CampaignDTO.toJSON(message.campaign);
+      obj.campaign = message.campaign;
     }
     if (message.world !== undefined) {
-      obj.world = WorldDTO.toJSON(message.world);
+      obj.world = message.world;
     }
     if (message.allowedEntities?.length) {
       obj.allowedEntities = message.allowedEntities;
@@ -10011,7 +9421,7 @@ export const EquipmentSlotDTO: MessageFns<EquipmentSlotDTO> = {
       obj.equippedItem = ItemDTO.toJSON(message.equippedItem);
     }
     if (message.character !== undefined) {
-      obj.character = CharacterDTO.toJSON(message.character);
+      obj.character = message.character;
     }
     if (message.targetEntity !== "") {
       obj.targetEntity = message.targetEntity;
@@ -10030,20 +9440,14 @@ export const EquipmentSlotDTO: MessageFns<EquipmentSlotDTO> = {
     message.metadata = (object.metadata !== undefined && object.metadata !== null)
       ? Metadata.fromPartial(object.metadata)
       : undefined;
-    message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
-    message.campaign = (object.campaign !== undefined && object.campaign !== null)
-      ? CampaignDTO.fromPartial(object.campaign)
-      : undefined;
-    message.world = (object.world !== undefined && object.world !== null)
-      ? WorldDTO.fromPartial(object.world)
-      : undefined;
+    message.user = object.user ?? undefined;
+    message.campaign = object.campaign ?? undefined;
+    message.world = object.world ?? undefined;
     message.allowedEntities = object.allowedEntities?.map((e) => e) || [];
     message.equippedItem = (object.equippedItem !== undefined && object.equippedItem !== null)
       ? ItemDTO.fromPartial(object.equippedItem)
       : undefined;
-    message.character = (object.character !== undefined && object.character !== null)
-      ? CharacterDTO.fromPartial(object.character)
-      : undefined;
+    message.character = object.character ?? undefined;
     message.targetEntity = object.targetEntity ?? "";
     return message;
   },
@@ -10137,13 +9541,13 @@ export const BirthsignDTO: MessageFns<BirthsignDTO> = {
       Metadata.encode(message.metadata, writer.uint32(34).fork()).join();
     }
     if (message.user !== undefined) {
-      UserDTO.encode(message.user, writer.uint32(42).fork()).join();
+      writer.uint32(42).string(message.user);
     }
     if (message.campaign !== undefined) {
-      CampaignDTO.encode(message.campaign, writer.uint32(50).fork()).join();
+      writer.uint32(50).string(message.campaign);
     }
     if (message.world !== undefined) {
-      WorldDTO.encode(message.world, writer.uint32(58).fork()).join();
+      writer.uint32(58).string(message.world);
     }
     if (message.targetEntity !== "") {
       writer.uint32(66).string(message.targetEntity);
@@ -10195,7 +9599,7 @@ export const BirthsignDTO: MessageFns<BirthsignDTO> = {
             break;
           }
 
-          message.user = UserDTO.decode(reader, reader.uint32());
+          message.user = reader.string();
           continue;
         }
         case 6: {
@@ -10203,7 +9607,7 @@ export const BirthsignDTO: MessageFns<BirthsignDTO> = {
             break;
           }
 
-          message.campaign = CampaignDTO.decode(reader, reader.uint32());
+          message.campaign = reader.string();
           continue;
         }
         case 7: {
@@ -10211,7 +9615,7 @@ export const BirthsignDTO: MessageFns<BirthsignDTO> = {
             break;
           }
 
-          message.world = WorldDTO.decode(reader, reader.uint32());
+          message.world = reader.string();
           continue;
         }
         case 8: {
@@ -10237,9 +9641,9 @@ export const BirthsignDTO: MessageFns<BirthsignDTO> = {
       blueprintId: isSet(object.blueprintId) ? globalThis.String(object.blueprintId) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       metadata: isSet(object.metadata) ? Metadata.fromJSON(object.metadata) : undefined,
-      user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
-      campaign: isSet(object.campaign) ? CampaignDTO.fromJSON(object.campaign) : undefined,
-      world: isSet(object.world) ? WorldDTO.fromJSON(object.world) : undefined,
+      user: isSet(object.user) ? globalThis.String(object.user) : undefined,
+      campaign: isSet(object.campaign) ? globalThis.String(object.campaign) : undefined,
+      world: isSet(object.world) ? globalThis.String(object.world) : undefined,
       targetEntity: isSet(object.targetEntity) ? globalThis.String(object.targetEntity) : "",
     };
   },
@@ -10259,13 +9663,13 @@ export const BirthsignDTO: MessageFns<BirthsignDTO> = {
       obj.metadata = Metadata.toJSON(message.metadata);
     }
     if (message.user !== undefined) {
-      obj.user = UserDTO.toJSON(message.user);
+      obj.user = message.user;
     }
     if (message.campaign !== undefined) {
-      obj.campaign = CampaignDTO.toJSON(message.campaign);
+      obj.campaign = message.campaign;
     }
     if (message.world !== undefined) {
-      obj.world = WorldDTO.toJSON(message.world);
+      obj.world = message.world;
     }
     if (message.targetEntity !== "") {
       obj.targetEntity = message.targetEntity;
@@ -10284,13 +9688,9 @@ export const BirthsignDTO: MessageFns<BirthsignDTO> = {
     message.metadata = (object.metadata !== undefined && object.metadata !== null)
       ? Metadata.fromPartial(object.metadata)
       : undefined;
-    message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
-    message.campaign = (object.campaign !== undefined && object.campaign !== null)
-      ? CampaignDTO.fromPartial(object.campaign)
-      : undefined;
-    message.world = (object.world !== undefined && object.world !== null)
-      ? WorldDTO.fromPartial(object.world)
-      : undefined;
+    message.user = object.user ?? undefined;
+    message.campaign = object.campaign ?? undefined;
+    message.world = object.world ?? undefined;
     message.targetEntity = object.targetEntity ?? "";
     return message;
   },
@@ -10383,13 +9783,13 @@ export const RaceDTO: MessageFns<RaceDTO> = {
       EquipmentSlotDefinitionsDTO.encode(message.equipmentSlotDefinitions, writer.uint32(34).fork()).join();
     }
     if (message.user !== undefined) {
-      UserDTO.encode(message.user, writer.uint32(42).fork()).join();
+      writer.uint32(42).string(message.user);
     }
     if (message.campaign !== undefined) {
-      CampaignDTO.encode(message.campaign, writer.uint32(50).fork()).join();
+      writer.uint32(50).string(message.campaign);
     }
     if (message.world !== undefined) {
-      WorldDTO.encode(message.world, writer.uint32(58).fork()).join();
+      writer.uint32(58).string(message.world);
     }
     if (message.metadata !== undefined) {
       Metadata.encode(message.metadata, writer.uint32(66).fork()).join();
@@ -10444,7 +9844,7 @@ export const RaceDTO: MessageFns<RaceDTO> = {
             break;
           }
 
-          message.user = UserDTO.decode(reader, reader.uint32());
+          message.user = reader.string();
           continue;
         }
         case 6: {
@@ -10452,7 +9852,7 @@ export const RaceDTO: MessageFns<RaceDTO> = {
             break;
           }
 
-          message.campaign = CampaignDTO.decode(reader, reader.uint32());
+          message.campaign = reader.string();
           continue;
         }
         case 7: {
@@ -10460,7 +9860,7 @@ export const RaceDTO: MessageFns<RaceDTO> = {
             break;
           }
 
-          message.world = WorldDTO.decode(reader, reader.uint32());
+          message.world = reader.string();
           continue;
         }
         case 8: {
@@ -10496,9 +9896,9 @@ export const RaceDTO: MessageFns<RaceDTO> = {
       equipmentSlotDefinitions: isSet(object.equipmentSlotDefinitions)
         ? EquipmentSlotDefinitionsDTO.fromJSON(object.equipmentSlotDefinitions)
         : undefined,
-      user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
-      campaign: isSet(object.campaign) ? CampaignDTO.fromJSON(object.campaign) : undefined,
-      world: isSet(object.world) ? WorldDTO.fromJSON(object.world) : undefined,
+      user: isSet(object.user) ? globalThis.String(object.user) : undefined,
+      campaign: isSet(object.campaign) ? globalThis.String(object.campaign) : undefined,
+      world: isSet(object.world) ? globalThis.String(object.world) : undefined,
       metadata: isSet(object.metadata) ? Metadata.fromJSON(object.metadata) : undefined,
       targetEntity: isSet(object.targetEntity) ? globalThis.String(object.targetEntity) : "",
     };
@@ -10519,13 +9919,13 @@ export const RaceDTO: MessageFns<RaceDTO> = {
       obj.equipmentSlotDefinitions = EquipmentSlotDefinitionsDTO.toJSON(message.equipmentSlotDefinitions);
     }
     if (message.user !== undefined) {
-      obj.user = UserDTO.toJSON(message.user);
+      obj.user = message.user;
     }
     if (message.campaign !== undefined) {
-      obj.campaign = CampaignDTO.toJSON(message.campaign);
+      obj.campaign = message.campaign;
     }
     if (message.world !== undefined) {
-      obj.world = WorldDTO.toJSON(message.world);
+      obj.world = message.world;
     }
     if (message.metadata !== undefined) {
       obj.metadata = Metadata.toJSON(message.metadata);
@@ -10548,13 +9948,9 @@ export const RaceDTO: MessageFns<RaceDTO> = {
       (object.equipmentSlotDefinitions !== undefined && object.equipmentSlotDefinitions !== null)
         ? EquipmentSlotDefinitionsDTO.fromPartial(object.equipmentSlotDefinitions)
         : undefined;
-    message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
-    message.campaign = (object.campaign !== undefined && object.campaign !== null)
-      ? CampaignDTO.fromPartial(object.campaign)
-      : undefined;
-    message.world = (object.world !== undefined && object.world !== null)
-      ? WorldDTO.fromPartial(object.world)
-      : undefined;
+    message.user = object.user ?? undefined;
+    message.campaign = object.campaign ?? undefined;
+    message.world = object.world ?? undefined;
     message.metadata = (object.metadata !== undefined && object.metadata !== null)
       ? Metadata.fromPartial(object.metadata)
       : undefined;
@@ -10956,13 +10352,13 @@ export const MoodDTO: MessageFns<MoodDTO> = {
       Metadata.encode(message.metadata, writer.uint32(34).fork()).join();
     }
     if (message.user !== undefined) {
-      UserDTO.encode(message.user, writer.uint32(42).fork()).join();
+      writer.uint32(42).string(message.user);
     }
     if (message.campaign !== undefined) {
-      CampaignDTO.encode(message.campaign, writer.uint32(50).fork()).join();
+      writer.uint32(50).string(message.campaign);
     }
     if (message.world !== undefined) {
-      WorldDTO.encode(message.world, writer.uint32(58).fork()).join();
+      writer.uint32(58).string(message.world);
     }
     if (message.description !== "") {
       writer.uint32(66).string(message.description);
@@ -11017,7 +10413,7 @@ export const MoodDTO: MessageFns<MoodDTO> = {
             break;
           }
 
-          message.user = UserDTO.decode(reader, reader.uint32());
+          message.user = reader.string();
           continue;
         }
         case 6: {
@@ -11025,7 +10421,7 @@ export const MoodDTO: MessageFns<MoodDTO> = {
             break;
           }
 
-          message.campaign = CampaignDTO.decode(reader, reader.uint32());
+          message.campaign = reader.string();
           continue;
         }
         case 7: {
@@ -11033,7 +10429,7 @@ export const MoodDTO: MessageFns<MoodDTO> = {
             break;
           }
 
-          message.world = WorldDTO.decode(reader, reader.uint32());
+          message.world = reader.string();
           continue;
         }
         case 8: {
@@ -11067,9 +10463,9 @@ export const MoodDTO: MessageFns<MoodDTO> = {
       blueprintId: isSet(object.blueprintId) ? globalThis.String(object.blueprintId) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       metadata: isSet(object.metadata) ? Metadata.fromJSON(object.metadata) : undefined,
-      user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
-      campaign: isSet(object.campaign) ? CampaignDTO.fromJSON(object.campaign) : undefined,
-      world: isSet(object.world) ? WorldDTO.fromJSON(object.world) : undefined,
+      user: isSet(object.user) ? globalThis.String(object.user) : undefined,
+      campaign: isSet(object.campaign) ? globalThis.String(object.campaign) : undefined,
+      world: isSet(object.world) ? globalThis.String(object.world) : undefined,
       description: isSet(object.description) ? globalThis.String(object.description) : "",
       targetEntity: isSet(object.targetEntity) ? globalThis.String(object.targetEntity) : "",
     };
@@ -11090,13 +10486,13 @@ export const MoodDTO: MessageFns<MoodDTO> = {
       obj.metadata = Metadata.toJSON(message.metadata);
     }
     if (message.user !== undefined) {
-      obj.user = UserDTO.toJSON(message.user);
+      obj.user = message.user;
     }
     if (message.campaign !== undefined) {
-      obj.campaign = CampaignDTO.toJSON(message.campaign);
+      obj.campaign = message.campaign;
     }
     if (message.world !== undefined) {
-      obj.world = WorldDTO.toJSON(message.world);
+      obj.world = message.world;
     }
     if (message.description !== "") {
       obj.description = message.description;
@@ -11118,13 +10514,9 @@ export const MoodDTO: MessageFns<MoodDTO> = {
     message.metadata = (object.metadata !== undefined && object.metadata !== null)
       ? Metadata.fromPartial(object.metadata)
       : undefined;
-    message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
-    message.campaign = (object.campaign !== undefined && object.campaign !== null)
-      ? CampaignDTO.fromPartial(object.campaign)
-      : undefined;
-    message.world = (object.world !== undefined && object.world !== null)
-      ? WorldDTO.fromPartial(object.world)
-      : undefined;
+    message.user = object.user ?? undefined;
+    message.campaign = object.campaign ?? undefined;
+    message.world = object.world ?? undefined;
     message.description = object.description ?? "";
     message.targetEntity = object.targetEntity ?? "";
     return message;
@@ -11220,13 +10612,13 @@ export const ReligionDTO: MessageFns<ReligionDTO> = {
       Metadata.encode(message.metadata, writer.uint32(34).fork()).join();
     }
     if (message.user !== undefined) {
-      UserDTO.encode(message.user, writer.uint32(42).fork()).join();
+      writer.uint32(42).string(message.user);
     }
     if (message.campaign !== undefined) {
-      CampaignDTO.encode(message.campaign, writer.uint32(50).fork()).join();
+      writer.uint32(50).string(message.campaign);
     }
     if (message.world !== undefined) {
-      WorldDTO.encode(message.world, writer.uint32(58).fork()).join();
+      writer.uint32(58).string(message.world);
     }
     if (message.description !== "") {
       writer.uint32(66).string(message.description);
@@ -11287,7 +10679,7 @@ export const ReligionDTO: MessageFns<ReligionDTO> = {
             break;
           }
 
-          message.user = UserDTO.decode(reader, reader.uint32());
+          message.user = reader.string();
           continue;
         }
         case 6: {
@@ -11295,7 +10687,7 @@ export const ReligionDTO: MessageFns<ReligionDTO> = {
             break;
           }
 
-          message.campaign = CampaignDTO.decode(reader, reader.uint32());
+          message.campaign = reader.string();
           continue;
         }
         case 7: {
@@ -11303,7 +10695,7 @@ export const ReligionDTO: MessageFns<ReligionDTO> = {
             break;
           }
 
-          message.world = WorldDTO.decode(reader, reader.uint32());
+          message.world = reader.string();
           continue;
         }
         case 8: {
@@ -11353,9 +10745,9 @@ export const ReligionDTO: MessageFns<ReligionDTO> = {
       blueprintId: isSet(object.blueprintId) ? globalThis.String(object.blueprintId) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       metadata: isSet(object.metadata) ? Metadata.fromJSON(object.metadata) : undefined,
-      user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
-      campaign: isSet(object.campaign) ? CampaignDTO.fromJSON(object.campaign) : undefined,
-      world: isSet(object.world) ? WorldDTO.fromJSON(object.world) : undefined,
+      user: isSet(object.user) ? globalThis.String(object.user) : undefined,
+      campaign: isSet(object.campaign) ? globalThis.String(object.campaign) : undefined,
+      world: isSet(object.world) ? globalThis.String(object.world) : undefined,
       description: isSet(object.description) ? globalThis.String(object.description) : "",
       rituals: isSet(object.rituals) ? ReligionRitualsDTO.fromJSON(object.rituals) : undefined,
       tenets: isSet(object.tenets) ? ReligionTenetsDTO.fromJSON(object.tenets) : undefined,
@@ -11378,13 +10770,13 @@ export const ReligionDTO: MessageFns<ReligionDTO> = {
       obj.metadata = Metadata.toJSON(message.metadata);
     }
     if (message.user !== undefined) {
-      obj.user = UserDTO.toJSON(message.user);
+      obj.user = message.user;
     }
     if (message.campaign !== undefined) {
-      obj.campaign = CampaignDTO.toJSON(message.campaign);
+      obj.campaign = message.campaign;
     }
     if (message.world !== undefined) {
-      obj.world = WorldDTO.toJSON(message.world);
+      obj.world = message.world;
     }
     if (message.description !== "") {
       obj.description = message.description;
@@ -11412,13 +10804,9 @@ export const ReligionDTO: MessageFns<ReligionDTO> = {
     message.metadata = (object.metadata !== undefined && object.metadata !== null)
       ? Metadata.fromPartial(object.metadata)
       : undefined;
-    message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
-    message.campaign = (object.campaign !== undefined && object.campaign !== null)
-      ? CampaignDTO.fromPartial(object.campaign)
-      : undefined;
-    message.world = (object.world !== undefined && object.world !== null)
-      ? WorldDTO.fromPartial(object.world)
-      : undefined;
+    message.user = object.user ?? undefined;
+    message.campaign = object.campaign ?? undefined;
+    message.world = object.world ?? undefined;
     message.description = object.description ?? "";
     message.rituals = (object.rituals !== undefined && object.rituals !== null)
       ? ReligionRitualsDTO.fromPartial(object.rituals)
@@ -12238,13 +11626,13 @@ export const CharacterGenInstructionDTO: MessageFns<CharacterGenInstructionDTO> 
       Metadata.encode(message.metadata, writer.uint32(114).fork()).join();
     }
     if (message.user !== undefined) {
-      UserDTO.encode(message.user, writer.uint32(122).fork()).join();
+      writer.uint32(122).string(message.user);
     }
     if (message.campaign !== undefined) {
-      CampaignDTO.encode(message.campaign, writer.uint32(130).fork()).join();
+      writer.uint32(130).string(message.campaign);
     }
     if (message.world !== undefined) {
-      WorldDTO.encode(message.world, writer.uint32(138).fork()).join();
+      writer.uint32(138).string(message.world);
     }
     return writer;
   },
@@ -12373,7 +11761,7 @@ export const CharacterGenInstructionDTO: MessageFns<CharacterGenInstructionDTO> 
             break;
           }
 
-          message.user = UserDTO.decode(reader, reader.uint32());
+          message.user = reader.string();
           continue;
         }
         case 16: {
@@ -12381,7 +11769,7 @@ export const CharacterGenInstructionDTO: MessageFns<CharacterGenInstructionDTO> 
             break;
           }
 
-          message.campaign = CampaignDTO.decode(reader, reader.uint32());
+          message.campaign = reader.string();
           continue;
         }
         case 17: {
@@ -12389,7 +11777,7 @@ export const CharacterGenInstructionDTO: MessageFns<CharacterGenInstructionDTO> 
             break;
           }
 
-          message.world = WorldDTO.decode(reader, reader.uint32());
+          message.world = reader.string();
           continue;
         }
       }
@@ -12419,9 +11807,9 @@ export const CharacterGenInstructionDTO: MessageFns<CharacterGenInstructionDTO> 
       birthSign: isSet(object.birthSign) ? globalThis.String(object.birthSign) : undefined,
       id: isSet(object.id) ? globalThis.String(object.id) : "",
       metadata: isSet(object.metadata) ? Metadata.fromJSON(object.metadata) : undefined,
-      user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
-      campaign: isSet(object.campaign) ? CampaignDTO.fromJSON(object.campaign) : undefined,
-      world: isSet(object.world) ? WorldDTO.fromJSON(object.world) : undefined,
+      user: isSet(object.user) ? globalThis.String(object.user) : undefined,
+      campaign: isSet(object.campaign) ? globalThis.String(object.campaign) : undefined,
+      world: isSet(object.world) ? globalThis.String(object.world) : undefined,
     };
   },
 
@@ -12470,13 +11858,13 @@ export const CharacterGenInstructionDTO: MessageFns<CharacterGenInstructionDTO> 
       obj.metadata = Metadata.toJSON(message.metadata);
     }
     if (message.user !== undefined) {
-      obj.user = UserDTO.toJSON(message.user);
+      obj.user = message.user;
     }
     if (message.campaign !== undefined) {
-      obj.campaign = CampaignDTO.toJSON(message.campaign);
+      obj.campaign = message.campaign;
     }
     if (message.world !== undefined) {
-      obj.world = WorldDTO.toJSON(message.world);
+      obj.world = message.world;
     }
     return obj;
   },
@@ -12505,13 +11893,9 @@ export const CharacterGenInstructionDTO: MessageFns<CharacterGenInstructionDTO> 
     message.metadata = (object.metadata !== undefined && object.metadata !== null)
       ? Metadata.fromPartial(object.metadata)
       : undefined;
-    message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
-    message.campaign = (object.campaign !== undefined && object.campaign !== null)
-      ? CampaignDTO.fromPartial(object.campaign)
-      : undefined;
-    message.world = (object.world !== undefined && object.world !== null)
-      ? WorldDTO.fromPartial(object.world)
-      : undefined;
+    message.user = object.user ?? undefined;
+    message.campaign = object.campaign ?? undefined;
+    message.world = object.world ?? undefined;
     return message;
   },
 };
@@ -12607,13 +11991,13 @@ export const CharacterGroupGenInstructionDTO: MessageFns<CharacterGroupGenInstru
       Metadata.encode(message.metadata, writer.uint32(34).fork()).join();
     }
     if (message.user !== undefined) {
-      UserDTO.encode(message.user, writer.uint32(42).fork()).join();
+      writer.uint32(42).string(message.user);
     }
     if (message.campaign !== undefined) {
-      CampaignDTO.encode(message.campaign, writer.uint32(50).fork()).join();
+      writer.uint32(50).string(message.campaign);
     }
     if (message.world !== undefined) {
-      WorldDTO.encode(message.world, writer.uint32(58).fork()).join();
+      writer.uint32(58).string(message.world);
     }
     if (message.set !== undefined) {
       CombinatorDTO.encode(message.set, writer.uint32(66).fork()).join();
@@ -12668,7 +12052,7 @@ export const CharacterGroupGenInstructionDTO: MessageFns<CharacterGroupGenInstru
             break;
           }
 
-          message.user = UserDTO.decode(reader, reader.uint32());
+          message.user = reader.string();
           continue;
         }
         case 6: {
@@ -12676,7 +12060,7 @@ export const CharacterGroupGenInstructionDTO: MessageFns<CharacterGroupGenInstru
             break;
           }
 
-          message.campaign = CampaignDTO.decode(reader, reader.uint32());
+          message.campaign = reader.string();
           continue;
         }
         case 7: {
@@ -12684,7 +12068,7 @@ export const CharacterGroupGenInstructionDTO: MessageFns<CharacterGroupGenInstru
             break;
           }
 
-          message.world = WorldDTO.decode(reader, reader.uint32());
+          message.world = reader.string();
           continue;
         }
         case 8: {
@@ -12718,9 +12102,9 @@ export const CharacterGroupGenInstructionDTO: MessageFns<CharacterGroupGenInstru
       blueprintId: isSet(object.blueprintId) ? globalThis.String(object.blueprintId) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       metadata: isSet(object.metadata) ? Metadata.fromJSON(object.metadata) : undefined,
-      user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
-      campaign: isSet(object.campaign) ? CampaignDTO.fromJSON(object.campaign) : undefined,
-      world: isSet(object.world) ? WorldDTO.fromJSON(object.world) : undefined,
+      user: isSet(object.user) ? globalThis.String(object.user) : undefined,
+      campaign: isSet(object.campaign) ? globalThis.String(object.campaign) : undefined,
+      world: isSet(object.world) ? globalThis.String(object.world) : undefined,
       set: isSet(object.set) ? CombinatorDTO.fromJSON(object.set) : undefined,
       targetEntity: isSet(object.targetEntity) ? globalThis.String(object.targetEntity) : "",
     };
@@ -12741,13 +12125,13 @@ export const CharacterGroupGenInstructionDTO: MessageFns<CharacterGroupGenInstru
       obj.metadata = Metadata.toJSON(message.metadata);
     }
     if (message.user !== undefined) {
-      obj.user = UserDTO.toJSON(message.user);
+      obj.user = message.user;
     }
     if (message.campaign !== undefined) {
-      obj.campaign = CampaignDTO.toJSON(message.campaign);
+      obj.campaign = message.campaign;
     }
     if (message.world !== undefined) {
-      obj.world = WorldDTO.toJSON(message.world);
+      obj.world = message.world;
     }
     if (message.set !== undefined) {
       obj.set = CombinatorDTO.toJSON(message.set);
@@ -12771,13 +12155,9 @@ export const CharacterGroupGenInstructionDTO: MessageFns<CharacterGroupGenInstru
     message.metadata = (object.metadata !== undefined && object.metadata !== null)
       ? Metadata.fromPartial(object.metadata)
       : undefined;
-    message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
-    message.campaign = (object.campaign !== undefined && object.campaign !== null)
-      ? CampaignDTO.fromPartial(object.campaign)
-      : undefined;
-    message.world = (object.world !== undefined && object.world !== null)
-      ? WorldDTO.fromPartial(object.world)
-      : undefined;
+    message.user = object.user ?? undefined;
+    message.campaign = object.campaign ?? undefined;
+    message.world = object.world ?? undefined;
     message.set = (object.set !== undefined && object.set !== null) ? CombinatorDTO.fromPartial(object.set) : undefined;
     message.targetEntity = object.targetEntity ?? "";
     return message;
@@ -13787,7 +13167,7 @@ function createBasePastExperienceDTO(): PastExperienceDTO {
     user: undefined,
     campaign: undefined,
     world: undefined,
-    tags: undefined,
+    tags: [],
     type: 0,
     targetEntity: "",
   };
@@ -13808,16 +13188,16 @@ export const PastExperienceDTO: MessageFns<PastExperienceDTO> = {
       Metadata.encode(message.metadata, writer.uint32(34).fork()).join();
     }
     if (message.user !== undefined) {
-      UserDTO.encode(message.user, writer.uint32(42).fork()).join();
+      writer.uint32(42).string(message.user);
     }
     if (message.campaign !== undefined) {
-      CampaignDTO.encode(message.campaign, writer.uint32(50).fork()).join();
+      writer.uint32(50).string(message.campaign);
     }
     if (message.world !== undefined) {
-      WorldDTO.encode(message.world, writer.uint32(58).fork()).join();
+      writer.uint32(58).string(message.world);
     }
-    if (message.tags !== undefined) {
-      TagsDTO.encode(message.tags, writer.uint32(66).fork()).join();
+    for (const v of message.tags) {
+      writer.uint32(66).string(v!);
     }
     if (message.type !== 0) {
       writer.uint32(72).int32(message.type);
@@ -13872,7 +13252,7 @@ export const PastExperienceDTO: MessageFns<PastExperienceDTO> = {
             break;
           }
 
-          message.user = UserDTO.decode(reader, reader.uint32());
+          message.user = reader.string();
           continue;
         }
         case 6: {
@@ -13880,7 +13260,7 @@ export const PastExperienceDTO: MessageFns<PastExperienceDTO> = {
             break;
           }
 
-          message.campaign = CampaignDTO.decode(reader, reader.uint32());
+          message.campaign = reader.string();
           continue;
         }
         case 7: {
@@ -13888,7 +13268,7 @@ export const PastExperienceDTO: MessageFns<PastExperienceDTO> = {
             break;
           }
 
-          message.world = WorldDTO.decode(reader, reader.uint32());
+          message.world = reader.string();
           continue;
         }
         case 8: {
@@ -13896,7 +13276,7 @@ export const PastExperienceDTO: MessageFns<PastExperienceDTO> = {
             break;
           }
 
-          message.tags = TagsDTO.decode(reader, reader.uint32());
+          message.tags.push(reader.string());
           continue;
         }
         case 9: {
@@ -13930,10 +13310,10 @@ export const PastExperienceDTO: MessageFns<PastExperienceDTO> = {
       blueprintId: isSet(object.blueprintId) ? globalThis.String(object.blueprintId) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       metadata: isSet(object.metadata) ? Metadata.fromJSON(object.metadata) : undefined,
-      user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
-      campaign: isSet(object.campaign) ? CampaignDTO.fromJSON(object.campaign) : undefined,
-      world: isSet(object.world) ? WorldDTO.fromJSON(object.world) : undefined,
-      tags: isSet(object.tags) ? TagsDTO.fromJSON(object.tags) : undefined,
+      user: isSet(object.user) ? globalThis.String(object.user) : undefined,
+      campaign: isSet(object.campaign) ? globalThis.String(object.campaign) : undefined,
+      world: isSet(object.world) ? globalThis.String(object.world) : undefined,
+      tags: globalThis.Array.isArray(object?.tags) ? object.tags.map((e: any) => globalThis.String(e)) : [],
       type: isSet(object.type) ? pastExperienceTypeEnumDTOFromJSON(object.type) : 0,
       targetEntity: isSet(object.targetEntity) ? globalThis.String(object.targetEntity) : "",
     };
@@ -13954,16 +13334,16 @@ export const PastExperienceDTO: MessageFns<PastExperienceDTO> = {
       obj.metadata = Metadata.toJSON(message.metadata);
     }
     if (message.user !== undefined) {
-      obj.user = UserDTO.toJSON(message.user);
+      obj.user = message.user;
     }
     if (message.campaign !== undefined) {
-      obj.campaign = CampaignDTO.toJSON(message.campaign);
+      obj.campaign = message.campaign;
     }
     if (message.world !== undefined) {
-      obj.world = WorldDTO.toJSON(message.world);
+      obj.world = message.world;
     }
-    if (message.tags !== undefined) {
-      obj.tags = TagsDTO.toJSON(message.tags);
+    if (message.tags?.length) {
+      obj.tags = message.tags;
     }
     if (message.type !== 0) {
       obj.type = pastExperienceTypeEnumDTOToJSON(message.type);
@@ -13985,14 +13365,10 @@ export const PastExperienceDTO: MessageFns<PastExperienceDTO> = {
     message.metadata = (object.metadata !== undefined && object.metadata !== null)
       ? Metadata.fromPartial(object.metadata)
       : undefined;
-    message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
-    message.campaign = (object.campaign !== undefined && object.campaign !== null)
-      ? CampaignDTO.fromPartial(object.campaign)
-      : undefined;
-    message.world = (object.world !== undefined && object.world !== null)
-      ? WorldDTO.fromPartial(object.world)
-      : undefined;
-    message.tags = (object.tags !== undefined && object.tags !== null) ? TagsDTO.fromPartial(object.tags) : undefined;
+    message.user = object.user ?? undefined;
+    message.campaign = object.campaign ?? undefined;
+    message.world = object.world ?? undefined;
+    message.tags = object.tags?.map((e) => e) || [];
     message.type = object.type ?? 0;
     message.targetEntity = object.targetEntity ?? "";
     return message;
@@ -14068,7 +13444,7 @@ function createBaseMemoryDTO(): MemoryDTO {
     user: undefined,
     campaign: undefined,
     world: undefined,
-    tags: undefined,
+    tags: [],
     facts: undefined,
     type: 0,
     description: "",
@@ -14091,16 +13467,16 @@ export const MemoryDTO: MessageFns<MemoryDTO> = {
       Metadata.encode(message.metadata, writer.uint32(34).fork()).join();
     }
     if (message.user !== undefined) {
-      UserDTO.encode(message.user, writer.uint32(42).fork()).join();
+      writer.uint32(42).string(message.user);
     }
     if (message.campaign !== undefined) {
-      CampaignDTO.encode(message.campaign, writer.uint32(50).fork()).join();
+      writer.uint32(50).string(message.campaign);
     }
     if (message.world !== undefined) {
-      WorldDTO.encode(message.world, writer.uint32(58).fork()).join();
+      writer.uint32(58).string(message.world);
     }
-    if (message.tags !== undefined) {
-      TagsDTO.encode(message.tags, writer.uint32(66).fork()).join();
+    for (const v of message.tags) {
+      writer.uint32(66).string(v!);
     }
     if (message.facts !== undefined) {
       FactsDTO.encode(message.facts, writer.uint32(74).fork()).join();
@@ -14161,7 +13537,7 @@ export const MemoryDTO: MessageFns<MemoryDTO> = {
             break;
           }
 
-          message.user = UserDTO.decode(reader, reader.uint32());
+          message.user = reader.string();
           continue;
         }
         case 6: {
@@ -14169,7 +13545,7 @@ export const MemoryDTO: MessageFns<MemoryDTO> = {
             break;
           }
 
-          message.campaign = CampaignDTO.decode(reader, reader.uint32());
+          message.campaign = reader.string();
           continue;
         }
         case 7: {
@@ -14177,7 +13553,7 @@ export const MemoryDTO: MessageFns<MemoryDTO> = {
             break;
           }
 
-          message.world = WorldDTO.decode(reader, reader.uint32());
+          message.world = reader.string();
           continue;
         }
         case 8: {
@@ -14185,7 +13561,7 @@ export const MemoryDTO: MessageFns<MemoryDTO> = {
             break;
           }
 
-          message.tags = TagsDTO.decode(reader, reader.uint32());
+          message.tags.push(reader.string());
           continue;
         }
         case 9: {
@@ -14235,10 +13611,10 @@ export const MemoryDTO: MessageFns<MemoryDTO> = {
       blueprintId: isSet(object.blueprintId) ? globalThis.String(object.blueprintId) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       metadata: isSet(object.metadata) ? Metadata.fromJSON(object.metadata) : undefined,
-      user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
-      campaign: isSet(object.campaign) ? CampaignDTO.fromJSON(object.campaign) : undefined,
-      world: isSet(object.world) ? WorldDTO.fromJSON(object.world) : undefined,
-      tags: isSet(object.tags) ? TagsDTO.fromJSON(object.tags) : undefined,
+      user: isSet(object.user) ? globalThis.String(object.user) : undefined,
+      campaign: isSet(object.campaign) ? globalThis.String(object.campaign) : undefined,
+      world: isSet(object.world) ? globalThis.String(object.world) : undefined,
+      tags: globalThis.Array.isArray(object?.tags) ? object.tags.map((e: any) => globalThis.String(e)) : [],
       facts: isSet(object.facts) ? FactsDTO.fromJSON(object.facts) : undefined,
       type: isSet(object.type) ? memoryTypeEnumDTOFromJSON(object.type) : 0,
       description: isSet(object.description) ? globalThis.String(object.description) : "",
@@ -14261,16 +13637,16 @@ export const MemoryDTO: MessageFns<MemoryDTO> = {
       obj.metadata = Metadata.toJSON(message.metadata);
     }
     if (message.user !== undefined) {
-      obj.user = UserDTO.toJSON(message.user);
+      obj.user = message.user;
     }
     if (message.campaign !== undefined) {
-      obj.campaign = CampaignDTO.toJSON(message.campaign);
+      obj.campaign = message.campaign;
     }
     if (message.world !== undefined) {
-      obj.world = WorldDTO.toJSON(message.world);
+      obj.world = message.world;
     }
-    if (message.tags !== undefined) {
-      obj.tags = TagsDTO.toJSON(message.tags);
+    if (message.tags?.length) {
+      obj.tags = message.tags;
     }
     if (message.facts !== undefined) {
       obj.facts = FactsDTO.toJSON(message.facts);
@@ -14298,14 +13674,10 @@ export const MemoryDTO: MessageFns<MemoryDTO> = {
     message.metadata = (object.metadata !== undefined && object.metadata !== null)
       ? Metadata.fromPartial(object.metadata)
       : undefined;
-    message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
-    message.campaign = (object.campaign !== undefined && object.campaign !== null)
-      ? CampaignDTO.fromPartial(object.campaign)
-      : undefined;
-    message.world = (object.world !== undefined && object.world !== null)
-      ? WorldDTO.fromPartial(object.world)
-      : undefined;
-    message.tags = (object.tags !== undefined && object.tags !== null) ? TagsDTO.fromPartial(object.tags) : undefined;
+    message.user = object.user ?? undefined;
+    message.campaign = object.campaign ?? undefined;
+    message.world = object.world ?? undefined;
+    message.tags = object.tags?.map((e) => e) || [];
     message.facts = (object.facts !== undefined && object.facts !== null)
       ? FactsDTO.fromPartial(object.facts)
       : undefined;
@@ -14383,7 +13755,7 @@ function createBaseSkillSetDTO(): SkillSetDTO {
     user: undefined,
     campaign: undefined,
     world: undefined,
-    tags: undefined,
+    tags: [],
     skillImprovement: undefined,
     targetEntity: "",
   };
@@ -14404,16 +13776,16 @@ export const SkillSetDTO: MessageFns<SkillSetDTO> = {
       Metadata.encode(message.metadata, writer.uint32(34).fork()).join();
     }
     if (message.user !== undefined) {
-      UserDTO.encode(message.user, writer.uint32(42).fork()).join();
+      writer.uint32(42).string(message.user);
     }
     if (message.campaign !== undefined) {
-      CampaignDTO.encode(message.campaign, writer.uint32(50).fork()).join();
+      writer.uint32(50).string(message.campaign);
     }
     if (message.world !== undefined) {
-      WorldDTO.encode(message.world, writer.uint32(58).fork()).join();
+      writer.uint32(58).string(message.world);
     }
-    if (message.tags !== undefined) {
-      TagsDTO.encode(message.tags, writer.uint32(66).fork()).join();
+    for (const v of message.tags) {
+      writer.uint32(66).string(v!);
     }
     if (message.skillImprovement !== undefined) {
       SkillImprovementDTO.encode(message.skillImprovement, writer.uint32(74).fork()).join();
@@ -14468,7 +13840,7 @@ export const SkillSetDTO: MessageFns<SkillSetDTO> = {
             break;
           }
 
-          message.user = UserDTO.decode(reader, reader.uint32());
+          message.user = reader.string();
           continue;
         }
         case 6: {
@@ -14476,7 +13848,7 @@ export const SkillSetDTO: MessageFns<SkillSetDTO> = {
             break;
           }
 
-          message.campaign = CampaignDTO.decode(reader, reader.uint32());
+          message.campaign = reader.string();
           continue;
         }
         case 7: {
@@ -14484,7 +13856,7 @@ export const SkillSetDTO: MessageFns<SkillSetDTO> = {
             break;
           }
 
-          message.world = WorldDTO.decode(reader, reader.uint32());
+          message.world = reader.string();
           continue;
         }
         case 8: {
@@ -14492,7 +13864,7 @@ export const SkillSetDTO: MessageFns<SkillSetDTO> = {
             break;
           }
 
-          message.tags = TagsDTO.decode(reader, reader.uint32());
+          message.tags.push(reader.string());
           continue;
         }
         case 9: {
@@ -14526,10 +13898,10 @@ export const SkillSetDTO: MessageFns<SkillSetDTO> = {
       blueprintId: isSet(object.blueprintId) ? globalThis.String(object.blueprintId) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       metadata: isSet(object.metadata) ? Metadata.fromJSON(object.metadata) : undefined,
-      user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
-      campaign: isSet(object.campaign) ? CampaignDTO.fromJSON(object.campaign) : undefined,
-      world: isSet(object.world) ? WorldDTO.fromJSON(object.world) : undefined,
-      tags: isSet(object.tags) ? TagsDTO.fromJSON(object.tags) : undefined,
+      user: isSet(object.user) ? globalThis.String(object.user) : undefined,
+      campaign: isSet(object.campaign) ? globalThis.String(object.campaign) : undefined,
+      world: isSet(object.world) ? globalThis.String(object.world) : undefined,
+      tags: globalThis.Array.isArray(object?.tags) ? object.tags.map((e: any) => globalThis.String(e)) : [],
       skillImprovement: isSet(object.skillImprovement)
         ? SkillImprovementDTO.fromJSON(object.skillImprovement)
         : undefined,
@@ -14552,16 +13924,16 @@ export const SkillSetDTO: MessageFns<SkillSetDTO> = {
       obj.metadata = Metadata.toJSON(message.metadata);
     }
     if (message.user !== undefined) {
-      obj.user = UserDTO.toJSON(message.user);
+      obj.user = message.user;
     }
     if (message.campaign !== undefined) {
-      obj.campaign = CampaignDTO.toJSON(message.campaign);
+      obj.campaign = message.campaign;
     }
     if (message.world !== undefined) {
-      obj.world = WorldDTO.toJSON(message.world);
+      obj.world = message.world;
     }
-    if (message.tags !== undefined) {
-      obj.tags = TagsDTO.toJSON(message.tags);
+    if (message.tags?.length) {
+      obj.tags = message.tags;
     }
     if (message.skillImprovement !== undefined) {
       obj.skillImprovement = SkillImprovementDTO.toJSON(message.skillImprovement);
@@ -14583,14 +13955,10 @@ export const SkillSetDTO: MessageFns<SkillSetDTO> = {
     message.metadata = (object.metadata !== undefined && object.metadata !== null)
       ? Metadata.fromPartial(object.metadata)
       : undefined;
-    message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
-    message.campaign = (object.campaign !== undefined && object.campaign !== null)
-      ? CampaignDTO.fromPartial(object.campaign)
-      : undefined;
-    message.world = (object.world !== undefined && object.world !== null)
-      ? WorldDTO.fromPartial(object.world)
-      : undefined;
-    message.tags = (object.tags !== undefined && object.tags !== null) ? TagsDTO.fromPartial(object.tags) : undefined;
+    message.user = object.user ?? undefined;
+    message.campaign = object.campaign ?? undefined;
+    message.world = object.world ?? undefined;
+    message.tags = object.tags?.map((e) => e) || [];
     message.skillImprovement = (object.skillImprovement !== undefined && object.skillImprovement !== null)
       ? SkillImprovementDTO.fromPartial(object.skillImprovement)
       : undefined;
@@ -14849,13 +14217,13 @@ export const PersonalityProfileDTO: MessageFns<PersonalityProfileDTO> = {
       Metadata.encode(message.metadata, writer.uint32(34).fork()).join();
     }
     if (message.user !== undefined) {
-      UserDTO.encode(message.user, writer.uint32(42).fork()).join();
+      writer.uint32(42).string(message.user);
     }
     if (message.campaign !== undefined) {
-      CampaignDTO.encode(message.campaign, writer.uint32(50).fork()).join();
+      writer.uint32(50).string(message.campaign);
     }
     if (message.world !== undefined) {
-      WorldDTO.encode(message.world, writer.uint32(58).fork()).join();
+      writer.uint32(58).string(message.world);
     }
     if (message.enneagramType !== "") {
       writer.uint32(66).string(message.enneagramType);
@@ -14913,7 +14281,7 @@ export const PersonalityProfileDTO: MessageFns<PersonalityProfileDTO> = {
             break;
           }
 
-          message.user = UserDTO.decode(reader, reader.uint32());
+          message.user = reader.string();
           continue;
         }
         case 6: {
@@ -14921,7 +14289,7 @@ export const PersonalityProfileDTO: MessageFns<PersonalityProfileDTO> = {
             break;
           }
 
-          message.campaign = CampaignDTO.decode(reader, reader.uint32());
+          message.campaign = reader.string();
           continue;
         }
         case 7: {
@@ -14929,7 +14297,7 @@ export const PersonalityProfileDTO: MessageFns<PersonalityProfileDTO> = {
             break;
           }
 
-          message.world = WorldDTO.decode(reader, reader.uint32());
+          message.world = reader.string();
           continue;
         }
         case 8: {
@@ -14971,9 +14339,9 @@ export const PersonalityProfileDTO: MessageFns<PersonalityProfileDTO> = {
       blueprintId: isSet(object.blueprintId) ? globalThis.String(object.blueprintId) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       metadata: isSet(object.metadata) ? Metadata.fromJSON(object.metadata) : undefined,
-      user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
-      campaign: isSet(object.campaign) ? CampaignDTO.fromJSON(object.campaign) : undefined,
-      world: isSet(object.world) ? WorldDTO.fromJSON(object.world) : undefined,
+      user: isSet(object.user) ? globalThis.String(object.user) : undefined,
+      campaign: isSet(object.campaign) ? globalThis.String(object.campaign) : undefined,
+      world: isSet(object.world) ? globalThis.String(object.world) : undefined,
       enneagramType: isSet(object.enneagramType) ? globalThis.String(object.enneagramType) : "",
       traits: globalThis.Array.isArray(object?.traits)
         ? object.traits.map((e: any) => GenerationInstructionDTO.fromJSON(e))
@@ -14997,13 +14365,13 @@ export const PersonalityProfileDTO: MessageFns<PersonalityProfileDTO> = {
       obj.metadata = Metadata.toJSON(message.metadata);
     }
     if (message.user !== undefined) {
-      obj.user = UserDTO.toJSON(message.user);
+      obj.user = message.user;
     }
     if (message.campaign !== undefined) {
-      obj.campaign = CampaignDTO.toJSON(message.campaign);
+      obj.campaign = message.campaign;
     }
     if (message.world !== undefined) {
-      obj.world = WorldDTO.toJSON(message.world);
+      obj.world = message.world;
     }
     if (message.enneagramType !== "") {
       obj.enneagramType = message.enneagramType;
@@ -15028,13 +14396,9 @@ export const PersonalityProfileDTO: MessageFns<PersonalityProfileDTO> = {
     message.metadata = (object.metadata !== undefined && object.metadata !== null)
       ? Metadata.fromPartial(object.metadata)
       : undefined;
-    message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
-    message.campaign = (object.campaign !== undefined && object.campaign !== null)
-      ? CampaignDTO.fromPartial(object.campaign)
-      : undefined;
-    message.world = (object.world !== undefined && object.world !== null)
-      ? WorldDTO.fromPartial(object.world)
-      : undefined;
+    message.user = object.user ?? undefined;
+    message.campaign = object.campaign ?? undefined;
+    message.world = object.world ?? undefined;
     message.enneagramType = object.enneagramType ?? "";
     message.traits = object.traits?.map((e) => GenerationInstructionDTO.fromPartial(e)) || [];
     message.targetEntity = object.targetEntity ?? "";
@@ -15133,13 +14497,13 @@ export const NeedDTO: MessageFns<NeedDTO> = {
       Metadata.encode(message.metadata, writer.uint32(34).fork()).join();
     }
     if (message.user !== undefined) {
-      UserDTO.encode(message.user, writer.uint32(42).fork()).join();
+      writer.uint32(42).string(message.user);
     }
     if (message.campaign !== undefined) {
-      CampaignDTO.encode(message.campaign, writer.uint32(50).fork()).join();
+      writer.uint32(50).string(message.campaign);
     }
     if (message.world !== undefined) {
-      WorldDTO.encode(message.world, writer.uint32(58).fork()).join();
+      writer.uint32(58).string(message.world);
     }
     if (message.description !== "") {
       writer.uint32(66).string(message.description);
@@ -15200,7 +14564,7 @@ export const NeedDTO: MessageFns<NeedDTO> = {
             break;
           }
 
-          message.user = UserDTO.decode(reader, reader.uint32());
+          message.user = reader.string();
           continue;
         }
         case 6: {
@@ -15208,7 +14572,7 @@ export const NeedDTO: MessageFns<NeedDTO> = {
             break;
           }
 
-          message.campaign = CampaignDTO.decode(reader, reader.uint32());
+          message.campaign = reader.string();
           continue;
         }
         case 7: {
@@ -15216,7 +14580,7 @@ export const NeedDTO: MessageFns<NeedDTO> = {
             break;
           }
 
-          message.world = WorldDTO.decode(reader, reader.uint32());
+          message.world = reader.string();
           continue;
         }
         case 8: {
@@ -15266,9 +14630,9 @@ export const NeedDTO: MessageFns<NeedDTO> = {
       blueprintId: isSet(object.blueprintId) ? globalThis.String(object.blueprintId) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       metadata: isSet(object.metadata) ? Metadata.fromJSON(object.metadata) : undefined,
-      user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
-      campaign: isSet(object.campaign) ? CampaignDTO.fromJSON(object.campaign) : undefined,
-      world: isSet(object.world) ? WorldDTO.fromJSON(object.world) : undefined,
+      user: isSet(object.user) ? globalThis.String(object.user) : undefined,
+      campaign: isSet(object.campaign) ? globalThis.String(object.campaign) : undefined,
+      world: isSet(object.world) ? globalThis.String(object.world) : undefined,
       description: isSet(object.description) ? globalThis.String(object.description) : "",
       type: isSet(object.type) ? needTypeEnumDTOFromJSON(object.type) : 0,
       layer: isSet(object.layer) ? needLayerEnumDTOFromJSON(object.layer) : 0,
@@ -15291,13 +14655,13 @@ export const NeedDTO: MessageFns<NeedDTO> = {
       obj.metadata = Metadata.toJSON(message.metadata);
     }
     if (message.user !== undefined) {
-      obj.user = UserDTO.toJSON(message.user);
+      obj.user = message.user;
     }
     if (message.campaign !== undefined) {
-      obj.campaign = CampaignDTO.toJSON(message.campaign);
+      obj.campaign = message.campaign;
     }
     if (message.world !== undefined) {
-      obj.world = WorldDTO.toJSON(message.world);
+      obj.world = message.world;
     }
     if (message.description !== "") {
       obj.description = message.description;
@@ -15325,13 +14689,9 @@ export const NeedDTO: MessageFns<NeedDTO> = {
     message.metadata = (object.metadata !== undefined && object.metadata !== null)
       ? Metadata.fromPartial(object.metadata)
       : undefined;
-    message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
-    message.campaign = (object.campaign !== undefined && object.campaign !== null)
-      ? CampaignDTO.fromPartial(object.campaign)
-      : undefined;
-    message.world = (object.world !== undefined && object.world !== null)
-      ? WorldDTO.fromPartial(object.world)
-      : undefined;
+    message.user = object.user ?? undefined;
+    message.campaign = object.campaign ?? undefined;
+    message.world = object.world ?? undefined;
     message.description = object.description ?? "";
     message.type = object.type ?? 0;
     message.layer = object.layer ?? 0;
@@ -15399,40 +14759,7 @@ export const NeedsDTO: MessageFns<NeedsDTO> = {
 };
 
 function createBaseUserDTO(): UserDTO {
-  return {
-    id: "",
-    backgrounds: undefined,
-    worlds: undefined,
-    campaigns: undefined,
-    items: undefined,
-    pastExperiences: undefined,
-    characterMemories: undefined,
-    memories: undefined,
-    memoryPools: undefined,
-    memoryPoolEntries: undefined,
-    skills: undefined,
-    traits: undefined,
-    addictions: undefined,
-    birthsigns: undefined,
-    characters: undefined,
-    characterProfessions: undefined,
-    diseases: undefined,
-    effects: undefined,
-    facts: undefined,
-    factions: undefined,
-    storageSlots: undefined,
-    equipmentSlots: undefined,
-    itemSets: undefined,
-    moods: undefined,
-    needs: undefined,
-    personalityProfiles: undefined,
-    races: undefined,
-    religions: undefined,
-    resistances: undefined,
-    statuses: undefined,
-    tags: undefined,
-    account: undefined,
-  };
+  return { id: "", backgrounds: undefined, worlds: undefined, campaigns: undefined, account: undefined };
 }
 
 export const UserDTO: MessageFns<UserDTO> = {
@@ -15449,89 +14776,8 @@ export const UserDTO: MessageFns<UserDTO> = {
     if (message.campaigns !== undefined) {
       CampaignsDTO.encode(message.campaigns, writer.uint32(34).fork()).join();
     }
-    if (message.items !== undefined) {
-      ItemsDTO.encode(message.items, writer.uint32(42).fork()).join();
-    }
-    if (message.pastExperiences !== undefined) {
-      PastExperiencesDTO.encode(message.pastExperiences, writer.uint32(50).fork()).join();
-    }
-    if (message.characterMemories !== undefined) {
-      CharacterMemoriesDTO.encode(message.characterMemories, writer.uint32(58).fork()).join();
-    }
-    if (message.memories !== undefined) {
-      MemoriesDTO.encode(message.memories, writer.uint32(66).fork()).join();
-    }
-    if (message.memoryPools !== undefined) {
-      MemoryPoolsDTO.encode(message.memoryPools, writer.uint32(74).fork()).join();
-    }
-    if (message.memoryPoolEntries !== undefined) {
-      MemoryPoolEntriesDTO.encode(message.memoryPoolEntries, writer.uint32(82).fork()).join();
-    }
-    if (message.skills !== undefined) {
-      SkillsDTO.encode(message.skills, writer.uint32(90).fork()).join();
-    }
-    if (message.traits !== undefined) {
-      TraitsDTO.encode(message.traits, writer.uint32(98).fork()).join();
-    }
-    if (message.addictions !== undefined) {
-      AddictionsDTO.encode(message.addictions, writer.uint32(106).fork()).join();
-    }
-    if (message.birthsigns !== undefined) {
-      BirthsignsDTO.encode(message.birthsigns, writer.uint32(114).fork()).join();
-    }
-    if (message.characters !== undefined) {
-      CharactersDTO.encode(message.characters, writer.uint32(122).fork()).join();
-    }
-    if (message.characterProfessions !== undefined) {
-      CharacterProfessionsDTO.encode(message.characterProfessions, writer.uint32(130).fork()).join();
-    }
-    if (message.diseases !== undefined) {
-      DiseasesDTO.encode(message.diseases, writer.uint32(138).fork()).join();
-    }
-    if (message.effects !== undefined) {
-      EffectsDTO.encode(message.effects, writer.uint32(146).fork()).join();
-    }
-    if (message.facts !== undefined) {
-      FactsDTO.encode(message.facts, writer.uint32(154).fork()).join();
-    }
-    if (message.factions !== undefined) {
-      FactionsDTO.encode(message.factions, writer.uint32(162).fork()).join();
-    }
-    if (message.storageSlots !== undefined) {
-      StorageSlotsDTO.encode(message.storageSlots, writer.uint32(170).fork()).join();
-    }
-    if (message.equipmentSlots !== undefined) {
-      EquipmentSlotsDTO.encode(message.equipmentSlots, writer.uint32(178).fork()).join();
-    }
-    if (message.itemSets !== undefined) {
-      ItemSetsDTO.encode(message.itemSets, writer.uint32(186).fork()).join();
-    }
-    if (message.moods !== undefined) {
-      MoodsDTO.encode(message.moods, writer.uint32(194).fork()).join();
-    }
-    if (message.needs !== undefined) {
-      NeedsDTO.encode(message.needs, writer.uint32(202).fork()).join();
-    }
-    if (message.personalityProfiles !== undefined) {
-      PersonalityProfilesDTO.encode(message.personalityProfiles, writer.uint32(210).fork()).join();
-    }
-    if (message.races !== undefined) {
-      RacesDTO.encode(message.races, writer.uint32(218).fork()).join();
-    }
-    if (message.religions !== undefined) {
-      ReligionsDTO.encode(message.religions, writer.uint32(226).fork()).join();
-    }
-    if (message.resistances !== undefined) {
-      ResistancesDTO.encode(message.resistances, writer.uint32(234).fork()).join();
-    }
-    if (message.statuses !== undefined) {
-      StatusesDTO.encode(message.statuses, writer.uint32(242).fork()).join();
-    }
-    if (message.tags !== undefined) {
-      TagsDTO.encode(message.tags, writer.uint32(250).fork()).join();
-    }
     if (message.account !== undefined) {
-      AccountDTO.encode(message.account, writer.uint32(258).fork()).join();
+      AccountDTO.encode(message.account, writer.uint32(42).fork()).join();
     }
     return writer;
   },
@@ -15580,222 +14826,6 @@ export const UserDTO: MessageFns<UserDTO> = {
             break;
           }
 
-          message.items = ItemsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 6: {
-          if (tag !== 50) {
-            break;
-          }
-
-          message.pastExperiences = PastExperiencesDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 7: {
-          if (tag !== 58) {
-            break;
-          }
-
-          message.characterMemories = CharacterMemoriesDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 8: {
-          if (tag !== 66) {
-            break;
-          }
-
-          message.memories = MemoriesDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 9: {
-          if (tag !== 74) {
-            break;
-          }
-
-          message.memoryPools = MemoryPoolsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 10: {
-          if (tag !== 82) {
-            break;
-          }
-
-          message.memoryPoolEntries = MemoryPoolEntriesDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 11: {
-          if (tag !== 90) {
-            break;
-          }
-
-          message.skills = SkillsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 12: {
-          if (tag !== 98) {
-            break;
-          }
-
-          message.traits = TraitsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 13: {
-          if (tag !== 106) {
-            break;
-          }
-
-          message.addictions = AddictionsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 14: {
-          if (tag !== 114) {
-            break;
-          }
-
-          message.birthsigns = BirthsignsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 15: {
-          if (tag !== 122) {
-            break;
-          }
-
-          message.characters = CharactersDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 16: {
-          if (tag !== 130) {
-            break;
-          }
-
-          message.characterProfessions = CharacterProfessionsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 17: {
-          if (tag !== 138) {
-            break;
-          }
-
-          message.diseases = DiseasesDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 18: {
-          if (tag !== 146) {
-            break;
-          }
-
-          message.effects = EffectsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 19: {
-          if (tag !== 154) {
-            break;
-          }
-
-          message.facts = FactsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 20: {
-          if (tag !== 162) {
-            break;
-          }
-
-          message.factions = FactionsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 21: {
-          if (tag !== 170) {
-            break;
-          }
-
-          message.storageSlots = StorageSlotsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 22: {
-          if (tag !== 178) {
-            break;
-          }
-
-          message.equipmentSlots = EquipmentSlotsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 23: {
-          if (tag !== 186) {
-            break;
-          }
-
-          message.itemSets = ItemSetsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 24: {
-          if (tag !== 194) {
-            break;
-          }
-
-          message.moods = MoodsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 25: {
-          if (tag !== 202) {
-            break;
-          }
-
-          message.needs = NeedsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 26: {
-          if (tag !== 210) {
-            break;
-          }
-
-          message.personalityProfiles = PersonalityProfilesDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 27: {
-          if (tag !== 218) {
-            break;
-          }
-
-          message.races = RacesDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 28: {
-          if (tag !== 226) {
-            break;
-          }
-
-          message.religions = ReligionsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 29: {
-          if (tag !== 234) {
-            break;
-          }
-
-          message.resistances = ResistancesDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 30: {
-          if (tag !== 242) {
-            break;
-          }
-
-          message.statuses = StatusesDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 31: {
-          if (tag !== 250) {
-            break;
-          }
-
-          message.tags = TagsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 32: {
-          if (tag !== 258) {
-            break;
-          }
-
           message.account = AccountDTO.decode(reader, reader.uint32());
           continue;
         }
@@ -15814,41 +14844,6 @@ export const UserDTO: MessageFns<UserDTO> = {
       backgrounds: isSet(object.backgrounds) ? BackgroundsDTO.fromJSON(object.backgrounds) : undefined,
       worlds: isSet(object.worlds) ? WorldsDTO.fromJSON(object.worlds) : undefined,
       campaigns: isSet(object.campaigns) ? CampaignsDTO.fromJSON(object.campaigns) : undefined,
-      items: isSet(object.items) ? ItemsDTO.fromJSON(object.items) : undefined,
-      pastExperiences: isSet(object.pastExperiences) ? PastExperiencesDTO.fromJSON(object.pastExperiences) : undefined,
-      characterMemories: isSet(object.characterMemories)
-        ? CharacterMemoriesDTO.fromJSON(object.characterMemories)
-        : undefined,
-      memories: isSet(object.memories) ? MemoriesDTO.fromJSON(object.memories) : undefined,
-      memoryPools: isSet(object.memoryPools) ? MemoryPoolsDTO.fromJSON(object.memoryPools) : undefined,
-      memoryPoolEntries: isSet(object.memoryPoolEntries)
-        ? MemoryPoolEntriesDTO.fromJSON(object.memoryPoolEntries)
-        : undefined,
-      skills: isSet(object.skills) ? SkillsDTO.fromJSON(object.skills) : undefined,
-      traits: isSet(object.traits) ? TraitsDTO.fromJSON(object.traits) : undefined,
-      addictions: isSet(object.addictions) ? AddictionsDTO.fromJSON(object.addictions) : undefined,
-      birthsigns: isSet(object.birthsigns) ? BirthsignsDTO.fromJSON(object.birthsigns) : undefined,
-      characters: isSet(object.characters) ? CharactersDTO.fromJSON(object.characters) : undefined,
-      characterProfessions: isSet(object.characterProfessions)
-        ? CharacterProfessionsDTO.fromJSON(object.characterProfessions)
-        : undefined,
-      diseases: isSet(object.diseases) ? DiseasesDTO.fromJSON(object.diseases) : undefined,
-      effects: isSet(object.effects) ? EffectsDTO.fromJSON(object.effects) : undefined,
-      facts: isSet(object.facts) ? FactsDTO.fromJSON(object.facts) : undefined,
-      factions: isSet(object.factions) ? FactionsDTO.fromJSON(object.factions) : undefined,
-      storageSlots: isSet(object.storageSlots) ? StorageSlotsDTO.fromJSON(object.storageSlots) : undefined,
-      equipmentSlots: isSet(object.equipmentSlots) ? EquipmentSlotsDTO.fromJSON(object.equipmentSlots) : undefined,
-      itemSets: isSet(object.itemSets) ? ItemSetsDTO.fromJSON(object.itemSets) : undefined,
-      moods: isSet(object.moods) ? MoodsDTO.fromJSON(object.moods) : undefined,
-      needs: isSet(object.needs) ? NeedsDTO.fromJSON(object.needs) : undefined,
-      personalityProfiles: isSet(object.personalityProfiles)
-        ? PersonalityProfilesDTO.fromJSON(object.personalityProfiles)
-        : undefined,
-      races: isSet(object.races) ? RacesDTO.fromJSON(object.races) : undefined,
-      religions: isSet(object.religions) ? ReligionsDTO.fromJSON(object.religions) : undefined,
-      resistances: isSet(object.resistances) ? ResistancesDTO.fromJSON(object.resistances) : undefined,
-      statuses: isSet(object.statuses) ? StatusesDTO.fromJSON(object.statuses) : undefined,
-      tags: isSet(object.tags) ? TagsDTO.fromJSON(object.tags) : undefined,
       account: isSet(object.account) ? AccountDTO.fromJSON(object.account) : undefined,
     };
   },
@@ -15866,87 +14861,6 @@ export const UserDTO: MessageFns<UserDTO> = {
     }
     if (message.campaigns !== undefined) {
       obj.campaigns = CampaignsDTO.toJSON(message.campaigns);
-    }
-    if (message.items !== undefined) {
-      obj.items = ItemsDTO.toJSON(message.items);
-    }
-    if (message.pastExperiences !== undefined) {
-      obj.pastExperiences = PastExperiencesDTO.toJSON(message.pastExperiences);
-    }
-    if (message.characterMemories !== undefined) {
-      obj.characterMemories = CharacterMemoriesDTO.toJSON(message.characterMemories);
-    }
-    if (message.memories !== undefined) {
-      obj.memories = MemoriesDTO.toJSON(message.memories);
-    }
-    if (message.memoryPools !== undefined) {
-      obj.memoryPools = MemoryPoolsDTO.toJSON(message.memoryPools);
-    }
-    if (message.memoryPoolEntries !== undefined) {
-      obj.memoryPoolEntries = MemoryPoolEntriesDTO.toJSON(message.memoryPoolEntries);
-    }
-    if (message.skills !== undefined) {
-      obj.skills = SkillsDTO.toJSON(message.skills);
-    }
-    if (message.traits !== undefined) {
-      obj.traits = TraitsDTO.toJSON(message.traits);
-    }
-    if (message.addictions !== undefined) {
-      obj.addictions = AddictionsDTO.toJSON(message.addictions);
-    }
-    if (message.birthsigns !== undefined) {
-      obj.birthsigns = BirthsignsDTO.toJSON(message.birthsigns);
-    }
-    if (message.characters !== undefined) {
-      obj.characters = CharactersDTO.toJSON(message.characters);
-    }
-    if (message.characterProfessions !== undefined) {
-      obj.characterProfessions = CharacterProfessionsDTO.toJSON(message.characterProfessions);
-    }
-    if (message.diseases !== undefined) {
-      obj.diseases = DiseasesDTO.toJSON(message.diseases);
-    }
-    if (message.effects !== undefined) {
-      obj.effects = EffectsDTO.toJSON(message.effects);
-    }
-    if (message.facts !== undefined) {
-      obj.facts = FactsDTO.toJSON(message.facts);
-    }
-    if (message.factions !== undefined) {
-      obj.factions = FactionsDTO.toJSON(message.factions);
-    }
-    if (message.storageSlots !== undefined) {
-      obj.storageSlots = StorageSlotsDTO.toJSON(message.storageSlots);
-    }
-    if (message.equipmentSlots !== undefined) {
-      obj.equipmentSlots = EquipmentSlotsDTO.toJSON(message.equipmentSlots);
-    }
-    if (message.itemSets !== undefined) {
-      obj.itemSets = ItemSetsDTO.toJSON(message.itemSets);
-    }
-    if (message.moods !== undefined) {
-      obj.moods = MoodsDTO.toJSON(message.moods);
-    }
-    if (message.needs !== undefined) {
-      obj.needs = NeedsDTO.toJSON(message.needs);
-    }
-    if (message.personalityProfiles !== undefined) {
-      obj.personalityProfiles = PersonalityProfilesDTO.toJSON(message.personalityProfiles);
-    }
-    if (message.races !== undefined) {
-      obj.races = RacesDTO.toJSON(message.races);
-    }
-    if (message.religions !== undefined) {
-      obj.religions = ReligionsDTO.toJSON(message.religions);
-    }
-    if (message.resistances !== undefined) {
-      obj.resistances = ResistancesDTO.toJSON(message.resistances);
-    }
-    if (message.statuses !== undefined) {
-      obj.statuses = StatusesDTO.toJSON(message.statuses);
-    }
-    if (message.tags !== undefined) {
-      obj.tags = TagsDTO.toJSON(message.tags);
     }
     if (message.account !== undefined) {
       obj.account = AccountDTO.toJSON(message.account);
@@ -15969,85 +14883,6 @@ export const UserDTO: MessageFns<UserDTO> = {
     message.campaigns = (object.campaigns !== undefined && object.campaigns !== null)
       ? CampaignsDTO.fromPartial(object.campaigns)
       : undefined;
-    message.items = (object.items !== undefined && object.items !== null)
-      ? ItemsDTO.fromPartial(object.items)
-      : undefined;
-    message.pastExperiences = (object.pastExperiences !== undefined && object.pastExperiences !== null)
-      ? PastExperiencesDTO.fromPartial(object.pastExperiences)
-      : undefined;
-    message.characterMemories = (object.characterMemories !== undefined && object.characterMemories !== null)
-      ? CharacterMemoriesDTO.fromPartial(object.characterMemories)
-      : undefined;
-    message.memories = (object.memories !== undefined && object.memories !== null)
-      ? MemoriesDTO.fromPartial(object.memories)
-      : undefined;
-    message.memoryPools = (object.memoryPools !== undefined && object.memoryPools !== null)
-      ? MemoryPoolsDTO.fromPartial(object.memoryPools)
-      : undefined;
-    message.memoryPoolEntries = (object.memoryPoolEntries !== undefined && object.memoryPoolEntries !== null)
-      ? MemoryPoolEntriesDTO.fromPartial(object.memoryPoolEntries)
-      : undefined;
-    message.skills = (object.skills !== undefined && object.skills !== null)
-      ? SkillsDTO.fromPartial(object.skills)
-      : undefined;
-    message.traits = (object.traits !== undefined && object.traits !== null)
-      ? TraitsDTO.fromPartial(object.traits)
-      : undefined;
-    message.addictions = (object.addictions !== undefined && object.addictions !== null)
-      ? AddictionsDTO.fromPartial(object.addictions)
-      : undefined;
-    message.birthsigns = (object.birthsigns !== undefined && object.birthsigns !== null)
-      ? BirthsignsDTO.fromPartial(object.birthsigns)
-      : undefined;
-    message.characters = (object.characters !== undefined && object.characters !== null)
-      ? CharactersDTO.fromPartial(object.characters)
-      : undefined;
-    message.characterProfessions = (object.characterProfessions !== undefined && object.characterProfessions !== null)
-      ? CharacterProfessionsDTO.fromPartial(object.characterProfessions)
-      : undefined;
-    message.diseases = (object.diseases !== undefined && object.diseases !== null)
-      ? DiseasesDTO.fromPartial(object.diseases)
-      : undefined;
-    message.effects = (object.effects !== undefined && object.effects !== null)
-      ? EffectsDTO.fromPartial(object.effects)
-      : undefined;
-    message.facts = (object.facts !== undefined && object.facts !== null)
-      ? FactsDTO.fromPartial(object.facts)
-      : undefined;
-    message.factions = (object.factions !== undefined && object.factions !== null)
-      ? FactionsDTO.fromPartial(object.factions)
-      : undefined;
-    message.storageSlots = (object.storageSlots !== undefined && object.storageSlots !== null)
-      ? StorageSlotsDTO.fromPartial(object.storageSlots)
-      : undefined;
-    message.equipmentSlots = (object.equipmentSlots !== undefined && object.equipmentSlots !== null)
-      ? EquipmentSlotsDTO.fromPartial(object.equipmentSlots)
-      : undefined;
-    message.itemSets = (object.itemSets !== undefined && object.itemSets !== null)
-      ? ItemSetsDTO.fromPartial(object.itemSets)
-      : undefined;
-    message.moods = (object.moods !== undefined && object.moods !== null)
-      ? MoodsDTO.fromPartial(object.moods)
-      : undefined;
-    message.needs = (object.needs !== undefined && object.needs !== null)
-      ? NeedsDTO.fromPartial(object.needs)
-      : undefined;
-    message.personalityProfiles = (object.personalityProfiles !== undefined && object.personalityProfiles !== null)
-      ? PersonalityProfilesDTO.fromPartial(object.personalityProfiles)
-      : undefined;
-    message.races = (object.races !== undefined && object.races !== null)
-      ? RacesDTO.fromPartial(object.races)
-      : undefined;
-    message.religions = (object.religions !== undefined && object.religions !== null)
-      ? ReligionsDTO.fromPartial(object.religions)
-      : undefined;
-    message.resistances = (object.resistances !== undefined && object.resistances !== null)
-      ? ResistancesDTO.fromPartial(object.resistances)
-      : undefined;
-    message.statuses = (object.statuses !== undefined && object.statuses !== null)
-      ? StatusesDTO.fromPartial(object.statuses)
-      : undefined;
-    message.tags = (object.tags !== undefined && object.tags !== null) ? TagsDTO.fromPartial(object.tags) : undefined;
     message.account = (object.account !== undefined && object.account !== null)
       ? AccountDTO.fromPartial(object.account)
       : undefined;
@@ -16132,7 +14967,7 @@ export const AccountDTO: MessageFns<AccountDTO> = {
       writer.uint32(34).string(message.role);
     }
     if (message.user !== undefined) {
-      UserDTO.encode(message.user, writer.uint32(42).fork()).join();
+      writer.uint32(42).string(message.user);
     }
     if (message.preferences !== undefined) {
       PreferencesDTO.encode(message.preferences, writer.uint32(50).fork()).join();
@@ -16184,7 +15019,7 @@ export const AccountDTO: MessageFns<AccountDTO> = {
             break;
           }
 
-          message.user = UserDTO.decode(reader, reader.uint32());
+          message.user = reader.string();
           continue;
         }
         case 6: {
@@ -16210,7 +15045,7 @@ export const AccountDTO: MessageFns<AccountDTO> = {
       username: isSet(object.username) ? globalThis.String(object.username) : "",
       email: isSet(object.email) ? globalThis.String(object.email) : "",
       role: isSet(object.role) ? globalThis.String(object.role) : "",
-      user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
+      user: isSet(object.user) ? globalThis.String(object.user) : undefined,
       preferences: isSet(object.preferences) ? PreferencesDTO.fromJSON(object.preferences) : undefined,
     };
   },
@@ -16230,7 +15065,7 @@ export const AccountDTO: MessageFns<AccountDTO> = {
       obj.role = message.role;
     }
     if (message.user !== undefined) {
-      obj.user = UserDTO.toJSON(message.user);
+      obj.user = message.user;
     }
     if (message.preferences !== undefined) {
       obj.preferences = PreferencesDTO.toJSON(message.preferences);
@@ -16247,7 +15082,7 @@ export const AccountDTO: MessageFns<AccountDTO> = {
     message.username = object.username ?? "";
     message.email = object.email ?? "";
     message.role = object.role ?? "";
-    message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
+    message.user = object.user ?? undefined;
     message.preferences = (object.preferences !== undefined && object.preferences !== null)
       ? PreferencesDTO.fromPartial(object.preferences)
       : undefined;
@@ -16462,34 +15297,6 @@ function createBaseWorldDTO(): WorldDTO {
     frozen: false,
     user: undefined,
     campaigns: undefined,
-    items: undefined,
-    pastExperiences: undefined,
-    characterMemories: undefined,
-    memories: undefined,
-    memoryPools: undefined,
-    memoryPoolEntries: undefined,
-    skills: undefined,
-    traits: undefined,
-    addictions: undefined,
-    birthsigns: undefined,
-    characters: undefined,
-    characterProfessions: undefined,
-    diseases: undefined,
-    effects: undefined,
-    facts: undefined,
-    factions: undefined,
-    storageSlots: undefined,
-    equipmentSlots: undefined,
-    itemSets: undefined,
-    moods: undefined,
-    needs: undefined,
-    personalityProfiles: undefined,
-    races: undefined,
-    religions: undefined,
-    resistances: undefined,
-    statuses: undefined,
-    tags: undefined,
-    backgrounds: undefined,
   };
 }
 
@@ -16511,94 +15318,10 @@ export const WorldDTO: MessageFns<WorldDTO> = {
       writer.uint32(40).bool(message.frozen);
     }
     if (message.user !== undefined) {
-      UserDTO.encode(message.user, writer.uint32(50).fork()).join();
+      writer.uint32(50).string(message.user);
     }
     if (message.campaigns !== undefined) {
       CampaignsDTO.encode(message.campaigns, writer.uint32(58).fork()).join();
-    }
-    if (message.items !== undefined) {
-      ItemsDTO.encode(message.items, writer.uint32(66).fork()).join();
-    }
-    if (message.pastExperiences !== undefined) {
-      PastExperiencesDTO.encode(message.pastExperiences, writer.uint32(74).fork()).join();
-    }
-    if (message.characterMemories !== undefined) {
-      CharacterMemoriesDTO.encode(message.characterMemories, writer.uint32(82).fork()).join();
-    }
-    if (message.memories !== undefined) {
-      MemoriesDTO.encode(message.memories, writer.uint32(90).fork()).join();
-    }
-    if (message.memoryPools !== undefined) {
-      MemoryPoolsDTO.encode(message.memoryPools, writer.uint32(98).fork()).join();
-    }
-    if (message.memoryPoolEntries !== undefined) {
-      MemoryPoolEntriesDTO.encode(message.memoryPoolEntries, writer.uint32(106).fork()).join();
-    }
-    if (message.skills !== undefined) {
-      SkillsDTO.encode(message.skills, writer.uint32(114).fork()).join();
-    }
-    if (message.traits !== undefined) {
-      TraitsDTO.encode(message.traits, writer.uint32(122).fork()).join();
-    }
-    if (message.addictions !== undefined) {
-      AddictionsDTO.encode(message.addictions, writer.uint32(130).fork()).join();
-    }
-    if (message.birthsigns !== undefined) {
-      BirthsignsDTO.encode(message.birthsigns, writer.uint32(138).fork()).join();
-    }
-    if (message.characters !== undefined) {
-      CharactersDTO.encode(message.characters, writer.uint32(146).fork()).join();
-    }
-    if (message.characterProfessions !== undefined) {
-      CharacterProfessionsDTO.encode(message.characterProfessions, writer.uint32(154).fork()).join();
-    }
-    if (message.diseases !== undefined) {
-      DiseasesDTO.encode(message.diseases, writer.uint32(162).fork()).join();
-    }
-    if (message.effects !== undefined) {
-      EffectsDTO.encode(message.effects, writer.uint32(170).fork()).join();
-    }
-    if (message.facts !== undefined) {
-      FactsDTO.encode(message.facts, writer.uint32(178).fork()).join();
-    }
-    if (message.factions !== undefined) {
-      FactionsDTO.encode(message.factions, writer.uint32(186).fork()).join();
-    }
-    if (message.storageSlots !== undefined) {
-      StorageSlotsDTO.encode(message.storageSlots, writer.uint32(194).fork()).join();
-    }
-    if (message.equipmentSlots !== undefined) {
-      EquipmentSlotsDTO.encode(message.equipmentSlots, writer.uint32(202).fork()).join();
-    }
-    if (message.itemSets !== undefined) {
-      ItemSetsDTO.encode(message.itemSets, writer.uint32(210).fork()).join();
-    }
-    if (message.moods !== undefined) {
-      MoodsDTO.encode(message.moods, writer.uint32(218).fork()).join();
-    }
-    if (message.needs !== undefined) {
-      NeedsDTO.encode(message.needs, writer.uint32(226).fork()).join();
-    }
-    if (message.personalityProfiles !== undefined) {
-      PersonalityProfilesDTO.encode(message.personalityProfiles, writer.uint32(234).fork()).join();
-    }
-    if (message.races !== undefined) {
-      RacesDTO.encode(message.races, writer.uint32(242).fork()).join();
-    }
-    if (message.religions !== undefined) {
-      ReligionsDTO.encode(message.religions, writer.uint32(250).fork()).join();
-    }
-    if (message.resistances !== undefined) {
-      ResistancesDTO.encode(message.resistances, writer.uint32(258).fork()).join();
-    }
-    if (message.statuses !== undefined) {
-      StatusesDTO.encode(message.statuses, writer.uint32(266).fork()).join();
-    }
-    if (message.tags !== undefined) {
-      TagsDTO.encode(message.tags, writer.uint32(274).fork()).join();
-    }
-    if (message.backgrounds !== undefined) {
-      BackgroundsDTO.encode(message.backgrounds, writer.uint32(282).fork()).join();
     }
     return writer;
   },
@@ -16655,7 +15378,7 @@ export const WorldDTO: MessageFns<WorldDTO> = {
             break;
           }
 
-          message.user = UserDTO.decode(reader, reader.uint32());
+          message.user = reader.string();
           continue;
         }
         case 7: {
@@ -16664,230 +15387,6 @@ export const WorldDTO: MessageFns<WorldDTO> = {
           }
 
           message.campaigns = CampaignsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 8: {
-          if (tag !== 66) {
-            break;
-          }
-
-          message.items = ItemsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 9: {
-          if (tag !== 74) {
-            break;
-          }
-
-          message.pastExperiences = PastExperiencesDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 10: {
-          if (tag !== 82) {
-            break;
-          }
-
-          message.characterMemories = CharacterMemoriesDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 11: {
-          if (tag !== 90) {
-            break;
-          }
-
-          message.memories = MemoriesDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 12: {
-          if (tag !== 98) {
-            break;
-          }
-
-          message.memoryPools = MemoryPoolsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 13: {
-          if (tag !== 106) {
-            break;
-          }
-
-          message.memoryPoolEntries = MemoryPoolEntriesDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 14: {
-          if (tag !== 114) {
-            break;
-          }
-
-          message.skills = SkillsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 15: {
-          if (tag !== 122) {
-            break;
-          }
-
-          message.traits = TraitsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 16: {
-          if (tag !== 130) {
-            break;
-          }
-
-          message.addictions = AddictionsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 17: {
-          if (tag !== 138) {
-            break;
-          }
-
-          message.birthsigns = BirthsignsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 18: {
-          if (tag !== 146) {
-            break;
-          }
-
-          message.characters = CharactersDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 19: {
-          if (tag !== 154) {
-            break;
-          }
-
-          message.characterProfessions = CharacterProfessionsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 20: {
-          if (tag !== 162) {
-            break;
-          }
-
-          message.diseases = DiseasesDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 21: {
-          if (tag !== 170) {
-            break;
-          }
-
-          message.effects = EffectsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 22: {
-          if (tag !== 178) {
-            break;
-          }
-
-          message.facts = FactsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 23: {
-          if (tag !== 186) {
-            break;
-          }
-
-          message.factions = FactionsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 24: {
-          if (tag !== 194) {
-            break;
-          }
-
-          message.storageSlots = StorageSlotsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 25: {
-          if (tag !== 202) {
-            break;
-          }
-
-          message.equipmentSlots = EquipmentSlotsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 26: {
-          if (tag !== 210) {
-            break;
-          }
-
-          message.itemSets = ItemSetsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 27: {
-          if (tag !== 218) {
-            break;
-          }
-
-          message.moods = MoodsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 28: {
-          if (tag !== 226) {
-            break;
-          }
-
-          message.needs = NeedsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 29: {
-          if (tag !== 234) {
-            break;
-          }
-
-          message.personalityProfiles = PersonalityProfilesDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 30: {
-          if (tag !== 242) {
-            break;
-          }
-
-          message.races = RacesDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 31: {
-          if (tag !== 250) {
-            break;
-          }
-
-          message.religions = ReligionsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 32: {
-          if (tag !== 258) {
-            break;
-          }
-
-          message.resistances = ResistancesDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 33: {
-          if (tag !== 266) {
-            break;
-          }
-
-          message.statuses = StatusesDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 34: {
-          if (tag !== 274) {
-            break;
-          }
-
-          message.tags = TagsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 35: {
-          if (tag !== 282) {
-            break;
-          }
-
-          message.backgrounds = BackgroundsDTO.decode(reader, reader.uint32());
           continue;
         }
       }
@@ -16906,44 +15405,8 @@ export const WorldDTO: MessageFns<WorldDTO> = {
       description: isSet(object.description) ? globalThis.String(object.description) : undefined,
       settings: isSet(object.settings) ? WorldSettings.fromJSON(object.settings) : undefined,
       frozen: isSet(object.frozen) ? globalThis.Boolean(object.frozen) : false,
-      user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
+      user: isSet(object.user) ? globalThis.String(object.user) : undefined,
       campaigns: isSet(object.campaigns) ? CampaignsDTO.fromJSON(object.campaigns) : undefined,
-      items: isSet(object.items) ? ItemsDTO.fromJSON(object.items) : undefined,
-      pastExperiences: isSet(object.pastExperiences) ? PastExperiencesDTO.fromJSON(object.pastExperiences) : undefined,
-      characterMemories: isSet(object.characterMemories)
-        ? CharacterMemoriesDTO.fromJSON(object.characterMemories)
-        : undefined,
-      memories: isSet(object.memories) ? MemoriesDTO.fromJSON(object.memories) : undefined,
-      memoryPools: isSet(object.memoryPools) ? MemoryPoolsDTO.fromJSON(object.memoryPools) : undefined,
-      memoryPoolEntries: isSet(object.memoryPoolEntries)
-        ? MemoryPoolEntriesDTO.fromJSON(object.memoryPoolEntries)
-        : undefined,
-      skills: isSet(object.skills) ? SkillsDTO.fromJSON(object.skills) : undefined,
-      traits: isSet(object.traits) ? TraitsDTO.fromJSON(object.traits) : undefined,
-      addictions: isSet(object.addictions) ? AddictionsDTO.fromJSON(object.addictions) : undefined,
-      birthsigns: isSet(object.birthsigns) ? BirthsignsDTO.fromJSON(object.birthsigns) : undefined,
-      characters: isSet(object.characters) ? CharactersDTO.fromJSON(object.characters) : undefined,
-      characterProfessions: isSet(object.characterProfessions)
-        ? CharacterProfessionsDTO.fromJSON(object.characterProfessions)
-        : undefined,
-      diseases: isSet(object.diseases) ? DiseasesDTO.fromJSON(object.diseases) : undefined,
-      effects: isSet(object.effects) ? EffectsDTO.fromJSON(object.effects) : undefined,
-      facts: isSet(object.facts) ? FactsDTO.fromJSON(object.facts) : undefined,
-      factions: isSet(object.factions) ? FactionsDTO.fromJSON(object.factions) : undefined,
-      storageSlots: isSet(object.storageSlots) ? StorageSlotsDTO.fromJSON(object.storageSlots) : undefined,
-      equipmentSlots: isSet(object.equipmentSlots) ? EquipmentSlotsDTO.fromJSON(object.equipmentSlots) : undefined,
-      itemSets: isSet(object.itemSets) ? ItemSetsDTO.fromJSON(object.itemSets) : undefined,
-      moods: isSet(object.moods) ? MoodsDTO.fromJSON(object.moods) : undefined,
-      needs: isSet(object.needs) ? NeedsDTO.fromJSON(object.needs) : undefined,
-      personalityProfiles: isSet(object.personalityProfiles)
-        ? PersonalityProfilesDTO.fromJSON(object.personalityProfiles)
-        : undefined,
-      races: isSet(object.races) ? RacesDTO.fromJSON(object.races) : undefined,
-      religions: isSet(object.religions) ? ReligionsDTO.fromJSON(object.religions) : undefined,
-      resistances: isSet(object.resistances) ? ResistancesDTO.fromJSON(object.resistances) : undefined,
-      statuses: isSet(object.statuses) ? StatusesDTO.fromJSON(object.statuses) : undefined,
-      tags: isSet(object.tags) ? TagsDTO.fromJSON(object.tags) : undefined,
-      backgrounds: isSet(object.backgrounds) ? BackgroundsDTO.fromJSON(object.backgrounds) : undefined,
     };
   },
 
@@ -16965,94 +15428,10 @@ export const WorldDTO: MessageFns<WorldDTO> = {
       obj.frozen = message.frozen;
     }
     if (message.user !== undefined) {
-      obj.user = UserDTO.toJSON(message.user);
+      obj.user = message.user;
     }
     if (message.campaigns !== undefined) {
       obj.campaigns = CampaignsDTO.toJSON(message.campaigns);
-    }
-    if (message.items !== undefined) {
-      obj.items = ItemsDTO.toJSON(message.items);
-    }
-    if (message.pastExperiences !== undefined) {
-      obj.pastExperiences = PastExperiencesDTO.toJSON(message.pastExperiences);
-    }
-    if (message.characterMemories !== undefined) {
-      obj.characterMemories = CharacterMemoriesDTO.toJSON(message.characterMemories);
-    }
-    if (message.memories !== undefined) {
-      obj.memories = MemoriesDTO.toJSON(message.memories);
-    }
-    if (message.memoryPools !== undefined) {
-      obj.memoryPools = MemoryPoolsDTO.toJSON(message.memoryPools);
-    }
-    if (message.memoryPoolEntries !== undefined) {
-      obj.memoryPoolEntries = MemoryPoolEntriesDTO.toJSON(message.memoryPoolEntries);
-    }
-    if (message.skills !== undefined) {
-      obj.skills = SkillsDTO.toJSON(message.skills);
-    }
-    if (message.traits !== undefined) {
-      obj.traits = TraitsDTO.toJSON(message.traits);
-    }
-    if (message.addictions !== undefined) {
-      obj.addictions = AddictionsDTO.toJSON(message.addictions);
-    }
-    if (message.birthsigns !== undefined) {
-      obj.birthsigns = BirthsignsDTO.toJSON(message.birthsigns);
-    }
-    if (message.characters !== undefined) {
-      obj.characters = CharactersDTO.toJSON(message.characters);
-    }
-    if (message.characterProfessions !== undefined) {
-      obj.characterProfessions = CharacterProfessionsDTO.toJSON(message.characterProfessions);
-    }
-    if (message.diseases !== undefined) {
-      obj.diseases = DiseasesDTO.toJSON(message.diseases);
-    }
-    if (message.effects !== undefined) {
-      obj.effects = EffectsDTO.toJSON(message.effects);
-    }
-    if (message.facts !== undefined) {
-      obj.facts = FactsDTO.toJSON(message.facts);
-    }
-    if (message.factions !== undefined) {
-      obj.factions = FactionsDTO.toJSON(message.factions);
-    }
-    if (message.storageSlots !== undefined) {
-      obj.storageSlots = StorageSlotsDTO.toJSON(message.storageSlots);
-    }
-    if (message.equipmentSlots !== undefined) {
-      obj.equipmentSlots = EquipmentSlotsDTO.toJSON(message.equipmentSlots);
-    }
-    if (message.itemSets !== undefined) {
-      obj.itemSets = ItemSetsDTO.toJSON(message.itemSets);
-    }
-    if (message.moods !== undefined) {
-      obj.moods = MoodsDTO.toJSON(message.moods);
-    }
-    if (message.needs !== undefined) {
-      obj.needs = NeedsDTO.toJSON(message.needs);
-    }
-    if (message.personalityProfiles !== undefined) {
-      obj.personalityProfiles = PersonalityProfilesDTO.toJSON(message.personalityProfiles);
-    }
-    if (message.races !== undefined) {
-      obj.races = RacesDTO.toJSON(message.races);
-    }
-    if (message.religions !== undefined) {
-      obj.religions = ReligionsDTO.toJSON(message.religions);
-    }
-    if (message.resistances !== undefined) {
-      obj.resistances = ResistancesDTO.toJSON(message.resistances);
-    }
-    if (message.statuses !== undefined) {
-      obj.statuses = StatusesDTO.toJSON(message.statuses);
-    }
-    if (message.tags !== undefined) {
-      obj.tags = TagsDTO.toJSON(message.tags);
-    }
-    if (message.backgrounds !== undefined) {
-      obj.backgrounds = BackgroundsDTO.toJSON(message.backgrounds);
     }
     return obj;
   },
@@ -17069,91 +15448,9 @@ export const WorldDTO: MessageFns<WorldDTO> = {
       ? WorldSettings.fromPartial(object.settings)
       : undefined;
     message.frozen = object.frozen ?? false;
-    message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
+    message.user = object.user ?? undefined;
     message.campaigns = (object.campaigns !== undefined && object.campaigns !== null)
       ? CampaignsDTO.fromPartial(object.campaigns)
-      : undefined;
-    message.items = (object.items !== undefined && object.items !== null)
-      ? ItemsDTO.fromPartial(object.items)
-      : undefined;
-    message.pastExperiences = (object.pastExperiences !== undefined && object.pastExperiences !== null)
-      ? PastExperiencesDTO.fromPartial(object.pastExperiences)
-      : undefined;
-    message.characterMemories = (object.characterMemories !== undefined && object.characterMemories !== null)
-      ? CharacterMemoriesDTO.fromPartial(object.characterMemories)
-      : undefined;
-    message.memories = (object.memories !== undefined && object.memories !== null)
-      ? MemoriesDTO.fromPartial(object.memories)
-      : undefined;
-    message.memoryPools = (object.memoryPools !== undefined && object.memoryPools !== null)
-      ? MemoryPoolsDTO.fromPartial(object.memoryPools)
-      : undefined;
-    message.memoryPoolEntries = (object.memoryPoolEntries !== undefined && object.memoryPoolEntries !== null)
-      ? MemoryPoolEntriesDTO.fromPartial(object.memoryPoolEntries)
-      : undefined;
-    message.skills = (object.skills !== undefined && object.skills !== null)
-      ? SkillsDTO.fromPartial(object.skills)
-      : undefined;
-    message.traits = (object.traits !== undefined && object.traits !== null)
-      ? TraitsDTO.fromPartial(object.traits)
-      : undefined;
-    message.addictions = (object.addictions !== undefined && object.addictions !== null)
-      ? AddictionsDTO.fromPartial(object.addictions)
-      : undefined;
-    message.birthsigns = (object.birthsigns !== undefined && object.birthsigns !== null)
-      ? BirthsignsDTO.fromPartial(object.birthsigns)
-      : undefined;
-    message.characters = (object.characters !== undefined && object.characters !== null)
-      ? CharactersDTO.fromPartial(object.characters)
-      : undefined;
-    message.characterProfessions = (object.characterProfessions !== undefined && object.characterProfessions !== null)
-      ? CharacterProfessionsDTO.fromPartial(object.characterProfessions)
-      : undefined;
-    message.diseases = (object.diseases !== undefined && object.diseases !== null)
-      ? DiseasesDTO.fromPartial(object.diseases)
-      : undefined;
-    message.effects = (object.effects !== undefined && object.effects !== null)
-      ? EffectsDTO.fromPartial(object.effects)
-      : undefined;
-    message.facts = (object.facts !== undefined && object.facts !== null)
-      ? FactsDTO.fromPartial(object.facts)
-      : undefined;
-    message.factions = (object.factions !== undefined && object.factions !== null)
-      ? FactionsDTO.fromPartial(object.factions)
-      : undefined;
-    message.storageSlots = (object.storageSlots !== undefined && object.storageSlots !== null)
-      ? StorageSlotsDTO.fromPartial(object.storageSlots)
-      : undefined;
-    message.equipmentSlots = (object.equipmentSlots !== undefined && object.equipmentSlots !== null)
-      ? EquipmentSlotsDTO.fromPartial(object.equipmentSlots)
-      : undefined;
-    message.itemSets = (object.itemSets !== undefined && object.itemSets !== null)
-      ? ItemSetsDTO.fromPartial(object.itemSets)
-      : undefined;
-    message.moods = (object.moods !== undefined && object.moods !== null)
-      ? MoodsDTO.fromPartial(object.moods)
-      : undefined;
-    message.needs = (object.needs !== undefined && object.needs !== null)
-      ? NeedsDTO.fromPartial(object.needs)
-      : undefined;
-    message.personalityProfiles = (object.personalityProfiles !== undefined && object.personalityProfiles !== null)
-      ? PersonalityProfilesDTO.fromPartial(object.personalityProfiles)
-      : undefined;
-    message.races = (object.races !== undefined && object.races !== null)
-      ? RacesDTO.fromPartial(object.races)
-      : undefined;
-    message.religions = (object.religions !== undefined && object.religions !== null)
-      ? ReligionsDTO.fromPartial(object.religions)
-      : undefined;
-    message.resistances = (object.resistances !== undefined && object.resistances !== null)
-      ? ResistancesDTO.fromPartial(object.resistances)
-      : undefined;
-    message.statuses = (object.statuses !== undefined && object.statuses !== null)
-      ? StatusesDTO.fromPartial(object.statuses)
-      : undefined;
-    message.tags = (object.tags !== undefined && object.tags !== null) ? TagsDTO.fromPartial(object.tags) : undefined;
-    message.backgrounds = (object.backgrounds !== undefined && object.backgrounds !== null)
-      ? BackgroundsDTO.fromPartial(object.backgrounds)
       : undefined;
     return message;
   },
@@ -17226,34 +15523,6 @@ function createBaseCampaignDTO(): CampaignDTO {
     createdAt: "",
     world: undefined,
     user: undefined,
-    items: undefined,
-    pastExperiences: undefined,
-    characterMemories: undefined,
-    memories: undefined,
-    memoryPools: undefined,
-    memoryPoolEntries: undefined,
-    skills: undefined,
-    traits: undefined,
-    addictions: undefined,
-    birthsigns: undefined,
-    characters: undefined,
-    characterProfessions: undefined,
-    diseases: undefined,
-    effects: undefined,
-    facts: undefined,
-    factions: undefined,
-    storageSlots: undefined,
-    equipmentSlots: undefined,
-    itemSets: undefined,
-    moods: undefined,
-    needs: undefined,
-    personalityProfiles: undefined,
-    races: undefined,
-    religions: undefined,
-    resistances: undefined,
-    statuses: undefined,
-    tags: undefined,
-    backgrounds: undefined,
   };
 }
 
@@ -17275,94 +15544,10 @@ export const CampaignDTO: MessageFns<CampaignDTO> = {
       writer.uint32(42).string(message.createdAt);
     }
     if (message.world !== undefined) {
-      WorldDTO.encode(message.world, writer.uint32(50).fork()).join();
+      writer.uint32(50).string(message.world);
     }
     if (message.user !== undefined) {
-      UserDTO.encode(message.user, writer.uint32(58).fork()).join();
-    }
-    if (message.items !== undefined) {
-      ItemsDTO.encode(message.items, writer.uint32(66).fork()).join();
-    }
-    if (message.pastExperiences !== undefined) {
-      PastExperiencesDTO.encode(message.pastExperiences, writer.uint32(74).fork()).join();
-    }
-    if (message.characterMemories !== undefined) {
-      CharacterMemoriesDTO.encode(message.characterMemories, writer.uint32(82).fork()).join();
-    }
-    if (message.memories !== undefined) {
-      MemoriesDTO.encode(message.memories, writer.uint32(90).fork()).join();
-    }
-    if (message.memoryPools !== undefined) {
-      MemoryPoolsDTO.encode(message.memoryPools, writer.uint32(98).fork()).join();
-    }
-    if (message.memoryPoolEntries !== undefined) {
-      MemoryPoolEntriesDTO.encode(message.memoryPoolEntries, writer.uint32(106).fork()).join();
-    }
-    if (message.skills !== undefined) {
-      SkillsDTO.encode(message.skills, writer.uint32(114).fork()).join();
-    }
-    if (message.traits !== undefined) {
-      TraitsDTO.encode(message.traits, writer.uint32(122).fork()).join();
-    }
-    if (message.addictions !== undefined) {
-      AddictionsDTO.encode(message.addictions, writer.uint32(130).fork()).join();
-    }
-    if (message.birthsigns !== undefined) {
-      BirthsignsDTO.encode(message.birthsigns, writer.uint32(138).fork()).join();
-    }
-    if (message.characters !== undefined) {
-      CharactersDTO.encode(message.characters, writer.uint32(146).fork()).join();
-    }
-    if (message.characterProfessions !== undefined) {
-      CharacterProfessionsDTO.encode(message.characterProfessions, writer.uint32(154).fork()).join();
-    }
-    if (message.diseases !== undefined) {
-      DiseasesDTO.encode(message.diseases, writer.uint32(162).fork()).join();
-    }
-    if (message.effects !== undefined) {
-      EffectsDTO.encode(message.effects, writer.uint32(170).fork()).join();
-    }
-    if (message.facts !== undefined) {
-      FactsDTO.encode(message.facts, writer.uint32(178).fork()).join();
-    }
-    if (message.factions !== undefined) {
-      FactionsDTO.encode(message.factions, writer.uint32(186).fork()).join();
-    }
-    if (message.storageSlots !== undefined) {
-      StorageSlotsDTO.encode(message.storageSlots, writer.uint32(194).fork()).join();
-    }
-    if (message.equipmentSlots !== undefined) {
-      EquipmentSlotsDTO.encode(message.equipmentSlots, writer.uint32(202).fork()).join();
-    }
-    if (message.itemSets !== undefined) {
-      ItemSetsDTO.encode(message.itemSets, writer.uint32(210).fork()).join();
-    }
-    if (message.moods !== undefined) {
-      MoodsDTO.encode(message.moods, writer.uint32(218).fork()).join();
-    }
-    if (message.needs !== undefined) {
-      NeedsDTO.encode(message.needs, writer.uint32(226).fork()).join();
-    }
-    if (message.personalityProfiles !== undefined) {
-      PersonalityProfilesDTO.encode(message.personalityProfiles, writer.uint32(234).fork()).join();
-    }
-    if (message.races !== undefined) {
-      RacesDTO.encode(message.races, writer.uint32(242).fork()).join();
-    }
-    if (message.religions !== undefined) {
-      ReligionsDTO.encode(message.religions, writer.uint32(250).fork()).join();
-    }
-    if (message.resistances !== undefined) {
-      ResistancesDTO.encode(message.resistances, writer.uint32(258).fork()).join();
-    }
-    if (message.statuses !== undefined) {
-      StatusesDTO.encode(message.statuses, writer.uint32(266).fork()).join();
-    }
-    if (message.tags !== undefined) {
-      TagsDTO.encode(message.tags, writer.uint32(274).fork()).join();
-    }
-    if (message.backgrounds !== undefined) {
-      BackgroundsDTO.encode(message.backgrounds, writer.uint32(282).fork()).join();
+      writer.uint32(58).string(message.user);
     }
     return writer;
   },
@@ -17422,7 +15607,7 @@ export const CampaignDTO: MessageFns<CampaignDTO> = {
             break;
           }
 
-          message.world = WorldDTO.decode(reader, reader.uint32());
+          message.world = reader.string();
           continue;
         }
         case 7: {
@@ -17430,231 +15615,7 @@ export const CampaignDTO: MessageFns<CampaignDTO> = {
             break;
           }
 
-          message.user = UserDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 8: {
-          if (tag !== 66) {
-            break;
-          }
-
-          message.items = ItemsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 9: {
-          if (tag !== 74) {
-            break;
-          }
-
-          message.pastExperiences = PastExperiencesDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 10: {
-          if (tag !== 82) {
-            break;
-          }
-
-          message.characterMemories = CharacterMemoriesDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 11: {
-          if (tag !== 90) {
-            break;
-          }
-
-          message.memories = MemoriesDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 12: {
-          if (tag !== 98) {
-            break;
-          }
-
-          message.memoryPools = MemoryPoolsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 13: {
-          if (tag !== 106) {
-            break;
-          }
-
-          message.memoryPoolEntries = MemoryPoolEntriesDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 14: {
-          if (tag !== 114) {
-            break;
-          }
-
-          message.skills = SkillsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 15: {
-          if (tag !== 122) {
-            break;
-          }
-
-          message.traits = TraitsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 16: {
-          if (tag !== 130) {
-            break;
-          }
-
-          message.addictions = AddictionsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 17: {
-          if (tag !== 138) {
-            break;
-          }
-
-          message.birthsigns = BirthsignsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 18: {
-          if (tag !== 146) {
-            break;
-          }
-
-          message.characters = CharactersDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 19: {
-          if (tag !== 154) {
-            break;
-          }
-
-          message.characterProfessions = CharacterProfessionsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 20: {
-          if (tag !== 162) {
-            break;
-          }
-
-          message.diseases = DiseasesDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 21: {
-          if (tag !== 170) {
-            break;
-          }
-
-          message.effects = EffectsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 22: {
-          if (tag !== 178) {
-            break;
-          }
-
-          message.facts = FactsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 23: {
-          if (tag !== 186) {
-            break;
-          }
-
-          message.factions = FactionsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 24: {
-          if (tag !== 194) {
-            break;
-          }
-
-          message.storageSlots = StorageSlotsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 25: {
-          if (tag !== 202) {
-            break;
-          }
-
-          message.equipmentSlots = EquipmentSlotsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 26: {
-          if (tag !== 210) {
-            break;
-          }
-
-          message.itemSets = ItemSetsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 27: {
-          if (tag !== 218) {
-            break;
-          }
-
-          message.moods = MoodsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 28: {
-          if (tag !== 226) {
-            break;
-          }
-
-          message.needs = NeedsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 29: {
-          if (tag !== 234) {
-            break;
-          }
-
-          message.personalityProfiles = PersonalityProfilesDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 30: {
-          if (tag !== 242) {
-            break;
-          }
-
-          message.races = RacesDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 31: {
-          if (tag !== 250) {
-            break;
-          }
-
-          message.religions = ReligionsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 32: {
-          if (tag !== 258) {
-            break;
-          }
-
-          message.resistances = ResistancesDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 33: {
-          if (tag !== 266) {
-            break;
-          }
-
-          message.statuses = StatusesDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 34: {
-          if (tag !== 274) {
-            break;
-          }
-
-          message.tags = TagsDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 35: {
-          if (tag !== 282) {
-            break;
-          }
-
-          message.backgrounds = BackgroundsDTO.decode(reader, reader.uint32());
+          message.user = reader.string();
           continue;
         }
       }
@@ -17678,44 +15639,8 @@ export const CampaignDTO: MessageFns<CampaignDTO> = {
         }, {})
         : {},
       createdAt: isSet(object.createdAt) ? globalThis.String(object.createdAt) : "",
-      world: isSet(object.world) ? WorldDTO.fromJSON(object.world) : undefined,
-      user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
-      items: isSet(object.items) ? ItemsDTO.fromJSON(object.items) : undefined,
-      pastExperiences: isSet(object.pastExperiences) ? PastExperiencesDTO.fromJSON(object.pastExperiences) : undefined,
-      characterMemories: isSet(object.characterMemories)
-        ? CharacterMemoriesDTO.fromJSON(object.characterMemories)
-        : undefined,
-      memories: isSet(object.memories) ? MemoriesDTO.fromJSON(object.memories) : undefined,
-      memoryPools: isSet(object.memoryPools) ? MemoryPoolsDTO.fromJSON(object.memoryPools) : undefined,
-      memoryPoolEntries: isSet(object.memoryPoolEntries)
-        ? MemoryPoolEntriesDTO.fromJSON(object.memoryPoolEntries)
-        : undefined,
-      skills: isSet(object.skills) ? SkillsDTO.fromJSON(object.skills) : undefined,
-      traits: isSet(object.traits) ? TraitsDTO.fromJSON(object.traits) : undefined,
-      addictions: isSet(object.addictions) ? AddictionsDTO.fromJSON(object.addictions) : undefined,
-      birthsigns: isSet(object.birthsigns) ? BirthsignsDTO.fromJSON(object.birthsigns) : undefined,
-      characters: isSet(object.characters) ? CharactersDTO.fromJSON(object.characters) : undefined,
-      characterProfessions: isSet(object.characterProfessions)
-        ? CharacterProfessionsDTO.fromJSON(object.characterProfessions)
-        : undefined,
-      diseases: isSet(object.diseases) ? DiseasesDTO.fromJSON(object.diseases) : undefined,
-      effects: isSet(object.effects) ? EffectsDTO.fromJSON(object.effects) : undefined,
-      facts: isSet(object.facts) ? FactsDTO.fromJSON(object.facts) : undefined,
-      factions: isSet(object.factions) ? FactionsDTO.fromJSON(object.factions) : undefined,
-      storageSlots: isSet(object.storageSlots) ? StorageSlotsDTO.fromJSON(object.storageSlots) : undefined,
-      equipmentSlots: isSet(object.equipmentSlots) ? EquipmentSlotsDTO.fromJSON(object.equipmentSlots) : undefined,
-      itemSets: isSet(object.itemSets) ? ItemSetsDTO.fromJSON(object.itemSets) : undefined,
-      moods: isSet(object.moods) ? MoodsDTO.fromJSON(object.moods) : undefined,
-      needs: isSet(object.needs) ? NeedsDTO.fromJSON(object.needs) : undefined,
-      personalityProfiles: isSet(object.personalityProfiles)
-        ? PersonalityProfilesDTO.fromJSON(object.personalityProfiles)
-        : undefined,
-      races: isSet(object.races) ? RacesDTO.fromJSON(object.races) : undefined,
-      religions: isSet(object.religions) ? ReligionsDTO.fromJSON(object.religions) : undefined,
-      resistances: isSet(object.resistances) ? ResistancesDTO.fromJSON(object.resistances) : undefined,
-      statuses: isSet(object.statuses) ? StatusesDTO.fromJSON(object.statuses) : undefined,
-      tags: isSet(object.tags) ? TagsDTO.fromJSON(object.tags) : undefined,
-      backgrounds: isSet(object.backgrounds) ? BackgroundsDTO.fromJSON(object.backgrounds) : undefined,
+      world: isSet(object.world) ? globalThis.String(object.world) : undefined,
+      user: isSet(object.user) ? globalThis.String(object.user) : undefined,
     };
   },
 
@@ -17743,94 +15668,10 @@ export const CampaignDTO: MessageFns<CampaignDTO> = {
       obj.createdAt = message.createdAt;
     }
     if (message.world !== undefined) {
-      obj.world = WorldDTO.toJSON(message.world);
+      obj.world = message.world;
     }
     if (message.user !== undefined) {
-      obj.user = UserDTO.toJSON(message.user);
-    }
-    if (message.items !== undefined) {
-      obj.items = ItemsDTO.toJSON(message.items);
-    }
-    if (message.pastExperiences !== undefined) {
-      obj.pastExperiences = PastExperiencesDTO.toJSON(message.pastExperiences);
-    }
-    if (message.characterMemories !== undefined) {
-      obj.characterMemories = CharacterMemoriesDTO.toJSON(message.characterMemories);
-    }
-    if (message.memories !== undefined) {
-      obj.memories = MemoriesDTO.toJSON(message.memories);
-    }
-    if (message.memoryPools !== undefined) {
-      obj.memoryPools = MemoryPoolsDTO.toJSON(message.memoryPools);
-    }
-    if (message.memoryPoolEntries !== undefined) {
-      obj.memoryPoolEntries = MemoryPoolEntriesDTO.toJSON(message.memoryPoolEntries);
-    }
-    if (message.skills !== undefined) {
-      obj.skills = SkillsDTO.toJSON(message.skills);
-    }
-    if (message.traits !== undefined) {
-      obj.traits = TraitsDTO.toJSON(message.traits);
-    }
-    if (message.addictions !== undefined) {
-      obj.addictions = AddictionsDTO.toJSON(message.addictions);
-    }
-    if (message.birthsigns !== undefined) {
-      obj.birthsigns = BirthsignsDTO.toJSON(message.birthsigns);
-    }
-    if (message.characters !== undefined) {
-      obj.characters = CharactersDTO.toJSON(message.characters);
-    }
-    if (message.characterProfessions !== undefined) {
-      obj.characterProfessions = CharacterProfessionsDTO.toJSON(message.characterProfessions);
-    }
-    if (message.diseases !== undefined) {
-      obj.diseases = DiseasesDTO.toJSON(message.diseases);
-    }
-    if (message.effects !== undefined) {
-      obj.effects = EffectsDTO.toJSON(message.effects);
-    }
-    if (message.facts !== undefined) {
-      obj.facts = FactsDTO.toJSON(message.facts);
-    }
-    if (message.factions !== undefined) {
-      obj.factions = FactionsDTO.toJSON(message.factions);
-    }
-    if (message.storageSlots !== undefined) {
-      obj.storageSlots = StorageSlotsDTO.toJSON(message.storageSlots);
-    }
-    if (message.equipmentSlots !== undefined) {
-      obj.equipmentSlots = EquipmentSlotsDTO.toJSON(message.equipmentSlots);
-    }
-    if (message.itemSets !== undefined) {
-      obj.itemSets = ItemSetsDTO.toJSON(message.itemSets);
-    }
-    if (message.moods !== undefined) {
-      obj.moods = MoodsDTO.toJSON(message.moods);
-    }
-    if (message.needs !== undefined) {
-      obj.needs = NeedsDTO.toJSON(message.needs);
-    }
-    if (message.personalityProfiles !== undefined) {
-      obj.personalityProfiles = PersonalityProfilesDTO.toJSON(message.personalityProfiles);
-    }
-    if (message.races !== undefined) {
-      obj.races = RacesDTO.toJSON(message.races);
-    }
-    if (message.religions !== undefined) {
-      obj.religions = ReligionsDTO.toJSON(message.religions);
-    }
-    if (message.resistances !== undefined) {
-      obj.resistances = ResistancesDTO.toJSON(message.resistances);
-    }
-    if (message.statuses !== undefined) {
-      obj.statuses = StatusesDTO.toJSON(message.statuses);
-    }
-    if (message.tags !== undefined) {
-      obj.tags = TagsDTO.toJSON(message.tags);
-    }
-    if (message.backgrounds !== undefined) {
-      obj.backgrounds = BackgroundsDTO.toJSON(message.backgrounds);
+      obj.user = message.user;
     }
     return obj;
   },
@@ -17853,92 +15694,8 @@ export const CampaignDTO: MessageFns<CampaignDTO> = {
       {},
     );
     message.createdAt = object.createdAt ?? "";
-    message.world = (object.world !== undefined && object.world !== null)
-      ? WorldDTO.fromPartial(object.world)
-      : undefined;
-    message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
-    message.items = (object.items !== undefined && object.items !== null)
-      ? ItemsDTO.fromPartial(object.items)
-      : undefined;
-    message.pastExperiences = (object.pastExperiences !== undefined && object.pastExperiences !== null)
-      ? PastExperiencesDTO.fromPartial(object.pastExperiences)
-      : undefined;
-    message.characterMemories = (object.characterMemories !== undefined && object.characterMemories !== null)
-      ? CharacterMemoriesDTO.fromPartial(object.characterMemories)
-      : undefined;
-    message.memories = (object.memories !== undefined && object.memories !== null)
-      ? MemoriesDTO.fromPartial(object.memories)
-      : undefined;
-    message.memoryPools = (object.memoryPools !== undefined && object.memoryPools !== null)
-      ? MemoryPoolsDTO.fromPartial(object.memoryPools)
-      : undefined;
-    message.memoryPoolEntries = (object.memoryPoolEntries !== undefined && object.memoryPoolEntries !== null)
-      ? MemoryPoolEntriesDTO.fromPartial(object.memoryPoolEntries)
-      : undefined;
-    message.skills = (object.skills !== undefined && object.skills !== null)
-      ? SkillsDTO.fromPartial(object.skills)
-      : undefined;
-    message.traits = (object.traits !== undefined && object.traits !== null)
-      ? TraitsDTO.fromPartial(object.traits)
-      : undefined;
-    message.addictions = (object.addictions !== undefined && object.addictions !== null)
-      ? AddictionsDTO.fromPartial(object.addictions)
-      : undefined;
-    message.birthsigns = (object.birthsigns !== undefined && object.birthsigns !== null)
-      ? BirthsignsDTO.fromPartial(object.birthsigns)
-      : undefined;
-    message.characters = (object.characters !== undefined && object.characters !== null)
-      ? CharactersDTO.fromPartial(object.characters)
-      : undefined;
-    message.characterProfessions = (object.characterProfessions !== undefined && object.characterProfessions !== null)
-      ? CharacterProfessionsDTO.fromPartial(object.characterProfessions)
-      : undefined;
-    message.diseases = (object.diseases !== undefined && object.diseases !== null)
-      ? DiseasesDTO.fromPartial(object.diseases)
-      : undefined;
-    message.effects = (object.effects !== undefined && object.effects !== null)
-      ? EffectsDTO.fromPartial(object.effects)
-      : undefined;
-    message.facts = (object.facts !== undefined && object.facts !== null)
-      ? FactsDTO.fromPartial(object.facts)
-      : undefined;
-    message.factions = (object.factions !== undefined && object.factions !== null)
-      ? FactionsDTO.fromPartial(object.factions)
-      : undefined;
-    message.storageSlots = (object.storageSlots !== undefined && object.storageSlots !== null)
-      ? StorageSlotsDTO.fromPartial(object.storageSlots)
-      : undefined;
-    message.equipmentSlots = (object.equipmentSlots !== undefined && object.equipmentSlots !== null)
-      ? EquipmentSlotsDTO.fromPartial(object.equipmentSlots)
-      : undefined;
-    message.itemSets = (object.itemSets !== undefined && object.itemSets !== null)
-      ? ItemSetsDTO.fromPartial(object.itemSets)
-      : undefined;
-    message.moods = (object.moods !== undefined && object.moods !== null)
-      ? MoodsDTO.fromPartial(object.moods)
-      : undefined;
-    message.needs = (object.needs !== undefined && object.needs !== null)
-      ? NeedsDTO.fromPartial(object.needs)
-      : undefined;
-    message.personalityProfiles = (object.personalityProfiles !== undefined && object.personalityProfiles !== null)
-      ? PersonalityProfilesDTO.fromPartial(object.personalityProfiles)
-      : undefined;
-    message.races = (object.races !== undefined && object.races !== null)
-      ? RacesDTO.fromPartial(object.races)
-      : undefined;
-    message.religions = (object.religions !== undefined && object.religions !== null)
-      ? ReligionsDTO.fromPartial(object.religions)
-      : undefined;
-    message.resistances = (object.resistances !== undefined && object.resistances !== null)
-      ? ResistancesDTO.fromPartial(object.resistances)
-      : undefined;
-    message.statuses = (object.statuses !== undefined && object.statuses !== null)
-      ? StatusesDTO.fromPartial(object.statuses)
-      : undefined;
-    message.tags = (object.tags !== undefined && object.tags !== null) ? TagsDTO.fromPartial(object.tags) : undefined;
-    message.backgrounds = (object.backgrounds !== undefined && object.backgrounds !== null)
-      ? BackgroundsDTO.fromPartial(object.backgrounds)
-      : undefined;
+    message.world = object.world ?? undefined;
+    message.user = object.user ?? undefined;
     return message;
   },
 };

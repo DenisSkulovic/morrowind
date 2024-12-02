@@ -79,115 +79,87 @@ export class World extends Base {
     campaigns!: Campaign[]
 
     @OneToMany(() => Item, item => item.world, { onDelete: "CASCADE", })
-    @Serializable({ strategy: 'id' })
     items!: Item[]
 
     @OneToMany(() => PastExperience, pastExperience => pastExperience.world, { onDelete: "CASCADE", })
-    @Serializable({ strategy: 'id' })
     pastExperiences!: PastExperience[]
 
     @OneToMany(() => CharacterMemory, characterMemory => characterMemory.world, { onDelete: "CASCADE", })
-    @Serializable({ strategy: 'id' })
     characterMemories!: CharacterMemory[]
 
     @OneToMany(() => Memory, memory => memory.world, { onDelete: "CASCADE", })
-    @Serializable({ strategy: 'id' })
     memories!: Memory[]
 
     @OneToMany(() => MemoryPool, memoryPool => memoryPool.world, { onDelete: "CASCADE", })
-    @Serializable({ strategy: 'id' })
     memoryPools!: MemoryPool[]
 
     @OneToMany(() => MemoryPoolEntry, memoryPoolEntry => memoryPoolEntry.world, { onDelete: "CASCADE", })
-    @Serializable({ strategy: 'id' })
     memoryPoolEntries!: MemoryPoolEntry[]
 
     @OneToMany(() => Skill, skill => skill.world, { onDelete: "CASCADE", })
-    @Serializable({ strategy: 'id' })
     skills!: Skill[]
 
     @OneToMany(() => Trait, trait => trait.world, { onDelete: "CASCADE", })
-    @Serializable({ strategy: 'id' })
     traits!: Trait[]
 
     @OneToMany(() => Addiction, addiction => addiction.world, { onDelete: "CASCADE", })
-    @Serializable({ strategy: 'id' })
     addictions!: Addiction[]
 
     @OneToMany(() => Birthsign, birthsign => birthsign.world, { onDelete: "CASCADE", })
-    @Serializable({ strategy: 'id' })
     birthsigns!: Birthsign[]
 
     @OneToMany(() => Character, character => character.world, { onDelete: "CASCADE", })
-    @Serializable({ strategy: 'id' })
     characters!: Character[]
 
     @OneToMany(() => CharacterProfession, characterProfession => characterProfession.world, { onDelete: "CASCADE", })
-    @Serializable({ strategy: 'id' })
     characterProfessions!: CharacterProfession[]
 
     @OneToMany(() => Disease, disease => disease.world, { onDelete: "CASCADE", })
-    @Serializable({ strategy: 'id' })
     diseases!: Disease[]
 
     @OneToMany(() => Effect, effect => effect.world, { onDelete: "CASCADE", })
-    @Serializable({ strategy: 'id' })
     effects!: Effect[]
 
     @OneToMany(() => Fact, fact => fact.world, { onDelete: "CASCADE", })
-    @Serializable({ strategy: 'id' })
     facts!: Fact[]
 
     @OneToMany(() => Faction, faction => faction.world, { onDelete: "CASCADE", })
-    @Serializable({ strategy: 'id' })
     factions!: Faction[]
 
     @OneToMany(() => StorageSlot, storageSlot => storageSlot.world, { onDelete: "CASCADE", })
-    @Serializable({ strategy: 'id' })
     storageSlots!: StorageSlot[]
 
     @OneToMany(() => EquipmentSlot, equipmentSlot => equipmentSlot.world, { onDelete: "CASCADE", })
-    @Serializable({ strategy: 'id' })
     equipmentSlots!: EquipmentSlot[]
 
     @OneToMany(() => ItemSet, itemSet => itemSet.world, { onDelete: "CASCADE", })
-    @Serializable({ strategy: 'id' })
     itemSets!: ItemSet[]
 
     @OneToMany(() => Mood, mood => mood.world, { onDelete: "CASCADE", })
-    @Serializable({ strategy: 'id' })
     moods!: Mood[]
 
     @OneToMany(() => Need, need => need.world, { onDelete: "CASCADE", })
-    @Serializable({ strategy: 'id' })
     needs!: Need[]
 
     @OneToMany(() => PersonalityProfile, personalityProfile => personalityProfile.world, { onDelete: "CASCADE", })
-    @Serializable({ strategy: 'id' })
     personalityProfiles!: PersonalityProfile[]
 
     @OneToMany(() => Race, race => race.world, { onDelete: "CASCADE", })
-    @Serializable({ strategy: 'id' })
     races!: Race[]
 
     @OneToMany(() => Religion, religion => religion.world, { onDelete: "CASCADE", })
-    @Serializable({ strategy: 'id' })
     religions!: Religion[]
 
     @OneToMany(() => Resistance, resistance => resistance.world, { onDelete: "CASCADE", })
-    @Serializable({ strategy: 'id' })
     resistances!: Resistance[]
 
     @OneToMany(() => Status, status => status.world, { onDelete: "CASCADE", })
-    @Serializable({ strategy: 'id' })
     statuses!: Status[]
 
     @OneToMany(() => Tag, tag => tag.world, { onDelete: "CASCADE", })
-    @Serializable({ strategy: 'id' })
     tags!: Tag[]
 
     @OneToMany(() => Background, background => background.world, { onDelete: "CASCADE", })
-    @Serializable({ strategy: 'id' })
     backgrounds!: Background[]
 
     public toDTO(): WorldDTO {

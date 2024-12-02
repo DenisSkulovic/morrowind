@@ -21,9 +21,9 @@ message BackgroundDTO {
     GenerationInstructionsDTO memoryPools = 13;
     GenerationInstructionsDTO skillSets = 14;
     map<string, int32> skillAdjustments = 15;
-    optional UserDTO user = 16;
-    optional CampaignDTO campaign = 17;
-    optional WorldDTO world = 18;
+    optional string user = 16;
+    optional string campaign = 17;
+    optional string world = 18;
     string targetEntity = 19;
     GenerationInstructionDTO gender = 20;
 }
@@ -48,10 +48,10 @@ message EffectDTO {
     string blueprintId = 2;
     string name = 3;
     optional Metadata metadata = 4;
-    optional UserDTO user = 5;
-    optional CampaignDTO campaign = 6;
-    optional WorldDTO world = 7;
-    optional TagsDTO tags = 8;
+    optional string user = 5;
+    optional string campaign = 6;
+    optional string world = 7;
+    repeated string tags = 8;
     EffectTypeEnumDTO type = 9;
     EffectTargetEnumDTO target = 10;
     EffectModeEnumDTO mode = 11;
@@ -71,9 +71,9 @@ message ResistanceDTO {
     string blueprintId = 2;
     string name = 3;
     optional Metadata metadata = 4;
-    optional UserDTO user = 5;
-    optional CampaignDTO campaign = 6;
-    optional WorldDTO world = 7;
+    optional string user = 5;
+    optional string campaign = 6;
+    optional string world = 7;
     EffectTypeEnumDTO effectType = 8;
     optional string targetEffect = 9;
     string targetEntity = 10;
@@ -91,9 +91,9 @@ message StatusDTO {
     string blueprintId = 2;
     string name = 3;
     optional Metadata metadata = 4;
-    optional UserDTO user = 5;
-    optional CampaignDTO campaign = 6;
-    optional WorldDTO world = 7;
+    optional string user = 5;
+    optional string campaign = 6;
+    optional string world = 7;
     EffectTypeEnumDTO type = 8;
     repeated string effects = 9;
     int32 duration = 10;
@@ -112,9 +112,9 @@ message ItemSetDTO {
     string id = 1;
     string blueprintId = 2;
     optional Metadata metadata = 3;
-    optional UserDTO user = 4;
-    optional CampaignDTO campaign = 5;
-    optional WorldDTO world = 6;
+    optional string user = 4;
+    optional string campaign = 5;
+    optional string world = 6;
     GenerationInstructionDTO set = 7;
     string targetEntity = 8;
 }
@@ -157,12 +157,12 @@ message ItemDTO {
     optional int32 spoilage = 28;
     optional int32 thirstQuenched = 29;
     optional string type = 30;
-    optional StorageSlotDTO storageSlot = 31;
+    repeated string storageSlot = 31;
     optional StorageSlotsDTO storageSlots = 32;
-    optional EquipmentSlotDTO equipmentSlot = 33;
-    optional UserDTO user = 34;
-    optional CampaignDTO campaign = 35;
-    optional WorldDTO world = 36;
+    repeated string equipmentSlot = 33;
+    optional string user = 34;
+    optional string campaign = 35;
+    optional string world = 36;
     optional string trainedSkill = 37;
     optional StorageSlotDefinitionsDTO storageSlotDefinition = 38;
     optional float weight = 39;
@@ -188,13 +188,13 @@ message StorageSlotDTO {
     string blueprintId = 2;
     string name = 3;
     optional Metadata metadata = 4;
-    optional UserDTO user = 5;
-    optional CampaignDTO campaign = 6;
-    optional WorldDTO world = 7;
+    optional string user = 5;
+    optional string campaign = 6;
+    optional string world = 7;
     repeated int32 grid = 8;
     StorageGridDTO gridState = 9;
     int32 maxWeight = 10;
-    optional ItemDTO parentItem = 11;
+    optional string parentItem = 11;
     optional ItemsDTO storedItems = 12;
     string targetEntity = 13;
 }
@@ -244,9 +244,9 @@ message CharacterDTO {
     string id = 1;
     string blueprintId = 2;
     optional Metadata metadata = 3;
-    optional UserDTO user = 4;
-    optional CampaignDTO campaign = 5;
-    optional WorldDTO world = 6;
+    optional string user = 4;
+    optional string campaign = 5;
+    optional string world = 6;
     string firstName = 7;
     string lastName = 8;
     string race = 9;
@@ -257,19 +257,18 @@ message CharacterDTO {
     optional int32 birthDay = 14;
     map<string, int32> skills = 15;
     optional EquipmentSlotsDTO equipmentSlots = 16;
-    optional CharacterProfessionsDTO professions  = 17;
-    optional MemoryPoolsDTO memoryPools = 18;
-    optional CharacterMemoriesDTO characterMemories = 19;
+    repeated string professions  = 17;
+    repeated string memoryPools = 18;
+    repeated string characterMemories = 19;
     string enneagramType = 20;
-    optional TraitsDTO traits = 21;
-    optional DiseasesDTO diseases = 22;
-    optional AddictionsDTO addictions = 23;
-    optional FactionsDTO factions = 24;
-    optional TagsDTO tags = 25;
+    repeated string traits = 21;
+    repeated string diseases = 22;
+    repeated string addictions = 23;
+    repeated string factions = 24;
+    repeated string tags = 25;
     string targetEntity = 26;
     optional string birthEra = 27;
-    optional PastExperiencesDTO pastExperiencesChild = 28;
-    optional PastExperiencesDTO pastExperiencesAdult = 29;
+    repeated string pastExperiences = 28;
 }
 message CharactersDTO {
     repeated CharacterDTO arr = 1;
@@ -284,12 +283,11 @@ message AddictionDTO {
     string blueprintId = 2;
     string name = 3;
     optional Metadata metadata = 4;
-    optional UserDTO user = 5;
-    optional CampaignDTO campaign = 6;
-    optional WorldDTO world = 7;
-    optional CharacterDTO character = 8;
-    optional CharactersDTO characters = 9;
-    string targetEntity = 10;
+    optional string user = 5;
+    optional string campaign = 6;
+    optional string world = 7;
+    repeated string characters = 8;
+    string targetEntity = 9;
 }
 message AddictionsDTO {
     repeated AddictionDTO arr = 1;
@@ -304,18 +302,18 @@ message CharacterMemoryDTO {
     string blueprintId = 2;
     string name = 3;
     optional Metadata metadata = 4;
-    optional UserDTO user = 5;
-    optional CampaignDTO campaign = 6;
-    optional WorldDTO world = 7;
-    optional CharacterDTO character = 8;
+    optional string user = 5;
+    optional string campaign = 6;
+    optional string world = 7;
+    optional string character = 8;
     repeated FactStatusDTO factStatus = 9;
     int32 importance = 10;
     int32 resistance = 11;
     int32 accumulator = 12;
     optional int32 acquiredAt = 13;
     optional int32 lastUpdatedAt = 14;
-    optional TagsDTO tags = 15;
-    MemoryDTO memory = 16;
+    repeated string tags = 15;
+    string memory = 16;
     string targetEntity = 17;
 }
 message CharacterMemoriesDTO {
@@ -344,23 +342,10 @@ message TagDTO {
     optional Metadata metadata = 3;
     string label = 4;
     TagSubtypeEnumDTO subtype = 5;
-    optional ItemsDTO items = 6;
-    optional PastExperiencesDTO pastExperiences = 7;
-    optional CharacterMemoriesDTO characterMemories = 8;
-    optional MemoriesDTO memories = 9;
-    optional MemoryPoolsDTO memoryPools = 10;
-    optional SkillsDTO skills = 11;
-    optional TraitsDTO traits = 12;
-    optional CharactersDTO characters = 13;
-    optional CharacterProfessionsDTO characterProfessions = 14;
-    optional DiseasesDTO diseases = 15;
-    optional EffectsDTO effects = 16;
-    optional FactsDTO facts = 17;
-    optional FactionsDTO factions = 18;
-    optional UserDTO user = 19;
-    optional CampaignDTO campaign = 20;
-    optional WorldDTO world = 21;
-    string targetEntity = 22;
+    optional string user = 6;
+    optional string campaign = 7;
+    optional string world = 8;
+    string targetEntity = 9;
 }
 message TagsDTO {
     repeated TagDTO arr = 1;
@@ -375,10 +360,10 @@ message SkillDTO {
     string blueprintId = 2;
     string name = 3;
     optional Metadata metadata = 4;
-    optional UserDTO user = 5;
-    optional CampaignDTO campaign = 6;
-    optional WorldDTO world = 7;
-    optional TagsDTO tags = 8;
+    optional string user = 5;
+    optional string campaign = 6;
+    optional string world = 7;
+    repeated string tags = 8;
     string description = 9;
     SkillCategoryEnumDTO category = 10;
     string targetEntity = 11;
@@ -396,10 +381,10 @@ message TraitDTO {
     string blueprintId = 2;
     string name = 3;
     optional Metadata metadata = 4;
-    optional UserDTO user = 5;
-    optional CampaignDTO campaign = 6;
-    optional WorldDTO world = 7;
-    optional TagsDTO tags = 8;
+    optional string user = 5;
+    optional string campaign = 6;
+    optional string world = 7;
+    repeated string tags = 8;
     string targetEntity = 9;
     TraitTypeEnumDTO type = 10;
 }
@@ -416,13 +401,13 @@ message DiseaseDTO {
     string blueprintId = 2;
     string name = 3;
     optional Metadata metadata = 4;
-    optional UserDTO user = 5;
-    optional CampaignDTO campaign = 6;
-    optional WorldDTO world = 7;
-    optional TagsDTO tags = 8;
+    optional string user = 5;
+    optional string campaign = 6;
+    optional string world = 7;
+    repeated string tags = 8;
     string description = 9;
     string severity = 10;
-    optional CharactersDTO characters = 11;
+    repeated string characters = 11;
     string targetEntity = 12;
 }
 message DiseasesDTO { 
@@ -438,15 +423,13 @@ message FactDTO {
     string blueprintId = 2;
     string name = 3;
     optional Metadata metadata = 4;
-    optional UserDTO user = 5;
-    optional CampaignDTO campaign = 6;
-    optional WorldDTO world = 7;
-    optional TagsDTO tags = 8;
+    optional string user = 5;
+    optional string campaign = 6;
+    optional string world = 7;
+    repeated string tags = 8;
     string description = 9;
     int32 weight = 10;
-    optional MemoriesDTO memories = 11;
-    optional CharactersDTO characters = 12;
-    string targetEntity = 13;
+    string targetEntity = 11;
 }
 message FactsDTO {
     repeated FactDTO arr = 1;
@@ -461,12 +444,11 @@ message FactionDTO {
     string blueprintId = 2;
     string name = 3;
     optional Metadata metadata = 4;
-    optional UserDTO user = 5;
-    optional CampaignDTO campaign = 6;
-    optional WorldDTO world = 7;
-    optional TagsDTO tags = 8;
-    optional CharactersDTO characters = 9;
-    string targetEntity = 10;
+    optional string user = 5;
+    optional string campaign = 6;
+    optional string world = 7;
+    repeated string tags = 8;
+    string targetEntity = 9;
 }
 message FactionsDTO {
     repeated FactionDTO arr = 1;
@@ -481,14 +463,13 @@ message MemoryPoolDTO {
     string blueprintId = 2;
     string name = 3;
     optional Metadata metadata = 4;
-    optional UserDTO user = 5;
-    optional CampaignDTO campaign = 6;
-    optional WorldDTO world = 7;
+    optional string user = 5;
+    optional string campaign = 6;
+    optional string world = 7;
     optional string description = 8;
-    optional MemoryPoolEntriesDTO memoryPoolEntries = 9;
-    optional CharacterProfessionsDTO characterProfessions = 10;
-    optional TagsDTO tags = 11;
-    string targetEntity = 12;
+    repeated string memoryPoolEntries = 9;
+    repeated string tags = 10;
+    string targetEntity = 11;
 }
 message MemoryPoolsDTO {
     repeated MemoryPoolDTO arr = 1;
@@ -503,11 +484,11 @@ message MemoryPoolEntryDTO {
     string blueprintId = 2;
     string name = 3;
     optional Metadata metadata = 4;
-    optional UserDTO user = 5;
-    optional CampaignDTO campaign = 6;
-    optional WorldDTO world = 7;
-    optional MemoryPoolDTO memoryPool = 8;
-    optional MemoryDTO memory = 9;
+    optional string user = 5;
+    optional string campaign = 6;
+    optional string world = 7;
+    optional string memoryPool = 8;
+    optional string memory = 9;
     int32 probability = 10;
     int32 defaultClarity = 11;
     int32 defaultImportance = 12;
@@ -526,13 +507,12 @@ message CharacterProfessionDTO {
     string blueprintId = 2;
     string name = 3;
     optional Metadata metadata = 4;
-    optional UserDTO user = 5;
-    optional CampaignDTO campaign = 6;
-    optional WorldDTO world = 7;
-    optional CharactersDTO characters = 8;
-    optional TagsDTO tags = 9;
-    optional MemoryPoolsDTO memoryPools = 10;
-    string targetEntity = 11;
+    optional string user = 5;
+    optional string campaign = 6;
+    optional string world = 7;
+    repeated string tags = 8;
+    repeated string memoryPools = 9;
+    string targetEntity = 10;
 }
 message CharacterProfessionsDTO {
     repeated CharacterProfessionDTO arr = 1;
@@ -547,12 +527,12 @@ message EquipmentSlotDTO {
     string blueprintId = 2;
     string name = 3;
     optional Metadata metadata = 4;
-    optional UserDTO user = 5;
-    optional CampaignDTO campaign = 6;
-    optional WorldDTO world = 7;
+    optional string user = 5;
+    optional string campaign = 6;
+    optional string world = 7;
     repeated string allowedEntities = 8;
     optional ItemDTO equippedItem = 9;
-    optional CharacterDTO character = 10;
+    optional string character = 10;
     string targetEntity = 11;
 }
 message EquipmentSlotsDTO {
@@ -568,9 +548,9 @@ message BirthsignDTO {
     string blueprintId = 2;
     string name = 3;
     optional Metadata metadata = 4;
-    optional UserDTO user = 5;
-    optional CampaignDTO campaign = 6;
-    optional WorldDTO world = 7;
+    optional string user = 5;
+    optional string campaign = 6;
+    optional string world = 7;
     string targetEntity = 8;
 }
 message BirthsignsDTO {
@@ -586,9 +566,9 @@ message RaceDTO {
     string blueprintId = 2;
     string name = 3;
     optional EquipmentSlotDefinitionsDTO equipmentSlotDefinitions = 4;
-    optional UserDTO user = 5;
-    optional CampaignDTO campaign = 6;
-    optional WorldDTO world = 7;
+    optional string user = 5;
+    optional string campaign = 6;
+    optional string world = 7;
     optional Metadata metadata = 8;
     string targetEntity = 9;
 }
@@ -630,9 +610,9 @@ message MoodDTO {
     string blueprintId = 2;
     string name = 3;
     optional Metadata metadata = 4;
-    optional UserDTO user = 5;
-    optional CampaignDTO campaign = 6;
-    optional WorldDTO world = 7;
+    optional string user = 5;
+    optional string campaign = 6;
+    optional string world = 7;
     string description = 8;
     string targetEntity = 9;
 }
@@ -649,9 +629,9 @@ message ReligionDTO {
     string blueprintId = 2;
     string name = 3;
     optional Metadata metadata = 4;
-    optional UserDTO user = 5;
-    optional CampaignDTO campaign = 6;
-    optional WorldDTO world = 7;
+    optional string user = 5;
+    optional string campaign = 6;
+    optional string world = 7;
     string description = 8;
     optional ReligionRitualsDTO rituals = 9;
     optional ReligionTenetsDTO tenets = 10;
@@ -742,9 +722,9 @@ message CharacterGenInstructionDTO {
     optional string birthSign = 12;
     string id = 13;
     optional Metadata metadata = 14;
-    optional UserDTO user = 15;
-    optional CampaignDTO campaign = 16;
-    optional WorldDTO world = 17;
+    optional string user = 15;
+    optional string campaign = 16;
+    optional string world = 17;
 }
 message CharacterGenInstructions {
     repeated CharacterGenInstructionDTO arr = 1;
@@ -759,9 +739,9 @@ message CharacterGroupGenInstructionDTO {
     string blueprintId = 2;
     string name = 3;
     optional Metadata metadata = 4;
-    optional UserDTO user = 5;
-    optional CampaignDTO campaign = 6;
-    optional WorldDTO world = 7;
+    optional string user = 5;
+    optional string campaign = 6;
+    optional string world = 7;
     CombinatorDTO set = 8;
     string targetEntity = 9;
 }
@@ -844,10 +824,10 @@ message PastExperienceDTO {
     string blueprintId = 2;
     string name = 3;
     optional Metadata metadata = 4;
-    optional UserDTO user = 5;
-    optional CampaignDTO campaign = 6;
-    optional WorldDTO world = 7;
-    optional TagsDTO tags = 8;
+    optional string user = 5;
+    optional string campaign = 6;
+    optional string world = 7;
+    repeated string tags = 8;
     PastExperienceTypeEnumDTO type = 9;
     string targetEntity = 10;
 }
@@ -864,10 +844,10 @@ message MemoryDTO {
     string blueprintId = 2;
     string name = 3;
     optional Metadata metadata = 4;
-    optional UserDTO user = 5;
-    optional CampaignDTO campaign = 6;
-    optional WorldDTO world = 7;
-    optional TagsDTO tags = 8;
+    optional string user = 5;
+    optional string campaign = 6;
+    optional string world = 7;
+    repeated string tags = 8;
     optional FactsDTO facts = 9;
     MemoryTypeEnumDTO type = 10;
     string description = 11;
@@ -886,10 +866,10 @@ message SkillSetDTO {
     string blueprintId = 2;
     string name = 3;
     optional Metadata metadata = 4;
-    optional UserDTO user = 5;
-    optional CampaignDTO campaign = 6;
-    optional WorldDTO world = 7;
-    optional TagsDTO tags = 8;
+    optional string user = 5;
+    optional string campaign = 6;
+    optional string world = 7;
+    repeated string tags = 8;
     SkillImprovementDTO skillImprovement = 9;
     string targetEntity = 10;
 }
@@ -914,9 +894,9 @@ message PersonalityProfileDTO {
     string blueprintId = 2;
     string name = 3;
     optional Metadata metadata = 4;
-    optional UserDTO user = 5;
-    optional CampaignDTO campaign = 6;
-    optional WorldDTO world = 7;
+    optional string user = 5;
+    optional string campaign = 6;
+    optional string world = 7;
     string enneagramType = 8;
     repeated GenerationInstructionDTO traits = 9;
     string targetEntity = 10;
@@ -934,9 +914,9 @@ message NeedDTO {
     string blueprintId = 2;
     string name = 3;
     optional Metadata metadata = 4;
-    optional UserDTO user = 5;
-    optional CampaignDTO campaign = 6;
-    optional WorldDTO world = 7;
+    optional string user = 5;
+    optional string campaign = 6;
+    optional string world = 7;
     string description = 8;
     NeedTypeEnumDTO type = 9;
     NeedLayerEnumDTO layer = 10;
@@ -957,34 +937,7 @@ message UserDTO {
     optional BackgroundsDTO backgrounds = 2;
     optional WorldsDTO worlds = 3;
     optional CampaignsDTO campaigns = 4;
-    optional ItemsDTO items = 5;
-    optional PastExperiencesDTO pastExperiences = 6;
-    optional CharacterMemoriesDTO characterMemories = 7;
-    optional MemoriesDTO memories = 8;
-    optional MemoryPoolsDTO memoryPools = 9;
-    optional MemoryPoolEntriesDTO memoryPoolEntries = 10;
-    optional SkillsDTO skills = 11;
-    optional TraitsDTO traits = 12;
-    optional AddictionsDTO addictions = 13;
-    optional BirthsignsDTO birthsigns = 14;
-    optional CharactersDTO characters = 15;
-    optional CharacterProfessionsDTO characterProfessions = 16;
-    optional DiseasesDTO diseases = 17;
-    optional EffectsDTO effects = 18;
-    optional FactsDTO facts = 19;
-    optional FactionsDTO factions = 20;
-    optional StorageSlotsDTO storageSlots = 21;
-    optional EquipmentSlotsDTO equipmentSlots = 22;
-    optional ItemSetsDTO itemSets = 23;
-    optional MoodsDTO moods = 24;
-    optional NeedsDTO needs = 25;
-    optional PersonalityProfilesDTO personalityProfiles = 26;
-    optional RacesDTO races = 27;
-    optional ReligionsDTO religions = 28;
-    optional ResistancesDTO resistances = 29;
-    optional StatusesDTO statuses = 30;
-    optional TagsDTO tags = 31;
-    optional AccountDTO account = 32;
+    optional AccountDTO account = 5;
 }
 message UsersDTO {
     repeated UserDTO arr = 1;
@@ -999,7 +952,7 @@ message AccountDTO {
     string username = 2;
     string email = 3;
     string role = 4;
-    optional UserDTO user = 5;
+    optional string user = 5;
     optional PreferencesDTO preferences = 6;
 }
 // #######################################################################################
@@ -1031,36 +984,8 @@ message WorldDTO {
     bool frozen = 5;
 
     // relations
-    optional UserDTO user = 6;                      
+    optional string user = 6;                      
     optional CampaignsDTO campaigns = 7;    
-    optional ItemsDTO items = 8;            
-    optional PastExperiencesDTO pastExperiences = 9;
-    optional CharacterMemoriesDTO characterMemories = 10;
-    optional MemoriesDTO memories = 11;
-    optional MemoryPoolsDTO memoryPools = 12;
-    optional MemoryPoolEntriesDTO memoryPoolEntries = 13;
-    optional SkillsDTO skills = 14;
-    optional TraitsDTO traits = 15;
-    optional AddictionsDTO addictions = 16;
-    optional BirthsignsDTO birthsigns = 17;
-    optional CharactersDTO characters = 18;
-    optional CharacterProfessionsDTO characterProfessions = 19;
-    optional DiseasesDTO diseases = 20;
-    optional EffectsDTO effects = 21;
-    optional FactsDTO facts = 22;
-    optional FactionsDTO factions = 23;
-    optional StorageSlotsDTO storageSlots = 24;
-    optional EquipmentSlotsDTO equipmentSlots = 25;
-    optional ItemSetsDTO itemSets = 26;
-    optional MoodsDTO moods = 27;
-    optional NeedsDTO needs = 28;
-    optional PersonalityProfilesDTO personalityProfiles = 29;
-    optional RacesDTO races = 30;
-    optional ReligionsDTO religions = 31;
-    optional ResistancesDTO resistances = 32;
-    optional StatusesDTO statuses = 33;
-    optional TagsDTO tags = 34;
-    optional BackgroundsDTO backgrounds = 35;
 }
 message WorldsDTO {
     repeated WorldDTO arr = 1;
@@ -1076,38 +1001,8 @@ message CampaignDTO {
     optional string description = 3;            
     map<string, string> dynamicState = 4; 
     string createdAt = 5;             
-    optional WorldDTO world = 6;                   
-    optional UserDTO user = 7;                     
-
-    // relations
-    optional ItemsDTO items = 8;                            
-    optional PastExperiencesDTO pastExperiences = 9;       
-    optional CharacterMemoriesDTO characterMemories = 10;   
-    optional MemoriesDTO memories = 11;                      
-    optional MemoryPoolsDTO memoryPools = 12;              
-    optional MemoryPoolEntriesDTO memoryPoolEntries = 13;  
-    optional SkillsDTO skills = 14;                         
-    optional TraitsDTO traits = 15;                         
-    optional AddictionsDTO addictions = 16;                 
-    optional BirthsignsDTO birthsigns = 17;                 
-    optional CharactersDTO characters = 18;                 
-    optional CharacterProfessionsDTO characterProfessions = 19; 
-    optional DiseasesDTO diseases = 20;                     
-    optional EffectsDTO effects = 21;                       
-    optional FactsDTO facts = 22;                           
-    optional FactionsDTO factions = 23;                     
-    optional StorageSlotsDTO storageSlots = 24;            
-    optional EquipmentSlotsDTO equipmentSlots = 25;        
-    optional ItemSetsDTO itemSets = 26;                    
-    optional MoodsDTO moods = 27;                           
-    optional NeedsDTO needs = 28;                           
-    optional PersonalityProfilesDTO personalityProfiles = 29; 
-    optional RacesDTO races = 30;                           
-    optional ReligionsDTO religions = 31;                   
-    optional ResistancesDTO resistances = 32;               
-    optional StatusesDTO statuses = 33;                      
-    optional TagsDTO tags = 34;                             
-    optional BackgroundsDTO backgrounds = 35;               
+    optional string world = 6;                   
+    optional string user = 7;                     
 }
 message CampaignsDTO {
     repeated CampaignDTO arr = 1;
