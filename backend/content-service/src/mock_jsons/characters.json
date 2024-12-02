@@ -1,0 +1,114 @@
+{
+    "source": 0,
+    "arr": [
+        {
+            "blueprintId": "GENERIC_HIGHLAND_GUARD",
+            "name": "GENERIC_HIGHLAND_GUARD",
+            "backgroundBlueprintId": "BACKGROUND_HIGHLAND_TOWN_GUARD",
+            "targetEntity": "CharacterGenInstruction"
+        },
+        {
+            "blueprintId": "SPECIFIC_CAIUS_COSSADES",
+            "name": "SPECIFIC_CAIUS_COSSADES",
+            "firstName": "Caius",
+            "lastName": "Cossades",
+            "gender": 0,
+            "birthsign": "TOWER",
+            "birthEra": "3E",
+            "birthYear": 427,
+            "birthMonth": "Last Seed",
+            "birthDay": 17,
+            "backgroundBlueprintId": "BACKGROUND_HIGHLAND_TOWN_GUARD",
+            "backgroundCustomization": {
+                "race": {
+                    "arr": [
+                        {
+                            "blueprintId": "HUMAN"
+                        }
+                    ]
+                },
+                "faction": {
+                    "arr": [
+                        {
+                            "blueprintId": "HIGHLAND_KINGDOM"
+                        }
+                    ]
+                },
+                "disease": {
+                    "arr": [
+                        {
+                            "blueprintId": "PLAGUE"
+                        }
+                    ]
+                },
+                "addiction": {
+                    "arr": [
+                        {
+                            "blueprintId": "ALCOHOLISM"
+                        }
+                    ]
+                },
+                "profession": {
+                    "arr": [
+                        {
+                            "blueprintId": "TOWN_GUARD"
+                        }
+                    ]
+                },
+                "religion": {
+                    "arr": [
+                        {
+                            "blueprintId": "ANCESTOR_WORSHIP"
+                        }
+                    ]
+                },
+                "itemSets": {
+                    "arr": [
+                        {
+                            "blueprintId": "COMMON_SHIRT_PANTS"
+                        }
+                    ]
+                },
+                "items": {
+                    "arr": []
+                },
+                "pastExpChild": {
+                    "arr": [
+                        {
+                            "blueprintId": "FARM_CHILD"
+                        }
+                    ]
+                },
+                "pastExpAdult": {
+                    "arr": [
+                        {
+                            "blueprintId": "RETIRED_SOLDIER"
+                        },
+                        {
+                            "blueprintId": "QUIET_TOWN_LIFE"
+                        }
+                    ]
+                },
+                "skillSets": {
+                    "arr": [
+                        {
+                            "blueprintId": "COMBAT_MASTER_SWORDSMAN"
+                        }
+                    ]
+                },
+                "skill_adjustments": {
+                    "MERCHANTILE": 10,
+                    "SPEECHCRAFT": -20
+                },
+                "personality": {
+                    "arr": [
+                        {
+                            "blueprintId": "PROFILE_LONER"
+                        }
+                    ]
+                }
+            },
+            "targetEntity": "CharacterGenInstruction"
+        }
+    ]
+}

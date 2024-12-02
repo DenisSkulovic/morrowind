@@ -5,6 +5,14 @@
         "faction": [
             "HIGHLAND_KINGDOM"
         ],
+        "gender": {
+            "cond": "OR",
+            "prob": {
+                "MALE": 0.95,
+                "FEMALE": 0.05
+            },
+            "clazz": "ProbObject_Simple"
+        },
         "disease": [
             {
                 "cond": "ANY",
@@ -46,9 +54,9 @@
             {
                 "cond": "OR",
                 "prob": {
-                    "PROFILE_LOYALIST": 0.6,
-                    "PROFILE_REFORMER": 0.3,
-                    "PROFILE_CHALLENGER": 0.1
+                    "PROFILE_LOYAL_COMPANION": 0.6,
+                    "PROFILE_LONER": 0.3,
+                    "PROFILE_REBEL": 0.1
                 },
                 "clazz": "ProbObject_Simple"
             }
@@ -100,153 +108,24 @@
         ],
         "skill_sets": [
             {
-                "cond": "ANY",
-                "set": {
-                    "name": "common_or_advanced_swordsman",
-                    "prob": 1,
-                    "condition": "OR",
-                    "items": [
-                        {
-                            "blueprint_id": "COMBAT_COMMON_SWORDSMAN",
-                            "prob": 0.80,
-                            "clazz": "BlueprintGenInstruction_Gaussian"
-                        },
-                        {
-                            "blueprint_id": "COMBAT_ADVANCED_SWORDSMAN",
-                            "prob": 0.18,
-                            "clazz": "BlueprintGenInstruction_Gaussian"
-                        },
-                        {
-                            "blueprint_id": "COMBAT_MASTER_SWORDSMAN",
-                            "prob": 0.02,
-                            "clazz": "BlueprintGenInstruction_Gaussian"
-                        }
-                    ]
-                },
-                "clazz": "BlueprintSetCombinator"
-            }
-        ],
-        "skill_adjustments": {},
-        "targetEntity": "Background"
-    },
-    {
-        "blueprint_id": "BACKGROUND_HIGHLAND_TOWN_GUARD",
-        "name": "Highland Town Guard",
-        "faction": [
-            "HIGHLAND_KINGDOM"
-        ],
-        "disease": [
-            {
-                "cond": "ANY",
-                "prob": {
-                    "COMMON_COLD": 0.1,
-                    "PLAGUE": 0.05
-                },
-                "clazz": "ProbObject_Simple"
-            }
-        ],
-        "addiction": [
-            {
-                "cond": "ANY",
-                "prob": {
-                    "ALCOHOLISM": 0.1,
-                    "DEVILS_LETTUCE": 0.05
-                },
-                "clazz": "ProbObject_Simple"
-            }
-        ],
-        "profession": [
-            "TOWN_GUARD"
-        ],
-        "race": [
-            "HUMAN"
-        ],
-        "religion": [
-            {
                 "cond": "OR",
-                "prob": {
-                    "MONOTHEISTIC_FAITH": 0.8,
-                    "ANCESTOR_WORSHIP": 0.1,
-                    "NATURE_FAITH": 0.1
-                },
-                "clazz": "ProbObject_Simple"
-            }
-        ],
-        "personality": [
-            {
-                "cond": "OR",
-                "prob": {
-                    "PROFILE_LOYALIST": 0.6,
-                    "PROFILE_REFORMER": 0.3,
-                    "PROFILE_CHALLENGER": 0.1
-                },
-                "clazz": "ProbObject_Simple"
-            }
-        ],
-        "item_sets": [
-            "SHORTSWORD_SHIELD",
-            "COMMON_SHIRT_PANTS",
-            "FULL_ARMOR"
-        ],
-        "items": [
-            {
-                "blueprint_id": "COIN",
-                "prob": 0.6,
-                "avg_quan": 20,
-                "st_dev": 1,
-                "clazz": "BlueprintGenInstruction_Gaussian"
-            }
-        ],
-        "past_exp_child": [
-            {
-                "cond": "OR",
-                "prob": {
-                    "BLACKSMITH_APPRENTICE": 0.3,
-                    "FARM_CHILD": 0.4,
-                    "ORPHAN": 0.15,
-                    "BEGGAR_CHILD": 0.15
-                },
-                "clazz": "ProbObject_Simple"
-            }
-        ],
-        "past_exp_adult": [
-            {
-                "cond": "OR",
-                "prob": {
-                    "RETIRED_SOLDIER": 0.3,
-                    "QUIET_TOWN_LIFE": 0.4,
-                    "WIDOW": 0.1,
-                    "FREED_SLAVE": 0.05,
-                    "RETIRED_ADVENTURER": 0.05
-                },
-                "clazz": "ProbObject_Simple"
-            }
-        ],
-        "skill_sets": [
-            {
-                "cond": "ANY",
-                "set": {
-                    "name": "common_or_advanced_swordsman",
-                    "prob": 1,
-                    "condition": "OR",
-                    "items": [
-                        {
-                            "blueprint_id": "COMBAT_COMMON_SWORDSMAN",
-                            "prob": 0.8,
-                            "clazz": "BlueprintGenInstruction_Gaussian"
-                        },
-                        {
-                            "blueprint_id": "COMBAT_ADVANCED_SWORDSMAN",
-                            "prob": 0.18,
-                            "clazz": "BlueprintGenInstruction_Gaussian"
-                        },
-                        {
-                            "blueprint_id": "COMBAT_MASTER_SWORDSMAN",
-                            "prob": 0.02,
-                            "clazz": "BlueprintGenInstruction_Gaussian"
-                        }
-                    ]
-                },
+                "items": [
+                    {
+                        "blueprint_id": "COMBAT_COMMON_SWORDSMAN",
+                        "prob": 0.80,
+                        "clazz": "BlueprintGenInstruction_Gaussian"
+                    },
+                    {
+                        "blueprint_id": "COMBAT_ADVANCED_SWORDSMAN",
+                        "prob": 0.18,
+                        "clazz": "BlueprintGenInstruction_Gaussian"
+                    },
+                    {
+                        "blueprint_id": "COMBAT_MASTER_SWORDSMAN",
+                        "prob": 0.02,
+                        "clazz": "BlueprintGenInstruction_Gaussian"
+                    }
+                ],
                 "clazz": "BlueprintSetCombinator"
             }
         ],
@@ -257,6 +136,14 @@
         "blueprint_id": "BACKGROUND_GUARD_RANGED",
         "name": "Ranged Guard",
         "faction": [],
+        "gender": {
+            "cond": "OR",
+            "prob": {
+                "MALE": 0.95,
+                "FEMALE": 0.05
+            },
+            "clazz": "ProbObject_Simple"
+        },
         "disease": [
             {
                 "cond": "ANY",
@@ -298,9 +185,9 @@
             {
                 "cond": "OR",
                 "prob": {
-                    "PROFILE_LOYALIST": 0.6,
-                    "PROFILE_REFORMER": 0.3,
-                    "PROFILE_CHALLENGER": 0.1
+                    "PROFILE_LOYAL_COMPANION": 0.6,
+                    "PROFILE_LONER": 0.3,
+                    "PROFILE_REBEL": 0.1
                 },
                 "clazz": "ProbObject_Simple"
             }
@@ -345,6 +232,14 @@
         "blueprint_id": "BACKGROUND_BANDIT",
         "name": "Bandit",
         "faction": [],
+        "gender": {
+            "cond": "OR",
+            "prob": {
+                "MALE": 0.95,
+                "FEMALE": 0.05
+            },
+            "clazz": "ProbObject_Simple"
+        },
         "disease": [
             {
                 "cond": "ANY",
@@ -384,9 +279,9 @@
             {
                 "cond": "OR",
                 "prob": {
-                    "PROFILE_CHALLENGER": 0.5,
+                    "PROFILE_REBEL": 0.5,
                     "PROFILE_OPPORTUNIST": 0.3,
-                    "PROFILE_REBEL": 0.2
+                    "PROFILE_SURVIVOR": 0.2
                 },
                 "clazz": "ProbObject_Simple"
             }
@@ -431,6 +326,14 @@
         "blueprint_id": "BACKGROUND_FISHERMAN",
         "name": "Fisherman",
         "faction": [],
+        "gender": {
+            "cond": "OR",
+            "prob": {
+                "MALE": 0.95,
+                "FEMALE": 0.05
+            },
+            "clazz": "ProbObject_Simple"
+        },
         "disease": [
             {
                 "cond": "ANY",
@@ -514,6 +417,14 @@
         "blueprint_id": "BACKGROUND_SCHOLAR",
         "name": "Scholar",
         "faction": [],
+        "gender": {
+            "cond": "OR",
+            "prob": {
+                "MALE": 0.85,
+                "FEMALE": 0.15
+            },
+            "clazz": "ProbObject_Simple"
+        },
         "disease": [
             {
                 "cond": "ANY",
@@ -553,9 +464,9 @@
             {
                 "cond": "OR",
                 "prob": {
-                    "PROFILE_INVESTIGATOR": 0.7,
+                    "PROFILE_MENTOR": 0.7,
                     "PROFILE_IDEALIST": 0.2,
-                    "PROFILE_MELANCHOLIC": 0.1
+                    "PROFILE_LONER": 0.1
                 },
                 "clazz": "ProbObject_Simple"
             }
@@ -597,6 +508,14 @@
         "blueprint_id": "BACKGROUND_MERCHANT",
         "name": "Merchant",
         "faction": [],
+        "gender": {
+            "cond": "OR",
+            "prob": {
+                "MALE": 0.8,
+                "FEMALE": 0.2
+            },
+            "clazz": "ProbObject_Simple"
+        },
         "disease": [
             {
                 "cond": "ANY",
@@ -637,7 +556,7 @@
                 "cond": "OR",
                 "prob": {
                     "PROFILE_CHARMER": 0.6,
-                    "PROFILE_OPPORTUNIST": 0.3,
+                    "PROFILE_DREAMER": 0.3,
                     "PROFILE_LOYAL_COMPANION": 0.1
                 },
                 "clazz": "ProbObject_Simple"

@@ -39,14 +39,16 @@ export class ItemSet extends ContentBase {
         };
     }
 
-    public static fromDTO(dto: ItemSetDTO, context: Context): ItemSet {
+    public static fromDTO(dto: ItemSetDTO, context?: Context): ItemSet {
         if (!dto.set) throw new Error("did not receive field 'set' on ItemSetDTO, and it is mandatory")
         const itemSet = new ItemSet();
         itemSet.id = dto.id;
         itemSet.set = deserializeInstruction(dto.set);
-        itemSet.user = context.user;
-        itemSet.campaign = context.campaign;
-        itemSet.world = context.world;
+        if (context) {
+            itemSet.user = context.user;
+            itemSet.campaign = context.campaign;
+            itemSet.world = context.world;
+        }
         itemSet.targetEntity = dto.targetEntity
         return itemSet;
     }

@@ -3,10 +3,11 @@ import { Campaign } from "../Campaign";
 import { User } from "../User";
 import { World } from "../World";
 import { ContentBase } from "../../ContentBase";
-import { Background, BackgroundCustomization } from "./Background";
-import { CharacterGenInstructionDTO } from "../../proto/common";
+import { BackgroundCustomization } from "./Background";
+import { CharacterGenInstructionDTO, GenderEnumDTO } from "../../proto/common";
 import { Context } from "../../types";
-import { CharacterMemory } from "./Knowledge/CharacterMemory";
+import { GenderEnum } from "../../enum/GenderEnum";
+import { deserializeEnum, serializeEnum } from "../../enum/util";
 
 
 
@@ -24,8 +25,8 @@ export class CharacterGenInstruction extends ContentBase {
     @Column({ nullable: true })
     last_name?: string
 
-    @Column({ nullable: true })
-    gender?: string
+    @Column({ nullable: true, type: "enum", enum: GenderEnum })
+    gender?: GenderEnum
 
     @Column({ nullable: true })
     birthsign?: string
@@ -64,7 +65,7 @@ export class CharacterGenInstruction extends ContentBase {
             blueprintId: charGen.blueprint_id,
             firstName: charGen.first_name,
             lastName: charGen.last_name,
-            gender: charGen.gender,
+            gender: charGen.gender ? serializeEnum(GenderEnum, charGen.gender) : undefined,
             birthSign: charGen.birthsign,
             birthEra: charGen.birthEra,
             birthYear: charGen.birthYear,
@@ -79,12 +80,13 @@ export class CharacterGenInstruction extends ContentBase {
         };
     }
 
-    public static fromDTO(dto: CharacterGenInstructionDTO, context: Context): CharacterGenInstruction {
+    public static fromDTO(dto: CharacterGenInstructionDTO, context?: Context): CharacterGenInstruction {
         const instruction = new CharacterGenInstruction();
         instruction.id = dto.id;
+        instruction.blueprint_id = dto.blueprintId;
         instruction.first_name = dto.firstName;
         instruction.last_name = dto.lastName;
-        instruction.gender = dto.gender;
+        instruction.gender = dto.gender ? deserializeEnum(GenderEnumDTO, dto.gender) as GenderEnum : undefined;
         instruction.birthsign = dto.birthSign;
         instruction.birthEra = dto.birthEra;
         instruction.birthYear = dto.birthYear;
@@ -92,9 +94,11 @@ export class CharacterGenInstruction extends ContentBase {
         instruction.birthDay = dto.birthDay;
         instruction.background_blueprint_id = dto.backgroundBlueprintId;
         instruction.background_customization = dto.backgroundCustomization && BackgroundCustomization.fromDTO(dto.backgroundCustomization);
-        instruction.user = context.user;
-        instruction.campaign = context.campaign;
-        instruction.world = context.world;
+        if (context) {
+            instruction.user = context.user;
+            instruction.campaign = context.campaign;
+            instruction.world = context.world;
+        }
         instruction.targetEntity = dto.targetEntity
         return instruction;
     }

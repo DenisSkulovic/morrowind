@@ -25,6 +25,7 @@ message BackgroundDTO {
     optional CampaignDTO campaign = 17;
     optional WorldDTO world = 18;
     string targetEntity = 19;
+    GenerationInstructionDTO gender = 20;
 }
 message BackgroundsDTO {
     repeated BackgroundDTO arr = 1;
@@ -249,7 +250,7 @@ message CharacterDTO {
     string firstName = 7;
     string lastName = 8;
     RaceDTO race = 9;
-    string gender = 10;
+    GenderEnumDTO gender = 10;
     BirthsignDTO birthsign = 11;
     optional int32 birthYear = 12;
     optional string birthMonth = 13;
@@ -266,6 +267,9 @@ message CharacterDTO {
     optional FactionsDTO factions = 24;
     optional TagsDTO tags = 25;
     string targetEntity = 26;
+    optional string birthEra = 27;
+    optional PastExperiencesDTO pastExperiencesChild = 28;
+    optional PastExperiencesDTO pastExperiencesAdult = 29;
 }
 message CharactersDTO {
     repeated CharacterDTO arr = 1;
@@ -728,7 +732,7 @@ message CharacterGenInstructionDTO {
     string targetEntity = 3;
     optional string firstName = 4;
     optional string lastName = 5;
-    optional string gender = 6;
+    optional GenderEnumDTO gender = 6;
     optional string birthEra = 7;
     optional int32 birthYear = 8;
     optional string birthMonth = 9;
@@ -783,6 +787,7 @@ message BackgroundCustomizationDTO {
     optional GenerationInstructionsDTO skillSets = 11;
     optional SkillAdjustmentsDTO skillAdjustments = 12;
     optional GenerationInstructionsDTO personality = 13;
+    optional GenerationInstructionDTO gender = 14;
 }
 // #######################################################################################
 
@@ -1197,4 +1202,8 @@ enum SkillCategoryEnumDTO {
 enum DataSourceEnumDTO {
     WORLD = 0;
     CAMPAIGN = 1;
+}
+enum GenderEnumDTO {
+    MALE = 0;
+    FEMALE = 1;
 }

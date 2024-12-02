@@ -50,11 +50,11 @@ export class BlueprintGenInstruction_Gaussian {
 
 export class BlueprintSetCombinator {
     name?: string
-    prob: Probability_0_to_1 // 0-1, default 1
+    prob?: Probability_0_to_1 // 0-1, default 1
     cond: ConditionEnum
     items: GenerationInstruction[]
     clazz = "BlueprintSetCombinator"
-    constructor(name: string | undefined, prob: Probability_0_to_1, cond: ConditionEnum, items: GenerationInstruction[]) {
+    constructor(name: string | undefined, prob: Probability_0_to_1 | undefined, cond: ConditionEnum, items: GenerationInstruction[]) {
         this.name = name
         this.prob = prob
         this.cond = cond

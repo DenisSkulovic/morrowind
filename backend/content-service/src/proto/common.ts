@@ -625,6 +625,39 @@ export function dataSourceEnumDTOToJSON(object: DataSourceEnumDTO): string {
   }
 }
 
+export enum GenderEnumDTO {
+  MALE = 0,
+  FEMALE = 1,
+  UNRECOGNIZED = -1,
+}
+
+export function genderEnumDTOFromJSON(object: any): GenderEnumDTO {
+  switch (object) {
+    case 0:
+    case "MALE":
+      return GenderEnumDTO.MALE;
+    case 1:
+    case "FEMALE":
+      return GenderEnumDTO.FEMALE;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return GenderEnumDTO.UNRECOGNIZED;
+  }
+}
+
+export function genderEnumDTOToJSON(object: GenderEnumDTO): string {
+  switch (object) {
+    case GenderEnumDTO.MALE:
+      return "MALE";
+    case GenderEnumDTO.FEMALE:
+      return "FEMALE";
+    case GenderEnumDTO.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
 /** ####################################################################################### */
 export interface BackgroundDTO {
   id: string;
@@ -646,6 +679,7 @@ export interface BackgroundDTO {
   campaign?: CampaignDTO | undefined;
   world?: WorldDTO | undefined;
   targetEntity: string;
+  gender: GenerationInstructionDTO | undefined;
 }
 
 export interface BackgroundDTO_SkillAdjustmentsEntry {
@@ -856,7 +890,7 @@ export interface CharacterDTO {
   firstName: string;
   lastName: string;
   race: RaceDTO | undefined;
-  gender: string;
+  gender: GenderEnumDTO;
   birthsign: BirthsignDTO | undefined;
   birthYear?: number | undefined;
   birthMonth?: string | undefined;
@@ -873,6 +907,9 @@ export interface CharacterDTO {
   factions?: FactionsDTO | undefined;
   tags?: TagsDTO | undefined;
   targetEntity: string;
+  birthEra?: string | undefined;
+  pastExperiencesChild?: PastExperiencesDTO | undefined;
+  pastExperiencesAdult?: PastExperiencesDTO | undefined;
 }
 
 export interface CharacterDTO_SkillsEntry {
@@ -1287,7 +1324,7 @@ export interface CharacterGenInstructionDTO {
   targetEntity: string;
   firstName?: string | undefined;
   lastName?: string | undefined;
-  gender?: string | undefined;
+  gender?: GenderEnumDTO | undefined;
   birthEra?: string | undefined;
   birthYear?: number | undefined;
   birthMonth?: string | undefined;
@@ -1337,6 +1374,7 @@ export interface BackgroundCustomizationDTO {
   skillSets?: GenerationInstructionsDTO | undefined;
   skillAdjustments?: SkillAdjustmentsDTO | undefined;
   personality?: GenerationInstructionsDTO | undefined;
+  gender?: GenerationInstructionDTO | undefined;
 }
 
 /** ####################################################################################### */
@@ -1376,7 +1414,7 @@ export interface CombinatorDTO {
   name?: string | undefined;
   cond: ConditionEnumDTO;
   /** prob must be a float value between 0 and 1 inclusive */
-  prob: number;
+  prob?: number | undefined;
   instructions: GenerationInstructionDTO[];
   clazz: string;
 }
@@ -1665,6 +1703,7 @@ function createBaseBackgroundDTO(): BackgroundDTO {
     campaign: undefined,
     world: undefined,
     targetEntity: "",
+    gender: undefined,
   };
 }
 
@@ -1726,6 +1765,9 @@ export const BackgroundDTO: MessageFns<BackgroundDTO> = {
     }
     if (message.targetEntity !== "") {
       writer.uint32(154).string(message.targetEntity);
+    }
+    if (message.gender !== undefined) {
+      GenerationInstructionDTO.encode(message.gender, writer.uint32(162).fork()).join();
     }
     return writer;
   },
@@ -1892,6 +1934,14 @@ export const BackgroundDTO: MessageFns<BackgroundDTO> = {
           message.targetEntity = reader.string();
           continue;
         }
+        case 20: {
+          if (tag !== 162) {
+            break;
+          }
+
+          message.gender = GenerationInstructionDTO.decode(reader, reader.uint32());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1927,6 +1977,7 @@ export const BackgroundDTO: MessageFns<BackgroundDTO> = {
       campaign: isSet(object.campaign) ? CampaignDTO.fromJSON(object.campaign) : undefined,
       world: isSet(object.world) ? WorldDTO.fromJSON(object.world) : undefined,
       targetEntity: isSet(object.targetEntity) ? globalThis.String(object.targetEntity) : "",
+      gender: isSet(object.gender) ? GenerationInstructionDTO.fromJSON(object.gender) : undefined,
     };
   },
 
@@ -1995,6 +2046,9 @@ export const BackgroundDTO: MessageFns<BackgroundDTO> = {
     if (message.targetEntity !== "") {
       obj.targetEntity = message.targetEntity;
     }
+    if (message.gender !== undefined) {
+      obj.gender = GenerationInstructionDTO.toJSON(message.gender);
+    }
     return obj;
   },
 
@@ -2058,6 +2112,9 @@ export const BackgroundDTO: MessageFns<BackgroundDTO> = {
       ? WorldDTO.fromPartial(object.world)
       : undefined;
     message.targetEntity = object.targetEntity ?? "";
+    message.gender = (object.gender !== undefined && object.gender !== null)
+      ? GenerationInstructionDTO.fromPartial(object.gender)
+      : undefined;
     return message;
   },
 };
@@ -5068,7 +5125,7 @@ function createBaseCharacterDTO(): CharacterDTO {
     firstName: "",
     lastName: "",
     race: undefined,
-    gender: "",
+    gender: 0,
     birthsign: undefined,
     birthYear: undefined,
     birthMonth: undefined,
@@ -5085,6 +5142,9 @@ function createBaseCharacterDTO(): CharacterDTO {
     factions: undefined,
     tags: undefined,
     targetEntity: "",
+    birthEra: undefined,
+    pastExperiencesChild: undefined,
+    pastExperiencesAdult: undefined,
   };
 }
 
@@ -5117,8 +5177,8 @@ export const CharacterDTO: MessageFns<CharacterDTO> = {
     if (message.race !== undefined) {
       RaceDTO.encode(message.race, writer.uint32(74).fork()).join();
     }
-    if (message.gender !== "") {
-      writer.uint32(82).string(message.gender);
+    if (message.gender !== 0) {
+      writer.uint32(80).int32(message.gender);
     }
     if (message.birthsign !== undefined) {
       BirthsignDTO.encode(message.birthsign, writer.uint32(90).fork()).join();
@@ -5167,6 +5227,15 @@ export const CharacterDTO: MessageFns<CharacterDTO> = {
     }
     if (message.targetEntity !== "") {
       writer.uint32(210).string(message.targetEntity);
+    }
+    if (message.birthEra !== undefined) {
+      writer.uint32(218).string(message.birthEra);
+    }
+    if (message.pastExperiencesChild !== undefined) {
+      PastExperiencesDTO.encode(message.pastExperiencesChild, writer.uint32(226).fork()).join();
+    }
+    if (message.pastExperiencesAdult !== undefined) {
+      PastExperiencesDTO.encode(message.pastExperiencesAdult, writer.uint32(234).fork()).join();
     }
     return writer;
   },
@@ -5251,11 +5320,11 @@ export const CharacterDTO: MessageFns<CharacterDTO> = {
           continue;
         }
         case 10: {
-          if (tag !== 82) {
+          if (tag !== 80) {
             break;
           }
 
-          message.gender = reader.string();
+          message.gender = reader.int32() as any;
           continue;
         }
         case 11: {
@@ -5389,6 +5458,30 @@ export const CharacterDTO: MessageFns<CharacterDTO> = {
           message.targetEntity = reader.string();
           continue;
         }
+        case 27: {
+          if (tag !== 218) {
+            break;
+          }
+
+          message.birthEra = reader.string();
+          continue;
+        }
+        case 28: {
+          if (tag !== 226) {
+            break;
+          }
+
+          message.pastExperiencesChild = PastExperiencesDTO.decode(reader, reader.uint32());
+          continue;
+        }
+        case 29: {
+          if (tag !== 234) {
+            break;
+          }
+
+          message.pastExperiencesAdult = PastExperiencesDTO.decode(reader, reader.uint32());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -5409,7 +5502,7 @@ export const CharacterDTO: MessageFns<CharacterDTO> = {
       firstName: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
       lastName: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
       race: isSet(object.race) ? RaceDTO.fromJSON(object.race) : undefined,
-      gender: isSet(object.gender) ? globalThis.String(object.gender) : "",
+      gender: isSet(object.gender) ? genderEnumDTOFromJSON(object.gender) : 0,
       birthsign: isSet(object.birthsign) ? BirthsignDTO.fromJSON(object.birthsign) : undefined,
       birthYear: isSet(object.birthYear) ? globalThis.Number(object.birthYear) : undefined,
       birthMonth: isSet(object.birthMonth) ? globalThis.String(object.birthMonth) : undefined,
@@ -5433,6 +5526,13 @@ export const CharacterDTO: MessageFns<CharacterDTO> = {
       factions: isSet(object.factions) ? FactionsDTO.fromJSON(object.factions) : undefined,
       tags: isSet(object.tags) ? TagsDTO.fromJSON(object.tags) : undefined,
       targetEntity: isSet(object.targetEntity) ? globalThis.String(object.targetEntity) : "",
+      birthEra: isSet(object.birthEra) ? globalThis.String(object.birthEra) : undefined,
+      pastExperiencesChild: isSet(object.pastExperiencesChild)
+        ? PastExperiencesDTO.fromJSON(object.pastExperiencesChild)
+        : undefined,
+      pastExperiencesAdult: isSet(object.pastExperiencesAdult)
+        ? PastExperiencesDTO.fromJSON(object.pastExperiencesAdult)
+        : undefined,
     };
   },
 
@@ -5465,8 +5565,8 @@ export const CharacterDTO: MessageFns<CharacterDTO> = {
     if (message.race !== undefined) {
       obj.race = RaceDTO.toJSON(message.race);
     }
-    if (message.gender !== "") {
-      obj.gender = message.gender;
+    if (message.gender !== 0) {
+      obj.gender = genderEnumDTOToJSON(message.gender);
     }
     if (message.birthsign !== undefined) {
       obj.birthsign = BirthsignDTO.toJSON(message.birthsign);
@@ -5522,6 +5622,15 @@ export const CharacterDTO: MessageFns<CharacterDTO> = {
     if (message.targetEntity !== "") {
       obj.targetEntity = message.targetEntity;
     }
+    if (message.birthEra !== undefined) {
+      obj.birthEra = message.birthEra;
+    }
+    if (message.pastExperiencesChild !== undefined) {
+      obj.pastExperiencesChild = PastExperiencesDTO.toJSON(message.pastExperiencesChild);
+    }
+    if (message.pastExperiencesAdult !== undefined) {
+      obj.pastExperiencesAdult = PastExperiencesDTO.toJSON(message.pastExperiencesAdult);
+    }
     return obj;
   },
 
@@ -5545,7 +5654,7 @@ export const CharacterDTO: MessageFns<CharacterDTO> = {
     message.firstName = object.firstName ?? "";
     message.lastName = object.lastName ?? "";
     message.race = (object.race !== undefined && object.race !== null) ? RaceDTO.fromPartial(object.race) : undefined;
-    message.gender = object.gender ?? "";
+    message.gender = object.gender ?? 0;
     message.birthsign = (object.birthsign !== undefined && object.birthsign !== null)
       ? BirthsignDTO.fromPartial(object.birthsign)
       : undefined;
@@ -5585,6 +5694,13 @@ export const CharacterDTO: MessageFns<CharacterDTO> = {
       : undefined;
     message.tags = (object.tags !== undefined && object.tags !== null) ? TagsDTO.fromPartial(object.tags) : undefined;
     message.targetEntity = object.targetEntity ?? "";
+    message.birthEra = object.birthEra ?? undefined;
+    message.pastExperiencesChild = (object.pastExperiencesChild !== undefined && object.pastExperiencesChild !== null)
+      ? PastExperiencesDTO.fromPartial(object.pastExperiencesChild)
+      : undefined;
+    message.pastExperiencesAdult = (object.pastExperiencesAdult !== undefined && object.pastExperiencesAdult !== null)
+      ? PastExperiencesDTO.fromPartial(object.pastExperiencesAdult)
+      : undefined;
     return message;
   },
 };
@@ -11912,7 +12028,7 @@ export const CharacterGenInstructionDTO: MessageFns<CharacterGenInstructionDTO> 
       writer.uint32(42).string(message.lastName);
     }
     if (message.gender !== undefined) {
-      writer.uint32(50).string(message.gender);
+      writer.uint32(48).int32(message.gender);
     }
     if (message.birthEra !== undefined) {
       writer.uint32(58).string(message.birthEra);
@@ -11998,11 +12114,11 @@ export const CharacterGenInstructionDTO: MessageFns<CharacterGenInstructionDTO> 
           continue;
         }
         case 6: {
-          if (tag !== 50) {
+          if (tag !== 48) {
             break;
           }
 
-          message.gender = reader.string();
+          message.gender = reader.int32() as any;
           continue;
         }
         case 7: {
@@ -12109,7 +12225,7 @@ export const CharacterGenInstructionDTO: MessageFns<CharacterGenInstructionDTO> 
       targetEntity: isSet(object.targetEntity) ? globalThis.String(object.targetEntity) : "",
       firstName: isSet(object.firstName) ? globalThis.String(object.firstName) : undefined,
       lastName: isSet(object.lastName) ? globalThis.String(object.lastName) : undefined,
-      gender: isSet(object.gender) ? globalThis.String(object.gender) : undefined,
+      gender: isSet(object.gender) ? genderEnumDTOFromJSON(object.gender) : undefined,
       birthEra: isSet(object.birthEra) ? globalThis.String(object.birthEra) : undefined,
       birthYear: isSet(object.birthYear) ? globalThis.Number(object.birthYear) : undefined,
       birthMonth: isSet(object.birthMonth) ? globalThis.String(object.birthMonth) : undefined,
@@ -12144,7 +12260,7 @@ export const CharacterGenInstructionDTO: MessageFns<CharacterGenInstructionDTO> 
       obj.lastName = message.lastName;
     }
     if (message.gender !== undefined) {
-      obj.gender = message.gender;
+      obj.gender = genderEnumDTOToJSON(message.gender);
     }
     if (message.birthEra !== undefined) {
       obj.birthEra = message.birthEra;
@@ -12566,6 +12682,7 @@ function createBaseBackgroundCustomizationDTO(): BackgroundCustomizationDTO {
     skillSets: undefined,
     skillAdjustments: undefined,
     personality: undefined,
+    gender: undefined,
   };
 }
 
@@ -12609,6 +12726,9 @@ export const BackgroundCustomizationDTO: MessageFns<BackgroundCustomizationDTO> 
     }
     if (message.personality !== undefined) {
       GenerationInstructionsDTO.encode(message.personality, writer.uint32(106).fork()).join();
+    }
+    if (message.gender !== undefined) {
+      GenerationInstructionDTO.encode(message.gender, writer.uint32(114).fork()).join();
     }
     return writer;
   },
@@ -12724,6 +12844,14 @@ export const BackgroundCustomizationDTO: MessageFns<BackgroundCustomizationDTO> 
           message.personality = GenerationInstructionsDTO.decode(reader, reader.uint32());
           continue;
         }
+        case 14: {
+          if (tag !== 114) {
+            break;
+          }
+
+          message.gender = GenerationInstructionDTO.decode(reader, reader.uint32());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -12750,6 +12878,7 @@ export const BackgroundCustomizationDTO: MessageFns<BackgroundCustomizationDTO> 
         ? SkillAdjustmentsDTO.fromJSON(object.skillAdjustments)
         : undefined,
       personality: isSet(object.personality) ? GenerationInstructionsDTO.fromJSON(object.personality) : undefined,
+      gender: isSet(object.gender) ? GenerationInstructionDTO.fromJSON(object.gender) : undefined,
     };
   },
 
@@ -12793,6 +12922,9 @@ export const BackgroundCustomizationDTO: MessageFns<BackgroundCustomizationDTO> 
     }
     if (message.personality !== undefined) {
       obj.personality = GenerationInstructionsDTO.toJSON(message.personality);
+    }
+    if (message.gender !== undefined) {
+      obj.gender = GenerationInstructionDTO.toJSON(message.gender);
     }
     return obj;
   },
@@ -12840,6 +12972,9 @@ export const BackgroundCustomizationDTO: MessageFns<BackgroundCustomizationDTO> 
       : undefined;
     message.personality = (object.personality !== undefined && object.personality !== null)
       ? GenerationInstructionsDTO.fromPartial(object.personality)
+      : undefined;
+    message.gender = (object.gender !== undefined && object.gender !== null)
+      ? GenerationInstructionDTO.fromPartial(object.gender)
       : undefined;
     return message;
   },
@@ -13335,7 +13470,7 @@ export const GaussianProbDTO: MessageFns<GaussianProbDTO> = {
 };
 
 function createBaseCombinatorDTO(): CombinatorDTO {
-  return { name: undefined, cond: 0, prob: 0, instructions: [], clazz: "" };
+  return { name: undefined, cond: 0, prob: undefined, instructions: [], clazz: "" };
 }
 
 export const CombinatorDTO: MessageFns<CombinatorDTO> = {
@@ -13346,7 +13481,7 @@ export const CombinatorDTO: MessageFns<CombinatorDTO> = {
     if (message.cond !== 0) {
       writer.uint32(16).int32(message.cond);
     }
-    if (message.prob !== 0) {
+    if (message.prob !== undefined) {
       writer.uint32(29).float(message.prob);
     }
     for (const v of message.instructions) {
@@ -13418,7 +13553,7 @@ export const CombinatorDTO: MessageFns<CombinatorDTO> = {
     return {
       name: isSet(object.name) ? globalThis.String(object.name) : undefined,
       cond: isSet(object.cond) ? conditionEnumDTOFromJSON(object.cond) : 0,
-      prob: isSet(object.prob) ? globalThis.Number(object.prob) : 0,
+      prob: isSet(object.prob) ? globalThis.Number(object.prob) : undefined,
       instructions: globalThis.Array.isArray(object?.instructions)
         ? object.instructions.map((e: any) => GenerationInstructionDTO.fromJSON(e))
         : [],
@@ -13434,7 +13569,7 @@ export const CombinatorDTO: MessageFns<CombinatorDTO> = {
     if (message.cond !== 0) {
       obj.cond = conditionEnumDTOToJSON(message.cond);
     }
-    if (message.prob !== 0) {
+    if (message.prob !== undefined) {
       obj.prob = message.prob;
     }
     if (message.instructions?.length) {
@@ -13453,7 +13588,7 @@ export const CombinatorDTO: MessageFns<CombinatorDTO> = {
     const message = createBaseCombinatorDTO();
     message.name = object.name ?? undefined;
     message.cond = object.cond ?? 0;
-    message.prob = object.prob ?? 0;
+    message.prob = object.prob ?? undefined;
     message.instructions = object.instructions?.map((e) => GenerationInstructionDTO.fromPartial(e)) || [];
     message.clazz = object.clazz ?? "";
     return message;

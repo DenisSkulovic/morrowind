@@ -6,7 +6,8 @@ import "common.proto";
 
 service GeneratorController {
     rpc generateItems(GenerateItemsRequest) returns (GenerateItemsResponse);
-    rpc generateCharacters(GenerateCharactersRequest) returns (GenerateCharactersResponse);
+    rpc generateCharactersCustom(GenerateCharactersRequestCustom) returns (GenerateCharactersResponse);
+    rpc generateCharactersDB(GenerateCharactersRequestDB) returns (GenerateCharactersResponse);
     rpc generateCharacterGroups(GenerateCharacterGroupsRequest) returns (GenerateCharacterGroupsResponse);
 }
 
@@ -17,9 +18,13 @@ message GenerateItemsRequest {
 message GenerateItemsResponse {
     repeated common.ItemDTO arr = 1;
 }
-message GenerateCharactersRequest {
+message GenerateCharactersRequestCustom {
     common.DataSourceEnumDTO source = 1;
     repeated common.CharacterGenInstructionDTO arr = 2;
+}
+message GenerateCharactersRequestDB {
+    common.DataSourceEnumDTO source = 1;
+    repeated string charGenInstructionIds = 2;
 }
 message GenerateCharactersResponse {
     repeated common.CharacterDTO arr = 1;

@@ -40,10 +40,10 @@ export class PastExperience extends TaggableContentBase {
             type: pastExp.type,
             blueprintId: pastExp.blueprint_id,
             name: pastExp.name,
-            tags: PastExperience.serializeEntityArray(pastExp.tags, i => Tag.toDTO(i)),
-            user: PastExperience.serializeEntity(pastExp.user, i => User.toDTO(i)),
-            campaign: PastExperience.serializeEntity(pastExp.campaign, i => Campaign.toDTO(i)),
-            world: PastExperience.serializeEntity(pastExp.world, i => World.toDTO(i)),
+            tags: pastExp.tags?.map(i => i.id),
+            user: pastExp.user.id,
+            campaign: pastExp.campaign?.id,
+            world: pastExp.world.id,
             targetEntity: pastExp.targetEntity
         };
     }

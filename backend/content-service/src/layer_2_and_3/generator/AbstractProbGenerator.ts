@@ -73,13 +73,24 @@ export abstract class AbstractProbGenerator<T extends ContentBase> {
     // Useful to generate random custom instructions on the fly,
     // when the character is not stored in the db but is a completely custom one.
     // This adds generation flexibility.
-    public cacheBlueprint<E extends ContentBase>(
+    // TODO use Redis
+    public async cacheBlueprint<E extends ContentBase>(
         type: string,
         key: string,
         blueprint: E,
-    ): void {
+    ): Promise<void> {
         if (!this.blueprintsCache[type]) this.blueprintsCache[type] = {}
         this.blueprintsCache[type][key] = blueprint
+    }
+
+    // TODO use Redis
+    public async getBlueprintFromCache<E extends ContentBase>(
+        type: string,
+        key: string
+    ): Promise<E | undefined> {
+        const typeCache: { [key: string]: any } | undefined = this.blueprintsCache[type]
+        const cached: E | undefined = typeCache && typeCache[key]
+        return cached
     }
 
     // ###########################
@@ -94,14 +105,13 @@ export abstract class AbstractProbGenerator<T extends ContentBase> {
     ): Promise<E[]> {
         const promises: Promise<E>[] = blueprint_ids.map(async (blueprint_id) => {
             // try to find background in the cache
-            const typeCache: { [key: string]: any } | undefined = this.blueprintsCache[type]
-            const cached = typeCache && typeCache[blueprint_id]
+            const cached = await this.getBlueprintFromCache<E>(type, blueprint_id)
             if (cached) return cached
             // try to extract background from db
             const repo: Repository<E> = this.dataSource.getRepository(entity)
             const fetched: E | null = await repo.findOne({ where: { id: blueprint_id } as FindOptionsWhere<E> });
             if (!fetched) throw new Error(`failed to fetch blueprint: "${blueprint_id}" for entity type: "${type}"`)
-            this.cacheBlueprint(type, blueprint_id, fetched)
+            await this.cacheBlueprint<E>(type, blueprint_id, fetched)
             return fetched
         })
         const res = await Promise.all(promises)

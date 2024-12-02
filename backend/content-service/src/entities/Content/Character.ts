@@ -16,9 +16,13 @@ import { Faction } from "./Faction";
 import { Disease } from "./Disease";
 import { Addiction } from "./Addiction";
 import { EquipmentSlot } from "./Slot/EquipmentSlot";
-import { CharacterDTO } from "../../proto/common";
+import { CharacterDTO, GenderEnumDTO } from "../../proto/common";
 import { GenderEnum } from "../../enum/GenderEnum";
 import { Context } from "../../types";
+import { deserializeEnum, serializeEnum } from "../../enum/util";
+import { PastExperience } from "./Knowledge/PastExperience/PastExperience";
+import { PastExperienceChild } from "./Knowledge/PastExperience/PastExperienceChild";
+import { PastExperienceAdult } from "./Knowledge/PastExperience/PastExperienceAdult";
 
 
 // lazy loading means when I need to access traits of a character, it will perform 2 queries. 
@@ -43,14 +47,17 @@ export class Character extends TaggableContentBase {
     @Column({ type: "varchar", length: 255 })
     last_name!: string;
 
-    @ManyToOne(() => Race, {})
+    @ManyToOne(() => Race)
     race!: Race;
 
-    @Column({ type: "enum", enum: Object.values(GenderEnum) })
-    gender!: string;
+    @Column({ type: "enum", enum: GenderEnum })
+    gender!: GenderEnum;
 
-    @ManyToOne(() => Birthsign, {})
+    @ManyToOne(() => Birthsign)
     birthsign?: Birthsign;
+
+    @Column({ default: null, nullable: true })
+    birthEra?: string;
 
     @Column({ default: null, nullable: true })
     birthYear?: number;
@@ -64,42 +71,48 @@ export class Character extends TaggableContentBase {
     @Column("jsonb", { default: {} })
     skills!: { [skill: string]: number };
 
-    @OneToMany(() => EquipmentSlot, eqiupmentSlot => eqiupmentSlot.character, {})
+    @OneToMany(() => EquipmentSlot, eqiupmentSlot => eqiupmentSlot.character)
     @JoinTable()
     equipmentSlots!: EquipmentSlot[];
 
-    @ManyToMany(() => CharacterProfession, profession => profession.characters, {})
+    @ManyToMany(() => CharacterProfession, profession => profession.characters)
     professions!: CharacterProfession[];
 
-    @ManyToMany(() => MemoryPool, {})
+    @ManyToMany(() => MemoryPool)
     @JoinTable()
     memoryPools!: MemoryPool[];
 
-    @OneToMany(() => CharacterMemory, charMemory => charMemory.character, {})
+    @OneToMany(() => CharacterMemory, charMemory => charMemory.character)
     characterMemories!: CharacterMemory[];
 
     @Column({ type: "varchar", length: 3 })
     enneagramType!: string;
 
-    @ManyToMany(() => Trait, {})
+    @ManyToMany(() => Trait)
     @JoinTable()
     traits!: Trait[];
 
-    @ManyToMany(() => Disease, {})
+    @ManyToMany(() => Disease)
     @JoinTable()
     diseases?: Disease[];
 
-    @ManyToMany(() => Addiction, {})
+    @ManyToMany(() => Addiction)
     @JoinTable()
     addictions?: Addiction[];
 
+    @ManyToMany(() => PastExperienceChild)
+    @JoinTable()
+    pastExperiencesChild?: PastExperienceChild[];
 
-    @ManyToMany(() => Faction, (faction) => faction.characters, {})
+    @ManyToMany(() => PastExperienceAdult)
+    @JoinTable()
+    pastExperiencesAdult?: PastExperienceAdult[];
+
+    @ManyToMany(() => Faction, (faction) => faction.characters)
     @JoinTable()
     factions?: Faction[];
 
-
-    @ManyToMany(() => Tag, (tag) => tag.characters, {})
+    @ManyToMany(() => Tag, (tag) => tag.characters)
     @JoinTable()
     tags?: Tag[];
 
@@ -118,26 +131,29 @@ export class Character extends TaggableContentBase {
             blueprintId: chr.blueprint_id,
             firstName: chr.first_name,
             lastName: chr.last_name,
-            race: chr.race && Race.toDTO(chr.race),
-            gender: chr.gender,
-            birthsign: Character.serializeEntity(chr.birthsign, i => Birthsign.toDTO(i)),
+            race: chr.race.id,
+            gender: serializeEnum(GenderEnum, chr.gender),
+            birthsign: chr.birthsign?.id,
+            birthEra: chr.birthEra,
             birthYear: chr.birthYear,
             birthMonth: chr.birthMonth,
             birthDay: chr.birthDay,
             skills: chr.skills,
+            pastExperiencesChild: chr.pastExperiencesChild?.map(i => i.id),
+            pastExperiencesAdult: chr.pastExperiencesAdult?.map(i => i.id),
             equipmentSlots: Character.serializeEntityArray(chr.equipmentSlots, i => EquipmentSlot.toDTO(i)),
-            professions: Character.serializeEntityArray(chr.professions, i => CharacterProfession.toDTO(i)),
-            memoryPools: Character.serializeEntityArray(chr.memoryPools, i => MemoryPool.toDTO(i)),
-            characterMemories: Character.serializeEntityArray(chr.characterMemories, i => CharacterMemory.toDTO(i)),
-            traits: Character.serializeEntityArray(chr.traits, i => Trait.toDTO(i)),
-            diseases: Character.serializeEntityArray(chr.diseases, i => Disease.toDTO(i)),
-            addictions: Character.serializeEntityArray(chr.addictions, i => Addiction.toDTO(i)),
-            factions: Character.serializeEntityArray(chr.factions, i => Faction.toDTO(i)),
-            tags: Character.serializeEntityArray(chr.tags, i => Tag.toDTO(i)),
+            professions: chr.professions?.map(i => i.id),
+            memoryPools: chr.memoryPools?.map(i => i.id),
+            characterMemories: chr.characterMemories?.map(i => i.id),
+            traits: chr.traits?.map(i => i.id),
+            diseases: chr.diseases?.map(i => i.id),
+            addictions: chr.addictions?.map(i => i.id),
+            factions: chr.factions?.map(i => i.id),
+            tags: chr.tags?.map(i => i.id),
             enneagramType: chr.enneagramType,
-            user: Character.serializeEntity(chr.user, i => User.toDTO(i)),
-            campaign: Character.serializeEntity(chr.campaign, i => Campaign.toDTO(i)),
-            world: Character.serializeEntity(chr.world, i => World.toDTO(i)),
+            user: chr.user.id,
+            campaign: chr.campaign?.id,
+            world: chr.world.id,
             targetEntity: chr.targetEntity
         };
     }
@@ -149,12 +165,15 @@ export class Character extends TaggableContentBase {
         character.first_name = dto.firstName;
         character.last_name = dto.lastName;
         character.race = Race.fromDTO(dto.race, context);
-        character.gender = dto.gender;
+        character.gender = deserializeEnum(GenderEnumDTO, dto.gender) as GenderEnum;
         character.birthsign = dto.birthsign ? Birthsign.fromDTO(dto.birthsign, context) : undefined;
+        character.birthEra = dto.birthEra;
         character.birthYear = dto.birthYear;
         character.birthMonth = dto.birthMonth;
         character.birthDay = dto.birthDay;
         character.skills = dto.skills;
+        character.pastExperiencesChild = Character.deserializeEntityArray(dto.pastExperiencesChild, i => PastExperienceChild.fromDTO(i, context))
+        character.pastExperiencesAdult = Character.deserializeEntityArray(dto.pastExperiencesAdult, i => PastExperienceChild.fromDTO(i, context))
         character.equipmentSlots = Character.deserializeEntityArray(dto.equipmentSlots, i => EquipmentSlot.fromDTO(i, context));
         character.professions = Character.deserializeEntityArray(dto.professions, i => CharacterProfession.fromDTO(i, context));
         character.memoryPools = Character.deserializeEntityArray(dto.memoryPools, i => MemoryPool.fromDTO(i, context));

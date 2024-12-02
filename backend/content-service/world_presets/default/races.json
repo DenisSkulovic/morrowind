@@ -10,7 +10,7 @@
             },
             {
                 "name": "Torso",
-                "allowedEntities": ["ItemWearableClotherTorso"]
+                "allowedEntities": ["ItemWearableClothesTorso"]
             },
             {
                 "name": "Cuirass",

@@ -46,10 +46,10 @@ export class EquipmentSlot extends ContentBase {
             name: eqSlot.name,
             allowedEntities: eqSlot.allowedEntities,
             equippedItem: EquipmentSlot.serializeEntity(eqSlot.equippedItem, i => Item.toDTO(i)),
-            character: EquipmentSlot.serializeEntity(eqSlot.character, i => Character.toDTO(i)),
-            user: EquipmentSlot.serializeEntity(eqSlot.user, i => User.toDTO(i)),
-            campaign: EquipmentSlot.serializeEntity(eqSlot.campaign, i => Campaign.toDTO(i)),
-            world: EquipmentSlot.serializeEntity(eqSlot.world, i => World.toDTO(i)),
+            character: eqSlot.character?.id,
+            user: eqSlot.user.id,
+            campaign: eqSlot.campaign?.id,
+            world: eqSlot.world?.id,
             targetEntity: eqSlot.targetEntity
         };
     }

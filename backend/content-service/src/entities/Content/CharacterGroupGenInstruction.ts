@@ -51,7 +51,7 @@ export class CharacterGroupGenInstruction extends ContentBase {
 
     public static fromDTO(
         dto: CharacterGroupGenInstructionDTO,
-        context: Context
+        context?: Context
     ): CharacterGroupGenInstruction {
         if (!dto.set) throw new Error("did not receive field 'set' on CharacterGroupGenInstructionDTO, but it is mandatory")
         const instruction = new CharacterGroupGenInstruction();
@@ -62,9 +62,11 @@ export class CharacterGroupGenInstruction extends ContentBase {
             cond: deserializeEnum(ConditionEnumDTO, dto.set.cond),
             items: dto.set.instructions.map(deserializeInstruction),
         });
-        instruction.user = context.user;
-        instruction.campaign = context.campaign;
-        instruction.world = context.world;
+        if (context) {
+            instruction.user = context.user;
+            instruction.campaign = context.campaign;
+            instruction.world = context.world;
+        }
         instruction.targetEntity = dto.targetEntity
         return instruction;
     }

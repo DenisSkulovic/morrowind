@@ -55,7 +55,7 @@
                 "SPEECHCRAFT": -20
             },
             "personality": [
-                "PROFILE_CHALLENGER"
+                "PROFILE_LONER"
             ]
         },
         "targetEntity": "CharacterGenInstruction"

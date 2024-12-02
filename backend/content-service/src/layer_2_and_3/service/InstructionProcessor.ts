@@ -12,22 +12,25 @@ export class InstructionProcessor {
         if (typeof instruction === "string") {
             console.log(`[processInstruction] case string`)
             return [new IdAndQuant(instruction, 1)]
-        } else if (instruction instanceof IdAndQuant) {
+        } else if (instruction.clazz === "IdAndQuant") {
             console.log(`[processInstruction] case IdAndQuant`)
-            return [instruction]
-        } else if (instruction instanceof ProbObject_Simple) {
+            return [IdAndQuant.build(instruction)]
+        } else if (instruction.clazz === "ProbObject_Simple") {
             console.log(`[processInstruction] case ProbObject_Simple`)
-            return this._processProbSimple(instruction)
-        } else if (instruction instanceof BlueprintGenInstruction_Gaussian) {
+            return this._processProbSimple(ProbObject_Simple.build(instruction))
+        } else if (instruction.clazz === "BlueprintGenInstruction_Gaussian") {
             console.log(`[processInstruction] case BlueprintGenInstruction_Gaussian`)
-            const idAndQuant: IdAndQuant | null = this._processProbGaussian(instruction)
+            const idAndQuant: IdAndQuant | null = this._processProbGaussian(BlueprintGenInstruction_Gaussian.build(instruction))
             const arr: IdAndQuant[] = []
             if (idAndQuant) arr.push(idAndQuant)
             return arr
-        } else if (instruction instanceof BlueprintSetCombinator) {
+        } else if (instruction.clazz === "BlueprintSetCombinator") {
             console.log(`[processInstruction] case BlueprintSetCombinator`)
-            return this._processCombinator(instruction)
-        } else throw new Error("got into 'else' of 'generateMany', and that should not be possible")
+            return this._processCombinator(BlueprintSetCombinator.build(instruction))
+        } else {
+            console.log(`error instruction: `, instruction)
+            throw new Error("got into 'else' of 'generateMany', and that should not be possible")
+        }
     }
 
 

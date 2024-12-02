@@ -1,6 +1,6 @@
 {
     "source": 0,
-    "instructions": [
+    "arr": [
         {
             "blueprintId": "COIN"
         },

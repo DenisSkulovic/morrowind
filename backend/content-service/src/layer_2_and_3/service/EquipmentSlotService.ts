@@ -1,6 +1,8 @@
+import { ContentBase } from "../../ContentBase";
 import { contentEntityMap } from "../../contentEntityMap";
 import { Item } from "../../entities/Content/Item/Item";
 import { EquipmentSlot } from "../../entities/Content/Slot/EquipmentSlot";
+import { EntityConstructor } from "../../types";
 
 export class EquipmentSlotService {
     /**
@@ -22,7 +24,9 @@ export class EquipmentSlotService {
 
             // Iterate through allowed entities in priority order
             for (const entityName of allowedEntities) {
-                const entityConstructor = contentEntityMap[entityName];
+                console.log(`entityName`, entityName)
+                const entityConstructor: EntityConstructor<ContentBase> | undefined = contentEntityMap[entityName];
+                console.log(`entityConstructor`, entityConstructor)
 
                 // Filter items that can be placed in this slot
                 const candidateItems = unequippedItems.filter(

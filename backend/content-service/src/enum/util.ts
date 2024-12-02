@@ -6,7 +6,7 @@ export function serializeEnum<T extends object>(enumObj: T, value: string): numb
 
 export function deserializeEnum<T extends object>(fromEnum: T, protoValue: number): string {
     const entry = Object.entries(fromEnum).find(([, val]) => val === protoValue);
-    console.log(`entry`, entry)
+    console.log(`[deserializeEnum] entry`, entry)
     if (!entry) throw new Error(`Enum deserialization failed: ${protoValue} not found in ${JSON.stringify(fromEnum)}`);
     return entry[1];
 }

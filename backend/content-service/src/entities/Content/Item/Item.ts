@@ -103,7 +103,7 @@ export class Item extends TaggableContentBase {
             gridPosition: item.grid_position
                 ? { x: item.grid_position.x, y: item.grid_position.y }
                 : undefined,
-            storageSlot: Item.serializeEntity(item.storageSlot, i => StorageSlot.toDTO(i)),
+            storageSlot: item.storageSlot?.id,
             storageSlots: Item.serializeEntityArray(item.storageSlots, i => StorageSlot.toDTO(i)),
             storageSlotDefinition: item.storageSlotDefinition
                 ? {
@@ -114,10 +114,10 @@ export class Item extends TaggableContentBase {
                     })),
                 }
                 : undefined,
-            equipmentSlot: Item.serializeEntity(item.equipmentSlot, i => EquipmentSlot.toDTO(i)),
-            user: Item.serializeEntity(item.user, i => User.toDTO(i)),
-            campaign: Item.serializeEntity(item.campaign, i => Campaign.toDTO(i)),
-            world: Item.serializeEntity(item.world, i => World.toDTO(i)),
+            equipmentSlot: item.equipmentSlot?.id,
+            user: item.user.id,
+            campaign: item.campaign?.id,
+            world: item.world?.id,
             trainedSkill: item.trained_skill,
             weight: item.weight,
             targetEntity: item.targetEntity

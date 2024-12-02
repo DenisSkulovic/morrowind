@@ -5,7 +5,7 @@ import { User } from "../User";
 import { World } from "../World";
 import { Context, GenerationInstruction } from "../../types";
 import { BackgroundCustomizationDTO, BackgroundDTO } from "../../proto/common";
-import { serializeGenerationInstructions, deserializeGenerationInstructions } from "../../class/blueprint_id_and_prob";
+import { serializeGenerationInstructions, deserializeGenerationInstructions, serializeInstruction, deserializeInstruction } from "../../class/blueprint_id_and_prob";
 
 
 @Entity()
@@ -17,6 +17,9 @@ export class Background extends ContentBase {
 
     @Column({ type: "varchar", length: 255 })
     name!: string; // Name of the background (e.g., "Highland Town Guard")
+
+    @Column({ type: "jsonb", nullable: true })
+    gender?: GenerationInstruction
 
     @Column({ type: "jsonb", nullable: true })
     faction?: GenerationInstruction[];
@@ -70,6 +73,7 @@ export class Background extends ContentBase {
         return {
             id: bck.id,
             name: bck.name,
+            gender: bck.gender ? serializeInstruction(bck.gender) : undefined,
             faction: bck.faction && serializeGenerationInstructions(bck.faction),
             disease: bck.disease && serializeGenerationInstructions(bck.disease),
             addiction: bck.addiction && serializeGenerationInstructions(bck.addiction),
@@ -119,6 +123,7 @@ export class Background extends ContentBase {
 
 
 export class BackgroundCustomization {
+    gender?: GenerationInstruction;
     faction?: GenerationInstruction[];
     disease?: GenerationInstruction[];
     addiction?: GenerationInstruction[];
@@ -136,6 +141,7 @@ export class BackgroundCustomization {
     // Serialization method to convert into DTO
     public static toDTO(bcgCust: BackgroundCustomization): BackgroundCustomizationDTO {
         return {
+            gender: bcgCust.gender ? serializeInstruction(bcgCust.gender) : undefined,
             faction: bcgCust.faction && serializeGenerationInstructions(bcgCust.faction),
             disease: bcgCust.disease && serializeGenerationInstructions(bcgCust.disease),
             addiction: bcgCust.addiction && serializeGenerationInstructions(bcgCust.addiction),
@@ -155,6 +161,7 @@ export class BackgroundCustomization {
     // Deserialization method to convert from DTO
     public static fromDTO(dto: BackgroundCustomizationDTO): BackgroundCustomization {
         const customization = new BackgroundCustomization();
+        customization.gender = dto.gender && deserializeInstruction(dto.gender);
         customization.faction = dto.faction && deserializeGenerationInstructions(dto.faction);
         customization.disease = dto.disease && deserializeGenerationInstructions(dto.disease);
         customization.addiction = dto.addiction && deserializeGenerationInstructions(dto.addiction);

@@ -12,6 +12,7 @@ import { ItemConsumable } from "./entities/Content/Item/ItemConsumable/ItemConsu
 import { ItemMisc } from "./entities/Content/Item/ItemMisc/ItemMisc";
 import { ItemMiscCurrency } from "./entities/Content/Item/ItemMisc/ItemMiscCurrency";
 import { ItemWeapon } from "./entities/Content/Item/ItemRepairable/ItemWeapon/ItemWeapon";
+import { ItemWeaponRanged } from "./entities/Content/Item/ItemRepairable/ItemWeapon/ItemWeaponRanged";
 import { ItemWeaponLongSword } from "./entities/Content/Item/ItemRepairable/ItemWeapon/ItemWeaponLongSword";
 import { ItemWeaponShortSword } from "./entities/Content/Item/ItemRepairable/ItemWeapon/ItemWeaponShortSword";
 import { ItemWearable } from "./entities/Content/Item/ItemRepairable/ItemWearable/ItemWearable";
@@ -82,7 +83,7 @@ export function isParentEntity(entity: EntityTarget<any>): boolean {
 }
 
 
-export const contentEntityMap: {[name: string]: EntityConstructor<ContentBase>} = {
+export const contentEntityMap: { [name: string]: EntityConstructor<ContentBase> } = {
     "ItemAlcohol": ItemAlcohol,
     "ItemDrinkable": ItemDrinkable,
     "ItemPotion": ItemPotion,
@@ -94,6 +95,7 @@ export const contentEntityMap: {[name: string]: EntityConstructor<ContentBase>} 
     "ItemMisc": ItemMisc,
     "ItemMiscCurrency": ItemMiscCurrency,
     "ItemWeapon": ItemWeapon,
+    "ItemWeaponRanged": ItemWeaponRanged,
     "ItemWeaponLongSword": ItemWeaponLongSword,
     "ItemWeaponShortSword": ItemWeaponShortSword,
     "ItemWearable": ItemWearable,

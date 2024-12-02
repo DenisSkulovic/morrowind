@@ -28,9 +28,14 @@ export interface GenerateItemsResponse {
   arr: ItemDTO[];
 }
 
-export interface GenerateCharactersRequest {
+export interface GenerateCharactersRequestCustom {
   source: DataSourceEnumDTO;
   arr: CharacterGenInstructionDTO[];
+}
+
+export interface GenerateCharactersRequestDB {
+  source: DataSourceEnumDTO;
+  charGenInstructionIds: string[];
 }
 
 export interface GenerateCharactersResponse {
@@ -182,12 +187,12 @@ export const GenerateItemsResponse: MessageFns<GenerateItemsResponse> = {
   },
 };
 
-function createBaseGenerateCharactersRequest(): GenerateCharactersRequest {
+function createBaseGenerateCharactersRequestCustom(): GenerateCharactersRequestCustom {
   return { source: 0, arr: [] };
 }
 
-export const GenerateCharactersRequest: MessageFns<GenerateCharactersRequest> = {
-  encode(message: GenerateCharactersRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+export const GenerateCharactersRequestCustom: MessageFns<GenerateCharactersRequestCustom> = {
+  encode(message: GenerateCharactersRequestCustom, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.source !== 0) {
       writer.uint32(8).int32(message.source);
     }
@@ -197,10 +202,10 @@ export const GenerateCharactersRequest: MessageFns<GenerateCharactersRequest> = 
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): GenerateCharactersRequest {
+  decode(input: BinaryReader | Uint8Array, length?: number): GenerateCharactersRequestCustom {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGenerateCharactersRequest();
+    const message = createBaseGenerateCharactersRequestCustom();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -229,7 +234,7 @@ export const GenerateCharactersRequest: MessageFns<GenerateCharactersRequest> = 
     return message;
   },
 
-  fromJSON(object: any): GenerateCharactersRequest {
+  fromJSON(object: any): GenerateCharactersRequestCustom {
     return {
       source: isSet(object.source) ? dataSourceEnumDTOFromJSON(object.source) : 0,
       arr: globalThis.Array.isArray(object?.arr)
@@ -238,7 +243,7 @@ export const GenerateCharactersRequest: MessageFns<GenerateCharactersRequest> = 
     };
   },
 
-  toJSON(message: GenerateCharactersRequest): unknown {
+  toJSON(message: GenerateCharactersRequestCustom): unknown {
     const obj: any = {};
     if (message.source !== 0) {
       obj.source = dataSourceEnumDTOToJSON(message.source);
@@ -249,13 +254,93 @@ export const GenerateCharactersRequest: MessageFns<GenerateCharactersRequest> = 
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<GenerateCharactersRequest>, I>>(base?: I): GenerateCharactersRequest {
-    return GenerateCharactersRequest.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<GenerateCharactersRequestCustom>, I>>(base?: I): GenerateCharactersRequestCustom {
+    return GenerateCharactersRequestCustom.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<GenerateCharactersRequest>, I>>(object: I): GenerateCharactersRequest {
-    const message = createBaseGenerateCharactersRequest();
+  fromPartial<I extends Exact<DeepPartial<GenerateCharactersRequestCustom>, I>>(
+    object: I,
+  ): GenerateCharactersRequestCustom {
+    const message = createBaseGenerateCharactersRequestCustom();
     message.source = object.source ?? 0;
     message.arr = object.arr?.map((e) => CharacterGenInstructionDTO.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseGenerateCharactersRequestDB(): GenerateCharactersRequestDB {
+  return { source: 0, charGenInstructionIds: [] };
+}
+
+export const GenerateCharactersRequestDB: MessageFns<GenerateCharactersRequestDB> = {
+  encode(message: GenerateCharactersRequestDB, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.source !== 0) {
+      writer.uint32(8).int32(message.source);
+    }
+    for (const v of message.charGenInstructionIds) {
+      writer.uint32(18).string(v!);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GenerateCharactersRequestDB {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGenerateCharactersRequestDB();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 8) {
+            break;
+          }
+
+          message.source = reader.int32() as any;
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.charGenInstructionIds.push(reader.string());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GenerateCharactersRequestDB {
+    return {
+      source: isSet(object.source) ? dataSourceEnumDTOFromJSON(object.source) : 0,
+      charGenInstructionIds: globalThis.Array.isArray(object?.charGenInstructionIds)
+        ? object.charGenInstructionIds.map((e: any) => globalThis.String(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GenerateCharactersRequestDB): unknown {
+    const obj: any = {};
+    if (message.source !== 0) {
+      obj.source = dataSourceEnumDTOToJSON(message.source);
+    }
+    if (message.charGenInstructionIds?.length) {
+      obj.charGenInstructionIds = message.charGenInstructionIds;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GenerateCharactersRequestDB>, I>>(base?: I): GenerateCharactersRequestDB {
+    return GenerateCharactersRequestDB.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GenerateCharactersRequestDB>, I>>(object: I): GenerateCharactersRequestDB {
+    const message = createBaseGenerateCharactersRequestDB();
+    message.source = object.source ?? 0;
+    message.charGenInstructionIds = object.charGenInstructionIds?.map((e) => e) || [];
     return message;
   },
 };
@@ -464,7 +549,8 @@ export const GenerateCharacterGroupsResponse: MessageFns<GenerateCharacterGroups
 
 export interface GeneratorController {
   generateItems(request: GenerateItemsRequest): Promise<GenerateItemsResponse>;
-  generateCharacters(request: GenerateCharactersRequest): Promise<GenerateCharactersResponse>;
+  generateCharactersCustom(request: GenerateCharactersRequestCustom): Promise<GenerateCharactersResponse>;
+  generateCharactersDB(request: GenerateCharactersRequestDB): Promise<GenerateCharactersResponse>;
   generateCharacterGroups(request: GenerateCharacterGroupsRequest): Promise<GenerateCharacterGroupsResponse>;
 }
 
@@ -476,7 +562,8 @@ export class GeneratorControllerClientImpl implements GeneratorController {
     this.service = opts?.service || GeneratorControllerServiceName;
     this.rpc = rpc;
     this.generateItems = this.generateItems.bind(this);
-    this.generateCharacters = this.generateCharacters.bind(this);
+    this.generateCharactersCustom = this.generateCharactersCustom.bind(this);
+    this.generateCharactersDB = this.generateCharactersDB.bind(this);
     this.generateCharacterGroups = this.generateCharacterGroups.bind(this);
   }
   generateItems(request: GenerateItemsRequest): Promise<GenerateItemsResponse> {
@@ -485,9 +572,15 @@ export class GeneratorControllerClientImpl implements GeneratorController {
     return promise.then((data) => GenerateItemsResponse.decode(new BinaryReader(data)));
   }
 
-  generateCharacters(request: GenerateCharactersRequest): Promise<GenerateCharactersResponse> {
-    const data = GenerateCharactersRequest.encode(request).finish();
-    const promise = this.rpc.request(this.service, "generateCharacters", data);
+  generateCharactersCustom(request: GenerateCharactersRequestCustom): Promise<GenerateCharactersResponse> {
+    const data = GenerateCharactersRequestCustom.encode(request).finish();
+    const promise = this.rpc.request(this.service, "generateCharactersCustom", data);
+    return promise.then((data) => GenerateCharactersResponse.decode(new BinaryReader(data)));
+  }
+
+  generateCharactersDB(request: GenerateCharactersRequestDB): Promise<GenerateCharactersResponse> {
+    const data = GenerateCharactersRequestDB.encode(request).finish();
+    const promise = this.rpc.request(this.service, "generateCharactersDB", data);
     return promise.then((data) => GenerateCharactersResponse.decode(new BinaryReader(data)));
   }
 

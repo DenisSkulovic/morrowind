@@ -26,6 +26,10 @@ import { Item } from "../../entities/Content/Item/Item";
 import { IdAndQuant } from "../../class/blueprint_id_and_prob";
 import { InstructionProcessor } from "../service/InstructionProcessor";
 import { SkillSet } from "../../entities/Content/Skill/SkillSet";
+import { GenderEnum } from "../../enum/GenderEnum";
+import { Birthsign } from "../../entities/Content/Birthsign";
+import { CharacterMemory } from "../../entities/Content/Knowledge/CharacterMemory";
+import { Tag } from "../../entities/Content/Tag";
 
 
 // TODO I need to conceptualize how I will deal with modifiers
@@ -37,7 +41,7 @@ import { SkillSet } from "../../entities/Content/Skill/SkillSet";
 
 
 
-enum CacheKeyEnum {
+export enum CacheKeyEnum {
     CHARACTER_INSTRUCTION = "characterInstruction",
     BACKGROUND = "background",
     SKILL_SET = "skill_set",
@@ -52,14 +56,15 @@ enum CacheKeyEnum {
     TRAIT = "trait",
     PAST_EXP_CHILD = "past_exp_child",
     PAST_EXP_ADULT = "past_exp_adult",
+    BIRTHSIGN = "birthsign",
 }
 
 
 
 
 export class CharacterGenerator extends AbstractProbGenerator<Character> {
-    context: Context
-    constructor(context: Context, dataSource: DataSource) {
+    context?: Context
+    constructor(dataSource: DataSource, context?: Context) {
         super(dataSource)
         this.context = context
         this.blueprintsCache = {}
@@ -90,35 +95,52 @@ export class CharacterGenerator extends AbstractProbGenerator<Character> {
 
         if (charGenInstruction.background_customization) Object.assign(customizedBackground, charGenInstruction.background_customization)
 
-        // Collect necessary data from either cache or db (these only extract data and dont create anything, so no need to handle unique instances for each separate character)
-        const [race, factions,
-            diseases, addictions, professions,
-            memoryPools, personality,
-            past_enp_child, past_exp_adult,
-            skills
-        ] = await Promise.all([
-            this._extractGeneric(CacheKeyEnum.RACE, Race, customizedBackground.race),
-            this._extractGeneric(CacheKeyEnum.FACTION, Faction, customizedBackground.faction),
-            this._extractGeneric(CacheKeyEnum.DISEASE, Disease, customizedBackground.disease),
-            this._extractGeneric(CacheKeyEnum.ADDICTION, Addiction, customizedBackground.addiction),
-            this._extractGeneric(CacheKeyEnum.PROFESSION, CharacterProfession, customizedBackground.profession),
-            this._extractGeneric(CacheKeyEnum.MEMORY_POOL, MemoryPool, customizedBackground.memory_pools),
-            this._extractPersonality(customizedBackground.personality[0]),
-            this._extractGeneric(CacheKeyEnum.PAST_EXP_CHILD, PastExperienceChild, customizedBackground.past_exp_child),
-            this._extractGeneric(CacheKeyEnum.PAST_EXP_ADULT, PastExperienceAdult, customizedBackground.past_exp_adult),
-            this._extractSkills(customizedBackground)
-        ])
-
         // create as many instances as quantity requires
         const characters: Character[] = []
         for (let i = 0; i < quantity; i++) {
+            // Collect necessary data from either cache or db (these only extract data and dont create anything, so no need to handle unique instances for each separate character)
+            const [birthsigns, races, factions,
+                diseases, addictions, professions,
+                memoryPools, personality,
+                past_exp_child, past_exp_adult,
+                skills
+            ] = await Promise.all([
+                this._extractGeneric(CacheKeyEnum.BIRTHSIGN, Birthsign, charGenInstruction.birthsign),
+                this._extractGeneric(CacheKeyEnum.RACE, Race, customizedBackground.race),
+                this._extractGeneric(CacheKeyEnum.FACTION, Faction, customizedBackground.faction),
+                this._extractGeneric(CacheKeyEnum.DISEASE, Disease, customizedBackground.disease),
+                this._extractGeneric(CacheKeyEnum.ADDICTION, Addiction, customizedBackground.addiction),
+                this._extractGeneric(CacheKeyEnum.PROFESSION, CharacterProfession, customizedBackground.profession),
+                this._extractGeneric(CacheKeyEnum.MEMORY_POOL, MemoryPool, customizedBackground.memory_pools),
+                this._extractPersonality(customizedBackground.personality[0]),
+                this._extractGeneric(CacheKeyEnum.PAST_EXP_CHILD, PastExperienceChild, customizedBackground.past_exp_child),
+                this._extractGeneric(CacheKeyEnum.PAST_EXP_ADULT, PastExperienceAdult, customizedBackground.past_exp_adult),
+                this._extractSkills(customizedBackground)
+            ])
+
+            // RACE
+            const race: Race | undefined = races[0]
+            if (!race) throw new Error("Received no Race for character. A character must have a race. Did you forget to set one? Or maybe your probabilities settings resulted in an empty value?")
+
+            // BIRTHSIGN
+            const birthsign: Birthsign | undefined = birthsigns[0]
+
+            // MEMORIES
+            const characterMemories: CharacterMemory[] = []
+
+            // TAGS
+            const tags: Tag[] = []
+
+            // GENDER
+            const gender: GenderEnum = this.decideGender(charGenInstruction, customizedBackground)
+
             // Create character entity
-            const character = Character.create({
-                first_name: charGenInstruction.first_name,
-                last_name: charGenInstruction.last_name,
-                gender: charGenInstruction.gender,
+            const character: Character = Character.create({
+                first_name: charGenInstruction.first_name || "FIRSTNAMELESS",
+                last_name: charGenInstruction.last_name || "LASTNAMELESS",
+                gender: gender,
                 race,
-                birthsign: charGenInstruction.birthsign,
+                birthsign,
                 birthEra: charGenInstruction.birthEra,
                 birthYear: charGenInstruction.birthYear,
                 birthMonth: charGenInstruction.birthMonth,
@@ -133,10 +155,12 @@ export class CharacterGenerator extends AbstractProbGenerator<Character> {
                 diseases,
                 addictions,
                 tags,
-                user: this.context.user,
-                world: this.context.world,
-                campaign: this.context.campaign
-            })[0];
+                user: this.context && this.context.user,
+                world: this.context && this.context.world,
+                campaign: this.context && this.context.campaign,
+                pastExperiencesChild: past_exp_child,
+                pastExperiencesAdult: past_exp_adult,
+            });
 
             // DEALING WITH ITEMS AND SLOTS 
             // generate an array of items (items are generated but not yet saved to DB, because generators only perform READ operations on the DB)
@@ -147,22 +171,42 @@ export class CharacterGenerator extends AbstractProbGenerator<Character> {
 
             // TODO assign tags based on everything
 
-            characters.push(character);
+            characters.push(Character.create(character));
         }
 
         return characters
     }
 
+    protected decideGender(charGenInstr: CharacterGenInstruction, customizedBackground: Background): GenderEnum {
+        if (charGenInstr.gender) return charGenInstr.gender
+        if (customizedBackground.gender) {
+            const idsAndQuants: IdAndQuant[] = InstructionProcessor.processInstruction(customizedBackground.gender)
+            const firstItem: IdAndQuant | undefined = idsAndQuants[0]
+            if (!firstItem) throw new Error("No gender info received for character. Character must have a gender.")
+            const genderLabel: string = firstItem.blueprint_id
+            if (!Object.values(GenderEnum).includes(genderLabel as GenderEnum)) {
+                throw new Error(`Received unrecognized gender: "${genderLabel}"`)
+            }
+            return genderLabel as GenderEnum
+        }
+        throw new Error("No gender info received for character. Character must have a gender.")
+    }
 
-    protected async _extractGeneric<T extends ContentBase>(type: CacheKeyEnum, entityConstructor: EntityConstructor<T>, instructions: GenerationInstruction[] | undefined): Promise<T[]> {
+
+    protected async _extractGeneric<T extends ContentBase>(type: CacheKeyEnum, entityConstructor: EntityConstructor<T>, instructions: GenerationInstruction[] | GenerationInstruction | undefined): Promise<T[]> {
         const res: T[] = []
         if (!instructions) return res
-        for (const instruction of instructions) {
-            const idsAndQuants: IdAndQuant[] = InstructionProcessor.processInstruction(instruction)
+        const process = async (instr: GenerationInstruction) => {
+            const idsAndQuants: IdAndQuant[] = InstructionProcessor.processInstruction(instr)
             const blueprintIds: string[] = idsAndQuants.map((idAndQuant) => idAndQuant.blueprint_id)
             const entities = await this._getBlueprints_cacheOrRequest(type, entityConstructor, blueprintIds)
             entities.forEach((entity) => res.push(entity))
         }
+        if (Array.isArray(instructions)) {
+            for (const instruction of instructions) {
+                await process(instruction)
+            }
+        } else await process(instructions)
         return res
     }
 
@@ -200,7 +244,8 @@ export class CharacterGenerator extends AbstractProbGenerator<Character> {
         // start with initial skill definition for the race
 
         // process skill sets
-        const skillSetIds: string[] | undefined = customizedBackground.skill_sets
+        const skillSetInstructions: GenerationInstruction[] | undefined = customizedBackground.skill_sets
+        const skillSetIds: IdAndQuant[] | undefined = skillSetInstructions?.map((instruction) => InstructionProcessor.processInstruction(instruction)).flat()
         if (skillSetIds) {
             const skillSets: SkillSet[] = await this._extractGeneric(CacheKeyEnum.SKILL_SET, SkillSet, skillSetIds)
             for (const skillSet of skillSets) {
@@ -233,14 +278,17 @@ export class CharacterGenerator extends AbstractProbGenerator<Character> {
         }[] = character.race.equipment_slot_definitions
 
         slotDefinitions.forEach((definition) => {
-            const slot: EquipmentSlot = EquipmentSlot.create({
+            const eqSlotObj: { [key: string]: any } = {
                 name: definition.name,
                 allowedEntities: definition.allowedEntities,
                 character,
-                world: this.context.world,
-                user: this.context.user,
-                campaign: this.context.campaign
-            })
+            }
+            if (this.context) {
+                eqSlotObj.user = this.context.user
+                eqSlotObj.world = this.context.world
+                eqSlotObj.campaign = this.context.campaign
+            }
+            const slot: EquipmentSlot = EquipmentSlot.create(eqSlotObj)
             character.equipmentSlots.push(slot)
         })
     }

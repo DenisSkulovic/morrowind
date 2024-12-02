@@ -12,7 +12,7 @@ export class StorageSlotService {
     ): boolean {
 
 
-        const [ width, height ] = item.size!;
+        const [width, height] = item.size!;
         const { x, y } = grid_position;
 
         // Check bounds
@@ -29,7 +29,8 @@ export class StorageSlotService {
     }
 
     private static _placeItemIntoGrid(grid: StorageGrid, item: Item, grid_position: { x: number; y: number }): void {
-        const [ width, height ] = item.size!;
+        if (!item.id) throw new Error("cannot place item into grid when item has no id; are you trying to place an item that doesn't exist yet?")
+        const [width, height] = item.size!;
         const { x, y } = grid_position;
 
         for (let i = x; i < x + width; i++) {
@@ -43,7 +44,7 @@ export class StorageSlotService {
 
     private static _removeItemFromGrid(grid: StorageGrid, item: Item): void {
         const { x, y } = item.grid_position!;
-        const [ width, height ] = item.size!;
+        const [width, height] = item.size!;
 
         for (let i = x; i < x + width; i++) {
             for (let j = y; j < y + height; j++) {
@@ -113,7 +114,7 @@ export class StorageSlotService {
         if (!storageSlot.gridState) {
             throw new Error("Storage slot does not have a grid.");
         }
-        
+
         // check weight
         const totalWeight = storageSlot.storedItems?.reduce((sum, i) => sum + i.weight, 0) || 0;
         const itemWeight = item.weight;
@@ -159,37 +160,37 @@ export class StorageSlotService {
         return StorageSlotService._swapItemsInGrid(storageSlot.gridState, item1, item2);
     }
 
-    
+
     public static placeItemsIntoStorageSlots(
         storageSlots: StorageSlot[],
         items: Item[]
     ): { placedItems: Item[]; unplacedItems: Item[] } {
         // Sort items by size (largest first), then by weight
-        items.sort((a, b) => 
-            (b.size![0] * b.size![1]) - (a.size![0] * a.size![1]) || 
+        items.sort((a, b) =>
+            (b.size![0] * b.size![1]) - (a.size![0] * a.size![1]) ||
             b.weight - a.weight
         );
-    
+
         // Sort slots by available space and weight limit (smallest first)
-        storageSlots.sort((a, b) => 
-            (a.grid![0] * a.grid![1]) - (b.grid![0] * b.grid![1]) || 
+        storageSlots.sort((a, b) =>
+            (a.grid![0] * a.grid![1]) - (b.grid![0] * b.grid![1]) ||
             (a.maxWeight! - a.storedItems!.reduce((sum, i) => sum + i.weight, 0))
         );
-    
+
         const placedItems: Item[] = [];
         const unplacedItems: Item[] = [];
-    
+
         items.forEach(item => {
             let itemPlaced = false;
-    
+
             // Try to place the item in each slot
             for (const slot of storageSlots) {
                 // Auto-organize the slot before placement
                 StorageSlotService.organizeStorageSlot(slot);
-    
+
                 const grid = slot.grid!;
                 const cells = slot.gridState!;
-    
+
                 // Try to place the item in the slot using the new GridCell system
                 const placement = StorageSlotService._findPlacementForItemInGrid(cells, grid, item);
                 if (placement) {
@@ -199,31 +200,31 @@ export class StorageSlotService {
                     break;
                 }
             }
-    
+
             if (itemPlaced) {
                 placedItems.push(item);
             } else {
                 unplacedItems.push(item); // If no slot is found, add to unplaced items
             }
         });
-    
+
         // Auto-organize all slots after placement
         storageSlots.forEach(slot => StorageSlotService.organizeStorageSlot(slot));
-    
+
         return { placedItems, unplacedItems };
     }
-    
+
     private static _findPlacementForItemInGrid(
         gridCells: StorageGrid,
         grid: [number, number],
         item: Item
     ): { x: number; y: number } | null {
-        const [itemWidth, itemHeight ] = item.size!;
-    
+        const [itemWidth, itemHeight] = item.size!;
+
         for (let x = 0; x <= grid[0] - itemWidth; x++) {
             for (let y = 0; y <= grid[1] - itemHeight; y++) {
                 let canPlace = true;
-    
+
                 // Check if the item fits in the grid without collision
                 for (let i = x; i < x + itemWidth; i++) {
                     for (let j = y; j < y + itemHeight; j++) {
@@ -235,31 +236,32 @@ export class StorageSlotService {
                     }
                     if (!canPlace) break;
                 }
-    
+
                 if (canPlace) {
                     return { x, y };
                 }
             }
         }
-    
+
         return null; // No valid position found
     }
-    
+
     private static _placeItemIntoGridCells(
         gridCells: StorageGrid,
         item: Item,
         position: { x: number; y: number }
     ): void {
-        const [itemWidth, itemHeight ] = item.size!;
+        if (!item.id) throw new Error("cannot place item into grid when item has no id; are you trying to place an item that doesn't exist yet?")
+        const [itemWidth, itemHeight] = item.size!;
         const { x, y } = position;
-    
+
         for (let i = x; i < x + itemWidth; i++) {
             for (let j = y; j < y + itemHeight; j++) {
                 gridCells[i][j] = item.id;
             }
         }
-    
+
         item.grid_position = position; // Update the item's position
     }
-    
+
 }
