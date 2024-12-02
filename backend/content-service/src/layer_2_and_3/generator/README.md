@@ -1,1 +1,0 @@
-Generators must only perform READ operations on databases. They only receive data and spit out data, like Entity instances, etc. The next layer is responsible for WRITE operations.

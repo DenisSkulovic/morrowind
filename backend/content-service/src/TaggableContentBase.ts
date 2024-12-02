@@ -1,5 +1,5 @@
 import { ContentBase } from "./ContentBase";
-import { Tag } from "./entities/Content/Tag";
+import { Tag } from "./modules/content/entities/Tag";
 
 export abstract class TaggableContentBase extends ContentBase {
     tags?: Promise<Tag[]> | Tag[];

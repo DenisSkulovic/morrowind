@@ -1,15 +1,7 @@
 import { BaseEntity } from "typeorm";
 import { Context } from "./types";
-import { User } from "./entities/User";
 
 export abstract class Base extends BaseEntity {
-    public static toDTO(obj: object): object {
-        throw new Error("needs implementation on child class")
-    };
-    public static fromDTO(dto: object, context: Context): object {
-        throw new Error("needs implementation on child class")
-    };
-
     public static serializeEntityArray<T extends BaseEntity>(
         entities: T[] | undefined,
         mapToDTO: (entity: T) => any

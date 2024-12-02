@@ -11,6 +11,7 @@ services:
     ports:
       - "5001:50051"
     environment:
+      - NODE_ENV=development
       - DATABASE_USER=${POSTGRES_USER}
       - DATABASE_PASSWORD=${POSTGRES_PASSWORD}
       - DATABASE_HOST__WORLD=world-db
@@ -19,8 +20,10 @@ services:
       - DATABASE_HOST__CAMPAIGN=campaign-db
       - DATABASE_PORT__CAMPAIGN=5432
       - DATABASE_NAME__CAMPAIGN=${POSTGRES_DB__CAMPAIGN}
+      - DATABASE_SYNCHRONIZE=false
     volumes:
       - ./backend/content-service:/usr/src/app
+      - /usr/src/app/node_modules
     depends_on:
       - world-db
       - campaign-db

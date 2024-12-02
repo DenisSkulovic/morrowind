@@ -1,6 +1,6 @@
-import { World } from "../entities/World";
+import { World } from "../modules/world/entities/World";
 import { WorldDataSource } from "../data-source";
-import { DataSourceEnum } from "../enum/DataSourceEnum";
+import { DataSourceEnum } from "../common/enum/DataSourceEnum";
 
 export function MakeSureWorldIsNotFrozen(
     worldIdParam: string,
@@ -15,7 +15,7 @@ export function MakeSureWorldIsNotFrozen(
 
         descriptor.value = async function (...args: any[]) {
             const source = args.find((arg) => arg[sourceParam] !== undefined)?.[sourceParam];
-            if (source === DataSourceEnum.WORLD) { // only ensure freezing for the WORLD data source as it is the only need atm; may generalize later
+            if (source === DataSourceEnum.DATA_SOURCE_WORLD) { // only ensure freezing for the WORLD data source as it is the only need atm; may generalize later
                 // Extract the worldId from the method arguments
                 const worldId = args.find((arg) => arg[worldIdParam] !== undefined)?.[worldIdParam];
 

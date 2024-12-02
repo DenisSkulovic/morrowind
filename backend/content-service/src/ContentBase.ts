@@ -1,8 +1,8 @@
 import { BeforeInsert, BeforeUpdate, Column } from "typeorm";
 import { randomUUID } from "crypto";
-import { Campaign } from "./entities/Campaign";
-import { User } from "./entities/User";
-import { World } from "./entities/World";
+import { Campaign } from "./modules/campaign/entities/Campaign";
+import { User } from "./modules/user/entities/User";
+import { World } from "./modules/world/entities/World";
 import { Base } from "./Base";
 
 export abstract class ContentBase extends Base {

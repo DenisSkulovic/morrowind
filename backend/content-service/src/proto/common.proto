@@ -176,7 +176,7 @@ message ItemsDTO {
 
 // #######################################################################################
 message ItemActionsDTO {
-    repeated string actions = 1;
+    repeated ItemActionEnumDTO actions = 1;
 }
 // #######################################################################################
 
@@ -249,9 +249,9 @@ message CharacterDTO {
     optional WorldDTO world = 6;
     string firstName = 7;
     string lastName = 8;
-    RaceDTO race = 9;
+    string race = 9;
     GenderEnumDTO gender = 10;
-    BirthsignDTO birthsign = 11;
+    string birthsign = 11;
     optional int32 birthYear = 12;
     optional string birthMonth = 13;
     optional int32 birthDay = 14;
@@ -401,6 +401,7 @@ message TraitDTO {
     optional WorldDTO world = 7;
     optional TagsDTO tags = 8;
     string targetEntity = 9;
+    TraitTypeEnumDTO type = 10;
 }
 message TraitsDTO {
     repeated TraitDTO arr = 1;
@@ -847,7 +848,7 @@ message PastExperienceDTO {
     optional CampaignDTO campaign = 6;
     optional WorldDTO world = 7;
     optional TagsDTO tags = 8;
-    optional string type = 9;
+    PastExperienceTypeEnumDTO type = 9;
     string targetEntity = 10;
 }
 message PastExperiencesDTO {
@@ -1121,89 +1122,110 @@ message CampaignsDTO {
 
 // #######################################################################################
 enum EffectTypeEnumDTO {
-    DAMAGE = 0;
-    HEALING = 1;
-    BUFF = 2;
-    DEBUFF = 3;
-    RESISTANCE = 4;
-    STEALING = 5;
-    NEUTRAL = 6;
+    EFFECT_TYPE_DAMAGE = 0;
+    EFFECT_TYPE_HEALING = 1;
+    EFFECT_TYPE_BUFF = 2;
+    EFFECT_TYPE_DEBUFF = 3;
+    EFFECT_TYPE_RESISTANCE = 4;
+    EFFECT_TYPE_STEALING = 5;
+    EFFECT_TYPE_NEUTRAL = 6;
 }
 enum EffectTargetEnumDTO {
-    HEALTH = 0;
-    STAMINA = 1;
-    MANA = 2;
+    EFFECT_TARGET_HEALTH = 0;
+    EFFECT_TARGET_STAMINA = 1;
+    EFFECT_TARGET_MANA = 2;
 }
 enum EffectModeEnumDTO {
-    INSTANT = 0;
-    GRADUAL = 1;
-    PERSISTENT = 2;
+    EFFECT_MODE_INSTANT = 0;
+    EFFECT_MODE_GRADUAL = 1;
+    EFFECT_MODE_PERSISTENT = 2;
 }
 enum EffectElementEnumDTO {
-    FIRE = 0;
-    FROST = 1;
-    POISON = 2;
-    SHOCK = 3;
+    EFFECT_ELEMENT_FIRE = 0;
+    EFFECT_ELEMENT_FROST = 1;
+    EFFECT_ELEMENT_POISON = 2;
+    EFFECT_ELEMENT_SHOCK = 3;
 }
 enum NeedTypeEnumDTO {
-    DYNAMIC = 0;
-    THRESHOLD = 1;
-    EXTERNAL = 2;
+    NEED_TYPE_DYNAMIC = 0;
+    NEED_TYPE_THRESHOLD = 1;
+    NEED_TYPE_EXTERNAL = 2;
 }
 enum NeedLayerEnumDTO {
-    PHYSIOLOGICAL = 0;
-    SAFETY = 1;
-    BELONGING_AND_LOVE = 2;
-    ESTEEM = 3;
-    COGNITIVE = 4;
-    AESTHETIC = 5;
-    SELF_ACTUALIZATION = 6;
-    TRANSCENDENCE = 7;
+    NEED_LAYER_PHYSIOLOGICAL = 0;
+    NEED_LAYER_SAFETY = 1;
+    NEED_LAYER_BELONGING_AND_LOVE = 2;
+    NEED_LAYER_ESTEEM = 3;
+    NEED_LAYER_COGNITIVE = 4;
+    NEED_LAYER_AESTHETIC = 5;
+    NEED_LAYER_SELF_ACTUALIZATION = 6;
+    NEED_LAYER_TRANSCENDENCE = 7;
 }
 enum MemoryTypeEnumDTO {
-    GLOBAL = 0;
-    REGIONAL = 1;
-    EVENT_RELATED = 2;
-    HISTORIC = 3;
-    PERSONAL = 4;
+    MEMORY_TYPE_GLOBAL = 0;
+    MEMORY_TYPE_REGIONAL = 1;
+    MEMORY_TYPE_EVENT_RELATED = 2;
+    MEMORY_TYPE_HISTORIC = 3;
+    MEMORY_TYPE_PERSONAL = 4;
 } 
 enum ConditionEnumDTO {
-    OR = 0;
-    ANY = 1;
-    AND = 2;
+    CONDITION_OR = 0;
+    CONDITION_ANY = 1;
+    CONDITION_AND = 2;
 }
 enum PresetEnumDTO {
-    default = 0;
-    morrowind = 1;
+    PRESET_DEFAULT = 0;
+    PRESET_MORROWIND = 1;
 }
 enum TagSubtypeEnumDTO {
-    MATERIAL = 0;
-    CULTURE = 1;
-    RELATION = 2;
-    FACTION = 3;
-    RELIGION = 4;
-    WEAPON_QUALITY = 5;
-    ARMOR_QUALITY = 6;
-    WEAPON_TYPE = 7;
-    STATUS = 8;
-    QUEST = 9;
+    TAG_SUBTYPE_MATERIAL = 0;
+    TAG_SUBTYPE_CULTURE = 1;
+    TAG_SUBTYPE_RELATION = 2;
+    TAG_SUBTYPE_FACTION = 3;
+    TAG_SUBTYPE_RELIGION = 4;
+    TAG_SUBTYPE_WEAPON_QUALITY = 5;
+    TAG_SUBTYPE_ARMOR_QUALITY = 6;
+    TAG_SUBTYPE_WEAPON_TYPE = 7;
+    TAG_SUBTYPE_STATUS = 8;
+    TAG_SUBTYPE_QUEST = 9;
 }
 enum FactStatusEnumDTO {
-    ACCESSIBLE = 0;
-    INACCESSIBLE = 1;
+    FACT_STATUS_ACCESSIBLE = 0;
+    FACT_STATUS_INACCESSIBLE = 1;
 }
 enum SkillCategoryEnumDTO {
-    CRAFTING = 0;
-    MAGIC = 1;
-    COMBAT = 2;
-    STEALTH = 3;
-    SOCIAL = 4;
+    SKILL_CATEGORY_CRAFTING = 0;
+    SKILL_CATEGORY_MAGIC = 1;
+    SKILL_CATEGORY_COMBAT = 2;
+    SKILL_CATEGORY_STEALTH = 3;
+    SKILL_CATEGORY_SOCIAL = 4;
 }
 enum DataSourceEnumDTO {
-    WORLD = 0;
-    CAMPAIGN = 1;
+    DATA_SOURCE_WORLD = 0;
+    DATA_SOURCE_CAMPAIGN = 1;
 }
 enum GenderEnumDTO {
-    MALE = 0;
-    FEMALE = 1;
+    GENDER_MALE = 0;
+    GENDER_FEMALE = 1;
+}
+enum ItemActionEnumDTO {
+    ITEM_ACTION_ATTACK = 0;
+    ITEM_ACTION_BLOCK = 1;
+    ITEM_ACTION_USE = 2;
+}
+enum TraitTypeEnumDTO {
+    TRAIT_CONGENITAL = 0;
+    TRAIT_COPING = 1;
+    TRAIT_EDUCATION = 2;
+    TRAIT_FAITH = 3;
+    TRAIT_HEALTH = 4;
+    TRAIT_INFAMY = 5;
+    TRAIT_LEVELED = 6;
+    TRAIT_LIFESTYLE = 7;
+    TRAIT_PERSONALITY = 8;
+    TRAIT_PHYSICAL = 9;
+}
+enum PastExperienceTypeEnumDTO {
+    PAST_EXPERIENCE_CHILD = 0;
+    PAST_EXPERIENCE_ADULT = 1;
 }

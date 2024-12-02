@@ -11,39 +11,39 @@ export const protobufPackage = "common";
 
 /** ####################################################################################### */
 export enum EffectTypeEnumDTO {
-  DAMAGE = 0,
-  HEALING = 1,
-  BUFF = 2,
-  DEBUFF = 3,
-  RESISTANCE = 4,
-  STEALING = 5,
-  NEUTRAL = 6,
+  EFFECT_TYPE_DAMAGE = 0,
+  EFFECT_TYPE_HEALING = 1,
+  EFFECT_TYPE_BUFF = 2,
+  EFFECT_TYPE_DEBUFF = 3,
+  EFFECT_TYPE_RESISTANCE = 4,
+  EFFECT_TYPE_STEALING = 5,
+  EFFECT_TYPE_NEUTRAL = 6,
   UNRECOGNIZED = -1,
 }
 
 export function effectTypeEnumDTOFromJSON(object: any): EffectTypeEnumDTO {
   switch (object) {
     case 0:
-    case "DAMAGE":
-      return EffectTypeEnumDTO.DAMAGE;
+    case "EFFECT_TYPE_DAMAGE":
+      return EffectTypeEnumDTO.EFFECT_TYPE_DAMAGE;
     case 1:
-    case "HEALING":
-      return EffectTypeEnumDTO.HEALING;
+    case "EFFECT_TYPE_HEALING":
+      return EffectTypeEnumDTO.EFFECT_TYPE_HEALING;
     case 2:
-    case "BUFF":
-      return EffectTypeEnumDTO.BUFF;
+    case "EFFECT_TYPE_BUFF":
+      return EffectTypeEnumDTO.EFFECT_TYPE_BUFF;
     case 3:
-    case "DEBUFF":
-      return EffectTypeEnumDTO.DEBUFF;
+    case "EFFECT_TYPE_DEBUFF":
+      return EffectTypeEnumDTO.EFFECT_TYPE_DEBUFF;
     case 4:
-    case "RESISTANCE":
-      return EffectTypeEnumDTO.RESISTANCE;
+    case "EFFECT_TYPE_RESISTANCE":
+      return EffectTypeEnumDTO.EFFECT_TYPE_RESISTANCE;
     case 5:
-    case "STEALING":
-      return EffectTypeEnumDTO.STEALING;
+    case "EFFECT_TYPE_STEALING":
+      return EffectTypeEnumDTO.EFFECT_TYPE_STEALING;
     case 6:
-    case "NEUTRAL":
-      return EffectTypeEnumDTO.NEUTRAL;
+    case "EFFECT_TYPE_NEUTRAL":
+      return EffectTypeEnumDTO.EFFECT_TYPE_NEUTRAL;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -53,20 +53,20 @@ export function effectTypeEnumDTOFromJSON(object: any): EffectTypeEnumDTO {
 
 export function effectTypeEnumDTOToJSON(object: EffectTypeEnumDTO): string {
   switch (object) {
-    case EffectTypeEnumDTO.DAMAGE:
-      return "DAMAGE";
-    case EffectTypeEnumDTO.HEALING:
-      return "HEALING";
-    case EffectTypeEnumDTO.BUFF:
-      return "BUFF";
-    case EffectTypeEnumDTO.DEBUFF:
-      return "DEBUFF";
-    case EffectTypeEnumDTO.RESISTANCE:
-      return "RESISTANCE";
-    case EffectTypeEnumDTO.STEALING:
-      return "STEALING";
-    case EffectTypeEnumDTO.NEUTRAL:
-      return "NEUTRAL";
+    case EffectTypeEnumDTO.EFFECT_TYPE_DAMAGE:
+      return "EFFECT_TYPE_DAMAGE";
+    case EffectTypeEnumDTO.EFFECT_TYPE_HEALING:
+      return "EFFECT_TYPE_HEALING";
+    case EffectTypeEnumDTO.EFFECT_TYPE_BUFF:
+      return "EFFECT_TYPE_BUFF";
+    case EffectTypeEnumDTO.EFFECT_TYPE_DEBUFF:
+      return "EFFECT_TYPE_DEBUFF";
+    case EffectTypeEnumDTO.EFFECT_TYPE_RESISTANCE:
+      return "EFFECT_TYPE_RESISTANCE";
+    case EffectTypeEnumDTO.EFFECT_TYPE_STEALING:
+      return "EFFECT_TYPE_STEALING";
+    case EffectTypeEnumDTO.EFFECT_TYPE_NEUTRAL:
+      return "EFFECT_TYPE_NEUTRAL";
     case EffectTypeEnumDTO.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -74,23 +74,23 @@ export function effectTypeEnumDTOToJSON(object: EffectTypeEnumDTO): string {
 }
 
 export enum EffectTargetEnumDTO {
-  HEALTH = 0,
-  STAMINA = 1,
-  MANA = 2,
+  EFFECT_TARGET_HEALTH = 0,
+  EFFECT_TARGET_STAMINA = 1,
+  EFFECT_TARGET_MANA = 2,
   UNRECOGNIZED = -1,
 }
 
 export function effectTargetEnumDTOFromJSON(object: any): EffectTargetEnumDTO {
   switch (object) {
     case 0:
-    case "HEALTH":
-      return EffectTargetEnumDTO.HEALTH;
+    case "EFFECT_TARGET_HEALTH":
+      return EffectTargetEnumDTO.EFFECT_TARGET_HEALTH;
     case 1:
-    case "STAMINA":
-      return EffectTargetEnumDTO.STAMINA;
+    case "EFFECT_TARGET_STAMINA":
+      return EffectTargetEnumDTO.EFFECT_TARGET_STAMINA;
     case 2:
-    case "MANA":
-      return EffectTargetEnumDTO.MANA;
+    case "EFFECT_TARGET_MANA":
+      return EffectTargetEnumDTO.EFFECT_TARGET_MANA;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -100,12 +100,12 @@ export function effectTargetEnumDTOFromJSON(object: any): EffectTargetEnumDTO {
 
 export function effectTargetEnumDTOToJSON(object: EffectTargetEnumDTO): string {
   switch (object) {
-    case EffectTargetEnumDTO.HEALTH:
-      return "HEALTH";
-    case EffectTargetEnumDTO.STAMINA:
-      return "STAMINA";
-    case EffectTargetEnumDTO.MANA:
-      return "MANA";
+    case EffectTargetEnumDTO.EFFECT_TARGET_HEALTH:
+      return "EFFECT_TARGET_HEALTH";
+    case EffectTargetEnumDTO.EFFECT_TARGET_STAMINA:
+      return "EFFECT_TARGET_STAMINA";
+    case EffectTargetEnumDTO.EFFECT_TARGET_MANA:
+      return "EFFECT_TARGET_MANA";
     case EffectTargetEnumDTO.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -113,23 +113,23 @@ export function effectTargetEnumDTOToJSON(object: EffectTargetEnumDTO): string {
 }
 
 export enum EffectModeEnumDTO {
-  INSTANT = 0,
-  GRADUAL = 1,
-  PERSISTENT = 2,
+  EFFECT_MODE_INSTANT = 0,
+  EFFECT_MODE_GRADUAL = 1,
+  EFFECT_MODE_PERSISTENT = 2,
   UNRECOGNIZED = -1,
 }
 
 export function effectModeEnumDTOFromJSON(object: any): EffectModeEnumDTO {
   switch (object) {
     case 0:
-    case "INSTANT":
-      return EffectModeEnumDTO.INSTANT;
+    case "EFFECT_MODE_INSTANT":
+      return EffectModeEnumDTO.EFFECT_MODE_INSTANT;
     case 1:
-    case "GRADUAL":
-      return EffectModeEnumDTO.GRADUAL;
+    case "EFFECT_MODE_GRADUAL":
+      return EffectModeEnumDTO.EFFECT_MODE_GRADUAL;
     case 2:
-    case "PERSISTENT":
-      return EffectModeEnumDTO.PERSISTENT;
+    case "EFFECT_MODE_PERSISTENT":
+      return EffectModeEnumDTO.EFFECT_MODE_PERSISTENT;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -139,12 +139,12 @@ export function effectModeEnumDTOFromJSON(object: any): EffectModeEnumDTO {
 
 export function effectModeEnumDTOToJSON(object: EffectModeEnumDTO): string {
   switch (object) {
-    case EffectModeEnumDTO.INSTANT:
-      return "INSTANT";
-    case EffectModeEnumDTO.GRADUAL:
-      return "GRADUAL";
-    case EffectModeEnumDTO.PERSISTENT:
-      return "PERSISTENT";
+    case EffectModeEnumDTO.EFFECT_MODE_INSTANT:
+      return "EFFECT_MODE_INSTANT";
+    case EffectModeEnumDTO.EFFECT_MODE_GRADUAL:
+      return "EFFECT_MODE_GRADUAL";
+    case EffectModeEnumDTO.EFFECT_MODE_PERSISTENT:
+      return "EFFECT_MODE_PERSISTENT";
     case EffectModeEnumDTO.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -152,27 +152,27 @@ export function effectModeEnumDTOToJSON(object: EffectModeEnumDTO): string {
 }
 
 export enum EffectElementEnumDTO {
-  FIRE = 0,
-  FROST = 1,
-  POISON = 2,
-  SHOCK = 3,
+  EFFECT_ELEMENT_FIRE = 0,
+  EFFECT_ELEMENT_FROST = 1,
+  EFFECT_ELEMENT_POISON = 2,
+  EFFECT_ELEMENT_SHOCK = 3,
   UNRECOGNIZED = -1,
 }
 
 export function effectElementEnumDTOFromJSON(object: any): EffectElementEnumDTO {
   switch (object) {
     case 0:
-    case "FIRE":
-      return EffectElementEnumDTO.FIRE;
+    case "EFFECT_ELEMENT_FIRE":
+      return EffectElementEnumDTO.EFFECT_ELEMENT_FIRE;
     case 1:
-    case "FROST":
-      return EffectElementEnumDTO.FROST;
+    case "EFFECT_ELEMENT_FROST":
+      return EffectElementEnumDTO.EFFECT_ELEMENT_FROST;
     case 2:
-    case "POISON":
-      return EffectElementEnumDTO.POISON;
+    case "EFFECT_ELEMENT_POISON":
+      return EffectElementEnumDTO.EFFECT_ELEMENT_POISON;
     case 3:
-    case "SHOCK":
-      return EffectElementEnumDTO.SHOCK;
+    case "EFFECT_ELEMENT_SHOCK":
+      return EffectElementEnumDTO.EFFECT_ELEMENT_SHOCK;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -182,14 +182,14 @@ export function effectElementEnumDTOFromJSON(object: any): EffectElementEnumDTO 
 
 export function effectElementEnumDTOToJSON(object: EffectElementEnumDTO): string {
   switch (object) {
-    case EffectElementEnumDTO.FIRE:
-      return "FIRE";
-    case EffectElementEnumDTO.FROST:
-      return "FROST";
-    case EffectElementEnumDTO.POISON:
-      return "POISON";
-    case EffectElementEnumDTO.SHOCK:
-      return "SHOCK";
+    case EffectElementEnumDTO.EFFECT_ELEMENT_FIRE:
+      return "EFFECT_ELEMENT_FIRE";
+    case EffectElementEnumDTO.EFFECT_ELEMENT_FROST:
+      return "EFFECT_ELEMENT_FROST";
+    case EffectElementEnumDTO.EFFECT_ELEMENT_POISON:
+      return "EFFECT_ELEMENT_POISON";
+    case EffectElementEnumDTO.EFFECT_ELEMENT_SHOCK:
+      return "EFFECT_ELEMENT_SHOCK";
     case EffectElementEnumDTO.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -197,23 +197,23 @@ export function effectElementEnumDTOToJSON(object: EffectElementEnumDTO): string
 }
 
 export enum NeedTypeEnumDTO {
-  DYNAMIC = 0,
-  THRESHOLD = 1,
-  EXTERNAL = 2,
+  NEED_TYPE_DYNAMIC = 0,
+  NEED_TYPE_THRESHOLD = 1,
+  NEED_TYPE_EXTERNAL = 2,
   UNRECOGNIZED = -1,
 }
 
 export function needTypeEnumDTOFromJSON(object: any): NeedTypeEnumDTO {
   switch (object) {
     case 0:
-    case "DYNAMIC":
-      return NeedTypeEnumDTO.DYNAMIC;
+    case "NEED_TYPE_DYNAMIC":
+      return NeedTypeEnumDTO.NEED_TYPE_DYNAMIC;
     case 1:
-    case "THRESHOLD":
-      return NeedTypeEnumDTO.THRESHOLD;
+    case "NEED_TYPE_THRESHOLD":
+      return NeedTypeEnumDTO.NEED_TYPE_THRESHOLD;
     case 2:
-    case "EXTERNAL":
-      return NeedTypeEnumDTO.EXTERNAL;
+    case "NEED_TYPE_EXTERNAL":
+      return NeedTypeEnumDTO.NEED_TYPE_EXTERNAL;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -223,12 +223,12 @@ export function needTypeEnumDTOFromJSON(object: any): NeedTypeEnumDTO {
 
 export function needTypeEnumDTOToJSON(object: NeedTypeEnumDTO): string {
   switch (object) {
-    case NeedTypeEnumDTO.DYNAMIC:
-      return "DYNAMIC";
-    case NeedTypeEnumDTO.THRESHOLD:
-      return "THRESHOLD";
-    case NeedTypeEnumDTO.EXTERNAL:
-      return "EXTERNAL";
+    case NeedTypeEnumDTO.NEED_TYPE_DYNAMIC:
+      return "NEED_TYPE_DYNAMIC";
+    case NeedTypeEnumDTO.NEED_TYPE_THRESHOLD:
+      return "NEED_TYPE_THRESHOLD";
+    case NeedTypeEnumDTO.NEED_TYPE_EXTERNAL:
+      return "NEED_TYPE_EXTERNAL";
     case NeedTypeEnumDTO.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -236,43 +236,43 @@ export function needTypeEnumDTOToJSON(object: NeedTypeEnumDTO): string {
 }
 
 export enum NeedLayerEnumDTO {
-  PHYSIOLOGICAL = 0,
-  SAFETY = 1,
-  BELONGING_AND_LOVE = 2,
-  ESTEEM = 3,
-  COGNITIVE = 4,
-  AESTHETIC = 5,
-  SELF_ACTUALIZATION = 6,
-  TRANSCENDENCE = 7,
+  NEED_LAYER_PHYSIOLOGICAL = 0,
+  NEED_LAYER_SAFETY = 1,
+  NEED_LAYER_BELONGING_AND_LOVE = 2,
+  NEED_LAYER_ESTEEM = 3,
+  NEED_LAYER_COGNITIVE = 4,
+  NEED_LAYER_AESTHETIC = 5,
+  NEED_LAYER_SELF_ACTUALIZATION = 6,
+  NEED_LAYER_TRANSCENDENCE = 7,
   UNRECOGNIZED = -1,
 }
 
 export function needLayerEnumDTOFromJSON(object: any): NeedLayerEnumDTO {
   switch (object) {
     case 0:
-    case "PHYSIOLOGICAL":
-      return NeedLayerEnumDTO.PHYSIOLOGICAL;
+    case "NEED_LAYER_PHYSIOLOGICAL":
+      return NeedLayerEnumDTO.NEED_LAYER_PHYSIOLOGICAL;
     case 1:
-    case "SAFETY":
-      return NeedLayerEnumDTO.SAFETY;
+    case "NEED_LAYER_SAFETY":
+      return NeedLayerEnumDTO.NEED_LAYER_SAFETY;
     case 2:
-    case "BELONGING_AND_LOVE":
-      return NeedLayerEnumDTO.BELONGING_AND_LOVE;
+    case "NEED_LAYER_BELONGING_AND_LOVE":
+      return NeedLayerEnumDTO.NEED_LAYER_BELONGING_AND_LOVE;
     case 3:
-    case "ESTEEM":
-      return NeedLayerEnumDTO.ESTEEM;
+    case "NEED_LAYER_ESTEEM":
+      return NeedLayerEnumDTO.NEED_LAYER_ESTEEM;
     case 4:
-    case "COGNITIVE":
-      return NeedLayerEnumDTO.COGNITIVE;
+    case "NEED_LAYER_COGNITIVE":
+      return NeedLayerEnumDTO.NEED_LAYER_COGNITIVE;
     case 5:
-    case "AESTHETIC":
-      return NeedLayerEnumDTO.AESTHETIC;
+    case "NEED_LAYER_AESTHETIC":
+      return NeedLayerEnumDTO.NEED_LAYER_AESTHETIC;
     case 6:
-    case "SELF_ACTUALIZATION":
-      return NeedLayerEnumDTO.SELF_ACTUALIZATION;
+    case "NEED_LAYER_SELF_ACTUALIZATION":
+      return NeedLayerEnumDTO.NEED_LAYER_SELF_ACTUALIZATION;
     case 7:
-    case "TRANSCENDENCE":
-      return NeedLayerEnumDTO.TRANSCENDENCE;
+    case "NEED_LAYER_TRANSCENDENCE":
+      return NeedLayerEnumDTO.NEED_LAYER_TRANSCENDENCE;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -282,22 +282,22 @@ export function needLayerEnumDTOFromJSON(object: any): NeedLayerEnumDTO {
 
 export function needLayerEnumDTOToJSON(object: NeedLayerEnumDTO): string {
   switch (object) {
-    case NeedLayerEnumDTO.PHYSIOLOGICAL:
-      return "PHYSIOLOGICAL";
-    case NeedLayerEnumDTO.SAFETY:
-      return "SAFETY";
-    case NeedLayerEnumDTO.BELONGING_AND_LOVE:
-      return "BELONGING_AND_LOVE";
-    case NeedLayerEnumDTO.ESTEEM:
-      return "ESTEEM";
-    case NeedLayerEnumDTO.COGNITIVE:
-      return "COGNITIVE";
-    case NeedLayerEnumDTO.AESTHETIC:
-      return "AESTHETIC";
-    case NeedLayerEnumDTO.SELF_ACTUALIZATION:
-      return "SELF_ACTUALIZATION";
-    case NeedLayerEnumDTO.TRANSCENDENCE:
-      return "TRANSCENDENCE";
+    case NeedLayerEnumDTO.NEED_LAYER_PHYSIOLOGICAL:
+      return "NEED_LAYER_PHYSIOLOGICAL";
+    case NeedLayerEnumDTO.NEED_LAYER_SAFETY:
+      return "NEED_LAYER_SAFETY";
+    case NeedLayerEnumDTO.NEED_LAYER_BELONGING_AND_LOVE:
+      return "NEED_LAYER_BELONGING_AND_LOVE";
+    case NeedLayerEnumDTO.NEED_LAYER_ESTEEM:
+      return "NEED_LAYER_ESTEEM";
+    case NeedLayerEnumDTO.NEED_LAYER_COGNITIVE:
+      return "NEED_LAYER_COGNITIVE";
+    case NeedLayerEnumDTO.NEED_LAYER_AESTHETIC:
+      return "NEED_LAYER_AESTHETIC";
+    case NeedLayerEnumDTO.NEED_LAYER_SELF_ACTUALIZATION:
+      return "NEED_LAYER_SELF_ACTUALIZATION";
+    case NeedLayerEnumDTO.NEED_LAYER_TRANSCENDENCE:
+      return "NEED_LAYER_TRANSCENDENCE";
     case NeedLayerEnumDTO.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -305,31 +305,31 @@ export function needLayerEnumDTOToJSON(object: NeedLayerEnumDTO): string {
 }
 
 export enum MemoryTypeEnumDTO {
-  GLOBAL = 0,
-  REGIONAL = 1,
-  EVENT_RELATED = 2,
-  HISTORIC = 3,
-  PERSONAL = 4,
+  MEMORY_TYPE_GLOBAL = 0,
+  MEMORY_TYPE_REGIONAL = 1,
+  MEMORY_TYPE_EVENT_RELATED = 2,
+  MEMORY_TYPE_HISTORIC = 3,
+  MEMORY_TYPE_PERSONAL = 4,
   UNRECOGNIZED = -1,
 }
 
 export function memoryTypeEnumDTOFromJSON(object: any): MemoryTypeEnumDTO {
   switch (object) {
     case 0:
-    case "GLOBAL":
-      return MemoryTypeEnumDTO.GLOBAL;
+    case "MEMORY_TYPE_GLOBAL":
+      return MemoryTypeEnumDTO.MEMORY_TYPE_GLOBAL;
     case 1:
-    case "REGIONAL":
-      return MemoryTypeEnumDTO.REGIONAL;
+    case "MEMORY_TYPE_REGIONAL":
+      return MemoryTypeEnumDTO.MEMORY_TYPE_REGIONAL;
     case 2:
-    case "EVENT_RELATED":
-      return MemoryTypeEnumDTO.EVENT_RELATED;
+    case "MEMORY_TYPE_EVENT_RELATED":
+      return MemoryTypeEnumDTO.MEMORY_TYPE_EVENT_RELATED;
     case 3:
-    case "HISTORIC":
-      return MemoryTypeEnumDTO.HISTORIC;
+    case "MEMORY_TYPE_HISTORIC":
+      return MemoryTypeEnumDTO.MEMORY_TYPE_HISTORIC;
     case 4:
-    case "PERSONAL":
-      return MemoryTypeEnumDTO.PERSONAL;
+    case "MEMORY_TYPE_PERSONAL":
+      return MemoryTypeEnumDTO.MEMORY_TYPE_PERSONAL;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -339,16 +339,16 @@ export function memoryTypeEnumDTOFromJSON(object: any): MemoryTypeEnumDTO {
 
 export function memoryTypeEnumDTOToJSON(object: MemoryTypeEnumDTO): string {
   switch (object) {
-    case MemoryTypeEnumDTO.GLOBAL:
-      return "GLOBAL";
-    case MemoryTypeEnumDTO.REGIONAL:
-      return "REGIONAL";
-    case MemoryTypeEnumDTO.EVENT_RELATED:
-      return "EVENT_RELATED";
-    case MemoryTypeEnumDTO.HISTORIC:
-      return "HISTORIC";
-    case MemoryTypeEnumDTO.PERSONAL:
-      return "PERSONAL";
+    case MemoryTypeEnumDTO.MEMORY_TYPE_GLOBAL:
+      return "MEMORY_TYPE_GLOBAL";
+    case MemoryTypeEnumDTO.MEMORY_TYPE_REGIONAL:
+      return "MEMORY_TYPE_REGIONAL";
+    case MemoryTypeEnumDTO.MEMORY_TYPE_EVENT_RELATED:
+      return "MEMORY_TYPE_EVENT_RELATED";
+    case MemoryTypeEnumDTO.MEMORY_TYPE_HISTORIC:
+      return "MEMORY_TYPE_HISTORIC";
+    case MemoryTypeEnumDTO.MEMORY_TYPE_PERSONAL:
+      return "MEMORY_TYPE_PERSONAL";
     case MemoryTypeEnumDTO.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -356,23 +356,23 @@ export function memoryTypeEnumDTOToJSON(object: MemoryTypeEnumDTO): string {
 }
 
 export enum ConditionEnumDTO {
-  OR = 0,
-  ANY = 1,
-  AND = 2,
+  CONDITION_OR = 0,
+  CONDITION_ANY = 1,
+  CONDITION_AND = 2,
   UNRECOGNIZED = -1,
 }
 
 export function conditionEnumDTOFromJSON(object: any): ConditionEnumDTO {
   switch (object) {
     case 0:
-    case "OR":
-      return ConditionEnumDTO.OR;
+    case "CONDITION_OR":
+      return ConditionEnumDTO.CONDITION_OR;
     case 1:
-    case "ANY":
-      return ConditionEnumDTO.ANY;
+    case "CONDITION_ANY":
+      return ConditionEnumDTO.CONDITION_ANY;
     case 2:
-    case "AND":
-      return ConditionEnumDTO.AND;
+    case "CONDITION_AND":
+      return ConditionEnumDTO.CONDITION_AND;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -382,12 +382,12 @@ export function conditionEnumDTOFromJSON(object: any): ConditionEnumDTO {
 
 export function conditionEnumDTOToJSON(object: ConditionEnumDTO): string {
   switch (object) {
-    case ConditionEnumDTO.OR:
-      return "OR";
-    case ConditionEnumDTO.ANY:
-      return "ANY";
-    case ConditionEnumDTO.AND:
-      return "AND";
+    case ConditionEnumDTO.CONDITION_OR:
+      return "CONDITION_OR";
+    case ConditionEnumDTO.CONDITION_ANY:
+      return "CONDITION_ANY";
+    case ConditionEnumDTO.CONDITION_AND:
+      return "CONDITION_AND";
     case ConditionEnumDTO.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -395,19 +395,19 @@ export function conditionEnumDTOToJSON(object: ConditionEnumDTO): string {
 }
 
 export enum PresetEnumDTO {
-  default = 0,
-  morrowind = 1,
+  PRESET_DEFAULT = 0,
+  PRESET_MORROWIND = 1,
   UNRECOGNIZED = -1,
 }
 
 export function presetEnumDTOFromJSON(object: any): PresetEnumDTO {
   switch (object) {
     case 0:
-    case "default":
-      return PresetEnumDTO.default;
+    case "PRESET_DEFAULT":
+      return PresetEnumDTO.PRESET_DEFAULT;
     case 1:
-    case "morrowind":
-      return PresetEnumDTO.morrowind;
+    case "PRESET_MORROWIND":
+      return PresetEnumDTO.PRESET_MORROWIND;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -417,10 +417,10 @@ export function presetEnumDTOFromJSON(object: any): PresetEnumDTO {
 
 export function presetEnumDTOToJSON(object: PresetEnumDTO): string {
   switch (object) {
-    case PresetEnumDTO.default:
-      return "default";
-    case PresetEnumDTO.morrowind:
-      return "morrowind";
+    case PresetEnumDTO.PRESET_DEFAULT:
+      return "PRESET_DEFAULT";
+    case PresetEnumDTO.PRESET_MORROWIND:
+      return "PRESET_MORROWIND";
     case PresetEnumDTO.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -428,51 +428,51 @@ export function presetEnumDTOToJSON(object: PresetEnumDTO): string {
 }
 
 export enum TagSubtypeEnumDTO {
-  MATERIAL = 0,
-  CULTURE = 1,
-  RELATION = 2,
-  FACTION = 3,
-  RELIGION = 4,
-  WEAPON_QUALITY = 5,
-  ARMOR_QUALITY = 6,
-  WEAPON_TYPE = 7,
-  STATUS = 8,
-  QUEST = 9,
+  TAG_SUBTYPE_MATERIAL = 0,
+  TAG_SUBTYPE_CULTURE = 1,
+  TAG_SUBTYPE_RELATION = 2,
+  TAG_SUBTYPE_FACTION = 3,
+  TAG_SUBTYPE_RELIGION = 4,
+  TAG_SUBTYPE_WEAPON_QUALITY = 5,
+  TAG_SUBTYPE_ARMOR_QUALITY = 6,
+  TAG_SUBTYPE_WEAPON_TYPE = 7,
+  TAG_SUBTYPE_STATUS = 8,
+  TAG_SUBTYPE_QUEST = 9,
   UNRECOGNIZED = -1,
 }
 
 export function tagSubtypeEnumDTOFromJSON(object: any): TagSubtypeEnumDTO {
   switch (object) {
     case 0:
-    case "MATERIAL":
-      return TagSubtypeEnumDTO.MATERIAL;
+    case "TAG_SUBTYPE_MATERIAL":
+      return TagSubtypeEnumDTO.TAG_SUBTYPE_MATERIAL;
     case 1:
-    case "CULTURE":
-      return TagSubtypeEnumDTO.CULTURE;
+    case "TAG_SUBTYPE_CULTURE":
+      return TagSubtypeEnumDTO.TAG_SUBTYPE_CULTURE;
     case 2:
-    case "RELATION":
-      return TagSubtypeEnumDTO.RELATION;
+    case "TAG_SUBTYPE_RELATION":
+      return TagSubtypeEnumDTO.TAG_SUBTYPE_RELATION;
     case 3:
-    case "FACTION":
-      return TagSubtypeEnumDTO.FACTION;
+    case "TAG_SUBTYPE_FACTION":
+      return TagSubtypeEnumDTO.TAG_SUBTYPE_FACTION;
     case 4:
-    case "RELIGION":
-      return TagSubtypeEnumDTO.RELIGION;
+    case "TAG_SUBTYPE_RELIGION":
+      return TagSubtypeEnumDTO.TAG_SUBTYPE_RELIGION;
     case 5:
-    case "WEAPON_QUALITY":
-      return TagSubtypeEnumDTO.WEAPON_QUALITY;
+    case "TAG_SUBTYPE_WEAPON_QUALITY":
+      return TagSubtypeEnumDTO.TAG_SUBTYPE_WEAPON_QUALITY;
     case 6:
-    case "ARMOR_QUALITY":
-      return TagSubtypeEnumDTO.ARMOR_QUALITY;
+    case "TAG_SUBTYPE_ARMOR_QUALITY":
+      return TagSubtypeEnumDTO.TAG_SUBTYPE_ARMOR_QUALITY;
     case 7:
-    case "WEAPON_TYPE":
-      return TagSubtypeEnumDTO.WEAPON_TYPE;
+    case "TAG_SUBTYPE_WEAPON_TYPE":
+      return TagSubtypeEnumDTO.TAG_SUBTYPE_WEAPON_TYPE;
     case 8:
-    case "STATUS":
-      return TagSubtypeEnumDTO.STATUS;
+    case "TAG_SUBTYPE_STATUS":
+      return TagSubtypeEnumDTO.TAG_SUBTYPE_STATUS;
     case 9:
-    case "QUEST":
-      return TagSubtypeEnumDTO.QUEST;
+    case "TAG_SUBTYPE_QUEST":
+      return TagSubtypeEnumDTO.TAG_SUBTYPE_QUEST;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -482,26 +482,26 @@ export function tagSubtypeEnumDTOFromJSON(object: any): TagSubtypeEnumDTO {
 
 export function tagSubtypeEnumDTOToJSON(object: TagSubtypeEnumDTO): string {
   switch (object) {
-    case TagSubtypeEnumDTO.MATERIAL:
-      return "MATERIAL";
-    case TagSubtypeEnumDTO.CULTURE:
-      return "CULTURE";
-    case TagSubtypeEnumDTO.RELATION:
-      return "RELATION";
-    case TagSubtypeEnumDTO.FACTION:
-      return "FACTION";
-    case TagSubtypeEnumDTO.RELIGION:
-      return "RELIGION";
-    case TagSubtypeEnumDTO.WEAPON_QUALITY:
-      return "WEAPON_QUALITY";
-    case TagSubtypeEnumDTO.ARMOR_QUALITY:
-      return "ARMOR_QUALITY";
-    case TagSubtypeEnumDTO.WEAPON_TYPE:
-      return "WEAPON_TYPE";
-    case TagSubtypeEnumDTO.STATUS:
-      return "STATUS";
-    case TagSubtypeEnumDTO.QUEST:
-      return "QUEST";
+    case TagSubtypeEnumDTO.TAG_SUBTYPE_MATERIAL:
+      return "TAG_SUBTYPE_MATERIAL";
+    case TagSubtypeEnumDTO.TAG_SUBTYPE_CULTURE:
+      return "TAG_SUBTYPE_CULTURE";
+    case TagSubtypeEnumDTO.TAG_SUBTYPE_RELATION:
+      return "TAG_SUBTYPE_RELATION";
+    case TagSubtypeEnumDTO.TAG_SUBTYPE_FACTION:
+      return "TAG_SUBTYPE_FACTION";
+    case TagSubtypeEnumDTO.TAG_SUBTYPE_RELIGION:
+      return "TAG_SUBTYPE_RELIGION";
+    case TagSubtypeEnumDTO.TAG_SUBTYPE_WEAPON_QUALITY:
+      return "TAG_SUBTYPE_WEAPON_QUALITY";
+    case TagSubtypeEnumDTO.TAG_SUBTYPE_ARMOR_QUALITY:
+      return "TAG_SUBTYPE_ARMOR_QUALITY";
+    case TagSubtypeEnumDTO.TAG_SUBTYPE_WEAPON_TYPE:
+      return "TAG_SUBTYPE_WEAPON_TYPE";
+    case TagSubtypeEnumDTO.TAG_SUBTYPE_STATUS:
+      return "TAG_SUBTYPE_STATUS";
+    case TagSubtypeEnumDTO.TAG_SUBTYPE_QUEST:
+      return "TAG_SUBTYPE_QUEST";
     case TagSubtypeEnumDTO.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -509,19 +509,19 @@ export function tagSubtypeEnumDTOToJSON(object: TagSubtypeEnumDTO): string {
 }
 
 export enum FactStatusEnumDTO {
-  ACCESSIBLE = 0,
-  INACCESSIBLE = 1,
+  FACT_STATUS_ACCESSIBLE = 0,
+  FACT_STATUS_INACCESSIBLE = 1,
   UNRECOGNIZED = -1,
 }
 
 export function factStatusEnumDTOFromJSON(object: any): FactStatusEnumDTO {
   switch (object) {
     case 0:
-    case "ACCESSIBLE":
-      return FactStatusEnumDTO.ACCESSIBLE;
+    case "FACT_STATUS_ACCESSIBLE":
+      return FactStatusEnumDTO.FACT_STATUS_ACCESSIBLE;
     case 1:
-    case "INACCESSIBLE":
-      return FactStatusEnumDTO.INACCESSIBLE;
+    case "FACT_STATUS_INACCESSIBLE":
+      return FactStatusEnumDTO.FACT_STATUS_INACCESSIBLE;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -531,10 +531,10 @@ export function factStatusEnumDTOFromJSON(object: any): FactStatusEnumDTO {
 
 export function factStatusEnumDTOToJSON(object: FactStatusEnumDTO): string {
   switch (object) {
-    case FactStatusEnumDTO.ACCESSIBLE:
-      return "ACCESSIBLE";
-    case FactStatusEnumDTO.INACCESSIBLE:
-      return "INACCESSIBLE";
+    case FactStatusEnumDTO.FACT_STATUS_ACCESSIBLE:
+      return "FACT_STATUS_ACCESSIBLE";
+    case FactStatusEnumDTO.FACT_STATUS_INACCESSIBLE:
+      return "FACT_STATUS_INACCESSIBLE";
     case FactStatusEnumDTO.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -542,31 +542,31 @@ export function factStatusEnumDTOToJSON(object: FactStatusEnumDTO): string {
 }
 
 export enum SkillCategoryEnumDTO {
-  CRAFTING = 0,
-  MAGIC = 1,
-  COMBAT = 2,
-  STEALTH = 3,
-  SOCIAL = 4,
+  SKILL_CATEGORY_CRAFTING = 0,
+  SKILL_CATEGORY_MAGIC = 1,
+  SKILL_CATEGORY_COMBAT = 2,
+  SKILL_CATEGORY_STEALTH = 3,
+  SKILL_CATEGORY_SOCIAL = 4,
   UNRECOGNIZED = -1,
 }
 
 export function skillCategoryEnumDTOFromJSON(object: any): SkillCategoryEnumDTO {
   switch (object) {
     case 0:
-    case "CRAFTING":
-      return SkillCategoryEnumDTO.CRAFTING;
+    case "SKILL_CATEGORY_CRAFTING":
+      return SkillCategoryEnumDTO.SKILL_CATEGORY_CRAFTING;
     case 1:
-    case "MAGIC":
-      return SkillCategoryEnumDTO.MAGIC;
+    case "SKILL_CATEGORY_MAGIC":
+      return SkillCategoryEnumDTO.SKILL_CATEGORY_MAGIC;
     case 2:
-    case "COMBAT":
-      return SkillCategoryEnumDTO.COMBAT;
+    case "SKILL_CATEGORY_COMBAT":
+      return SkillCategoryEnumDTO.SKILL_CATEGORY_COMBAT;
     case 3:
-    case "STEALTH":
-      return SkillCategoryEnumDTO.STEALTH;
+    case "SKILL_CATEGORY_STEALTH":
+      return SkillCategoryEnumDTO.SKILL_CATEGORY_STEALTH;
     case 4:
-    case "SOCIAL":
-      return SkillCategoryEnumDTO.SOCIAL;
+    case "SKILL_CATEGORY_SOCIAL":
+      return SkillCategoryEnumDTO.SKILL_CATEGORY_SOCIAL;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -576,16 +576,16 @@ export function skillCategoryEnumDTOFromJSON(object: any): SkillCategoryEnumDTO 
 
 export function skillCategoryEnumDTOToJSON(object: SkillCategoryEnumDTO): string {
   switch (object) {
-    case SkillCategoryEnumDTO.CRAFTING:
-      return "CRAFTING";
-    case SkillCategoryEnumDTO.MAGIC:
-      return "MAGIC";
-    case SkillCategoryEnumDTO.COMBAT:
-      return "COMBAT";
-    case SkillCategoryEnumDTO.STEALTH:
-      return "STEALTH";
-    case SkillCategoryEnumDTO.SOCIAL:
-      return "SOCIAL";
+    case SkillCategoryEnumDTO.SKILL_CATEGORY_CRAFTING:
+      return "SKILL_CATEGORY_CRAFTING";
+    case SkillCategoryEnumDTO.SKILL_CATEGORY_MAGIC:
+      return "SKILL_CATEGORY_MAGIC";
+    case SkillCategoryEnumDTO.SKILL_CATEGORY_COMBAT:
+      return "SKILL_CATEGORY_COMBAT";
+    case SkillCategoryEnumDTO.SKILL_CATEGORY_STEALTH:
+      return "SKILL_CATEGORY_STEALTH";
+    case SkillCategoryEnumDTO.SKILL_CATEGORY_SOCIAL:
+      return "SKILL_CATEGORY_SOCIAL";
     case SkillCategoryEnumDTO.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -593,19 +593,19 @@ export function skillCategoryEnumDTOToJSON(object: SkillCategoryEnumDTO): string
 }
 
 export enum DataSourceEnumDTO {
-  WORLD = 0,
-  CAMPAIGN = 1,
+  DATA_SOURCE_WORLD = 0,
+  DATA_SOURCE_CAMPAIGN = 1,
   UNRECOGNIZED = -1,
 }
 
 export function dataSourceEnumDTOFromJSON(object: any): DataSourceEnumDTO {
   switch (object) {
     case 0:
-    case "WORLD":
-      return DataSourceEnumDTO.WORLD;
+    case "DATA_SOURCE_WORLD":
+      return DataSourceEnumDTO.DATA_SOURCE_WORLD;
     case 1:
-    case "CAMPAIGN":
-      return DataSourceEnumDTO.CAMPAIGN;
+    case "DATA_SOURCE_CAMPAIGN":
+      return DataSourceEnumDTO.DATA_SOURCE_CAMPAIGN;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -615,10 +615,10 @@ export function dataSourceEnumDTOFromJSON(object: any): DataSourceEnumDTO {
 
 export function dataSourceEnumDTOToJSON(object: DataSourceEnumDTO): string {
   switch (object) {
-    case DataSourceEnumDTO.WORLD:
-      return "WORLD";
-    case DataSourceEnumDTO.CAMPAIGN:
-      return "CAMPAIGN";
+    case DataSourceEnumDTO.DATA_SOURCE_WORLD:
+      return "DATA_SOURCE_WORLD";
+    case DataSourceEnumDTO.DATA_SOURCE_CAMPAIGN:
+      return "DATA_SOURCE_CAMPAIGN";
     case DataSourceEnumDTO.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -626,19 +626,19 @@ export function dataSourceEnumDTOToJSON(object: DataSourceEnumDTO): string {
 }
 
 export enum GenderEnumDTO {
-  MALE = 0,
-  FEMALE = 1,
+  GENDER_MALE = 0,
+  GENDER_FEMALE = 1,
   UNRECOGNIZED = -1,
 }
 
 export function genderEnumDTOFromJSON(object: any): GenderEnumDTO {
   switch (object) {
     case 0:
-    case "MALE":
-      return GenderEnumDTO.MALE;
+    case "GENDER_MALE":
+      return GenderEnumDTO.GENDER_MALE;
     case 1:
-    case "FEMALE":
-      return GenderEnumDTO.FEMALE;
+    case "GENDER_FEMALE":
+      return GenderEnumDTO.GENDER_FEMALE;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -648,11 +648,164 @@ export function genderEnumDTOFromJSON(object: any): GenderEnumDTO {
 
 export function genderEnumDTOToJSON(object: GenderEnumDTO): string {
   switch (object) {
-    case GenderEnumDTO.MALE:
-      return "MALE";
-    case GenderEnumDTO.FEMALE:
-      return "FEMALE";
+    case GenderEnumDTO.GENDER_MALE:
+      return "GENDER_MALE";
+    case GenderEnumDTO.GENDER_FEMALE:
+      return "GENDER_FEMALE";
     case GenderEnumDTO.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export enum ItemActionEnumDTO {
+  ITEM_ACTION_ATTACK = 0,
+  ITEM_ACTION_BLOCK = 1,
+  ITEM_ACTION_USE = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function itemActionEnumDTOFromJSON(object: any): ItemActionEnumDTO {
+  switch (object) {
+    case 0:
+    case "ITEM_ACTION_ATTACK":
+      return ItemActionEnumDTO.ITEM_ACTION_ATTACK;
+    case 1:
+    case "ITEM_ACTION_BLOCK":
+      return ItemActionEnumDTO.ITEM_ACTION_BLOCK;
+    case 2:
+    case "ITEM_ACTION_USE":
+      return ItemActionEnumDTO.ITEM_ACTION_USE;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ItemActionEnumDTO.UNRECOGNIZED;
+  }
+}
+
+export function itemActionEnumDTOToJSON(object: ItemActionEnumDTO): string {
+  switch (object) {
+    case ItemActionEnumDTO.ITEM_ACTION_ATTACK:
+      return "ITEM_ACTION_ATTACK";
+    case ItemActionEnumDTO.ITEM_ACTION_BLOCK:
+      return "ITEM_ACTION_BLOCK";
+    case ItemActionEnumDTO.ITEM_ACTION_USE:
+      return "ITEM_ACTION_USE";
+    case ItemActionEnumDTO.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export enum TraitTypeEnumDTO {
+  TRAIT_CONGENITAL = 0,
+  TRAIT_COPING = 1,
+  TRAIT_EDUCATION = 2,
+  TRAIT_FAITH = 3,
+  TRAIT_HEALTH = 4,
+  TRAIT_INFAMY = 5,
+  TRAIT_LEVELED = 6,
+  TRAIT_LIFESTYLE = 7,
+  TRAIT_PERSONALITY = 8,
+  TRAIT_PHYSICAL = 9,
+  UNRECOGNIZED = -1,
+}
+
+export function traitTypeEnumDTOFromJSON(object: any): TraitTypeEnumDTO {
+  switch (object) {
+    case 0:
+    case "TRAIT_CONGENITAL":
+      return TraitTypeEnumDTO.TRAIT_CONGENITAL;
+    case 1:
+    case "TRAIT_COPING":
+      return TraitTypeEnumDTO.TRAIT_COPING;
+    case 2:
+    case "TRAIT_EDUCATION":
+      return TraitTypeEnumDTO.TRAIT_EDUCATION;
+    case 3:
+    case "TRAIT_FAITH":
+      return TraitTypeEnumDTO.TRAIT_FAITH;
+    case 4:
+    case "TRAIT_HEALTH":
+      return TraitTypeEnumDTO.TRAIT_HEALTH;
+    case 5:
+    case "TRAIT_INFAMY":
+      return TraitTypeEnumDTO.TRAIT_INFAMY;
+    case 6:
+    case "TRAIT_LEVELED":
+      return TraitTypeEnumDTO.TRAIT_LEVELED;
+    case 7:
+    case "TRAIT_LIFESTYLE":
+      return TraitTypeEnumDTO.TRAIT_LIFESTYLE;
+    case 8:
+    case "TRAIT_PERSONALITY":
+      return TraitTypeEnumDTO.TRAIT_PERSONALITY;
+    case 9:
+    case "TRAIT_PHYSICAL":
+      return TraitTypeEnumDTO.TRAIT_PHYSICAL;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return TraitTypeEnumDTO.UNRECOGNIZED;
+  }
+}
+
+export function traitTypeEnumDTOToJSON(object: TraitTypeEnumDTO): string {
+  switch (object) {
+    case TraitTypeEnumDTO.TRAIT_CONGENITAL:
+      return "TRAIT_CONGENITAL";
+    case TraitTypeEnumDTO.TRAIT_COPING:
+      return "TRAIT_COPING";
+    case TraitTypeEnumDTO.TRAIT_EDUCATION:
+      return "TRAIT_EDUCATION";
+    case TraitTypeEnumDTO.TRAIT_FAITH:
+      return "TRAIT_FAITH";
+    case TraitTypeEnumDTO.TRAIT_HEALTH:
+      return "TRAIT_HEALTH";
+    case TraitTypeEnumDTO.TRAIT_INFAMY:
+      return "TRAIT_INFAMY";
+    case TraitTypeEnumDTO.TRAIT_LEVELED:
+      return "TRAIT_LEVELED";
+    case TraitTypeEnumDTO.TRAIT_LIFESTYLE:
+      return "TRAIT_LIFESTYLE";
+    case TraitTypeEnumDTO.TRAIT_PERSONALITY:
+      return "TRAIT_PERSONALITY";
+    case TraitTypeEnumDTO.TRAIT_PHYSICAL:
+      return "TRAIT_PHYSICAL";
+    case TraitTypeEnumDTO.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export enum PastExperienceTypeEnumDTO {
+  PAST_EXPERIENCE_CHILD = 0,
+  PAST_EXPERIENCE_ADULT = 1,
+  UNRECOGNIZED = -1,
+}
+
+export function pastExperienceTypeEnumDTOFromJSON(object: any): PastExperienceTypeEnumDTO {
+  switch (object) {
+    case 0:
+    case "PAST_EXPERIENCE_CHILD":
+      return PastExperienceTypeEnumDTO.PAST_EXPERIENCE_CHILD;
+    case 1:
+    case "PAST_EXPERIENCE_ADULT":
+      return PastExperienceTypeEnumDTO.PAST_EXPERIENCE_ADULT;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return PastExperienceTypeEnumDTO.UNRECOGNIZED;
+  }
+}
+
+export function pastExperienceTypeEnumDTOToJSON(object: PastExperienceTypeEnumDTO): string {
+  switch (object) {
+    case PastExperienceTypeEnumDTO.PAST_EXPERIENCE_CHILD:
+      return "PAST_EXPERIENCE_CHILD";
+    case PastExperienceTypeEnumDTO.PAST_EXPERIENCE_ADULT:
+      return "PAST_EXPERIENCE_ADULT";
+    case PastExperienceTypeEnumDTO.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
   }
@@ -825,7 +978,7 @@ export interface ItemsDTO {
 
 /** ####################################################################################### */
 export interface ItemActionsDTO {
-  actions: string[];
+  actions: ItemActionEnumDTO[];
 }
 
 /** ####################################################################################### */
@@ -889,9 +1042,9 @@ export interface CharacterDTO {
   world?: WorldDTO | undefined;
   firstName: string;
   lastName: string;
-  race: RaceDTO | undefined;
+  race: string;
   gender: GenderEnumDTO;
-  birthsign: BirthsignDTO | undefined;
+  birthsign: string;
   birthYear?: number | undefined;
   birthMonth?: string | undefined;
   birthDay?: number | undefined;
@@ -1034,6 +1187,7 @@ export interface TraitDTO {
   world?: WorldDTO | undefined;
   tags?: TagsDTO | undefined;
   targetEntity: string;
+  type: TraitTypeEnumDTO;
 }
 
 export interface TraitsDTO {
@@ -1429,7 +1583,7 @@ export interface PastExperienceDTO {
   campaign?: CampaignDTO | undefined;
   world?: WorldDTO | undefined;
   tags?: TagsDTO | undefined;
-  type?: string | undefined;
+  type: PastExperienceTypeEnumDTO;
   targetEntity: string;
 }
 
@@ -4390,9 +4544,11 @@ function createBaseItemActionsDTO(): ItemActionsDTO {
 
 export const ItemActionsDTO: MessageFns<ItemActionsDTO> = {
   encode(message: ItemActionsDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    writer.uint32(10).fork();
     for (const v of message.actions) {
-      writer.uint32(10).string(v!);
+      writer.int32(v);
     }
+    writer.join();
     return writer;
   },
 
@@ -4404,12 +4560,22 @@ export const ItemActionsDTO: MessageFns<ItemActionsDTO> = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1: {
-          if (tag !== 10) {
-            break;
+          if (tag === 8) {
+            message.actions.push(reader.int32() as any);
+
+            continue;
           }
 
-          message.actions.push(reader.string());
-          continue;
+          if (tag === 10) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.actions.push(reader.int32() as any);
+            }
+
+            continue;
+          }
+
+          break;
         }
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -4422,14 +4588,16 @@ export const ItemActionsDTO: MessageFns<ItemActionsDTO> = {
 
   fromJSON(object: any): ItemActionsDTO {
     return {
-      actions: globalThis.Array.isArray(object?.actions) ? object.actions.map((e: any) => globalThis.String(e)) : [],
+      actions: globalThis.Array.isArray(object?.actions)
+        ? object.actions.map((e: any) => itemActionEnumDTOFromJSON(e))
+        : [],
     };
   },
 
   toJSON(message: ItemActionsDTO): unknown {
     const obj: any = {};
     if (message.actions?.length) {
-      obj.actions = message.actions;
+      obj.actions = message.actions.map((e) => itemActionEnumDTOToJSON(e));
     }
     return obj;
   },
@@ -5124,9 +5292,9 @@ function createBaseCharacterDTO(): CharacterDTO {
     world: undefined,
     firstName: "",
     lastName: "",
-    race: undefined,
+    race: "",
     gender: 0,
-    birthsign: undefined,
+    birthsign: "",
     birthYear: undefined,
     birthMonth: undefined,
     birthDay: undefined,
@@ -5174,14 +5342,14 @@ export const CharacterDTO: MessageFns<CharacterDTO> = {
     if (message.lastName !== "") {
       writer.uint32(66).string(message.lastName);
     }
-    if (message.race !== undefined) {
-      RaceDTO.encode(message.race, writer.uint32(74).fork()).join();
+    if (message.race !== "") {
+      writer.uint32(74).string(message.race);
     }
     if (message.gender !== 0) {
       writer.uint32(80).int32(message.gender);
     }
-    if (message.birthsign !== undefined) {
-      BirthsignDTO.encode(message.birthsign, writer.uint32(90).fork()).join();
+    if (message.birthsign !== "") {
+      writer.uint32(90).string(message.birthsign);
     }
     if (message.birthYear !== undefined) {
       writer.uint32(96).int32(message.birthYear);
@@ -5316,7 +5484,7 @@ export const CharacterDTO: MessageFns<CharacterDTO> = {
             break;
           }
 
-          message.race = RaceDTO.decode(reader, reader.uint32());
+          message.race = reader.string();
           continue;
         }
         case 10: {
@@ -5332,7 +5500,7 @@ export const CharacterDTO: MessageFns<CharacterDTO> = {
             break;
           }
 
-          message.birthsign = BirthsignDTO.decode(reader, reader.uint32());
+          message.birthsign = reader.string();
           continue;
         }
         case 12: {
@@ -5501,9 +5669,9 @@ export const CharacterDTO: MessageFns<CharacterDTO> = {
       world: isSet(object.world) ? WorldDTO.fromJSON(object.world) : undefined,
       firstName: isSet(object.firstName) ? globalThis.String(object.firstName) : "",
       lastName: isSet(object.lastName) ? globalThis.String(object.lastName) : "",
-      race: isSet(object.race) ? RaceDTO.fromJSON(object.race) : undefined,
+      race: isSet(object.race) ? globalThis.String(object.race) : "",
       gender: isSet(object.gender) ? genderEnumDTOFromJSON(object.gender) : 0,
-      birthsign: isSet(object.birthsign) ? BirthsignDTO.fromJSON(object.birthsign) : undefined,
+      birthsign: isSet(object.birthsign) ? globalThis.String(object.birthsign) : "",
       birthYear: isSet(object.birthYear) ? globalThis.Number(object.birthYear) : undefined,
       birthMonth: isSet(object.birthMonth) ? globalThis.String(object.birthMonth) : undefined,
       birthDay: isSet(object.birthDay) ? globalThis.Number(object.birthDay) : undefined,
@@ -5562,14 +5730,14 @@ export const CharacterDTO: MessageFns<CharacterDTO> = {
     if (message.lastName !== "") {
       obj.lastName = message.lastName;
     }
-    if (message.race !== undefined) {
-      obj.race = RaceDTO.toJSON(message.race);
+    if (message.race !== "") {
+      obj.race = message.race;
     }
     if (message.gender !== 0) {
       obj.gender = genderEnumDTOToJSON(message.gender);
     }
-    if (message.birthsign !== undefined) {
-      obj.birthsign = BirthsignDTO.toJSON(message.birthsign);
+    if (message.birthsign !== "") {
+      obj.birthsign = message.birthsign;
     }
     if (message.birthYear !== undefined) {
       obj.birthYear = Math.round(message.birthYear);
@@ -5653,11 +5821,9 @@ export const CharacterDTO: MessageFns<CharacterDTO> = {
       : undefined;
     message.firstName = object.firstName ?? "";
     message.lastName = object.lastName ?? "";
-    message.race = (object.race !== undefined && object.race !== null) ? RaceDTO.fromPartial(object.race) : undefined;
+    message.race = object.race ?? "";
     message.gender = object.gender ?? 0;
-    message.birthsign = (object.birthsign !== undefined && object.birthsign !== null)
-      ? BirthsignDTO.fromPartial(object.birthsign)
-      : undefined;
+    message.birthsign = object.birthsign ?? "";
     message.birthYear = object.birthYear ?? undefined;
     message.birthMonth = object.birthMonth ?? undefined;
     message.birthDay = object.birthDay ?? undefined;
@@ -7482,6 +7648,7 @@ function createBaseTraitDTO(): TraitDTO {
     world: undefined,
     tags: undefined,
     targetEntity: "",
+    type: 0,
   };
 }
 
@@ -7513,6 +7680,9 @@ export const TraitDTO: MessageFns<TraitDTO> = {
     }
     if (message.targetEntity !== "") {
       writer.uint32(74).string(message.targetEntity);
+    }
+    if (message.type !== 0) {
+      writer.uint32(80).int32(message.type);
     }
     return writer;
   },
@@ -7596,6 +7766,14 @@ export const TraitDTO: MessageFns<TraitDTO> = {
           message.targetEntity = reader.string();
           continue;
         }
+        case 10: {
+          if (tag !== 80) {
+            break;
+          }
+
+          message.type = reader.int32() as any;
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -7616,6 +7794,7 @@ export const TraitDTO: MessageFns<TraitDTO> = {
       world: isSet(object.world) ? WorldDTO.fromJSON(object.world) : undefined,
       tags: isSet(object.tags) ? TagsDTO.fromJSON(object.tags) : undefined,
       targetEntity: isSet(object.targetEntity) ? globalThis.String(object.targetEntity) : "",
+      type: isSet(object.type) ? traitTypeEnumDTOFromJSON(object.type) : 0,
     };
   },
 
@@ -7648,6 +7827,9 @@ export const TraitDTO: MessageFns<TraitDTO> = {
     if (message.targetEntity !== "") {
       obj.targetEntity = message.targetEntity;
     }
+    if (message.type !== 0) {
+      obj.type = traitTypeEnumDTOToJSON(message.type);
+    }
     return obj;
   },
 
@@ -7671,6 +7853,7 @@ export const TraitDTO: MessageFns<TraitDTO> = {
       : undefined;
     message.tags = (object.tags !== undefined && object.tags !== null) ? TagsDTO.fromPartial(object.tags) : undefined;
     message.targetEntity = object.targetEntity ?? "";
+    message.type = object.type ?? 0;
     return message;
   },
 };
@@ -13605,7 +13788,7 @@ function createBasePastExperienceDTO(): PastExperienceDTO {
     campaign: undefined,
     world: undefined,
     tags: undefined,
-    type: undefined,
+    type: 0,
     targetEntity: "",
   };
 }
@@ -13636,8 +13819,8 @@ export const PastExperienceDTO: MessageFns<PastExperienceDTO> = {
     if (message.tags !== undefined) {
       TagsDTO.encode(message.tags, writer.uint32(66).fork()).join();
     }
-    if (message.type !== undefined) {
-      writer.uint32(74).string(message.type);
+    if (message.type !== 0) {
+      writer.uint32(72).int32(message.type);
     }
     if (message.targetEntity !== "") {
       writer.uint32(82).string(message.targetEntity);
@@ -13717,11 +13900,11 @@ export const PastExperienceDTO: MessageFns<PastExperienceDTO> = {
           continue;
         }
         case 9: {
-          if (tag !== 74) {
+          if (tag !== 72) {
             break;
           }
 
-          message.type = reader.string();
+          message.type = reader.int32() as any;
           continue;
         }
         case 10: {
@@ -13751,7 +13934,7 @@ export const PastExperienceDTO: MessageFns<PastExperienceDTO> = {
       campaign: isSet(object.campaign) ? CampaignDTO.fromJSON(object.campaign) : undefined,
       world: isSet(object.world) ? WorldDTO.fromJSON(object.world) : undefined,
       tags: isSet(object.tags) ? TagsDTO.fromJSON(object.tags) : undefined,
-      type: isSet(object.type) ? globalThis.String(object.type) : undefined,
+      type: isSet(object.type) ? pastExperienceTypeEnumDTOFromJSON(object.type) : 0,
       targetEntity: isSet(object.targetEntity) ? globalThis.String(object.targetEntity) : "",
     };
   },
@@ -13782,8 +13965,8 @@ export const PastExperienceDTO: MessageFns<PastExperienceDTO> = {
     if (message.tags !== undefined) {
       obj.tags = TagsDTO.toJSON(message.tags);
     }
-    if (message.type !== undefined) {
-      obj.type = message.type;
+    if (message.type !== 0) {
+      obj.type = pastExperienceTypeEnumDTOToJSON(message.type);
     }
     if (message.targetEntity !== "") {
       obj.targetEntity = message.targetEntity;
@@ -13810,7 +13993,7 @@ export const PastExperienceDTO: MessageFns<PastExperienceDTO> = {
       ? WorldDTO.fromPartial(object.world)
       : undefined;
     message.tags = (object.tags !== undefined && object.tags !== null) ? TagsDTO.fromPartial(object.tags) : undefined;
-    message.type = object.type ?? undefined;
+    message.type = object.type ?? 0;
     message.targetEntity = object.targetEntity ?? "";
     return message;
   },

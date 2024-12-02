@@ -1,4 +1,4 @@
-import { World } from "../entities/World";
+import { World } from "../modules/world/entities/World";
 import { WorldDataSource } from "../data-source";
 
 const frozenWorlds = new Map<string, number>(); // Tracks frozen state with reentrant counters // TODO clearly this needs to be done differently

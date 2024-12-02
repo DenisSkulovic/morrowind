@@ -1,0 +1,50 @@
+import { Entity, PrimaryColumn, Column, ManyToOne } from "typeorm";
+import { ContentBase } from "../../../ContentBase";
+import { CharacterGroupGenInstructionDTO, ConditionEnumDTO } from "../../../proto/common";
+import { ConditionEnum } from "../../../common/enum/ConditionEnum";
+import { serializeEnum, deserializeEnum } from "../../../common/enum/util";
+import { Context } from "../../../types";
+import { Campaign } from "../../campaign/entities/Campaign";
+import { User } from "../../user/entities/User";
+import { World } from "../../world/entities/World";
+import { Serializable } from "../../../decorator/serializable.decorator";
+import { serializeInstruction, deserializeInstruction, BlueprintSetCombinator } from "../../../class/GenerationInstruction";
+import { Serializer } from "../../../serializer";
+
+@Entity()
+export class CharacterGroupGenInstruction extends ContentBase {
+    @PrimaryColumn()
+    @Serializable()
+    id!: string;
+
+    id_prefix = "CHARACTER_GROUP_GEN_INSTRUCTION"
+
+    @Column()
+    @Serializable()
+    name!: string
+
+    @Column({ type: "jsonb" })
+    @Serializable({ serialize: serializeInstruction, deserialize: deserializeInstruction })
+    set!: BlueprintSetCombinator;
+
+    @ManyToOne(() => User, { nullable: true })
+    @Serializable({ strategy: 'id' })
+    user!: User;
+
+    @ManyToOne(() => Campaign, { nullable: true })
+    @Serializable({ strategy: 'id' })
+    campaign?: Campaign;
+
+    @ManyToOne(() => World, { nullable: true })
+    @Serializable({ strategy: 'id' })
+    world!: World;
+
+    public toDTO(): CharacterGroupGenInstructionDTO {
+        return Serializer.toDTO(this);
+    }
+
+    public static fromDTO(dto: CharacterGroupGenInstructionDTO): CharacterGroupGenInstruction {
+        const chGrpGenInstruction = new CharacterGroupGenInstruction();
+        return Serializer.fromDTO(dto, chGrpGenInstruction);
+    }
+}
