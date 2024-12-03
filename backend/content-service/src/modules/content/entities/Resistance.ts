@@ -22,10 +22,10 @@ export class Resistance extends ContentBase {
     @Serializable()
     name!: string;
 
-    @Column({ type: "enum", enum: EffectTypeEnum })
+    @Column({ type: "enum", enum: Object.values(EffectTypeEnum) })
     @Serializable({
-        serialize: (i) => serializeEnum(EffectTypeEnumDTO, i),
-        deserialize: (i) => deserializeEnum(EffectTypeEnum, i)
+        serialize: (i) => serializeEnum(EffectTypeEnum, EffectTypeEnumDTO, i),
+        deserialize: (i) => deserializeEnum(EffectTypeEnumDTO, EffectTypeEnum, i)
     })
     effectType!: string; // Matches Effect.type
 

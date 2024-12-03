@@ -1,6 +1,7 @@
-import { DataSourceOptions } from 'typeorm';
+import { DataSource, DataSourceOptions } from 'typeorm';
 import { DataSourceEnum } from '../common/enum/DataSourceEnum';
 import { getEnvParam } from '../common/util/getEnvParam';
+import { join } from 'path';
 
 const env = {
     db_user: getEnvParam("DATABASE_USER"),
@@ -13,6 +14,14 @@ const env = {
     db_name_campaign: getEnvParam("DATABASE_NAME__CAMPAIGN")
 }
 
+const entityPaths = [
+    join(__dirname, '../modules/content/entities/**/*.{js,ts}'),
+    join(__dirname, '../modules/account/entities/*.{js,ts}'),
+    join(__dirname, '../modules/user/entities/*.{js,ts}'),
+    join(__dirname, '../modules/world/entities/*.{js,ts}'),
+    join(__dirname, '../modules/campaign/entities/*.{js,ts}'),
+]
+
 export const worldDbOptions: DataSourceOptions = {
     type: "postgres",
     host: env.host_world,
@@ -22,10 +31,10 @@ export const worldDbOptions: DataSourceOptions = {
     database: env.db_name_world,
     synchronize: false, // For development only
     logging: ['error'],
-    entities: ["src/entities/**/*.ts"],
+    entities: entityPaths,
     migrations: [
-        "src/migration/world/*.ts"
-    ]
+        join(__dirname, '../migration/world/*.{js,ts}'),
+    ],
 }
 
 
@@ -38,10 +47,10 @@ export const campaignDbOptions: DataSourceOptions = {
     database: env.db_name_campaign,
     synchronize: false, // For development only
     logging: ['error'],
-    entities: ["src/entities/**/*.ts"],
+    entities: entityPaths,
     migrations: [
-        "src/migration/campaign/*.ts"
-    ]
+        join(__dirname, '../campaign/world/*.{js,ts}'),
+    ],
 }
 
 

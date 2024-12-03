@@ -36,20 +36,20 @@ export class Need extends ContentBase {
      * The type of need (e.g., dynamic, threshold, external).
      * Hunger is a dynamic need. Safety is an external need as it is based on the world around the NPC. 
      */
-    @Column({ type: "enum", enum: NeedTypeEnum })
+    @Column({ type: "enum", enum: Object.values(NeedTypeEnum) })
     @Serializable({
-        serialize: (i) => serializeEnum(NeedTypeEnumDTO, i),
-        deserialize: (i) => deserializeEnum(NeedTypeEnum, i)
+        serialize: (i) => serializeEnum(NeedTypeEnum, NeedTypeEnumDTO, i),
+        deserialize: (i) => deserializeEnum(NeedTypeEnumDTO, NeedTypeEnum, i)
     })
     type!: NeedTypeEnum; // "dynamic", "threshold", "external".
 
     /**
      * Need layer according to Maslow pyramid
      */
-    @Column({ type: "enum", enum: NeedLayerEnum })
+    @Column({ type: "enum", enum: Object.values(NeedLayerEnum) })
     @Serializable({
-        serialize: (i) => serializeEnum(NeedLayerEnumDTO, i),
-        deserialize: (i) => deserializeEnum(NeedLayerEnum, i)
+        serialize: (i) => serializeEnum(NeedLayerEnum, NeedLayerEnumDTO, i),
+        deserialize: (i) => deserializeEnum(NeedLayerEnumDTO, NeedLayerEnum, i)
     })
     layer!: NeedLayerEnum
 

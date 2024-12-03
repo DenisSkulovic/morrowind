@@ -14,8 +14,10 @@ import { DataSourceEnum } from "../../common/enum/DataSourceEnum";
 import { UserService } from "../user/user.service";
 import { ContentBase } from "../../ContentBase";
 import { Preset, PresetService } from "../preset/preset.service";
+import { join } from "path";
 
-const pathToPresetsFolder = "../../world_presets"
+
+const pathToPresetsFolder = join(__dirname, "../../../world_presets")
 
 export interface IWorldService {
 
@@ -93,7 +95,7 @@ export class WorldService {
                     entity.user = user;
                     return entity;
                 });
-
+                console.log(`batch entityName`, entityName)
                 await repository.save(batch);
             }
         }

@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { AccountModule } from './modules/account/account.module';
 import { WorldModule } from './modules/world/world.module';
 import { ContentModule } from './modules/content/content.module';
@@ -10,10 +9,12 @@ import { ItemGeneratorModule } from './modules/content/generator/item/item-gener
 import { GeneratorModule } from './modules/content/generator/generator.module';
 import { PresetModule } from './modules/preset/preset.module';
 import { UserModule } from './modules/user/user.module';
-import { campaignDbOptions, worldDbOptions } from './data-source/datasource-config';
 import { CopyModule } from './modules/copy/copy.module';
 import { InstructionProcessorModule } from './modules/content/instruction/instruction-processor.module';
 import { StorageSlotModule } from './modules/content/storage-slot/storage-slot.module';
+import { InjectDataSourceModule } from './data-source/inject-datasource.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { worldDbOptions, campaignDbOptions } from './data-source/datasource-config';
 
 @Module({
     imports: [
@@ -27,6 +28,11 @@ import { StorageSlotModule } from './modules/content/storage-slot/storage-slot.m
             name: DataSourceEnum.DATA_SOURCE_CAMPAIGN,
             useFactory: async () => campaignDbOptions,
         }),
+
+        InjectDataSourceModule.register([
+            DataSourceEnum.DATA_SOURCE_WORLD,
+            DataSourceEnum.DATA_SOURCE_CAMPAIGN,
+        ]),
 
         // Feature Modules
         AccountModule,

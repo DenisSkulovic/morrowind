@@ -4,11 +4,18 @@ export class Serializer {
     static toDTO(entity: any): any {
         const dto: any = {};
         const fields = getSerializableFields(entity.constructor.prototype);
-        fields.forEach(({ propertyKey, dtoKey }) => {
+        fields.forEach(({ propertyKey, dtoKey, strategy }) => {
             const value = entity[propertyKey];
-            dto[dtoKey] = Array.isArray(value)
-                ? value.map(item => (item?.toDTO ? item.toDTO() : item))
-                : value?.toDTO ? value.toDTO() : value;
+
+            if (strategy === 'id') {
+                // Serialize only the ID
+                dto[dtoKey] = value?.id ?? value;
+            } else {
+                // Serialize the full object
+                dto[dtoKey] = Array.isArray(value)
+                    ? value.map(item => (item?.toDTO ? item.toDTO() : item))
+                    : value?.toDTO ? value.toDTO() : value;
+            }
         });
         return dto;
     }

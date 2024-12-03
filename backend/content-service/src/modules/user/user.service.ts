@@ -23,7 +23,7 @@ export class UserService implements IUserService {
         return source === DataSourceEnum.DATA_SOURCE_WORLD ? this.worldDataSource : this.campaignDataSource;
     }
 
-    protected getRepository(source: DataSourceEnum): Repository<User> {
+    public getRepository(source: DataSourceEnum): Repository<User> {
         return this.getDataSource(source).getRepository(User);
     }
 

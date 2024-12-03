@@ -1,7 +1,7 @@
 import { Entity, TableInheritance, PrimaryColumn, Column, ManyToOne, OneToMany, ManyToMany } from "typeorm";
 import { TaggableContentBase } from "../../../../TaggableContentBase";
 import { ItemActionEnum } from "../../../../common/enum/entityEnums";
-import { ItemActionEnumDTO, ItemDTO, ItemRequirementsDTO, StorageSlotDefinitionDTO } from "../../../../proto/common";
+import { ItemActionEnumDTO, ItemDTO } from "../../../../proto/common";
 import { Campaign } from "../../../campaign/entities/Campaign";
 import { User } from "../../../user/entities/User";
 import { World } from "../../../world/entities/World";
@@ -10,7 +10,7 @@ import { StorageSlot } from "../Slot/StorageSlot";
 import { Tag } from "../Tag";
 import { Serializer } from "../../../../serializer";
 import { Serializable } from "../../../../decorator/serializable.decorator";
-import { StorageSlotDefinition, deserializeStorageSlotDefinition, serializeStorageSlotDefinition } from "../../../../class/StorageSlotDefinition";
+import { StorageSlotDefinition, deserializeStorageSlotDefinitions, serializeStorageSlotDefinitions } from "../../../../class/StorageSlotDefinition";
 import { serializeRequirements, deserializeRequirements, ItemRequirements } from "../../../../class/ItemRequirement";
 import { deserializeEnum, serializeEnum } from "../../../../common/enum/util";
 
@@ -61,8 +61,8 @@ export class Item extends TaggableContentBase {
 
     @Column({ type: "jsonb", nullable: true })
     @Serializable({
-        serialize: (actions: ItemActionEnum[]) => actions.map(action => serializeEnum(ItemActionEnumDTO, action)),
-        deserialize: (actions: number[]) => actions.map(action => deserializeEnum(ItemActionEnum, action)),
+        serialize: (actions: ItemActionEnum[]) => actions.map(action => serializeEnum(ItemActionEnum, ItemActionEnumDTO, action)),
+        deserialize: (actions: number[]) => actions.map(action => deserializeEnum(ItemActionEnumDTO, ItemActionEnum, action)),
     })
     actions?: ItemActionEnum[];
 
@@ -109,8 +109,8 @@ export class Item extends TaggableContentBase {
 
     @Column("jsonb", { nullable: true })
     @Serializable({
-        serialize: serializeStorageSlotDefinition,
-        deserialize: deserializeStorageSlotDefinition
+        serialize: serializeStorageSlotDefinitions,
+        deserialize: deserializeStorageSlotDefinitions
     })
     storageSlotDefinition?: StorageSlotDefinition[]; // the storage slots this item itself has (this is a backpack and it has 3 sections, i.e. slots)
 

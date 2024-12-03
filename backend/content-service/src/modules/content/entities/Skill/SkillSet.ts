@@ -1,8 +1,7 @@
-import { Column, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, TableInheritance } from "typeorm";
+import { Column, Entity, ManyToMany, ManyToOne, PrimaryColumn } from "typeorm";
 import { TaggableContentBase } from "../../../../TaggableContentBase";
 import { Tag } from "../Tag";
 import { SkillSetDTO } from "../../../../proto/common";
-import { Context } from "../../../../types";
 import { Campaign } from "../../../campaign/entities/Campaign";
 import { User } from "../../../user/entities/User";
 import { World } from "../../../world/entities/World";
@@ -11,7 +10,6 @@ import { Serializer } from "../../../../serializer";
 import { serializeSkillImprovement, deserializeSkillImprovement, SkillImprovement } from "../../../../class/SkillImprovement";
 
 @Entity()
-@TableInheritance({ column: { type: "varchar", name: "type" } })
 export class SkillSet extends TaggableContentBase {
     @PrimaryColumn()
     @Serializable()

@@ -12,13 +12,13 @@ export class FactStatus {
 export function serializeFactStatus(st: FactStatus): FactStatusDTO {
     return {
         factId: st.factId,
-        status: serializeEnum(FactStatusEnumDTO, st.status)
+        status: serializeEnum(FactStatusEnum, FactStatusEnumDTO, st.status)
     }
 }
 export function deserializeFactStatus(dtoSt: FactStatusDTO): FactStatus {
     return {
         factId: dtoSt.factId,
-        status: deserializeEnum(FactStatusEnum, dtoSt.status) as FactStatusEnum
+        status: deserializeEnum(FactStatusEnumDTO, FactStatusEnum, dtoSt.status)
     }
 }
 

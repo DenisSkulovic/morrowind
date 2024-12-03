@@ -547,19 +547,19 @@ export const GenerateCharacterGroupsResponse: MessageFns<GenerateCharacterGroups
   },
 };
 
-export interface GeneratorController {
+export interface GeneratorService {
   generateItems(request: GenerateItemsRequest): Promise<GenerateItemsResponse>;
   generateCharactersCustom(request: GenerateCharactersRequestCustom): Promise<GenerateCharactersResponse>;
   generateCharactersDB(request: GenerateCharactersRequestDB): Promise<GenerateCharactersResponse>;
   generateCharacterGroups(request: GenerateCharacterGroupsRequest): Promise<GenerateCharacterGroupsResponse>;
 }
 
-export const GeneratorControllerServiceName = "generator.GeneratorController";
-export class GeneratorControllerClientImpl implements GeneratorController {
+export const GeneratorServiceServiceName = "generator.GeneratorService";
+export class GeneratorServiceClientImpl implements GeneratorService {
   private readonly rpc: Rpc;
   private readonly service: string;
   constructor(rpc: Rpc, opts?: { service?: string }) {
-    this.service = opts?.service || GeneratorControllerServiceName;
+    this.service = opts?.service || GeneratorServiceServiceName;
     this.rpc = rpc;
     this.generateItems = this.generateItems.bind(this);
     this.generateCharactersCustom = this.generateCharactersCustom.bind(this);

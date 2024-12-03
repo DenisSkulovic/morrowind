@@ -23,31 +23,31 @@ export class Effect extends TaggableContentBase {
     @Serializable()
     name!: string;
 
-    @Column({ type: "enum", enum: EffectTypeEnum })
+    @Column({ type: "enum", enum: Object.values(EffectTypeEnum) })
     @Serializable({
-        serialize: type => serializeEnum(EffectTypeEnumDTO, type),
-        deserialize: type => deserializeEnum(EffectTypeEnum, type),
+        serialize: type => serializeEnum(EffectTypeEnum, EffectTypeEnumDTO, type),
+        deserialize: type => deserializeEnum(EffectTypeEnumDTO, EffectTypeEnum, type),
     })
     type!: EffectTypeEnum; // "damage", "healing", "buff", "debuff", "resistance", etc.
 
-    @Column({ type: "enum", enum: EffectTargetEnum })
+    @Column({ type: "enum", enum: Object.values(EffectTargetEnum) })
     @Serializable({
-        serialize: target => serializeEnum(EffectTargetEnumDTO, target),
-        deserialize: target => deserializeEnum(EffectTargetEnum, target),
+        serialize: target => serializeEnum(EffectTargetEnum, EffectTargetEnumDTO, target),
+        deserialize: target => deserializeEnum(EffectTargetEnumDTO, EffectTargetEnum, target),
     })
     target!: EffectTargetEnum; // "health", "stamina", "magic", etc.
 
-    @Column({ type: "enum", enum: EffectModeEnum })
+    @Column({ type: "enum", enum: Object.values(EffectModeEnum) })
     @Serializable({
-        serialize: mode => serializeEnum(EffectModeEnumDTO, mode),
-        deserialize: mode => deserializeEnum(EffectModeEnum, mode),
+        serialize: mode => serializeEnum(EffectModeEnum, EffectModeEnumDTO, mode),
+        deserialize: mode => deserializeEnum(EffectModeEnumDTO, EffectModeEnum, mode),
     })
     mode!: EffectModeEnum; // "instant", "gradual", "persistent"
 
-    @Column({ type: "enum", enum: EffectElementEnum, nullable: true })
+    @Column({ type: "enum", enum: Object.values(EffectElementEnum), nullable: true })
     @Serializable({
-        serialize: element => serializeEnum(EffectElementEnumDTO, element),
-        deserialize: element => deserializeEnum(EffectElementEnum, element),
+        serialize: element => serializeEnum(EffectElementEnum, EffectElementEnumDTO, element),
+        deserialize: element => deserializeEnum(EffectElementEnumDTO, EffectElementEnum, element),
     })
     element?: EffectElementEnum;
 

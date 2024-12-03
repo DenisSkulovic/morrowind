@@ -6,9 +6,19 @@ import { InjectDataSourceModule } from '../../data-source/inject-datasource.modu
 
 @Module({
     imports: [
-        InjectDataSourceModule.register([DataSourceEnum.DATA_SOURCE_WORLD, DataSourceEnum.DATA_SOURCE_CAMPAIGN]),
+        InjectDataSourceModule.register([
+            DataSourceEnum.DATA_SOURCE_WORLD,
+            DataSourceEnum.DATA_SOURCE_CAMPAIGN
+        ]),
     ],
     controllers: [CampaignController],
-    providers: [CampaignService],
+    providers: [
+        {
+            provide: 'ICampaignService',
+            useClass: CampaignService,
+        },
+        CampaignService,
+    ],
+    exports: ['ICampaignService', CampaignService],
 })
 export class CampaignModule { }

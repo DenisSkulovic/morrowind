@@ -88,10 +88,10 @@ export class WorldController {
     public async loadWorldPreset(
         request: LoadWorldPresetRequest,
     ): Promise<LoadWorldPresetResponse> {
-        if (!request.preset || request.preset === PresetEnumDTO.UNRECOGNIZED) throw new Error(`no preset found for preset identifier: ${request.preset}`)
+        if (typeof request.preset !== "number" || request.preset === PresetEnumDTO.UNRECOGNIZED) throw new Error(`no preset found for preset identifier: ${request.preset}`)
         const worldId: string = request.worldId // TODO these fields should come from middleware
         const userId: string = request.userId // TODO these fields should come from middleware, especially this one
-        const preset: PresetEnum = deserializeEnum(PresetEnum, request.preset) as PresetEnum
+        const preset: PresetEnum = deserializeEnum(PresetEnumDTO, PresetEnum, request.preset)
         // check preset for existence in the enum
         await this.worldService.loadPresetIntoWorld(preset, worldId, userId)
         const response = {} // status 200

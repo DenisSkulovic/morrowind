@@ -14,7 +14,6 @@ import { Serializer } from "../../../serializer";
 @Entity()
 export class Status extends ContentBase {
 
-
     @PrimaryColumn()
     @Serializable()
     id!: string;
@@ -29,10 +28,10 @@ export class Status extends ContentBase {
     @Serializable()
     description!: string;
 
-    @Column({ type: "enum", enum: EffectTypeEnum })
+    @Column({ type: "enum", enum: Object.values(EffectTypeEnum) })
     @Serializable({
-        serialize: (i) => serializeEnum(EffectTypeEnumDTO, i),
-        deserialize: (i) => deserializeEnum(EffectTypeEnum, i)
+        serialize: (i) => serializeEnum(EffectTypeEnum, EffectTypeEnumDTO, i),
+        deserialize: (i) => deserializeEnum(EffectTypeEnumDTO, EffectTypeEnum, i)
     })
     type!: EffectTypeEnum;
 

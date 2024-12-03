@@ -3,8 +3,9 @@ import { User } from "../user/entities/User";
 import { DataSourceEnum } from "../../common/enum/DataSourceEnum";
 import { Account } from "./entities/Account";
 import { AccountRoleEnum } from "../../common/enum/AccountRoleEnum";
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
+import { UserService } from "../user/user.service";
 
 export interface IAccountService {
     getAccount(
@@ -28,13 +29,14 @@ export class AccountService implements IAccountService {
     constructor(
         @InjectDataSource(DataSourceEnum.DATA_SOURCE_WORLD) private readonly worldDataSource: DataSource,
         @InjectDataSource(DataSourceEnum.DATA_SOURCE_CAMPAIGN) private readonly campaignDataSource: DataSource,
+        @Inject(forwardRef(() => UserService)) private readonly userService: UserService
     ) { }
 
     private getDataSource(source: DataSourceEnum): DataSource {
         return source === DataSourceEnum.DATA_SOURCE_WORLD ? this.worldDataSource : this.campaignDataSource;
     }
 
-    private getRepository(source: DataSourceEnum): Repository<any> { return this.getDataSource(source).getRepository(Account) }
+    private getRepository(source: DataSourceEnum): Repository<Account> { return this.getDataSource(source).getRepository(Account) }
 
     public async getAccount(
         username: string,
@@ -57,13 +59,15 @@ export class AccountService implements IAccountService {
     ): Promise<{ account: Account, user: User }> {
         console.log(`[AccountService - createAccountAndUser] entry:`, JSON.stringify({ username, password_hash, email, role, source }))
 
-        const user: User = User.create()
+        const userRepository: Repository<User> = this.userService.getRepository(source)
+        const user: User = userRepository.create()
         console.log(`[AccountService - createAccountAndUser] created user`)
         const account: Account = this.getRepository(source).create({
             username,
             password_hash,
             email,
             role,
+            user,
         })
         console.log(`[AccountService - createAccountAndUser] created account`)
         user.account = account

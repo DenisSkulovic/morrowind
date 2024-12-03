@@ -332,24 +332,24 @@ export const GetAccountResponse: MessageFns<GetAccountResponse> = {
   },
 };
 
-export interface AccountController {
-  createAccount(request: CreateAccountRequest): Promise<CreateAccountResponse>;
+export interface AccountService {
+  createAccountAndUser(request: CreateAccountRequest): Promise<CreateAccountResponse>;
   getAccount(request: GetAccountRequest): Promise<GetAccountResponse>;
 }
 
-export const AccountControllerServiceName = "account.AccountController";
-export class AccountControllerClientImpl implements AccountController {
+export const AccountServiceServiceName = "account.AccountService";
+export class AccountServiceClientImpl implements AccountService {
   private readonly rpc: Rpc;
   private readonly service: string;
   constructor(rpc: Rpc, opts?: { service?: string }) {
-    this.service = opts?.service || AccountControllerServiceName;
+    this.service = opts?.service || AccountServiceServiceName;
     this.rpc = rpc;
-    this.createAccount = this.createAccount.bind(this);
+    this.createAccountAndUser = this.createAccountAndUser.bind(this);
     this.getAccount = this.getAccount.bind(this);
   }
-  createAccount(request: CreateAccountRequest): Promise<CreateAccountResponse> {
+  createAccountAndUser(request: CreateAccountRequest): Promise<CreateAccountResponse> {
     const data = CreateAccountRequest.encode(request).finish();
-    const promise = this.rpc.request(this.service, "createAccount", data);
+    const promise = this.rpc.request(this.service, "createAccountAndUser", data);
     return promise.then((data) => CreateAccountResponse.decode(new BinaryReader(data)));
   }
 

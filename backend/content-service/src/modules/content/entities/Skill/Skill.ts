@@ -1,10 +1,8 @@
-import { Column, Entity, ManyToMany, ManyToOne, PrimaryColumn, TableInheritance } from "typeorm";
+import { Column, Entity, ManyToMany, ManyToOne, PrimaryColumn } from "typeorm";
 import { TaggableContentBase } from "../../../../TaggableContentBase";
 import { Tag } from "../Tag";
-import { SkillCategoryEnumDTO, SkillDTO } from "../../../../proto/common";
-import { Context } from "../../../../types";
+import { SkillDTO } from "../../../../proto/common";
 import { SkillCategoryEnum } from "../../../../common/enum/entityEnums";
-import { serializeEnum, deserializeEnum } from "../../../../common/enum/util";
 import { Campaign } from "../../../campaign/entities/Campaign";
 import { User } from "../../../user/entities/User";
 import { World } from "../../../world/entities/World";
@@ -12,7 +10,6 @@ import { Serializer } from "../../../../serializer";
 import { Serializable } from "../../../../decorator/serializable.decorator";
 
 @Entity()
-@TableInheritance({ column: { type: "varchar", name: "type" } })
 export class Skill extends TaggableContentBase {
     @PrimaryColumn()
     @Serializable()

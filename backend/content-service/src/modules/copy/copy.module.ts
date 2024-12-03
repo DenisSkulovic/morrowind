@@ -5,13 +5,18 @@ import { InjectDataSourceModule } from '../../data-source/inject-datasource.modu
 
 @Module({
     imports: [
-        InjectDataSourceModule.register([DataSourceEnum.DATA_SOURCE_WORLD, DataSourceEnum.DATA_SOURCE_CAMPAIGN]), // Custom module to handle multiple datasources
+        InjectDataSourceModule.register([
+            DataSourceEnum.DATA_SOURCE_WORLD,
+            DataSourceEnum.DATA_SOURCE_CAMPAIGN,
+        ]),
     ],
     providers: [
+        {
+            provide: 'ICopyService',
+            useClass: CopyService,
+        },
         CopyService,
     ],
-    exports: [
-        CopyService,
-    ],
+    exports: ['ICopyService', CopyService],
 })
 export class CopyModule { }

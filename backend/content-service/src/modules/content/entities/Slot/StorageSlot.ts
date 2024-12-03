@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn, TableInheritance } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from "typeorm";
 import { Item } from "../Item/Item";
 import { ContentBase } from "../../../../ContentBase";
 import { StorageGridDTO, StorageSlotDTO } from "../../../../proto/common";
@@ -12,7 +12,6 @@ export type StorageGridCell = string | null;
 export type StorageGrid = StorageGridCell[][];
 
 @Entity()
-@TableInheritance({ column: { type: "varchar", name: "type" } })
 export class StorageSlot extends ContentBase {
     @PrimaryColumn()
     @Serializable()

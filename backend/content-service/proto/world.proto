@@ -4,7 +4,7 @@ package world;
 
 import "common.proto";
 
-service WorldController {
+service WorldService {
     rpc createWorld (CreateWorldRequest) returns (CreateWorldResponse);
     rpc getWorld (GetWorldRequest) returns (GetWorldResponse);
     rpc getWorldsForUser (GetWorldsForUserRequest) returns (GetWorldsForUserResponse);

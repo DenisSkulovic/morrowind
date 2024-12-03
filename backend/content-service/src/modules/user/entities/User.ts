@@ -116,10 +116,10 @@ export class User extends Base {
     factions?: Faction[]
 
     @OneToMany(() => StorageSlot, storageSlot => storageSlot.user, { onDelete: "CASCADE", })
-    storageSlots!: StorageSlot[]
+    storageSlots?: StorageSlot[]
 
     @OneToMany(() => EquipmentSlot, equipmentSlot => equipmentSlot.user, { onDelete: "CASCADE", })
-    equipmentSlots!: EquipmentSlot[]
+    equipmentSlots?: EquipmentSlot[]
 
     @OneToMany(() => ItemSet, itemSet => itemSet.user, { onDelete: "CASCADE", })
     itemSets?: ItemSet[]
@@ -149,7 +149,7 @@ export class User extends Base {
     tags?: Tag[]
 
     @OneToMany(() => Background, background => background.user, { onDelete: "CASCADE", })
-    backgrounds!: Background[]
+    backgrounds?: Background[]
 
     public toDTO(): UserDTO {
         return Serializer.toDTO(this);

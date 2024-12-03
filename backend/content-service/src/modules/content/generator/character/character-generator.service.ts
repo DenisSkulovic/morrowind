@@ -22,7 +22,7 @@ import { EquipmentSlot } from "../../entities/Slot/EquipmentSlot";
 import { StorageSlot } from "../../entities/Slot/StorageSlot";
 import { Tag } from "../../entities/Tag";
 import { Trait } from "../../entities/Trait";
-import { Inject, Injectable } from "@nestjs/common";
+import { Inject, Injectable, forwardRef } from "@nestjs/common";
 import { IdAndQuant, GenerationInstruction } from "../../../../class/GenerationInstruction";
 import { Context, EntityConstructor } from "../../../../types";
 import { InjectDataSource } from "@nestjs/typeorm";
@@ -74,10 +74,10 @@ export class CharacterGeneratorService extends AbstractProbGenerator<Character> 
     constructor(
         @InjectDataSource(DataSourceEnum.DATA_SOURCE_WORLD) protected readonly worldDataSource: DataSource,
         @InjectDataSource(DataSourceEnum.DATA_SOURCE_CAMPAIGN) protected readonly campaignDataSource: DataSource,
-        @Inject('IInstructionProcessorService') protected instructionProcessorService: InstructionProcessorService,
-        @Inject('IItemGeneratorService') protected itemGeneratorService: ItemGeneratorService,
-        @Inject('IStorageSlotService') protected storageSlotService: StorageSlotService,
-        @Inject('IEquipmentSlotService') protected equipmentSlotService: EquipmentSlotService,
+        @Inject(forwardRef(() => InstructionProcessorService)) protected instructionProcessorService: InstructionProcessorService,
+        @Inject(forwardRef(() => ItemGeneratorService)) protected itemGeneratorService: ItemGeneratorService,
+        @Inject(forwardRef(() => StorageSlotService)) protected storageSlotService: StorageSlotService,
+        @Inject(forwardRef(() => EquipmentSlotService)) protected equipmentSlotService: EquipmentSlotService,
     ) {
         super(worldDataSource, campaignDataSource, instructionProcessorService)
         this.blueprintsCache = {}

@@ -38,4 +38,5 @@ export abstract class ContentBase extends Base {
     user!: Promise<User> | User;
     campaign?: Promise<Campaign> | Campaign;
     world!: Promise<World> | World;
+
 }

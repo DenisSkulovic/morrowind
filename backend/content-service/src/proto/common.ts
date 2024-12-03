@@ -1676,7 +1676,7 @@ export interface AccountDTO {
   username: string;
   email: string;
   role: string;
-  user?: string | undefined;
+  user?: UserDTO | undefined;
   preferences?: PreferencesDTO | undefined;
 }
 
@@ -14967,7 +14967,7 @@ export const AccountDTO: MessageFns<AccountDTO> = {
       writer.uint32(34).string(message.role);
     }
     if (message.user !== undefined) {
-      writer.uint32(42).string(message.user);
+      UserDTO.encode(message.user, writer.uint32(42).fork()).join();
     }
     if (message.preferences !== undefined) {
       PreferencesDTO.encode(message.preferences, writer.uint32(50).fork()).join();
@@ -15019,7 +15019,7 @@ export const AccountDTO: MessageFns<AccountDTO> = {
             break;
           }
 
-          message.user = reader.string();
+          message.user = UserDTO.decode(reader, reader.uint32());
           continue;
         }
         case 6: {
@@ -15045,7 +15045,7 @@ export const AccountDTO: MessageFns<AccountDTO> = {
       username: isSet(object.username) ? globalThis.String(object.username) : "",
       email: isSet(object.email) ? globalThis.String(object.email) : "",
       role: isSet(object.role) ? globalThis.String(object.role) : "",
-      user: isSet(object.user) ? globalThis.String(object.user) : undefined,
+      user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
       preferences: isSet(object.preferences) ? PreferencesDTO.fromJSON(object.preferences) : undefined,
     };
   },
@@ -15065,7 +15065,7 @@ export const AccountDTO: MessageFns<AccountDTO> = {
       obj.role = message.role;
     }
     if (message.user !== undefined) {
-      obj.user = message.user;
+      obj.user = UserDTO.toJSON(message.user);
     }
     if (message.preferences !== undefined) {
       obj.preferences = PreferencesDTO.toJSON(message.preferences);
@@ -15082,7 +15082,7 @@ export const AccountDTO: MessageFns<AccountDTO> = {
     message.username = object.username ?? "";
     message.email = object.email ?? "";
     message.role = object.role ?? "";
-    message.user = object.user ?? undefined;
+    message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
     message.preferences = (object.preferences !== undefined && object.preferences !== null)
       ? PreferencesDTO.fromPartial(object.preferences)
       : undefined;

@@ -952,7 +952,7 @@ message AccountDTO {
     string username = 2;
     string email = 3;
     string role = 4;
-    optional string user = 5;
+    optional UserDTO user = 5;
     optional PreferencesDTO preferences = 6;
 }
 // #######################################################################################

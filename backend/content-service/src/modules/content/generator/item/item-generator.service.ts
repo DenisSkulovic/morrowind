@@ -2,7 +2,7 @@ import { cloneDeep } from "lodash";
 import { AbstractProbGenerator, IAbstractProbGenerator } from "../abstract-generator";
 import { Item } from "../../entities/Item/Item";
 import { StorageSlot } from "../../entities/Slot/StorageSlot";
-import { Inject, Injectable } from "@nestjs/common";
+import { Inject, Injectable, forwardRef } from "@nestjs/common";
 import { DataSourceEnum } from "../../../../common/enum/DataSourceEnum";
 import { IdAndQuant } from "../../../../class/GenerationInstruction";
 import { InjectDataSource } from "@nestjs/typeorm";
@@ -24,7 +24,7 @@ export class ItemGeneratorService extends AbstractProbGenerator<Item> implements
     constructor(
         @InjectDataSource(DataSourceEnum.DATA_SOURCE_WORLD) protected readonly worldDataSource: DataSource,
         @InjectDataSource(DataSourceEnum.DATA_SOURCE_CAMPAIGN) protected readonly campaignDataSource: DataSource,
-        @Inject('IInstructionProcessorService') protected instructionProcessorService: InstructionProcessorService,
+        @Inject(forwardRef(() => InstructionProcessorService)) protected instructionProcessorService: InstructionProcessorService,
     ) {
         super(worldDataSource, campaignDataSource, instructionProcessorService)
     }

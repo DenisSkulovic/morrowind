@@ -785,7 +785,7 @@ export const LoadWorldPresetResponse: MessageFns<LoadWorldPresetResponse> = {
   },
 };
 
-export interface WorldController {
+export interface WorldService {
   createWorld(request: CreateWorldRequest): Promise<CreateWorldResponse>;
   getWorld(request: GetWorldRequest): Promise<GetWorldResponse>;
   getWorldsForUser(request: GetWorldsForUserRequest): Promise<GetWorldsForUserResponse>;
@@ -794,12 +794,12 @@ export interface WorldController {
   loadWorldPreset(request: LoadWorldPresetRequest): Promise<LoadWorldPresetResponse>;
 }
 
-export const WorldControllerServiceName = "world.WorldController";
-export class WorldControllerClientImpl implements WorldController {
+export const WorldServiceServiceName = "world.WorldService";
+export class WorldServiceClientImpl implements WorldService {
   private readonly rpc: Rpc;
   private readonly service: string;
   constructor(rpc: Rpc, opts?: { service?: string }) {
-    this.service = opts?.service || WorldControllerServiceName;
+    this.service = opts?.service || WorldServiceServiceName;
     this.rpc = rpc;
     this.createWorld = this.createWorld.bind(this);
     this.getWorld = this.getWorld.bind(this);

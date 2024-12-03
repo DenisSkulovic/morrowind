@@ -1,7 +1,6 @@
 import { Entity, Column, ManyToOne, PrimaryColumn } from "typeorm";
 import { ContentBase } from "../../../ContentBase";
 import { CharacterGenInstructionDTO, GenderEnumDTO } from "../../../proto/common";
-import { Context } from "../../../types";
 import { GenderEnum } from "../../../common/enum/GenderEnum";
 import { serializeEnum, deserializeEnum } from "../../../common/enum/util";
 import { Campaign } from "../../campaign/entities/Campaign";
@@ -30,8 +29,11 @@ export class CharacterGenInstruction extends ContentBase {
     @Serializable()
     last_name?: string
 
-    @Column({ nullable: true, type: "enum", enum: GenderEnum })
-    @Serializable({ serialize: (i: GenderEnum) => serializeEnum(GenderEnumDTO, i), deserialize: (i: GenderEnumDTO) => deserializeEnum(GenderEnum, i) })
+    @Column({ nullable: true, type: "enum", enum: Object.values(GenderEnum) })
+    @Serializable({
+        serialize: (i: GenderEnum) => serializeEnum(GenderEnum, GenderEnumDTO, i),
+        deserialize: (i: GenderEnumDTO) => deserializeEnum(GenderEnumDTO, GenderEnum, i)
+    })
     gender?: GenderEnum
 
     @Column({ nullable: true })

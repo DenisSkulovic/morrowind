@@ -96,7 +96,7 @@ export function serializeInstruction(instruction: GenerationInstruction): Genera
             combinator: {
                 name: instruction.name,
                 prob: instruction.prob,
-                cond: serializeEnum(ConditionEnum, instruction.cond),
+                cond: serializeEnum(ConditionEnum, ConditionEnumDTO, instruction.cond),
                 instructions: instruction.items.map(serializeInstruction),
                 clazz: "BlueprintSetCombinator"
             },
@@ -115,7 +115,7 @@ export function deserializeInstruction(dto: GenerationInstructionDTO): Generatio
     }
     if (dto.simpleProb) {
         return new ProbObject_Simple(
-            deserializeEnum(ConditionEnumDTO, dto.simpleProb.cond) as ConditionEnum,
+            deserializeEnum(ConditionEnumDTO, ConditionEnum, dto.simpleProb.cond),
             dto.simpleProb.prob
         )
     }
@@ -133,7 +133,7 @@ export function deserializeInstruction(dto: GenerationInstructionDTO): Generatio
         return new BlueprintSetCombinator(
             name,
             prob,
-            deserializeEnum(ConditionEnumDTO, cond) as ConditionEnum,
+            deserializeEnum(ConditionEnumDTO, ConditionEnum, cond),
             instructions.map(deserializeInstruction),
         );
     }

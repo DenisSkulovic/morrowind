@@ -4,7 +4,7 @@ package generator;
 
 import "common.proto";
 
-service GeneratorController {
+service GeneratorService {
     rpc generateItems(GenerateItemsRequest) returns (GenerateItemsResponse);
     rpc generateCharactersCustom(GenerateCharactersRequestCustom) returns (GenerateCharactersResponse);
     rpc generateCharactersDB(GenerateCharactersRequestDB) returns (GenerateCharactersResponse);

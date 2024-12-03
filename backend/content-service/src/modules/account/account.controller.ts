@@ -13,24 +13,24 @@ export class AccountController {
         private readonly accountService: AccountService,
     ) { }
 
-    @GrpcMethod('AccountService', 'createAccount')
-    public async createAccount(
+    @GrpcMethod('AccountService', 'createAccountAndUser')
+    public async createAccountAndUser(
         request: CreateAccountRequest,
     ): Promise<CreateAccountResponse> {
-        console.log(`[AccountController - createAccount] request:`, request)
+        console.log(`[AccountController - createAccountAndUser] request:`, request)
         const { username, passwordHash, email, role } = request
 
         // TODO validate that role is in AccountRoleEnum
         const validatedRole = role as AccountRoleEnum
 
         const { user, account } = await this.accountService.createAccountAndUser(username, passwordHash, email, validatedRole, DataSourceEnum.DATA_SOURCE_WORLD)
-        console.log(`[AccountController - createAccount] user, account:`, user, account)
+        console.log(`[AccountController - createAccountAndUser] user, account:`, user, account)
 
         const response: CreateAccountResponse = {
             userId: user.id,
             accountId: account.id
         }
-        console.log(`[AccountController - createAccount] response:`, response)
+        console.log(`[AccountController - createAccountAndUser] response:`, response)
         return response
     };
 
@@ -38,16 +38,16 @@ export class AccountController {
     public async getAccount(
         request: GetAccountRequest,
     ): Promise<GetAccountResponse> {
-        console.log(`[AccountController - createAccount] request:`, request)
+        console.log(`[AccountController - getAccount] request:`, request)
         const { username } = request
 
         const accounts: Account[] = await this.accountService.getAccount(username, DataSourceEnum.DATA_SOURCE_WORLD)
-        console.log(`[AccountController - createAccount] accounts:`, accounts)
+        console.log(`[AccountController - getAccount] accounts:`, accounts)
 
         const response: GetAccountResponse = {
             account: accounts[0] ? accounts[0].toDTO() : undefined
         }
-        console.log(`[AccountController - createAccount] response:`, response)
+        console.log(`[AccountController - getAccount] response:`, response)
         return response
     };
 

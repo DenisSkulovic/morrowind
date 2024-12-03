@@ -29,7 +29,7 @@ export class PresetService implements IPresetService {
         preset: PresetEnum,
         pathToPresetsFolder: string
     ): Promise<Preset> {
-        const presetPath = join(__dirname, pathToPresetsFolder, preset.toString());
+        const presetPath = join(pathToPresetsFolder, preset.toString());
         const files: string[] = this._getJSONFiles(presetPath);
 
         const allBlueprints: Preset = {};

@@ -4,8 +4,8 @@ package account;
 
 import "common.proto";
 
-service AccountController {
-    rpc createAccount (CreateAccountRequest) returns (CreateAccountResponse);
+service AccountService {
+    rpc createAccountAndUser (CreateAccountRequest) returns (CreateAccountResponse);
     rpc getAccount (GetAccountRequest) returns (GetAccountResponse);
 }
 

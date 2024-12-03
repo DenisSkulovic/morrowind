@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { CharacterGeneratorService } from './character-generator.service';
 import { DataSourceEnum } from '../../../../common/enum/DataSourceEnum';
 import { InjectDataSourceModule } from '../../../../data-source/inject-datasource.module';
@@ -9,13 +9,22 @@ import { InstructionProcessorModule } from '../../instruction/instruction-proces
 
 @Module({
     imports: [
-        InjectDataSourceModule.register([DataSourceEnum.DATA_SOURCE_WORLD, DataSourceEnum.DATA_SOURCE_CAMPAIGN]),
-        InstructionProcessorModule,
-        ItemGeneratorModule,
-        StorageSlotModule,
-        EquipmentSlotModule,
+        InjectDataSourceModule.register([
+            DataSourceEnum.DATA_SOURCE_WORLD,
+            DataSourceEnum.DATA_SOURCE_CAMPAIGN,
+        ]),
+        forwardRef(() => InstructionProcessorModule),
+        forwardRef(() => ItemGeneratorModule),
+        forwardRef(() => StorageSlotModule),
+        forwardRef(() => EquipmentSlotModule),
     ],
-    providers: [CharacterGeneratorService],
-    exports: [CharacterGeneratorService],
+    providers: [
+        {
+            provide: 'ICharacterGeneratorService',
+            useClass: CharacterGeneratorService,
+        },
+        CharacterGeneratorService,
+    ],
+    exports: ['ICharacterGeneratorService', CharacterGeneratorService],
 })
 export class CharacterGeneratorModule { }

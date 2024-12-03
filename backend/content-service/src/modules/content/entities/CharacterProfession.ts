@@ -4,7 +4,6 @@ import { Character } from "./Character";
 import { TaggableContentBase } from "../../../TaggableContentBase";
 import { Tag } from "./Tag";
 import { CharacterProfessionDTO } from "../../../proto/common";
-import { Context } from "../../../types";
 import { Campaign } from "../../campaign/entities/Campaign";
 import { User } from "../../user/entities/User";
 import { World } from "../../world/entities/World";

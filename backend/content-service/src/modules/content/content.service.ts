@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource, EntityTarget, FindOptionsWhere, Repository } from 'typeorm';
 import { CONTENT_ENTITY_MAP, isParentEntity } from '../../CONTENT_ENTITY_MAP';
@@ -18,8 +18,8 @@ export class ContentService<T extends ContentBase> implements IContentService {
     constructor(
         @InjectDataSource(DataSourceEnum.DATA_SOURCE_WORLD) private readonly worldDataSource: DataSource,
         @InjectDataSource(DataSourceEnum.DATA_SOURCE_CAMPAIGN) private readonly campaignDataSource: DataSource,
-        @Inject('IWorldService') private worldService: WorldService,
-        @Inject('ICampaignService') private campaignService: CampaignService,
+        @Inject(forwardRef(() => WorldService)) private worldService: WorldService,
+        @Inject(forwardRef(() => CampaignService)) private campaignService: CampaignService,
     ) { }
 
     private getDataSource(source: DataSourceEnum): DataSource {

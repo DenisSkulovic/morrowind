@@ -1,10 +1,8 @@
-import { BeforeInsert, ChildEntity, Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryColumn, TableInheritance } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryColumn } from "typeorm";
 import { Item } from "../Item/Item";
 import { Character } from "../Character";
 import { ContentBase } from "../../../../ContentBase";
-import { randomUUID } from "crypto";
 import { EquipmentSlotDTO } from "../../../../proto/common";
-import { Context } from "../../../../types";
 import { Campaign } from "../../../campaign/entities/Campaign";
 import { User } from "../../../user/entities/User";
 import { World } from "../../../world/entities/World";
@@ -12,7 +10,6 @@ import { Serializer } from "../../../../serializer";
 import { Serializable } from "../../../../decorator/serializable.decorator";
 
 @Entity()
-@TableInheritance({ column: { type: "varchar", name: "type" } })
 export class EquipmentSlot extends ContentBase {
     @PrimaryColumn()
     @Serializable()

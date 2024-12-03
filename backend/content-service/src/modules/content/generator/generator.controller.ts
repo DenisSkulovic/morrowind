@@ -28,7 +28,7 @@ export class GeneratorController {
         const instructions: GenerationInstruction[] = deserializeGenerationInstructions(request)
         console.log(`[GeneratorController - generateItems] received instructions`, instructions)
 
-        const source: DataSourceEnum = deserializeEnum(DataSourceEnumDTO, request.source) as DataSourceEnum
+        const source: DataSourceEnum = deserializeEnum(DataSourceEnumDTO, DataSourceEnum, request.source)
 
         const generatedItems: Item[] = await this.itemGeneratorService.generateMany(instructions, source)
         console.log(`[GeneratorController - generateItems] generatedItems`, generatedItems)
@@ -46,7 +46,7 @@ export class GeneratorController {
         const instructions: CharacterGenInstruction[] = arr.map((chGenInstr) => CharacterGenInstruction.fromDTO(chGenInstr))
         console.log(`[GeneratorController - generateCharacters] received instructions`, instructions)
 
-        const source: DataSourceEnum = deserializeEnum(DataSourceEnumDTO, request.source) as DataSourceEnum
+        const source: DataSourceEnum = deserializeEnum(DataSourceEnumDTO, DataSourceEnum, request.source)
 
         // set the custom instructions into the cache, so that when the code checks the id, the instruction will be retrieved from the cache
         const ids: string[] = []
@@ -67,7 +67,7 @@ export class GeneratorController {
         console.log(`[GeneratorController - generateCharactersDB] request`, request)
         const ids: string[] = request.charGenInstructionIds
         console.log(`[GeneratorController - generateCharactersDB] received ids`, ids)
-        const source: DataSourceEnum = deserializeEnum(DataSourceEnumDTO, request.source) as DataSourceEnum
+        const source: DataSourceEnum = deserializeEnum(DataSourceEnumDTO, DataSourceEnum, request.source)
         const characters: Character[] = await this.characterGeneratorService.generateMany(ids, source)
         return { arr: characters.map((char) => char.toDTO()) }
     };

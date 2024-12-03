@@ -51,10 +51,10 @@ export class Character extends TaggableContentBase {
     @Serializable({ strategy: 'id' })
     race!: Race;
 
-    @Column({ type: "enum", enum: GenderEnum })
+    @Column({ type: "enum", enum: Object.values(GenderEnum) })
     @Serializable({
-        serialize: (i) => serializeEnum(GenderEnumDTO, i),
-        deserialize: (i) => deserializeEnum(GenderEnum, i)
+        serialize: (i) => serializeEnum(GenderEnum, GenderEnumDTO, i),
+        deserialize: (i) => deserializeEnum(GenderEnumDTO, GenderEnum, i)
     })
     gender!: GenderEnum;
 

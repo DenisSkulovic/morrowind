@@ -14,7 +14,6 @@ import { PastExperienceTypeEnum } from "../../../common/enum/PastExperienceTypeE
 import { deserializeEnum, serializeEnum } from "../../../common/enum/util";
 
 @Entity()
-@TableInheritance({ column: { type: "varchar", name: "type" } })
 export class PastExperience extends TaggableContentBase {
     @PrimaryColumn()
     @Serializable()
@@ -26,12 +25,12 @@ export class PastExperience extends TaggableContentBase {
     @Serializable()
     name!: string;
 
-    @Column({ type: "enum", enum: PastExperienceTypeEnum })
+    @Column({ type: "enum", enum: Object.values(PastExperienceTypeEnum) })
     @Serializable({
-        serialize: (i) => serializeEnum(PastExperienceTypeEnumDTO, i),
-        deserialize: (i) => deserializeEnum(PastExperienceTypeEnum, i)
+        serialize: (i) => serializeEnum(PastExperienceTypeEnum, PastExperienceTypeEnumDTO, i),
+        deserialize: (i) => deserializeEnum(PastExperienceTypeEnumDTO, PastExperienceTypeEnum, i)
     })
-    type!: PastExperienceTypeEnum
+    exp_type!: PastExperienceTypeEnum
 
     @ManyToMany(() => Tag, (tag) => tag.pastExperiences)
     @Serializable({ strategy: 'id' })

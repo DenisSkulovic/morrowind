@@ -1,13 +1,24 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { ItemGeneratorService } from './item-generator.service';
 import { DataSourceEnum } from '../../../../common/enum/DataSourceEnum';
 import { InjectDataSourceModule } from '../../../../data-source/inject-datasource.module';
+import { InstructionProcessorModule } from '../../instruction/instruction-processor.module';
 
 @Module({
     imports: [
-        InjectDataSourceModule.register([DataSourceEnum.DATA_SOURCE_WORLD, DataSourceEnum.DATA_SOURCE_CAMPAIGN]),
+        InjectDataSourceModule.register([
+            DataSourceEnum.DATA_SOURCE_WORLD,
+            DataSourceEnum.DATA_SOURCE_CAMPAIGN,
+        ]),
+        forwardRef(() => InstructionProcessorModule),
     ],
-    providers: [ItemGeneratorService],
-    exports: [ItemGeneratorService],
+    providers: [
+        {
+            provide: 'IItemGeneratorService',
+            useClass: ItemGeneratorService,
+        },
+        ItemGeneratorService
+    ],
+    exports: ['IItemGeneratorService', ItemGeneratorService],
 })
 export class ItemGeneratorModule { }

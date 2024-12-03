@@ -12,7 +12,6 @@ import { TraitTypeEnum } from "../../../common/enum/TraitTypeEnum";
 import { deserializeEnum, serializeEnum } from "../../../common/enum/util";
 
 @Entity()
-@TableInheritance({ column: { type: "varchar", name: "type" } })
 export class Trait extends TaggableContentBase {
     @PrimaryColumn()
     @Serializable()
@@ -24,12 +23,12 @@ export class Trait extends TaggableContentBase {
     @Serializable()
     name!: string;
 
-    @Column({ type: "enum", enum: TraitTypeEnum })
+    @Column({ type: "enum", enum: Object.values(TraitTypeEnum) })
     @Serializable({
-        serialize: (i) => serializeEnum(TraitTypeEnumDTO, i),
-        deserialize: (i) => deserializeEnum(TraitTypeEnum, i)
+        serialize: (i) => serializeEnum(TraitTypeEnum, TraitTypeEnumDTO, i),
+        deserialize: (i) => deserializeEnum(TraitTypeEnumDTO, TraitTypeEnum, i)
     })
-    type!: TraitTypeEnum
+    trait_type!: TraitTypeEnum
 
     @ManyToMany(() => Tag, (tag) => tag.traits, {})
     @Serializable({ strategy: 'id' })
