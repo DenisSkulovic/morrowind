@@ -4,7 +4,7 @@ import { Serializable } from "../../../../../decorator/serializable.decorator";
 
 @ChildEntity()
 export class ItemRepairable extends Item {
-    id_prefix = "ITEM_REPAIRABLE";
+    idPrefix = "ITEM_REPAIRABLE";
 
     @Column({ default: true })
     @Serializable()

@@ -15,7 +15,7 @@ export class PersonalityProfile extends ContentBase {
     @Serializable()
     id!: string;
 
-    id_prefix = "PROFILE";
+    idPrefix = "PROFILE";
 
     @Column({ type: "varchar", length: 255 })
     @Serializable()

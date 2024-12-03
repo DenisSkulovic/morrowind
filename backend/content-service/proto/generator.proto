@@ -14,6 +14,7 @@ service GeneratorService {
 message GenerateItemsRequest {
     common.DataSourceEnumDTO source = 1;
     repeated common.GenerationInstructionDTO arr = 2;
+    common.ContextDTO context = 3;
 }
 message GenerateItemsResponse {
     repeated common.ItemDTO arr = 1;
@@ -21,10 +22,12 @@ message GenerateItemsResponse {
 message GenerateCharactersRequestCustom {
     common.DataSourceEnumDTO source = 1;
     repeated common.CharacterGenInstructionDTO arr = 2;
+    common.ContextDTO context = 3;
 }
 message GenerateCharactersRequestDB {
     common.DataSourceEnumDTO source = 1;
     repeated string charGenInstructionIds = 2;
+    common.ContextDTO context = 3;
 }
 message GenerateCharactersResponse {
     repeated common.CharacterDTO arr = 1;
@@ -32,6 +35,7 @@ message GenerateCharactersResponse {
 message GenerateCharacterGroupsRequest {
     common.DataSourceEnumDTO source = 1;
     repeated common.CharacterGroupGenInstructionDTO arr = 2;
+    common.ContextDTO context = 3;
 }
 message GenerateCharacterGroupsResponse {
     repeated GenerateCharactersResponse arr = 1;

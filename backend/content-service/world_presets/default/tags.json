@@ -1,90 +1,90 @@
 [
     {
-        "blueprint_id": "CULTURE_HIGHLAND",
+        "blueprintId": "CULTURE_HIGHLAND",
         "label": "Highland Culture",
         "subtype": "CULTURE",
         "description": "Pertains to a Highland cultural identity.",
         "targetEntity": "Tag"
     },
     {
-        "blueprint_id": "CULTURE_LOWLAND",
+        "blueprintId": "CULTURE_LOWLAND",
         "label": "Lowland Culture",
         "subtype": "CULTURE",
         "description": "Pertains to a Lowland cultural identity.",
         "targetEntity": "Tag"
     },
     {
-        "blueprint_id": "ITEM_MATERIAL_IRON",
+        "blueprintId": "ITEM_MATERIAL_IRON",
         "label": "Iron",
         "subtype": "MATERIAL",
         "description": "Indicates the item is made of iron.",
         "targetEntity": "Tag"
     },
     {
-        "blueprint_id": "ITEM_MATERIAL_STEEL",
+        "blueprintId": "ITEM_MATERIAL_STEEL",
         "label": "Steel",
         "subtype": "MATERIAL",
         "description": "Indicates the item is made of steel.",
         "targetEntity": "Tag"
     },
     {
-        "blueprint_id": "ITEM_MATERIAL_WOOD",
+        "blueprintId": "ITEM_MATERIAL_WOOD",
         "label": "Wood",
         "subtype": "MATERIAL",
         "description": "Indicates the item is made of wood.",
         "targetEntity": "Tag"
     },
     {
-        "blueprint_id": "WEAPON_BLADE",
+        "blueprintId": "WEAPON_BLADE",
         "label": "Blade",
         "subtype": "WEAPON_TYPE",
         "description": "A general tag for bladed weapons.",
         "targetEntity": "Tag"
     },
     {
-        "blueprint_id": "WEAPON_BLUNT",
+        "blueprintId": "WEAPON_BLUNT",
         "label": "Blunt",
         "subtype": "WEAPON_TYPE",
         "description": "A general tag for blunt weapons.",
         "targetEntity": "Tag"
     },
     {
-        "blueprint_id": "WEAPON_RANGED",
+        "blueprintId": "WEAPON_RANGED",
         "label": "Ranged Weapon",
         "subtype": "WEAPON_TYPE",
         "description": "A general tag for ranged weapons.",
         "targetEntity": "Tag"
     },
     {
-        "blueprint_id": "FACTION_FIGHTERS_GUILD",
+        "blueprintId": "FACTION_FIGHTERS_GUILD",
         "label": "Fighters Guild",
         "subtype": "FACTION",
         "description": "Represents the Fighters guild.",
         "targetEntity": "Tag"
     },
     {
-        "blueprint_id": "FACTION_HIGHLAND_KINGDOM",
+        "blueprintId": "FACTION_HIGHLAND_KINGDOM",
         "label": "Highland Kingdom",
         "subtype": "FACTION",
         "description": "Represents the Highland Kingdom.",
         "targetEntity": "Tag"
     },
     {
-        "blueprint_id": "FACTION_LOWLAND_KINGDOM",
+        "blueprintId": "FACTION_LOWLAND_KINGDOM",
         "label": "Lowland Kingdom",
         "subtype": "FACTION",
         "description": "Represents the Lowland Kingdom.",
         "targetEntity": "Tag"
     },
     {
-        "blueprint_id": "STOLEN_ITEM",
+        "blueprintId": "STOLEN_ITEM",
         "label": "Stolen Item",
         "subtype": "STATUS",
         "description": "Marks the item as stolen property.",
         "targetEntity": "Tag"
     },
     {
-        "blueprint_id": "TAG_QUEST_ACTIVE",
+        "blueprintId": "TAG_QUEST_ACTIVE",
         "label": "Active Quest Item",
         "subtype": "QUEST",
         "description": "Marks this item as important for an active quest.",

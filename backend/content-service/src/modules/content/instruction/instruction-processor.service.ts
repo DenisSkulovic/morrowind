@@ -130,15 +130,15 @@ export class InstructionProcessorService implements IInstructionProcessorService
 
         switch (instruction.cond) {
             case (ConditionEnum.CONDITION_OR): {
-                const blueprint_id: string | undefined = this._processProbOr(instruction.prob)
-                if (blueprint_id) res.push(IdAndQuant.build({ blueprint_id }))
+                const blueprintId: string | undefined = this._processProbOr(instruction.prob)
+                if (blueprintId) res.push(IdAndQuant.build({ blueprintId }))
                 break;
             }
             case (ConditionEnum.CONDITION_AND): // not sure if there is any difference between AND and ANY, will keep both for now
             case (ConditionEnum.CONDITION_ANY): {
                 const blueprintIds: string[] = this._processProbAny(instruction.prob)
-                blueprintIds.forEach((blueprint_id) => {
-                    res.push(IdAndQuant.build({ blueprint_id }))
+                blueprintIds.forEach((blueprintId) => {
+                    res.push(IdAndQuant.build({ blueprintId }))
                 })
                 break;
             }
@@ -159,7 +159,7 @@ export class InstructionProcessorService implements IInstructionProcessorService
         const randomValue = this._getSkewedRandom(stDev, skew);
         const quantity = Math.max(1, Math.round(avg + randomValue));
         console.log(`[InstructionProcessor - _processProbGaussian] quantity`, quantity)
-        return IdAndQuant.build({ blueprint_id: instruction.blueprint_id, quantity })
+        return IdAndQuant.build({ blueprintId: instruction.blueprintId, quantity })
     }
 
     private _processCombinator(combinator: BlueprintSetCombinator): IdAndQuant[] {

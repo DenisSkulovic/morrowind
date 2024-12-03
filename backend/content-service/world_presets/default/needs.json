@@ -1,6 +1,6 @@
 [
     {
-        "blueprint_id": "HUNGER",
+        "blueprintId": "HUNGER",
         "name": "Hunger",
         "description": "The need to consume food to maintain health and energy.",
         "type": "DYNAMIC",
@@ -17,7 +17,7 @@
         "targetEntity": "Need"
     },
     {
-        "blueprint_id": "THIRST",
+        "blueprintId": "THIRST",
         "name": "Thirst",
         "description": "The need to drink water to stay hydrated.",
         "type": "DYNAMIC",
@@ -34,7 +34,7 @@
         "targetEntity": "Need"
     },
     {
-        "blueprint_id": "SLEEP",
+        "blueprintId": "SLEEP",
         "name": "Sleep",
         "description": "The need to rest and recover energy.",
         "type": "DYNAMIC",
@@ -51,7 +51,7 @@
         "targetEntity": "Need"
     },
     {
-        "blueprint_id": "RECREATION",
+        "blueprintId": "RECREATION",
         "name": "Recreation",
         "description": "The need to relax and engage in enjoyable activities.",
         "type": "DYNAMIC",
@@ -67,7 +67,7 @@
         "targetEntity": "Need"
     },
     {
-        "blueprint_id": "KNOWLEDGE",
+        "blueprintId": "KNOWLEDGE",
         "name": "Knowledge",
         "description": "The desire to learn and satisfy curiosity.",
         "type": "DYNAMIC",
@@ -83,7 +83,7 @@
         "targetEntity": "Need"
     },
     {
-        "blueprint_id": "RELIGIOUS_FULFILLMENT",
+        "blueprintId": "RELIGIOUS_FULFILLMENT",
         "name": "Religious Fulfillment",
         "description": "The need to connect with one's faith through prayer, rituals, or worship.",
         "type": "DYNAMIC",
@@ -100,7 +100,7 @@
         "targetEntity": "Need"
     },
     {
-        "blueprint_id": "SECURITY",
+        "blueprintId": "SECURITY",
         "name": "Security",
         "description": "The need to feel safe and free from harm.",
         "type": "EXTERNAL",
@@ -112,7 +112,7 @@
         "targetEntity": "Need"
     },
     {
-        "blueprint_id": "FINANCIAL",
+        "blueprintId": "FINANCIAL",
         "name": "Financial Stability",
         "description": "The need for wealth or stable income.",
         "type": "EXTERNAL",
@@ -124,7 +124,7 @@
         "targetEntity": "Need"
     },
     {
-        "blueprint_id": "ALCOHOL",
+        "blueprintId": "ALCOHOL",
         "name": "Alcohol",
         "description": "The craving for alcoholic beverages.",
         "type": "DYNAMIC",
@@ -140,7 +140,7 @@
         "targetEntity": "Need"
     },
     {
-        "blueprint_id": "DRUG",
+        "blueprintId": "DRUG",
         "name": "Drug",
         "description": "The craving for specific drugs.",
         "type": "DYNAMIC",

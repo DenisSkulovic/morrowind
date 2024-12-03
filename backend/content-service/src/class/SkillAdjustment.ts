@@ -1,7 +1,7 @@
 import { SkillAdjustmentsDTO } from "../proto/common";
 
 export class SkillAdjustment {
-    [skill_blueprint_id: string]: number
+    [skill_blueprintId: string]: number
 }
 
 export function serializeSkillAdjustment(skAdj: SkillAdjustment): SkillAdjustmentsDTO {

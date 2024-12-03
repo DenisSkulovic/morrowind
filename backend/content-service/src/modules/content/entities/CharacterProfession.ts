@@ -16,7 +16,7 @@ export class CharacterProfession extends TaggableContentBase {
     @Serializable()
     id!: string;
 
-    id_prefix = "CHARACTER_PROFESSION"
+    idPrefix = "CHARACTER_PROFESSION"
 
     @ManyToMany(() => Character, character => character.professions, {})
     @JoinTable()

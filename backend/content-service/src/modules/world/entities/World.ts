@@ -4,8 +4,6 @@ import { User } from "../../user/entities/User";
 
 import { randomUUID } from "crypto";
 import { WorldDTO } from "../../../proto/common";
-import { Base } from "../../../Base";
-import { Context } from "../../../types";
 import { Addiction } from "../../content/entities/Addiction";
 import { Background } from "../../content/entities/Background";
 import { Birthsign } from "../../content/entities/Birthsign";
@@ -41,7 +39,7 @@ import { Serializer } from "../../../serializer";
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })
-export class World extends Base {
+export class World extends BaseEntity {
 
 
     @PrimaryColumn()
@@ -50,9 +48,9 @@ export class World extends Base {
 
     @BeforeInsert()
     generateId() {
-        this.id = `${this.id_prefix}_${randomUUID().replace(/-/g, "")}`;
+        this.id = `${this.idPrefix}_${randomUUID().replace(/-/g, "")}`;
     }
-    id_prefix = "WORLD";
+    idPrefix = "WORLD";
 
     @ManyToOne(() => User)
     @Serializable({ strategy: 'id' })

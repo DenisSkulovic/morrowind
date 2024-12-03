@@ -16,7 +16,7 @@ export class MemoryPool extends TaggableContentBase {
     @Serializable()
     id!: string;
 
-    id_prefix = "MEMORY_POOL"
+    idPrefix = "MEMORY_POOL"
 
     @Column({ default: "PLACEHOLDER" })
     @Serializable()

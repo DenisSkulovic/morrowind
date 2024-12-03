@@ -3,6 +3,13 @@ syntax = "proto3";
 package common;
 
 
+message ContextDTO {
+    string userId = 1;
+    string worldId = 2;
+    string campaignId = 3;
+} 
+
+
 
 // #######################################################################################
 message BackgroundDTO {
@@ -231,6 +238,7 @@ message ItemRequirementDTO {
         int32 number = 3; // Numerical value
         bool flag = 4;    // Boolean value
     }
+    string clazz = 5;
 }
 message ItemRequirementsDTO {
     repeated ItemRequirementDTO arr = 1;
@@ -327,6 +335,7 @@ message CharacterMemoriesDTO {
 message FactStatusDTO {
     string factId = 1;
     FactStatusEnumDTO status = 2;
+    string clazz = 3;
 }
 message FactStatusesDTO {
     repeated FactStatusDTO arr = 1;
@@ -583,6 +592,7 @@ message RacesDTO {
 message EquipmentSlotDefinitionDTO {
     string name = 1;
     repeated string allowedEntities = 2;
+    string clazz = 3;
 }
 message EquipmentSlotDefinitionsDTO {
     repeated EquipmentSlotDefinitionDTO arr = 1;
@@ -596,6 +606,7 @@ message StorageSlotDefinitionDTO {
     repeated int32 grid = 1;
     string name = 2;
     int32 maxWeight = 3;
+    string clazz = 4;
 }
 message StorageSlotDefinitionsDTO {
     repeated StorageSlotDefinitionDTO arr = 1;
@@ -648,6 +659,7 @@ message ReligionsDTO {
 message ReligionRitualDTO {
     string name = 1;
     string description = 2;
+    string clazz = 3;
 }
 message ReligionRitualsDTO {
     repeated ReligionRitualDTO arr = 1;
@@ -660,6 +672,7 @@ message ReligionRitualsDTO {
 message ReligionTenetDTO {
     string name = 1;
     string description = 2;
+    string clazz = 3;
 }
 message ReligionTenetsDTO {
     repeated ReligionTenetDTO arr = 1;
@@ -769,6 +782,7 @@ message BackgroundCustomizationDTO {
     optional SkillAdjustmentsDTO skillAdjustments = 12;
     optional GenerationInstructionsDTO personality = 13;
     optional GenerationInstructionDTO gender = 14;
+    string clazz = 15;
 }
 // #######################################################################################
 

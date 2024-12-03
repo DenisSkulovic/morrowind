@@ -1,6 +1,6 @@
 export function serializeEnum<T extends object, E extends object>(fromEnum: T, toEnum: E, value: string): E[keyof E] {
-    const entry = Object.entries(fromEnum).find(([key]) => key === value);
-    if (!entry) throw new Error(`Enum serialization failed: ${value} not found in ${JSON.stringify(toEnum)}`);
+    const entry = Object.entries(fromEnum).find(([enumKey, enumValue]) => enumValue === value);
+    if (!entry) throw new Error(`Enum serialization failed: ${value} not found in ${JSON.stringify(fromEnum)}`);
     const key: keyof E = entry[0] as keyof E
     return toEnum[key]
 }

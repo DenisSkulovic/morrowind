@@ -1,26 +1,26 @@
 [
     {
-        "blueprint_id": "BREAD",
+        "blueprintId": "BREAD",
         "name": "Bread",
         "description": "A freshly baked loaf of bread. Simple but filling.",
         "weight": 1,
         "size": [1, 1],
         "stackable": true,
         "maxQuantity": 3,
-        "base_value": 2,
+        "baseValue": 2,
         "nutrition": 20,
         "spoilage": 48,
         "targetEntity": "ItemFood"
     },
     {
-        "blueprint_id": "APPLE",
+        "blueprintId": "APPLE",
         "name": "Apple",
         "description": "A fresh apple, perfect for a quick snack.",
         "weight": 0.5,
         "size": [1, 1],
         "stackable": true,
         "maxQuantity": 6,
-        "base_value": 1,
+        "baseValue": 1,
         "nutrition": 10,
         "spoilage": 36,
         "targetEntity": "ItemFood"

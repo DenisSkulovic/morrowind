@@ -3,6 +3,6 @@ import { ItemWeapon } from "./ItemWeapon";
 
 @ChildEntity()
 export class ItemWeaponRanged extends ItemWeapon {
-    id_prefix = "ITEM_WEAPON_RANGED"
+    idPrefix = "ITEM_WEAPON_RANGED"
 
 }

@@ -1,111 +1,111 @@
 [
     {
-        "blueprint_id": "ALCHEMY",
+        "blueprintId": "ALCHEMY",
         "name": "Alchemy",
         "description": "The skill of crafting potions and poisons.",
         "category": "CRAFTING",
         "targetEntity": "Skill"
     },
     {
-        "blueprint_id": "ALTERATION",
+        "blueprintId": "ALTERATION",
         "name": "Alteration",
         "description": "The art of manipulating physical properties.",
         "category": "MAGIC",
         "targetEntity": "Skill"
     },
     {
-        "blueprint_id": "MARKSMAN",
+        "blueprintId": "MARKSMAN",
         "name": "Marksman",
         "description": "The ability to use ranged weapons.",
         "category": "COMBAT",
         "targetEntity": "Skill"
     },
     {
-        "blueprint_id": "SHORT_SWORD",
+        "blueprintId": "SHORT_SWORD",
         "name": "Short Sword",
         "description": "The ability to use a short sword.",
         "category": "COMBAT",
         "targetEntity": "Skill"
     },
     {
-        "blueprint_id": "LONG_SWORD",
+        "blueprintId": "LONG_SWORD",
         "name": "Long Sword",
         "description": "The ability to use a long sword.",
         "category": "COMBAT",
         "targetEntity": "Skill"
     },
     {
-        "blueprint_id": "SPEAR",
+        "blueprintId": "SPEAR",
         "name": "Spear",
         "description": "The ability to use a spear.",
         "category": "COMBAT",
         "targetEntity": "Skill"
     },
     {
-        "blueprint_id": "BLOCK",
+        "blueprintId": "BLOCK",
         "name": "Block",
         "description": "The ability to block attacks with a shield or weapon.",
         "category": "COMBAT",
         "targetEntity": "Skill"
     },
     {
-        "blueprint_id": "CONJURATION",
+        "blueprintId": "CONJURATION",
         "name": "Conjuration",
         "description": "The art of summoning creatures and weapons.",
         "category": "MAGIC",
         "targetEntity": "Skill"
     },
     {
-        "blueprint_id": "DESTRUCTION",
+        "blueprintId": "DESTRUCTION",
         "name": "Destruction",
         "description": "The skill of wielding destructive magical forces.",
         "category": "MAGIC",
         "targetEntity": "Skill"
     },
     {
-        "blueprint_id": "ENCHANTING",
+        "blueprintId": "ENCHANTING",
         "name": "Enchanting",
         "description": "The art of imbuing items with magical properties.",
         "category": "CRAFTING",
         "targetEntity": "Skill"
     },
     {
-        "blueprint_id": "ILLUSION",
+        "blueprintId": "ILLUSION",
         "name": "Illusion",
         "description": "The art of manipulating the minds of others.",
         "category": "MAGIC",
         "targetEntity": "Skill"
     },
     {
-        "blueprint_id": "LIGHT_ARMOR",
+        "blueprintId": "LIGHT_ARMOR",
         "name": "Light Armor",
         "description": "Proficiency in wearing light armor.",
         "category": "COMBAT",
         "targetEntity": "Skill"
     },
     {
-        "blueprint_id": "HEAVY_ARMOR",
+        "blueprintId": "HEAVY_ARMOR",
         "name": "Heavy Armor",
         "description": "Proficiency in wearing heavy armor.",
         "category": "COMBAT",
         "targetEntity": "Skill"
     },
     {
-        "blueprint_id": "SNEAK",
+        "blueprintId": "SNEAK",
         "name": "Sneak",
         "description": "The ability to move silently and unseen.",
         "category": "STEALTH",
         "targetEntity": "Skill"
     },
     {
-        "blueprint_id": "SPEECHCRAFT",
+        "blueprintId": "SPEECHCRAFT",
         "name": "Speechcraft",
         "description": "The skill of persuasion.",
         "category": "SOCIAL",
         "targetEntity": "Skill"
     },
     {
-        "blueprint_id": "MERCHANTILE",
+        "blueprintId": "MERCHANTILE",
         "name": "Merchantile",
         "description": "The skill of bartering.",
         "category": "SOCIAL",

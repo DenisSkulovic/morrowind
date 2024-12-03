@@ -4,19 +4,19 @@ import { Serializable } from "../../../../../../decorator/serializable.decorator
 
 @ChildEntity()
 export class ItemWeapon extends ItemRepairable {
-    id_prefix = "ITEM_WEAPON";
+    idPrefix = "ITEM_WEAPON";
 
     @Column({ type: "varchar", nullable: true })
     @Serializable()
-    damage_slash?: string;
+    damageSlash?: string;
 
     @Column({ type: "varchar", nullable: true })
     @Serializable()
-    damage_pierce?: string;
+    damagePierce?: string;
 
     @Column({ type: "varchar", nullable: true })
     @Serializable()
-    damage_blunt?: string;
+    damageBlunt?: string;
 
     @Column({ nullable: true })
     @Serializable()
@@ -24,6 +24,6 @@ export class ItemWeapon extends ItemRepairable {
 
     @Column({ default: false })
     @Serializable()
-    two_handed!: boolean; // Whether the weapon requires two hands.
+    twoHanded!: boolean; // Whether the weapon requires two hands.
 
 }

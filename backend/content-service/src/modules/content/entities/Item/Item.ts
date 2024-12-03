@@ -11,7 +11,7 @@ import { Tag } from "../Tag";
 import { Serializer } from "../../../../serializer";
 import { Serializable } from "../../../../decorator/serializable.decorator";
 import { StorageSlotDefinition, deserializeStorageSlotDefinitions, serializeStorageSlotDefinitions } from "../../../../class/StorageSlotDefinition";
-import { serializeRequirements, deserializeRequirements, ItemRequirements } from "../../../../class/ItemRequirement";
+import { serializeRequirements, deserializeRequirements, ItemRequirements, ItemRequirement, serializeRequirement, deserializeRequirement } from "../../../../class/ItemRequirement";
 import { deserializeEnum, serializeEnum } from "../../../../common/enum/util";
 
 
@@ -24,7 +24,7 @@ export class Item extends TaggableContentBase {
     @Serializable()
     id?: string;
 
-    id_prefix = "ITEM";
+    idPrefix = "ITEM";
 
     @Column({ default: "PLACEHOLDER" })
     @Serializable()
@@ -53,11 +53,11 @@ export class Item extends TaggableContentBase {
 
     @Column({ default: 0 })
     @Serializable()
-    base_value!: number; // Monetary value in gold coins. To be adjusted with skills, modifiers, attitude, etc.
+    baseValue!: number; // Monetary value in gold coins. To be adjusted with skills, modifiers, attitude, etc.
 
     @Column({ nullable: true })
     @Serializable()
-    trained_skill?: string
+    trainedSkill?: string
 
     @Column({ type: "jsonb", nullable: true })
     @Serializable({
@@ -68,10 +68,10 @@ export class Item extends TaggableContentBase {
 
     @Column({ type: "jsonb", default: null, nullable: true })
     @Serializable({
-        serialize: serializeRequirements,
-        deserialize: deserializeRequirements
+        serialize: serializeRequirement,
+        deserialize: deserializeRequirement
     })
-    requirements?: ItemRequirements
+    requirements?: ItemRequirement[]
 
     // flags
     @Column({ default: false })
@@ -101,11 +101,11 @@ export class Item extends TaggableContentBase {
 
     @Column({ type: "jsonb", nullable: true })
     @Serializable()
-    grid_position?: { x: number; y: number }; // Item's top-left corner on the grid inside a storage slot
+    gridPosition?: { x: number; y: number }; // Item's top-left corner on the grid inside a storage slot
 
     @OneToMany(() => StorageSlot, storageSlot => storageSlot.storedItems)
     @Serializable({ strategy: 'full' })
-    storageSlots?: | StorageSlot[]; // the storage slots this item itself has (this is a backpack and it has 3 sections, i.e. slots)
+    storageSlots?: StorageSlot[]; // the storage slots this item itself has (this is a backpack and it has 3 sections, i.e. slots)
 
     @Column("jsonb", { nullable: true })
     @Serializable({

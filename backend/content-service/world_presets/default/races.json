@@ -1,6 +1,6 @@
 [
     {
-        "blueprint_id": "HUMAN",
+        "blueprintId": "HUMAN",
         "name": "Human",
         "description": "A versatile and adaptable race, known for their resilience.",
         "equipment_slot_definitions": [

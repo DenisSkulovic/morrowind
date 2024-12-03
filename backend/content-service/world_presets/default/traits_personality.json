@@ -1,344 +1,344 @@
 [
     {
-        "blueprint_id": "HOPEFUL",
+        "blueprintId": "HOPEFUL",
         "name": "HOPEFUL",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "OPTIMISTIC",
+        "blueprintId": "OPTIMISTIC",
         "name": "OPTIMISTIC",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "EMPATHETIC",
+        "blueprintId": "EMPATHETIC",
         "name": "EMPATHETIC",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "VISIONARY",
+        "blueprintId": "VISIONARY",
         "name": "VISIONARY",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "MOTIVATIONAL",
+        "blueprintId": "MOTIVATIONAL",
         "name": "MOTIVATIONAL",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "UNREALISTIC",
+        "blueprintId": "UNREALISTIC",
         "name": "UNREALISTIC",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "OVERLY_TRUSTING",
+        "blueprintId": "OVERLY_TRUSTING",
         "name": "OVERLY_TRUSTING",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "PEACEFUL",
+        "blueprintId": "PEACEFUL",
         "name": "PEACEFUL",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "COOPERATIVE",
+        "blueprintId": "COOPERATIVE",
         "name": "COOPERATIVE",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "SKILLED_MEDIATOR",
+        "blueprintId": "SKILLED_MEDIATOR",
         "name": "SKILLED_MEDIATOR",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "FAIR",
+        "blueprintId": "FAIR",
         "name": "FAIR",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "COMPASSIONATE",
+        "blueprintId": "COMPASSIONATE",
         "name": "COMPASSIONATE",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "AVOIDANT",
+        "blueprintId": "AVOIDANT",
         "name": "AVOIDANT",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "INDECISIVE",
+        "blueprintId": "INDECISIVE",
         "name": "INDECISIVE",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "WISE",
+        "blueprintId": "WISE",
         "name": "WISE",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "NURTURING",
+        "blueprintId": "NURTURING",
         "name": "NURTURING",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "PATIENT",
+        "blueprintId": "PATIENT",
         "name": "PATIENT",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "INSIGHTFUL",
+        "blueprintId": "INSIGHTFUL",
         "name": "INSIGHTFUL",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "SUPPORTIVE",
+        "blueprintId": "SUPPORTIVE",
         "name": "SUPPORTIVE",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "OVERPROTECTIVE",
+        "blueprintId": "OVERPROTECTIVE",
         "name": "OVERPROTECTIVE",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "DISMISSIVE_OF_INDEPENDENCE",
+        "blueprintId": "DISMISSIVE_OF_INDEPENDENCE",
         "name": "DISMISSIVE_OF_INDEPENDENCE",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "DEVOTED",
+        "blueprintId": "DEVOTED",
         "name": "DEVOTED",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "STEADFAST",
+        "blueprintId": "STEADFAST",
         "name": "STEADFAST",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "DEPENDABLE",
+        "blueprintId": "DEPENDABLE",
         "name": "DEPENDABLE",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "PROTECTIVE",
+        "blueprintId": "PROTECTIVE",
         "name": "PROTECTIVE",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "COURAGEOUS",
+        "blueprintId": "COURAGEOUS",
         "name": "COURAGEOUS",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "CLINGY",
+        "blueprintId": "CLINGY",
         "name": "CLINGY",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "OVERLY_CAUTIOUS",
+        "blueprintId": "OVERLY_CAUTIOUS",
         "name": "OVERLY_CAUTIOUS",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "SOCIABLE",
+        "blueprintId": "SOCIABLE",
         "name": "SOCIABLE",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "CHARISMATIC",
+        "blueprintId": "CHARISMATIC",
         "name": "CHARISMATIC",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "QUICK_WITTED",
+        "blueprintId": "QUICK_WITTED",
         "name": "QUICK_WITTED",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "DIPLOMATIC",
+        "blueprintId": "DIPLOMATIC",
         "name": "DIPLOMATIC",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "ADAPTIVE",
+        "blueprintId": "ADAPTIVE",
         "name": "ADAPTIVE",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "SUPERFICIAL",
+        "blueprintId": "SUPERFICIAL",
         "name": "SUPERFICIAL",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "MANIPULATIVE",
+        "blueprintId": "MANIPULATIVE",
         "name": "MANIPULATIVE",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "IMAGINATIVE",
+        "blueprintId": "IMAGINATIVE",
         "name": "IMAGINATIVE",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "CREATIVE",
+        "blueprintId": "CREATIVE",
         "name": "CREATIVE",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "INTROSPECTIVE",
+        "blueprintId": "INTROSPECTIVE",
         "name": "INTROSPECTIVE",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "INVENTIVE",
+        "blueprintId": "INVENTIVE",
         "name": "INVENTIVE",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "INNOVATIVE",
+        "blueprintId": "INNOVATIVE",
         "name": "INNOVATIVE",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "DISCONNECTED",
+        "blueprintId": "DISCONNECTED",
         "name": "DISCONNECTED",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "IMPRACTICAL",
+        "blueprintId": "IMPRACTICAL",
         "name": "IMPRACTICAL",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "RESILIENT",
+        "blueprintId": "RESILIENT",
         "name": "RESILIENT",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "ADAPTABLE",
+        "blueprintId": "ADAPTABLE",
         "name": "ADAPTABLE",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "PRAGMATIC",
+        "blueprintId": "PRAGMATIC",
         "name": "PRAGMATIC",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "CYNICAL",
+        "blueprintId": "CYNICAL",
         "name": "CYNICAL",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "MISTRUSTFUL",
+        "blueprintId": "MISTRUSTFUL",
         "name": "MISTRUSTFUL",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "DEFIANT",
+        "blueprintId": "DEFIANT",
         "name": "DEFIANT",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "INDEPENDENT",
+        "blueprintId": "INDEPENDENT",
         "name": "INDEPENDENT",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "UNCONVENTIONAL",
+        "blueprintId": "UNCONVENTIONAL",
         "name": "UNCONVENTIONAL",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "DETERMINED",
+        "blueprintId": "DETERMINED",
         "name": "DETERMINED",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "RECKLESS",
+        "blueprintId": "RECKLESS",
         "name": "RECKLESS",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "CONFRONTATIONAL",
+        "blueprintId": "CONFRONTATIONAL",
         "name": "CONFRONTATIONAL",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "RESERVED",
+        "blueprintId": "RESERVED",
         "name": "RESERVED",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "SELF_SUFFICIENT",
+        "blueprintId": "SELF_SUFFICIENT",
         "name": "SELF_SUFFICIENT",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "ANTISOCIAL",
+        "blueprintId": "ANTISOCIAL",
         "name": "ANTISOCIAL",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     },
     {
-        "blueprint_id": "DISTRUSTFUL",
+        "blueprintId": "DISTRUSTFUL",
         "name": "DISTRUSTFUL",
-        "trait_type": "PERSONALITY",
+        "traitType": "PERSONALITY",
         "targetEntity": "Trait"
     }
 ]

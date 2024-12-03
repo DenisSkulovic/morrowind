@@ -8,15 +8,15 @@ export type GenerationInstruction = string | IdAndQuant | ProbObject_Simple | Bl
 
 
 export class IdAndQuant {
-    blueprint_id: string
+    blueprintId: string
     quantity?: number
     clazz = "IdAndQuant"
-    constructor(blueprint_id: string, quantity?: number) {
-        this.blueprint_id = blueprint_id
+    constructor(blueprintId: string, quantity?: number) {
+        this.blueprintId = blueprintId
         this.quantity = quantity
     }
     public static build(obj: any): IdAndQuant {
-        return new IdAndQuant(obj.blueprint_id, obj.quantity)
+        return new IdAndQuant(obj.blueprintId, obj.quantity)
     }
 }
 
@@ -34,21 +34,21 @@ export class ProbObject_Simple {
 }
 
 export class BlueprintGenInstruction_Gaussian {
-    blueprint_id: string
+    blueprintId: string
     prob?: Probability_0_to_1 // 0-1, default 1
     avg_quan?: number // positive integer, default 1
     st_dev?: number // positive float, default 0
     skew?: number // positive float, default 0
     clazz = "BlueprintGenInstruction_Gaussian"
-    constructor(blueprint_id: string, prob?: Probability_0_to_1, avg_quan?: number, st_dev?: number, skew?: number) {
-        this.blueprint_id = blueprint_id
+    constructor(blueprintId: string, prob?: Probability_0_to_1, avg_quan?: number, st_dev?: number, skew?: number) {
+        this.blueprintId = blueprintId
         this.prob = prob
         this.avg_quan = avg_quan
         this.st_dev = st_dev
         this.skew = skew
     }
     public static build(obj: any): BlueprintGenInstruction_Gaussian {
-        return new BlueprintGenInstruction_Gaussian(obj.blueprint_id, obj.prob, obj.avg_quan, obj.st_dev, obj.skew)
+        return new BlueprintGenInstruction_Gaussian(obj.blueprintId, obj.prob, obj.avg_quan, obj.st_dev, obj.skew)
     }
 }
 
@@ -74,7 +74,7 @@ export function serializeInstruction(instruction: GenerationInstruction): Genera
     if (instruction instanceof IdAndQuant) {
         return {
             idAndQuant: {
-                blueprintId: instruction.blueprint_id,
+                blueprintId: instruction.blueprintId,
                 quantity: instruction.quantity || 1
             }
         };
@@ -82,7 +82,7 @@ export function serializeInstruction(instruction: GenerationInstruction): Genera
     if (instruction instanceof BlueprintGenInstruction_Gaussian) {
         return {
             gaussianProb: {
-                blueprintId: instruction.blueprint_id,
+                blueprintId: instruction.blueprintId,
                 prob: instruction.prob || 1,
                 avgQuan: instruction.avg_quan,
                 stDev: instruction.st_dev,
@@ -140,5 +140,9 @@ export function deserializeInstruction(dto: GenerationInstructionDTO): Generatio
     throw new Error("Unknown GenerationInstructionDTO type");
 }
 
-export const serializeGenerationInstructions = (instructions: GenerationInstruction[]): GenerationInstructionsDTO => { return { arr: instructions.map(serializeInstruction) } };
-export const deserializeGenerationInstructions = (dtoInstructions: GenerationInstructionsDTO): GenerationInstruction[] => { return dtoInstructions.arr.map(deserializeInstruction) };
+export const serializeGenerationInstructions = (instructions: GenerationInstruction[]): GenerationInstructionsDTO => {
+    return { arr: instructions.map(serializeInstruction) }
+};
+export const deserializeGenerationInstructions = (dtoInstructions: GenerationInstructionsDTO): GenerationInstruction[] => {
+    return dtoInstructions.arr.map(deserializeInstruction)
+};

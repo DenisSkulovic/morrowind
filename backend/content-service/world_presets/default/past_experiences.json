@@ -1,80 +1,80 @@
 [
     {
-        "blueprint_id": "ORPHAN",
+        "blueprintId": "ORPHAN",
         "name": "ORPHAN",
-        "exp_type": "CHILD",
+        "expType": "CHILD",
         "targetEntity": "PastExperience"
     },
     {
-        "blueprint_id": "BEGGAR_CHILD",
+        "blueprintId": "BEGGAR_CHILD",
         "name": "BEGGAR_CHILD",
-        "exp_type": "CHILD",
+        "expType": "CHILD",
         "targetEntity": "PastExperience"
     },
     {
-        "blueprint_id": "SLAVE_CHILD",
+        "blueprintId": "SLAVE_CHILD",
         "name": "SLAVE_CHILD",
-        "exp_type": "CHILD",
+        "expType": "CHILD",
         "targetEntity": "PastExperience"
     },
     {
-        "blueprint_id": "BLACKSMITH_APPRENTICE",
+        "blueprintId": "BLACKSMITH_APPRENTICE",
         "name": "BLACKSMITH_APPRENTICE",
-        "exp_type": "CHILD",
+        "expType": "CHILD",
         "targetEntity": "PastExperience"
     },
     {
-        "blueprint_id": "FARM_CHILD",
+        "blueprintId": "FARM_CHILD",
         "name": "FARM_CHILD",
-        "exp_type": "CHILD",
+        "expType": "CHILD",
         "targetEntity": "PastExperience"
     },
     {
-        "blueprint_id": "ORPHAN",
+        "blueprintId": "ORPHAN",
         "name": "ORPHAN",
-        "exp_type": "CHILD",
+        "expType": "CHILD",
         "targetEntity": "PastExperience"
     },
     {
-        "blueprint_id": "WIDOW",
+        "blueprintId": "WIDOW",
         "name": "WIDOW",
-        "exp_type": "ADULT",
+        "expType": "ADULT",
         "targetEntity": "PastExperience"
     },
     {
-        "blueprint_id": "RETIRED_ADVENTURER",
+        "blueprintId": "RETIRED_ADVENTURER",
         "name": "RETIRED_ADVENTURER",
-        "exp_type": "ADULT",
+        "expType": "ADULT",
         "targetEntity": "PastExperience"
     },
     {
-        "blueprint_id": "RETIRED_SOLDIER",
+        "blueprintId": "RETIRED_SOLDIER",
         "name": "RETIRED_SOLDIER",
-        "exp_type": "ADULT",
+        "expType": "ADULT",
         "targetEntity": "PastExperience"
     },
     {
-        "blueprint_id": "WAR_VETERAN",
+        "blueprintId": "WAR_VETERAN",
         "name": "WAR_VETERAN",
-        "exp_type": "ADULT",
+        "expType": "ADULT",
         "targetEntity": "PastExperience"
     },
     {
-        "blueprint_id": "QUIET_VILLAGE_LIFE",
+        "blueprintId": "QUIET_VILLAGE_LIFE",
         "name": "QUIET_VILLAGE_LIFE",
-        "exp_type": "ADULT",
+        "expType": "ADULT",
         "targetEntity": "PastExperience"
     },
     {
-        "blueprint_id": "QUIET_TOWN_LIFE",
+        "blueprintId": "QUIET_TOWN_LIFE",
         "name": "QUIET_TOWN_LIFE",
-        "exp_type": "ADULT",
+        "expType": "ADULT",
         "targetEntity": "PastExperience"
     },
     {
-        "blueprint_id": "FREED_SLAVE",
+        "blueprintId": "FREED_SLAVE",
         "name": "FREED_SLAVE",
-        "exp_type": "ADULT",
+        "expType": "ADULT",
         "targetEntity": "PastExperience"
     }
 ]

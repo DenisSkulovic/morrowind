@@ -8,7 +8,7 @@ import { EntityConstructor } from "../../types";
 
 export class Preset {
     [entity: string]: {
-        [blueprint_id: string]: ContentBase
+        [blueprintId: string]: ContentBase
     }
 }
 
@@ -86,8 +86,8 @@ export class PresetService implements IPresetService {
 
             // Group entities by their target type
             if (!entitiesByType[targetEntity]) entitiesByType[targetEntity] = {};
-            entitiesByType[targetEntity][blueprintRaw.blueprint_id] = entity;
-            console.log(`[PresetLoader - _loadBlueprintsFromFile] targetEntity: ${targetEntity}; processed blueprintRaw.id: ${blueprintRaw.blueprint_id};`)
+            entitiesByType[targetEntity][blueprintRaw.blueprintId] = entity;
+            console.log(`[PresetLoader - _loadBlueprintsFromFile] targetEntity: ${targetEntity}; processed blueprintRaw.id: ${blueprintRaw.blueprintId};`)
         }
 
         return entitiesByType;

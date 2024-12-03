@@ -15,7 +15,7 @@ export class Skill extends TaggableContentBase {
     @Serializable()
     id!: string;
 
-    id_prefix = "SKILL"
+    idPrefix = "SKILL"
 
     @Column({ type: "varchar", length: 50 })
     @Serializable()

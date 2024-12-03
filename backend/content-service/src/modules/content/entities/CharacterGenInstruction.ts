@@ -18,21 +18,21 @@ export class CharacterGenInstruction extends ContentBase {
     @Serializable()
     id!: string;
 
-    id_prefix = "CHARACTER_GEN_INSTRUCTION"
+    idPrefix = "CHARACTER_GEN_INSTRUCTION"
 
 
     @Column({ nullable: true })
     @Serializable()
-    first_name?: string
+    firstName?: string
 
     @Column({ nullable: true })
     @Serializable()
-    last_name?: string
+    lastName?: string
 
     @Column({ nullable: true, type: "enum", enum: Object.values(GenderEnum) })
     @Serializable({
         serialize: (i: GenderEnum) => serializeEnum(GenderEnum, GenderEnumDTO, i),
-        deserialize: (i: GenderEnumDTO) => deserializeEnum(GenderEnumDTO, GenderEnum, i)
+        deserialize: (i: GenderEnumDTO | undefined) => typeof i !== "undefined" ? deserializeEnum(GenderEnumDTO, GenderEnum, i) : null
     })
     gender?: GenderEnum
 
@@ -58,11 +58,14 @@ export class CharacterGenInstruction extends ContentBase {
 
     @Column()
     @Serializable()
-    background_blueprint_id!: string
+    backgroundBlueprintId!: string
 
     @Column("jsonb", { nullable: true })
-    @Serializable({ serialize: serializeBackgroundCustomization, deserialize: deserializeBackgroundCustomization })
-    background_customization?: BackgroundCustomization
+    @Serializable({
+        serialize: serializeBackgroundCustomization,
+        deserialize: i => i ? deserializeBackgroundCustomization(i) : null
+    })
+    backgroundCustomization?: BackgroundCustomization
 
     @ManyToOne(() => User, { nullable: true })
     @Serializable({ strategy: 'id' })

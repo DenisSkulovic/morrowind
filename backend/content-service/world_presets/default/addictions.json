@@ -1,11 +1,11 @@
 [
     {
-        "blueprint_id": "ALCOHOLISM",
+        "blueprintId": "ALCOHOLISM",
         "name": "Alcoholism",
         "targetEntity": "Addiction"
     },
     {
-        "blueprint_id": "DEVILS_LETTUCE",
+        "blueprintId": "DEVILS_LETTUCE",
         "name": "Devil's Lettuce",
         "targetEntity": "Addiction"
     }

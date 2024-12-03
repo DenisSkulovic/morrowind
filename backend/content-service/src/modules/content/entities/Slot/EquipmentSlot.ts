@@ -15,7 +15,7 @@ export class EquipmentSlot extends ContentBase {
     @Serializable()
     id!: string;
 
-    id_prefix = "EQUIPMENT_SLOT"
+    idPrefix = "EQUIPMENT_SLOT"
 
     @Column({ type: "varchar", length: 64 })
     @Serializable()

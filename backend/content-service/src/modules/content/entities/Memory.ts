@@ -17,7 +17,7 @@ export class Memory extends TaggableContentBase {
     @Serializable()
     id!: string;
 
-    id_prefix = "MEMORY"
+    idPrefix = "MEMORY"
 
     @Column()
     @Serializable()

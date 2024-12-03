@@ -17,7 +17,7 @@ export class Religion extends ContentBase {
     @Serializable()
     id!: string;
 
-    id_prefix = "RELIGION";
+    idPrefix = "RELIGION";
 
     /**
      * The name of the religion.

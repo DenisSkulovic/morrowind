@@ -16,7 +16,7 @@ export class Resistance extends ContentBase {
     @Serializable()
     id!: string;
 
-    id_prefix = "RESISTANCE";
+    idPrefix = "RESISTANCE";
 
     @Column({ type: "varchar", length: 255 })
     @Serializable()

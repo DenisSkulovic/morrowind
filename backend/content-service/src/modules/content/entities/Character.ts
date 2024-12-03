@@ -37,15 +37,15 @@ export class Character extends TaggableContentBase {
     @Serializable()
     id!: string;
 
-    id_prefix = "CHARACTER"
+    idPrefix = "CHARACTER"
 
     @Column({ type: "varchar", length: 255 })
     @Serializable()
-    first_name!: string;
+    firstName!: string;
 
     @Column({ type: "varchar", length: 255 })
     @Serializable()
-    last_name!: string;
+    lastName!: string;
 
     @ManyToOne(() => Race)
     @Serializable({ strategy: 'id' })
@@ -101,6 +101,7 @@ export class Character extends TaggableContentBase {
     characterMemories!: CharacterMemory[];
 
     @Column({ type: "varchar", length: 3 })
+    @Serializable()
     enneagramType!: string;
 
     @ManyToMany(() => Trait)

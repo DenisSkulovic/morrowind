@@ -1,11 +1,9 @@
-import { TableInheritance, Entity, Column, PrimaryGeneratedColumn, OneToMany, BaseEntity, OneToOne, BeforeInsert, PrimaryColumn } from "typeorm";
+import { TableInheritance, Entity, OneToMany, BaseEntity, OneToOne, BeforeInsert, PrimaryColumn } from "typeorm";
 import { Campaign } from "../../campaign/entities/Campaign";
 import { World } from "../../world/entities/World";
 
 import { randomUUID } from "crypto";
 import { UserDTO } from "../../../proto/common";
-import { Base } from "../../../Base";
-import { Context } from "../../../types";
 import { Account } from "../../account/entities/Account";
 import { Addiction } from "../../content/entities/Addiction";
 import { Background } from "../../content/entities/Background";
@@ -41,7 +39,7 @@ import { Serializer } from "../../../serializer";
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })
-export class User extends Base {
+export class User extends BaseEntity {
 
 
     @PrimaryColumn()
@@ -50,9 +48,9 @@ export class User extends Base {
 
     @BeforeInsert()
     generateId() {
-        this.id = `${this.id_prefix}_${randomUUID().replace(/-/g, "")}`;
+        this.id = `${this.idPrefix}_${randomUUID().replace(/-/g, "")}`;
     }
-    id_prefix = "USER";
+    idPrefix = "USER";
 
     @OneToOne(() => Account, (account) => account.user, {})
     @Serializable({ strategy: 'id' })

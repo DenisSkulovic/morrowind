@@ -4,7 +4,6 @@ import { EntityConstructor } from "../../../types";
 import { Item } from "../entities/Item/Item";
 import { EquipmentSlot } from "../entities/Slot/EquipmentSlot";
 import { CONTENT_ENTITY_MAP } from "../../../CONTENT_ENTITY_MAP";
-import { EntityTarget } from "typeorm";
 
 @Injectable()
 export class EquipmentSlotService {
@@ -20,6 +19,7 @@ export class EquipmentSlotService {
         equipmentSlots: EquipmentSlot[],
         items: Item[]
     ): { equippedItems: Item[]; unequippedItems: Item[] } {
+        console.log(`[EquipmentSlotService - equipItems]`)
         const equippedItems: Item[] = [];
         const unequippedItems: Item[] = [...items];
 
@@ -34,10 +34,15 @@ export class EquipmentSlotService {
                 if (!entityConstructor) throw new Error(`unrecognized entity name in allowedEntities: "${entityName}" of equipment slot: "${slot.name}"`)
 
                 // Filter items that can be placed in this slot
-                const candidateItems = unequippedItems.filter(
-                    (item) =>
-                        item instanceof entityConstructor || // Direct match
-                        Object.getPrototypeOf(item) instanceof entityConstructor // Inherited match
+                const candidateItems = unequippedItems.filter((item: Item) => {
+                    if (item instanceof entityConstructor) { // Direct match
+                        return true
+                    }
+                    if (Object.getPrototypeOf(item) instanceof entityConstructor) { // Inherited match
+                        return true
+                    }
+                    return false
+                }
                 );
 
                 // TODO: Add complex decision-making logic here.
@@ -76,6 +81,6 @@ export class EquipmentSlotService {
         // - Consider item stats like protection, damage, weight, etc.
         // - Check NPC preferences or traits (e.g., prefers heavy armor).
         // - Evaluate the context (e.g., equip a weapon even if it means leaving a shield unequipped).
-        return items.sort((a, b) => b.base_value - a.base_value)[0] || null; // Fallback to base price for now
+        return items.sort((a, b) => b.baseValue - a.baseValue)[0] || null; // Fallback to base price for now
     }
 }

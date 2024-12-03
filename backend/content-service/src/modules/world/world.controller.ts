@@ -8,21 +8,32 @@ import {
 import { World } from "./entities/World";
 import { DataSourceEnum } from "../../common/enum/DataSourceEnum";
 import { PresetEnum } from "../../common/enum/entityEnums";
-import { PresetEnumDTO } from "../../proto/common";
+import { ContextDTO, PresetEnumDTO } from "../../proto/common";
 import { deserializeEnum } from "../../common/enum/util";
 
-import { Controller } from '@nestjs/common';
+import { Controller, Inject } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
 import { WorldService } from "./world.service";
 import { UserService } from "../user/user.service";
+import { Context } from "../../types";
 
 @Controller()
 export class WorldController {
 
     constructor(
-        private readonly worldService: WorldService,
-        private readonly userService: UserService,
+        @Inject('IWorldService') private readonly worldService: WorldService,
+        @Inject('IUserService') private readonly userService: UserService,
     ) { }
+
+    async processContextDTO(contextDTO: ContextDTO, source: DataSourceEnum): Promise<Context> {
+        const [user, world] = await Promise.all([
+            this.userService.findUser(contextDTO.userId, source),
+            this.worldService.findWorld(contextDTO.worldId, contextDTO.userId, source),
+        ])
+        console.log(`user`, user)
+        console.log(`world`, world)
+        return { user, world }
+    }
 
     @GrpcMethod('WorldService', 'createWorld')
     public async createWorld(
@@ -89,8 +100,14 @@ export class WorldController {
         request: LoadWorldPresetRequest,
     ): Promise<LoadWorldPresetResponse> {
         if (typeof request.preset !== "number" || request.preset === PresetEnumDTO.UNRECOGNIZED) throw new Error(`no preset found for preset identifier: ${request.preset}`)
-        const worldId: string = request.worldId // TODO these fields should come from middleware
-        const userId: string = request.userId // TODO these fields should come from middleware, especially this one
+        const source: DataSourceEnum = DataSourceEnum.DATA_SOURCE_WORLD
+        const contextDTO: ContextDTO | undefined = request.context
+        const context: Context | undefined = contextDTO ? await this.processContextDTO(contextDTO, source) : undefined
+        console.log(`@@@context`, context)
+        const worldId: string | undefined = context?.world?.id // TODO these fields should come from middleware
+        const userId: string | undefined = context?.user?.id // TODO these fields should come from middleware, especially this one
+        if (!worldId) throw new Error(`unidentified world id: "${contextDTO?.worldId}"`)
+        if (!userId) throw new Error(`unidentified user id: "${contextDTO?.userId}"`)
         const preset: PresetEnum = deserializeEnum(PresetEnumDTO, PresetEnum, request.preset)
         // check preset for existence in the enum
         await this.worldService.loadPresetIntoWorld(preset, worldId, userId)

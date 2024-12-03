@@ -13,7 +13,7 @@ export class Birthsign extends ContentBase {
     @Serializable()
     id!: string;
 
-    id_prefix = "BIRTHSIGN"
+    idPrefix = "BIRTHSIGN"
 
     @Column({ type: "varchar", length: 50 })
     @Serializable()

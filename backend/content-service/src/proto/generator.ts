@@ -10,6 +10,7 @@ import {
   CharacterDTO,
   CharacterGenInstructionDTO,
   CharacterGroupGenInstructionDTO,
+  ContextDTO,
   DataSourceEnumDTO,
   dataSourceEnumDTOFromJSON,
   dataSourceEnumDTOToJSON,
@@ -22,6 +23,7 @@ export const protobufPackage = "generator";
 export interface GenerateItemsRequest {
   source: DataSourceEnumDTO;
   arr: GenerationInstructionDTO[];
+  context: ContextDTO | undefined;
 }
 
 export interface GenerateItemsResponse {
@@ -31,11 +33,13 @@ export interface GenerateItemsResponse {
 export interface GenerateCharactersRequestCustom {
   source: DataSourceEnumDTO;
   arr: CharacterGenInstructionDTO[];
+  context: ContextDTO | undefined;
 }
 
 export interface GenerateCharactersRequestDB {
   source: DataSourceEnumDTO;
   charGenInstructionIds: string[];
+  context: ContextDTO | undefined;
 }
 
 export interface GenerateCharactersResponse {
@@ -45,6 +49,7 @@ export interface GenerateCharactersResponse {
 export interface GenerateCharacterGroupsRequest {
   source: DataSourceEnumDTO;
   arr: CharacterGroupGenInstructionDTO[];
+  context: ContextDTO | undefined;
 }
 
 export interface GenerateCharacterGroupsResponse {
@@ -52,7 +57,7 @@ export interface GenerateCharacterGroupsResponse {
 }
 
 function createBaseGenerateItemsRequest(): GenerateItemsRequest {
-  return { source: 0, arr: [] };
+  return { source: 0, arr: [], context: undefined };
 }
 
 export const GenerateItemsRequest: MessageFns<GenerateItemsRequest> = {
@@ -62,6 +67,9 @@ export const GenerateItemsRequest: MessageFns<GenerateItemsRequest> = {
     }
     for (const v of message.arr) {
       GenerationInstructionDTO.encode(v!, writer.uint32(18).fork()).join();
+    }
+    if (message.context !== undefined) {
+      ContextDTO.encode(message.context, writer.uint32(26).fork()).join();
     }
     return writer;
   },
@@ -89,6 +97,14 @@ export const GenerateItemsRequest: MessageFns<GenerateItemsRequest> = {
           message.arr.push(GenerationInstructionDTO.decode(reader, reader.uint32()));
           continue;
         }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.context = ContextDTO.decode(reader, reader.uint32());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -104,6 +120,7 @@ export const GenerateItemsRequest: MessageFns<GenerateItemsRequest> = {
       arr: globalThis.Array.isArray(object?.arr)
         ? object.arr.map((e: any) => GenerationInstructionDTO.fromJSON(e))
         : [],
+      context: isSet(object.context) ? ContextDTO.fromJSON(object.context) : undefined,
     };
   },
 
@@ -115,6 +132,9 @@ export const GenerateItemsRequest: MessageFns<GenerateItemsRequest> = {
     if (message.arr?.length) {
       obj.arr = message.arr.map((e) => GenerationInstructionDTO.toJSON(e));
     }
+    if (message.context !== undefined) {
+      obj.context = ContextDTO.toJSON(message.context);
+    }
     return obj;
   },
 
@@ -125,6 +145,9 @@ export const GenerateItemsRequest: MessageFns<GenerateItemsRequest> = {
     const message = createBaseGenerateItemsRequest();
     message.source = object.source ?? 0;
     message.arr = object.arr?.map((e) => GenerationInstructionDTO.fromPartial(e)) || [];
+    message.context = (object.context !== undefined && object.context !== null)
+      ? ContextDTO.fromPartial(object.context)
+      : undefined;
     return message;
   },
 };
@@ -188,7 +211,7 @@ export const GenerateItemsResponse: MessageFns<GenerateItemsResponse> = {
 };
 
 function createBaseGenerateCharactersRequestCustom(): GenerateCharactersRequestCustom {
-  return { source: 0, arr: [] };
+  return { source: 0, arr: [], context: undefined };
 }
 
 export const GenerateCharactersRequestCustom: MessageFns<GenerateCharactersRequestCustom> = {
@@ -198,6 +221,9 @@ export const GenerateCharactersRequestCustom: MessageFns<GenerateCharactersReque
     }
     for (const v of message.arr) {
       CharacterGenInstructionDTO.encode(v!, writer.uint32(18).fork()).join();
+    }
+    if (message.context !== undefined) {
+      ContextDTO.encode(message.context, writer.uint32(26).fork()).join();
     }
     return writer;
   },
@@ -225,6 +251,14 @@ export const GenerateCharactersRequestCustom: MessageFns<GenerateCharactersReque
           message.arr.push(CharacterGenInstructionDTO.decode(reader, reader.uint32()));
           continue;
         }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.context = ContextDTO.decode(reader, reader.uint32());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -240,6 +274,7 @@ export const GenerateCharactersRequestCustom: MessageFns<GenerateCharactersReque
       arr: globalThis.Array.isArray(object?.arr)
         ? object.arr.map((e: any) => CharacterGenInstructionDTO.fromJSON(e))
         : [],
+      context: isSet(object.context) ? ContextDTO.fromJSON(object.context) : undefined,
     };
   },
 
@@ -250,6 +285,9 @@ export const GenerateCharactersRequestCustom: MessageFns<GenerateCharactersReque
     }
     if (message.arr?.length) {
       obj.arr = message.arr.map((e) => CharacterGenInstructionDTO.toJSON(e));
+    }
+    if (message.context !== undefined) {
+      obj.context = ContextDTO.toJSON(message.context);
     }
     return obj;
   },
@@ -263,12 +301,15 @@ export const GenerateCharactersRequestCustom: MessageFns<GenerateCharactersReque
     const message = createBaseGenerateCharactersRequestCustom();
     message.source = object.source ?? 0;
     message.arr = object.arr?.map((e) => CharacterGenInstructionDTO.fromPartial(e)) || [];
+    message.context = (object.context !== undefined && object.context !== null)
+      ? ContextDTO.fromPartial(object.context)
+      : undefined;
     return message;
   },
 };
 
 function createBaseGenerateCharactersRequestDB(): GenerateCharactersRequestDB {
-  return { source: 0, charGenInstructionIds: [] };
+  return { source: 0, charGenInstructionIds: [], context: undefined };
 }
 
 export const GenerateCharactersRequestDB: MessageFns<GenerateCharactersRequestDB> = {
@@ -278,6 +319,9 @@ export const GenerateCharactersRequestDB: MessageFns<GenerateCharactersRequestDB
     }
     for (const v of message.charGenInstructionIds) {
       writer.uint32(18).string(v!);
+    }
+    if (message.context !== undefined) {
+      ContextDTO.encode(message.context, writer.uint32(26).fork()).join();
     }
     return writer;
   },
@@ -305,6 +349,14 @@ export const GenerateCharactersRequestDB: MessageFns<GenerateCharactersRequestDB
           message.charGenInstructionIds.push(reader.string());
           continue;
         }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.context = ContextDTO.decode(reader, reader.uint32());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -320,6 +372,7 @@ export const GenerateCharactersRequestDB: MessageFns<GenerateCharactersRequestDB
       charGenInstructionIds: globalThis.Array.isArray(object?.charGenInstructionIds)
         ? object.charGenInstructionIds.map((e: any) => globalThis.String(e))
         : [],
+      context: isSet(object.context) ? ContextDTO.fromJSON(object.context) : undefined,
     };
   },
 
@@ -331,6 +384,9 @@ export const GenerateCharactersRequestDB: MessageFns<GenerateCharactersRequestDB
     if (message.charGenInstructionIds?.length) {
       obj.charGenInstructionIds = message.charGenInstructionIds;
     }
+    if (message.context !== undefined) {
+      obj.context = ContextDTO.toJSON(message.context);
+    }
     return obj;
   },
 
@@ -341,6 +397,9 @@ export const GenerateCharactersRequestDB: MessageFns<GenerateCharactersRequestDB
     const message = createBaseGenerateCharactersRequestDB();
     message.source = object.source ?? 0;
     message.charGenInstructionIds = object.charGenInstructionIds?.map((e) => e) || [];
+    message.context = (object.context !== undefined && object.context !== null)
+      ? ContextDTO.fromPartial(object.context)
+      : undefined;
     return message;
   },
 };
@@ -404,7 +463,7 @@ export const GenerateCharactersResponse: MessageFns<GenerateCharactersResponse> 
 };
 
 function createBaseGenerateCharacterGroupsRequest(): GenerateCharacterGroupsRequest {
-  return { source: 0, arr: [] };
+  return { source: 0, arr: [], context: undefined };
 }
 
 export const GenerateCharacterGroupsRequest: MessageFns<GenerateCharacterGroupsRequest> = {
@@ -414,6 +473,9 @@ export const GenerateCharacterGroupsRequest: MessageFns<GenerateCharacterGroupsR
     }
     for (const v of message.arr) {
       CharacterGroupGenInstructionDTO.encode(v!, writer.uint32(18).fork()).join();
+    }
+    if (message.context !== undefined) {
+      ContextDTO.encode(message.context, writer.uint32(26).fork()).join();
     }
     return writer;
   },
@@ -441,6 +503,14 @@ export const GenerateCharacterGroupsRequest: MessageFns<GenerateCharacterGroupsR
           message.arr.push(CharacterGroupGenInstructionDTO.decode(reader, reader.uint32()));
           continue;
         }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.context = ContextDTO.decode(reader, reader.uint32());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -456,6 +526,7 @@ export const GenerateCharacterGroupsRequest: MessageFns<GenerateCharacterGroupsR
       arr: globalThis.Array.isArray(object?.arr)
         ? object.arr.map((e: any) => CharacterGroupGenInstructionDTO.fromJSON(e))
         : [],
+      context: isSet(object.context) ? ContextDTO.fromJSON(object.context) : undefined,
     };
   },
 
@@ -466,6 +537,9 @@ export const GenerateCharacterGroupsRequest: MessageFns<GenerateCharacterGroupsR
     }
     if (message.arr?.length) {
       obj.arr = message.arr.map((e) => CharacterGroupGenInstructionDTO.toJSON(e));
+    }
+    if (message.context !== undefined) {
+      obj.context = ContextDTO.toJSON(message.context);
     }
     return obj;
   },
@@ -479,6 +553,9 @@ export const GenerateCharacterGroupsRequest: MessageFns<GenerateCharacterGroupsR
     const message = createBaseGenerateCharacterGroupsRequest();
     message.source = object.source ?? 0;
     message.arr = object.arr?.map((e) => CharacterGroupGenInstructionDTO.fromPartial(e)) || [];
+    message.context = (object.context !== undefined && object.context !== null)
+      ? ContextDTO.fromPartial(object.context)
+      : undefined;
     return message;
   },
 };

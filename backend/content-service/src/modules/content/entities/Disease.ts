@@ -18,7 +18,7 @@ export class Disease extends TaggableContentBase {
     @Serializable()
     id!: string;
 
-    id_prefix = "DISEASE";
+    idPrefix = "DISEASE";
 
     @Column({ type: "varchar", length: 255 })
     @Serializable()

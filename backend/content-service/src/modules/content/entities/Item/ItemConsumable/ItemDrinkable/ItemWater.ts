@@ -4,9 +4,9 @@ import { Serializable } from "../../../../../../decorator/serializable.decorator
 
 @ChildEntity()
 export class ItemWater extends ItemDrinkable {
-    id_prefix = "ITEM_WATER";
+    idPrefix = "ITEM_WATER";
 
     @Column({ default: 0 })
     @Serializable()
-    thirst_quenched!: number; // Amount of thirst satisfied.
+    thirstQuenched!: number; // Amount of thirst satisfied.
 }

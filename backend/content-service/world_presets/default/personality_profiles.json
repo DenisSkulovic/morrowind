@@ -1,6 +1,6 @@
 [
     {
-        "blueprint_id": "PROFILE_IDEALIST",
+        "blueprintId": "PROFILE_IDEALIST",
         "name": "The Idealist",
         "enneagramType": "1w9",
         "traits": [
@@ -21,7 +21,7 @@
         "targetEntity": "PersonalityProfile"
     },
     {
-        "blueprint_id": "PROFILE_DIPLOMAT",
+        "blueprintId": "PROFILE_DIPLOMAT",
         "name": "The Diplomat",
         "enneagramType": "9w1",
         "traits": [
@@ -42,7 +42,7 @@
         "targetEntity": "PersonalityProfile"
     },
     {
-        "blueprint_id": "PROFILE_MENTOR",
+        "blueprintId": "PROFILE_MENTOR",
         "name": "The Mentor",
         "enneagramType": "2w1",
         "traits": [
@@ -63,7 +63,7 @@
         "targetEntity": "PersonalityProfile"
     },
     {
-        "blueprint_id": "PROFILE_LOYAL_COMPANION",
+        "blueprintId": "PROFILE_LOYAL_COMPANION",
         "name": "The Loyal Companion",
         "enneagramType": "6w5",
         "traits": [
@@ -84,7 +84,7 @@
         "targetEntity": "PersonalityProfile"
     },
     {
-        "blueprint_id": "PROFILE_CHARMER",
+        "blueprintId": "PROFILE_CHARMER",
         "name": "The Charmer",
         "enneagramType": "3w2",
         "traits": [
@@ -105,7 +105,7 @@
         "targetEntity": "PersonalityProfile"
     },
     {
-        "blueprint_id": "PROFILE_DREAMER",
+        "blueprintId": "PROFILE_DREAMER",
         "name": "The Dreamer",
         "enneagramType": "4w5",
         "traits": [
@@ -126,7 +126,7 @@
         "targetEntity": "PersonalityProfile"
     },
     {
-        "blueprint_id": "PROFILE_SURVIVOR",
+        "blueprintId": "PROFILE_SURVIVOR",
         "name": "The Survivor",
         "enneagramType": "6w7",
         "traits": [
@@ -147,7 +147,7 @@
         "targetEntity": "PersonalityProfile"
     },
     {
-        "blueprint_id": "PROFILE_REBEL",
+        "blueprintId": "PROFILE_REBEL",
         "name": "The Rebel",
         "enneagramType": "8w7",
         "traits": [
@@ -168,7 +168,7 @@
         "targetEntity": "PersonalityProfile"
     },
     {
-        "blueprint_id": "PROFILE_LONER",
+        "blueprintId": "PROFILE_LONER",
         "name": "The Loner",
         "enneagramType": "5w4",
         "traits": [

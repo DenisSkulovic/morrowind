@@ -1,36 +1,36 @@
 [
     {
-        "blueprint_id": "COMMON_HAT",
+        "blueprintId": "COMMON_HAT",
         "name": "Common Hat",
         "description": "A simple hat.",
         "weight": 1,
         "size": [1, 2],
-        "base_value": 2,
-        "stealth_disadvantage": false,
+        "baseValue": 2,
+        "stealthDisadvantage": false,
         "targetEntity": "ItemWearableHead"
     },
     {
-        "blueprint_id": "COMMON_SHIRT",
+        "blueprintId": "COMMON_SHIRT",
         "name": "Common Shirt",
         "description": "A simple shirt.",
         "weight": 1,
         "size": [1, 2],
         "stackable": true,
         "maxQuantity": 6,
-        "base_value": 2,
-        "stealth_disadvantage": false,
+        "baseValue": 2,
+        "stealthDisadvantage": false,
         "targetEntity": "ItemWearableClothesTorso"
     },
     {
-        "blueprint_id": "COMMON_PANTS",
+        "blueprintId": "COMMON_PANTS",
         "name": "Common Pants",
         "description": "Simple pants.",
         "weight": 1,
         "size": [1, 2],
         "stackable": true,
         "maxQuantity": 4,
-        "base_value": 2,
-        "stealth_disadvantage": false,
+        "baseValue": 2,
+        "stealthDisadvantage": false,
         "storageSlotDefinition": [
             {
                 "name": "Left Pocket",
@@ -46,25 +46,25 @@
         "targetEntity": "ItemWearableClothesPants"
     },
     {
-        "blueprint_id": "COMMON_SHOES",
+        "blueprintId": "COMMON_SHOES",
         "name": "Common Shoes",
         "description": "Simple shoes.",
         "weight": 1,
         "size": [1, 2],
-        "base_value": 2,
-        "stealth_disadvantage": false,
+        "baseValue": 2,
+        "stealthDisadvantage": false,
         "targetEntity": "ItemWearableFeet"
     },
     {
-        "blueprint_id": "IRON_GREAVES",
+        "blueprintId": "IRON_GREAVES",
         "name": "Iron Greaves",
         "description": "Sturdy greaves made from iron plates.",
         "weight": 15,
         "size": [2, 3],
-        "base_value": 35,
+        "baseValue": 35,
         "protection": 8,
-        "stealth_disadvantage": true,
-        "trained_skill": "HEAVY_ARMOR",
+        "stealthDisadvantage": true,
+        "trainedSkill": "HEAVY_ARMOR",
         "requirements": [
             {
                 "type": "skill",
@@ -80,15 +80,15 @@
         "targetEntity": "ItemWearableGreaves"
     },
     {
-        "blueprint_id": "STEEL_GREAVES",
+        "blueprintId": "STEEL_GREAVES",
         "name": "Steel Greaves",
         "description": "Sturdy greaves made from steel plates.",
         "weight": 12,
         "size": [2, 3],
-        "base_value": 70,
+        "baseValue": 70,
         "protection": 11,
-        "stealth_disadvantage": true,
-        "trained_skill": "HEAVY_ARMOR",
+        "stealthDisadvantage": true,
+        "trainedSkill": "HEAVY_ARMOR",
         "requirements": [
             {
                 "type": "skill",
@@ -104,15 +104,15 @@
         "targetEntity": "ItemWearableGreaves"
     },
     {
-        "blueprint_id": "IRON_CUIRASS",
+        "blueprintId": "IRON_CUIRASS",
         "name": "Iron Cuirass",
         "description": "A sturdy cuirass made from iron plates.",
         "weight": 25,
         "size": [3, 5],
-        "base_value": 50,
+        "baseValue": 50,
         "protection": 12,
-        "stealth_disadvantage": true,
-        "trained_skill": "HEAVY_ARMOR",
+        "stealthDisadvantage": true,
+        "trainedSkill": "HEAVY_ARMOR",
         "requirements": [
             {
                 "type": "skill",
@@ -128,15 +128,15 @@
         "targetEntity": "ItemWearableCuirass"
     },
     {
-        "blueprint_id": "STEEL_CUIRASS",
+        "blueprintId": "STEEL_CUIRASS",
         "name": "Steel Cuirass",
         "description": "A well-forged steel cuirass offering better protection.",
         "weight": 20,
         "size": [3, 5],
-        "base_value": 100,
+        "baseValue": 100,
         "protection": 15,
-        "stealth_disadvantage": true,
-        "trained_skill": "HEAVY_ARMOR",
+        "stealthDisadvantage": true,
+        "trainedSkill": "HEAVY_ARMOR",
         "requirements": [
             {
                 "type": "skill",
@@ -152,14 +152,14 @@
         "targetEntity": "ItemWearableCuirass"
     },
     {
-        "blueprint_id": "IRON_HELMET",
+        "blueprintId": "IRON_HELMET",
         "name": "Iron Helmet",
         "description": "A basic iron helmet offering minimal protection.",
         "weight": 5,
         "size": [2, 2],
-        "base_value": 10,
+        "baseValue": 10,
         "protection": 2,
-        "trained_skill": "HEAVY_ARMOR",
+        "trainedSkill": "HEAVY_ARMOR",
         "requirements": [
             {
                 "type": "skill",
@@ -175,14 +175,14 @@
         "targetEntity": "ItemWearableHead"
     },
     {
-        "blueprint_id": "STEEL_HELMET",
+        "blueprintId": "STEEL_HELMET",
         "name": "Steel Helmet",
         "description": "A durable steel helmet providing decent protection.",
         "weight": 4,
         "size": [2, 2],
-        "base_value": 25,
+        "baseValue": 25,
         "protection": 3,
-        "trained_skill": "HEAVY_ARMOR",
+        "trainedSkill": "HEAVY_ARMOR",
         "requirements": [
             {
                 "type": "skill",
@@ -198,14 +198,14 @@
         "targetEntity": "ItemWearableHead"
     },
     {
-        "blueprint_id": "IRON_BOOTS",
+        "blueprintId": "IRON_BOOTS",
         "name": "Iron Boots",
         "description": "Basic iron boots offering minimal protection.",
         "weight": 6,
         "size": [2, 3],
-        "base_value": 15,
+        "baseValue": 15,
         "protection": 3,
-        "trained_skill": "HEAVY_ARMOR",
+        "trainedSkill": "HEAVY_ARMOR",
         "requirements": [
             {
                 "type": "skill",
@@ -221,14 +221,14 @@
         "targetEntity": "ItemWearableFeet"
     },
     {
-        "blueprint_id": "STEEL_BOOTS",
+        "blueprintId": "STEEL_BOOTS",
         "name": "Steel BOOTS",
         "description": "A durable steel helmet providing decent protection.",
         "weight": 5,
         "size": [2, 3],
-        "base_value": 35,
+        "baseValue": 35,
         "protection": 4,
-        "trained_skill": "HEAVY_ARMOR",
+        "trainedSkill": "HEAVY_ARMOR",
         "requirements": [
             {
                 "type": "skill",
@@ -241,18 +241,18 @@
                 "value":  5
             }
         ],
-        "stealth_disadvantage": true,
+        "stealthDisadvantage": true,
         "targetEntity": "ItemWearableFeet"
     },
     {
-        "blueprint_id": "IRON_SHIELD",
+        "blueprintId": "IRON_SHIELD",
         "name": "Iron Shield",
         "description": "Basic iron shield offering minimal protection.",
         "weight": 12,
         "size": [5, 5],
-        "base_value": 70,
+        "baseValue": 70,
         "protection": 50,
-        "trained_skill": "HEAVY_ARMOR",
+        "trainedSkill": "HEAVY_ARMOR",
         "requirements": [
             {
                 "type": "skill",
@@ -268,14 +268,14 @@
         "targetEntity": "ItemWearableShield"
     },
     {
-        "blueprint_id": "STEEL_SHIELD",
+        "blueprintId": "STEEL_SHIELD",
         "name": "Steel Shield",
         "description": "A durable steel shield providing decent protection.",
         "weight": 10,
         "size": [5, 5],
-        "base_value": 140,
+        "baseValue": 140,
         "protection": 60,
-        "trained_skill": "HEAVY_ARMOR",
+        "trainedSkill": "HEAVY_ARMOR",
         "requirements": [
             {
                 "type": "skill",
@@ -288,16 +288,16 @@
                 "value":  5
             }
         ],
-        "stealth_disadvantage": true,
+        "stealthDisadvantage": true,
         "targetEntity": "ItemWearableShield"
     },
     {
-        "blueprint_id": "SMALL_BACKPACK",
+        "blueprintId": "SMALL_BACKPACK",
         "name": "Small Backpack",
         "description": "A simple small backpack that can store some items",
         "weight": 2,
         "size": [2, 1],
-        "base_value": 100,
+        "baseValue": 100,
         "storageSlotDefinition": [
             {
                 "name": "Main Section",
@@ -310,16 +310,16 @@
                 "maxWeight": 20
             }
         ],
-        "stealth_disadvantage": false,
+        "stealthDisadvantage": false,
         "targetEntity": "ItemWearableBackpack"
     },
     {
-        "blueprint_id": "LARGE_BACKPACK",
+        "blueprintId": "LARGE_BACKPACK",
         "name": "Large Backpack",
         "description": "A large backpack that can store many items",
         "weight": 4,
         "size": [3, 1],
-        "base_value": 200,
+        "baseValue": 200,
         "storageSlotDefinition": [
             {
                 "name": "Main Section",
@@ -342,7 +342,7 @@
                 "maxWeight": 10
             }
         ],
-        "stealth_disadvantage": true,
+        "stealthDisadvantage": true,
         "targetEntity": "ItemWearableBackpack"
     }
 ]

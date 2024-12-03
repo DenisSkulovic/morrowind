@@ -52,19 +52,19 @@ export class AccountService implements IAccountService {
 
     public async createAccountAndUser(
         username: string,
-        password_hash: string, // TODO clearly this is only for testing purposes; will use a proper auth approach
+        passwordHash: string, // TODO clearly this is only for testing purposes; will use a proper auth approach
         email: string,
         role: AccountRoleEnum,
         source: DataSourceEnum,
     ): Promise<{ account: Account, user: User }> {
-        console.log(`[AccountService - createAccountAndUser] entry:`, JSON.stringify({ username, password_hash, email, role, source }))
+        console.log(`[AccountService - createAccountAndUser] entry:`, JSON.stringify({ username, passwordHash, email, role, source }))
 
         const userRepository: Repository<User> = this.userService.getRepository(source)
         const user: User = userRepository.create()
         console.log(`[AccountService - createAccountAndUser] created user`)
         const account: Account = this.getRepository(source).create({
             username,
-            password_hash,
+            passwordHash,
             email,
             role,
             user,

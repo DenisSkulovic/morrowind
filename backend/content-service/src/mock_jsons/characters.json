@@ -1,5 +1,9 @@
 {
     "source": 0,
+    "context": {
+        "worldId": "WORLD_b71701ee42f54efdb097b1e82e5ba43c",
+        "userId": "USER_d580651fbc954326a781a0f317d9eb9f"
+    },
     "arr": [
         {
             "blueprintId": "GENERIC_HIGHLAND_GUARD",
@@ -70,7 +74,11 @@
                     ]
                 },
                 "items": {
-                    "arr": []
+                    "arr": [
+                        {
+                            "blueprintId": "IRON_SHORT_SWORD"
+                        }
+                    ]
                 },
                 "pastExpChild": {
                     "arr": [

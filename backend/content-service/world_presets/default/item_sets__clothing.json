@@ -1,12 +1,12 @@
 [
     {
-        "blueprint_id": "NAKED",
+        "blueprintId": "NAKED",
         "name": "NAKED",
         "set": [],
         "targetEntity": "ItemSet"
     },
     {
-        "blueprint_id": "COMMON_SHIRT_PANTS",
+        "blueprintId": "COMMON_SHIRT_PANTS",
         "name": "COMMON_SHIRT_PANTS",
         "set": [
             "COMMON_SHIRT",
@@ -15,7 +15,7 @@
         "targetEntity": "ItemSet"
     },
     {
-        "blueprint_id": "COMMON_SHIRT_PANTS_SHOES",
+        "blueprintId": "COMMON_SHIRT_PANTS_SHOES",
         "name": "COMMON_SHIRT_PANTS_SHOES",
         "set": [
             "COMMON_SHIRT",
@@ -25,7 +25,7 @@
         "targetEntity": "ItemSet"
     },
     {
-        "blueprint_id": "FULL_COMMON_CLOTHES",
+        "blueprintId": "FULL_COMMON_CLOTHES",
         "name": "FULL_COMMON_CLOTHES",
         "set": [
             "COMMON_SHIRT",
@@ -36,7 +36,7 @@
         "targetEntity": "ItemSet"
     },
     {
-        "blueprint_id": "FULL_ARMOR",
+        "blueprintId": "FULL_ARMOR",
         "name": "FULL_ARMOR",
         "set": [
             {
@@ -75,7 +75,7 @@
         "targetEntity": "ItemSet"
     },
     {
-        "blueprint_id": "CUIRASS_HELMET",
+        "blueprintId": "CUIRASS_HELMET",
         "name": "CUIRASS_HELMET",
         "set": [
             {
@@ -98,7 +98,7 @@
         "targetEntity": "ItemSet"
     },
     {
-        "blueprint_id": "CUIRASS",
+        "blueprintId": "CUIRASS",
         "name": "CUIRASS",
         "set": [
             {

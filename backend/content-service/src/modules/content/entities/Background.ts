@@ -16,67 +16,71 @@ export class Background extends ContentBase {
     @Serializable()
     id!: string;
 
-    id_prefix = "BACKGROUND";
+    idPrefix = "BACKGROUND";
 
     @Column({ type: "varchar", length: 255 })
     @Serializable()
     name!: string; // Name of the background (e.g., "Highland Town Guard")
 
     @Column({ type: "jsonb", nullable: true })
-    @Serializable({ serialize: serializeInstruction, deserialize: deserializeInstruction })
+    @Serializable({ serialize: serializeInstruction, deserialize: i => i ? deserializeInstruction(i) : null })
     gender?: GenerationInstruction
 
     @Column({ type: "jsonb", nullable: true })
-    @Serializable({ serialize: serializeGenerationInstructions, deserialize: deserializeGenerationInstructions })
+    @Serializable({ serialize: serializeGenerationInstructions, deserialize: i => i ? deserializeGenerationInstructions(i) : null })
     faction?: GenerationInstruction[];
 
     @Column({ type: "jsonb", nullable: true })
-    @Serializable({ serialize: serializeGenerationInstructions, deserialize: deserializeGenerationInstructions })
+    @Serializable({ serialize: serializeGenerationInstructions, deserialize: i => i ? deserializeGenerationInstructions(i) : null })
     disease?: GenerationInstruction[];
 
     @Column({ type: "jsonb", nullable: true })
-    @Serializable({ serialize: serializeGenerationInstructions, deserialize: deserializeGenerationInstructions })
+    @Serializable({ serialize: serializeGenerationInstructions, deserialize: i => i ? deserializeGenerationInstructions(i) : null })
     addiction?: GenerationInstruction[];
 
     @Column({ type: "jsonb", nullable: true })
-    @Serializable({ serialize: serializeGenerationInstructions, deserialize: deserializeGenerationInstructions })
+    @Serializable({ serialize: serializeGenerationInstructions, deserialize: i => i ? deserializeGenerationInstructions(i) : null })
     profession?: GenerationInstruction[];
 
     @Column({ type: "jsonb", nullable: true })
-    @Serializable({ serialize: serializeGenerationInstructions, deserialize: deserializeGenerationInstructions })
-    race!: GenerationInstruction[];
+    @Serializable({ serialize: serializeGenerationInstructions, deserialize: i => i ? deserializeGenerationInstructions(i) : null })
+    race?: GenerationInstruction[];
 
     @Column({ type: "jsonb", nullable: true })
-    @Serializable({ serialize: serializeGenerationInstructions, deserialize: deserializeGenerationInstructions })
+    @Serializable({ serialize: serializeGenerationInstructions, deserialize: i => i ? deserializeGenerationInstructions(i) : null })
     religion?: GenerationInstruction[];
 
     @Column({ type: "jsonb", nullable: true })
-    @Serializable({ serialize: serializeGenerationInstructions, deserialize: deserializeGenerationInstructions })
-    personality!: GenerationInstruction[];
+    @Serializable({ serialize: serializeGenerationInstructions, deserialize: i => i ? deserializeGenerationInstructions(i) : null })
+    personality?: GenerationInstruction[];
 
     @Column({ type: "jsonb", nullable: true })
-    @Serializable({ serialize: serializeGenerationInstructions, deserialize: deserializeGenerationInstructions })
+    @Serializable({ serialize: serializeGenerationInstructions, deserialize: i => i ? deserializeGenerationInstructions(i) : null })
     items?: GenerationInstruction[];
 
     @Column({ type: "jsonb", nullable: true })
-    @Serializable({ serialize: serializeGenerationInstructions, deserialize: deserializeGenerationInstructions })
-    past_exp_child?: GenerationInstruction[]
+    @Serializable({ serialize: serializeGenerationInstructions, deserialize: i => i ? deserializeGenerationInstructions(i) : null })
+    itemSets?: GenerationInstruction[];
 
     @Column({ type: "jsonb", nullable: true })
-    @Serializable({ serialize: serializeGenerationInstructions, deserialize: deserializeGenerationInstructions })
-    past_exp_adult?: GenerationInstruction[]
+    @Serializable({ serialize: serializeGenerationInstructions, deserialize: i => i ? deserializeGenerationInstructions(i) : null })
+    pastExpChild?: GenerationInstruction[]
 
     @Column({ type: "jsonb", nullable: true })
-    @Serializable({ serialize: serializeGenerationInstructions, deserialize: deserializeGenerationInstructions })
-    memory_pools?: GenerationInstruction[]
+    @Serializable({ serialize: serializeGenerationInstructions, deserialize: i => i ? deserializeGenerationInstructions(i) : null })
+    pastExpAdult?: GenerationInstruction[]
 
     @Column({ type: "jsonb", nullable: true })
-    @Serializable({ serialize: serializeGenerationInstructions, deserialize: deserializeGenerationInstructions })
-    skill_sets?: GenerationInstruction[]
+    @Serializable({ serialize: serializeGenerationInstructions, deserialize: i => i ? deserializeGenerationInstructions(i) : null })
+    memoryPools?: GenerationInstruction[]
 
     @Column({ type: "jsonb", nullable: true })
-    @Serializable({ serialize: serializeSkillAdjustment, deserialize: deserializeSkillAdjustment })
-    skill_adjustments?: SkillAdjustment
+    @Serializable({ serialize: serializeGenerationInstructions, deserialize: i => i ? deserializeGenerationInstructions(i) : null })
+    skillSets?: GenerationInstruction[]
+
+    @Column({ type: "jsonb", nullable: true })
+    @Serializable({ serialize: serializeSkillAdjustment, deserialize: i => i ? deserializeSkillAdjustment(i) : null })
+    skillAdjustments?: SkillAdjustment
 
     @ManyToOne(() => User, { nullable: true })
     @Serializable({ strategy: 'id' })

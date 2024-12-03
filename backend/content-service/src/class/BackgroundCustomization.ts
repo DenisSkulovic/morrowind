@@ -2,6 +2,7 @@ import { BackgroundCustomizationDTO } from "../proto/common";
 import { GenerationInstruction, serializeInstruction, serializeGenerationInstructions, deserializeInstruction, deserializeGenerationInstructions } from "./GenerationInstruction";
 
 export class BackgroundCustomization {
+    clazz = "BackgroundCustomization"
     constructor(
         public gender?: GenerationInstruction,
         public faction?: GenerationInstruction[],
@@ -12,12 +13,19 @@ export class BackgroundCustomization {
         public religion?: GenerationInstruction[],
         public personality?: GenerationInstruction[],
         public items?: GenerationInstruction[],
-        public past_exp_child?: GenerationInstruction[],
-        public past_exp_adult?: GenerationInstruction[],
-        public memory_pools?: GenerationInstruction[],
-        public skill_sets?: GenerationInstruction[],
-        public skill_adjustments?: { [skill_blueprint_id: string]: number },
+        public pastExpChild?: GenerationInstruction[],
+        public pastExpAdult?: GenerationInstruction[],
+        public memoryPools?: GenerationInstruction[],
+        public skillSets?: GenerationInstruction[],
+        public skillAdjustments?: { [skillBlueprintId: string]: number },
     ) { }
+
+    toDTO(): BackgroundCustomizationDTO {
+        return serializeBackgroundCustomization(this)
+    }
+    static fromDTO(dto: BackgroundCustomizationDTO): BackgroundCustomization {
+        return deserializeBackgroundCustomization(dto)
+    }
 }
 
 
@@ -32,11 +40,12 @@ export function serializeBackgroundCustomization(bcgCust: BackgroundCustomizatio
         religion: bcgCust.religion && serializeGenerationInstructions(bcgCust.religion),
         personality: bcgCust.personality && serializeGenerationInstructions(bcgCust.personality),
         items: bcgCust.items && serializeGenerationInstructions(bcgCust.items),
-        pastExpChild: bcgCust.past_exp_child && serializeGenerationInstructions(bcgCust.past_exp_child),
-        pastExpAdult: bcgCust.past_exp_adult && serializeGenerationInstructions(bcgCust.past_exp_adult),
-        // memoryPools: bcgCust.memory_pools && serializeGenerationInstructions(bcgCust.memory_pools),
-        skillSets: bcgCust.skill_sets && serializeGenerationInstructions(bcgCust.skill_sets),
-        skillAdjustments: bcgCust.skill_adjustments && { skillAdjustments: bcgCust.skill_adjustments },
+        pastExpChild: bcgCust.pastExpChild && serializeGenerationInstructions(bcgCust.pastExpChild),
+        pastExpAdult: bcgCust.pastExpAdult && serializeGenerationInstructions(bcgCust.pastExpAdult),
+        // memoryPools: bcgCust.memoryPools && serializeGenerationInstructions(bcgCust.memoryPools),
+        skillSets: bcgCust.skillSets && serializeGenerationInstructions(bcgCust.skillSets),
+        skillAdjustments: bcgCust.skillAdjustments && { skillAdjustments: bcgCust.skillAdjustments },
+        clazz: bcgCust.clazz
     };
 }
 export function deserializeBackgroundCustomization(dto: BackgroundCustomizationDTO): BackgroundCustomization {
@@ -50,10 +59,11 @@ export function deserializeBackgroundCustomization(dto: BackgroundCustomizationD
     customization.religion = dto.religion && deserializeGenerationInstructions(dto.religion);
     customization.personality = dto.personality && deserializeGenerationInstructions(dto.personality);
     customization.items = dto.items && deserializeGenerationInstructions(dto.items);
-    customization.past_exp_child = dto.pastExpChild && deserializeGenerationInstructions(dto.pastExpChild);
-    customization.past_exp_adult = dto.pastExpAdult && deserializeGenerationInstructions(dto.pastExpAdult);
-    // customization.memory_pools = dto.memoryPools && deserializeGenerationInstructions(dto.memoryPools);
-    customization.skill_sets = dto.skillSets && deserializeGenerationInstructions(dto.skillSets);
-    customization.skill_adjustments = dto.skillAdjustments?.skillAdjustments;
+    customization.pastExpChild = dto.pastExpChild && deserializeGenerationInstructions(dto.pastExpChild);
+    customization.pastExpAdult = dto.pastExpAdult && deserializeGenerationInstructions(dto.pastExpAdult);
+    // customization.memoryPools = dto.memoryPools && deserializeGenerationInstructions(dto.memoryPools);
+    customization.skillSets = dto.skillSets && deserializeGenerationInstructions(dto.skillSets);
+    customization.skillAdjustments = dto.skillAdjustments?.skillAdjustments;
+    customization.clazz = dto.clazz
     return customization;
 }

@@ -1,14 +1,14 @@
 [
     {
-        "blueprint_id": "WATER_FLASK",
+        "blueprintId": "WATER_FLASK",
         "name": "Water Flask",
         "description": "A leather flask filled with clean drinking water.",
         "weight": 1.5,
         "size": [1, 1],
         "stackable": true,
         "maxQuantity": 6,
-        "base_value": 1,
-        "thirst_quenched": 30,
+        "baseValue": 1,
+        "thirstQuenched": 30,
         "refills": 3,
         "targetEntity": "ItemWater"
     }

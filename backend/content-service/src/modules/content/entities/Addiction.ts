@@ -13,7 +13,7 @@ export class Addiction extends ContentBase {
     @PrimaryColumn()
     id!: string;
 
-    id_prefix = "ADDICTION"
+    idPrefix = "ADDICTION"
 
     @Column()
     name!: string

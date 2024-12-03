@@ -1,6 +1,6 @@
 [
     {
-        "blueprint_id": "NATURE_FAITH",
+        "blueprintId": "NATURE_FAITH",
         "name": "Nature Faith",
         "description": "A religion that venerates the forces of nature, viewing the natural world as sacred and interconnected.",
         "rituals": [
@@ -26,7 +26,7 @@
         "targetEntity": "Religion"
     },
     {
-        "blueprint_id": "ANCESTOR_WORSHIP",
+        "blueprintId": "ANCESTOR_WORSHIP",
         "name": "Ancestor Worship",
         "description": "A religion that emphasizes reverence for ancestors, believing they offer guidance and protection.",
         "rituals": [
@@ -52,7 +52,7 @@
         "targetEntity": "Religion"
     },
     {
-        "blueprint_id": "MONOTHEISTIC_FAITH",
+        "blueprintId": "MONOTHEISTIC_FAITH",
         "name": "Monotheistic Faith",
         "description": "A religion centered on the worship of a single all-powerful deity, emphasizing moral conduct and devotion.",
         "rituals": [

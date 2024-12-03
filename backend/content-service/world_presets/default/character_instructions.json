@@ -1,23 +1,23 @@
 [
     {
-        "blueprint_id": "GENERIC_HIGHLAND_GUARD",
+        "blueprintId": "GENERIC_HIGHLAND_GUARD",
         "name": "GENERIC_HIGHLAND_GUARD",
-        "background_blueprint_id": "BACKGROUND_HIGHLAND_TOWN_GUARD",
+        "backgroundBlueprintId": "BACKGROUND_HIGHLAND_TOWN_GUARD",
         "targetEntity": "CharacterGenInstruction"
     },
     {
-        "blueprint_id": "SPECIFIC_CAIUS_COSSADES",
+        "blueprintId": "SPECIFIC_CAIUS_COSSADES",
         "name": "SPECIFIC_CAIUS_COSSADES",
-        "first_name": "Caius",
-        "last_name": "Cossades",
+        "firstName": "Caius",
+        "lastName": "Cossades",
         "gender": "MALE",
         "birthsign": "TOWER",
         "birthEra": "3E",
         "birthYear": 427,
         "birthMonth": "Last Seed",
         "birthDay": 17,
-        "background_blueprint_id": "BACKGROUND_HIGHLAND_TOWN_GUARD",
-        "background_customization": {
+        "backgroundBlueprintId": "BACKGROUND_HIGHLAND_TOWN_GUARD",
+        "backgroundCustomization": {
             "race": [
                 "HUMAN"
             ],
@@ -40,17 +40,17 @@
                 "COMMON_SHIRT_PANTS"
             ],
             "items": [],
-            "past_exp_child": [
+            "pastExpChild": [
                 "FARM_CHILD"
             ],
-            "past_exp_adult": [
+            "pastExpAdult": [
                 "RETIRED_SOLDIER",
                 "QUIET_TOWN_LIFE"
             ],
-            "skill_sets": [
+            "skillSets": [
                 "COMBAT_MASTER_SWORDSMAN"
             ],
-            "skill_adjustments": {
+            "skillAdjustments": {
                 "MERCHANTILE": 10,
                 "SPEECHCRAFT": -20
             },

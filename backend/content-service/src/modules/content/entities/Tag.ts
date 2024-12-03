@@ -30,7 +30,7 @@ export class Tag extends ContentBase {
     @Serializable()
     id!: string;
 
-    id_prefix = "TAG"
+    idPrefix = "TAG"
 
     @Column({ type: "varchar", length: 30, unique: true })
     @Serializable()

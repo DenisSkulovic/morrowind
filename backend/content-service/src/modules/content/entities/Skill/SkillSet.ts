@@ -15,7 +15,7 @@ export class SkillSet extends TaggableContentBase {
     @Serializable()
     id!: string;
 
-    id_prefix = "SKILL_SET"
+    idPrefix = "SKILL_SET"
 
     @Column({ type: "varchar", length: 64 })
     @Serializable()
@@ -23,7 +23,7 @@ export class SkillSet extends TaggableContentBase {
 
     @Column("jsonb")
     @Serializable({ serialize: serializeSkillImprovement, deserialize: deserializeSkillImprovement })
-    skill_improvement!: SkillImprovement
+    skillImprovement!: SkillImprovement
 
     @ManyToMany(() => Tag, (tag) => tag.skills)
     @Serializable({ strategy: 'id' })

@@ -15,7 +15,7 @@ export class MemoryPoolEntry extends ContentBase {
     @Serializable()
     id!: string;
 
-    id_prefix = "MEMORY_POOL_ENTRY";
+    idPrefix = "MEMORY_POOL_ENTRY";
 
     @Column()
     @Serializable()

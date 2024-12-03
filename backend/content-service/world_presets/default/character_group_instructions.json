@@ -1,10 +1,10 @@
 [
     {
-        "blueprint_id": "SMALL_GROUP__HIGHLAND_TOWN_GUARDS",
+        "blueprintId": "SMALL_GROUP__HIGHLAND_TOWN_GUARDS",
         "name": "SMALL_GROUP__HIGHLAND_TOWN_GUARDS",
         "set": [
             {
-                "blueprint_id": "GENERIC_HIGHLAND_GUARD",
+                "blueprintId": "GENERIC_HIGHLAND_GUARD",
                 "prob": 1,
                 "avg_quan": 5,
                 "st_dev": 1,
@@ -15,11 +15,11 @@
         "targetEntity": "CharacterGroupGenInstruction"
     },
     {
-        "blueprint_id": "TWINS_CAIUS_COSSADES",
+        "blueprintId": "TWINS_CAIUS_COSSADES",
         "name": "TWINS_CAIUS_COSSADES",
         "set": [
             {
-                "blueprint_id": "SPECIFIC_CAIUS_COSSADES",
+                "blueprintId": "SPECIFIC_CAIUS_COSSADES",
                 "prob": 1,
                 "avg_quan": 2,
                 "st_dev": 0,

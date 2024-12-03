@@ -2,7 +2,7 @@ import { BlueprintSetCombinator } from "./GenerationInstruction";
 
 export class BlueprintSetInstruction {
     constructor(
-        public blueprint_id: string,
+        public blueprintId: string,
         public set: BlueprintSetCombinator
     ) { }
 }

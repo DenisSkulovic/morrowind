@@ -18,7 +18,7 @@ export class Status extends ContentBase {
     @Serializable()
     id!: string;
 
-    id_prefix = "STATUS";
+    idPrefix = "STATUS";
 
     @Column({ type: "varchar", length: 255 })
     @Serializable()

@@ -16,7 +16,7 @@ export class Fact extends TaggableContentBase {
     @Serializable()
     id!: string;
 
-    id_prefix = "FACT"
+    idPrefix = "FACT"
 
     @Column()
     @Serializable()

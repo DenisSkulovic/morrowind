@@ -6,8 +6,10 @@ import { Inject, Injectable, forwardRef } from "@nestjs/common";
 import { DataSourceEnum } from "../../../../common/enum/DataSourceEnum";
 import { IdAndQuant } from "../../../../class/GenerationInstruction";
 import { InjectDataSource } from "@nestjs/typeorm";
-import { DataSource } from "typeorm";
+import { DataSource, Repository } from "typeorm";
 import { InstructionProcessorService } from "../../instruction/instruction-processor.service";
+import { Context } from "../../../../types";
+import { ContentService } from "../../content.service";
 
 enum CacheKeyEnum {
     ITEM = "item",
@@ -25,6 +27,7 @@ export class ItemGeneratorService extends AbstractProbGenerator<Item> implements
         @InjectDataSource(DataSourceEnum.DATA_SOURCE_WORLD) protected readonly worldDataSource: DataSource,
         @InjectDataSource(DataSourceEnum.DATA_SOURCE_CAMPAIGN) protected readonly campaignDataSource: DataSource,
         @Inject(forwardRef(() => InstructionProcessorService)) protected instructionProcessorService: InstructionProcessorService,
+        @Inject(forwardRef(() => ContentService)) protected contentService: ContentService<Item>,
     ) {
         super(worldDataSource, campaignDataSource, instructionProcessorService)
     }
@@ -32,20 +35,23 @@ export class ItemGeneratorService extends AbstractProbGenerator<Item> implements
     public async _generateOne(
         idAndQuant: IdAndQuant,
         source: DataSourceEnum,
+        context: Context | undefined,
     ): Promise<Item[]> {
         const instances: Item[] = []
 
         const quantity: number = idAndQuant.quantity || 1
         console.log(`[ItemGenerator - _generateOne] quantity`, quantity)
 
-        const cacheExtract: (Item | null)[] = await this._getBlueprints_cacheOrRequest(CacheKeyEnum.ITEM, Item, [idAndQuant.blueprint_id], source)
+        const cacheExtract: (Item | null)[] = await this._getBlueprints_cacheOrRequest(CacheKeyEnum.ITEM, Item, [idAndQuant.blueprintId], source, context)
         const extractedBlueprint: Item | null = cacheExtract[0]
-        if (!extractedBlueprint) throw new Error(`could not find Item blueprint for id: "${idAndQuant.blueprint_id}"`)
+        if (!extractedBlueprint) throw new Error(`could not find Item blueprint for id: "${idAndQuant.blueprintId}"`)
 
         // create clone for safety
         const blueprint: Item = cloneDeep(extractedBlueprint)
         const maxQuantity: number = blueprint.maxQuantity
         const isStackable: boolean = blueprint.stackable
+
+        const itemRepository: Repository<Item> = this.contentService.getRepository(blueprint.targetEntity, source)
 
         // make sure TypeORM creates a new entry
         delete blueprint.id
@@ -58,18 +64,18 @@ export class ItemGeneratorService extends AbstractProbGenerator<Item> implements
             const full_stacks: number = Math.floor(quantity / maxQuantity)
             console.log(`[ItemGenerator - _generateOne] full_stacks`, full_stacks)
             for (let i = 0; i < full_stacks; i++) {
-                instances.push(Item.create({ ...blueprint, quantity: blueprint.maxQuantity }))
+                instances.push(itemRepository.create({ ...blueprint, quantity: blueprint.maxQuantity }))
             }
 
             // generate last stack, if any (maybe all arrows nicely fit into full stacks, you know?)
             const lastStackQuantity: number = quantity - (full_stacks * maxQuantity)
             console.log(`[ItemGenerator - _generateOne] lastStackQuantity`, lastStackQuantity)
             if (lastStackQuantity) {
-                instances.push(Item.create({ ...blueprint, quantity: lastStackQuantity }))
+                instances.push(itemRepository.create({ ...blueprint, quantity: lastStackQuantity }))
             }
         } else { // if not stackable - create separate instances
             for (let i = 0; i < quantity; i++) {
-                const instance: Item = Item.create({ ...blueprint })
+                const instance: Item = itemRepository.create({ ...blueprint })
                 // FYI: I made a simple assumption that a stackable item cannot have storage slots... So it somewhat simplifies things
                 // assigning storage slots
                 if (blueprint.storageSlots) {
@@ -83,6 +89,14 @@ export class ItemGeneratorService extends AbstractProbGenerator<Item> implements
                 }
                 instances.push(instance)
             }
+        }
+
+        if (context) {
+            instances.forEach((instance) => {
+                if (context?.user) instance.user = context.user
+                if (context?.world) instance.world = context.world
+                if (context?.campaign) instance.campaign = context.campaign
+            })
         }
 
         return instances

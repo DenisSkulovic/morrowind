@@ -17,7 +17,7 @@ export class Trait extends TaggableContentBase {
     @Serializable()
     id!: string;
 
-    id_prefix = "TRAIT";
+    idPrefix = "TRAIT";
 
     @Column({ default: "PLACEHOLDER" })
     @Serializable()
@@ -28,7 +28,7 @@ export class Trait extends TaggableContentBase {
         serialize: (i) => serializeEnum(TraitTypeEnum, TraitTypeEnumDTO, i),
         deserialize: (i) => deserializeEnum(TraitTypeEnumDTO, TraitTypeEnum, i)
     })
-    trait_type!: TraitTypeEnum
+    traitType!: TraitTypeEnum
 
     @ManyToMany(() => Tag, (tag) => tag.traits, {})
     @Serializable({ strategy: 'id' })

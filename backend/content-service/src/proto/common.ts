@@ -811,6 +811,12 @@ export function pastExperienceTypeEnumDTOToJSON(object: PastExperienceTypeEnumDT
   }
 }
 
+export interface ContextDTO {
+  userId: string;
+  worldId: string;
+  campaignId: string;
+}
+
 /** ####################################################################################### */
 export interface BackgroundDTO {
   id: string;
@@ -1026,6 +1032,7 @@ export interface ItemRequirementDTO {
     | undefined;
   /** Boolean value */
   flag?: boolean | undefined;
+  clazz: string;
 }
 
 export interface ItemRequirementsDTO {
@@ -1119,6 +1126,7 @@ export interface CharacterMemoriesDTO {
 export interface FactStatusDTO {
   factId: string;
   status: FactStatusEnumDTO;
+  clazz: string;
 }
 
 export interface FactStatusesDTO {
@@ -1349,6 +1357,7 @@ export interface RacesDTO {
 export interface EquipmentSlotDefinitionDTO {
   name: string;
   allowedEntities: string[];
+  clazz: string;
 }
 
 export interface EquipmentSlotDefinitionsDTO {
@@ -1360,6 +1369,7 @@ export interface StorageSlotDefinitionDTO {
   grid: number[];
   name: string;
   maxWeight: number;
+  clazz: string;
 }
 
 export interface StorageSlotDefinitionsDTO {
@@ -1406,6 +1416,7 @@ export interface ReligionsDTO {
 export interface ReligionRitualDTO {
   name: string;
   description: string;
+  clazz: string;
 }
 
 export interface ReligionRitualsDTO {
@@ -1416,6 +1427,7 @@ export interface ReligionRitualsDTO {
 export interface ReligionTenetDTO {
   name: string;
   description: string;
+  clazz: string;
 }
 
 export interface ReligionTenetsDTO {
@@ -1509,6 +1521,7 @@ export interface BackgroundCustomizationDTO {
   skillAdjustments?: SkillAdjustmentsDTO | undefined;
   personality?: GenerationInstructionsDTO | undefined;
   gender?: GenerationInstructionDTO | undefined;
+  clazz: string;
 }
 
 /** ####################################################################################### */
@@ -1729,6 +1742,98 @@ export interface CampaignDTO_DynamicStateEntry {
 export interface CampaignsDTO {
   arr: CampaignDTO[];
 }
+
+function createBaseContextDTO(): ContextDTO {
+  return { userId: "", worldId: "", campaignId: "" };
+}
+
+export const ContextDTO: MessageFns<ContextDTO> = {
+  encode(message: ContextDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.userId !== "") {
+      writer.uint32(10).string(message.userId);
+    }
+    if (message.worldId !== "") {
+      writer.uint32(18).string(message.worldId);
+    }
+    if (message.campaignId !== "") {
+      writer.uint32(26).string(message.campaignId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ContextDTO {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseContextDTO();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.userId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.worldId = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.campaignId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ContextDTO {
+    return {
+      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+      worldId: isSet(object.worldId) ? globalThis.String(object.worldId) : "",
+      campaignId: isSet(object.campaignId) ? globalThis.String(object.campaignId) : "",
+    };
+  },
+
+  toJSON(message: ContextDTO): unknown {
+    const obj: any = {};
+    if (message.userId !== "") {
+      obj.userId = message.userId;
+    }
+    if (message.worldId !== "") {
+      obj.worldId = message.worldId;
+    }
+    if (message.campaignId !== "") {
+      obj.campaignId = message.campaignId;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ContextDTO>, I>>(base?: I): ContextDTO {
+    return ContextDTO.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ContextDTO>, I>>(object: I): ContextDTO {
+    const message = createBaseContextDTO();
+    message.userId = object.userId ?? "";
+    message.worldId = object.worldId ?? "";
+    message.campaignId = object.campaignId ?? "";
+    return message;
+  },
+};
 
 function createBaseBackgroundDTO(): BackgroundDTO {
   return {
@@ -4979,7 +5084,7 @@ export const StorageGridCellDTO: MessageFns<StorageGridCellDTO> = {
 };
 
 function createBaseItemRequirementDTO(): ItemRequirementDTO {
-  return { type: "", name: "", number: undefined, flag: undefined };
+  return { type: "", name: "", number: undefined, flag: undefined, clazz: "" };
 }
 
 export const ItemRequirementDTO: MessageFns<ItemRequirementDTO> = {
@@ -4995,6 +5100,9 @@ export const ItemRequirementDTO: MessageFns<ItemRequirementDTO> = {
     }
     if (message.flag !== undefined) {
       writer.uint32(32).bool(message.flag);
+    }
+    if (message.clazz !== "") {
+      writer.uint32(42).string(message.clazz);
     }
     return writer;
   },
@@ -5038,6 +5146,14 @@ export const ItemRequirementDTO: MessageFns<ItemRequirementDTO> = {
           message.flag = reader.bool();
           continue;
         }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.clazz = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -5053,6 +5169,7 @@ export const ItemRequirementDTO: MessageFns<ItemRequirementDTO> = {
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       number: isSet(object.number) ? globalThis.Number(object.number) : undefined,
       flag: isSet(object.flag) ? globalThis.Boolean(object.flag) : undefined,
+      clazz: isSet(object.clazz) ? globalThis.String(object.clazz) : "",
     };
   },
 
@@ -5070,6 +5187,9 @@ export const ItemRequirementDTO: MessageFns<ItemRequirementDTO> = {
     if (message.flag !== undefined) {
       obj.flag = message.flag;
     }
+    if (message.clazz !== "") {
+      obj.clazz = message.clazz;
+    }
     return obj;
   },
 
@@ -5082,6 +5202,7 @@ export const ItemRequirementDTO: MessageFns<ItemRequirementDTO> = {
     message.name = object.name ?? "";
     message.number = object.number ?? undefined;
     message.flag = object.flag ?? undefined;
+    message.clazz = object.clazz ?? "";
     return message;
   },
 };
@@ -6495,7 +6616,7 @@ export const CharacterMemoriesDTO: MessageFns<CharacterMemoriesDTO> = {
 };
 
 function createBaseFactStatusDTO(): FactStatusDTO {
-  return { factId: "", status: 0 };
+  return { factId: "", status: 0, clazz: "" };
 }
 
 export const FactStatusDTO: MessageFns<FactStatusDTO> = {
@@ -6505,6 +6626,9 @@ export const FactStatusDTO: MessageFns<FactStatusDTO> = {
     }
     if (message.status !== 0) {
       writer.uint32(16).int32(message.status);
+    }
+    if (message.clazz !== "") {
+      writer.uint32(26).string(message.clazz);
     }
     return writer;
   },
@@ -6532,6 +6656,14 @@ export const FactStatusDTO: MessageFns<FactStatusDTO> = {
           message.status = reader.int32() as any;
           continue;
         }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.clazz = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -6545,6 +6677,7 @@ export const FactStatusDTO: MessageFns<FactStatusDTO> = {
     return {
       factId: isSet(object.factId) ? globalThis.String(object.factId) : "",
       status: isSet(object.status) ? factStatusEnumDTOFromJSON(object.status) : 0,
+      clazz: isSet(object.clazz) ? globalThis.String(object.clazz) : "",
     };
   },
 
@@ -6556,6 +6689,9 @@ export const FactStatusDTO: MessageFns<FactStatusDTO> = {
     if (message.status !== 0) {
       obj.status = factStatusEnumDTOToJSON(message.status);
     }
+    if (message.clazz !== "") {
+      obj.clazz = message.clazz;
+    }
     return obj;
   },
 
@@ -6566,6 +6702,7 @@ export const FactStatusDTO: MessageFns<FactStatusDTO> = {
     const message = createBaseFactStatusDTO();
     message.factId = object.factId ?? "";
     message.status = object.status ?? 0;
+    message.clazz = object.clazz ?? "";
     return message;
   },
 };
@@ -10018,7 +10155,7 @@ export const RacesDTO: MessageFns<RacesDTO> = {
 };
 
 function createBaseEquipmentSlotDefinitionDTO(): EquipmentSlotDefinitionDTO {
-  return { name: "", allowedEntities: [] };
+  return { name: "", allowedEntities: [], clazz: "" };
 }
 
 export const EquipmentSlotDefinitionDTO: MessageFns<EquipmentSlotDefinitionDTO> = {
@@ -10028,6 +10165,9 @@ export const EquipmentSlotDefinitionDTO: MessageFns<EquipmentSlotDefinitionDTO> 
     }
     for (const v of message.allowedEntities) {
       writer.uint32(18).string(v!);
+    }
+    if (message.clazz !== "") {
+      writer.uint32(26).string(message.clazz);
     }
     return writer;
   },
@@ -10055,6 +10195,14 @@ export const EquipmentSlotDefinitionDTO: MessageFns<EquipmentSlotDefinitionDTO> 
           message.allowedEntities.push(reader.string());
           continue;
         }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.clazz = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -10070,6 +10218,7 @@ export const EquipmentSlotDefinitionDTO: MessageFns<EquipmentSlotDefinitionDTO> 
       allowedEntities: globalThis.Array.isArray(object?.allowedEntities)
         ? object.allowedEntities.map((e: any) => globalThis.String(e))
         : [],
+      clazz: isSet(object.clazz) ? globalThis.String(object.clazz) : "",
     };
   },
 
@@ -10081,6 +10230,9 @@ export const EquipmentSlotDefinitionDTO: MessageFns<EquipmentSlotDefinitionDTO> 
     if (message.allowedEntities?.length) {
       obj.allowedEntities = message.allowedEntities;
     }
+    if (message.clazz !== "") {
+      obj.clazz = message.clazz;
+    }
     return obj;
   },
 
@@ -10091,6 +10243,7 @@ export const EquipmentSlotDefinitionDTO: MessageFns<EquipmentSlotDefinitionDTO> 
     const message = createBaseEquipmentSlotDefinitionDTO();
     message.name = object.name ?? "";
     message.allowedEntities = object.allowedEntities?.map((e) => e) || [];
+    message.clazz = object.clazz ?? "";
     return message;
   },
 };
@@ -10158,7 +10311,7 @@ export const EquipmentSlotDefinitionsDTO: MessageFns<EquipmentSlotDefinitionsDTO
 };
 
 function createBaseStorageSlotDefinitionDTO(): StorageSlotDefinitionDTO {
-  return { grid: [], name: "", maxWeight: 0 };
+  return { grid: [], name: "", maxWeight: 0, clazz: "" };
 }
 
 export const StorageSlotDefinitionDTO: MessageFns<StorageSlotDefinitionDTO> = {
@@ -10173,6 +10326,9 @@ export const StorageSlotDefinitionDTO: MessageFns<StorageSlotDefinitionDTO> = {
     }
     if (message.maxWeight !== 0) {
       writer.uint32(24).int32(message.maxWeight);
+    }
+    if (message.clazz !== "") {
+      writer.uint32(34).string(message.clazz);
     }
     return writer;
   },
@@ -10218,6 +10374,14 @@ export const StorageSlotDefinitionDTO: MessageFns<StorageSlotDefinitionDTO> = {
           message.maxWeight = reader.int32();
           continue;
         }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.clazz = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -10232,6 +10396,7 @@ export const StorageSlotDefinitionDTO: MessageFns<StorageSlotDefinitionDTO> = {
       grid: globalThis.Array.isArray(object?.grid) ? object.grid.map((e: any) => globalThis.Number(e)) : [],
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       maxWeight: isSet(object.maxWeight) ? globalThis.Number(object.maxWeight) : 0,
+      clazz: isSet(object.clazz) ? globalThis.String(object.clazz) : "",
     };
   },
 
@@ -10246,6 +10411,9 @@ export const StorageSlotDefinitionDTO: MessageFns<StorageSlotDefinitionDTO> = {
     if (message.maxWeight !== 0) {
       obj.maxWeight = Math.round(message.maxWeight);
     }
+    if (message.clazz !== "") {
+      obj.clazz = message.clazz;
+    }
     return obj;
   },
 
@@ -10257,6 +10425,7 @@ export const StorageSlotDefinitionDTO: MessageFns<StorageSlotDefinitionDTO> = {
     message.grid = object.grid?.map((e) => e) || [];
     message.name = object.name ?? "";
     message.maxWeight = object.maxWeight ?? 0;
+    message.clazz = object.clazz ?? "";
     return message;
   },
 };
@@ -10878,7 +11047,7 @@ export const ReligionsDTO: MessageFns<ReligionsDTO> = {
 };
 
 function createBaseReligionRitualDTO(): ReligionRitualDTO {
-  return { name: "", description: "" };
+  return { name: "", description: "", clazz: "" };
 }
 
 export const ReligionRitualDTO: MessageFns<ReligionRitualDTO> = {
@@ -10888,6 +11057,9 @@ export const ReligionRitualDTO: MessageFns<ReligionRitualDTO> = {
     }
     if (message.description !== "") {
       writer.uint32(18).string(message.description);
+    }
+    if (message.clazz !== "") {
+      writer.uint32(26).string(message.clazz);
     }
     return writer;
   },
@@ -10915,6 +11087,14 @@ export const ReligionRitualDTO: MessageFns<ReligionRitualDTO> = {
           message.description = reader.string();
           continue;
         }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.clazz = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -10928,6 +11108,7 @@ export const ReligionRitualDTO: MessageFns<ReligionRitualDTO> = {
     return {
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       description: isSet(object.description) ? globalThis.String(object.description) : "",
+      clazz: isSet(object.clazz) ? globalThis.String(object.clazz) : "",
     };
   },
 
@@ -10939,6 +11120,9 @@ export const ReligionRitualDTO: MessageFns<ReligionRitualDTO> = {
     if (message.description !== "") {
       obj.description = message.description;
     }
+    if (message.clazz !== "") {
+      obj.clazz = message.clazz;
+    }
     return obj;
   },
 
@@ -10949,6 +11133,7 @@ export const ReligionRitualDTO: MessageFns<ReligionRitualDTO> = {
     const message = createBaseReligionRitualDTO();
     message.name = object.name ?? "";
     message.description = object.description ?? "";
+    message.clazz = object.clazz ?? "";
     return message;
   },
 };
@@ -11014,7 +11199,7 @@ export const ReligionRitualsDTO: MessageFns<ReligionRitualsDTO> = {
 };
 
 function createBaseReligionTenetDTO(): ReligionTenetDTO {
-  return { name: "", description: "" };
+  return { name: "", description: "", clazz: "" };
 }
 
 export const ReligionTenetDTO: MessageFns<ReligionTenetDTO> = {
@@ -11024,6 +11209,9 @@ export const ReligionTenetDTO: MessageFns<ReligionTenetDTO> = {
     }
     if (message.description !== "") {
       writer.uint32(18).string(message.description);
+    }
+    if (message.clazz !== "") {
+      writer.uint32(26).string(message.clazz);
     }
     return writer;
   },
@@ -11051,6 +11239,14 @@ export const ReligionTenetDTO: MessageFns<ReligionTenetDTO> = {
           message.description = reader.string();
           continue;
         }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.clazz = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -11064,6 +11260,7 @@ export const ReligionTenetDTO: MessageFns<ReligionTenetDTO> = {
     return {
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       description: isSet(object.description) ? globalThis.String(object.description) : "",
+      clazz: isSet(object.clazz) ? globalThis.String(object.clazz) : "",
     };
   },
 
@@ -11075,6 +11272,9 @@ export const ReligionTenetDTO: MessageFns<ReligionTenetDTO> = {
     if (message.description !== "") {
       obj.description = message.description;
     }
+    if (message.clazz !== "") {
+      obj.clazz = message.clazz;
+    }
     return obj;
   },
 
@@ -11085,6 +11285,7 @@ export const ReligionTenetDTO: MessageFns<ReligionTenetDTO> = {
     const message = createBaseReligionTenetDTO();
     message.name = object.name ?? "";
     message.description = object.description ?? "";
+    message.clazz = object.clazz ?? "";
     return message;
   },
 };
@@ -12246,6 +12447,7 @@ function createBaseBackgroundCustomizationDTO(): BackgroundCustomizationDTO {
     skillAdjustments: undefined,
     personality: undefined,
     gender: undefined,
+    clazz: "",
   };
 }
 
@@ -12292,6 +12494,9 @@ export const BackgroundCustomizationDTO: MessageFns<BackgroundCustomizationDTO> 
     }
     if (message.gender !== undefined) {
       GenerationInstructionDTO.encode(message.gender, writer.uint32(114).fork()).join();
+    }
+    if (message.clazz !== "") {
+      writer.uint32(122).string(message.clazz);
     }
     return writer;
   },
@@ -12415,6 +12620,14 @@ export const BackgroundCustomizationDTO: MessageFns<BackgroundCustomizationDTO> 
           message.gender = GenerationInstructionDTO.decode(reader, reader.uint32());
           continue;
         }
+        case 15: {
+          if (tag !== 122) {
+            break;
+          }
+
+          message.clazz = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -12442,6 +12655,7 @@ export const BackgroundCustomizationDTO: MessageFns<BackgroundCustomizationDTO> 
         : undefined,
       personality: isSet(object.personality) ? GenerationInstructionsDTO.fromJSON(object.personality) : undefined,
       gender: isSet(object.gender) ? GenerationInstructionDTO.fromJSON(object.gender) : undefined,
+      clazz: isSet(object.clazz) ? globalThis.String(object.clazz) : "",
     };
   },
 
@@ -12488,6 +12702,9 @@ export const BackgroundCustomizationDTO: MessageFns<BackgroundCustomizationDTO> 
     }
     if (message.gender !== undefined) {
       obj.gender = GenerationInstructionDTO.toJSON(message.gender);
+    }
+    if (message.clazz !== "") {
+      obj.clazz = message.clazz;
     }
     return obj;
   },
@@ -12539,6 +12756,7 @@ export const BackgroundCustomizationDTO: MessageFns<BackgroundCustomizationDTO> 
     message.gender = (object.gender !== undefined && object.gender !== null)
       ? GenerationInstructionDTO.fromPartial(object.gender)
       : undefined;
+    message.clazz = object.clazz ?? "";
     return message;
   },
 };

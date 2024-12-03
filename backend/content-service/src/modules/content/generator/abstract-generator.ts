@@ -4,8 +4,9 @@ import { ContentBase } from "../../../ContentBase";
 import { InjectDataSource } from "@nestjs/typeorm";
 import { DataSourceEnum } from "../../../common/enum/DataSourceEnum";
 import { IdAndQuant, BlueprintGenInstruction_Gaussian, BlueprintSetCombinator, GenerationInstruction } from "../../../class/GenerationInstruction";
-import { EntityConstructor } from "../../../types";
+import { Context, EntityConstructor } from "../../../types";
 import { InstructionProcessorService } from "../instruction/instruction-processor.service";
+import { ContextDTO } from "../../../proto/common";
 
 
 export type BlueprintsCache = {
@@ -19,10 +20,12 @@ export interface IAbstractProbGenerator<T extends ContentBase> {
     generateOne(
         instruction: string | IdAndQuant | BlueprintGenInstruction_Gaussian | BlueprintSetCombinator,
         source: DataSourceEnum,
+        context: Context | undefined,
     ): Promise<T[]>;
     generateMany(
         instructions: GenerationInstruction[],
         source: DataSourceEnum,
+        context: Context | undefined,
     ): Promise<T[]>
     cacheBlueprint<E extends ContentBase>(
         type: string,
@@ -61,7 +64,11 @@ export abstract class AbstractProbGenerator<T extends ContentBase> implements IA
     // or if the gen instruction is completely custom (not in db), then use "cacheBlueprint" before calling "generateOne"
     // Returns an array because of stackables. If I ask to generate 1000 arrows, it is still ONE, but it will be split into stacks as a result,
     // so still one blueprint, but potentially many separate instances. Same with generating 10 swords - 10 separate entities
-    abstract _generateOne(idAndQuant: IdAndQuant, source: DataSourceEnum): Promise<T[]>;
+    abstract _generateOne(
+        idAndQuant: IdAndQuant,
+        source: DataSourceEnum,
+        context: Context | undefined,
+    ): Promise<T[]>;
 
 
 
@@ -71,13 +78,14 @@ export abstract class AbstractProbGenerator<T extends ContentBase> implements IA
 
 
     public async generateOne(
-        instruction: string | IdAndQuant | BlueprintGenInstruction_Gaussian | BlueprintSetCombinator,
+        instruction: GenerationInstruction,
         source: DataSourceEnum,
+        context: Context | undefined,
     ): Promise<T[]> {
         const idAndQuants: IdAndQuant[] = this.instructionProcessorService.processInstruction(instruction)
         const instances: T[] = []
         for (const idAndQuant of idAndQuants) {
-            const items: T[] = await this._generateOne(idAndQuant, source)
+            const items: T[] = await this._generateOne(idAndQuant, source, context)
             items.forEach((item) => instances.push(item))
         }
         return instances;
@@ -92,6 +100,7 @@ export abstract class AbstractProbGenerator<T extends ContentBase> implements IA
     public async generateMany(
         instructions: GenerationInstruction[],
         source: DataSourceEnum,
+        context: Context | undefined,
     ): Promise<T[]> {
         console.log(`[AbstractProbGenerator - generateMany] instructions`, instructions)
         const res: T[] = []
@@ -99,7 +108,7 @@ export abstract class AbstractProbGenerator<T extends ContentBase> implements IA
             const idAndQuants: IdAndQuant[] = this.instructionProcessorService.processInstruction(instruction)
             console.log(`[AbstractProbGenerator - generateMany] idAndQuants`, idAndQuants)
             for (const idAndQuant of idAndQuants) {
-                const items: T[] = await this.generateOne(idAndQuant, source)
+                const items: T[] = await this.generateOne(idAndQuant, source, context)
                 items.forEach((item) => res.push(item))
             }
         }
@@ -139,20 +148,29 @@ export abstract class AbstractProbGenerator<T extends ContentBase> implements IA
     protected async _getBlueprints_cacheOrRequest<E extends ContentBase>(
         type: string,
         entity: EntityConstructor<E>,
-        blueprint_ids: string[],
-        source: DataSourceEnum
+        blueprintIds: string[],
+        source: DataSourceEnum,
+        context: Context | undefined,
     ): Promise<E[]> {
-        const promises: Promise<E>[] = blueprint_ids.map(async (blueprint_id) => {
-            // try to find background in the cache
-            const cached = await this.getBlueprintFromCache<E>(type, blueprint_id)
-            if (cached) return cached
-            // try to extract background from db
+        const promises: Promise<E>[] = blueprintIds.map(async (blueprintId) => {
+            // try to find entity in the cache
+            const cached = await this.getBlueprintFromCache<E>(type, blueprintId)
+            if (cached) {
+                console.log(`$$$$ cached`)
+                return cached
+            }
+            // try to extract entity from db
             const dataSource: DataSource | undefined = this.dataSourceMap.get(source)
             if (!dataSource) throw new Error(`dataSource cannot be undefined; received source: "${source}`)
             const repo: Repository<E> = dataSource.getRepository(entity)
-            const fetched: E | null = await repo.findOne({ where: { id: blueprint_id } as FindOptionsWhere<E> });
-            if (!fetched) throw new Error(`failed to fetch blueprint: "${blueprint_id}" for entity type: "${type}"`)
-            await this.cacheBlueprint<E>(type, blueprint_id, fetched)
+            const where = { id: blueprintId } as any
+            if (context?.user?.id) where.user = { id: context.user.id }
+            if (context?.world?.id) where.world = { id: context.world.id }
+            if (context?.campaign?.id) where.campaign = { id: context.campaign.id }
+            const fetched: E | null = await repo.findOne({ where });
+            if (!fetched) throw new Error(`failed to fetch blueprint: "${blueprintId}" for entity type: "${type}"`)
+            await this.cacheBlueprint<E>(type, blueprintId, fetched)
+            console.log(`$$$$ fetched`)
             return fetched
         })
         const res = await Promise.all(promises)

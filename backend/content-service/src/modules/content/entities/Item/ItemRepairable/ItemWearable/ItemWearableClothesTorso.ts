@@ -4,6 +4,6 @@ import { ItemWearable } from "./ItemWearable";
 
 @ChildEntity()
 export class ItemWearableClothesTorso extends ItemWearable {
-    id_prefix = "ITEM_WEARABLE_CLOTHES_TORSO"
+    idPrefix = "ITEM_WEARABLE_CLOTHES_TORSO"
 
 }

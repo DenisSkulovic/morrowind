@@ -1,6 +1,6 @@
 [
     {
-        "blueprint_id": "BACKGROUND_HIGHLAND_TOWN_GUARD",
+        "blueprintId": "BACKGROUND_HIGHLAND_TOWN_GUARD",
         "name": "Highland Town Guard",
         "faction": [
             "HIGHLAND_KINGDOM"
@@ -61,7 +61,7 @@
                 "clazz": "ProbObject_Simple"
             }
         ],
-        "item_sets": [
+        "itemSets": [
             {
                 "cond": "ANY",
                 "prob": {
@@ -74,14 +74,14 @@
         ],
         "items": [
             {
-                "blueprint_id": "COIN",
+                "blueprintId": "COIN",
                 "prob": 0.6,
                 "avg_quan": 20,
                 "st_dev": 1,
                 "clazz": "BlueprintGenInstruction_Gaussian"
             }
         ],
-        "past_exp_child": [
+        "pastExpChild": [
             {
                 "cond": "OR",
                 "prob": {
@@ -93,7 +93,7 @@
                 "clazz": "ProbObject_Simple"
             }
         ],
-        "past_exp_adult": [
+        "pastExpAdult": [
             {
                 "cond": "OR",
                 "prob": {
@@ -106,22 +106,22 @@
                 "clazz": "ProbObject_Simple"
             }
         ],
-        "skill_sets": [
+        "skillSets": [
             {
                 "cond": "OR",
                 "items": [
                     {
-                        "blueprint_id": "COMBAT_COMMON_SWORDSMAN",
+                        "blueprintId": "COMBAT_COMMON_SWORDSMAN",
                         "prob": 0.80,
                         "clazz": "BlueprintGenInstruction_Gaussian"
                     },
                     {
-                        "blueprint_id": "COMBAT_ADVANCED_SWORDSMAN",
+                        "blueprintId": "COMBAT_ADVANCED_SWORDSMAN",
                         "prob": 0.18,
                         "clazz": "BlueprintGenInstruction_Gaussian"
                     },
                     {
-                        "blueprint_id": "COMBAT_MASTER_SWORDSMAN",
+                        "blueprintId": "COMBAT_MASTER_SWORDSMAN",
                         "prob": 0.02,
                         "clazz": "BlueprintGenInstruction_Gaussian"
                     }
@@ -129,13 +129,15 @@
                 "clazz": "BlueprintSetCombinator"
             }
         ],
-        "skill_adjustments": {},
+        "skillAdjustments": {},
         "targetEntity": "Background"
     },
     {
-        "blueprint_id": "BACKGROUND_GUARD_RANGED",
+        "blueprintId": "BACKGROUND_GUARD_RANGED",
         "name": "Ranged Guard",
-        "faction": [],
+        "faction": [
+            "HIGHLAND_KINGDOM"
+        ],
         "gender": {
             "cond": "OR",
             "prob": {
@@ -192,14 +194,14 @@
                 "clazz": "ProbObject_Simple"
             }
         ],
-        "item_sets": [
+        "itemSets": [
             "SHORTSWORD",
             "BOW_AND_ARROWS",
             "COMMON_SHIRT_PANTS_SHOES",
             "CUIRASS_HELMET"
         ],
         "items": [],
-        "past_exp_child": [
+        "pastExpChild": [
             {
                 "cond": "OR",
                 "prob": {
@@ -211,7 +213,7 @@
                 "clazz": "ProbObject_Simple"
             }
         ],
-        "past_exp_adult": [
+        "pastExpAdult": [
             {
                 "cond": "OR",
                 "prob": {
@@ -224,14 +226,16 @@
                 "clazz": "ProbObject_Simple"
             }
         ],
-        "skill_sets": [],
-        "skill_adjustments": {},
+        "skillSets": [],
+        "skillAdjustments": {},
         "targetEntity": "Background"
     },
     {
-        "blueprint_id": "BACKGROUND_BANDIT",
+        "blueprintId": "BACKGROUND_BANDIT",
         "name": "Bandit",
-        "faction": [],
+        "faction": [
+            "HIGHLAND_KINGDOM"
+        ],
         "gender": {
             "cond": "OR",
             "prob": {
@@ -280,20 +284,20 @@
                 "cond": "OR",
                 "prob": {
                     "PROFILE_REBEL": 0.5,
-                    "PROFILE_OPPORTUNIST": 0.3,
+                    "PROFILE_LONER": 0.3,
                     "PROFILE_SURVIVOR": 0.2
                 },
                 "clazz": "ProbObject_Simple"
             }
         ],
-        "item_sets": [
+        "itemSets": [
             "SHORTSWORD",
             "BOW_AND_ARROWS",
             "COMMON_SHIRT_PANTS_SHOES",
             "CUIRASS_HELMET"
         ],
         "items": [],
-        "past_exp_child": [
+        "pastExpChild": [
             {
                 "cond": "OR",
                 "prob": {
@@ -305,7 +309,7 @@
                 "clazz": "ProbObject_Simple"
             }
         ],
-        "past_exp_adult": [
+        "pastExpAdult": [
             {
                 "cond": "OR",
                 "prob": {
@@ -318,14 +322,16 @@
                 "clazz": "ProbObject_Simple"
             }
         ],
-        "skill_sets": [],
-        "skill_adjustments": {},
+        "skillSets": [],
+        "skillAdjustments": {},
         "targetEntity": "Background"
     },
     {
-        "blueprint_id": "BACKGROUND_FISHERMAN",
+        "blueprintId": "BACKGROUND_FISHERMAN",
         "name": "Fisherman",
-        "faction": [],
+        "faction": [
+            "HIGHLAND_KINGDOM"
+        ],
         "gender": {
             "cond": "OR",
             "prob": {
@@ -380,11 +386,11 @@
                 "clazz": "ProbObject_Simple"
             }
         ],
-        "item_sets": [
+        "itemSets": [
             "FULL_COMMON_CLOTHES"
         ],
         "items": [],
-        "past_exp_child": [
+        "pastExpChild": [
             {
                 "cond": "OR",
                 "prob": {
@@ -396,7 +402,7 @@
                 "clazz": "ProbObject_Simple"
             }
         ],
-        "past_exp_adult": [
+        "pastExpAdult": [
             {
                 "cond": "OR",
                 "prob": {
@@ -409,14 +415,16 @@
                 "clazz": "ProbObject_Simple"
             }
         ],
-        "skill_sets": [],
-        "skill_adjustments": {},
+        "skillSets": [],
+        "skillAdjustments": {},
         "targetEntity": "Background"
     },
     {
-        "blueprint_id": "BACKGROUND_SCHOLAR",
+        "blueprintId": "BACKGROUND_SCHOLAR",
         "name": "Scholar",
-        "faction": [],
+        "faction": [
+            "HIGHLAND_KINGDOM"
+        ],
         "gender": {
             "cond": "OR",
             "prob": {
@@ -471,11 +479,11 @@
                 "clazz": "ProbObject_Simple"
             }
         ],
-        "item_sets": [
+        "itemSets": [
             "FULL_COMMON_CLOTHES"
         ],
         "items": [],
-        "past_exp_child": [
+        "pastExpChild": [
             {
                 "cond": "OR",
                 "prob": {
@@ -487,7 +495,7 @@
                 "clazz": "ProbObject_Simple"
             }
         ],
-        "past_exp_adult": [
+        "pastExpAdult": [
             {
                 "cond": "OR",
                 "prob": {
@@ -500,14 +508,16 @@
                 "clazz": "ProbObject_Simple"
             }
         ],
-        "skill_sets": [],
-        "skill_adjustments": {},
+        "skillSets": [],
+        "skillAdjustments": {},
         "targetEntity": "Background"
     },
     {
-        "blueprint_id": "BACKGROUND_MERCHANT",
+        "blueprintId": "BACKGROUND_MERCHANT",
         "name": "Merchant",
-        "faction": [],
+        "faction": [
+            "HIGHLAND_KINGDOM"
+        ],
         "gender": {
             "cond": "OR",
             "prob": {
@@ -562,11 +572,11 @@
                 "clazz": "ProbObject_Simple"
             }
         ],
-        "item_sets": [
+        "itemSets": [
             "FULL_COMMON_CLOTHES"
         ],
         "items": [],
-        "past_exp_child": [
+        "pastExpChild": [
             {
                 "cond": "OR",
                 "prob": {
@@ -578,7 +588,7 @@
                 "clazz": "ProbObject_Simple"
             }
         ],
-        "past_exp_adult": [
+        "pastExpAdult": [
             {
                 "cond": "OR",
                 "prob": {
@@ -591,8 +601,8 @@
                 "clazz": "ProbObject_Simple"
             }
         ],
-        "skill_sets": [],
-        "skill_adjustments": {},
+        "skillSets": [],
+        "skillAdjustments": {},
         "targetEntity": "Background"
     }
 ]

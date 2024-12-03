@@ -1,29 +1,32 @@
-import { BeforeInsert, BeforeUpdate, Column } from "typeorm";
+import { BaseEntity, BeforeInsert, BeforeUpdate, Column } from "typeorm";
 import { randomUUID } from "crypto";
 import { Campaign } from "./modules/campaign/entities/Campaign";
 import { User } from "./modules/user/entities/User";
 import { World } from "./modules/world/entities/World";
-import { Base } from "./Base";
+import { Serializable } from "./decorator/serializable.decorator";
 
-export abstract class ContentBase extends Base {
+export abstract class ContentBase extends BaseEntity {
 
     id?: string
-    id_prefix?: string
+    idPrefix?: string
     type?: string
 
     @BeforeInsert()
     generateId() {
-        if (!this.id) this.id = `${this.id_prefix}_${randomUUID().replace(/-/g, "")}`;
+        if (!this.id) this.id = `${this.idPrefix}_${randomUUID().replace(/-/g, "")}`;
     }
 
     @Column({ type: "varchar", length: 255, nullable: true })
-    blueprint_id!: string;
+    @Serializable()
+    blueprintId!: string;
 
 
     @Column({ type: "json", nullable: true })
+    @Serializable()
     metadata?: { [key: string]: string };
 
     @Column({ name: "targetEntity", type: "varchar" })
+    @Serializable()
     targetEntity!: string;
 
     @BeforeInsert()

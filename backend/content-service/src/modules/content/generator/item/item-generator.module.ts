@@ -3,6 +3,7 @@ import { ItemGeneratorService } from './item-generator.service';
 import { DataSourceEnum } from '../../../../common/enum/DataSourceEnum';
 import { InjectDataSourceModule } from '../../../../data-source/inject-datasource.module';
 import { InstructionProcessorModule } from '../../instruction/instruction-processor.module';
+import { ContentModule } from '../../content.module';
 
 @Module({
     imports: [
@@ -11,6 +12,7 @@ import { InstructionProcessorModule } from '../../instruction/instruction-proces
             DataSourceEnum.DATA_SOURCE_CAMPAIGN,
         ]),
         forwardRef(() => InstructionProcessorModule),
+        forwardRef(() => ContentModule),
     ],
     providers: [
         {

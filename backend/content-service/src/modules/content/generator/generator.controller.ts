@@ -1,9 +1,8 @@
 import { Controller, Inject } from "@nestjs/common"
 import { GrpcMethod } from "@nestjs/microservices"
-import { DataSource } from "typeorm"
 import { DataSourceEnum } from "../../../common/enum/DataSourceEnum"
 import { deserializeEnum } from "../../../common/enum/util"
-import { DataSourceEnumDTO, CharacterGenInstructionDTO } from "../../../proto/common"
+import { DataSourceEnumDTO, CharacterGenInstructionDTO, ContextDTO } from "../../../proto/common"
 import { GenerateItemsRequest, GenerateItemsResponse, GenerateCharactersRequestCustom, GenerateCharactersResponse, GenerateCharactersRequestDB, GenerateCharacterGroupsRequest, GenerateCharacterGroupsResponse } from "../../../proto/generator"
 import { Character } from "../entities/Character"
 import { CharacterGenInstruction } from "../entities/CharacterGenInstruction"
@@ -11,13 +10,32 @@ import { Item } from "../entities/Item/Item"
 import { CacheKeyEnum, CharacterGeneratorService } from "./character/character-generator.service"
 import { ItemGeneratorService } from "./item/item-generator.service"
 import { GenerationInstruction, deserializeGenerationInstructions } from "../../../class/GenerationInstruction"
+import { CampaignService } from "../../campaign/campaign.service"
+import { UserService } from "../../user/user.service"
+import { WorldService } from "../../world/world.service"
+import { Context } from "../../../types"
 
 @Controller()
 export class GeneratorController {
     constructor(
         @Inject('ICharacterGeneratorService') private characterGeneratorService: CharacterGeneratorService,
         @Inject('IItemGeneratorService') private itemGeneratorService: ItemGeneratorService,
+        @Inject('IUserService') private userService: UserService,
+        @Inject('IWorldService') private worldService: WorldService,
+        @Inject('ICampaignService') private campaignService: CampaignService,
     ) { }
+
+    async processContextDTO(contextDTO: ContextDTO, source: DataSourceEnum): Promise<Context> {
+        const [user, world, campaign] = await Promise.all([
+            this.userService.findUser(contextDTO.userId, source),
+            this.worldService.findWorld(contextDTO.worldId, contextDTO.userId, source),
+            this.campaignService.findCampaign(contextDTO.campaignId, contextDTO.userId, source),
+        ])
+        console.log(`user`, user)
+        console.log(`world`, world)
+        console.log(`campaign`, campaign)
+        return { user, world, campaign }
+    }
 
     @GrpcMethod('GeneratorService', 'generateItems')
     public async generateItems(
@@ -26,12 +44,15 @@ export class GeneratorController {
         console.log(`[GeneratorController - generateItems] request`, request)
 
         const instructions: GenerationInstruction[] = deserializeGenerationInstructions(request)
-        console.log(`[GeneratorController - generateItems] received instructions`, instructions)
+        console.log(`[GeneratorController - generateItems] received instructions length`, instructions.length)
 
         const source: DataSourceEnum = deserializeEnum(DataSourceEnumDTO, DataSourceEnum, request.source)
 
-        const generatedItems: Item[] = await this.itemGeneratorService.generateMany(instructions, source)
-        console.log(`[GeneratorController - generateItems] generatedItems`, generatedItems)
+        const contextDTO: ContextDTO | undefined = request.context
+        const context: Context | undefined = contextDTO ? await this.processContextDTO(contextDTO, source) : undefined
+
+        const generatedItems: Item[] = await this.itemGeneratorService.generateMany(instructions, source, context)
+        console.log(`[GeneratorController - generateItems] generatedItems length`, generatedItems.length)
 
         return { arr: generatedItems.map(item => item.toDTO()) }
     };
@@ -42,22 +63,28 @@ export class GeneratorController {
     ): Promise<GenerateCharactersResponse> {
         console.log(`[GeneratorController - generateCharacters] request`, request)
 
+
         const arr: CharacterGenInstructionDTO[] = request.arr
         const instructions: CharacterGenInstruction[] = arr.map((chGenInstr) => CharacterGenInstruction.fromDTO(chGenInstr))
-        console.log(`[GeneratorController - generateCharacters] received instructions`, instructions)
+        console.log(`[GeneratorController - generateCharacters] received instructions length`, instructions.length)
 
         const source: DataSourceEnum = deserializeEnum(DataSourceEnumDTO, DataSourceEnum, request.source)
+        const contextDTO: ContextDTO | undefined = request.context
+        const context: Context | undefined = contextDTO ? await this.processContextDTO(contextDTO, source) : undefined
+        console.log(`@@@context`, context)
 
         // set the custom instructions into the cache, so that when the code checks the id, the instruction will be retrieved from the cache
         const ids: string[] = []
         for (const instruction of instructions) {
-            ids.push(instruction.blueprint_id)
-            await this.characterGeneratorService.cacheBlueprint(CacheKeyEnum.CHARACTER_INSTRUCTION, instruction.blueprint_id, instruction)
+            ids.push(instruction.blueprintId)
+            await this.characterGeneratorService.cacheBlueprint(CacheKeyEnum.CHARACTER_INSTRUCTION, instruction.blueprintId, instruction)
         }
         console.log(`[GeneratorController - generateCharacters] ids`, ids)
 
-        const characters: Character[] = await this.characterGeneratorService.generateMany(ids, source)
-        return { arr: characters.map((char) => char.toDTO()) }
+        const characters: Character[] = await this.characterGeneratorService.generateMany(ids, source, context)
+        const response = { arr: characters.map((char) => char.toDTO()) }
+        console.log(`[GeneratorController - generateCharacters] finish`)
+        return response
     };
 
     @GrpcMethod('GeneratorService', 'generateCharactersDB')
@@ -68,7 +95,9 @@ export class GeneratorController {
         const ids: string[] = request.charGenInstructionIds
         console.log(`[GeneratorController - generateCharactersDB] received ids`, ids)
         const source: DataSourceEnum = deserializeEnum(DataSourceEnumDTO, DataSourceEnum, request.source)
-        const characters: Character[] = await this.characterGeneratorService.generateMany(ids, source)
+        const contextDTO: ContextDTO | undefined = request.context
+        const context: Context | undefined = contextDTO ? await this.processContextDTO(contextDTO, source) : undefined
+        const characters: Character[] = await this.characterGeneratorService.generateMany(ids, source, context)
         return { arr: characters.map((char) => char.toDTO()) }
     };
 

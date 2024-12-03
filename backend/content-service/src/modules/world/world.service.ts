@@ -53,6 +53,18 @@ export class WorldService {
         return await this.getRepository(source).save(newWorld);
     }
 
+    public async findWorld(worldId: string, userId: string, source: DataSourceEnum): Promise<World | null> {
+        const worldRepository = this.getRepository(source)
+        const worlds: World[] = await worldRepository.find({
+            where: {
+                id: worldId,
+                user: { id: userId }
+            }
+        })
+        const world: World | null = worlds[0] || null
+        return world
+    }
+
 
 
     /**
@@ -93,9 +105,9 @@ export class WorldService {
                     const entity = repository.create(blueprint);
                     entity.world = world;
                     entity.user = user;
+                    entity.id = blueprint.blueprintId;
                     return entity;
                 });
-                console.log(`batch entityName`, entityName)
                 await repository.save(batch);
             }
         }

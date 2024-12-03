@@ -1,6 +1,6 @@
 [
     {
-        "blueprint_id": "WELL_FED",
+        "blueprintId": "WELL_FED",
         "name": "Well-Fed",
         "description": "Well-Fed",
         "type": "BUFF",
@@ -11,7 +11,7 @@
         "targetEntity": "Status"
     },
     {
-        "blueprint_id": "HUNGRY",
+        "blueprintId": "HUNGRY",
         "name": "Hungry",
         "description": "Hungry",
         "type": "DEBUFF",
@@ -21,7 +21,7 @@
         "targetEntity": "Status"
     },
     {
-        "blueprint_id": "STARVING",
+        "blueprintId": "STARVING",
         "name": "Starving",
         "description": "Starving",
         "type": "DEBUFF",
@@ -32,7 +32,7 @@
         "targetEntity": "Status"
     },
     {
-        "blueprint_id": "THIRSTY",
+        "blueprintId": "THIRSTY",
         "name": "Thirsty",
         "description": "Thirsty",
         "type": "DEBUFF",
@@ -42,7 +42,7 @@
         "targetEntity": "Status"
     },
     {
-        "blueprint_id": "DEHYDRATED",
+        "blueprintId": "DEHYDRATED",
         "name": "Dehydrated",
         "description": "Dehydrated",
         "type": "DEBUFF",
@@ -53,7 +53,7 @@
         "targetEntity": "Status"
     },
     {
-        "blueprint_id": "WELL_RESTED",
+        "blueprintId": "WELL_RESTED",
         "name": "Well-Rested",
         "description": "Well-Rested",
         "type": "BUFF",
@@ -64,7 +64,7 @@
         "targetEntity": "Status"
     },
     {
-        "blueprint_id": "SLEEPY",
+        "blueprintId": "SLEEPY",
         "name": "Sleepy",
         "description": "Sleepy",
         "type": "DEBUFF",
@@ -74,7 +74,7 @@
         "targetEntity": "Status"
     },
     {
-        "blueprint_id": "EXHAUSTED",
+        "blueprintId": "EXHAUSTED",
         "name": "Exhausted",
         "description": "Exhausted",
         "type": "DEBUFF",
@@ -85,7 +85,7 @@
         "targetEntity": "Status"
     },
     {
-        "blueprint_id": "DRUNK",
+        "blueprintId": "DRUNK",
         "name": "Drunk",
         "description": "Drunk",
         "type": "NEUTRAL",
@@ -97,7 +97,7 @@
         "targetEntity": "Status"
     },
     {
-        "blueprint_id": "HUNGOVER",
+        "blueprintId": "HUNGOVER",
         "name": "Hungover",
         "description": "Hungover",
         "type": "DEBUFF",
@@ -108,7 +108,7 @@
         "targetEntity": "Status"
     },
     {
-        "blueprint_id": "CONFUSED",
+        "blueprintId": "CONFUSED",
         "name": "Confused",
         "description": "Confused",
         "type": "DEBUFF",
@@ -118,7 +118,7 @@
         "targetEntity": "Status"
     },
     {
-        "blueprint_id": "PANICKING",
+        "blueprintId": "PANICKING",
         "name": "Panicking",
         "description": "Panicking",
         "type": "DEBUFF",
@@ -129,7 +129,7 @@
         "targetEntity": "Status"
     },
     {
-        "blueprint_id": "IN_PAIN",
+        "blueprintId": "IN_PAIN",
         "name": "In Pain",
         "description": "In Pain",
         "type": "DEBUFF",
@@ -140,7 +140,7 @@
         "targetEntity": "Status"
     },
     {
-        "blueprint_id": "POISONED",
+        "blueprintId": "POISONED",
         "name": "Poisoned",
         "description": "Poisoned",
         "type": "DEBUFF",
@@ -150,7 +150,7 @@
         "targetEntity": "Status"
     },
     {
-        "blueprint_id": "BURNING",
+        "blueprintId": "BURNING",
         "name": "Burning",
         "description": "Burning",
         "type": "DEBUFF",
@@ -160,7 +160,7 @@
         "targetEntity": "Status"
     },
     {
-        "blueprint_id": "FREEZING",
+        "blueprintId": "FREEZING",
         "name": "Freezing",
         "description": "Freezing",
         "type": "DEBUFF",
@@ -170,7 +170,7 @@
         "targetEntity": "Status"
     },
     {
-        "blueprint_id": "WET",
+        "blueprintId": "WET",
         "name": "Wet",
         "description": "Wet",
         "type": "NEUTRAL",
@@ -180,7 +180,7 @@
         "targetEntity": "Status"
     },
     {
-        "blueprint_id": "OVERBURDENED",
+        "blueprintId": "OVERBURDENED",
         "name": "Overburdened",
         "description": "Overburdened",
         "type": "DEBUFF",
@@ -191,7 +191,7 @@
         "targetEntity": "Status"
     },
     {
-        "blueprint_id": "WELL_HYDRATED",
+        "blueprintId": "WELL_HYDRATED",
         "name": "Well-Hydrated",
         "description": "Well-Hydrated",
         "type": "BUFF",
@@ -201,7 +201,7 @@
         "targetEntity": "Status"
     },
     {
-        "blueprint_id": "MOTIVATED",
+        "blueprintId": "MOTIVATED",
         "name": "Motivated",
         "description": "Motivated",
         "type": "BUFF",
@@ -212,7 +212,7 @@
         "targetEntity": "Status"
     },
     {
-        "blueprint_id": "DEMORALIZED",
+        "blueprintId": "DEMORALIZED",
         "name": "Demoralized",
         "description": "Demoralized",
         "type": "DEBUFF",
@@ -223,7 +223,7 @@
         "targetEntity": "Status"
     },
     {
-        "blueprint_id": "FOCUSED",
+        "blueprintId": "FOCUSED",
         "name": "Focused",
         "description": "Focused",
         "type": "BUFF",
@@ -233,7 +233,7 @@
         "targetEntity": "Status"
     },
     {
-        "blueprint_id": "DISTRACTED",
+        "blueprintId": "DISTRACTED",
         "name": "Distracted",
         "description": "Distracted",
         "type": "DEBUFF",

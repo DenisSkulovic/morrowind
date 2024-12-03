@@ -46,7 +46,7 @@ export class StorageSlotService implements IStorageSlotService {
 
     public removeItemFromStorageSlot(storageSlot: StorageSlot, item: Item): void {
         if (!storageSlot.gridState) throw new Error("Storage slot does not have a grid.");
-        if (!item.grid_position) throw new Error("Item is not placed in the grid.");
+        if (!item.gridPosition) throw new Error("Item is not placed in the grid.");
 
         this._removeItemFromGrid(storageSlot.gridState, item);
 
@@ -65,7 +65,7 @@ export class StorageSlotService implements IStorageSlotService {
             throw new Error("Storage slot does not have a grid.");
         }
 
-        if (!item1.grid_position || !item2.grid_position) {
+        if (!item1.gridPosition || !item2.gridPosition) {
             throw new Error("One or both items are not placed in the grid.");
         }
 
@@ -130,12 +130,12 @@ export class StorageSlotService implements IStorageSlotService {
     private _canPlaceItemIntoGrid(
         grid: StorageGrid,
         item: Item,
-        grid_position: { x: number; y: number }
+        gridPosition: { x: number; y: number }
     ): boolean {
 
 
         const [width, height] = item.size!;
-        const { x, y } = grid_position;
+        const { x, y } = gridPosition;
 
         // Check bounds
         if (x + width > grid.length || y + height > grid[0].length) return false;
@@ -150,10 +150,10 @@ export class StorageSlotService implements IStorageSlotService {
         return true;
     }
 
-    private _placeItemIntoGrid(grid: StorageGrid, item: Item, grid_position: { x: number; y: number }): void {
+    private _placeItemIntoGrid(grid: StorageGrid, item: Item, gridPosition: { x: number; y: number }): void {
         if (!item.id) throw new Error("cannot place item into grid when item has no id; are you trying to place an item that doesn't exist yet?")
         const [width, height] = item.size!;
-        const { x, y } = grid_position;
+        const { x, y } = gridPosition;
 
         for (let i = x; i < x + width; i++) {
             for (let j = y; j < y + height; j++) {
@@ -161,11 +161,11 @@ export class StorageSlotService implements IStorageSlotService {
             }
         }
 
-        item.grid_position = grid_position; // Record item's position
+        item.gridPosition = gridPosition; // Record item's position
     }
 
     private _removeItemFromGrid(grid: StorageGrid, item: Item): void {
-        const { x, y } = item.grid_position!;
+        const { x, y } = item.gridPosition!;
         const [width, height] = item.size!;
 
         for (let i = x; i < x + width; i++) {
@@ -174,7 +174,7 @@ export class StorageSlotService implements IStorageSlotService {
             }
         }
 
-        item.grid_position = undefined; // Clear the item's recorded position
+        item.gridPosition = undefined; // Clear the item's recorded position
     }
 
     private _autoPlaceItemIntoGrid(grid: StorageGrid, item: Item): { x: number; y: number } | null {
@@ -191,8 +191,8 @@ export class StorageSlotService implements IStorageSlotService {
     }
 
     private _swapItemsInGrid(grid: StorageGrid, item1: Item, item2: Item): boolean {
-        const pos1 = item1.grid_position!;
-        const pos2 = item2.grid_position!;
+        const pos1 = item1.gridPosition!;
+        const pos2 = item2.gridPosition!;
 
         // Remove items from grid
         this._removeItemFromGrid(grid, item1);
@@ -279,7 +279,7 @@ export class StorageSlotService implements IStorageSlotService {
             }
         }
 
-        item.grid_position = position; // Update the item's position
+        item.gridPosition = position; // Update the item's position
     }
 
 }

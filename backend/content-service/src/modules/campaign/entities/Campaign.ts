@@ -1,11 +1,9 @@
-import { TableInheritance, Entity, Column, PrimaryGeneratedColumn, ManyToOne, BaseEntity, OneToMany, BeforeInsert, PrimaryColumn } from "typeorm";
+import { TableInheritance, Entity, Column, ManyToOne, BaseEntity, OneToMany, BeforeInsert, PrimaryColumn } from "typeorm";
 import { World } from "../../world/entities/World";
 import { User } from "../../user/entities/User";
 
 import { randomUUID } from "crypto";
 import { CampaignDTO } from "../../../proto/common";
-import { Base } from "../../../Base";
-import { Context } from "../../../types";
 import { Serializer } from "../../../serializer";
 import { Addiction } from "../../content/entities/Addiction";
 import { Background } from "../../content/entities/Background";
@@ -39,16 +37,16 @@ import { Serializable } from "../../../decorator/serializable.decorator";
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })
-export class Campaign extends Base {
+export class Campaign extends BaseEntity {
     @PrimaryColumn()
     @Serializable()
     id!: string;
 
     @BeforeInsert()
     generateId() {
-        this.id = `${this.id_prefix}_${randomUUID().replace(/-/g, "")}`;
+        this.id = `${this.idPrefix}_${randomUUID().replace(/-/g, "")}`;
     }
-    id_prefix = "CAMPAIGN";
+    idPrefix = "CAMPAIGN";
 
     @Column({ type: "varchar", length: 255 })
     @Serializable()
@@ -60,7 +58,7 @@ export class Campaign extends Base {
 
     @Column({ type: "json", nullable: true })
     @Serializable()
-    dynamic_state?: any;
+    dynamicState?: any;
 
     @ManyToOne(() => World, (world) => world.campaigns, {})
     @Serializable({ strategy: 'id' })
@@ -68,7 +66,7 @@ export class Campaign extends Base {
 
     @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
     @Serializable()
-    created_at!: number;
+    createdAt!: number;
 
     @ManyToOne(() => User, user => user.campaigns, {})
     @Serializable({ strategy: 'id' })

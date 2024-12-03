@@ -6,8 +6,8 @@ export function Serializable(
     options?: {
         dtoKey?: string;
         strategy?: 'id' | 'full';
-        serialize?: (value: any) => any; // Custom serialization function
-        deserialize?: (value: any) => any; // Custom deserialization function
+        serialize?: (value: any) => any;
+        deserialize?: (value: any) => any;
     }) {
     return (target: any, propertyKey: string) => {
         const existingFields = Reflect.getMetadata(SERIALIZABLE_FIELDS_KEY, target) || [];
@@ -16,12 +16,20 @@ export function Serializable(
             {
                 propertyKey,
                 dtoKey: options?.dtoKey || propertyKey, // Use propertyKey by default
-                strategy: options?.strategy || 'full', // Default strategy is full serialization
+                strategy: options?.strategy,
+                serialize: options?.serialize,
+                deserialize: options?.deserialize
             },
         ], target);
     };
 }
 
-export function getSerializableFields(target: any): { propertyKey: string; dtoKey: string; strategy: 'id' | 'full' }[] {
+export function getSerializableFields(target: any): {
+    propertyKey: string;
+    dtoKey: string;
+    strategy: 'id' | 'full';
+    serialize?: (value: any) => any;
+    deserialize?: (value: any) => any;
+}[] {
     return Reflect.getMetadata(SERIALIZABLE_FIELDS_KEY, target) || [];
 }

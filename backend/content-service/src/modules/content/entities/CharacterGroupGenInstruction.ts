@@ -17,7 +17,7 @@ export class CharacterGroupGenInstruction extends ContentBase {
     @Serializable()
     id!: string;
 
-    id_prefix = "CHARACTER_GROUP_GEN_INSTRUCTION"
+    idPrefix = "CHARACTER_GROUP_GEN_INSTRUCTION"
 
     @Column()
     @Serializable()

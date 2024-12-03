@@ -1,9 +1,7 @@
-import { TableInheritance, Entity, Column, PrimaryGeneratedColumn, OneToMany, BaseEntity, OneToOne, JoinColumn, BeforeInsert, PrimaryColumn } from "typeorm";
+import { TableInheritance, Entity, Column, BaseEntity, OneToOne, JoinColumn, BeforeInsert, PrimaryColumn } from "typeorm";
 import { User } from "../../user/entities/User";
 import { randomUUID } from "crypto";
 import { AccountRoleEnum } from "../../../common/enum/AccountRoleEnum";
-import { Base } from "../../../Base";
-import { Context } from "../../../types";
 import { AccountDTO } from "../../../proto/common";
 import { Serializable } from "../../../decorator/serializable.decorator";
 import { Serializer } from "../../../serializer";
@@ -12,23 +10,23 @@ import { Serializer } from "../../../serializer";
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })
-export class Account extends Base {
+export class Account extends BaseEntity {
     @PrimaryColumn()
     @Serializable()
     id!: string;
 
     @BeforeInsert()
     generateId() {
-        this.id = `${this.id_prefix}_${randomUUID().replace(/-/g, "")}`;
+        this.id = `${this.idPrefix}_${randomUUID().replace(/-/g, "")}`;
     }
-    id_prefix = "ACCOUNT";
+    idPrefix = "ACCOUNT";
 
     @Column({ unique: true })
     @Serializable()
     username!: string; // Unique username.
 
     @Column({ type: "varchar", length: 255 })
-    password_hash!: string; // Hashed password for authentication.
+    passwordHash!: string; // Hashed password for authentication.
 
     @Column({ type: "varchar", length: 255, nullable: true })
     @Serializable()

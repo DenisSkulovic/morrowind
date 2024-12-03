@@ -1,26 +1,26 @@
 [
     {
-        "blueprint_id": "HIGHLAND_KINGDOM",
+        "blueprintId": "HIGHLAND_KINGDOM",
         "name": "Highland Kingdom",
         "targetEntity": "Faction"
     },
     {
-        "blueprint_id": "LOWLAND_KINGDOM",
+        "blueprintId": "LOWLAND_KINGDOM",
         "name": "Lowland Kingdom",
         "targetEntity": "Faction"
     },
     {
-        "blueprint_id": "BANDITS",
+        "blueprintId": "BANDITS",
         "name": "Bandits",
         "targetEntity": "Faction"
     },
     {
-        "blueprint_id": "FIGHTERS_GUILD",
+        "blueprintId": "FIGHTERS_GUILD",
         "name": "Fighters Guild",
         "targetEntity": "Faction"
     },
     {
-        "blueprint_id": "COMMONER",
+        "blueprintId": "COMMONER",
         "name": "Commoner",
         "targetEntity": "Faction"
     }

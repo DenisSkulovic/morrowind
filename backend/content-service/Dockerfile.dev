@@ -30,5 +30,5 @@ COPY proto/ ./proto
 EXPOSE 50051
 
 # Start the gRPC server
-# CMD ["sh", "-c", "npm run proto:generate && npm run start:dev"]
-CMD ["sh", "-c", "npm run proto:generate && npm run migrate:generate && npm run migrate:run && npm run start:dev"]
+CMD ["sh", "-c", "npm run proto:generate && npm run start:dev"]
+# CMD ["sh", "-c", "npm run proto:generate && npm run migrate:generate && npm run migrate:run && npm run start:dev"]

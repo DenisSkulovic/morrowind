@@ -15,6 +15,7 @@ import {
   CharacterGroupGenInstructionDTO,
   CharacterMemoryDTO,
   CharacterProfessionDTO,
+  ContextDTO,
   DataSourceEnumDTO,
   dataSourceEnumDTOFromJSON,
   dataSourceEnumDTOToJSON,
@@ -49,6 +50,7 @@ export interface CreateContentRequest {
   source: DataSourceEnumDTO;
   contentBody: ContentBodyDTO | undefined;
   entityName: string;
+  context: ContextDTO | undefined;
 }
 
 export interface CreateContentResponse {
@@ -89,7 +91,7 @@ export interface ContentBodyDTO {
 }
 
 function createBaseCreateContentRequest(): CreateContentRequest {
-  return { source: 0, contentBody: undefined, entityName: "" };
+  return { source: 0, contentBody: undefined, entityName: "", context: undefined };
 }
 
 export const CreateContentRequest: MessageFns<CreateContentRequest> = {
@@ -102,6 +104,9 @@ export const CreateContentRequest: MessageFns<CreateContentRequest> = {
     }
     if (message.entityName !== "") {
       writer.uint32(26).string(message.entityName);
+    }
+    if (message.context !== undefined) {
+      ContextDTO.encode(message.context, writer.uint32(34).fork()).join();
     }
     return writer;
   },
@@ -137,6 +142,14 @@ export const CreateContentRequest: MessageFns<CreateContentRequest> = {
           message.entityName = reader.string();
           continue;
         }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.context = ContextDTO.decode(reader, reader.uint32());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -151,6 +164,7 @@ export const CreateContentRequest: MessageFns<CreateContentRequest> = {
       source: isSet(object.source) ? dataSourceEnumDTOFromJSON(object.source) : 0,
       contentBody: isSet(object.contentBody) ? ContentBodyDTO.fromJSON(object.contentBody) : undefined,
       entityName: isSet(object.entityName) ? globalThis.String(object.entityName) : "",
+      context: isSet(object.context) ? ContextDTO.fromJSON(object.context) : undefined,
     };
   },
 
@@ -165,6 +179,9 @@ export const CreateContentRequest: MessageFns<CreateContentRequest> = {
     if (message.entityName !== "") {
       obj.entityName = message.entityName;
     }
+    if (message.context !== undefined) {
+      obj.context = ContextDTO.toJSON(message.context);
+    }
     return obj;
   },
 
@@ -178,6 +195,9 @@ export const CreateContentRequest: MessageFns<CreateContentRequest> = {
       ? ContentBodyDTO.fromPartial(object.contentBody)
       : undefined;
     message.entityName = object.entityName ?? "";
+    message.context = (object.context !== undefined && object.context !== null)
+      ? ContextDTO.fromPartial(object.context)
+      : undefined;
     return message;
   },
 };

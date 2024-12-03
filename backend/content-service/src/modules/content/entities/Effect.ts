@@ -17,7 +17,7 @@ export class Effect extends TaggableContentBase {
     @Serializable()
     id!: string;
 
-    id_prefix = "EFFECT";
+    idPrefix = "EFFECT";
 
     @Column({ default: "PLACEHOLDER" })
     @Serializable()

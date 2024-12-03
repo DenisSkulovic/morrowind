@@ -16,7 +16,7 @@ export class Race extends ContentBase {
     @Serializable()
     id!: string;
 
-    id_prefix = "RACE"
+    idPrefix = "RACE"
 
     @Column({ type: "varchar", length: 255 })
     @Serializable()

@@ -6,7 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { PresetEnumDTO, presetEnumDTOFromJSON, presetEnumDTOToJSON, WorldDTO } from "./common";
+import { ContextDTO, PresetEnumDTO, presetEnumDTOFromJSON, presetEnumDTOToJSON, WorldDTO } from "./common";
 
 export const protobufPackage = "world";
 
@@ -53,9 +53,8 @@ export interface DropWorldContentResponse {
 }
 
 export interface LoadWorldPresetRequest {
-  worldId: string;
-  userId: string;
   preset: PresetEnumDTO;
+  context: ContextDTO | undefined;
 }
 
 /** No fields required for a 200 status response */
@@ -651,19 +650,16 @@ export const DropWorldContentResponse: MessageFns<DropWorldContentResponse> = {
 };
 
 function createBaseLoadWorldPresetRequest(): LoadWorldPresetRequest {
-  return { worldId: "", userId: "", preset: 0 };
+  return { preset: 0, context: undefined };
 }
 
 export const LoadWorldPresetRequest: MessageFns<LoadWorldPresetRequest> = {
   encode(message: LoadWorldPresetRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.worldId !== "") {
-      writer.uint32(10).string(message.worldId);
-    }
-    if (message.userId !== "") {
-      writer.uint32(18).string(message.userId);
-    }
     if (message.preset !== 0) {
-      writer.uint32(24).int32(message.preset);
+      writer.uint32(8).int32(message.preset);
+    }
+    if (message.context !== undefined) {
+      ContextDTO.encode(message.context, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -676,11 +672,11 @@ export const LoadWorldPresetRequest: MessageFns<LoadWorldPresetRequest> = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1: {
-          if (tag !== 10) {
+          if (tag !== 8) {
             break;
           }
 
-          message.worldId = reader.string();
+          message.preset = reader.int32() as any;
           continue;
         }
         case 2: {
@@ -688,15 +684,7 @@ export const LoadWorldPresetRequest: MessageFns<LoadWorldPresetRequest> = {
             break;
           }
 
-          message.userId = reader.string();
-          continue;
-        }
-        case 3: {
-          if (tag !== 24) {
-            break;
-          }
-
-          message.preset = reader.int32() as any;
+          message.context = ContextDTO.decode(reader, reader.uint32());
           continue;
         }
       }
@@ -710,22 +698,18 @@ export const LoadWorldPresetRequest: MessageFns<LoadWorldPresetRequest> = {
 
   fromJSON(object: any): LoadWorldPresetRequest {
     return {
-      worldId: isSet(object.worldId) ? globalThis.String(object.worldId) : "",
-      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
       preset: isSet(object.preset) ? presetEnumDTOFromJSON(object.preset) : 0,
+      context: isSet(object.context) ? ContextDTO.fromJSON(object.context) : undefined,
     };
   },
 
   toJSON(message: LoadWorldPresetRequest): unknown {
     const obj: any = {};
-    if (message.worldId !== "") {
-      obj.worldId = message.worldId;
-    }
-    if (message.userId !== "") {
-      obj.userId = message.userId;
-    }
     if (message.preset !== 0) {
       obj.preset = presetEnumDTOToJSON(message.preset);
+    }
+    if (message.context !== undefined) {
+      obj.context = ContextDTO.toJSON(message.context);
     }
     return obj;
   },
@@ -735,9 +719,10 @@ export const LoadWorldPresetRequest: MessageFns<LoadWorldPresetRequest> = {
   },
   fromPartial<I extends Exact<DeepPartial<LoadWorldPresetRequest>, I>>(object: I): LoadWorldPresetRequest {
     const message = createBaseLoadWorldPresetRequest();
-    message.worldId = object.worldId ?? "";
-    message.userId = object.userId ?? "";
     message.preset = object.preset ?? 0;
+    message.context = (object.context !== undefined && object.context !== null)
+      ? ContextDTO.fromPartial(object.context)
+      : undefined;
     return message;
   },
 };

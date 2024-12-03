@@ -19,7 +19,7 @@ export class PastExperience extends TaggableContentBase {
     @Serializable()
     id!: string;
 
-    id_prefix = "PAST_EXPERIENCE"
+    idPrefix = "PAST_EXPERIENCE"
 
     @Column()
     @Serializable()
@@ -30,7 +30,7 @@ export class PastExperience extends TaggableContentBase {
         serialize: (i) => serializeEnum(PastExperienceTypeEnum, PastExperienceTypeEnumDTO, i),
         deserialize: (i) => deserializeEnum(PastExperienceTypeEnumDTO, PastExperienceTypeEnum, i)
     })
-    exp_type!: PastExperienceTypeEnum
+    expType!: PastExperienceTypeEnum
 
     @ManyToMany(() => Tag, (tag) => tag.pastExperiences)
     @Serializable({ strategy: 'id' })

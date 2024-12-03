@@ -1,33 +1,33 @@
 [
     {
-        "blueprint_id": "FIRE_RESISTANCE",
+        "blueprintId": "FIRE_RESISTANCE",
         "name": "Fire Resistance",
         "effectType": "DAMAGE",
         "targetEffect": "FIRE",
         "targetEntity": "Resistance"
     },
     {
-        "blueprint_id": "FROST_RESISTANCE",
+        "blueprintId": "FROST_RESISTANCE",
         "name": "Frost Resistance",
         "effectType": "DAMAGE",
         "targetEffect": "FROST",
         "targetEntity": "Resistance"
     },
     {
-        "blueprint_id": "POISON_RESISTANCE", 
+        "blueprintId": "POISON_RESISTANCE", 
         "name": "Poison Resistance",
         "effectType": "DAMAGE",
         "targetEffect": "POISON",
         "targetEntity": "Resistance"
     },
     {
-        "blueprint_id": "MAGIC_RESISTANCE",
+        "blueprintId": "MAGIC_RESISTANCE",
         "name": "Magic Resistance",
         "effectType": "DAMAGE",
         "targetEntity": "Resistance"
     },
     {
-        "blueprint_id": "DISEASE_RESISTANCE", 
+        "blueprintId": "DISEASE_RESISTANCE", 
         "name": "Disease Resistance",
         "effectType": "RESISTANCE",
         "targetEffect": "DISEASE",

@@ -18,7 +18,7 @@ export class CharacterMemory extends TaggableContentBase {
     @Serializable()
     id!: string;
 
-    id_prefix = "CHARACTER_MEMORY"
+    idPrefix = "CHARACTER_MEMORY"
 
     @Column()
     @Serializable()

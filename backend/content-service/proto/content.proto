@@ -12,6 +12,7 @@ message CreateContentRequest {
     common.DataSourceEnumDTO source = 1;
     ContentBodyDTO contentBody = 2;
     string entityName = 3;
+    common.ContextDTO context = 4;
 }
 
 message CreateContentResponse {

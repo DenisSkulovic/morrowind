@@ -16,7 +16,7 @@ export class Need extends ContentBase {
     @Serializable()
     id!: string;
 
-    id_prefix = "NEED";
+    idPrefix = "NEED";
 
     /**
      * Name of the need (e.g., Hunger, Security, Financial Stability).

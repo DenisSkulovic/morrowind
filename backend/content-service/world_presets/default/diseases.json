@@ -1,6 +1,6 @@
 [
     {
-        "blueprint_id": "COMMON_COLD",
+        "blueprintId": "COMMON_COLD",
         "name": "Common Cold",
         "description": "Common Cold",
         "severity": "MILD",
@@ -13,7 +13,7 @@
         "targetEntity": "Disease"
     },
     {
-        "blueprint_id": "PLAGUE",
+        "blueprintId": "PLAGUE",
         "name": "Plague",
         "description": "Plague",
         "severity": "SEVERE",

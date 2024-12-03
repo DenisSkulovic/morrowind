@@ -18,7 +18,7 @@ export class Mood extends ContentBase {
     @Serializable()
     id!: string;
 
-    id_prefix = "MOOD";
+    idPrefix = "MOOD";
 
     @Column({ type: "varchar", length: 255 })
     @Serializable()

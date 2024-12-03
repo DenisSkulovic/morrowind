@@ -14,14 +14,14 @@ export class ItemSet extends ContentBase {
     @Serializable()
     id!: string;
 
-    id_prefix = "ITEM_SET"
+    idPrefix = "ITEM_SET"
 
     @Column({ type: "jsonb" })
     @Serializable({
         serialize: serializeGenerationInstructions,
         deserialize: deserializeGenerationInstructions
     })
-    set!: GenerationInstruction;
+    set!: GenerationInstruction[];
 
     @ManyToOne(() => User, { nullable: true })
     @Serializable({ strategy: 'id' })

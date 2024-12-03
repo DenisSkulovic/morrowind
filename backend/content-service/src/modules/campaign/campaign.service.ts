@@ -25,6 +25,18 @@ export class CampaignService implements ICampaignService {
         return this.getDataSource(source).getRepository(Campaign);
     }
 
+    public async findCampaign(campaignId: string, userId: string, source: DataSourceEnum): Promise<Campaign | null> {
+        const campaignRepository = this.getRepository(source)
+        const campaigns: Campaign[] = await campaignRepository.find({
+            where: {
+                id: campaignId,
+                user: { id: userId }
+            }
+        })
+        const campaign: Campaign | null = campaigns[0] || null
+        return campaign
+    }
+
     async create(data: any, source: DataSourceEnum): Promise<Campaign[]> {
         const repository = this.getRepository(source);
         const entity = repository.create(data);
