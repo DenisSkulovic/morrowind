@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package account;
+
+import "common.proto";
+
+service AccountService {
+    rpc createAccountAndUser (CreateAccountRequest) returns (CreateAccountResponse);
+    rpc getAccount (GetAccountRequest) returns (GetAccountResponse);
+}
+
+message CreateAccountRequest {
+    string username = 1;
+    string passwordHash = 2;
+    string email = 3;
+    string role = 4;
+}
+
+message CreateAccountResponse {
+    string userId = 1;
+    string accountId = 2;
+}
+
+message GetAccountRequest {
+    string username = 1;
+}
+
+message GetAccountResponse {
+    common.AccountDTO account = 1;
+}

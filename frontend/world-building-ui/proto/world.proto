@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package world;
+
+import "common.proto";
+
+service WorldService {
+    rpc createWorld (CreateWorldRequest) returns (CreateWorldResponse);
+    rpc getWorld (GetWorldRequest) returns (GetWorldResponse);
+    rpc getWorldsForUser (GetWorldsForUserRequest) returns (GetWorldsForUserResponse);
+    rpc deleteWorld (DeleteWorldRequest) returns (DeleteWorldResponse);
+    rpc dropWorldContent (DropWorldContentRequest) returns (DropWorldContentResponse);
+    rpc loadWorldPreset (LoadWorldPresetRequest) returns (LoadWorldPresetResponse);
+}
+
+message CreateWorldRequest {
+    string name = 1;
+    optional string description = 2;
+    string userId = 3;
+}
+
+message CreateWorldResponse {
+    string worldId = 1;
+}
+
+message GetWorldRequest {
+    string worldId = 1;
+}
+
+message GetWorldResponse {
+    common.WorldDTO world = 1;
+}
+
+message GetWorldsForUserRequest {
+    string userId = 1;
+}
+
+message GetWorldsForUserResponse {
+    repeated common.WorldDTO worlds = 1;
+}
+
+message DeleteWorldRequest {
+    string worldId = 1;
+}
+
+message DeleteWorldResponse {
+    // No fields required for a 200 status response
+}
+
+message DropWorldContentRequest {
+    string worldId = 1;
+}
+
+message DropWorldContentResponse {
+    // No fields required for a 200 status response
+}
+
+message LoadWorldPresetRequest {
+    common.PresetEnumDTO preset = 1;
+    common.ContextDTO context = 2;
+}
+
+message LoadWorldPresetResponse {
+    // No fields required for a 200 status response
+}

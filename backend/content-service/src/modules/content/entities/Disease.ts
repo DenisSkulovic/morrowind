@@ -2,7 +2,7 @@ import { Column, Entity, ManyToMany, ManyToOne, PrimaryColumn } from "typeorm";
 import { TaggableContentBase } from "../../../TaggableContentBase";
 import { Tag } from "./Tag";
 import { Character } from "./Character";
-import { DiseaseDTO } from "../../../proto/common";
+import { DiseaseDTO, DiseaseSeverityEnumDTO } from "../../../proto/common";
 import { Context } from "../../../types";
 import { DiseaseSeverityEnum } from "../../../common/enum/entityEnums";
 import { Campaign } from "../../campaign/entities/Campaign";
@@ -10,6 +10,7 @@ import { User } from "../../user/entities/User";
 import { World } from "../../world/entities/World";
 import { Serializable } from "../../../decorator/serializable.decorator";
 import { Serializer } from "../../../serializer";
+import { deserializeEnum, serializeEnum } from "../../../common/enum/util";
 
 
 @Entity()
@@ -29,11 +30,13 @@ export class Disease extends TaggableContentBase {
     description!: string;
 
     @Column({ type: "enum", enum: Object.values(DiseaseSeverityEnum) })
-    @Serializable()
+    @Serializable({
+        serialize: type => serializeEnum(DiseaseSeverityEnum, DiseaseSeverityEnumDTO, type),
+        deserialize: type => deserializeEnum(DiseaseSeverityEnumDTO, DiseaseSeverityEnum, type),
+    })
     severity!: string;
 
     @ManyToMany(() => Character, {})
-    @Serializable({ strategy: 'id' })
     characters?: Character[];
 
     @ManyToMany(() => Tag, (tag) => tag.diseases, {})

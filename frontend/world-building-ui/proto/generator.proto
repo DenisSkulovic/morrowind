@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package generator;
+
+import "common.proto";
+
+service GeneratorService {
+    rpc generateItems(GenerateItemsRequest) returns (GenerateItemsResponse);
+    rpc generateCharactersCustom(GenerateCharactersRequestCustom) returns (GenerateCharactersResponse);
+    rpc generateCharactersDB(GenerateCharactersRequestDB) returns (GenerateCharactersResponse);
+    rpc generateCharacterGroups(GenerateCharacterGroupsRequest) returns (GenerateCharacterGroupsResponse);
+}
+
+message GenerateItemsRequest {
+    common.DataSourceEnumDTO source = 1;
+    repeated common.GenerationInstructionDTO arr = 2;
+    common.ContextDTO context = 3;
+}
+message GenerateItemsResponse {
+    repeated common.ItemDTO arr = 1;
+}
+message GenerateCharactersRequestCustom {
+    common.DataSourceEnumDTO source = 1;
+    repeated common.CharacterGenInstructionDTO arr = 2;
+    common.ContextDTO context = 3;
+}
+message GenerateCharactersRequestDB {
+    common.DataSourceEnumDTO source = 1;
+    repeated string charGenInstructionIds = 2;
+    common.ContextDTO context = 3;
+}
+message GenerateCharactersResponse {
+    repeated common.CharacterDTO arr = 1;
+}
+message GenerateCharacterGroupsRequest {
+    common.DataSourceEnumDTO source = 1;
+    repeated common.CharacterGroupGenInstructionDTO arr = 2;
+    common.ContextDTO context = 3;
+}
+message GenerateCharacterGroupsResponse {
+    repeated GenerateCharactersResponse arr = 1;
+}
