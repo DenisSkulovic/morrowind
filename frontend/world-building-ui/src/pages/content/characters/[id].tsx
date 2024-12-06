@@ -1,8 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import ContentForm from '../../../components/ComponentForm/ContentForm';
-import { Character } from '../../../dto/Character';
+import ContentForm from '../../../components/ContentForm';
+import { Character } from '../../../dto/content/Character';
 
 const CharacterPage = () => {
     const router = useRouter();

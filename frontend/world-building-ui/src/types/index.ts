@@ -1,14 +1,22 @@
-import { Campaign } from "../modules/campaign/entities/Campaign";
-import { User } from "../modules/user/entities/User";
-import { World } from "../modules/world/entities/World";
+import { User } from "../dto/User";
+import { World } from "../dto/World";
+import { ContextDTO } from "../proto/common";
 
 export type EntityConstructor<T> = new () => T;
 
 
-export type Context = {
-    user?: User | null,
+export class Context {
+    user?: User | null
     world?: World | null
-    campaign?: Campaign | null,
+    campaign?: null
+
+    toDTO(): ContextDTO {
+        return {
+            userId: this.user?.id ?? "",
+            worldId: this.world?.id ?? "",
+            campaignId: "",
+        }
+    }
 }
 
 

@@ -1,15 +1,15 @@
 import 'reflect-metadata';
 import { FormSelectOption } from '../class/FormSelectOption';
+import { FieldComponentEnum } from '../enum/FieldComponentEnum';
 
 const FORM_FIELDS_KEY = Symbol('form_fields');
 
 interface FormFieldOptions {
-    component: string; // Field component type
-    label?: string; // Label for the field
-    placeholder?: string; // Placeholder for basic fields
-    required?: boolean; // Is the field required
+    component: FieldComponentEnum;
+    label?: string;
+    placeholder?: string;
+    required?: boolean;
     search?: (filter?: { [key: string]: any }) => Promise<FormSelectOption[]>;
-    customConfig?: any; // Additional configuration for custom fields
 }
 
 export function FormField(options: FormFieldOptions) {

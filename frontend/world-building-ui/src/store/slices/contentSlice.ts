@@ -1,48 +1,61 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { ContentService } from '../../services/ContentService';
+import { ContentBase } from '../../class/ContentBase';
+import { Context } from '../../types';
+
+export enum RequestStatus {
+    IDLE = 'idle',
+    LOADING = 'loading',
+    SUCCEEDED = 'succeeded',
+    FAILED = 'failed'
+}
 
 interface ContentState {
-    [key: string]: { id: string; name: string }[]; // e.g., { tags: [{ id: '1', name: 'Tag1' }] }
-    status: { [key: string]: 'idle' | 'loading' | 'succeeded' | 'failed' }; // Track loading state per entity type
-    error: { [key: string]: string | null }; // Error messages per entity type
+    data: { [entity: string]: { [id: string]: ContentBase } };
+    status: RequestStatus;
+    error: string | null;
 }
 
 const initialState: ContentState = {
-    status: {},
-    error: {},
+    data: {},
+    status: RequestStatus.IDLE,
+    error: null
 };
 
-// Fetch content data thunk
-export const fetchContentData = createAsyncThunk(
-    'content/fetchContentData',
-    async ({ entityName, query }: { entityName: string; query?: string }) => {
-        const response = await axios.get(`/api/${entityName}`, { params: { search: query } });
-        return { entityName, data: response.data };
+// Async thunk for creating content
+export const createContent = createAsyncThunk(
+    'content/createContent',
+    async ({ entityName, contentBody, context }: { entityName: string; contentBody: any; context: Context }) => {
+        const contentService = new ContentService();
+        return await contentService.createContent(entityName, contentBody, context);
     }
 );
 
 const contentSlice = createSlice({
     name: 'content',
     initialState,
-    reducers: {},
+    reducers: {
+        clearContent: (state) => {
+            state.data = {};
+            state.status = RequestStatus.IDLE;
+            state.error = null;
+        }
+    },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchContentData.pending, (state, action) => {
-                const { entityName } = action.meta.arg;
-                state.status[entityName] = 'loading';
-                state.error[entityName] = null;
+            .addCase(createContent.pending, (state) => {
+                state.status = RequestStatus.LOADING;
+                state.error = null;
             })
-            .addCase(fetchContentData.fulfilled, (state, action) => {
-                const { entityName, data } = action.payload;
-                state.status[entityName] = 'succeeded';
-                state[entityName] = data;
+            .addCase(createContent.fulfilled, (state) => {
+                state.status = RequestStatus.SUCCEEDED;
             })
-            .addCase(fetchContentData.rejected, (state, action) => {
-                const { entityName } = action.meta.arg;
-                state.status[entityName] = 'failed';
-                state.error[entityName] = action.error.message || 'Failed to fetch data';
+            .addCase(createContent.rejected, (state, action) => {
+                state.status = RequestStatus.FAILED;
+                state.error = action.error.message || 'Failed to create content';
             });
     },
 });
 
+export const { clearContent } = contentSlice.actions;
 export default contentSlice.reducer;

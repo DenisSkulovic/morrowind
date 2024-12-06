@@ -1,24 +1,52 @@
 import { BackgroundCustomizationDTO } from "../proto/common";
-import { GenerationInstruction, serializeInstruction, serializeGenerationInstructions, deserializeInstruction, deserializeGenerationInstructions } from "./GenerationInstruction";
+import { serializeInstruction, serializeGenerationInstructions, deserializeInstruction, deserializeGenerationInstructions } from "./GenerationInstruction";
+import type { GenerationInstruction } from "./GenerationInstruction";;
+import { FormField } from "../decorator/form-field.decorator";
+import { FieldComponentEnum } from "../enum/FieldComponentEnum";
 
 export class BackgroundCustomization {
     clazz = "BackgroundCustomization"
-    constructor(
-        public gender?: GenerationInstruction,
-        public faction?: GenerationInstruction[],
-        public disease?: GenerationInstruction[],
-        public addiction?: GenerationInstruction[],
-        public profession?: GenerationInstruction[],
-        public race?: GenerationInstruction[],
-        public religion?: GenerationInstruction[],
-        public personality?: GenerationInstruction[],
-        public items?: GenerationInstruction[],
-        public pastExpChild?: GenerationInstruction[],
-        public pastExpAdult?: GenerationInstruction[],
-        public memoryPools?: GenerationInstruction[],
-        public skillSets?: GenerationInstruction[],
-        public skillAdjustments?: { [skillBlueprintId: string]: number },
-    ) { }
+    @FormField({ component: FieldComponentEnum.GENERATION_INSTRUCTION_FIELD, label: 'Gender' })
+    public gender?: GenerationInstruction
+
+    @FormField({ component: FieldComponentEnum.GENERATION_INSTRUCTION_FIELD, label: 'Factions' })
+    public faction?: GenerationInstruction[]
+
+    @FormField({ component: FieldComponentEnum.GENERATION_INSTRUCTION_FIELD, label: 'Diseases' })
+    public disease?: GenerationInstruction[]
+
+    @FormField({ component: FieldComponentEnum.GENERATION_INSTRUCTION_FIELD, label: 'Addictions' })
+    public addiction?: GenerationInstruction[]
+
+    @FormField({ component: FieldComponentEnum.GENERATION_INSTRUCTION_FIELD, label: 'Professions' })
+    public profession?: GenerationInstruction[]
+
+    @FormField({ component: FieldComponentEnum.GENERATION_INSTRUCTION_FIELD, label: 'Race' })
+    public race?: GenerationInstruction[]
+
+    @FormField({ component: FieldComponentEnum.GENERATION_INSTRUCTION_FIELD, label: 'Religion' })
+    public religion?: GenerationInstruction[]
+
+    @FormField({ component: FieldComponentEnum.GENERATION_INSTRUCTION_FIELD, label: 'Personality' })
+    public personality?: GenerationInstruction[]
+
+    @FormField({ component: FieldComponentEnum.GENERATION_INSTRUCTION_FIELD, label: 'Items' })
+    public items?: GenerationInstruction[]
+
+    @FormField({ component: FieldComponentEnum.GENERATION_INSTRUCTION_FIELD, label: 'Childhood Past Experiences' })
+    public pastExpChild?: GenerationInstruction[]
+
+    @FormField({ component: FieldComponentEnum.GENERATION_INSTRUCTION_FIELD, label: 'Adult Past Experiences' })
+    public pastExpAdult?: GenerationInstruction[]
+
+    @FormField({ component: FieldComponentEnum.GENERATION_INSTRUCTION_FIELD, label: 'Memory Pools' })
+    public memoryPools?: GenerationInstruction[]
+
+    @FormField({ component: FieldComponentEnum.GENERATION_INSTRUCTION_FIELD, label: 'Skill Sets' })
+    public skillSets?: GenerationInstruction[]
+
+    @FormField({ component: FieldComponentEnum.OBJECT_FIELD, label: 'Skill Adjustments' })
+    public skillAdjustments?: { [skillBlueprintId: string]: number }
 
     toDTO(): BackgroundCustomizationDTO {
         return serializeBackgroundCustomization(this)

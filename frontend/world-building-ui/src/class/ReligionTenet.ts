@@ -1,11 +1,21 @@
 import { ReligionTenetDTO, ReligionTenetsDTO } from "../proto/common";
+import { FormField } from "../decorator/form-field.decorator";
+import { FieldComponentEnum } from "../enum/FieldComponentEnum";
 
 export class ReligionTenet {
     clazz = "ReligionTenet"
-    constructor(
-        public name: string,
-        public description: string,
-    ) { }
+
+    @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter tenet name', required: true })
+    name: string;
+
+    @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Description', placeholder: 'Enter tenet description', required: true })
+    description: string;
+
+    constructor(name: string, description: string) {
+        this.name = name;
+        this.description = description;
+    }
+
     toDTO(): ReligionTenetDTO {
         return serializeReligionTenet(this)
     }
@@ -24,9 +34,9 @@ export function deserializeReligionTenet(tenetDTO: ReligionTenetDTO): ReligionTe
     )
 }
 
-export function serializeReligionTenets(tenets: ReligionTenets): ReligionTenetsDTO {
+export function serializeReligionTenets(tenets: ReligionTenet[]): ReligionTenetsDTO {
     return { arr: tenets.map((tenet) => serializeReligionTenet(tenet)) }
 }
-export function deserializeReligionTenets(tenetDTO: ReligionTenetsDTO): ReligionTenets {
+export function deserializeReligionTenets(tenetDTO: ReligionTenetsDTO): ReligionTenet[] {
     return tenetDTO.arr.map((tenet) => deserializeReligionTenet(tenet))
 }

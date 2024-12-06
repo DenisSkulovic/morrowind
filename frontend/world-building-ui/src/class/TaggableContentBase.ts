@@ -1,9 +1,21 @@
-import { Tag } from "../dto/Tag";
+import { Tag } from "../dto/content/Tag";
 import { Serializable } from "../decorator/serializable.decorator";
 import { ContentBase } from "./ContentBase";
+import { FormField } from "../decorator/form-field.decorator";
+import { FieldComponentEnum } from "../enum/FieldComponentEnum";
+import { FormSelectOption } from "./FormSelectOption";
 
 export abstract class TaggableContentBase extends ContentBase {
     @Serializable()
+    @FormField({
+        component: FieldComponentEnum.MULTI_SELECT_FIELD,
+        label: 'Tags',
+        search: async (filter): Promise<FormSelectOption[]> => {
+            return (await Tag.search(filter)).map((item: Tag) => {
+                return { id: item.id, label: item.label }
+            })
+        }
+    })
     tags?: string[];
 
     addTag(tag: Tag): void {

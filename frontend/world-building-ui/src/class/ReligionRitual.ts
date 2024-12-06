@@ -1,11 +1,21 @@
 import { ReligionRitualDTO, ReligionRitualsDTO } from "../proto/common";
+import { FormField } from "../decorator/form-field.decorator";
+import { FieldComponentEnum } from "../enum/FieldComponentEnum";
 
 export class ReligionRitual {
     clazz = "ReligionRitual"
-    constructor(
-        public name: string,
-        public description: string,
-    ) { }
+
+    @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter ritual name', required: true })
+    name: string;
+
+    @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Description', placeholder: 'Enter ritual description', required: true })
+    description: string;
+
+    constructor(name: string, description: string) {
+        this.name = name;
+        this.description = description;
+    }
+
     toDTO(): ReligionRitualDTO {
         return serializeReligionRitual(this)
     }
@@ -24,9 +34,9 @@ export function deserializeReligionRitual(ritDTO: ReligionRitualDTO): ReligionRi
     )
 }
 
-export function serializeReligionRituals(rits: ReligionRituals): ReligionRitualsDTO {
+export function serializeReligionRituals(rits: ReligionRitual[]): ReligionRitualsDTO {
     return { arr: rits.map((rit) => serializeReligionRitual(rit)) }
 }
-export function deserializeReligionRituals(ritDTO: ReligionRitualsDTO): ReligionRituals {
+export function deserializeReligionRituals(ritDTO: ReligionRitualsDTO): ReligionRitual[] {
     return ritDTO.arr.map((rit) => deserializeReligionRitual(rit))
 }

@@ -92,7 +92,6 @@ export class User extends BaseEntity {
     addictions?: Addiction[]
 
     @OneToMany(() => Birthsign, birthsign => birthsign.user, { onDelete: "CASCADE", })
-    @Serializable({ strategy: 'id' })
     birthsigns?: Birthsign[]
 
     @OneToMany(() => Character, character => character.user, { onDelete: "CASCADE", })

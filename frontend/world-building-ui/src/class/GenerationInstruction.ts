@@ -1,5 +1,5 @@
-import { ConditionEnum } from "../common/enum/ConditionEnum"
-import { deserializeEnum, serializeEnum } from "../common/enum/util"
+import { ConditionEnum } from "../enum/ConditionEnum"
+import { serializeEnum, deserializeEnum } from "../enum/util"
 import { ConditionEnumDTO, GenerationInstructionDTO, GenerationInstructionsDTO } from "../proto/common"
 import { BlueprintGenInstruction_Simple, Probability_0_to_1 } from "../types"
 

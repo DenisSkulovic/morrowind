@@ -1,36 +1,63 @@
 import { ItemRequirementDTO, ItemRequirementsDTO } from "../proto/common";
-
+import { FormField } from "../decorator/form-field.decorator";
+import { FieldComponentEnum } from "../enum/FieldComponentEnum";
+import { Serializer } from "../serialize/serializer";
+import { ItemRequirementTypeEnum } from "../enum/ItemRequirementTypeEnum";
+import { FormSelectOption } from "./FormSelectOption";
 
 export class ItemRequirement {
     clazz = "ItemRequirement"
-    constructor(
-        public type: string,
-        public name: string,
-        public value: number | boolean,
-    ) { }
+
+    @FormField({
+        component: FieldComponentEnum.SELECT_FIELD, label: 'Type', placeholder: 'Select requirement type', required: true,
+        search: async (): Promise<FormSelectOption[]> => {
+            return Object.values(ItemRequirementTypeEnum).map(([key, value]) => {
+                return { id: value, label: value }
+            })
+        },
+    })
+    type: string;
+
+    @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter requirement name', required: true })
+    name: string;
+
+    @FormField({
+        component: FieldComponentEnum.NUMBER_FIELD,
+        label: 'Value',
+        placeholder: 'Enter requirement value',
+        required: true
+    })
+    value: number | boolean;
+
+    constructor(type: string, name: string, value: number | boolean) {
+        this.type = type;
+        this.name = name;
+        this.value = value;
+    }
+
     toDTO(): ItemRequirementDTO {
-        return serializeRequirement(this)
+        return Serializer.toDTO(this);
     }
+
     static fromDTO(dto: ItemRequirementDTO): ItemRequirement {
-        return deserializeRequirement(dto)
+        const req = new ItemRequirement(
+            dto.type,
+            dto.name,
+            dto.number !== undefined ? dto.number : dto.flag || false
+        );
+        return Serializer.fromDTO(dto, req);
     }
-};
+}
+
 export type ItemRequirements = ItemRequirement[]
 
-export function serializeRequirement(req: ItemRequirement): ItemRequirementDTO {
-    return {
-        type: req.type,
-        name: req.name,
-        ...(typeof req.value === "number" ? { number: req.value } : { flag: req.value }),
-        clazz: req.clazz
-    }
-};
-export function deserializeRequirement(dtoReq: ItemRequirementDTO): ItemRequirement {
-    return new ItemRequirement(
-        dtoReq.type,
-        dtoReq.name,
-        dtoReq.number !== undefined ? dtoReq.number : dtoReq.flag || false,
-    )
+export function serializeRequirements(reqs: ItemRequirement[]): ItemRequirementsDTO {
+    return { arr: reqs.map(req => req.toDTO()) }
 }
-export const serializeRequirements = (reqs: ItemRequirement[]): ItemRequirementsDTO => { return { arr: reqs.map(serializeRequirement) } };
-export const deserializeRequirements = (dtoInstructions: ItemRequirementsDTO): ItemRequirement[] => { return dtoInstructions.arr.map(deserializeRequirement) };
+
+export function deserializeRequirements(dtoInstructions: ItemRequirementsDTO): ItemRequirement[] {
+    return dtoInstructions.arr.map(dto => ItemRequirement.fromDTO(dto))
+}
+
+
+
