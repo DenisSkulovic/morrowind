@@ -6,7 +6,6 @@ export enum FieldComponentEnum {
     CHECKBOX_FIELD = "CheckboxField",
     RADIO_FIELD = "RadioField",
     TEXTAREA_FIELD = "TextareaField",
-    EQUIPMENT_SLOT_FIELD = "EquipmentSlotField",
     OBJECT_FIELD = "ObjectField",
     GENERATION_INSTRUCTION_FIELD = "GenerationInstructionField",
     NESTED_FORM = "NestedForm",

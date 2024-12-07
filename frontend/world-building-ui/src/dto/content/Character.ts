@@ -87,7 +87,7 @@ export class Character extends TaggableContentBase {
     skills!: { [skill: string]: number };
 
     @FormField({
-        component: FieldComponentEnum.EQUIPMENT_SLOT_FIELD,
+        component: FieldComponentEnum.NESTED_FORM,
         label: 'Equipment Slots',
         search: async (filter): Promise<FormSelectOption[]> => {
             return (await EquipmentSlot.search(filter)).map((item: EquipmentSlot) => {
