@@ -17,21 +17,38 @@ import { PastExperience } from "./PastExperience";
 import { Faction } from "./Faction";
 import { Disease } from "./Disease";
 import { Addiction } from "./Addiction";
+import { DisplayField } from '../../decorator/display-field.decorator';
+import { EntityDisplay } from '../../decorator/entity-display.decorator';
+import { FilterOption } from "../../decorator/filter-option.decorator";
+import { ContentService } from "../../services/ContentService";
+import { SearchQuery } from "../../class/search/SearchQuery";
+import { Context } from "../../class/Context";
 
+@EntityDisplay({
+    title: 'Characters',
+    defaultSort: 'firstName'
+})
 export class Character extends TaggableContentBase {
-    @Serializable()
+    @DisplayField({
+        order: 1,
+        displayName: 'Name',
+        getValue: (char: Character) => `${char.firstName} ${char.lastName}`
+    })
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'First Name', placeholder: 'Enter first name', required: true })
+    @Serializable()
     firstName!: string;
 
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Last Name', placeholder: 'Enter last name', required: true })
     @Serializable()
     lastName!: string;
 
+    @DisplayField({ order: 2 })
+    @FilterOption()
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
         label: 'Race',
-        search: async (filter): Promise<FormSelectOption[]> => {
-            return (await Race.search(filter)).map((item: Race) => {
+        search: async (filter: SearchQuery, context: Context): Promise<FormSelectOption[]> => {
+            return (await Race.search(filter, context)).map((item: Race) => {
                 return { id: item.id, label: item.name }
             })
         }
@@ -39,6 +56,8 @@ export class Character extends TaggableContentBase {
     @Serializable()
     race!: string;
 
+    @DisplayField({ order: 3 })
+    @FilterOption()
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
         label: 'Gender',
@@ -54,11 +73,13 @@ export class Character extends TaggableContentBase {
     })
     gender!: GenderEnum;
 
+    @DisplayField({ order: 4 })
+    @FilterOption()
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
         label: 'Birthsign',
-        search: async (filter): Promise<FormSelectOption[]> => {
-            return (await Birthsign.search(filter)).map((item: Birthsign) => {
+        search: async (filter: SearchQuery, context: Context): Promise<FormSelectOption[]> => {
+            return (await Birthsign.search(filter, context)).map((item: Birthsign) => {
                 return { id: item.id, label: item.name }
             })
         }
@@ -101,8 +122,8 @@ export class Character extends TaggableContentBase {
     @FormField({
         component: FieldComponentEnum.MULTI_SELECT_FIELD,
         label: 'Professions',
-        search: async (filter): Promise<FormSelectOption[]> => {
-            return (await CharacterProfession.search(filter)).map((item: CharacterProfession) => {
+        search: async (filter, context): Promise<FormSelectOption[]> => {
+            return (await CharacterProfession.search(filter, context)).map((item: CharacterProfession) => {
                 return { id: item.id, label: item.name }
             })
         }
@@ -113,8 +134,8 @@ export class Character extends TaggableContentBase {
     @FormField({
         component: FieldComponentEnum.MULTI_SELECT_FIELD,
         label: 'Memory Pools',
-        search: async (filter): Promise<FormSelectOption[]> => {
-            return (await MemoryPool.search(filter)).map((item: MemoryPool) => {
+        search: async (filter, context): Promise<FormSelectOption[]> => {
+            return (await MemoryPool.search(filter, context)).map((item: MemoryPool) => {
                 return { id: item.id, label: item.name }
             })
         }
@@ -125,8 +146,8 @@ export class Character extends TaggableContentBase {
     @FormField({
         component: FieldComponentEnum.MULTI_SELECT_FIELD,
         label: 'Memory Pools',
-        search: async (filter): Promise<FormSelectOption[]> => {
-            return (await MemoryPool.search(filter)).map((item: MemoryPool) => {
+        search: async (filter, context): Promise<FormSelectOption[]> => {
+            return (await MemoryPool.search(filter, context)).map((item: MemoryPool) => {
                 return { id: item.id, label: item.name }
             })
         }
@@ -139,8 +160,8 @@ export class Character extends TaggableContentBase {
     enneagramType!: string;
 
     @FormField({
-        component: FieldComponentEnum.MULTI_SELECT_FIELD, label: 'Traits', search: async (filter): Promise<FormSelectOption[]> => {
-            return (await Trait.search(filter)).map((item: Trait) => {
+        component: FieldComponentEnum.MULTI_SELECT_FIELD, label: 'Traits', search: async (filter, context): Promise<FormSelectOption[]> => {
+            return (await Trait.search(filter, context)).map((item: Trait) => {
                 return { id: item.id, label: item.name }
             })
         }
@@ -149,8 +170,8 @@ export class Character extends TaggableContentBase {
     traits!: string[];
 
     @FormField({
-        component: FieldComponentEnum.MULTI_SELECT_FIELD, label: 'Diseases', search: async (filter): Promise<FormSelectOption[]> => {
-            return (await Disease.search(filter)).map((item: Disease) => {
+        component: FieldComponentEnum.MULTI_SELECT_FIELD, label: 'Diseases', search: async (filter, context): Promise<FormSelectOption[]> => {
+            return (await Disease.search(filter, context)).map((item: Disease) => {
                 return { id: item.id, label: item.name }
             })
         }
@@ -159,8 +180,8 @@ export class Character extends TaggableContentBase {
     diseases?: string[];
 
     @FormField({
-        component: FieldComponentEnum.MULTI_SELECT_FIELD, label: 'Addictions', search: async (filter): Promise<FormSelectOption[]> => {
-            return (await Addiction.search(filter)).map((item: Addiction) => {
+        component: FieldComponentEnum.MULTI_SELECT_FIELD, label: 'Addictions', search: async (filter, context): Promise<FormSelectOption[]> => {
+            return (await Addiction.search(filter, context)).map((item: Addiction) => {
                 return { id: item.id, label: item.name }
             })
         }
@@ -171,8 +192,8 @@ export class Character extends TaggableContentBase {
     @FormField({
         component: FieldComponentEnum.MULTI_SELECT_FIELD,
         label: 'Factions',
-        search: async (filter): Promise<FormSelectOption[]> => {
-            return (await PastExperience.search(filter)).map((item: PastExperience) => {
+        search: async (filter, context): Promise<FormSelectOption[]> => {
+            return (await PastExperience.search(filter, context)).map((item: PastExperience) => {
                 return { id: item.id, label: item.name }
             })
         }
@@ -180,11 +201,13 @@ export class Character extends TaggableContentBase {
     @Serializable()
     pastExperiences?: string[];
 
+    @DisplayField({ order: 5 })
+    @FilterOption()
     @FormField({
         component: FieldComponentEnum.MULTI_SELECT_FIELD,
         label: 'Factions',
-        search: async (filter): Promise<FormSelectOption[]> => {
-            return (await Faction.search(filter)).map((item: Faction) => {
+        search: async (filter, context): Promise<FormSelectOption[]> => {
+            return (await Faction.search(filter, context)).map((item: Faction) => {
                 return { id: item.id, label: item.name }
             })
         }
@@ -199,5 +222,11 @@ export class Character extends TaggableContentBase {
     public static fromDTO(dto: CharacterDTO): Character {
         const character = new Character();
         return Serializer.fromDTO(dto, character);
+    }
+
+    public static async search(filter: SearchQuery, context: Context): Promise<Character[]> {
+        const contentService = new ContentService<Character>();
+        const { results } = await contentService.searchContent('Character', filter, 1, 100, context);
+        return results as Character[];
     }
 }

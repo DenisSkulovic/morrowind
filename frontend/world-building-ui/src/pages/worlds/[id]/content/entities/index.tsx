@@ -1,11 +1,9 @@
 import { useState } from 'react';
 import { Box, Container, Typography, Paper } from '@mui/material';
-import { useAppDispatch } from '../../../store/hooks';
-import { EntityListTable } from '../../../components/EntityListTable';
-import { EntityListFilters } from '../../../components/EntityListFilters';
-import { EntityListActions } from '../../../components/EntityListActions';
-import { EntityListSearch } from '../../../components/EntityListSearch';
-import { RequestStatus } from '../../../store/slices/contentSlice';
+import { EntityListSearch } from '../../../../../components/entities/EntityListSearch';
+import { EntityListActions } from '../../../../../components/entities/EntityListActions';
+import { EntityListFilters } from '../../../../../components/entities/EntityListFilters';
+import EntityListTable from '../../../../../components/entities/EntityListTable';
 
 const EntityListPage = () => {
     const dispatch = useAppDispatch();
@@ -14,31 +12,10 @@ const EntityListPage = () => {
     const [filters, setFilters] = useState({});
     const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
-    // Map of entity types to their display configs
-    const entityConfigs = {
-        characters: {
-            title: 'Characters',
-            columns: ['name', 'race', 'gender', 'factions'],
-            filterOptions: ['race', 'gender', 'faction', 'traits']
-        },
-        items: {
-            title: 'Items',
-            columns: ['name', 'type', 'rarity', 'value'],
-            filterOptions: ['type', 'rarity', 'tags']
-        },
-        religions: {
-            title: 'Religions',
-            columns: ['name', 'description', 'rituals', 'tenets'],
-            filterOptions: ['tags']
-        },
-        traits: {
-            title: 'Traits',
-            columns: ['name', 'description'],
-            filterOptions: ['tags']
-        }
-    };
-
-    const currentConfig = entityConfigs[selectedEntityType];
+    const entityClass = getEntityClass(selectedEntityType);
+    const displayConfig = Reflect.getMetadata('entityDisplay', entityClass);
+    const displayFields = Reflect.getMetadata('displayFields', entityClass) || [];
+    const filterOptions = Reflect.getMetadata('filterOptions', entityClass) || [];
 
     const handleSearch = (query: string) => {
         setSearchQuery(query);
@@ -56,14 +33,14 @@ const EntityListPage = () => {
         <Container maxWidth="xl">
             <Box sx={{ py: 4 }}>
                 <Typography variant="h4" sx={{ mb: 3 }}>
-                    {currentConfig.title}
+                    {displayConfig.title}
                 </Typography>
 
                 <Paper sx={{ p: 2, mb: 3 }}>
                     <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
                         <EntityListSearch
                             onSearch={handleSearch}
-                            placeholder={`Search ${currentConfig.title.toLowerCase()}...`}
+                            placeholder={`Search ${displayConfig.title.toLowerCase()}...`}
                         />
                         <EntityListActions
                             entityType={selectedEntityType}
@@ -72,14 +49,14 @@ const EntityListPage = () => {
                     </Box>
 
                     <EntityListFilters
-                        filterOptions={currentConfig.filterOptions}
+                        filterOptions={filterOptions}
                         onChange={handleFilterChange}
                     />
                 </Paper>
 
                 <EntityListTable
                     entityType={selectedEntityType}
-                    columns={currentConfig.columns}
+                    columns={displayFields}
                     filters={filters}
                     searchQuery={searchQuery}
                     onSelectionChange={handleSelectionChange}

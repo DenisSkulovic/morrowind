@@ -31,10 +31,11 @@ export class Serializer {
 
     static fromDTO(dto: any, entity: any): any {
         const fields = getSerializableFields(entity.constructor.prototype);
-        fields.forEach(({ propertyKey, dtoKey, deserialize }) => {
+        fields.forEach(({ propertyKey, dtoKey, strategy, deserialize }) => {
             const value = dto[dtoKey];
             const processOne = (item: any) => {
                 if (deserialize) return deserialize(item)
+                else if (strategy === 'id') return item?.id ? { id: item.id } : null
                 return item?.fromDTO ? item.fromDTO(item) : item
             }
             if (Array.isArray(value)) {

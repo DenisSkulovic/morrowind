@@ -5,8 +5,20 @@ import { Serializable } from "../../decorator/serializable.decorator";
 import { Serializer } from "../../serialize/serializer";
 import { FormField } from "../../decorator/form-field.decorator";
 import { FieldComponentEnum } from "../../enum/FieldComponentEnum";
+import { EntityDisplay } from "../../decorator/entity-display.decorator";
+import { DisplayField } from "../../decorator/display-field.decorator";
+import { FilterOption } from "../../decorator/filter-option.decorator";
+import { ContentService } from "../../services/ContentService";
+import { SearchQuery } from "../../class/search/SearchQuery";
+import { Context } from "../../class/Context";
 
+@EntityDisplay({
+    title: 'Races',
+    defaultSort: 'name'
+})
 export class Race extends ContentBase {
+    @DisplayField({ order: 1 })
+    @FilterOption()
     @Serializable()
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter race name', required: true })
     name!: string;
@@ -27,9 +39,9 @@ export class Race extends ContentBase {
         return Serializer.fromDTO(dto, race);
     }
 
-    public static async search(filter?: any): Promise<Race[]> {
-        // perform request to backend using the filter
-        // return array of options
-        return []
+    public static async search(filter: SearchQuery, context: Context): Promise<Race[]> {
+        const contentService = new ContentService<Race>();
+        const { results } = await contentService.searchContent('Race', filter, 1, 100, context);
+        return results as Race[];
     }
 }

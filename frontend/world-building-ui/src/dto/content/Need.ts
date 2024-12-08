@@ -7,16 +7,31 @@ import { Serializer } from "../../serialize/serializer";
 import { FormField } from "../../decorator/form-field.decorator";
 import { FieldComponentEnum } from "../../enum/FieldComponentEnum";
 import { FormSelectOption } from "../../class/FormSelectOption";
+import { DisplayField } from '../../decorator/display-field.decorator';
+import { EntityDisplay } from '../../decorator/entity-display.decorator';
+import { FilterOption } from "../../decorator/filter-option.decorator";
+import { Context } from "../../class/Context";
+import { ContentService } from "../../services/ContentService";
+import { SearchQuery } from "../../class/search/SearchQuery";
 
+@EntityDisplay({
+    title: 'Needs',
+    defaultSort: 'name'
+})
 export class Need extends ContentBase {
+    @DisplayField({ order: 1 })
+    @FilterOption()
     @Serializable()
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter need name', required: true })
     name!: string;
 
+    @DisplayField({ order: 2 })
     @Serializable()
     @FormField({ component: FieldComponentEnum.TEXTAREA_FIELD, label: 'Description', placeholder: 'Enter need description', required: true })
     description!: string;
 
+    @DisplayField({ order: 3 })
+    @FilterOption()
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
         label: 'Need Type',
@@ -32,6 +47,8 @@ export class Need extends ContentBase {
     })
     type!: NeedTypeEnum; // "dynamic", "threshold", "external".
 
+    @DisplayField({ order: 4 })
+    @FilterOption()
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
         label: 'Need Layer',
@@ -54,5 +71,11 @@ export class Need extends ContentBase {
     public static fromDTO(dto: NeedDTO): Need {
         const need = new Need();
         return Serializer.fromDTO(dto, need);
+    }
+
+    public static async search(filter: SearchQuery, context: Context): Promise<Need[]> {
+        const contentService = new ContentService<Need>();
+        const { results } = await contentService.searchContent('Need', filter, 1, 100, context);
+        return results as Need[];
     }
 }

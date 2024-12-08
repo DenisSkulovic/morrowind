@@ -7,12 +7,25 @@ import { Tag } from "./Tag";
 import { FormField } from "../../decorator/form-field.decorator";
 import { FieldComponentEnum } from "../../enum/FieldComponentEnum";
 import { FormSelectOption } from "../../class/FormSelectOption";
+import { DisplayField } from '../../decorator/display-field.decorator';
+import { EntityDisplay } from '../../decorator/entity-display.decorator';
+import { FilterOption } from "../../decorator/filter-option.decorator";
+import { Context } from "../../class/Context";
+import { ContentService } from "../../services/ContentService";
+import { SearchQuery } from "../../class/search/SearchQuery";
 
+@EntityDisplay({
+    title: 'Memory Pools',
+    defaultSort: 'name'
+})
 export class MemoryPool extends TaggableContentBase {
+    @DisplayField({ order: 1 })
+    @FilterOption()
     @Serializable()
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter memory pool name', required: true })
     name!: string;
 
+    @DisplayField({ order: 2 })
     @Serializable()
     @FormField({ component: FieldComponentEnum.TEXTAREA_FIELD, label: 'Description', placeholder: 'Enter memory pool description' })
     description?: string;
@@ -20,8 +33,8 @@ export class MemoryPool extends TaggableContentBase {
     @FormField({
         component: FieldComponentEnum.MULTI_SELECT_FIELD,
         label: 'Memory Pool Entries',
-        search: async (filter): Promise<FormSelectOption[]> => {
-            return (await MemoryPoolEntry.search(filter)).map((item: MemoryPoolEntry) => {
+        search: async (filter: SearchQuery, context: Context): Promise<FormSelectOption[]> => {
+            return (await MemoryPoolEntry.search(filter, context)).map((item: MemoryPoolEntry) => {
                 return { id: item.id, label: item.name }
             })
         }
@@ -38,10 +51,10 @@ export class MemoryPool extends TaggableContentBase {
         return Serializer.fromDTO(dto, memoryPool);
     }
 
-    public static async search(filter?: any): Promise<MemoryPool[]> {
-        // perform request to backend using the filter
-        // return array of options
-        return []
+    public static async search(filter: SearchQuery, context: Context): Promise<MemoryPool[]> {
+        const contentService = new ContentService<MemoryPool>();
+        const { results } = await contentService.searchContent('MemoryPool', filter, 1, 100, context);
+        return results as MemoryPool[];
     }
 }
 

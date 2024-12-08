@@ -6,6 +6,71 @@ import "common.proto";
 
 service ContentService {
     rpc create (CreateContentRequest) returns (CreateContentResponse);
+    rpc update (UpdateContentRequest) returns (UpdateContentResponse);
+    rpc delete (DeleteContentRequest) returns (DeleteContentResponse);
+    rpc search (SearchContentRequest) returns (SearchContentResponse);
+    rpc createBulk (CreateBulkContentRequest) returns (CreateBulkContentResponse);
+    rpc updateBulk (UpdateBulkContentRequest) returns (UpdateBulkContentResponse);
+    rpc deleteBulk (DeleteBulkContentRequest) returns (DeleteBulkContentResponse);
+}
+
+message UpdateContentRequest {
+    ContentBodyDTO contentBody = 1;
+    string entityName = 2;
+    common.ContextDTO context = 3;
+}
+
+message UpdateContentResponse {
+    string id = 1;
+}
+
+message DeleteContentRequest {
+    string entityName = 1;
+    string id = 2;
+    common.ContextDTO context = 3;
+}
+
+message DeleteContentResponse {
+    bool success = 1;
+}
+
+message SearchContentRequest {
+    string entityName = 1;
+    string query = 2;
+    common.ContextDTO context = 3;
+    int32 page = 4;
+    int32 pageSize = 5;
+}
+
+message SearchContentResponse {
+    repeated ContentBodyDTO results = 1;
+    int32 totalResults = 2;
+    int32 totalPages = 3;
+    int32 currentPage = 4;
+}
+
+message CreateBulkContentRequest {
+    repeated CreateContentRequest requests = 1;
+}
+
+message CreateBulkContentResponse {
+    repeated CreateContentResponse responses = 1;
+}
+
+message UpdateBulkContentRequest {
+    repeated UpdateContentRequest requests = 1;
+}
+
+message UpdateBulkContentResponse {
+    repeated UpdateContentResponse responses = 1;
+}
+
+message DeleteBulkContentRequest {
+    repeated DeleteContentRequest requests = 1;
+}
+
+message DeleteBulkContentResponse {
+    repeated DeleteContentResponse responses = 1;
 }
 
 message CreateContentRequest {

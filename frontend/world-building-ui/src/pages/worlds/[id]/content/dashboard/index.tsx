@@ -1,30 +1,43 @@
 import { useEffect, useState } from 'react';
 import { Box, Grid, Typography, Paper, Button } from '@mui/material';
-import { useDispatch } from 'react-redux';
-import { DashboardOverview } from './components/DashboardOverview';
-import { RecentActivity } from './components/RecentActivity';
-import { QuickActions } from './components/QuickActions';
-import { GlobalSearch } from './components/GlobalSearch';
-import { ContentService } from '../../../services/ContentService';
+import { useDispatch, useSelector } from 'react-redux';
+import { DashboardOverview } from '../../../../../components/dashboard/DashboardOverview';
+import { GlobalSearch } from '../../../../../components/dashboard/GlobalSearch';
+import { QuickActions } from '../../../../../components/dashboard/QuickActions';
+import { RecentActivity } from '../../../../../components/dashboard/RecentActivity';
+import { ContentService } from '../../../../../services/ContentService';
+import { Context } from '../../../../../types';
+import { RootState } from '../../../../../store/store';
+import { useRouter } from 'next/router';
+import { World } from '../../../../../dto/World';
+import { User } from '../../../../../dto/User';
+import { Account } from '../../../../../dto/Account';
+import { GetContentStatsResponse } from '../../../../../proto/content';
+import { ContentStat } from '../../../../../class/ContentStat';
+
 
 export default function Dashboard() {
+    const router = useRouter();
+    const { id } = router.query;
+    const worlds: World[] = useSelector((state: RootState) => state.worlds.data);
+    const world: World | undefined = worlds.find((w) => w.id === id);
+    if (!world) throw new Error('World not found');
+
+    const account: Account | null = useSelector((state: RootState) => state.account.data);
+    if (!account) throw new Error('Account not found');
+
     const dispatch = useDispatch();
-    const [contentStats, setContentStats] = useState({
-        characters: 0,
-        items: 0,
-        traits: 0,
-        factions: 0,
-        religions: 0
-    });
+    const [contentStats, setContentStats] = useState<ContentStat[]>([]);
 
     useEffect(() => {
-        // Load initial dashboard data
+        const context: Context = new Context(
+            { id: account.user } as User,
+            world,
+        );
         const loadDashboardData = async () => {
             const contentService = new ContentService();
-            // Fetch content stats
-            // This would be implemented in the ContentService
-            const stats = await contentService.getContentStats();
-            setContentStats(stats);
+            const stats: GetContentStatsResponse = await contentService.getContentStats(context);
+            setContentStats(stats.stats);
         };
 
         loadDashboardData();

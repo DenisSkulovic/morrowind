@@ -3,29 +3,24 @@ import { GeneratorService } from '../../services/GeneratorService';
 import { GenerationInstructionDTO, CharacterGenInstructionDTO, CharacterGroupGenInstructionDTO } from '../../proto/common';
 import { Context } from '../../types';
 import { GenerateItemsResponse, GenerateCharactersResponse, GenerateCharacterGroupsResponse } from '../../proto/generator';
+import { RequestStatusEnum } from '../../enum/RequestStatusEnum';
 
-export enum RequestStatus {
-    IDLE = 'idle',
-    LOADING = 'loading',
-    SUCCEEDED = 'succeeded',
-    FAILED = 'failed'
-}
 
 // Define state shape
 interface GeneratorState {
     items: {
         data: GenerateItemsResponse | null;
-        status: RequestStatus;
+        status: RequestStatusEnum;
         error: string | null;
     };
     characters: {
         data: GenerateCharactersResponse | null;
-        status: RequestStatus;
+        status: RequestStatusEnum;
         error: string | null;
     };
     characterGroups: {
         data: GenerateCharacterGroupsResponse | null;
-        status: RequestStatus;
+        status: RequestStatusEnum;
         error: string | null;
     };
 }
@@ -33,17 +28,17 @@ interface GeneratorState {
 const initialState: GeneratorState = {
     items: {
         data: null,
-        status: RequestStatus.IDLE,
+        status: RequestStatusEnum.IDLE,
         error: null
     },
     characters: {
         data: null,
-        status: RequestStatus.IDLE,
+        status: RequestStatusEnum.IDLE,
         error: null
     },
     characterGroups: {
         data: null,
-        status: RequestStatus.IDLE,
+        status: RequestStatusEnum.IDLE,
         error: null
     }
 };
@@ -88,17 +83,17 @@ const generatorSlice = createSlice({
     reducers: {
         clearItems: (state) => {
             state.items.data = null;
-            state.items.status = RequestStatus.IDLE;
+            state.items.status = RequestStatusEnum.IDLE;
             state.items.error = null;
         },
         clearCharacters: (state) => {
             state.characters.data = null;
-            state.characters.status = RequestStatus.IDLE;
+            state.characters.status = RequestStatusEnum.IDLE;
             state.characters.error = null;
         },
         clearCharacterGroups: (state) => {
             state.characterGroups.data = null;
-            state.characterGroups.status = RequestStatus.IDLE;
+            state.characterGroups.status = RequestStatusEnum.IDLE;
             state.characterGroups.error = null;
         }
     },
@@ -106,57 +101,57 @@ const generatorSlice = createSlice({
         builder
             // item generation
             .addCase(generateItems.pending, (state) => {
-                state.items.status = RequestStatus.LOADING;
+                state.items.status = RequestStatusEnum.LOADING;
                 state.items.error = null;
             })
             .addCase(generateItems.fulfilled, (state, action) => {
-                state.items.status = RequestStatus.SUCCEEDED;
+                state.items.status = RequestStatusEnum.SUCCEEDED;
                 state.items.data = action.payload;
             })
             .addCase(generateItems.rejected, (state, action) => {
-                state.items.status = RequestStatus.FAILED;
+                state.items.status = RequestStatusEnum.FAILED;
                 state.items.error = action.error.message || 'Failed to generate items';
             })
 
             // character generation CUSTOM
             .addCase(generateCharactersCustom.pending, (state) => {
-                state.characters.status = RequestStatus.LOADING;
+                state.characters.status = RequestStatusEnum.LOADING;
                 state.characters.error = null;
             })
             .addCase(generateCharactersCustom.fulfilled, (state, action) => {
-                state.characters.status = RequestStatus.SUCCEEDED;
+                state.characters.status = RequestStatusEnum.SUCCEEDED;
                 state.characters.data = action.payload;
             })
             .addCase(generateCharactersCustom.rejected, (state, action) => {
-                state.characters.status = RequestStatus.FAILED;
+                state.characters.status = RequestStatusEnum.FAILED;
                 state.characters.error = action.error.message || 'Failed to generate characters';
             })
 
             // character generation DB
             .addCase(generateCharactersDB.pending, (state) => {
-                state.characters.status = RequestStatus.LOADING;
+                state.characters.status = RequestStatusEnum.LOADING;
                 state.characters.error = null;
             })
             .addCase(generateCharactersDB.fulfilled, (state, action) => {
-                state.characters.status = RequestStatus.SUCCEEDED;
+                state.characters.status = RequestStatusEnum.SUCCEEDED;
                 state.characters.data = action.payload;
             })
             .addCase(generateCharactersDB.rejected, (state, action) => {
-                state.characters.status = RequestStatus.FAILED;
+                state.characters.status = RequestStatusEnum.FAILED;
                 state.characters.error = action.error.message || 'Failed to generate characters';
             })
 
             // character group generation
             .addCase(generateCharacterGroups.pending, (state) => {
-                state.characterGroups.status = RequestStatus.LOADING;
+                state.characterGroups.status = RequestStatusEnum.LOADING;
                 state.characterGroups.error = null;
             })
             .addCase(generateCharacterGroups.fulfilled, (state, action) => {
-                state.characterGroups.status = RequestStatus.SUCCEEDED;
+                state.characterGroups.status = RequestStatusEnum.SUCCEEDED;
                 state.characterGroups.data = action.payload;
             })
             .addCase(generateCharacterGroups.rejected, (state, action) => {
-                state.characterGroups.status = RequestStatus.FAILED;
+                state.characterGroups.status = RequestStatusEnum.FAILED;
                 state.characterGroups.error = action.error.message || 'Failed to generate character groups';
             });
     }

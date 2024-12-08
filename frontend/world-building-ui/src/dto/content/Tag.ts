@@ -5,6 +5,9 @@ import { Serializer } from "../../serialize/serializer";
 import { FormField } from "../../decorator/form-field.decorator";
 import { FieldComponentEnum } from "../../enum/FieldComponentEnum";
 import { TagSubtypeEnum } from "../../enum/entityEnums";
+import { ContentService } from "../../services/ContentService";
+import { Context } from "../../class/Context";
+import { SearchQuery } from "../../class/search/SearchQuery";
 
 export class Tag extends ContentBase {
     @Serializable()
@@ -33,9 +36,9 @@ export class Tag extends ContentBase {
         return Serializer.fromDTO(dto, tag);
     }
 
-    public static async search(filter?: any): Promise<Tag[]> {
-        // perform request to backend using the filter
-        // return array of options
-        return []
+    public static async search(filter: SearchQuery, context: Context): Promise<Tag[]> {
+        const contentService = new ContentService<Tag>();
+        const { results } = await contentService.searchContent('Tag', filter, 1, 100, context);
+        return results as Tag[];
     }
 }

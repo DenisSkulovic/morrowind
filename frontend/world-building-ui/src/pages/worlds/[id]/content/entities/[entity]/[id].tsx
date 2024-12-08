@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
-import ContentForm from '../../../components/ContentForm';
-import { createContent } from '../../../store/slices/contentSlice';
-import { Character } from '../../../dto/content/Character';
-import { ItemSet } from '../../../dto/content/ItemSet';
-import { Religion } from '../../../dto/content/Religion';
-import { ContentBase } from '../../../class/ContentBase';
+import ContentForm from '../../../../../../components/entity/ContentForm';
+import { createContent } from '../../../../../../store/slices/contentSlice';
+import { Character } from '../../../../../../dto/content/Character';
+import { ItemSet } from '../../../../../../dto/content/ItemSet';
+import { Religion } from '../../../../../../dto/content/Religion';
+import { ContentBase } from '../../../../../../class/ContentBase';
+import { Context } from '../../../../../../class/Context';
+import { User } from '../../../../../../dto/User';
+import { World } from '../../../../../../dto/World';
 
 // Map of entity types to their classes
 const entityClasses: { [key: string]: typeof ContentBase } = {
@@ -50,7 +53,10 @@ const EntityPage = () => {
             await dispatch(createContent({
                 entityName: type.toString(),
                 contentBody: data,
-                context: { /* Add context if needed */ }
+                context: new Context(
+                    { id: account.user } as User,
+                    { id: world.id } as World,
+                )
             }));
 
             // Redirect to the entity list page

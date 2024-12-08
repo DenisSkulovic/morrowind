@@ -1,9 +1,13 @@
 import { ContentBase } from '../class/ContentBase';
-import { backendURL } from '../config';
-import { DataSourceEnumDTO, ContextDTO } from '../proto/common';
-import { ContentBodyDTO, ContentServiceClientImpl, CreateContentRequest, CreateContentResponse } from '../proto/content';
+import { Context } from '../class/Context';
+import { SearchQuery } from '../class/search/SearchQuery';
+import { CONTENT_ENTITY_MAP } from '../CONTENT_ENTITY_MAP';
+import { DataSourceEnumDTO } from '../proto/common';
+import { ContentBodyDTO, ContentServiceClientImpl, CreateBulkContentRequest, CreateBulkContentResponse, CreateContentRequest, CreateContentResponse, DeleteBulkContentRequest, DeleteBulkContentResponse, DeleteContentRequest, DeleteContentResponse, GetContentStatsRequest, GetContentStatsResponse, SearchContentRequest, SearchContentResponse, UpdateBulkContentRequest, UpdateBulkContentResponse, UpdateContentRequest, UpdateContentResponse } from '../proto/content';
 import { rpc } from '../rpc';
-import { Context } from '../types';
+import { Serializer } from '../serialize/serializer';
+import { ClassConstructor } from '../types';
+
 
 export class ContentService<T extends ContentBase> {
     private client: ContentServiceClientImpl;
@@ -12,15 +16,128 @@ export class ContentService<T extends ContentBase> {
         this.client = new ContentServiceClientImpl(rpc);
     }
 
-    async createContent(entityName: string, content: T, context: Context): Promise<CreateContentResponse> {
+    async getContentStats(context: Context): Promise<GetContentStatsResponse> {
+        const request: GetContentStatsRequest = {
+            context: context.toDTO(),
+        };
+        return await this.client.getStats(request);
+    }
+
+    async createContent(entityName: string, content: T, context: Context): Promise<T> {
         const request: CreateContentRequest = {
             source: DataSourceEnumDTO.DATA_SOURCE_WORLD,
             contentBody: content.toDTO(),
             entityName,
             context: context.toDTO(),
         }
-        return await this.client.create(request);
+        const constructor: ClassConstructor<ContentBase> | undefined = CONTENT_ENTITY_MAP[entityName];
+        if (!constructor) throw new Error(`Constructor for entity ${entityName} not found`);
+        const response: CreateContentResponse = await this.client.create(request);
+        const deserialized: T = Serializer.fromDTO(response.contentBody, constructor);
+        return deserialized
     }
 
-    // Add methods for other operations: fetch, update, delete, etc.
+    async updateContent(entityName: string, content: T, context: Context): Promise<T> {
+        const request: UpdateContentRequest = {
+            contentBody: content.toDTO(),
+            entityName,
+            context: context.toDTO(),
+        }
+        const constructor: ClassConstructor<ContentBase> | undefined = CONTENT_ENTITY_MAP[entityName];
+        if (!constructor) throw new Error(`Constructor for entity ${entityName} not found`);
+        const response: UpdateContentResponse = await this.client.update(request);
+        const deserialized: T = Serializer.fromDTO(response.contentBody, constructor);
+        return deserialized
+    }
+
+    async deleteContent(entityName: string, id: string, context: Context): Promise<void> {
+        const request: DeleteContentRequest = {
+            entityName,
+            id,
+            context: context.toDTO(),
+        }
+        await this.client.delete(request);
+    }
+
+    async searchContent(
+        entityName: string,
+        query: SearchQuery,
+        page: number,
+        pageSize: number,
+        context: Context
+    ): Promise<{
+        results: ContentBase[];
+        totalResults: number;
+        totalPages: number;
+        currentPage: number;
+    }> {
+        const request: SearchContentRequest = {
+            entityName,
+            query: JSON.stringify(query),
+            context: context.toDTO(),
+            page,
+            pageSize,
+        }
+        const constructor: ClassConstructor<ContentBase> | undefined = CONTENT_ENTITY_MAP[entityName];
+        if (!constructor) throw new Error(`Constructor for entity ${entityName} not found`);
+        const response: SearchContentResponse = await this.client.search(request);
+        const deserialized: T[] = response.results.map((contentBody: ContentBodyDTO) => Serializer.fromDTO(contentBody, constructor));
+        return {
+            results: deserialized,
+            totalResults: response.totalResults,
+            totalPages: response.totalPages,
+            currentPage: response.currentPage,
+        }
+    }
+
+    async createContentBulk(entityName: string, contentBodies: T[], context: Context): Promise<T[]> {
+        const requests: CreateContentRequest[] = contentBodies.map((contentBody: T) => ({
+            source: DataSourceEnumDTO.DATA_SOURCE_WORLD,
+            entityName,
+            contentBody: contentBody.toDTO(),
+            context: context.toDTO()
+        }));
+        const constructor: ClassConstructor<ContentBase> | undefined = CONTENT_ENTITY_MAP[entityName];
+        if (!constructor) throw new Error(`Constructor for entity ${entityName} not found`);
+        const request: CreateBulkContentRequest = {
+            requests,
+        }
+        const response: CreateBulkContentResponse = await this.client.createBulk(request);
+        const deserialized: T[] = response.responses.map((response: CreateContentResponse) =>
+            Serializer.fromDTO(response.contentBody, constructor)
+        );
+        return deserialized
+    }
+
+    async updateContentBulk(entityName: string, contentBodies: T[], context: Context): Promise<T[]> {
+        const requests: UpdateContentRequest[] = contentBodies.map((contentBody: T) => ({
+            source: DataSourceEnumDTO.DATA_SOURCE_WORLD,
+            entityName,
+            contentBody: contentBody.toDTO(),
+            context: context.toDTO()
+        }));
+        const constructor: ClassConstructor<ContentBase> | undefined = CONTENT_ENTITY_MAP[entityName];
+        if (!constructor) throw new Error(`Constructor for entity ${entityName} not found`);
+        const request: UpdateBulkContentRequest = {
+            requests,
+        }
+        const response: UpdateBulkContentResponse = await this.client.updateBulk(request);
+        const deserialized: T[] = response.responses.map((response: UpdateContentResponse) =>
+            Serializer.fromDTO(response.contentBody, constructor)
+        );
+        return deserialized
+    }
+
+    async deleteContentBulk(entityName: string, ids: string[], context: Context): Promise<void> {
+        const requests: DeleteContentRequest[] = ids.map((id) => ({
+            entityName,
+            id,
+            context: context.toDTO()
+        }));
+        const request: DeleteBulkContentRequest = {
+            requests,
+        }
+        await this.client.deleteBulk(request);
+    }
+
 }

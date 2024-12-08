@@ -7,6 +7,24 @@ import "common.proto";
 service AccountService {
     rpc createAccountAndUser (CreateAccountRequest) returns (CreateAccountResponse);
     rpc getAccount (GetAccountRequest) returns (GetAccountResponse);
+    rpc updateAccount (UpdateAccountRequest) returns (UpdateAccountResponse);
+    rpc deleteAccount (DeleteAccountRequest) returns (DeleteAccountResponse);
+}
+
+message UpdateAccountRequest {
+    common.AccountDTO account = 1;
+}
+
+message UpdateAccountResponse {
+    common.AccountDTO account = 1;
+}
+
+message DeleteAccountRequest {
+    string username = 1;
+}
+
+message DeleteAccountResponse {
+    // No fields required for a 200 status response
 }
 
 message CreateAccountRequest {
@@ -17,8 +35,7 @@ message CreateAccountRequest {
 }
 
 message CreateAccountResponse {
-    string userId = 1;
-    string accountId = 2;
+    common.AccountDTO account = 1;
 }
 
 message GetAccountRequest {

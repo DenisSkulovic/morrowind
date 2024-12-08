@@ -1,4 +1,9 @@
-import { AccountServiceClientImpl, CreateAccountRequest, CreateAccountResponse, GetAccountRequest, GetAccountResponse } from '../proto/account';
+import {
+    AccountServiceClientImpl, CreateAccountRequest, CreateAccountResponse,
+    GetAccountRequest, GetAccountResponse, UpdateAccountRequest,
+    UpdateAccountResponse, DeleteAccountRequest, DeleteAccountResponse
+} from '../proto/account';
+import { AccountDTO } from '../proto/common';
 import { rpc } from '../rpc';
 
 export class AccountService {
@@ -23,5 +28,19 @@ export class AccountService {
             username
         };
         return await this.client.getAccount(request);
+    }
+
+    async updateAccount(account: AccountDTO): Promise<UpdateAccountResponse> {
+        const request: UpdateAccountRequest = {
+            account
+        };
+        return await this.client.updateAccount(request);
+    }
+
+    async deleteAccount(username: string): Promise<DeleteAccountResponse> {
+        const request: DeleteAccountRequest = {
+            username
+        };
+        return await this.client.deleteAccount(request);
     }
 }

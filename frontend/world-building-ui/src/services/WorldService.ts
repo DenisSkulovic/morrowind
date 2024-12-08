@@ -7,7 +7,7 @@ import {
     CreateWorldRequest, CreateWorldResponse, DeleteWorldRequest,
     DeleteWorldResponse, DropWorldContentRequest, DropWorldContentResponse,
     GetWorldRequest, GetWorldResponse, GetWorldsForUserRequest, GetWorldsForUserResponse,
-    LoadWorldPresetRequest, LoadWorldPresetResponse, WorldServiceClientImpl
+    LoadWorldPresetRequest, LoadWorldPresetResponse, UpdateWorldRequest, UpdateWorldResponse, WorldServiceClientImpl
 } from '../proto/world';
 import { rpc } from '../rpc';
 
@@ -18,18 +18,20 @@ export class WorldService {
         this.client = new WorldServiceClientImpl(rpc);
     }
 
-    async createWorld(world: World, user: User): Promise<CreateWorldResponse> {
-        const request: CreateWorldRequest = {
-            name: world.name,
-            description: world.description,
-            userId: user.id
-        };
+    async createWorld(world: World, userId: string): Promise<CreateWorldResponse> {
+        world.user = userId;
+        const request: CreateWorldRequest = { world: world.toDTO() };
         return await this.client.createWorld(request);
     }
 
     async getWorld(worldId: string): Promise<GetWorldResponse> {
         const request: GetWorldRequest = { worldId };
         return await this.client.getWorld(request);
+    }
+
+    async updateWorld(world: World): Promise<UpdateWorldResponse> {
+        const request: UpdateWorldRequest = { world: world.toDTO() };
+        return await this.client.updateWorld(request);
     }
 
     async getWorldsForUser(userId: string): Promise<GetWorldsForUserResponse> {

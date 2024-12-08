@@ -1,4 +1,6 @@
+import { Context } from "vm";
 import { Serializable } from "../decorator/serializable.decorator";
+import { SearchQuery } from "./search/SearchQuery";
 
 export abstract class ContentBase {
     @Serializable()
@@ -30,7 +32,7 @@ export abstract class ContentBase {
         throw new Error("Not implemented")
     }
 
-    public static async search(filter?: any): Promise<ContentBase[]> {
+    public static async search(filter: SearchQuery, context: Context): Promise<ContentBase[]> {
         throw new Error("Not implemented")
     }
 }

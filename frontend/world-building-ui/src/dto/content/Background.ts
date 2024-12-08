@@ -7,8 +7,22 @@ import { Serializable } from "../../decorator/serializable.decorator";
 import { Serializer } from "../../serialize/serializer";
 import { FormField } from "../../decorator/form-field.decorator";
 import { FieldComponentEnum } from "../../enum/FieldComponentEnum";
+import { EntityDisplay } from "../../decorator/entity-display.decorator";
+import { FilterOption } from "../../decorator/filter-option.decorator";
+import { DisplayField } from "../../decorator/display-field.decorator";
+import { SearchQuery } from "../../class/search/SearchQuery";
+import { Context } from "../../class/Context";
+import { ContentService } from "../../services/ContentService";
 
+@EntityDisplay({
+    title: 'Backgrounds',
+    defaultSort: 'name'
+})
 export class Background extends ContentBase {
+    @DisplayField({
+        order: 1
+    })
+    @FilterOption()
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter background name', required: true })
     @Serializable()
     name!: string; // Name of the background (e.g., "Highland Town Guard")
@@ -80,5 +94,11 @@ export class Background extends ContentBase {
     public static fromDTO(dto: BackgroundDTO): Background {
         const pastExperience = new Background();
         return Serializer.fromDTO(dto, pastExperience);
+    }
+
+    public static async search(filter: SearchQuery, context: Context): Promise<Background[]> {
+        const contentService = new ContentService<Background>();
+        const { results } = await contentService.searchContent('Background', filter, 1, 100, context);
+        return results as Background[];
     }
 }

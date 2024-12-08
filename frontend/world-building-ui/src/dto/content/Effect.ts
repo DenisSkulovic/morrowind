@@ -7,12 +7,29 @@ import { Serializer } from "../../serialize/serializer";
 import { FormField } from "../../decorator/form-field.decorator";
 import { FieldComponentEnum } from "../../enum/FieldComponentEnum";
 import { FormSelectOption } from "../../class/FormSelectOption";
+import { DisplayField } from '../../decorator/display-field.decorator';
+import { EntityDisplay } from '../../decorator/entity-display.decorator';
+import { FilterOption } from "../../decorator/filter-option.decorator";
+import { ContentService } from "../../services/ContentService";
+import { SearchQuery } from "../../class/search/SearchQuery";
+import { Context } from "../../class/Context";
 
+@EntityDisplay({
+    title: 'Effects',
+    defaultSort: 'name'
+})
 export class Effect extends TaggableContentBase {
+    @DisplayField({
+        order: 1,
+        displayName: 'Name'
+    })
+    @FilterOption()
     @Serializable()
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter effect name', required: true })
     name!: string;
 
+    @DisplayField({ order: 2 })
+    @FilterOption()
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
         label: 'Effect Type',
@@ -28,6 +45,8 @@ export class Effect extends TaggableContentBase {
     })
     type!: EffectTypeEnum; // "damage", "healing", "buff", "debuff", "resistance", etc.
 
+    @DisplayField({ order: 3 })
+    @FilterOption()
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
         label: 'Effect Target',
@@ -43,6 +62,8 @@ export class Effect extends TaggableContentBase {
     })
     target!: EffectTargetEnum; // "health", "stamina", "magic", etc.
 
+    @DisplayField({ order: 4 })
+    @FilterOption()
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
         label: 'Effect Mode',
@@ -58,6 +79,8 @@ export class Effect extends TaggableContentBase {
     })
     mode!: EffectModeEnum; // "instant", "gradual", "persistent"
 
+    @DisplayField({ order: 5 })
+    @FilterOption()
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
         label: 'Effect Element',
@@ -82,10 +105,10 @@ export class Effect extends TaggableContentBase {
         return Serializer.fromDTO(dto, effect);
     }
 
-    public static async search(filter?: any): Promise<Effect[]> {
-        // perform request to backend using the filter
-        // return array of options
-        return []
+    public static async search(filter: SearchQuery, context: Context): Promise<Effect[]> {
+        const contentService = new ContentService<Effect>();
+        const { results } = await contentService.searchContent('Effect', filter, 1, 100, context);
+        return results as Effect[];
     }
 
 }

@@ -6,23 +6,35 @@ import { FormField } from "../../decorator/form-field.decorator";
 import { FieldComponentEnum } from "../../enum/FieldComponentEnum";
 import { FormSelectOption } from "../../class/FormSelectOption";
 import { MemoryPool } from "./MemoryPool";
+import { DisplayField } from "../../decorator/display-field.decorator";
+import { EntityDisplay } from "../../decorator/entity-display.decorator";
+import { FilterOption } from "../../decorator/filter-option.decorator";
+import { SearchQuery } from "../../class/search/SearchQuery";
+import { Context } from "../../class/Context";
+import { ContentService } from "../../services/ContentService";
 
+@EntityDisplay({
+    title: 'Character Professions',
+    defaultSort: 'name'
+})
 export class CharacterProfession extends TaggableContentBase {
+    @DisplayField({ order: 1 })
+    @FilterOption()
+    @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter profession name', required: true })
+    @Serializable()
+    name!: string; // E.g., "Fisherman", "Kwama Egg Miner", "Imperial Soldier"
+
     @FormField({
         component: FieldComponentEnum.MULTI_SELECT_FIELD,
         label: 'Memory Pools',
-        search: async (filter): Promise<FormSelectOption[]> => {
-            return (await MemoryPool.search(filter)).map((item: MemoryPool) => {
+        search: async (filter, context): Promise<FormSelectOption[]> => {
+            return (await MemoryPool.search(filter, context)).map((item: MemoryPool) => {
                 return { id: item.id, label: item.name }
             })
         }
     })
     @Serializable()
     memoryPools!: string[]
-
-    @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter profession name', required: true })
-    @Serializable()
-    name!: string; // E.g., "Fisherman", "Kwama Egg Miner", "Imperial Soldier"
 
     public toDTO(): CharacterProfessionDTO {
         return Serializer.toDTO(this);
@@ -33,10 +45,10 @@ export class CharacterProfession extends TaggableContentBase {
         return Serializer.fromDTO(dto, chProfession);
     }
 
-    public static async search(filter?: any): Promise<CharacterProfession[]> {
-        // perform request to backend using the filter
-        // return array of options
-        return []
+    public static async search(filter: SearchQuery, context: Context): Promise<CharacterProfession[]> {
+        const contentService = new ContentService<CharacterProfession>();
+        const { results } = await contentService.searchContent('CharacterProfession', filter, 1, 100, context);
+        return results as CharacterProfession[];
     }
 }
 

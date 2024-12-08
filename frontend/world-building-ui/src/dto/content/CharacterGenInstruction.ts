@@ -9,8 +9,25 @@ import { FormField } from "../../decorator/form-field.decorator";
 import { FieldComponentEnum } from "../../enum/FieldComponentEnum";
 import { FormSelectOption } from "../../class/FormSelectOption";
 import { Birthsign } from "./Birthsign";
+import { DisplayField } from '../../decorator/display-field.decorator';
+import { EntityDisplay } from '../../decorator/entity-display.decorator';
+import { FilterOption } from "../../decorator/filter-option.decorator";
+import { Context } from "../../class/Context";
+import { ContentService } from "../../services/ContentService";
+import { SearchQuery } from "../../class/search/SearchQuery";
 
+@EntityDisplay({
+    title: 'Character Generation Instructions',
+    defaultSort: 'firstName'
+})
 export class CharacterGenInstruction extends ContentBase {
+    @DisplayField({
+        order: 1,
+        displayName: 'Name',
+        getValue: (inst: CharacterGenInstruction) => inst.firstName || inst.lastName ?
+            `${inst.firstName || ''} ${inst.lastName || ''}`.trim() : 'Unnamed'
+    })
+    @FilterOption()
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'First Name', placeholder: 'Enter first name', required: false })
     @Serializable()
     firstName?: string
@@ -19,6 +36,8 @@ export class CharacterGenInstruction extends ContentBase {
     @Serializable()
     lastName?: string
 
+    @DisplayField({ order: 2 })
+    @FilterOption()
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
         label: 'Gender',
@@ -34,11 +53,13 @@ export class CharacterGenInstruction extends ContentBase {
     })
     gender?: GenderEnum
 
+    @DisplayField({ order: 3 })
+    @FilterOption()
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
         label: 'Birthsign',
-        search: async (filter): Promise<FormSelectOption[]> => {
-            return (await Birthsign.search(filter)).map((item: Birthsign) => {
+        search: async (filter: SearchQuery, context: Context): Promise<FormSelectOption[]> => {
+            return (await Birthsign.search(filter, context)).map((item: Birthsign) => {
                 return { id: item.id, label: item.name }
             })
         }
@@ -62,6 +83,8 @@ export class CharacterGenInstruction extends ContentBase {
     @Serializable()
     birthDay?: number
 
+    @DisplayField({ order: 4 })
+    @FilterOption()
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Background Blueprint ID', placeholder: 'Enter background blueprint ID', required: true })
     @Serializable()
     backgroundBlueprintId!: string
@@ -80,6 +103,12 @@ export class CharacterGenInstruction extends ContentBase {
     public static fromDTO(dto: CharacterGenInstructionDTO): CharacterGenInstruction {
         const chGenInst = new CharacterGenInstruction();
         return Serializer.fromDTO(dto, chGenInst);
+    }
+
+    public static async search(filter: SearchQuery, context: Context): Promise<CharacterGenInstruction[]> {
+        const contentService = new ContentService<CharacterGenInstruction>();
+        const { results } = await contentService.searchContent('CharacterGenInstruction', filter, 1, 100, context);
+        return results as CharacterGenInstruction[];
     }
 }
 

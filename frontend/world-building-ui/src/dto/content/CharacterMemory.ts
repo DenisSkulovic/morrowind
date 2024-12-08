@@ -5,12 +5,26 @@ import { Serializable } from "../../decorator/serializable.decorator";
 import { Serializer } from "../../serialize/serializer";
 import { FormField } from "../../decorator/form-field.decorator";
 import { FieldComponentEnum } from "../../enum/FieldComponentEnum";
+import { DisplayField } from "../../decorator/display-field.decorator";
+import { EntityDisplay } from "../../decorator/entity-display.decorator";
+import { FilterOption } from "../../decorator/filter-option.decorator";
+import { ContentService } from "../../services/ContentService";
+import { Context } from "../../class/Context";
+import { SearchQuery } from "../../class/search/SearchQuery";
 
+@EntityDisplay({
+    title: 'Character Memories',
+    defaultSort: 'name'
+})
 export class CharacterMemory extends TaggableContentBase {
+    @DisplayField({ order: 1 })
+    @FilterOption()
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter name', required: true })
     @Serializable()
     name!: string;
 
+    @DisplayField({ order: 2 })
+    @FilterOption()
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Character', placeholder: 'Enter character', required: true })
     @Serializable()
     character!: string;
@@ -23,6 +37,8 @@ export class CharacterMemory extends TaggableContentBase {
     @Serializable({ serialize: serializeFactStatuses, deserialize: deserializeFactStatuses })
     factStatus?: FactStatus[];
 
+    @DisplayField({ order: 3 })
+    @FilterOption()
     @FormField({ component: FieldComponentEnum.NUMBER_FIELD, label: 'Importance', placeholder: 'Enter importance', required: true })
     @Serializable()
     importance!: number; // How significant this memory is (affects reinforcement)
@@ -50,5 +66,11 @@ export class CharacterMemory extends TaggableContentBase {
     public static fromDTO(dto: CharacterMemoryDTO): CharacterMemory {
         const characterMemory = new CharacterMemory();
         return Serializer.fromDTO(dto, characterMemory);
+    }
+
+    public static async search(filter: SearchQuery, context: Context): Promise<CharacterMemory[]> {
+        const contentService = new ContentService<CharacterMemory>();
+        const { results } = await contentService.searchContent('CharacterMemory', filter, 1, 100, context);
+        return results as CharacterMemory[];
     }
 }

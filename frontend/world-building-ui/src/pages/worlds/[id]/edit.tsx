@@ -3,34 +3,45 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../store/store';
 import { fetchWorlds, updateWorld } from '../../../store/slices/worldSlice';
 import { useRouter } from 'next/router';
+import { Account } from '../../../dto/Account';
+import { World } from '../../../dto/World';
 
 const EditWorldPage = () => {
     const router = useRouter();
     const { id } = router.query;
 
     const dispatch = useDispatch<AppDispatch>();
-    const { worlds } = useSelector((state: RootState) => state.worlds);
+    const { data: worlds } = useSelector((state: RootState) => state.worlds);
+    const world: World | undefined = worlds.find((w) => w.id === id);
+    if (!world) throw new Error('World not found');
 
-    const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
+    const account: Account | null = useSelector((state: RootState) => state.account.data);
+    if (!account) throw new Error('Account not found');
+    const userId: string = account.user;
+
+    const [name, setName] = useState(world.name || "");
+    const [description, setDescription] = useState(world.description || "");
 
     useEffect(() => {
         if (!id) return;
 
         if (worlds.length === 0) {
-            dispatch(fetchWorlds());
+            dispatch(fetchWorlds(userId));
         } else {
             const world = worlds.find((w) => w.id === id);
             if (world) {
                 setName(world.name);
-                setDescription(world.description);
+                setDescription(world.description || "");
             }
         }
     }, [id, worlds, dispatch]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        await dispatch(updateWorld({ id: id as string, name, description }));
+        const worldClone: World = World.fromDTO(world.toDTO());
+        worldClone.name = name;
+        worldClone.description = description;
+        await dispatch(updateWorld(worldClone));
         router.push('/worlds');
     };
 
