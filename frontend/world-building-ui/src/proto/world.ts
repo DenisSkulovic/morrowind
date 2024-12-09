@@ -6,7 +6,14 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { ContextDTO, PresetEnumDTO, presetEnumDTOFromJSON, presetEnumDTOToJSON, WorldDTO } from "./common";
+import {
+  ContextDTO,
+  PresetEnumDTO,
+  presetEnumDTOFromJSON,
+  presetEnumDTOToJSON,
+  SearchQueryDTO,
+  WorldDTO,
+} from "./common";
 
 export const protobufPackage = "world";
 
@@ -65,6 +72,19 @@ export interface LoadWorldPresetRequest {
 
 /** No fields required for a 200 status response */
 export interface LoadWorldPresetResponse {
+}
+
+export interface SearchWorldRequest {
+  entityName: string;
+  query: SearchQueryDTO | undefined;
+  context: ContextDTO | undefined;
+}
+
+export interface SearchWorldResponse {
+  worlds: WorldDTO[];
+  totalResults: number;
+  totalPages: number;
+  currentPage: number;
 }
 
 function createBaseUpdateWorldRequest(): UpdateWorldRequest {
@@ -866,12 +886,216 @@ export const LoadWorldPresetResponse: MessageFns<LoadWorldPresetResponse> = {
   },
 };
 
+function createBaseSearchWorldRequest(): SearchWorldRequest {
+  return { entityName: "", query: undefined, context: undefined };
+}
+
+export const SearchWorldRequest: MessageFns<SearchWorldRequest> = {
+  encode(message: SearchWorldRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.entityName !== "") {
+      writer.uint32(10).string(message.entityName);
+    }
+    if (message.query !== undefined) {
+      SearchQueryDTO.encode(message.query, writer.uint32(18).fork()).join();
+    }
+    if (message.context !== undefined) {
+      ContextDTO.encode(message.context, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SearchWorldRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSearchWorldRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.entityName = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.query = SearchQueryDTO.decode(reader, reader.uint32());
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.context = ContextDTO.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SearchWorldRequest {
+    return {
+      entityName: isSet(object.entityName) ? globalThis.String(object.entityName) : "",
+      query: isSet(object.query) ? SearchQueryDTO.fromJSON(object.query) : undefined,
+      context: isSet(object.context) ? ContextDTO.fromJSON(object.context) : undefined,
+    };
+  },
+
+  toJSON(message: SearchWorldRequest): unknown {
+    const obj: any = {};
+    if (message.entityName !== "") {
+      obj.entityName = message.entityName;
+    }
+    if (message.query !== undefined) {
+      obj.query = SearchQueryDTO.toJSON(message.query);
+    }
+    if (message.context !== undefined) {
+      obj.context = ContextDTO.toJSON(message.context);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SearchWorldRequest>, I>>(base?: I): SearchWorldRequest {
+    return SearchWorldRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SearchWorldRequest>, I>>(object: I): SearchWorldRequest {
+    const message = createBaseSearchWorldRequest();
+    message.entityName = object.entityName ?? "";
+    message.query = (object.query !== undefined && object.query !== null)
+      ? SearchQueryDTO.fromPartial(object.query)
+      : undefined;
+    message.context = (object.context !== undefined && object.context !== null)
+      ? ContextDTO.fromPartial(object.context)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseSearchWorldResponse(): SearchWorldResponse {
+  return { worlds: [], totalResults: 0, totalPages: 0, currentPage: 0 };
+}
+
+export const SearchWorldResponse: MessageFns<SearchWorldResponse> = {
+  encode(message: SearchWorldResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.worlds) {
+      WorldDTO.encode(v!, writer.uint32(10).fork()).join();
+    }
+    if (message.totalResults !== 0) {
+      writer.uint32(16).int32(message.totalResults);
+    }
+    if (message.totalPages !== 0) {
+      writer.uint32(24).int32(message.totalPages);
+    }
+    if (message.currentPage !== 0) {
+      writer.uint32(32).int32(message.currentPage);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SearchWorldResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSearchWorldResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.worlds.push(WorldDTO.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.totalResults = reader.int32();
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.totalPages = reader.int32();
+          continue;
+        }
+        case 4: {
+          if (tag !== 32) {
+            break;
+          }
+
+          message.currentPage = reader.int32();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SearchWorldResponse {
+    return {
+      worlds: globalThis.Array.isArray(object?.worlds) ? object.worlds.map((e: any) => WorldDTO.fromJSON(e)) : [],
+      totalResults: isSet(object.totalResults) ? globalThis.Number(object.totalResults) : 0,
+      totalPages: isSet(object.totalPages) ? globalThis.Number(object.totalPages) : 0,
+      currentPage: isSet(object.currentPage) ? globalThis.Number(object.currentPage) : 0,
+    };
+  },
+
+  toJSON(message: SearchWorldResponse): unknown {
+    const obj: any = {};
+    if (message.worlds?.length) {
+      obj.worlds = message.worlds.map((e) => WorldDTO.toJSON(e));
+    }
+    if (message.totalResults !== 0) {
+      obj.totalResults = Math.round(message.totalResults);
+    }
+    if (message.totalPages !== 0) {
+      obj.totalPages = Math.round(message.totalPages);
+    }
+    if (message.currentPage !== 0) {
+      obj.currentPage = Math.round(message.currentPage);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SearchWorldResponse>, I>>(base?: I): SearchWorldResponse {
+    return SearchWorldResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SearchWorldResponse>, I>>(object: I): SearchWorldResponse {
+    const message = createBaseSearchWorldResponse();
+    message.worlds = object.worlds?.map((e) => WorldDTO.fromPartial(e)) || [];
+    message.totalResults = object.totalResults ?? 0;
+    message.totalPages = object.totalPages ?? 0;
+    message.currentPage = object.currentPage ?? 0;
+    return message;
+  },
+};
+
 export interface WorldService {
-  createWorld(request: CreateWorldRequest): Promise<CreateWorldResponse>;
   getWorld(request: GetWorldRequest): Promise<GetWorldResponse>;
+  createWorld(request: CreateWorldRequest): Promise<CreateWorldResponse>;
   updateWorld(request: UpdateWorldRequest): Promise<UpdateWorldResponse>;
-  getWorldsForUser(request: GetWorldsForUserRequest): Promise<GetWorldsForUserResponse>;
   deleteWorld(request: DeleteWorldRequest): Promise<DeleteWorldResponse>;
+  search(request: SearchWorldRequest): Promise<SearchWorldResponse>;
   dropWorldContent(request: DropWorldContentRequest): Promise<DropWorldContentResponse>;
   loadWorldPreset(request: LoadWorldPresetRequest): Promise<LoadWorldPresetResponse>;
 }
@@ -883,24 +1107,24 @@ export class WorldServiceClientImpl implements WorldService {
   constructor(rpc: Rpc, opts?: { service?: string }) {
     this.service = opts?.service || WorldServiceServiceName;
     this.rpc = rpc;
-    this.createWorld = this.createWorld.bind(this);
     this.getWorld = this.getWorld.bind(this);
+    this.createWorld = this.createWorld.bind(this);
     this.updateWorld = this.updateWorld.bind(this);
-    this.getWorldsForUser = this.getWorldsForUser.bind(this);
     this.deleteWorld = this.deleteWorld.bind(this);
+    this.search = this.search.bind(this);
     this.dropWorldContent = this.dropWorldContent.bind(this);
     this.loadWorldPreset = this.loadWorldPreset.bind(this);
   }
-  createWorld(request: CreateWorldRequest): Promise<CreateWorldResponse> {
-    const data = CreateWorldRequest.encode(request).finish();
-    const promise = this.rpc.request(this.service, "createWorld", data);
-    return promise.then((data) => CreateWorldResponse.decode(new BinaryReader(data)));
-  }
-
   getWorld(request: GetWorldRequest): Promise<GetWorldResponse> {
     const data = GetWorldRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "getWorld", data);
     return promise.then((data) => GetWorldResponse.decode(new BinaryReader(data)));
+  }
+
+  createWorld(request: CreateWorldRequest): Promise<CreateWorldResponse> {
+    const data = CreateWorldRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "createWorld", data);
+    return promise.then((data) => CreateWorldResponse.decode(new BinaryReader(data)));
   }
 
   updateWorld(request: UpdateWorldRequest): Promise<UpdateWorldResponse> {
@@ -909,16 +1133,16 @@ export class WorldServiceClientImpl implements WorldService {
     return promise.then((data) => UpdateWorldResponse.decode(new BinaryReader(data)));
   }
 
-  getWorldsForUser(request: GetWorldsForUserRequest): Promise<GetWorldsForUserResponse> {
-    const data = GetWorldsForUserRequest.encode(request).finish();
-    const promise = this.rpc.request(this.service, "getWorldsForUser", data);
-    return promise.then((data) => GetWorldsForUserResponse.decode(new BinaryReader(data)));
-  }
-
   deleteWorld(request: DeleteWorldRequest): Promise<DeleteWorldResponse> {
     const data = DeleteWorldRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "deleteWorld", data);
     return promise.then((data) => DeleteWorldResponse.decode(new BinaryReader(data)));
+  }
+
+  search(request: SearchWorldRequest): Promise<SearchWorldResponse> {
+    const data = SearchWorldRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "search", data);
+    return promise.then((data) => SearchWorldResponse.decode(new BinaryReader(data)));
   }
 
   dropWorldContent(request: DropWorldContentRequest): Promise<DropWorldContentResponse> {

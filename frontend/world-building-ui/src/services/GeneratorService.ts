@@ -1,13 +1,15 @@
 import { GeneratorServiceClientImpl, GenerateItemsRequest, GenerateItemsResponse, GenerateCharactersRequestCustom, GenerateCharactersRequestDB, GenerateCharactersResponse, GenerateCharacterGroupsRequest, GenerateCharacterGroupsResponse } from '../proto/generator';
 import { DataSourceEnumDTO, GenerationInstructionDTO, CharacterGenInstructionDTO, CharacterGroupGenInstructionDTO, ContextDTO } from '../proto/common';
 import { rpc } from '../rpc';
-import { Context } from '../types';
+import { Context } from '../class/Context';
 
 export class GeneratorService {
     private client: GeneratorServiceClientImpl;
 
     constructor() {
-        this.client = new GeneratorServiceClientImpl(rpc);
+        this.client = new GeneratorServiceClientImpl(rpc, {
+            service: "GeneratorService"
+        });
     }
 
     async generateItems(instructions: GenerationInstructionDTO[], context: Context): Promise<GenerateItemsResponse> {

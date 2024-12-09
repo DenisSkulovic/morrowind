@@ -966,7 +966,7 @@ message AccountDTO {
     string username = 2;
     string email = 3;
     string role = 4;
-    optional UserDTO user = 5;
+    string user = 5;
     optional PreferencesDTO preferences = 6;
 }
 // #######################################################################################
@@ -1024,6 +1024,31 @@ message CampaignsDTO {
 // #######################################################################################
 
 
+
+
+message SearchQueryDTO {
+    repeated QueryFilterDTO filters = 1;
+    SortByDTO sortBy = 2;
+    int32 page = 3;
+    int32 pageSize = 4;
+}
+
+message QueryFilterDTO {
+    string field = 1;
+    string operator = 2; // eq, neq, gt, gte, lt, lte, contains, regex
+    QueryFilterValueDTO value = 3;
+}
+
+message QueryFilterValueDTO {
+    optional string stringValue = 1;
+    optional int32 numberValue = 2;
+    optional bool boolValue = 3;
+}
+
+message SortByDTO {
+    string field = 1;
+    string direction = 2;
+}
 
 
 

@@ -1,32 +1,34 @@
 import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource, EntityTarget, FindOptionsWhere, Repository } from 'typeorm';
-import { CONTENT_ENTITY_MAP, isParentEntity } from '../../CONTENT_ENTITY_MAP';
+import { CONTENT_ENTITY_MAP } from '../../CONTENT_ENTITY_MAP';
 import { DataSourceEnum } from '../../common/enum/DataSourceEnum';
 import { ContentBase } from '../../ContentBase';
 import { MakeSureWorldIsNotFrozen } from '../../decorator/MakeSureWorldIsNotFrozen';
 import { WorldService } from '../world/world.service';
-import { TemporarilyFreezeWorld } from '../../decorator/TemporarilyFreezeWorld';
-import { CampaignService } from '../campaign/campaign.service';
+import { ContentStat } from '../../class/ContentStat';
+import { SearchQuery } from '../../class/search/SearchQuery';
+import { Context } from '../../class/Context';
+import { ContentStatDTO } from '../../proto/content';
+import { World } from '../world/entities/World';
 
-export interface IContentService {
-    create(entityName: string, data: any, source: DataSourceEnum): Promise<ContentBase>
-}
+type DynamicWhere<T> = FindOptionsWhere<T> & {
+    [key: string]: any;
+};
 
 @Injectable()
-export class ContentService<T extends ContentBase> implements IContentService {
+export class ContentService<T extends ContentBase> {
     constructor(
         @InjectDataSource(DataSourceEnum.DATA_SOURCE_WORLD) private readonly worldDataSource: DataSource,
         @InjectDataSource(DataSourceEnum.DATA_SOURCE_CAMPAIGN) private readonly campaignDataSource: DataSource,
         @Inject(forwardRef(() => WorldService)) private worldService: WorldService,
-        @Inject(forwardRef(() => CampaignService)) private campaignService: CampaignService,
     ) { }
 
     private getDataSource(source: DataSourceEnum): DataSource {
         return source === DataSourceEnum.DATA_SOURCE_WORLD ? this.worldDataSource : this.campaignDataSource;
     }
 
-    getRepository(entityName: string, source: DataSourceEnum): Repository<T> {
+    public getRepository(entityName: string, source: DataSourceEnum): Repository<T> {
         const entity: EntityTarget<T> = CONTENT_ENTITY_MAP[entityName] as EntityTarget<T>;
         if (!entity) {
             throw new Error(`Entity "${entityName}" not found in CONTENT_ENTITY_MAP.`);
@@ -34,98 +36,109 @@ export class ContentService<T extends ContentBase> implements IContentService {
         return this.getDataSource(source).getRepository(entity);
     }
 
-    async create(entityName: string, data: any, source: DataSourceEnum): Promise<any> {
+    async create(entityName: string, entity: T, source: DataSourceEnum): Promise<any> {
         const repository = this.getRepository(entityName, source);
-        const entity = repository.create(data);
         return await repository.save(entity);
     }
 
-
-
-
-    /**
-     * Upserts a single blueprint into the database.
-     */
-    @MakeSureWorldIsNotFrozen("worldId", "source")
-    public async upsertBlueprint(
-        worldId: string,
-        source: DataSourceEnum,
-        blueprintData: Partial<T>
-    ): Promise<T> {
-        // Validate input data
-        if (!blueprintData.id) throw new Error("Blueprint must have an ID.");
-        if (!blueprintData.targetEntity) throw new Error("'targetEntity' was not present on the imported blueprint.");
-
-        // Fetch the world and validate existence
-        const world = await this.worldService.getWorld(worldId);
-        if (!world) throw new Error(`World with ID ${worldId} not found.`);
-
-        // Get the appropriate repository for the target entity
-        const blueprintRepository: Repository<T> = this.getRepository(blueprintData.targetEntity, source);
-
-        // Check for an existing blueprint in the repository
-        const existingBlueprint = await blueprintRepository.findOne({ where: { id: blueprintData.id } as FindOptionsWhere<T> });
-        const existingBlueprintString = JSON.stringify(existingBlueprint) || "";
-        const isPreexisting = !!existingBlueprint;
-
-        // Create or update the blueprint entity
-        const blueprintToSave = isPreexisting
-            ? Object.assign(existingBlueprint!, blueprintData) // Update existing blueprint
-            : blueprintRepository.create(blueprintData as T); // Create a new blueprint
-
-        // Check if the blueprint has changed
-        const isChanged = isPreexisting && JSON.stringify(blueprintToSave) !== existingBlueprintString;
-
-        // If nothing has changed and the blueprint already exists, return it as-is
-        if (isPreexisting && !isChanged) return blueprintToSave;
-
-        // Save the new or updated blueprint to the database
-        return await blueprintRepository.save(blueprintToSave);
+    async update(entityName: string, entity: T, context: Context): Promise<any> {
+        const repository = this.getRepository(entityName, DataSourceEnum.DATA_SOURCE_WORLD);
+        return await repository.save(entity);
     }
 
-
-
-    /**
-     * Deletes a blueprint from the database.
-     */
-    @MakeSureWorldIsNotFrozen("worldId", "source")
-    public async deleteBlueprint(
-        blueprintId: string,
-        source: DataSourceEnum,
-        targetEntity: string
-    ): Promise<void> {
-        const blueprintRepository: Repository<T> = this.getRepository(targetEntity, source);
-        const blueprint = await blueprintRepository.findOne({ where: { id: blueprintId } as FindOptionsWhere<T> });
-        if (!blueprint) throw new Error(`Blueprint with ID ${blueprintId} not found`);
-        await blueprintRepository.remove(blueprint);
+    async delete(entityName: string, id: string, context: Context): Promise<void> {
+        const repository = this.getRepository(entityName, DataSourceEnum.DATA_SOURCE_WORLD);
+        await repository.delete(id);
     }
+    async search(entityName: string, query: SearchQuery, context: Context): Promise<any> {
+        const repository = this.getRepository(entityName, DataSourceEnum.DATA_SOURCE_WORLD);
 
+        // Build where clause from query filters
+        const where: any = {};
+        if (query.filters) {
+            for (const filter of query.filters) {
+                where[filter.field] = {};
+                switch (filter.operator) {
+                    case 'eq':
+                        where[filter.field] = filter.value;
+                        break;
+                    case 'neq':
+                        where[filter.field] = { not: filter.value };
+                        break;
+                    case 'gt':
+                        where[filter.field] = { gt: filter.value };
+                        break;
+                    case 'gte':
+                        where[filter.field] = { gte: filter.value };
+                        break;
+                    case 'lt':
+                        where[filter.field] = { lt: filter.value };
+                        break;
+                    case 'lte':
+                        where[filter.field] = { lte: filter.value };
+                        break;
+                    case 'contains':
+                        where[filter.field] = { contains: filter.value };
+                        break;
+                    case 'regex':
+                        where[filter.field] = { regex: filter.value };
+                        break;
+                }
+            }
 
+            // Build order options from sortBy
+            const order: any = {};
+            if (query.sortBy) {
+                order[query.sortBy.field] = query.sortBy.direction;
+            }
 
-    /**
-     * Searches blueprints in the database with pagination.
-     */
-    @MakeSureWorldIsNotFrozen("worldId", "source")
-    public async searchBlueprints(
-        targetEntity: string,
-        source: DataSourceEnum,
-        worldId: string,
-        searchCriteria: Partial<ContentBase>,
-        page: number,
-        limit: number
-    ): Promise<ContentBase[]> {
-        const blueprintRepository: Repository<T> = this.getRepository(targetEntity, source);
-        const queryBuilder = blueprintRepository.createQueryBuilder("content")
-            .where("content.worldId = :worldId", { worldId });
+            const [results, total] = await repository.findAndCount({
+                where,
+                order,
+                skip: (query.page - 1) * query.pageSize,
+                take: query.pageSize
+            });
 
-        for (const [key, value] of Object.entries(searchCriteria)) {
-            queryBuilder.andWhere(`content.${key} LIKE :${key}`, { [key]: `%${value}%` });
+            return {
+                results,
+                totalResults: total,
+                totalPages: Math.ceil(total / query.pageSize),
+                currentPage: query.page
+            };
         }
-
-        return queryBuilder
-            .skip((page - 1) * limit)
-            .take(limit)
-            .getMany();
     }
 
+    async createBulk(entityName: string, entities: T[], source: DataSourceEnum): Promise<T[]> {
+        const repository = this.getRepository(entityName, source);
+        return await repository.save(entities);
+    }
+
+    async updateBulk(entityName: string, entities: T[], context: Context): Promise<T[]> {
+        const repository = this.getRepository(entityName, DataSourceEnum.DATA_SOURCE_WORLD);
+        return await repository.save(entities);
+    }
+
+    async deleteBulk(entityName: string, ids: string[], context: Context): Promise<void> {
+        const repository = this.getRepository(entityName, DataSourceEnum.DATA_SOURCE_WORLD);
+        await repository.delete(ids);
+    }
+    async getStats(entityNames: string[], context: Context): Promise<ContentStatDTO[]> {
+        if (!context.world) throw new Error('World is required');
+        const stats: ContentStatDTO[] = [];
+        for (const entityName of entityNames) {
+            const repository = this.getRepository(entityName, DataSourceEnum.DATA_SOURCE_WORLD);
+            const count = await repository.count({
+                where: {
+                    world: { id: context.world.id }
+                } as FindOptionsWhere<T>
+            });
+            stats.push({
+                title: entityName,
+                type: entityName,
+                count: count,
+                icon: ''
+            });
+        }
+        return stats;
+    }
 }

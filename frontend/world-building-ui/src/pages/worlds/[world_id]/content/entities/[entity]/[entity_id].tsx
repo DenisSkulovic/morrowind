@@ -3,64 +3,56 @@ import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import ContentForm from '../../../../../../components/entity/ContentForm';
 import { createContent } from '../../../../../../store/slices/contentSlice';
-import { Character } from '../../../../../../dto/content/Character';
-import { ItemSet } from '../../../../../../dto/content/ItemSet';
-import { Religion } from '../../../../../../dto/content/Religion';
 import { ContentBase } from '../../../../../../class/ContentBase';
 import { Context } from '../../../../../../class/Context';
 import { User } from '../../../../../../dto/User';
 import { World } from '../../../../../../dto/World';
+import { CONTENT_ENTITY_MAP } from '../../../../../../CONTENT_ENTITY_MAP';
+import { ClassConstructor } from '../../../../../../types';
 
-// Map of entity types to their classes
-const entityClasses: { [key: string]: typeof ContentBase } = {
-    character: Character,
-    itemSet: ItemSet,
-    religion: Religion,
-    // Add other entity types here
-};
 
 const EntityPage = () => {
     const router = useRouter();
-    const { id, type } = router.query;
+    const { entity_id, targetEntity } = router.query;
     const dispatch = useDispatch();
-    const [entityClass, setEntityClass] = useState<typeof ContentBase | null>(null);
+    const [entityClass, setEntityClass] = useState<ClassConstructor<ContentBase> | null>(null);
     const [initialData, setInitialData] = useState<any>({});
 
     // Get the entity class based on the type parameter
     useEffect(() => {
-        if (type && typeof type === 'string') {
-            const EntityClass = entityClasses[type.toLowerCase()];
+        if (targetEntity && typeof targetEntity === 'string') {
+            const EntityClass: ClassConstructor<ContentBase> = CONTENT_ENTITY_MAP[targetEntity];
             if (EntityClass) {
                 setEntityClass(EntityClass);
             } else {
-                console.error(`Unknown entity type: ${type}`);
+                console.error(`Unknown entity type: ${targetEntity}`);
                 router.push('/dashboard');
             }
         }
-    }, [type]);
+    }, [targetEntity]);
 
     // Fetch initial data if editing existing entity
     useEffect(() => {
-        if (id && entityClass) {
+        if (entity_id && entityClass) {
             // TODO: Add fetch logic when implementing edit functionality
         }
-    }, [id, entityClass]);
+    }, [entity_id, entityClass]);
 
-    const handleSubmit = async (data: any) => {
+    const handleSubmit = async (data: ContentBase) => {
         try {
-            if (!type) return;
+            if (!targetEntity) return;
 
-            await dispatch(createContent({
-                entityName: type.toString(),
+            await createContent({
+                entityName: targetEntity.toString(),
                 contentBody: data,
                 context: new Context(
                     { id: account.user } as User,
                     { id: world.id } as World,
                 )
-            }));
+            });
 
             // Redirect to the entity list page
-            router.push(`/content/${type}`);
+            router.push(`/content/${targetEntity}`);
         } catch (error) {
             console.error('Failed to save entity:', error);
             // TODO: Add error handling UI
@@ -73,7 +65,7 @@ const EntityPage = () => {
 
     return (
         <div>
-            <h1>{id ? `Edit ${type}` : `Create ${type}`}</h1>
+            <h1>{entity_id ? `Edit ${targetEntity}` : `Create ${targetEntity}`}</h1>
             <ContentForm
                 entityClass={entityClass}
                 onSubmit={handleSubmit}

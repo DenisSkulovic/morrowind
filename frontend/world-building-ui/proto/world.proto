@@ -5,11 +5,11 @@ package world;
 import "common.proto";
 
 service WorldService {
-    rpc createWorld (CreateWorldRequest) returns (CreateWorldResponse);
     rpc getWorld (GetWorldRequest) returns (GetWorldResponse);
+    rpc createWorld (CreateWorldRequest) returns (CreateWorldResponse);
     rpc updateWorld (UpdateWorldRequest) returns (UpdateWorldResponse);
-    rpc getWorldsForUser (GetWorldsForUserRequest) returns (GetWorldsForUserResponse);
     rpc deleteWorld (DeleteWorldRequest) returns (DeleteWorldResponse);
+    rpc search (SearchWorldRequest) returns (SearchWorldResponse);
     rpc dropWorldContent (DropWorldContentRequest) returns (DropWorldContentResponse);
     rpc loadWorldPreset (LoadWorldPresetRequest) returns (LoadWorldPresetResponse);
 }
@@ -69,4 +69,18 @@ message LoadWorldPresetRequest {
 
 message LoadWorldPresetResponse {
     // No fields required for a 200 status response
+}
+
+message SearchWorldRequest {
+    string entityName = 1;
+    common.SearchQueryDTO query = 2;
+    common.ContextDTO context = 3;
+}
+
+
+message SearchWorldResponse {
+    repeated common.WorldDTO worlds = 1;
+    int32 totalResults = 2;
+    int32 totalPages = 3;
+    int32 currentPage = 4;
 }

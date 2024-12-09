@@ -1,12 +1,12 @@
-import { DataSource, FindOptionsWhere, Repository } from "typeorm";
+import { DataSource, Repository } from "typeorm";
 import { Inject, Injectable } from "@nestjs/common";
 import { ContentBase } from "../../../ContentBase";
 import { InjectDataSource } from "@nestjs/typeorm";
 import { DataSourceEnum } from "../../../common/enum/DataSourceEnum";
 import { IdAndQuant, BlueprintGenInstruction_Gaussian, BlueprintSetCombinator, GenerationInstruction } from "../../../class/GenerationInstruction";
-import { Context, EntityConstructor } from "../../../types";
 import { InstructionProcessorService } from "../instruction/instruction-processor.service";
-import { ContextDTO } from "../../../proto/common";
+import { Context } from "../../../class/Context";
+import { EntityConstructor } from "../../../types";
 
 
 export type BlueprintsCache = {

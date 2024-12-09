@@ -2,9 +2,14 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { World } from '../../dto/World';
 import { RequestStatusEnum } from '../../enum/RequestStatusEnum';
 import { WorldService } from '../../services/WorldService';
+import { SearchQuery } from '../../class/search/SearchQuery';
+import { QueryFilter } from '../../class/search/QueryFilter';
+import { WorldDTO } from '../../proto/common';
+import { Context } from '../../class/Context';
+import { User } from '../../dto/User';
 
 interface WorldState {
-    data: World[];
+    data: WorldDTO[];
     status: RequestStatusEnum;
     error: string | null;
 };
@@ -19,8 +24,20 @@ const initialState: WorldState = {
 export const fetchWorlds = createAsyncThunk(
     'worlds/fetchWorlds',
     async (userId: string) => {
+        console.log(`[fetchWorlds] userId:`, userId)
+        const user = new User();
+        user.id = userId;
+        const context = new Context(user);
         const worldService = new WorldService();
-        const response = await worldService.getWorldsForUser(userId);
+        const query: SearchQuery = new SearchQuery(
+            1,
+            100,
+            [
+                new QueryFilter("user", "eq", userId)
+            ]);
+        console.log(`before`)
+        const response = await worldService.search("World", query, context);
+        console.log(`after`)
         return response.worlds.map(world => World.fromDTO(world));
     }
 );
@@ -68,14 +85,17 @@ const worldSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(fetchWorlds.pending, (state) => {
+                console.log(`[fetchWorlds.pending] state:`, state)
                 state.status = RequestStatusEnum.LOADING;
                 state.error = null;
             })
             .addCase(fetchWorlds.fulfilled, (state, action) => {
+                console.log(`[fetchWorlds.fulfilled] action.payload:`, action.payload)
                 state.status = RequestStatusEnum.SUCCEEDED;
-                state.data = action.payload;
+                state.data = action.payload.map(world => world.toDTO());
             })
             .addCase(fetchWorlds.rejected, (state, action) => {
+                console.log(`[fetchWorlds.rejected] action.error:`, action.error)
                 state.status = RequestStatusEnum.FAILED;
                 state.error = action.error.message || 'Failed to fetch worlds';
             })
@@ -85,7 +105,7 @@ const worldSlice = createSlice({
             })
             .addCase(createWorld.fulfilled, (state, action) => {
                 state.status = RequestStatusEnum.SUCCEEDED;
-                state.data.push(action.payload);
+                state.data.push(action.payload.toDTO());
             })
             .addCase(createWorld.rejected, (state, action) => {
                 state.status = RequestStatusEnum.FAILED;

@@ -10,7 +10,9 @@ export class AccountService {
     private client: AccountServiceClientImpl;
 
     constructor() {
-        this.client = new AccountServiceClientImpl(rpc);
+        this.client = new AccountServiceClientImpl(rpc, {
+            service: "AccountService"
+        });
     }
 
     async createAccountAndUser(username: string, passwordHash: string, email: string, role: string): Promise<CreateAccountResponse> {

@@ -36,6 +36,7 @@ import {
   RaceDTO,
   ReligionDTO,
   ResistanceDTO,
+  SearchQueryDTO,
   SkillDTO,
   SkillSetDTO,
   StatusDTO,
@@ -46,6 +47,79 @@ import {
 
 export const protobufPackage = "content";
 
+export interface UpdateContentRequest {
+  contentBody: ContentBodyDTO | undefined;
+  entityName: string;
+  context: ContextDTO | undefined;
+}
+
+export interface UpdateContentResponse {
+  contentBody: ContentBodyDTO | undefined;
+}
+
+export interface DeleteContentRequest {
+  entityName: string;
+  id: string;
+  context: ContextDTO | undefined;
+}
+
+export interface DeleteContentResponse {
+  success: boolean;
+}
+
+export interface SearchContentRequest {
+  entityName: string;
+  query: SearchQueryDTO | undefined;
+  context: ContextDTO | undefined;
+}
+
+export interface SearchContentResponse {
+  results: ContentBodyDTO[];
+  totalResults: number;
+  totalPages: number;
+  currentPage: number;
+}
+
+export interface GetContentStatsRequest {
+  context: ContextDTO | undefined;
+  entityNames: string[];
+}
+
+export interface GetContentStatsResponse {
+  stats: ContentStatDTO[];
+}
+
+export interface ContentStatDTO {
+  title: string;
+  type: string;
+  count: number;
+  icon: string;
+}
+
+export interface CreateBulkContentRequest {
+  requests: CreateContentRequest[];
+}
+
+export interface CreateBulkContentResponse {
+  responses: CreateContentResponse[];
+}
+
+export interface UpdateBulkContentRequest {
+  requests: UpdateContentRequest[];
+}
+
+export interface UpdateBulkContentResponse {
+  responses: UpdateContentResponse[];
+}
+
+export interface DeleteBulkContentRequest {
+  requests: DeleteContentRequest[];
+}
+
+export interface DeleteBulkContentResponse {
+  responses: DeleteContentResponse[];
+}
+
 export interface CreateContentRequest {
   source: DataSourceEnumDTO;
   contentBody: ContentBodyDTO | undefined;
@@ -54,6 +128,7 @@ export interface CreateContentRequest {
 }
 
 export interface CreateContentResponse {
+  contentBody: ContentBodyDTO | undefined;
 }
 
 export interface ContentBodyDTO {
@@ -89,6 +164,1140 @@ export interface ContentBodyDTO {
   Status?: StatusDTO | undefined;
   Tag?: TagDTO | undefined;
 }
+
+function createBaseUpdateContentRequest(): UpdateContentRequest {
+  return { contentBody: undefined, entityName: "", context: undefined };
+}
+
+export const UpdateContentRequest: MessageFns<UpdateContentRequest> = {
+  encode(message: UpdateContentRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.contentBody !== undefined) {
+      ContentBodyDTO.encode(message.contentBody, writer.uint32(10).fork()).join();
+    }
+    if (message.entityName !== "") {
+      writer.uint32(18).string(message.entityName);
+    }
+    if (message.context !== undefined) {
+      ContextDTO.encode(message.context, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateContentRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateContentRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.contentBody = ContentBodyDTO.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.entityName = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.context = ContextDTO.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateContentRequest {
+    return {
+      contentBody: isSet(object.contentBody) ? ContentBodyDTO.fromJSON(object.contentBody) : undefined,
+      entityName: isSet(object.entityName) ? globalThis.String(object.entityName) : "",
+      context: isSet(object.context) ? ContextDTO.fromJSON(object.context) : undefined,
+    };
+  },
+
+  toJSON(message: UpdateContentRequest): unknown {
+    const obj: any = {};
+    if (message.contentBody !== undefined) {
+      obj.contentBody = ContentBodyDTO.toJSON(message.contentBody);
+    }
+    if (message.entityName !== "") {
+      obj.entityName = message.entityName;
+    }
+    if (message.context !== undefined) {
+      obj.context = ContextDTO.toJSON(message.context);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpdateContentRequest>, I>>(base?: I): UpdateContentRequest {
+    return UpdateContentRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpdateContentRequest>, I>>(object: I): UpdateContentRequest {
+    const message = createBaseUpdateContentRequest();
+    message.contentBody = (object.contentBody !== undefined && object.contentBody !== null)
+      ? ContentBodyDTO.fromPartial(object.contentBody)
+      : undefined;
+    message.entityName = object.entityName ?? "";
+    message.context = (object.context !== undefined && object.context !== null)
+      ? ContextDTO.fromPartial(object.context)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseUpdateContentResponse(): UpdateContentResponse {
+  return { contentBody: undefined };
+}
+
+export const UpdateContentResponse: MessageFns<UpdateContentResponse> = {
+  encode(message: UpdateContentResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.contentBody !== undefined) {
+      ContentBodyDTO.encode(message.contentBody, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateContentResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateContentResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.contentBody = ContentBodyDTO.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateContentResponse {
+    return { contentBody: isSet(object.contentBody) ? ContentBodyDTO.fromJSON(object.contentBody) : undefined };
+  },
+
+  toJSON(message: UpdateContentResponse): unknown {
+    const obj: any = {};
+    if (message.contentBody !== undefined) {
+      obj.contentBody = ContentBodyDTO.toJSON(message.contentBody);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpdateContentResponse>, I>>(base?: I): UpdateContentResponse {
+    return UpdateContentResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpdateContentResponse>, I>>(object: I): UpdateContentResponse {
+    const message = createBaseUpdateContentResponse();
+    message.contentBody = (object.contentBody !== undefined && object.contentBody !== null)
+      ? ContentBodyDTO.fromPartial(object.contentBody)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseDeleteContentRequest(): DeleteContentRequest {
+  return { entityName: "", id: "", context: undefined };
+}
+
+export const DeleteContentRequest: MessageFns<DeleteContentRequest> = {
+  encode(message: DeleteContentRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.entityName !== "") {
+      writer.uint32(10).string(message.entityName);
+    }
+    if (message.id !== "") {
+      writer.uint32(18).string(message.id);
+    }
+    if (message.context !== undefined) {
+      ContextDTO.encode(message.context, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DeleteContentRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteContentRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.entityName = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.context = ContextDTO.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteContentRequest {
+    return {
+      entityName: isSet(object.entityName) ? globalThis.String(object.entityName) : "",
+      id: isSet(object.id) ? globalThis.String(object.id) : "",
+      context: isSet(object.context) ? ContextDTO.fromJSON(object.context) : undefined,
+    };
+  },
+
+  toJSON(message: DeleteContentRequest): unknown {
+    const obj: any = {};
+    if (message.entityName !== "") {
+      obj.entityName = message.entityName;
+    }
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    if (message.context !== undefined) {
+      obj.context = ContextDTO.toJSON(message.context);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeleteContentRequest>, I>>(base?: I): DeleteContentRequest {
+    return DeleteContentRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<DeleteContentRequest>, I>>(object: I): DeleteContentRequest {
+    const message = createBaseDeleteContentRequest();
+    message.entityName = object.entityName ?? "";
+    message.id = object.id ?? "";
+    message.context = (object.context !== undefined && object.context !== null)
+      ? ContextDTO.fromPartial(object.context)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseDeleteContentResponse(): DeleteContentResponse {
+  return { success: false };
+}
+
+export const DeleteContentResponse: MessageFns<DeleteContentResponse> = {
+  encode(message: DeleteContentResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.success !== false) {
+      writer.uint32(8).bool(message.success);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DeleteContentResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteContentResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 8) {
+            break;
+          }
+
+          message.success = reader.bool();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteContentResponse {
+    return { success: isSet(object.success) ? globalThis.Boolean(object.success) : false };
+  },
+
+  toJSON(message: DeleteContentResponse): unknown {
+    const obj: any = {};
+    if (message.success !== false) {
+      obj.success = message.success;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeleteContentResponse>, I>>(base?: I): DeleteContentResponse {
+    return DeleteContentResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<DeleteContentResponse>, I>>(object: I): DeleteContentResponse {
+    const message = createBaseDeleteContentResponse();
+    message.success = object.success ?? false;
+    return message;
+  },
+};
+
+function createBaseSearchContentRequest(): SearchContentRequest {
+  return { entityName: "", query: undefined, context: undefined };
+}
+
+export const SearchContentRequest: MessageFns<SearchContentRequest> = {
+  encode(message: SearchContentRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.entityName !== "") {
+      writer.uint32(10).string(message.entityName);
+    }
+    if (message.query !== undefined) {
+      SearchQueryDTO.encode(message.query, writer.uint32(18).fork()).join();
+    }
+    if (message.context !== undefined) {
+      ContextDTO.encode(message.context, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SearchContentRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSearchContentRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.entityName = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.query = SearchQueryDTO.decode(reader, reader.uint32());
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.context = ContextDTO.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SearchContentRequest {
+    return {
+      entityName: isSet(object.entityName) ? globalThis.String(object.entityName) : "",
+      query: isSet(object.query) ? SearchQueryDTO.fromJSON(object.query) : undefined,
+      context: isSet(object.context) ? ContextDTO.fromJSON(object.context) : undefined,
+    };
+  },
+
+  toJSON(message: SearchContentRequest): unknown {
+    const obj: any = {};
+    if (message.entityName !== "") {
+      obj.entityName = message.entityName;
+    }
+    if (message.query !== undefined) {
+      obj.query = SearchQueryDTO.toJSON(message.query);
+    }
+    if (message.context !== undefined) {
+      obj.context = ContextDTO.toJSON(message.context);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SearchContentRequest>, I>>(base?: I): SearchContentRequest {
+    return SearchContentRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SearchContentRequest>, I>>(object: I): SearchContentRequest {
+    const message = createBaseSearchContentRequest();
+    message.entityName = object.entityName ?? "";
+    message.query = (object.query !== undefined && object.query !== null)
+      ? SearchQueryDTO.fromPartial(object.query)
+      : undefined;
+    message.context = (object.context !== undefined && object.context !== null)
+      ? ContextDTO.fromPartial(object.context)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseSearchContentResponse(): SearchContentResponse {
+  return { results: [], totalResults: 0, totalPages: 0, currentPage: 0 };
+}
+
+export const SearchContentResponse: MessageFns<SearchContentResponse> = {
+  encode(message: SearchContentResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.results) {
+      ContentBodyDTO.encode(v!, writer.uint32(10).fork()).join();
+    }
+    if (message.totalResults !== 0) {
+      writer.uint32(16).int32(message.totalResults);
+    }
+    if (message.totalPages !== 0) {
+      writer.uint32(24).int32(message.totalPages);
+    }
+    if (message.currentPage !== 0) {
+      writer.uint32(32).int32(message.currentPage);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SearchContentResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSearchContentResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.results.push(ContentBodyDTO.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.totalResults = reader.int32();
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.totalPages = reader.int32();
+          continue;
+        }
+        case 4: {
+          if (tag !== 32) {
+            break;
+          }
+
+          message.currentPage = reader.int32();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SearchContentResponse {
+    return {
+      results: globalThis.Array.isArray(object?.results)
+        ? object.results.map((e: any) => ContentBodyDTO.fromJSON(e))
+        : [],
+      totalResults: isSet(object.totalResults) ? globalThis.Number(object.totalResults) : 0,
+      totalPages: isSet(object.totalPages) ? globalThis.Number(object.totalPages) : 0,
+      currentPage: isSet(object.currentPage) ? globalThis.Number(object.currentPage) : 0,
+    };
+  },
+
+  toJSON(message: SearchContentResponse): unknown {
+    const obj: any = {};
+    if (message.results?.length) {
+      obj.results = message.results.map((e) => ContentBodyDTO.toJSON(e));
+    }
+    if (message.totalResults !== 0) {
+      obj.totalResults = Math.round(message.totalResults);
+    }
+    if (message.totalPages !== 0) {
+      obj.totalPages = Math.round(message.totalPages);
+    }
+    if (message.currentPage !== 0) {
+      obj.currentPage = Math.round(message.currentPage);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SearchContentResponse>, I>>(base?: I): SearchContentResponse {
+    return SearchContentResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SearchContentResponse>, I>>(object: I): SearchContentResponse {
+    const message = createBaseSearchContentResponse();
+    message.results = object.results?.map((e) => ContentBodyDTO.fromPartial(e)) || [];
+    message.totalResults = object.totalResults ?? 0;
+    message.totalPages = object.totalPages ?? 0;
+    message.currentPage = object.currentPage ?? 0;
+    return message;
+  },
+};
+
+function createBaseGetContentStatsRequest(): GetContentStatsRequest {
+  return { context: undefined, entityNames: [] };
+}
+
+export const GetContentStatsRequest: MessageFns<GetContentStatsRequest> = {
+  encode(message: GetContentStatsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      ContextDTO.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.entityNames) {
+      writer.uint32(18).string(v!);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetContentStatsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetContentStatsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = ContextDTO.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.entityNames.push(reader.string());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetContentStatsRequest {
+    return {
+      context: isSet(object.context) ? ContextDTO.fromJSON(object.context) : undefined,
+      entityNames: globalThis.Array.isArray(object?.entityNames)
+        ? object.entityNames.map((e: any) => globalThis.String(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetContentStatsRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = ContextDTO.toJSON(message.context);
+    }
+    if (message.entityNames?.length) {
+      obj.entityNames = message.entityNames;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetContentStatsRequest>, I>>(base?: I): GetContentStatsRequest {
+    return GetContentStatsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetContentStatsRequest>, I>>(object: I): GetContentStatsRequest {
+    const message = createBaseGetContentStatsRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? ContextDTO.fromPartial(object.context)
+      : undefined;
+    message.entityNames = object.entityNames?.map((e) => e) || [];
+    return message;
+  },
+};
+
+function createBaseGetContentStatsResponse(): GetContentStatsResponse {
+  return { stats: [] };
+}
+
+export const GetContentStatsResponse: MessageFns<GetContentStatsResponse> = {
+  encode(message: GetContentStatsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.stats) {
+      ContentStatDTO.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetContentStatsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetContentStatsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.stats.push(ContentStatDTO.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetContentStatsResponse {
+    return {
+      stats: globalThis.Array.isArray(object?.stats) ? object.stats.map((e: any) => ContentStatDTO.fromJSON(e)) : [],
+    };
+  },
+
+  toJSON(message: GetContentStatsResponse): unknown {
+    const obj: any = {};
+    if (message.stats?.length) {
+      obj.stats = message.stats.map((e) => ContentStatDTO.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetContentStatsResponse>, I>>(base?: I): GetContentStatsResponse {
+    return GetContentStatsResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetContentStatsResponse>, I>>(object: I): GetContentStatsResponse {
+    const message = createBaseGetContentStatsResponse();
+    message.stats = object.stats?.map((e) => ContentStatDTO.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseContentStatDTO(): ContentStatDTO {
+  return { title: "", type: "", count: 0, icon: "" };
+}
+
+export const ContentStatDTO: MessageFns<ContentStatDTO> = {
+  encode(message: ContentStatDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.title !== "") {
+      writer.uint32(10).string(message.title);
+    }
+    if (message.type !== "") {
+      writer.uint32(18).string(message.type);
+    }
+    if (message.count !== 0) {
+      writer.uint32(24).int32(message.count);
+    }
+    if (message.icon !== "") {
+      writer.uint32(34).string(message.icon);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ContentStatDTO {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseContentStatDTO();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.title = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.type = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.count = reader.int32();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.icon = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ContentStatDTO {
+    return {
+      title: isSet(object.title) ? globalThis.String(object.title) : "",
+      type: isSet(object.type) ? globalThis.String(object.type) : "",
+      count: isSet(object.count) ? globalThis.Number(object.count) : 0,
+      icon: isSet(object.icon) ? globalThis.String(object.icon) : "",
+    };
+  },
+
+  toJSON(message: ContentStatDTO): unknown {
+    const obj: any = {};
+    if (message.title !== "") {
+      obj.title = message.title;
+    }
+    if (message.type !== "") {
+      obj.type = message.type;
+    }
+    if (message.count !== 0) {
+      obj.count = Math.round(message.count);
+    }
+    if (message.icon !== "") {
+      obj.icon = message.icon;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ContentStatDTO>, I>>(base?: I): ContentStatDTO {
+    return ContentStatDTO.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ContentStatDTO>, I>>(object: I): ContentStatDTO {
+    const message = createBaseContentStatDTO();
+    message.title = object.title ?? "";
+    message.type = object.type ?? "";
+    message.count = object.count ?? 0;
+    message.icon = object.icon ?? "";
+    return message;
+  },
+};
+
+function createBaseCreateBulkContentRequest(): CreateBulkContentRequest {
+  return { requests: [] };
+}
+
+export const CreateBulkContentRequest: MessageFns<CreateBulkContentRequest> = {
+  encode(message: CreateBulkContentRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.requests) {
+      CreateContentRequest.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CreateBulkContentRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateBulkContentRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.requests.push(CreateContentRequest.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateBulkContentRequest {
+    return {
+      requests: globalThis.Array.isArray(object?.requests)
+        ? object.requests.map((e: any) => CreateContentRequest.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: CreateBulkContentRequest): unknown {
+    const obj: any = {};
+    if (message.requests?.length) {
+      obj.requests = message.requests.map((e) => CreateContentRequest.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateBulkContentRequest>, I>>(base?: I): CreateBulkContentRequest {
+    return CreateBulkContentRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CreateBulkContentRequest>, I>>(object: I): CreateBulkContentRequest {
+    const message = createBaseCreateBulkContentRequest();
+    message.requests = object.requests?.map((e) => CreateContentRequest.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseCreateBulkContentResponse(): CreateBulkContentResponse {
+  return { responses: [] };
+}
+
+export const CreateBulkContentResponse: MessageFns<CreateBulkContentResponse> = {
+  encode(message: CreateBulkContentResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.responses) {
+      CreateContentResponse.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CreateBulkContentResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateBulkContentResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.responses.push(CreateContentResponse.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateBulkContentResponse {
+    return {
+      responses: globalThis.Array.isArray(object?.responses)
+        ? object.responses.map((e: any) => CreateContentResponse.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: CreateBulkContentResponse): unknown {
+    const obj: any = {};
+    if (message.responses?.length) {
+      obj.responses = message.responses.map((e) => CreateContentResponse.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateBulkContentResponse>, I>>(base?: I): CreateBulkContentResponse {
+    return CreateBulkContentResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CreateBulkContentResponse>, I>>(object: I): CreateBulkContentResponse {
+    const message = createBaseCreateBulkContentResponse();
+    message.responses = object.responses?.map((e) => CreateContentResponse.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseUpdateBulkContentRequest(): UpdateBulkContentRequest {
+  return { requests: [] };
+}
+
+export const UpdateBulkContentRequest: MessageFns<UpdateBulkContentRequest> = {
+  encode(message: UpdateBulkContentRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.requests) {
+      UpdateContentRequest.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateBulkContentRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateBulkContentRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.requests.push(UpdateContentRequest.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateBulkContentRequest {
+    return {
+      requests: globalThis.Array.isArray(object?.requests)
+        ? object.requests.map((e: any) => UpdateContentRequest.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: UpdateBulkContentRequest): unknown {
+    const obj: any = {};
+    if (message.requests?.length) {
+      obj.requests = message.requests.map((e) => UpdateContentRequest.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpdateBulkContentRequest>, I>>(base?: I): UpdateBulkContentRequest {
+    return UpdateBulkContentRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpdateBulkContentRequest>, I>>(object: I): UpdateBulkContentRequest {
+    const message = createBaseUpdateBulkContentRequest();
+    message.requests = object.requests?.map((e) => UpdateContentRequest.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseUpdateBulkContentResponse(): UpdateBulkContentResponse {
+  return { responses: [] };
+}
+
+export const UpdateBulkContentResponse: MessageFns<UpdateBulkContentResponse> = {
+  encode(message: UpdateBulkContentResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.responses) {
+      UpdateContentResponse.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateBulkContentResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateBulkContentResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.responses.push(UpdateContentResponse.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateBulkContentResponse {
+    return {
+      responses: globalThis.Array.isArray(object?.responses)
+        ? object.responses.map((e: any) => UpdateContentResponse.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: UpdateBulkContentResponse): unknown {
+    const obj: any = {};
+    if (message.responses?.length) {
+      obj.responses = message.responses.map((e) => UpdateContentResponse.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpdateBulkContentResponse>, I>>(base?: I): UpdateBulkContentResponse {
+    return UpdateBulkContentResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpdateBulkContentResponse>, I>>(object: I): UpdateBulkContentResponse {
+    const message = createBaseUpdateBulkContentResponse();
+    message.responses = object.responses?.map((e) => UpdateContentResponse.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseDeleteBulkContentRequest(): DeleteBulkContentRequest {
+  return { requests: [] };
+}
+
+export const DeleteBulkContentRequest: MessageFns<DeleteBulkContentRequest> = {
+  encode(message: DeleteBulkContentRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.requests) {
+      DeleteContentRequest.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DeleteBulkContentRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteBulkContentRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.requests.push(DeleteContentRequest.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteBulkContentRequest {
+    return {
+      requests: globalThis.Array.isArray(object?.requests)
+        ? object.requests.map((e: any) => DeleteContentRequest.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: DeleteBulkContentRequest): unknown {
+    const obj: any = {};
+    if (message.requests?.length) {
+      obj.requests = message.requests.map((e) => DeleteContentRequest.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeleteBulkContentRequest>, I>>(base?: I): DeleteBulkContentRequest {
+    return DeleteBulkContentRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<DeleteBulkContentRequest>, I>>(object: I): DeleteBulkContentRequest {
+    const message = createBaseDeleteBulkContentRequest();
+    message.requests = object.requests?.map((e) => DeleteContentRequest.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseDeleteBulkContentResponse(): DeleteBulkContentResponse {
+  return { responses: [] };
+}
+
+export const DeleteBulkContentResponse: MessageFns<DeleteBulkContentResponse> = {
+  encode(message: DeleteBulkContentResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.responses) {
+      DeleteContentResponse.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DeleteBulkContentResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteBulkContentResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.responses.push(DeleteContentResponse.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteBulkContentResponse {
+    return {
+      responses: globalThis.Array.isArray(object?.responses)
+        ? object.responses.map((e: any) => DeleteContentResponse.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: DeleteBulkContentResponse): unknown {
+    const obj: any = {};
+    if (message.responses?.length) {
+      obj.responses = message.responses.map((e) => DeleteContentResponse.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeleteBulkContentResponse>, I>>(base?: I): DeleteBulkContentResponse {
+    return DeleteBulkContentResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<DeleteBulkContentResponse>, I>>(object: I): DeleteBulkContentResponse {
+    const message = createBaseDeleteBulkContentResponse();
+    message.responses = object.responses?.map((e) => DeleteContentResponse.fromPartial(e)) || [];
+    return message;
+  },
+};
 
 function createBaseCreateContentRequest(): CreateContentRequest {
   return { source: 0, contentBody: undefined, entityName: "", context: undefined };
@@ -203,11 +1412,14 @@ export const CreateContentRequest: MessageFns<CreateContentRequest> = {
 };
 
 function createBaseCreateContentResponse(): CreateContentResponse {
-  return {};
+  return { contentBody: undefined };
 }
 
 export const CreateContentResponse: MessageFns<CreateContentResponse> = {
-  encode(_: CreateContentResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+  encode(message: CreateContentResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.contentBody !== undefined) {
+      ContentBodyDTO.encode(message.contentBody, writer.uint32(10).fork()).join();
+    }
     return writer;
   },
 
@@ -218,6 +1430,14 @@ export const CreateContentResponse: MessageFns<CreateContentResponse> = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.contentBody = ContentBodyDTO.decode(reader, reader.uint32());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -227,20 +1447,26 @@ export const CreateContentResponse: MessageFns<CreateContentResponse> = {
     return message;
   },
 
-  fromJSON(_: any): CreateContentResponse {
-    return {};
+  fromJSON(object: any): CreateContentResponse {
+    return { contentBody: isSet(object.contentBody) ? ContentBodyDTO.fromJSON(object.contentBody) : undefined };
   },
 
-  toJSON(_: CreateContentResponse): unknown {
+  toJSON(message: CreateContentResponse): unknown {
     const obj: any = {};
+    if (message.contentBody !== undefined) {
+      obj.contentBody = ContentBodyDTO.toJSON(message.contentBody);
+    }
     return obj;
   },
 
   create<I extends Exact<DeepPartial<CreateContentResponse>, I>>(base?: I): CreateContentResponse {
     return CreateContentResponse.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<CreateContentResponse>, I>>(_: I): CreateContentResponse {
+  fromPartial<I extends Exact<DeepPartial<CreateContentResponse>, I>>(object: I): CreateContentResponse {
     const message = createBaseCreateContentResponse();
+    message.contentBody = (object.contentBody !== undefined && object.contentBody !== null)
+      ? ContentBodyDTO.fromPartial(object.contentBody)
+      : undefined;
     return message;
   },
 };
@@ -879,6 +2105,13 @@ export const ContentBodyDTO: MessageFns<ContentBodyDTO> = {
 
 export interface ContentService {
   create(request: CreateContentRequest): Promise<CreateContentResponse>;
+  update(request: UpdateContentRequest): Promise<UpdateContentResponse>;
+  delete(request: DeleteContentRequest): Promise<DeleteContentResponse>;
+  search(request: SearchContentRequest): Promise<SearchContentResponse>;
+  createBulk(request: CreateBulkContentRequest): Promise<CreateBulkContentResponse>;
+  updateBulk(request: UpdateBulkContentRequest): Promise<UpdateBulkContentResponse>;
+  deleteBulk(request: DeleteBulkContentRequest): Promise<DeleteBulkContentResponse>;
+  getStats(request: GetContentStatsRequest): Promise<GetContentStatsResponse>;
 }
 
 export const ContentServiceServiceName = "content.ContentService";
@@ -889,11 +2122,60 @@ export class ContentServiceClientImpl implements ContentService {
     this.service = opts?.service || ContentServiceServiceName;
     this.rpc = rpc;
     this.create = this.create.bind(this);
+    this.update = this.update.bind(this);
+    this.delete = this.delete.bind(this);
+    this.search = this.search.bind(this);
+    this.createBulk = this.createBulk.bind(this);
+    this.updateBulk = this.updateBulk.bind(this);
+    this.deleteBulk = this.deleteBulk.bind(this);
+    this.getStats = this.getStats.bind(this);
   }
   create(request: CreateContentRequest): Promise<CreateContentResponse> {
     const data = CreateContentRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "create", data);
     return promise.then((data) => CreateContentResponse.decode(new BinaryReader(data)));
+  }
+
+  update(request: UpdateContentRequest): Promise<UpdateContentResponse> {
+    const data = UpdateContentRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "update", data);
+    return promise.then((data) => UpdateContentResponse.decode(new BinaryReader(data)));
+  }
+
+  delete(request: DeleteContentRequest): Promise<DeleteContentResponse> {
+    const data = DeleteContentRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "delete", data);
+    return promise.then((data) => DeleteContentResponse.decode(new BinaryReader(data)));
+  }
+
+  search(request: SearchContentRequest): Promise<SearchContentResponse> {
+    const data = SearchContentRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "search", data);
+    return promise.then((data) => SearchContentResponse.decode(new BinaryReader(data)));
+  }
+
+  createBulk(request: CreateBulkContentRequest): Promise<CreateBulkContentResponse> {
+    const data = CreateBulkContentRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "createBulk", data);
+    return promise.then((data) => CreateBulkContentResponse.decode(new BinaryReader(data)));
+  }
+
+  updateBulk(request: UpdateBulkContentRequest): Promise<UpdateBulkContentResponse> {
+    const data = UpdateBulkContentRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "updateBulk", data);
+    return promise.then((data) => UpdateBulkContentResponse.decode(new BinaryReader(data)));
+  }
+
+  deleteBulk(request: DeleteBulkContentRequest): Promise<DeleteBulkContentResponse> {
+    const data = DeleteBulkContentRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "deleteBulk", data);
+    return promise.then((data) => DeleteBulkContentResponse.decode(new BinaryReader(data)));
+  }
+
+  getStats(request: GetContentStatsRequest): Promise<GetContentStatsResponse> {
+    const data = GetContentStatsRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "getStats", data);
+    return promise.then((data) => GetContentStatsResponse.decode(new BinaryReader(data)));
   }
 }
 

@@ -8,7 +8,7 @@ import { IdAndQuant } from "../../../../class/GenerationInstruction";
 import { InjectDataSource } from "@nestjs/typeorm";
 import { DataSource, Repository } from "typeorm";
 import { InstructionProcessorService } from "../../instruction/instruction-processor.service";
-import { Context } from "../../../../types";
+import { Context } from "../../../../class/Context";
 import { ContentService } from "../../content.service";
 
 enum CacheKeyEnum {

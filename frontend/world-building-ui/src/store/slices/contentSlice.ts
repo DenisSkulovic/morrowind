@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { ContentService } from '../../services/ContentService';
 import { ContentBase } from '../../class/ContentBase';
-import { Context } from '../../types';
+import { Context } from '../../class/Context';
 import { RequestStatusEnum } from '../../enum/RequestStatusEnum';
-import { CreateContentRequest, UpdateContentRequest, DeleteContentRequest, CreateContentResponse } from '../../proto/content';
-import { DataSourceEnumDTO } from '../../proto/common';
+import { SearchQuery } from '../../class/search/SearchQuery';
+import { Serializer } from '../../serialize/serializer';
 
 interface ContentState {
     data: { [entity: string]: { [id: string]: ContentBase } };
@@ -46,7 +46,7 @@ export const deleteContent = createAsyncThunk(
 
 export const searchContent = createAsyncThunk(
     'content/searchContent',
-    async ({ entityName, query, page, pageSize, context }: { entityName: string; query: string; page: number; pageSize: number; context: Context }) => {
+    async ({ entityName, query, page, pageSize, context }: { entityName: string; query: SearchQuery; page: number; pageSize: number; context: Context }) => {
         const contentService = new ContentService();
         return await contentService.searchContent(entityName, query, page, pageSize, context);
     }
@@ -97,8 +97,7 @@ const contentSlice = createSlice({
                 if (!state.data[action.meta.arg.entityName]) {
                     state.data[action.meta.arg.entityName] = {};
                 }
-                state.data[action.meta.arg.entityName][action.payload.id] = action.payload;
-                CreateContentResponse
+                state.data[action.meta.arg.entityName][action.payload.id] = Serializer.fromDTO(action.payload, action.meta.arg.entityName);
             })
             .addCase(createContent.rejected, (state, action) => {
                 state.status = RequestStatusEnum.FAILED;
@@ -144,7 +143,7 @@ const contentSlice = createSlice({
                 if (!state.data[action.meta.arg.entityName]) {
                     state.data[action.meta.arg.entityName] = {};
                 }
-                action.payload.forEach((item: ContentBase) => {
+                action.payload.results.forEach((item: ContentBase) => {
                     state.data[action.meta.arg.entityName][item.id] = item;
                 });
             })

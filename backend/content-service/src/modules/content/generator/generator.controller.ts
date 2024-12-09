@@ -13,7 +13,7 @@ import { GenerationInstruction, deserializeGenerationInstructions } from "../../
 import { CampaignService } from "../../campaign/campaign.service"
 import { UserService } from "../../user/user.service"
 import { WorldService } from "../../world/world.service"
-import { Context } from "../../../types"
+import { Context } from "../../../class/Context"
 
 @Controller()
 export class GeneratorController {
@@ -31,10 +31,9 @@ export class GeneratorController {
             this.worldService.findWorld(contextDTO.worldId, contextDTO.userId, source),
             this.campaignService.findCampaign(contextDTO.campaignId, contextDTO.userId, source),
         ])
-        console.log(`user`, user)
-        console.log(`world`, world)
-        console.log(`campaign`, campaign)
-        return { user, world, campaign }
+        if (!user) throw new Error("User not found")
+        if (!world) throw new Error("World not found")
+        return new Context(user, world, campaign || undefined)
     }
 
     @GrpcMethod('GeneratorService', 'generateItems')

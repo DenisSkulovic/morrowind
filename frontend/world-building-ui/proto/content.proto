@@ -34,13 +34,10 @@ message DeleteContentRequest {
 message DeleteContentResponse {
     bool success = 1;
 }
-
 message SearchContentRequest {
     string entityName = 1;
-    string query = 2;
+    common.SearchQueryDTO query = 2;
     common.ContextDTO context = 3;
-    int32 page = 4;
-    int32 pageSize = 5;
 }
 
 message SearchContentResponse {
@@ -52,13 +49,14 @@ message SearchContentResponse {
 
 message GetContentStatsRequest {
     common.ContextDTO context = 1;
+    repeated string entityNames = 2;
 }
 
 message GetContentStatsResponse {
-    repeated ContentStat stats = 1;
+    repeated ContentStatDTO stats = 1;
 }
 
-message ContentStat {
+message ContentStatDTO {
     string title = 1;
     string type = 2;
     int32 count = 3;

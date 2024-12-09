@@ -8,11 +8,10 @@ WORKDIR /usr/src/app
 COPY package.json package-lock.json ./
 RUN npm install
 
-# Copy the entire codebase
-COPY . .
+COPY public/ ./public
+COPY src/ ./src
 
-# Build the Next.js app
-RUN npm run build
+COPY proto/ ./proto
 
 # Use a lightweight Node.js image to serve the app
 FROM node:18
@@ -21,4 +20,4 @@ COPY --from=build /usr/src/app ./
 EXPOSE 3000
 
 # Start the app
-CMD ["npm", "run", "dev"]
+CMD ["sh", "-c", "npm run proto:generate && npm run dev"]

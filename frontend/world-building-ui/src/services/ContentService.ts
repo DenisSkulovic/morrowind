@@ -13,12 +13,14 @@ export class ContentService<T extends ContentBase> {
     private client: ContentServiceClientImpl;
 
     constructor() {
-        this.client = new ContentServiceClientImpl(rpc);
+        this.client = new ContentServiceClientImpl(rpc, {
+            service: "ContentService"
+        });
     }
-
-    async getContentStats(context: Context): Promise<GetContentStatsResponse> {
+    async getContentStats(entityNames: string[] | null, context: Context): Promise<GetContentStatsResponse> {
         const request: GetContentStatsRequest = {
             context: context.toDTO(),
+            entityNames: entityNames || Object.keys(CONTENT_ENTITY_MAP)
         };
         return await this.client.getStats(request);
     }
@@ -73,10 +75,8 @@ export class ContentService<T extends ContentBase> {
     }> {
         const request: SearchContentRequest = {
             entityName,
-            query: JSON.stringify(query),
+            query: query.toDTO(),
             context: context.toDTO(),
-            page,
-            pageSize,
         }
         const constructor: ClassConstructor<ContentBase> | undefined = CONTENT_ENTITY_MAP[entityName];
         if (!constructor) throw new Error(`Constructor for entity ${entityName} not found`);

@@ -1728,7 +1728,7 @@ export interface AccountDTO {
   username: string;
   email: string;
   role: string;
-  user?: UserDTO | undefined;
+  user: string;
   preferences?: PreferencesDTO | undefined;
 }
 
@@ -1780,6 +1780,31 @@ export interface CampaignDTO_DynamicStateEntry {
 
 export interface CampaignsDTO {
   arr: CampaignDTO[];
+}
+
+export interface SearchQueryDTO {
+  filters: QueryFilterDTO[];
+  sortBy: SortByDTO | undefined;
+  page: number;
+  pageSize: number;
+}
+
+export interface QueryFilterDTO {
+  field: string;
+  /** eq, neq, gt, gte, lt, lte, contains, regex */
+  operator: string;
+  value: QueryFilterValueDTO | undefined;
+}
+
+export interface QueryFilterValueDTO {
+  stringValue?: string | undefined;
+  numberValue?: number | undefined;
+  boolValue?: boolean | undefined;
+}
+
+export interface SortByDTO {
+  field: string;
+  direction: string;
 }
 
 function createBaseContextDTO(): ContextDTO {
@@ -15206,7 +15231,7 @@ export const UsersDTO: MessageFns<UsersDTO> = {
 };
 
 function createBaseAccountDTO(): AccountDTO {
-  return { id: "", username: "", email: "", role: "", user: undefined, preferences: undefined };
+  return { id: "", username: "", email: "", role: "", user: "", preferences: undefined };
 }
 
 export const AccountDTO: MessageFns<AccountDTO> = {
@@ -15223,8 +15248,8 @@ export const AccountDTO: MessageFns<AccountDTO> = {
     if (message.role !== "") {
       writer.uint32(34).string(message.role);
     }
-    if (message.user !== undefined) {
-      UserDTO.encode(message.user, writer.uint32(42).fork()).join();
+    if (message.user !== "") {
+      writer.uint32(42).string(message.user);
     }
     if (message.preferences !== undefined) {
       PreferencesDTO.encode(message.preferences, writer.uint32(50).fork()).join();
@@ -15276,7 +15301,7 @@ export const AccountDTO: MessageFns<AccountDTO> = {
             break;
           }
 
-          message.user = UserDTO.decode(reader, reader.uint32());
+          message.user = reader.string();
           continue;
         }
         case 6: {
@@ -15302,7 +15327,7 @@ export const AccountDTO: MessageFns<AccountDTO> = {
       username: isSet(object.username) ? globalThis.String(object.username) : "",
       email: isSet(object.email) ? globalThis.String(object.email) : "",
       role: isSet(object.role) ? globalThis.String(object.role) : "",
-      user: isSet(object.user) ? UserDTO.fromJSON(object.user) : undefined,
+      user: isSet(object.user) ? globalThis.String(object.user) : "",
       preferences: isSet(object.preferences) ? PreferencesDTO.fromJSON(object.preferences) : undefined,
     };
   },
@@ -15321,8 +15346,8 @@ export const AccountDTO: MessageFns<AccountDTO> = {
     if (message.role !== "") {
       obj.role = message.role;
     }
-    if (message.user !== undefined) {
-      obj.user = UserDTO.toJSON(message.user);
+    if (message.user !== "") {
+      obj.user = message.user;
     }
     if (message.preferences !== undefined) {
       obj.preferences = PreferencesDTO.toJSON(message.preferences);
@@ -15339,7 +15364,7 @@ export const AccountDTO: MessageFns<AccountDTO> = {
     message.username = object.username ?? "";
     message.email = object.email ?? "";
     message.role = object.role ?? "";
-    message.user = (object.user !== undefined && object.user !== null) ? UserDTO.fromPartial(object.user) : undefined;
+    message.user = object.user ?? "";
     message.preferences = (object.preferences !== undefined && object.preferences !== null)
       ? PreferencesDTO.fromPartial(object.preferences)
       : undefined;
@@ -16089,6 +16114,380 @@ export const CampaignsDTO: MessageFns<CampaignsDTO> = {
   fromPartial<I extends Exact<DeepPartial<CampaignsDTO>, I>>(object: I): CampaignsDTO {
     const message = createBaseCampaignsDTO();
     message.arr = object.arr?.map((e) => CampaignDTO.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseSearchQueryDTO(): SearchQueryDTO {
+  return { filters: [], sortBy: undefined, page: 0, pageSize: 0 };
+}
+
+export const SearchQueryDTO: MessageFns<SearchQueryDTO> = {
+  encode(message: SearchQueryDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.filters) {
+      QueryFilterDTO.encode(v!, writer.uint32(10).fork()).join();
+    }
+    if (message.sortBy !== undefined) {
+      SortByDTO.encode(message.sortBy, writer.uint32(18).fork()).join();
+    }
+    if (message.page !== 0) {
+      writer.uint32(24).int32(message.page);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(32).int32(message.pageSize);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SearchQueryDTO {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSearchQueryDTO();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.filters.push(QueryFilterDTO.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.sortBy = SortByDTO.decode(reader, reader.uint32());
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.page = reader.int32();
+          continue;
+        }
+        case 4: {
+          if (tag !== 32) {
+            break;
+          }
+
+          message.pageSize = reader.int32();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SearchQueryDTO {
+    return {
+      filters: globalThis.Array.isArray(object?.filters)
+        ? object.filters.map((e: any) => QueryFilterDTO.fromJSON(e))
+        : [],
+      sortBy: isSet(object.sortBy) ? SortByDTO.fromJSON(object.sortBy) : undefined,
+      page: isSet(object.page) ? globalThis.Number(object.page) : 0,
+      pageSize: isSet(object.pageSize) ? globalThis.Number(object.pageSize) : 0,
+    };
+  },
+
+  toJSON(message: SearchQueryDTO): unknown {
+    const obj: any = {};
+    if (message.filters?.length) {
+      obj.filters = message.filters.map((e) => QueryFilterDTO.toJSON(e));
+    }
+    if (message.sortBy !== undefined) {
+      obj.sortBy = SortByDTO.toJSON(message.sortBy);
+    }
+    if (message.page !== 0) {
+      obj.page = Math.round(message.page);
+    }
+    if (message.pageSize !== 0) {
+      obj.pageSize = Math.round(message.pageSize);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SearchQueryDTO>, I>>(base?: I): SearchQueryDTO {
+    return SearchQueryDTO.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SearchQueryDTO>, I>>(object: I): SearchQueryDTO {
+    const message = createBaseSearchQueryDTO();
+    message.filters = object.filters?.map((e) => QueryFilterDTO.fromPartial(e)) || [];
+    message.sortBy = (object.sortBy !== undefined && object.sortBy !== null)
+      ? SortByDTO.fromPartial(object.sortBy)
+      : undefined;
+    message.page = object.page ?? 0;
+    message.pageSize = object.pageSize ?? 0;
+    return message;
+  },
+};
+
+function createBaseQueryFilterDTO(): QueryFilterDTO {
+  return { field: "", operator: "", value: undefined };
+}
+
+export const QueryFilterDTO: MessageFns<QueryFilterDTO> = {
+  encode(message: QueryFilterDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.field !== "") {
+      writer.uint32(10).string(message.field);
+    }
+    if (message.operator !== "") {
+      writer.uint32(18).string(message.operator);
+    }
+    if (message.value !== undefined) {
+      QueryFilterValueDTO.encode(message.value, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryFilterDTO {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryFilterDTO();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.field = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.operator = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.value = QueryFilterValueDTO.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryFilterDTO {
+    return {
+      field: isSet(object.field) ? globalThis.String(object.field) : "",
+      operator: isSet(object.operator) ? globalThis.String(object.operator) : "",
+      value: isSet(object.value) ? QueryFilterValueDTO.fromJSON(object.value) : undefined,
+    };
+  },
+
+  toJSON(message: QueryFilterDTO): unknown {
+    const obj: any = {};
+    if (message.field !== "") {
+      obj.field = message.field;
+    }
+    if (message.operator !== "") {
+      obj.operator = message.operator;
+    }
+    if (message.value !== undefined) {
+      obj.value = QueryFilterValueDTO.toJSON(message.value);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<QueryFilterDTO>, I>>(base?: I): QueryFilterDTO {
+    return QueryFilterDTO.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<QueryFilterDTO>, I>>(object: I): QueryFilterDTO {
+    const message = createBaseQueryFilterDTO();
+    message.field = object.field ?? "";
+    message.operator = object.operator ?? "";
+    message.value = (object.value !== undefined && object.value !== null)
+      ? QueryFilterValueDTO.fromPartial(object.value)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseQueryFilterValueDTO(): QueryFilterValueDTO {
+  return { stringValue: undefined, numberValue: undefined, boolValue: undefined };
+}
+
+export const QueryFilterValueDTO: MessageFns<QueryFilterValueDTO> = {
+  encode(message: QueryFilterValueDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.stringValue !== undefined) {
+      writer.uint32(10).string(message.stringValue);
+    }
+    if (message.numberValue !== undefined) {
+      writer.uint32(16).int32(message.numberValue);
+    }
+    if (message.boolValue !== undefined) {
+      writer.uint32(24).bool(message.boolValue);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryFilterValueDTO {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryFilterValueDTO();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.stringValue = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.numberValue = reader.int32();
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.boolValue = reader.bool();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryFilterValueDTO {
+    return {
+      stringValue: isSet(object.stringValue) ? globalThis.String(object.stringValue) : undefined,
+      numberValue: isSet(object.numberValue) ? globalThis.Number(object.numberValue) : undefined,
+      boolValue: isSet(object.boolValue) ? globalThis.Boolean(object.boolValue) : undefined,
+    };
+  },
+
+  toJSON(message: QueryFilterValueDTO): unknown {
+    const obj: any = {};
+    if (message.stringValue !== undefined) {
+      obj.stringValue = message.stringValue;
+    }
+    if (message.numberValue !== undefined) {
+      obj.numberValue = Math.round(message.numberValue);
+    }
+    if (message.boolValue !== undefined) {
+      obj.boolValue = message.boolValue;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<QueryFilterValueDTO>, I>>(base?: I): QueryFilterValueDTO {
+    return QueryFilterValueDTO.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<QueryFilterValueDTO>, I>>(object: I): QueryFilterValueDTO {
+    const message = createBaseQueryFilterValueDTO();
+    message.stringValue = object.stringValue ?? undefined;
+    message.numberValue = object.numberValue ?? undefined;
+    message.boolValue = object.boolValue ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSortByDTO(): SortByDTO {
+  return { field: "", direction: "" };
+}
+
+export const SortByDTO: MessageFns<SortByDTO> = {
+  encode(message: SortByDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.field !== "") {
+      writer.uint32(10).string(message.field);
+    }
+    if (message.direction !== "") {
+      writer.uint32(18).string(message.direction);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SortByDTO {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSortByDTO();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.field = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.direction = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SortByDTO {
+    return {
+      field: isSet(object.field) ? globalThis.String(object.field) : "",
+      direction: isSet(object.direction) ? globalThis.String(object.direction) : "",
+    };
+  },
+
+  toJSON(message: SortByDTO): unknown {
+    const obj: any = {};
+    if (message.field !== "") {
+      obj.field = message.field;
+    }
+    if (message.direction !== "") {
+      obj.direction = message.direction;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SortByDTO>, I>>(base?: I): SortByDTO {
+    return SortByDTO.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SortByDTO>, I>>(object: I): SortByDTO {
+    const message = createBaseSortByDTO();
+    message.field = object.field ?? "";
+    message.direction = object.direction ?? "";
     return message;
   },
 };

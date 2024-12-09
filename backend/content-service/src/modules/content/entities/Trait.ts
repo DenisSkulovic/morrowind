@@ -2,7 +2,6 @@ import { Entity, Column, ManyToMany, ManyToOne, TableInheritance, PrimaryColumn 
 import { TaggableContentBase } from "../../../TaggableContentBase";
 import { Tag } from "./Tag";
 import { TraitDTO, TraitTypeEnumDTO } from "../../../proto/common";
-import { Context } from "../../../types";
 import { Campaign } from "../../campaign/entities/Campaign";
 import { User } from "../../user/entities/User";
 import { World } from "../../world/entities/World";

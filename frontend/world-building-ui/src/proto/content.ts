@@ -36,6 +36,7 @@ import {
   RaceDTO,
   ReligionDTO,
   ResistanceDTO,
+  SearchQueryDTO,
   SkillDTO,
   SkillSetDTO,
   StatusDTO,
@@ -68,10 +69,8 @@ export interface DeleteContentResponse {
 
 export interface SearchContentRequest {
   entityName: string;
-  query: string;
+  query: SearchQueryDTO | undefined;
   context: ContextDTO | undefined;
-  page: number;
-  pageSize: number;
 }
 
 export interface SearchContentResponse {
@@ -83,13 +82,14 @@ export interface SearchContentResponse {
 
 export interface GetContentStatsRequest {
   context: ContextDTO | undefined;
+  entityNames: string[];
 }
 
 export interface GetContentStatsResponse {
-  stats: ContentStat[];
+  stats: ContentStatDTO[];
 }
 
-export interface ContentStat {
+export interface ContentStatDTO {
   title: string;
   type: string;
   count: number;
@@ -474,7 +474,7 @@ export const DeleteContentResponse: MessageFns<DeleteContentResponse> = {
 };
 
 function createBaseSearchContentRequest(): SearchContentRequest {
-  return { entityName: "", query: "", context: undefined, page: 0, pageSize: 0 };
+  return { entityName: "", query: undefined, context: undefined };
 }
 
 export const SearchContentRequest: MessageFns<SearchContentRequest> = {
@@ -482,17 +482,11 @@ export const SearchContentRequest: MessageFns<SearchContentRequest> = {
     if (message.entityName !== "") {
       writer.uint32(10).string(message.entityName);
     }
-    if (message.query !== "") {
-      writer.uint32(18).string(message.query);
+    if (message.query !== undefined) {
+      SearchQueryDTO.encode(message.query, writer.uint32(18).fork()).join();
     }
     if (message.context !== undefined) {
       ContextDTO.encode(message.context, writer.uint32(26).fork()).join();
-    }
-    if (message.page !== 0) {
-      writer.uint32(32).int32(message.page);
-    }
-    if (message.pageSize !== 0) {
-      writer.uint32(40).int32(message.pageSize);
     }
     return writer;
   },
@@ -517,7 +511,7 @@ export const SearchContentRequest: MessageFns<SearchContentRequest> = {
             break;
           }
 
-          message.query = reader.string();
+          message.query = SearchQueryDTO.decode(reader, reader.uint32());
           continue;
         }
         case 3: {
@@ -526,22 +520,6 @@ export const SearchContentRequest: MessageFns<SearchContentRequest> = {
           }
 
           message.context = ContextDTO.decode(reader, reader.uint32());
-          continue;
-        }
-        case 4: {
-          if (tag !== 32) {
-            break;
-          }
-
-          message.page = reader.int32();
-          continue;
-        }
-        case 5: {
-          if (tag !== 40) {
-            break;
-          }
-
-          message.pageSize = reader.int32();
           continue;
         }
       }
@@ -556,10 +534,8 @@ export const SearchContentRequest: MessageFns<SearchContentRequest> = {
   fromJSON(object: any): SearchContentRequest {
     return {
       entityName: isSet(object.entityName) ? globalThis.String(object.entityName) : "",
-      query: isSet(object.query) ? globalThis.String(object.query) : "",
+      query: isSet(object.query) ? SearchQueryDTO.fromJSON(object.query) : undefined,
       context: isSet(object.context) ? ContextDTO.fromJSON(object.context) : undefined,
-      page: isSet(object.page) ? globalThis.Number(object.page) : 0,
-      pageSize: isSet(object.pageSize) ? globalThis.Number(object.pageSize) : 0,
     };
   },
 
@@ -568,17 +544,11 @@ export const SearchContentRequest: MessageFns<SearchContentRequest> = {
     if (message.entityName !== "") {
       obj.entityName = message.entityName;
     }
-    if (message.query !== "") {
-      obj.query = message.query;
+    if (message.query !== undefined) {
+      obj.query = SearchQueryDTO.toJSON(message.query);
     }
     if (message.context !== undefined) {
       obj.context = ContextDTO.toJSON(message.context);
-    }
-    if (message.page !== 0) {
-      obj.page = Math.round(message.page);
-    }
-    if (message.pageSize !== 0) {
-      obj.pageSize = Math.round(message.pageSize);
     }
     return obj;
   },
@@ -589,12 +559,12 @@ export const SearchContentRequest: MessageFns<SearchContentRequest> = {
   fromPartial<I extends Exact<DeepPartial<SearchContentRequest>, I>>(object: I): SearchContentRequest {
     const message = createBaseSearchContentRequest();
     message.entityName = object.entityName ?? "";
-    message.query = object.query ?? "";
+    message.query = (object.query !== undefined && object.query !== null)
+      ? SearchQueryDTO.fromPartial(object.query)
+      : undefined;
     message.context = (object.context !== undefined && object.context !== null)
       ? ContextDTO.fromPartial(object.context)
       : undefined;
-    message.page = object.page ?? 0;
-    message.pageSize = object.pageSize ?? 0;
     return message;
   },
 };
@@ -710,13 +680,16 @@ export const SearchContentResponse: MessageFns<SearchContentResponse> = {
 };
 
 function createBaseGetContentStatsRequest(): GetContentStatsRequest {
-  return { context: undefined };
+  return { context: undefined, entityNames: [] };
 }
 
 export const GetContentStatsRequest: MessageFns<GetContentStatsRequest> = {
   encode(message: GetContentStatsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.context !== undefined) {
       ContextDTO.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.entityNames) {
+      writer.uint32(18).string(v!);
     }
     return writer;
   },
@@ -736,6 +709,14 @@ export const GetContentStatsRequest: MessageFns<GetContentStatsRequest> = {
           message.context = ContextDTO.decode(reader, reader.uint32());
           continue;
         }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.entityNames.push(reader.string());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -746,13 +727,21 @@ export const GetContentStatsRequest: MessageFns<GetContentStatsRequest> = {
   },
 
   fromJSON(object: any): GetContentStatsRequest {
-    return { context: isSet(object.context) ? ContextDTO.fromJSON(object.context) : undefined };
+    return {
+      context: isSet(object.context) ? ContextDTO.fromJSON(object.context) : undefined,
+      entityNames: globalThis.Array.isArray(object?.entityNames)
+        ? object.entityNames.map((e: any) => globalThis.String(e))
+        : [],
+    };
   },
 
   toJSON(message: GetContentStatsRequest): unknown {
     const obj: any = {};
     if (message.context !== undefined) {
       obj.context = ContextDTO.toJSON(message.context);
+    }
+    if (message.entityNames?.length) {
+      obj.entityNames = message.entityNames;
     }
     return obj;
   },
@@ -765,6 +754,7 @@ export const GetContentStatsRequest: MessageFns<GetContentStatsRequest> = {
     message.context = (object.context !== undefined && object.context !== null)
       ? ContextDTO.fromPartial(object.context)
       : undefined;
+    message.entityNames = object.entityNames?.map((e) => e) || [];
     return message;
   },
 };
@@ -776,7 +766,7 @@ function createBaseGetContentStatsResponse(): GetContentStatsResponse {
 export const GetContentStatsResponse: MessageFns<GetContentStatsResponse> = {
   encode(message: GetContentStatsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     for (const v of message.stats) {
-      ContentStat.encode(v!, writer.uint32(10).fork()).join();
+      ContentStatDTO.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
   },
@@ -793,7 +783,7 @@ export const GetContentStatsResponse: MessageFns<GetContentStatsResponse> = {
             break;
           }
 
-          message.stats.push(ContentStat.decode(reader, reader.uint32()));
+          message.stats.push(ContentStatDTO.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -807,14 +797,14 @@ export const GetContentStatsResponse: MessageFns<GetContentStatsResponse> = {
 
   fromJSON(object: any): GetContentStatsResponse {
     return {
-      stats: globalThis.Array.isArray(object?.stats) ? object.stats.map((e: any) => ContentStat.fromJSON(e)) : [],
+      stats: globalThis.Array.isArray(object?.stats) ? object.stats.map((e: any) => ContentStatDTO.fromJSON(e)) : [],
     };
   },
 
   toJSON(message: GetContentStatsResponse): unknown {
     const obj: any = {};
     if (message.stats?.length) {
-      obj.stats = message.stats.map((e) => ContentStat.toJSON(e));
+      obj.stats = message.stats.map((e) => ContentStatDTO.toJSON(e));
     }
     return obj;
   },
@@ -824,17 +814,17 @@ export const GetContentStatsResponse: MessageFns<GetContentStatsResponse> = {
   },
   fromPartial<I extends Exact<DeepPartial<GetContentStatsResponse>, I>>(object: I): GetContentStatsResponse {
     const message = createBaseGetContentStatsResponse();
-    message.stats = object.stats?.map((e) => ContentStat.fromPartial(e)) || [];
+    message.stats = object.stats?.map((e) => ContentStatDTO.fromPartial(e)) || [];
     return message;
   },
 };
 
-function createBaseContentStat(): ContentStat {
+function createBaseContentStatDTO(): ContentStatDTO {
   return { title: "", type: "", count: 0, icon: "" };
 }
 
-export const ContentStat: MessageFns<ContentStat> = {
-  encode(message: ContentStat, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+export const ContentStatDTO: MessageFns<ContentStatDTO> = {
+  encode(message: ContentStatDTO, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.title !== "") {
       writer.uint32(10).string(message.title);
     }
@@ -850,10 +840,10 @@ export const ContentStat: MessageFns<ContentStat> = {
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): ContentStat {
+  decode(input: BinaryReader | Uint8Array, length?: number): ContentStatDTO {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseContentStat();
+    const message = createBaseContentStatDTO();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -898,7 +888,7 @@ export const ContentStat: MessageFns<ContentStat> = {
     return message;
   },
 
-  fromJSON(object: any): ContentStat {
+  fromJSON(object: any): ContentStatDTO {
     return {
       title: isSet(object.title) ? globalThis.String(object.title) : "",
       type: isSet(object.type) ? globalThis.String(object.type) : "",
@@ -907,7 +897,7 @@ export const ContentStat: MessageFns<ContentStat> = {
     };
   },
 
-  toJSON(message: ContentStat): unknown {
+  toJSON(message: ContentStatDTO): unknown {
     const obj: any = {};
     if (message.title !== "") {
       obj.title = message.title;
@@ -924,11 +914,11 @@ export const ContentStat: MessageFns<ContentStat> = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<ContentStat>, I>>(base?: I): ContentStat {
-    return ContentStat.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<ContentStatDTO>, I>>(base?: I): ContentStatDTO {
+    return ContentStatDTO.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<ContentStat>, I>>(object: I): ContentStat {
-    const message = createBaseContentStat();
+  fromPartial<I extends Exact<DeepPartial<ContentStatDTO>, I>>(object: I): ContentStatDTO {
+    const message = createBaseContentStatDTO();
     message.title = object.title ?? "";
     message.type = object.type ?? "";
     message.count = object.count ?? 0;

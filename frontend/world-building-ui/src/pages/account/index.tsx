@@ -2,6 +2,18 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import { Account } from '../../dto/Account';
+import { updateAccount } from '../../store/slices/accountSlice';
+import {
+    Container,
+    Paper,
+    Typography,
+    TextField,
+    Button,
+    Box,
+    Grid,
+    Divider,
+    Alert
+} from '@mui/material';
 
 const AccountPage = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -10,63 +22,111 @@ const AccountPage = () => {
     const [username, setUsername] = useState(account?.username || '');
 
     if (!account) {
-        return <div>Please log in to view account settings</div>;
+        return (
+            <Container maxWidth="sm">
+                <Alert severity="warning">
+                    Please log in to view account settings
+                </Alert>
+            </Container>
+        );
     }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // TODO: Implement account update logic
+        const accountClone: Account = Account.fromDTO(account.toDTO());
+        accountClone.email = email;
+        accountClone.username = username;
+        await dispatch(updateAccount(accountClone));
     };
 
     return (
-        <div>
-            <h1>Account Settings</h1>
+        <Container maxWidth="md">
+            <Box sx={{ py: 4 }}>
+                <Typography variant="h4" component="h1" gutterBottom>
+                    Account Settings
+                </Typography>
 
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="email">Email</label>
-                    <input
-                        id="email"
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                </div>
+                <Grid container spacing={4}>
+                    <Grid item xs={12} md={8}>
+                        <Paper sx={{ p: 3, mb: 3 }}>
+                            <form onSubmit={handleSubmit}>
+                                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                                    <TextField
+                                        id="email"
+                                        label="Email"
+                                        type="email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        fullWidth
+                                        variant="outlined"
+                                    />
 
-                <div>
-                    <label htmlFor="username">Username</label>
-                    <input
-                        id="username"
-                        type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
-                </div>
+                                    <TextField
+                                        id="username"
+                                        label="Username"
+                                        type="text"
+                                        value={username}
+                                        onChange={(e) => setUsername(e.target.value)}
+                                        fullWidth
+                                        variant="outlined"
+                                    />
 
-                <button type="submit">Save Changes</button>
-            </form>
+                                    <Button
+                                        type="submit"
+                                        variant="contained"
+                                        color="primary"
+                                        sx={{ mt: 2 }}
+                                    >
+                                        Save Changes
+                                    </Button>
+                                </Box>
+                            </form>
+                        </Paper>
 
-            <div>
-                <h2>Account Information</h2>
-                <p>Account ID: {account.id}</p>
-                <p>Created: {new Date(account.createdAt).toLocaleDateString()}</p>
-            </div>
+                        <Paper sx={{ p: 3, mb: 3 }}>
+                            <Typography variant="h6" gutterBottom>
+                                Account Information
+                            </Typography>
+                            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                                <Typography>
+                                    Account ID: {account.id}
+                                </Typography>
+                                <Typography>
+                                    Role: {account.role}
+                                </Typography>
+                            </Box>
+                        </Paper>
+                    </Grid>
 
-            <div>
-                <h2>Danger Zone</h2>
-                <button
-                    onClick={() => {
-                        // TODO: Implement account deletion logic
-                        if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
-                            // Delete account
-                        }
-                    }}
-                    style={{ backgroundColor: '#dc3545', color: 'white' }}
-                >
-                    Delete Account
-                </button>
-            </div>
-        </div>
+                    <Grid item xs={12} md={4}>
+                        <Paper
+                            sx={{
+                                p: 3,
+                                bgcolor: 'error.light',
+                                color: 'error.contrastText'
+                            }}
+                        >
+                            <Typography variant="h6" gutterBottom>
+                                Danger Zone
+                            </Typography>
+                            <Divider sx={{ my: 2 }} />
+                            <Button
+                                onClick={() => {
+                                    if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+                                        // Delete account
+                                    }
+                                }}
+                                variant="contained"
+                                color="error"
+                                fullWidth
+                            >
+                                Delete Account
+                            </Button>
+                        </Paper>
+                    </Grid>
+                </Grid>
+            </Box>
+        </Container>
     );
 };
 

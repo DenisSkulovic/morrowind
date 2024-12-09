@@ -2,20 +2,24 @@ import { User } from "../user/entities/User";
 import {
     CreateWorldRequest, CreateWorldResponse, DeleteWorldRequest,
     DeleteWorldResponse, DropWorldContentRequest, DropWorldContentResponse,
-    GetWorldRequest, GetWorldResponse, GetWorldsForUserRequest,
-    GetWorldsForUserResponse, LoadWorldPresetRequest, LoadWorldPresetResponse
+    GetWorldRequest, GetWorldResponse,
+    LoadWorldPresetRequest, LoadWorldPresetResponse,
+    SearchWorldRequest,
+    SearchWorldResponse,
+    UpdateWorldRequest, UpdateWorldResponse
 } from "../../proto/world";
 import { World } from "./entities/World";
 import { DataSourceEnum } from "../../common/enum/DataSourceEnum";
 import { PresetEnum } from "../../common/enum/entityEnums";
-import { ContextDTO, PresetEnumDTO } from "../../proto/common";
+import { ContextDTO, PresetEnumDTO, WorldDTO } from "../../proto/common";
 import { deserializeEnum } from "../../common/enum/util";
 
 import { Controller, Inject } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
 import { WorldService } from "./world.service";
 import { UserService } from "../user/user.service";
-import { Context } from "../../types";
+import { SearchQuery } from "../../class/search/SearchQuery";
+import { Context } from "../../class/Context";
 
 @Controller()
 export class WorldController {
@@ -30,9 +34,11 @@ export class WorldController {
             this.userService.findUser(contextDTO.userId, source),
             this.worldService.findWorld(contextDTO.worldId, contextDTO.userId, source),
         ])
+        if (!user) throw new Error(`failed to find User for userId: "${contextDTO.userId}"`)
+        if (!world) throw new Error(`failed to find World for worldId: "${contextDTO.worldId}"`)
         console.log(`user`, user)
         console.log(`world`, world)
-        return { user, world }
+        return new Context(user, world)
     }
 
     @GrpcMethod('WorldService', 'createWorld')
@@ -40,12 +46,16 @@ export class WorldController {
         request: CreateWorldRequest
     ): Promise<CreateWorldResponse> {
         console.log(`[WorldController - createWorld] request:`, request)
-        const { name, description, userId } = request
+        const worldDTO: WorldDTO | undefined = request.world
+        if (!worldDTO) throw new Error(`failed to find WorldDTO in request`)
+        const userId: string | undefined = worldDTO.user
+        if (!userId) throw new Error(`failed to find User in WorldDTO`)
         const user: User | null = await this.userService.findUser(userId, DataSourceEnum.DATA_SOURCE_WORLD)
-        if (!user) throw new Error(`cannot create world - failed to find user for userId: "${userId}"`)
-        const world: World = await this.worldService.createWorld(name, description, user)
+        if (!user) throw new Error(`failed to find User for userId: "${userId}"`)
+
+        const world: World = await this.worldService.createWorld(worldDTO.name, worldDTO.description, user)
         console.log(`[WorldController - createWorld] world:`, world)
-        const response: CreateWorldResponse = { worldId: world.id }
+        const response: CreateWorldResponse = { world: world.toDTO() }
         console.log(`[WorldController - createWorld] response:`, response)
         return response
     };
@@ -62,17 +72,35 @@ export class WorldController {
         return response
     }
 
+    @GrpcMethod('WorldService', 'updateWorld')
+    public async updateWorld(
+        request: UpdateWorldRequest
+    ): Promise<UpdateWorldResponse> {
+        const worldDTO: WorldDTO | undefined = request.world
+        if (!worldDTO) throw new Error(`failed to find WorldDTO in request`)
+        const world: World = World.fromDTO(worldDTO)
+        const worldRes: World = await this.worldService.updateWorld(world)
+        return { world: worldRes.toDTO() }
+    }
+    @GrpcMethod('WorldService', 'search')
+    public async search(
+        request: SearchWorldRequest
+    ): Promise<SearchWorldResponse> {
+        console.log(`[WorldController - search] request:`, request)
+        const { entityName, query, context } = request;
+        if (!context) throw new Error(`context cannot be undefined`);
+        if (!query) throw new Error(`query cannot be undefined`);
 
+        const searchQuery = SearchQuery.fromDTO(query);
+        const result = await this.worldService.searchWorlds(searchQuery);
 
-    @GrpcMethod('WorldService', 'getWorldsForUser')
-    public async getWorldsForUser(
-        request: GetWorldsForUserRequest
-    ): Promise<GetWorldsForUserResponse> {
-        const { userId } = request
-        const worlds: World[] = await this.worldService.searchWorlds({ userId })
-        const response = { worlds: worlds.map((world) => world.toDTO()) } // TODO I need to introduce pagination later
-        return response
-    };
+        return {
+            worlds: result.worlds.map(world => world.toDTO()),
+            totalResults: result.totalResults,
+            totalPages: result.totalPages,
+            currentPage: result.currentPage
+        };
+    }
 
     @GrpcMethod('WorldService', 'deleteWorld')
     public async deleteWorld(

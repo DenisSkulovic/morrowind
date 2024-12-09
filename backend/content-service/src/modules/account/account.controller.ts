@@ -1,16 +1,16 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Inject } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
 import { AccountService } from './account.service';
 import { Account } from './entities/Account';
 import { AccountRoleEnum } from '../../common/enum/AccountRoleEnum';
 import { DataSourceEnum } from '../../common/enum/DataSourceEnum';
-import { CreateAccountRequest, CreateAccountResponse, GetAccountRequest, GetAccountResponse } from '../../proto/account';
+import { CreateAccountRequest, CreateAccountResponse, GetAccountRequest, GetAccountResponse, UpdateAccountRequest, UpdateAccountResponse, DeleteAccountRequest, DeleteAccountResponse } from '../../proto/account';
 
 @Controller()
 export class AccountController {
 
     constructor(
-        private readonly accountService: AccountService,
+        @Inject('IAccountService') private readonly accountService: AccountService,
     ) { }
 
     @GrpcMethod('AccountService', 'createAccountAndUser')
@@ -27,8 +27,7 @@ export class AccountController {
         console.log(`[AccountController - createAccountAndUser] user, account:`, user, account)
 
         const response: CreateAccountResponse = {
-            userId: user.id,
-            accountId: account.id
+            account: account.toDTO()
         }
         console.log(`[AccountController - createAccountAndUser] response:`, response)
         return response
@@ -48,6 +47,31 @@ export class AccountController {
             account: accounts[0] ? accounts[0].toDTO() : undefined
         }
         console.log(`[AccountController - getAccount] response:`, response)
+        return response
+    };
+
+    @GrpcMethod('AccountService', 'updateAccount')
+    public async updateAccount(
+        request: UpdateAccountRequest,
+    ): Promise<UpdateAccountResponse> {
+        console.log(`[AccountController - updateAccount] request:`, request)
+        if (!request.account) throw new Error("Account is required")
+        const account = await this.accountService.updateAccount(Account.fromDTO(request.account), DataSourceEnum.DATA_SOURCE_WORLD);
+        const response: UpdateAccountResponse = {
+            account: account.toDTO()
+        }
+        console.log(`[AccountController - updateAccount] response:`, response)
+        return response
+    };
+
+    @GrpcMethod('AccountService', 'deleteAccount')
+    public async deleteAccount(
+        request: DeleteAccountRequest,
+    ): Promise<DeleteAccountResponse> {
+        console.log(`[AccountController - deleteAccount] request:`, request)
+        await this.accountService.deleteAccount(request.username, DataSourceEnum.DATA_SOURCE_WORLD);
+        const response: DeleteAccountResponse = {}
+        console.log(`[AccountController - deleteAccount] response:`, response)
         return response
     };
 

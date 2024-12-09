@@ -1,7 +1,7 @@
 import { SearchQueryDTO } from "../../proto/common";
-import { Serializer } from "../../serialize/serializer";
 import { QueryFilter } from "./QueryFilter";
 import { Serializable } from "../../decorator/serializable.decorator";
+import { Serializer } from "../../serializer";
 
 export class SearchQuery {
     constructor(

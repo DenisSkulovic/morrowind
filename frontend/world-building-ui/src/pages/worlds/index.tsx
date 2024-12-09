@@ -8,13 +8,17 @@ import { Box, Button, Card, CardActions, CardContent, CircularProgress, Containe
 import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import { Account } from '../../dto/Account';
 import { World } from '../../dto/World';
+import { AccountDTO } from '../../proto/common';
 
 const WorldsPage = () => {
     const dispatch = useDispatch<AppDispatch>();
-    const { data: worlds, status, error } = useSelector((state: RootState) => state.worlds);
-    const account: Account | null = useSelector((state: RootState) => state.account.data);
-    if (!account) throw new Error('Account not found');
-    const userId: string = account.user;
+    const { data: worldDTOs, status, error } = useSelector((state: RootState) => state.worlds);
+    const worlds = worldDTOs.map(worldDTO => World.fromDTO(worldDTO));
+    const accountDTO: AccountDTO | null = useSelector((state: RootState) => state.account.data);
+    if (!accountDTO) throw new Error('Account not found');
+    const userId: string = accountDTO.user;
+    console.log(`[WorldsPage] worlds:`, worlds)
+    console.log(`[WorldsPage] userId:`, userId)
     useEffect(() => {
         if (status === RequestStatusEnum.IDLE) {
             dispatch(fetchWorlds(userId));

@@ -1,13 +1,15 @@
+import { Context } from '../class/Context';
+import { SearchQuery } from '../class/search/SearchQuery';
 import { User } from '../dto/User';
 import { World } from '../dto/World';
 import { PresetEnum } from '../enum/entityEnums';
 import { serializeEnum } from '../enum/util';
-import { ContextDTO, PresetEnumDTO } from '../proto/common';
+import { ContextDTO, PresetEnumDTO, SearchQueryDTO } from '../proto/common';
 import {
     CreateWorldRequest, CreateWorldResponse, DeleteWorldRequest,
     DeleteWorldResponse, DropWorldContentRequest, DropWorldContentResponse,
     GetWorldRequest, GetWorldResponse, GetWorldsForUserRequest, GetWorldsForUserResponse,
-    LoadWorldPresetRequest, LoadWorldPresetResponse, UpdateWorldRequest, UpdateWorldResponse, WorldServiceClientImpl
+    LoadWorldPresetRequest, LoadWorldPresetResponse, SearchWorldRequest, SearchWorldResponse, UpdateWorldRequest, UpdateWorldResponse, WorldServiceClientImpl
 } from '../proto/world';
 import { rpc } from '../rpc';
 
@@ -15,7 +17,9 @@ export class WorldService {
     private client: WorldServiceClientImpl;
 
     constructor() {
-        this.client = new WorldServiceClientImpl(rpc);
+        this.client = new WorldServiceClientImpl(rpc, {
+            service: "WorldService"
+        });
     }
 
     async createWorld(world: World, userId: string): Promise<CreateWorldResponse> {
@@ -34,9 +38,40 @@ export class WorldService {
         return await this.client.updateWorld(request);
     }
 
-    async getWorldsForUser(userId: string): Promise<GetWorldsForUserResponse> {
-        const request: GetWorldsForUserRequest = { userId };
-        return await this.client.getWorldsForUser(request);
+    async search(entityName: string, query?: SearchQuery, context?: Context): Promise<SearchWorldResponse> {
+        console.log(`[WorldService - search] query:`, query)
+        // const request: SearchWorldRequest = {
+        //     entityName,
+        //     query: query?.toDTO(),
+        //     context: context?.toDTO()
+        // };
+        const request: SearchWorldRequest = {
+            "entityName": "World",
+            "query": {
+                "filters": [
+                    {
+                        "field": "user",
+                        "operator": "eq",
+                        "value": {
+                            "stringValue": "USER_df3bd4a7c1334138a9edd3c953f93840"
+                        }
+                    }
+                ],
+                "page": 1,
+                "pageSize": 100,
+                "sortBy": {
+                    "field": "name",
+                    "direction": "asc"
+                }
+            },
+            "context": {
+                "userId": "USER_df3bd4a7c1334138a9edd3c953f93840",
+                "worldId": "",
+                "campaignId": ""
+            }
+        }
+        console.log(`[WorldService - search] request:`, request)
+        return await this.client.search(request);
     }
 
     async deleteWorld(worldId: string): Promise<DeleteWorldResponse> {

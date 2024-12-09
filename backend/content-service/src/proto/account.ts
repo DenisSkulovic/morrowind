@@ -10,6 +10,22 @@ import { AccountDTO } from "./common";
 
 export const protobufPackage = "account";
 
+export interface UpdateAccountRequest {
+  account: AccountDTO | undefined;
+}
+
+export interface UpdateAccountResponse {
+  account: AccountDTO | undefined;
+}
+
+export interface DeleteAccountRequest {
+  username: string;
+}
+
+/** No fields required for a 200 status response */
+export interface DeleteAccountResponse {
+}
+
 export interface CreateAccountRequest {
   username: string;
   passwordHash: string;
@@ -18,8 +34,7 @@ export interface CreateAccountRequest {
 }
 
 export interface CreateAccountResponse {
-  userId: string;
-  accountId: string;
+  account: AccountDTO | undefined;
 }
 
 export interface GetAccountRequest {
@@ -29,6 +44,227 @@ export interface GetAccountRequest {
 export interface GetAccountResponse {
   account: AccountDTO | undefined;
 }
+
+function createBaseUpdateAccountRequest(): UpdateAccountRequest {
+  return { account: undefined };
+}
+
+export const UpdateAccountRequest: MessageFns<UpdateAccountRequest> = {
+  encode(message: UpdateAccountRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.account !== undefined) {
+      AccountDTO.encode(message.account, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateAccountRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateAccountRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.account = AccountDTO.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateAccountRequest {
+    return { account: isSet(object.account) ? AccountDTO.fromJSON(object.account) : undefined };
+  },
+
+  toJSON(message: UpdateAccountRequest): unknown {
+    const obj: any = {};
+    if (message.account !== undefined) {
+      obj.account = AccountDTO.toJSON(message.account);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpdateAccountRequest>, I>>(base?: I): UpdateAccountRequest {
+    return UpdateAccountRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpdateAccountRequest>, I>>(object: I): UpdateAccountRequest {
+    const message = createBaseUpdateAccountRequest();
+    message.account = (object.account !== undefined && object.account !== null)
+      ? AccountDTO.fromPartial(object.account)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseUpdateAccountResponse(): UpdateAccountResponse {
+  return { account: undefined };
+}
+
+export const UpdateAccountResponse: MessageFns<UpdateAccountResponse> = {
+  encode(message: UpdateAccountResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.account !== undefined) {
+      AccountDTO.encode(message.account, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateAccountResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateAccountResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.account = AccountDTO.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateAccountResponse {
+    return { account: isSet(object.account) ? AccountDTO.fromJSON(object.account) : undefined };
+  },
+
+  toJSON(message: UpdateAccountResponse): unknown {
+    const obj: any = {};
+    if (message.account !== undefined) {
+      obj.account = AccountDTO.toJSON(message.account);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpdateAccountResponse>, I>>(base?: I): UpdateAccountResponse {
+    return UpdateAccountResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpdateAccountResponse>, I>>(object: I): UpdateAccountResponse {
+    const message = createBaseUpdateAccountResponse();
+    message.account = (object.account !== undefined && object.account !== null)
+      ? AccountDTO.fromPartial(object.account)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseDeleteAccountRequest(): DeleteAccountRequest {
+  return { username: "" };
+}
+
+export const DeleteAccountRequest: MessageFns<DeleteAccountRequest> = {
+  encode(message: DeleteAccountRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.username !== "") {
+      writer.uint32(10).string(message.username);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DeleteAccountRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteAccountRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.username = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteAccountRequest {
+    return { username: isSet(object.username) ? globalThis.String(object.username) : "" };
+  },
+
+  toJSON(message: DeleteAccountRequest): unknown {
+    const obj: any = {};
+    if (message.username !== "") {
+      obj.username = message.username;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeleteAccountRequest>, I>>(base?: I): DeleteAccountRequest {
+    return DeleteAccountRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<DeleteAccountRequest>, I>>(object: I): DeleteAccountRequest {
+    const message = createBaseDeleteAccountRequest();
+    message.username = object.username ?? "";
+    return message;
+  },
+};
+
+function createBaseDeleteAccountResponse(): DeleteAccountResponse {
+  return {};
+}
+
+export const DeleteAccountResponse: MessageFns<DeleteAccountResponse> = {
+  encode(_: DeleteAccountResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DeleteAccountResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteAccountResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): DeleteAccountResponse {
+    return {};
+  },
+
+  toJSON(_: DeleteAccountResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeleteAccountResponse>, I>>(base?: I): DeleteAccountResponse {
+    return DeleteAccountResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<DeleteAccountResponse>, I>>(_: I): DeleteAccountResponse {
+    const message = createBaseDeleteAccountResponse();
+    return message;
+  },
+};
 
 function createBaseCreateAccountRequest(): CreateAccountRequest {
   return { username: "", passwordHash: "", email: "", role: "" };
@@ -139,16 +375,13 @@ export const CreateAccountRequest: MessageFns<CreateAccountRequest> = {
 };
 
 function createBaseCreateAccountResponse(): CreateAccountResponse {
-  return { userId: "", accountId: "" };
+  return { account: undefined };
 }
 
 export const CreateAccountResponse: MessageFns<CreateAccountResponse> = {
   encode(message: CreateAccountResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.userId !== "") {
-      writer.uint32(10).string(message.userId);
-    }
-    if (message.accountId !== "") {
-      writer.uint32(18).string(message.accountId);
+    if (message.account !== undefined) {
+      AccountDTO.encode(message.account, writer.uint32(10).fork()).join();
     }
     return writer;
   },
@@ -165,15 +398,7 @@ export const CreateAccountResponse: MessageFns<CreateAccountResponse> = {
             break;
           }
 
-          message.userId = reader.string();
-          continue;
-        }
-        case 2: {
-          if (tag !== 18) {
-            break;
-          }
-
-          message.accountId = reader.string();
+          message.account = AccountDTO.decode(reader, reader.uint32());
           continue;
         }
       }
@@ -186,19 +411,13 @@ export const CreateAccountResponse: MessageFns<CreateAccountResponse> = {
   },
 
   fromJSON(object: any): CreateAccountResponse {
-    return {
-      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
-      accountId: isSet(object.accountId) ? globalThis.String(object.accountId) : "",
-    };
+    return { account: isSet(object.account) ? AccountDTO.fromJSON(object.account) : undefined };
   },
 
   toJSON(message: CreateAccountResponse): unknown {
     const obj: any = {};
-    if (message.userId !== "") {
-      obj.userId = message.userId;
-    }
-    if (message.accountId !== "") {
-      obj.accountId = message.accountId;
+    if (message.account !== undefined) {
+      obj.account = AccountDTO.toJSON(message.account);
     }
     return obj;
   },
@@ -208,8 +427,9 @@ export const CreateAccountResponse: MessageFns<CreateAccountResponse> = {
   },
   fromPartial<I extends Exact<DeepPartial<CreateAccountResponse>, I>>(object: I): CreateAccountResponse {
     const message = createBaseCreateAccountResponse();
-    message.userId = object.userId ?? "";
-    message.accountId = object.accountId ?? "";
+    message.account = (object.account !== undefined && object.account !== null)
+      ? AccountDTO.fromPartial(object.account)
+      : undefined;
     return message;
   },
 };
@@ -335,6 +555,8 @@ export const GetAccountResponse: MessageFns<GetAccountResponse> = {
 export interface AccountService {
   createAccountAndUser(request: CreateAccountRequest): Promise<CreateAccountResponse>;
   getAccount(request: GetAccountRequest): Promise<GetAccountResponse>;
+  updateAccount(request: UpdateAccountRequest): Promise<UpdateAccountResponse>;
+  deleteAccount(request: DeleteAccountRequest): Promise<DeleteAccountResponse>;
 }
 
 export const AccountServiceServiceName = "account.AccountService";
@@ -346,6 +568,8 @@ export class AccountServiceClientImpl implements AccountService {
     this.rpc = rpc;
     this.createAccountAndUser = this.createAccountAndUser.bind(this);
     this.getAccount = this.getAccount.bind(this);
+    this.updateAccount = this.updateAccount.bind(this);
+    this.deleteAccount = this.deleteAccount.bind(this);
   }
   createAccountAndUser(request: CreateAccountRequest): Promise<CreateAccountResponse> {
     const data = CreateAccountRequest.encode(request).finish();
@@ -357,6 +581,18 @@ export class AccountServiceClientImpl implements AccountService {
     const data = GetAccountRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "getAccount", data);
     return promise.then((data) => GetAccountResponse.decode(new BinaryReader(data)));
+  }
+
+  updateAccount(request: UpdateAccountRequest): Promise<UpdateAccountResponse> {
+    const data = UpdateAccountRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "updateAccount", data);
+    return promise.then((data) => UpdateAccountResponse.decode(new BinaryReader(data)));
+  }
+
+  deleteAccount(request: DeleteAccountRequest): Promise<DeleteAccountResponse> {
+    const data = DeleteAccountRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "deleteAccount", data);
+    return promise.then((data) => DeleteAccountResponse.decode(new BinaryReader(data)));
   }
 }
 

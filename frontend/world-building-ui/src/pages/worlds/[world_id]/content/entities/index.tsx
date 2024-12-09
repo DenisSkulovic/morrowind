@@ -4,15 +4,19 @@ import { EntityListSearch } from '../../../../../components/entities/EntityListS
 import { EntityListActions } from '../../../../../components/entities/EntityListActions';
 import { EntityListFilters } from '../../../../../components/entities/EntityListFilters';
 import EntityListTable from '../../../../../components/entities/EntityListTable';
+import { useDispatch } from 'react-redux';
+import { CONTENT_ENTITY_MAP } from '../../../../../CONTENT_ENTITY_MAP';
+import { ClassConstructor } from '../../../../../types';
+import { ContentBase } from '../../../../../class/ContentBase';
 
 const EntityListPage = () => {
-    const dispatch = useAppDispatch();
-    const [selectedEntityType, setSelectedEntityType] = useState('characters');
+    const dispatch = useDispatch();
+    const [selectedTargetEntity, setSelectedTargetEntity] = useState("");
     const [searchQuery, setSearchQuery] = useState('');
     const [filters, setFilters] = useState({});
     const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
-    const entityClass = getEntityClass(selectedEntityType);
+    const entityClass: ClassConstructor<ContentBase> = CONTENT_ENTITY_MAP[selectedTargetEntity];
     const displayConfig = Reflect.getMetadata('entityDisplay', entityClass);
     const displayFields = Reflect.getMetadata('displayFields', entityClass) || [];
     const filterOptions = Reflect.getMetadata('filterOptions', entityClass) || [];
@@ -43,22 +47,29 @@ const EntityListPage = () => {
                             placeholder={`Search ${displayConfig.title.toLowerCase()}...`}
                         />
                         <EntityListActions
-                            entityType={selectedEntityType}
-                            selectedItems={selectedItems}
+                            entityName={selectedTargetEntity}
+                            selectedIds={selectedItems}
+                            onCreateNew={() => { }}
+                            onDelete={() => { }}
+                            onDuplicate={() => { }}
+                            onExport={() => { }}
                         />
                     </Box>
 
                     <EntityListFilters
-                        filterOptions={filterOptions}
-                        onChange={handleFilterChange}
+                        searchTerm={searchQuery}
+                        onSearchChange={handleSearch}
+                        selectedTags={[]}
+                        onTagsChange={() => { }}
+                        availableTags={filterOptions}
                     />
                 </Paper>
 
                 <EntityListTable
-                    entityType={selectedEntityType}
+                    entities={[]} // TODO: Add entities from state/API
+                    onEdit={(entity) => { }} // TODO: Add edit handler
+                    onDelete={(entity) => { }} // TODO: Add delete handler
                     columns={displayFields}
-                    filters={filters}
-                    searchQuery={searchQuery}
                     onSelectionChange={handleSelectionChange}
                 />
             </Box>

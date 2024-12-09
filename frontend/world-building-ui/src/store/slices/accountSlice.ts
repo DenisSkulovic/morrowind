@@ -2,15 +2,23 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Account } from "../../dto/Account";
 import { RequestStatusEnum } from "../../enum/RequestStatusEnum";
 import { AccountService } from "../../services/AccountService";
-import { GetAccountResponse } from "../../proto/account";
+import { AccountDTO } from "../../proto/common";
+
+const mockAccount: AccountDTO = {
+    id: "ACCOUNT_9c82f8af6f1342ca8549b8c3d6b104ca",
+    username: "testUser",
+    email: "test12@example.com",
+    role: "admin",
+    user: "USER_df3bd4a7c1334138a9edd3c953f93840"
+}
 
 interface AccountState {
-    data: Account | null;
+    data: AccountDTO | null;
     status: RequestStatusEnum;
     error: string | null;
 }
 const initialState: AccountState = {
-    data: null,
+    data: mockAccount,
     status: RequestStatusEnum.IDLE,
     error: null
 };

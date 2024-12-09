@@ -23,79 +23,13 @@ services:
       - DATABASE_SYNCHRONIZE=false
     volumes:
       - ./backend/content-service:/usr/src/app
-      # - /usr/src/app/node_modules
+      - /usr/src/app/node_modules
     depends_on:
       - world-db
       - campaign-db
     profiles:
       - fullstack
       - backend
-
-  # Uncomment the other services as they become ready
-  # ai-service:
-  #   build:
-  #     context: ./backend/ai-service
-  #     dockerfile: Dockerfile.dev
-  #   container_name: ai_service
-  #   restart: always
-  #   ports:
-  #     - "5002:50051"
-  #   depends_on:
-  #     - world-db
-  #   profiles:
-  #     - backend
-
-  # campaign-service:
-  #   build:
-  #     context: ./backend/campaign-service
-  #     dockerfile: Dockerfile.dev
-  #   container_name: campaign_service
-  #   restart: always
-  #   ports:
-  #     - "5003:50051"
-  #   depends_on:
-  #     - campaign-db
-  #   profiles:
-  #     - backend
-
-  # combat-service:
-  #   build:
-  #     context: ./backend/combat-service
-  #     dockerfile: Dockerfile.dev
-  #   container_name: combat_service
-  #   restart: always
-  #   ports:
-  #     - "5004:50051"
-  #   depends_on:
-  #     - world-db
-  #   profiles:
-  #     - backend
-
-  # dialogue-service:
-  #   build:
-  #     context: ./backend/dialogue-service
-  #     dockerfile: Dockerfile.dev
-  #   container_name: dialogue_service
-  #   restart: always
-  #   ports:
-  #     - "5005:50051"
-  #   depends_on:
-  #     - world-db
-  #   profiles:
-  #     - backend
-
-  # trade-service:
-  #   build:
-  #     context: ./backend/trade-service
-  #     dockerfile: Dockerfile.dev
-  #   container_name: trade_service
-  #   restart: always
-  #   ports:
-  #     - "5006:50051"
-  #   depends_on:
-  #     - world-db
-  #   profiles:
-  #     - backend
 
   # Databases
   world-db:
@@ -133,32 +67,21 @@ services:
       - backend
 
   # # Frontends
-  # world-building-ui:
-  #   build:
-  #     context: ./frontend/world-building-ui
-  #   container_name: world_building_ui
-  #   restart: always
-  #   ports:
-  #     - "3001:3000"
-  #   volumes:
-  #     - ./frontend/world-building-ui:/usr/src/app
-  #   depends_on:
-  #     - content-service
-  #   profiles:
-  #     - frontend
-  #     - fullstack
-
-  # campaign-ui:
-  #   build:
-  #     context: ./frontend/campaign-ui
-  #   container_name: campaign_ui
-  #   restart: always
-  #   ports:
-  #     - "3002:3000"
-  #   depends_on:
-  #     - campaign-service
-  #   profiles:
-  #     - frontend
+  world-building-ui:
+    build:
+      context: ./frontend/world-building-ui
+      dockerfile: Dockerfile.dev
+    container_name: world_building_ui
+    restart: always
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./frontend/world-building-ui:/usr/src/app
+    depends_on:
+      - content-service
+    profiles:
+      - frontend
+      - fullstack
 
 volumes:
   world_db_data:

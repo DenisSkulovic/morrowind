@@ -15,12 +15,21 @@ export interface IAccountService {
 
     createAccountAndUser(
         username: string,
-        password_hash: string, // TODO clearly this is only for testing purposes; will use a proper auth approach
+        password_hash: string,
         email: string,
         role: AccountRoleEnum,
         source: DataSourceEnum,
     ): Promise<{ account: Account, user: User }>
 
+    updateAccount(
+        account: Account,
+        source: DataSourceEnum,
+    ): Promise<Account>
+
+    deleteAccount(
+        username: string,
+        source: DataSourceEnum,
+    ): Promise<void>
 }
 
 @Injectable()
@@ -52,7 +61,7 @@ export class AccountService implements IAccountService {
 
     public async createAccountAndUser(
         username: string,
-        passwordHash: string, // TODO clearly this is only for testing purposes; will use a proper auth approach
+        passwordHash: string,
         email: string,
         role: AccountRoleEnum,
         source: DataSourceEnum,
@@ -73,7 +82,24 @@ export class AccountService implements IAccountService {
         user.account = account
         account.user = user
         console.log(`[AccountService - createAccountAndUser] user, account:`, user, account)
-        await this.getRepository(source).save(account) // TODO as far as I know, typeorm saves all connected entities as well, if they are changed or new, so this should also save the user
+        await this.getRepository(source).save(account)
         return { account, user }
+    }
+
+    public async updateAccount(
+        account: Account,
+        source: DataSourceEnum,
+    ): Promise<Account> {
+        return await this.getRepository(source).save(account);
+    }
+
+    public async deleteAccount(
+        username: string,
+        source: DataSourceEnum,
+    ): Promise<void> {
+        const accounts = await this.getAccount(username, source);
+        if (accounts.length > 0) {
+            await this.getRepository(source).remove(accounts[0]);
+        }
     }
 }

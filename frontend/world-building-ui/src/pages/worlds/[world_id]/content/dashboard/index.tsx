@@ -6,7 +6,7 @@ import { GlobalSearch } from '../../../../../components/dashboard/GlobalSearch';
 import { QuickActions } from '../../../../../components/dashboard/QuickActions';
 import { RecentActivity } from '../../../../../components/dashboard/RecentActivity';
 import { ContentService } from '../../../../../services/ContentService';
-import { Context } from '../../../../../types';
+import { Context } from '../../../../../class/Context';
 import { RootState } from '../../../../../store/store';
 import { useRouter } from 'next/router';
 import { World } from '../../../../../dto/World';
@@ -36,7 +36,8 @@ export default function Dashboard() {
         );
         const loadDashboardData = async () => {
             const contentService = new ContentService();
-            const stats: GetContentStatsResponse = await contentService.getContentStats(context);
+            const entityNames: string[] | null = null // TODO limit this to specific entities initially, and full as needed
+            const stats: GetContentStatsResponse = await contentService.getContentStats(entityNames, context);
             setContentStats(stats.stats);
         };
 

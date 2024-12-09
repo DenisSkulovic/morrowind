@@ -1,12 +1,17 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Transport } from '@nestjs/microservices';
-import { INestMicroservice } from '@nestjs/common';
-
 import { join } from 'path';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
+
+    // Enable CORS
+    app.enableCors({
+        origin: '*',
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+        allowedHeaders: ['Content-Type', 'Accept'],
+    });
 
     // Configure gRPC to listen on port 50051
     app.connectMicroservice({

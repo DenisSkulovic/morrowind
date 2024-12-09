@@ -8,11 +8,11 @@ import { World } from '../../../dto/World';
 
 const EditWorldPage = () => {
     const router = useRouter();
-    const { id } = router.query;
+    const { world_id } = router.query;
 
     const dispatch = useDispatch<AppDispatch>();
     const { data: worlds } = useSelector((state: RootState) => state.worlds);
-    const world: World | undefined = worlds.find((w) => w.id === id);
+    const world: World | undefined = worlds.find((w) => w.id === world_id);
     if (!world) throw new Error('World not found');
 
     const account: Account | null = useSelector((state: RootState) => state.account.data);
@@ -23,18 +23,18 @@ const EditWorldPage = () => {
     const [description, setDescription] = useState(world.description || "");
 
     useEffect(() => {
-        if (!id) return;
+        if (!world_id) return;
 
         if (worlds.length === 0) {
             dispatch(fetchWorlds(userId));
         } else {
-            const world = worlds.find((w) => w.id === id);
+            const world = worlds.find((w) => w.id === world_id);
             if (world) {
                 setName(world.name);
                 setDescription(world.description || "");
             }
         }
-    }, [id, worlds, dispatch]);
+    }, [world_id, worlds, dispatch]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();

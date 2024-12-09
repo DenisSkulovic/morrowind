@@ -12,6 +12,7 @@ service ContentService {
     rpc createBulk (CreateBulkContentRequest) returns (CreateBulkContentResponse);
     rpc updateBulk (UpdateBulkContentRequest) returns (UpdateBulkContentResponse);
     rpc deleteBulk (DeleteBulkContentRequest) returns (DeleteBulkContentResponse);
+    rpc getStats (GetContentStatsRequest) returns (GetContentStatsResponse);
 }
 
 message UpdateContentRequest {
@@ -21,7 +22,7 @@ message UpdateContentRequest {
 }
 
 message UpdateContentResponse {
-    string id = 1;
+    ContentBodyDTO contentBody = 1;
 }
 
 message DeleteContentRequest {
@@ -33,13 +34,10 @@ message DeleteContentRequest {
 message DeleteContentResponse {
     bool success = 1;
 }
-
 message SearchContentRequest {
     string entityName = 1;
-    string query = 2;
+    common.SearchQueryDTO query = 2;
     common.ContextDTO context = 3;
-    int32 page = 4;
-    int32 pageSize = 5;
 }
 
 message SearchContentResponse {
@@ -47,6 +45,22 @@ message SearchContentResponse {
     int32 totalResults = 2;
     int32 totalPages = 3;
     int32 currentPage = 4;
+}
+
+message GetContentStatsRequest {
+    common.ContextDTO context = 1;
+    repeated string entityNames = 2;
+}
+
+message GetContentStatsResponse {
+    repeated ContentStatDTO stats = 1;
+}
+
+message ContentStatDTO {
+    string title = 1;
+    string type = 2;
+    int32 count = 3;
+    string icon = 4;
 }
 
 message CreateBulkContentRequest {
@@ -81,7 +95,7 @@ message CreateContentRequest {
 }
 
 message CreateContentResponse {
-    
+    ContentBodyDTO contentBody = 1;
 }
 
 message ContentBodyDTO {

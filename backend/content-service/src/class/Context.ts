@@ -1,8 +1,8 @@
-import { Serializable } from "../decorator/serializable.decorator";
-import { User } from "../dto/User";
-import { World } from "../dto/World";
+import { Campaign } from "../modules/campaign/entities/Campaign";
+import { User } from "../modules/user/entities/User";
+import { World } from "../modules/world/entities/World";
 import { ContextDTO } from "../proto/common";
-import { Campaign } from "../dto/Campaign";
+import { Serializable } from "../decorator/serializable.decorator";
 
 export class Context {
     @Serializable()
