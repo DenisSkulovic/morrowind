@@ -8,8 +8,8 @@ import { ContextDTO, PresetEnumDTO, SearchQueryDTO } from '../proto/common';
 import {
     CreateWorldRequest, CreateWorldResponse, DeleteWorldRequest,
     DeleteWorldResponse, DropWorldContentRequest, DropWorldContentResponse,
-    GetWorldRequest, GetWorldResponse, GetWorldsForUserRequest, GetWorldsForUserResponse,
-    LoadWorldPresetRequest, LoadWorldPresetResponse, SearchWorldRequest, SearchWorldResponse, UpdateWorldRequest, UpdateWorldResponse, WorldServiceClientImpl
+    GetWorldRequest, GetWorldResponse, LoadWorldPresetRequest, LoadWorldPresetResponse,
+    SearchWorldRequest, SearchWorldResponse, UpdateWorldRequest, UpdateWorldResponse, WorldServiceClientImpl
 } from '../proto/world';
 import { rpc } from '../rpc';
 
@@ -40,36 +40,11 @@ export class WorldService {
 
     async search(entityName: string, query?: SearchQuery, context?: Context): Promise<SearchWorldResponse> {
         console.log(`[WorldService - search] query:`, query)
-        // const request: SearchWorldRequest = {
-        //     entityName,
-        //     query: query?.toDTO(),
-        //     context: context?.toDTO()
-        // };
         const request: SearchWorldRequest = {
-            "entityName": "World",
-            "query": {
-                "filters": [
-                    {
-                        "field": "user",
-                        "operator": "eq",
-                        "value": {
-                            "stringValue": "USER_df3bd4a7c1334138a9edd3c953f93840"
-                        }
-                    }
-                ],
-                "page": 1,
-                "pageSize": 100,
-                "sortBy": {
-                    "field": "name",
-                    "direction": "asc"
-                }
-            },
-            "context": {
-                "userId": "USER_df3bd4a7c1334138a9edd3c953f93840",
-                "worldId": "",
-                "campaignId": ""
-            }
-        }
+            entityName,
+            query: query?.toDTO(),
+            context: context?.toDTO()
+        };
         console.log(`[WorldService - search] request:`, request)
         return await this.client.search(request);
     }

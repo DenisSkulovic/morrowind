@@ -9,7 +9,7 @@ services:
     container_name: content_service
     restart: always
     ports:
-      - "3000:50051"
+      - "50051:50051"
     environment:
       - NODE_ENV=development
       - DATABASE_USER=${POSTGRES_USER}
@@ -30,6 +30,21 @@ services:
     profiles:
       - fullstack
       - backend
+
+  # Envoy Proxy
+  envoy:
+    image: envoyproxy/envoy:v1.23.0
+    container_name: envoy_proxy
+    restart: always
+    ports:
+      - "8080:8080" # HTTP endpoint for frontend
+      - "9901:9901" # Admin interface (optional)
+    volumes:
+      - ./envoy/envoy.yaml:/etc/envoy/envoy.yaml
+    depends_on:
+      - content-service
+    profiles:
+      - fullstack
 
   # Databases
   world-db:
@@ -79,6 +94,7 @@ services:
       - ./frontend/world-building-ui:/usr/src/app
     depends_on:
       - content-service
+      - envoy
     profiles:
       - frontend
       - fullstack

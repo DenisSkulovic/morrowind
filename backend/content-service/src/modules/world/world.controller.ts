@@ -13,8 +13,7 @@ import { DataSourceEnum } from "../../common/enum/DataSourceEnum";
 import { PresetEnum } from "../../common/enum/entityEnums";
 import { ContextDTO, PresetEnumDTO, WorldDTO } from "../../proto/common";
 import { deserializeEnum } from "../../common/enum/util";
-
-import { Controller, Inject } from '@nestjs/common';
+import { Controller, Inject, Logger } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
 import { WorldService } from "./world.service";
 import { UserService } from "../user/user.service";
@@ -23,6 +22,7 @@ import { Context } from "../../class/Context";
 
 @Controller()
 export class WorldController {
+    private readonly logger = new Logger(WorldController.name);
 
     constructor(
         @Inject('IWorldService') private readonly worldService: WorldService,
@@ -84,8 +84,13 @@ export class WorldController {
     }
     @GrpcMethod('WorldService', 'search')
     public async search(
-        request: SearchWorldRequest
+        request: SearchWorldRequest, metadata: any
     ): Promise<SearchWorldResponse> {
+        this.logger.debug(`Received gRPC request:
+            Method: WorldService.search
+            Metadata: ${JSON.stringify(metadata)}
+            Request: ${JSON.stringify(request)}
+        `);
         console.log(`[WorldController - search] request:`, request)
         const { entityName, query, context } = request;
         if (!context) throw new Error(`context cannot be undefined`);
@@ -94,12 +99,14 @@ export class WorldController {
         const searchQuery = SearchQuery.fromDTO(query);
         const result = await this.worldService.searchWorlds(searchQuery);
 
-        return {
+        const response = {
             worlds: result.worlds.map(world => world.toDTO()),
             totalResults: result.totalResults,
             totalPages: result.totalPages,
             currentPage: result.currentPage
-        };
+        }
+        console.log(`[WorldController - search] response:`, response)
+        return response;
     }
 
     @GrpcMethod('WorldService', 'deleteWorld')

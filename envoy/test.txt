@@ -1,0 +1,1 @@
+docker run --rm -v $(pwd)/envoy.yaml:/etc/envoy/envoy.yaml envoyproxy/envoy:v1.26.0 envoy -c /etc/envoy/envoy.yaml

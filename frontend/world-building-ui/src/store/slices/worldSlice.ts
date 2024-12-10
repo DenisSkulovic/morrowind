@@ -37,7 +37,7 @@ export const fetchWorlds = createAsyncThunk(
             ]);
         console.log(`before`)
         const response = await worldService.search("World", query, context);
-        console.log(`after`)
+        console.log(`after`, response)
         return response.worlds.map(world => World.fromDTO(world));
     }
 );

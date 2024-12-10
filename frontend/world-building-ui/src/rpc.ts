@@ -1,20 +1,13 @@
 export const rpc = {
     request: async (service: string, method: string, data: Uint8Array): Promise<Uint8Array> => {
-        const url = `http://localhost:3000/${service}/${method}`;
-
-        // Log the raw data being sent
-        console.log('Raw request data:', {
-            byteLength: data.byteLength,
-            firstFewBytes: Array.from(data.slice(0, 10))
-        });
+        const url = `http://localhost:8080/${service}/${method}`;
 
         try {
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {
-                    // Add the exact headers from your working Postman request
-                    'Content-Type': 'application/x-protobuf',
-                    'Accept': 'application/x-protobuf',
+                    'Content-Type': 'application/grpc-web',
+                    'Accept': 'application/grpc-web',
                 },
                 body: data,
             });
@@ -31,7 +24,8 @@ export const rpc = {
             }
 
             const buffer = await response.arrayBuffer();
-            return new Uint8Array(buffer);
+            const uint8Array = new Uint8Array(buffer);
+            return uint8Array;
         } catch (error) {
             console.error('RPC request failed:', error);
             throw error;

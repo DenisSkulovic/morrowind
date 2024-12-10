@@ -4,14 +4,19 @@ import { Transport } from '@nestjs/microservices';
 import { join } from 'path';
 
 async function bootstrap() {
-    const app = await NestFactory.create(AppModule);
+    const app = await NestFactory.create(AppModule, {
+        logger: ['error', 'warn', 'debug', 'log', 'verbose'],
+    });
 
     // Enable CORS
     app.enableCors({
         origin: '*',
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-        allowedHeaders: ['Content-Type', 'Accept'],
+        allowedHeaders: ['Content-Type', 'Accept', 'Authorization', 'application/x-protobuf'],
+        exposedHeaders: ['Content-Length', 'X-Kuma-Revision'],
+        credentials: true,
     });
+    console.log(`[ContentService - bootstrap] CORS enabled`);
 
     // Configure gRPC to listen on port 50051
     app.connectMicroservice({
@@ -32,6 +37,13 @@ async function bootstrap() {
                 join(__dirname, '../proto/world.proto'),
                 join(__dirname, '../proto/generator.proto'),
             ],
+            loader: {
+                keepCase: true,
+                longs: String,
+                enums: String,
+                defaults: true,
+                oneofs: true,
+            },
         },
     });
 
