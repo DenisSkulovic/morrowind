@@ -2,7 +2,7 @@ import { ContentBase } from "../../class/ContentBase";
 import { serializeInstruction, deserializeInstruction, serializeGenerationInstructions, deserializeGenerationInstructions } from "../../class/GenerationInstruction";
 import type { GenerationInstruction } from "../../class/GenerationInstruction"
 import { serializeSkillAdjustment, deserializeSkillAdjustment, SkillAdjustment } from "../../class/SkillAdjustment";
-import { BackgroundDTO } from "../../proto/common";
+import { common } from "../../proto/common";
 import { Serializable } from "../../decorator/serializable.decorator";
 import { Serializer } from "../../serialize/serializer";
 import { FormField } from "../../decorator/form-field.decorator";
@@ -87,18 +87,18 @@ export class Background extends ContentBase {
     @Serializable({ serialize: serializeSkillAdjustment, deserialize: i => i ? deserializeSkillAdjustment(i) : null })
     skillAdjustments?: SkillAdjustment
 
-    public toDTO(): BackgroundDTO {
+    public toDTO(): common.BackgroundDTO {
         return Serializer.toDTO(this);
     }
 
-    public static fromDTO(dto: BackgroundDTO): Background {
-        const pastExperience = new Background();
-        return Serializer.fromDTO(dto, pastExperience);
+    public static fromDTO(dto: common.BackgroundDTO): Background {
+        const background = new Background();
+        return Serializer.fromDTO(dto, background);
     }
 
     public static async search(filter: SearchQuery, context: Context): Promise<Background[]> {
         const contentService = new ContentService<Background>();
-        const { results } = await contentService.searchContent('Background', filter, 1, 100, context);
+        const { results } = await contentService.searchContent('Background', filter, context);
         return results as Background[];
     }
 }

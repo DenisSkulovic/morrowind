@@ -1,5 +1,6 @@
-import { QueryFilterDTO } from "../../proto/common";
+import { common } from "../../proto/common";
 import { Serializable } from "../../decorator/serializable.decorator";
+import { Serializer } from "../../serialize/serializer";
 
 type Operator = 'eq' | 'neq' | 'gt' | 'gte' | 'lt' | 'lte' | 'contains' | 'regex';
 
@@ -36,34 +37,16 @@ export class QueryFilter {
     })
     public value: string | number | boolean;
 
-    public static fromDTO(dto: QueryFilterDTO): QueryFilter {
-        let value: string | number | boolean;
-        if (dto.stringValue !== undefined) {
-            value = dto.stringValue;
-        } else if (dto.numberValue !== undefined) {
-            value = dto.numberValue;
-        } else if (dto.boolValue !== undefined) {
-            value = dto.boolValue;
-        } else {
-            throw new Error('QueryFilterDTO must have a value');
-        }
-        return new QueryFilter(dto.field, dto.operator as Operator, value);
+    public toDTO(): common.QueryFilterDTO {
+        return Serializer.toDTO(this);
     }
 
-    public toDTO(filter: QueryFilter): QueryFilterDTO {
-        const dto: QueryFilterDTO = {
-            field: filter.field,
-            operator: filter.operator
-        };
-
-        if (typeof filter.value === 'string') {
-            dto.stringValue = filter.value;
-        } else if (typeof filter.value === 'number') {
-            dto.numberValue = filter.value;
-        } else if (typeof filter.value === 'boolean') {
-            dto.boolValue = filter.value;
-        }
-
-        return dto;
+    public static fromDTO(dto: common.QueryFilterDTO): QueryFilter {
+        const filter = new QueryFilter(
+            dto.field,
+            dto.operator as Operator,
+            dto.value.stringValue ?? dto.value.numberValue ?? dto.value.boolValue ?? ''
+        );
+        return Serializer.fromDTO(dto, filter);
     }
 }

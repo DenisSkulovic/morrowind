@@ -1,5 +1,5 @@
 import { TaggableContentBase } from "../../../class/TaggableContentBase";
-import { SkillDTO } from "../../../proto/common";
+import { common } from "../../../proto/common";
 import { Serializable } from "../../../decorator/serializable.decorator";
 import { Serializer } from "../../../serialize/serializer";
 import { FormField } from "../../../decorator/form-field.decorator";
@@ -49,23 +49,23 @@ export class Skill extends TaggableContentBase {
         required: true
     })
     @Serializable({
-        serialize: (i) => serializeEnum(SkillCategoryEnum, SkillCategoryEnum, i),
-        deserialize: (i) => deserializeEnum(SkillCategoryEnum, SkillCategoryEnum, i)
+        serialize: category => serializeEnum(SkillCategoryEnum, common.SkillCategoryEnumDTO, category),
+        deserialize: category => deserializeEnum(common.SkillCategoryEnumDTO, SkillCategoryEnum, category)
     })
     category!: SkillCategoryEnum
 
-    public toDTO(): SkillDTO {
+    public toDTO(): common.SkillDTO {
         return Serializer.toDTO(this);
     }
 
-    public static fromDTO(dto: SkillDTO): Skill {
+    public static fromDTO(dto: common.SkillDTO): Skill {
         const skill = new Skill();
         return Serializer.fromDTO(dto, skill);
     }
 
     public static async search(filter: SearchQuery, context: Context): Promise<Skill[]> {
         const contentService = new ContentService<Skill>();
-        const { results } = await contentService.searchContent('Skill', filter, 1, 100, context);
+        const { results } = await contentService.searchContent('Skill', filter, context);
         return results as Skill[];
     }
 }

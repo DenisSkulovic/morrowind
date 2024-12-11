@@ -1,7 +1,7 @@
 import { TaggableContentBase } from "../../class/TaggableContentBase";
 import { MemoryTypeEnum } from "../../enum/entityEnums";
 import { serializeEnum, deserializeEnum } from "../../enum/util";
-import { MemoryTypeEnumDTO, MemoryDTO } from "../../proto/common";
+import { common } from "../../proto/common";
 import { Serializable } from "../../decorator/serializable.decorator";
 import { Serializer } from "../../serialize/serializer";
 import { Fact } from "./Fact";
@@ -45,8 +45,8 @@ export class Memory extends TaggableContentBase {
         },
     })
     @Serializable({
-        serialize: (i) => serializeEnum(MemoryTypeEnum, MemoryTypeEnumDTO, i),
-        deserialize: (i) => deserializeEnum(MemoryTypeEnumDTO, MemoryTypeEnum, i)
+        serialize: type => serializeEnum(MemoryTypeEnum, common.MemoryTypeEnumDTO, type),
+        deserialize: type => deserializeEnum(common.MemoryTypeEnumDTO, MemoryTypeEnum, type),
     })
     type!: MemoryTypeEnum // TODO need to properly conceptualize types of memories and what that means. Maybe better to do it with tags?
 
@@ -54,18 +54,18 @@ export class Memory extends TaggableContentBase {
     @Serializable({ strategy: 'full' })
     facts!: Fact[]
 
-    public toDTO(): MemoryDTO {
+    public toDTO(): common.MemoryDTO {
         return Serializer.toDTO(this);
     }
 
-    public static fromDTO(dto: MemoryDTO): Memory {
+    public static fromDTO(dto: common.MemoryDTO): Memory {
         const memory = new Memory();
         return Serializer.fromDTO(dto, memory);
     }
 
     public static async search(filter: SearchQuery, context: Context): Promise<Memory[]> {
         const contentService = new ContentService<Memory>();
-        const { results } = await contentService.searchContent('Memory', filter, 1, 100, context);
+        const { results } = await contentService.searchContent('Memory', filter, context);
         return results as Memory[];
     }
 }

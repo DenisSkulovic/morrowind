@@ -1,5 +1,5 @@
 import { ContentBase } from "../../class/ContentBase";
-import { MemoryPoolEntryDTO } from "../../proto/common";
+import { common } from "../../proto/common";
 import { Serializable } from "../../decorator/serializable.decorator";
 import { Serializer } from "../../serialize/serializer";
 import { FormField } from "../../decorator/form-field.decorator";
@@ -59,18 +59,18 @@ export class MemoryPoolEntry extends ContentBase {
     @FormField({ component: FieldComponentEnum.NUMBER_FIELD, label: 'Default Importance', placeholder: 'Enter default importance', required: true })
     defaultImportance!: number;
 
-    public toDTO(): MemoryPoolEntryDTO {
+    public toDTO(): common.MemoryPoolEntryDTO {
         return Serializer.toDTO(this);
     }
 
-    public static fromDTO(dto: MemoryPoolEntryDTO): MemoryPoolEntry {
+    public static fromDTO(dto: common.MemoryPoolEntryDTO): MemoryPoolEntry {
         const memoryPoolEntry = new MemoryPoolEntry();
         return Serializer.fromDTO(dto, memoryPoolEntry);
     }
 
     public static async search(filter: SearchQuery, context: Context): Promise<MemoryPoolEntry[]> {
         const contentService = new ContentService<MemoryPoolEntry>();
-        const { results } = await contentService.searchContent('MemoryPoolEntry', filter, 1, 100, context);
+        const { results } = await contentService.searchContent('MemoryPoolEntry', filter, context);
         return results as MemoryPoolEntry[];
     }
 }

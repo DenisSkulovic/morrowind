@@ -1,7 +1,7 @@
 import { ContentBase } from "../../class/ContentBase";
 import { EffectTypeEnum } from "../../enum/entityEnums";
 import { serializeEnum, deserializeEnum } from "../../enum/util";
-import { EffectTypeEnumDTO, StatusDTO } from "../../proto/common";
+import { common } from "../../proto/common";
 import { Serializable } from "../../decorator/serializable.decorator";
 import { Serializer } from "../../serialize/serializer";
 import { FormField } from "../../decorator/form-field.decorator";
@@ -43,8 +43,8 @@ export class Status extends ContentBase {
         required: true
     })
     @Serializable({
-        serialize: (i) => serializeEnum(EffectTypeEnum, EffectTypeEnumDTO, i),
-        deserialize: (i) => deserializeEnum(EffectTypeEnumDTO, EffectTypeEnum, i)
+        serialize: type => serializeEnum(EffectTypeEnum, common.EffectTypeEnumDTO, type),
+        deserialize: type => deserializeEnum(common.EffectTypeEnumDTO, EffectTypeEnum, type)
     })
     type!: EffectTypeEnum;
 
@@ -68,18 +68,18 @@ export class Status extends ContentBase {
     @FormField({ component: FieldComponentEnum.NUMBER_FIELD, label: 'Duration', placeholder: 'Enter duration in ticks (0 for permanent)', required: true })
     duration!: number; // Duration in ticks (0 for permanent).
 
-    public toDTO(): StatusDTO {
+    public toDTO(): common.StatusDTO {
         return Serializer.toDTO(this);
     }
 
-    public static fromDTO(dto: StatusDTO): Status {
+    public static fromDTO(dto: common.StatusDTO): Status {
         const status = new Status();
         return Serializer.fromDTO(dto, status);
     }
 
     public static async search(filter: SearchQuery, context: Context): Promise<Status[]> {
         const contentService = new ContentService<Status>();
-        const { results } = await contentService.searchContent('Status', filter, 1, 100, context);
+        const { results } = await contentService.searchContent('Status', filter, context);
         return results as Status[];
     }
 }

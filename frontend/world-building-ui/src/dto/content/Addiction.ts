@@ -1,5 +1,5 @@
 import { ContentBase } from "../../class/ContentBase";
-import { AddictionDTO } from "../../proto/common";
+import { common } from "../../proto/common";
 import { Serializable } from "../../decorator/serializable.decorator";
 import { Serializer } from "../../serialize/serializer";
 import { FormField } from "../../decorator/form-field.decorator";
@@ -24,18 +24,18 @@ export class Addiction extends ContentBase {
     @Serializable()
     name!: string
 
-    public toDTO(): AddictionDTO {
+    public toDTO(): common.AddictionDTO {
         return Serializer.toDTO(this);
     }
 
-    public static fromDTO(dto: AddictionDTO): Addiction {
+    public static fromDTO(dto: common.AddictionDTO): Addiction {
         const addiction = new Addiction();
         return Serializer.fromDTO(dto, addiction);
     }
 
     public static async search(filter: SearchQuery, context: Context): Promise<Addiction[]> {
         const contentService = new ContentService<Addiction>();
-        const { results } = await contentService.searchContent('Addiction', filter, 1, 100, context);
+        const { results } = await contentService.searchContent('Addiction', filter, context);
         return results as Addiction[];
     }
 }

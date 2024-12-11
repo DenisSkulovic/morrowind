@@ -1,48 +1,73 @@
-import { GeneratorServiceClientImpl, GenerateItemsRequest, GenerateItemsResponse, GenerateCharactersRequestCustom, GenerateCharactersRequestDB, GenerateCharactersResponse, GenerateCharacterGroupsRequest, GenerateCharacterGroupsResponse } from '../proto/generator';
-import { DataSourceEnumDTO, GenerationInstructionDTO, CharacterGenInstructionDTO, CharacterGroupGenInstructionDTO, ContextDTO } from '../proto/common';
-import { rpc } from '../rpc';
-import { Context } from '../class/Context';
+import { Context } from "../class/Context";
+import { GenerationInstruction, serializeInstruction } from "../class/GenerationInstruction";
+import { CharacterGenInstruction } from "../dto/content/CharacterGenInstruction";
+import { CharacterGroupGenInstruction } from "../dto/content/CharacterGroupGenInstruction";
+import { common } from "../proto/common";
+import { generator } from "../proto/generator";
+import { grpc } from '@improbable-eng/grpc-web';
 
 export class GeneratorService {
-    private client: GeneratorServiceClientImpl;
+    private client: generator.GeneratorServiceClient;
 
     constructor() {
-        this.client = new GeneratorServiceClientImpl(rpc);
+        this.client = new generator.GeneratorServiceClient("localhost:8080", grpc.credentials.createInsecure());
     }
 
-    async generateItems(instructions: GenerationInstructionDTO[], context: Context): Promise<GenerateItemsResponse> {
-        const request: GenerateItemsRequest = {
-            source: DataSourceEnumDTO.DATA_SOURCE_WORLD,
-            arr: instructions,
-            context: context.toDTO()
-        };
-        return await this.client.generateItems(request);
+    async generateItems(instructions: GenerationInstruction[], context: Context): Promise<generator.GenerateItemsResponse> {
+        const instructionsDTO: common.GenerationInstructionDTO[] = instructions.map(instruction => serializeInstruction(instruction));
+        const request = new generator.GenerateItemsRequest();
+        request.source = common.DataSourceEnumDTO.DATA_SOURCE_WORLD;
+        request.arr = instructionsDTO;
+        request.context = context.toDTO();
+        return new Promise((resolve, reject) => {
+            this.client.generateItems(request, (err, response) => {
+                if (err) reject(err);
+                else if (!response) reject(new Error('No response from server'));
+                else resolve(response);
+            });
+        });
     }
 
-    async generateCharactersCustom(instructions: CharacterGenInstructionDTO[], context: Context): Promise<GenerateCharactersResponse> {
-        const request: GenerateCharactersRequestCustom = {
-            source: DataSourceEnumDTO.DATA_SOURCE_WORLD,
-            arr: instructions,
-            context: context.toDTO()
-        };
-        return await this.client.generateCharactersCustom(request);
+    async generateCharactersCustom(instructions: CharacterGenInstruction[], context: Context): Promise<generator.GenerateCharactersResponse> {
+        const instructionsDTO: common.CharacterGenInstructionDTO[] = instructions.map(instruction => instruction.toDTO());
+        const request = new generator.GenerateCharactersRequestCustom();
+        request.source = common.DataSourceEnumDTO.DATA_SOURCE_WORLD;
+        request.arr = instructionsDTO;
+        request.context = context.toDTO();
+        return new Promise((resolve, reject) => {
+            this.client.generateCharactersCustom(request, (err, response) => {
+                if (err) reject(err);
+                else if (!response) reject(new Error('No response from server'));
+                else resolve(response);
+            });
+        });
     }
 
-    async generateCharactersDB(instructionIds: string[], context: Context): Promise<GenerateCharactersResponse> {
-        const request: GenerateCharactersRequestDB = {
-            source: DataSourceEnumDTO.DATA_SOURCE_WORLD,
-            charGenInstructionIds: instructionIds,
-            context: context.toDTO()
-        };
-        return await this.client.generateCharactersDB(request);
+    async generateCharactersDB(instructionIds: string[], context: Context): Promise<generator.GenerateCharactersResponse> {
+        const request = new generator.GenerateCharactersRequestDB();
+        request.source = common.DataSourceEnumDTO.DATA_SOURCE_WORLD;
+        request.charGenInstructionIds = instructionIds;
+        request.context = context.toDTO();
+        return new Promise((resolve, reject) => {
+            this.client.generateCharactersDB(request, (err, response) => {
+                if (err) reject(err);
+                else if (!response) reject(new Error('No response from server'));
+                else resolve(response);
+            });
+        });
     }
 
-    async generateCharacterGroups(instructions: CharacterGroupGenInstructionDTO[], context: Context): Promise<GenerateCharacterGroupsResponse> {
-        const request: GenerateCharacterGroupsRequest = {
-            source: DataSourceEnumDTO.DATA_SOURCE_WORLD,
-            arr: instructions,
-            context: context.toDTO()
-        };
-        return await this.client.generateCharacterGroups(request);
+    async generateCharacterGroups(instructions: CharacterGroupGenInstruction[], context: Context): Promise<generator.GenerateCharacterGroupsResponse> {
+        const request = new generator.GenerateCharacterGroupsRequest();
+        request.source = common.DataSourceEnumDTO.DATA_SOURCE_WORLD;
+        request.arr = instructions.map(instruction => instruction.toDTO());
+        request.context = context.toDTO();
+        return new Promise((resolve, reject) => {
+            this.client.generateCharacterGroups(request, (err, response) => {
+                if (err) reject(err);
+                else if (!response) reject(new Error('No response from server'));
+                else resolve(response);
+            });
+        });
     }
 }

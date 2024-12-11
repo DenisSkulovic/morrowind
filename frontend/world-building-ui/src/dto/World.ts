@@ -1,11 +1,14 @@
 import { Serializable } from "../decorator/serializable.decorator";
-import { WorldDTO } from "../proto/common";
 import { Serializer } from "../serialize/serializer";
 import { FormField } from "../decorator/form-field.decorator";
 import { FieldComponentEnum } from "../enum/FieldComponentEnum";
 import { DisplayField } from "../decorator/display-field.decorator";
 import { EntityDisplay } from "../decorator/entity-display.decorator";
 import { FilterOption } from "../decorator/filter-option.decorator";
+import { common } from "../proto/common";
+import { ContentService } from "../services/ContentService";
+import { SearchQuery } from "../class/search/SearchQuery";
+import { Context } from "../class/Context";
 
 @EntityDisplay({
     title: 'Worlds',
@@ -38,11 +41,11 @@ export class World {
     @Serializable()
     campaigns!: string[]
 
-    public toDTO(): WorldDTO {
+    public toDTO(): common.WorldDTO {
         return Serializer.toDTO(this);
     }
 
-    public static fromDTO(dto: WorldDTO): World {
+    public static fromDTO(dto: common.WorldDTO): World {
         const world = new World();
         return Serializer.fromDTO(dto, world);
     }

@@ -1,4 +1,4 @@
-import { StorageSlotDefinitionDTO, StorageSlotDefinitionsDTO } from "../proto/common"
+import { common } from "../proto/common";
 import { FormField } from "../decorator/form-field.decorator"
 import { FieldComponentEnum } from "../enum/FieldComponentEnum"
 import type { GridSize } from "../dto/content/Slot/StorageSlot"
@@ -25,35 +25,39 @@ export class StorageSlotDefinition {
         this.maxWeight = maxWeight;
     }
 
-    toDTO(): StorageSlotDefinitionDTO {
+    toDTO(): common.StorageSlotDefinitionDTO {
         return serializeStorageSlotDefinition(this)
     }
-    static fromDTO(dto: StorageSlotDefinitionDTO): StorageSlotDefinition {
+    static fromDTO(dto: common.StorageSlotDefinitionDTO): StorageSlotDefinition {
         return deserializeStorageSlotDefinition(dto)
     }
 }
 export type StorageSlotDefinitions = StorageSlotDefinition[]
-export function serializeStorageSlotDefinition(stSlDef: StorageSlotDefinition): StorageSlotDefinitionDTO {
-    return {
-        name: stSlDef.name,
-        grid: [stSlDef.grid.width, stSlDef.grid.height],
-        maxWeight: stSlDef.maxWeight,
-        clazz: stSlDef.clazz
-    }
+
+export function serializeStorageSlotDefinition(stSlDef: StorageSlotDefinition): common.StorageSlotDefinitionDTO {
+    const dto = new common.StorageSlotDefinitionDTO();
+    dto.name = stSlDef.name;
+    dto.clazz = stSlDef.clazz;
+    dto.maxWeight = stSlDef.maxWeight;
+    dto.grid = [stSlDef.grid.width, stSlDef.grid.height];
+    return dto;
 }
-export function deserializeStorageSlotDefinition(stSlDefDTO: StorageSlotDefinitionDTO): StorageSlotDefinition {
+
+export function deserializeStorageSlotDefinition(stSlDefDTO: common.StorageSlotDefinitionDTO): StorageSlotDefinition {
     return new StorageSlotDefinition(
         stSlDefDTO.name,
         { width: stSlDefDTO.grid[0], height: stSlDefDTO.grid[1] },
         stSlDefDTO.maxWeight
     )
 }
-export function serializeStorageSlotDefinitions(stSlDefs: StorageSlotDefinitions): StorageSlotDefinitionsDTO {
-    return {
-        arr: stSlDefs.map(def => def.toDTO())
-    }
+
+export function serializeStorageSlotDefinitions(stSlDefs: StorageSlotDefinitions): common.StorageSlotDefinitionsDTO {
+    const dto = new common.StorageSlotDefinitionsDTO();
+    dto.arr = stSlDefs.map(def => def.toDTO());
+    return dto;
 }
-export function deserializeStorageSlotDefinitions(stSlDefsDTO: StorageSlotDefinitionsDTO): StorageSlotDefinitions {
+
+export function deserializeStorageSlotDefinitions(stSlDefsDTO: common.StorageSlotDefinitionsDTO): StorageSlotDefinitions {
     return stSlDefsDTO.arr.map(stSlDefDTO => {
         return deserializeStorageSlotDefinition(stSlDefDTO)
     })

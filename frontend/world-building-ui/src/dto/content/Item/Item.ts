@@ -3,7 +3,7 @@ import { serializeStorageSlotDefinitions, deserializeStorageSlotDefinitions, Sto
 import { TaggableContentBase } from "../../../class/TaggableContentBase";
 import { ItemActionEnum } from "../../../enum/entityEnums";
 import { serializeEnum, deserializeEnum } from "../../../enum/util";
-import { ItemActionEnumDTO, ItemDTO } from "../../../proto/common";
+import { common } from "../../../proto/common";
 import { Serializable } from "../../../decorator/serializable.decorator";
 import { Serializer } from "../../../serialize/serializer";
 import { StorageSlot } from "../Slot/StorageSlot";
@@ -87,8 +87,8 @@ export class Item extends TaggableContentBase {
         required: false
     })
     @Serializable({
-        serialize: (actions: ItemActionEnum[]) => actions.map(action => serializeEnum(ItemActionEnum, ItemActionEnumDTO, action)),
-        deserialize: (actions: number[]) => actions.map(action => deserializeEnum(ItemActionEnumDTO, ItemActionEnum, action)),
+        serialize: (actions: ItemActionEnum[]) => actions.map(action => serializeEnum(ItemActionEnum, common.ItemActionEnumDTO, action)),
+        deserialize: (actions: number[]) => actions.map(action => deserializeEnum(common.ItemActionEnumDTO, ItemActionEnum, action)),
     })
     actions?: ItemActionEnum[];
 
@@ -128,18 +128,18 @@ export class Item extends TaggableContentBase {
     @Serializable()
     equipmentSlot?: string; // the equipment slot where this item sits (sword in hand, for e.g.)
 
-    public toDTO(): ItemDTO {
+    public toDTO(): common.ItemDTO {
         return Serializer.toDTO(this);
     }
 
-    public static fromDTO(dto: ItemDTO): Item {
+    public static fromDTO(dto: common.ItemDTO): Item {
         const item = new Item();
         return Serializer.fromDTO(dto, item);
     }
 
     public static async search(filter: SearchQuery, context: Context): Promise<Item[]> {
         const contentService = new ContentService<Item>();
-        const { results } = await contentService.searchContent('Item', filter, 1, 100, context);
+        const { results } = await contentService.searchContent('Item', filter, context);
         return results as Item[];
     }
 }

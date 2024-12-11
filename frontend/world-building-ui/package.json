@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "proto:generate": "npx protoc --proto_path=proto --ts_proto_out=src/proto --ts_proto_opt=esModuleInterop=true,env=browser proto/*.proto",
+    "proto:generate": "protoc --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts --plugin=protoc-gen-grpc-web=/usr/local/bin/protoc-gen-grpc-web --js_out=import_style=commonjs,binary:./src/proto --grpc-web_out=import_style=typescript,mode=grpcweb:./src/proto --ts_out=./src/proto -I ./proto ./proto/*.proto",
     "proto:watch": "chokidar \"proto/**/*.proto\" -c \"npm run proto:generate\"",
     "dev": "next dev",
     "build": "next build",
@@ -13,6 +13,7 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@grpc/grpc-js": "^1.12.4",
     "@grpc/proto-loader": "^0.7.13",
     "@improbable-eng/grpc-web": "^0.15.0",
     "@mui/icons-material": "^6.1.10",

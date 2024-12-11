@@ -10,8 +10,8 @@ export abstract class TaggableContentBase extends ContentBase {
     @FormField({
         component: FieldComponentEnum.MULTI_SELECT_FIELD,
         label: 'Tags',
-        search: async (filter): Promise<FormSelectOption[]> => {
-            return (await Tag.search(filter)).map((item: Tag) => {
+        search: async (filter, context): Promise<FormSelectOption[]> => {
+            return (await Tag.search(filter, context)).map((item: Tag) => {
                 return { id: item.id, label: item.label }
             })
         }

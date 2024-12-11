@@ -1,6 +1,6 @@
 import { serializeFactStatuses, deserializeFactStatuses, FactStatus } from "../../class/FactStatus";
 import { TaggableContentBase } from "../../class/TaggableContentBase";
-import { CharacterMemoryDTO } from "../../proto/common";
+import { common } from "../../proto/common";
 import { Serializable } from "../../decorator/serializable.decorator";
 import { Serializer } from "../../serialize/serializer";
 import { FormField } from "../../decorator/form-field.decorator";
@@ -59,18 +59,18 @@ export class CharacterMemory extends TaggableContentBase {
     @Serializable()
     lastUpdatedAt?: number; // Last time the memory was reinforced/pruned
 
-    public toDTO(): CharacterMemoryDTO {
+    public toDTO(): common.CharacterMemoryDTO {
         return Serializer.toDTO(this);
     }
 
-    public static fromDTO(dto: CharacterMemoryDTO): CharacterMemory {
+    public static fromDTO(dto: common.CharacterMemoryDTO): CharacterMemory {
         const characterMemory = new CharacterMemory();
         return Serializer.fromDTO(dto, characterMemory);
     }
 
     public static async search(filter: SearchQuery, context: Context): Promise<CharacterMemory[]> {
         const contentService = new ContentService<CharacterMemory>();
-        const { results } = await contentService.searchContent('CharacterMemory', filter, 1, 100, context);
+        const { results } = await contentService.searchContent('CharacterMemory', filter, context);
         return results as CharacterMemory[];
     }
 }

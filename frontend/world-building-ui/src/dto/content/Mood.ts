@@ -1,5 +1,5 @@
 import { ContentBase } from "../../class/ContentBase";
-import { MoodDTO } from "../../proto/common";
+import { common } from "../../proto/common";
 import { Serializable } from "../../decorator/serializable.decorator";
 import { Serializer } from "../../serialize/serializer";
 import { FormField } from "../../decorator/form-field.decorator";
@@ -27,18 +27,18 @@ export class Mood extends ContentBase {
     @FormField({ component: FieldComponentEnum.TEXTAREA_FIELD, label: 'Description', placeholder: 'Enter mood description', required: true })
     description!: string;
 
-    public toDTO(): MoodDTO {
+    public toDTO(): common.MoodDTO {
         return Serializer.toDTO(this);
     }
 
-    public static fromDTO(dto: MoodDTO): Mood {
+    public static fromDTO(dto: common.MoodDTO): Mood {
         const mood = new Mood();
         return Serializer.fromDTO(dto, mood);
     }
 
     public static async search(filter: SearchQuery, context: Context): Promise<Mood[]> {
         const contentService = new ContentService<Mood>();
-        const { results } = await contentService.searchContent('Mood', filter, 1, 100, context);
+        const { results } = await contentService.searchContent('Mood', filter, context);
         return results as Mood[];
     }
 }

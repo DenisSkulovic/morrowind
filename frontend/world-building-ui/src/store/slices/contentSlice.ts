@@ -46,9 +46,9 @@ export const deleteContent = createAsyncThunk(
 
 export const searchContent = createAsyncThunk(
     'content/searchContent',
-    async ({ entityName, query, page, pageSize, context }: { entityName: string; query: SearchQuery; page: number; pageSize: number; context: Context }) => {
+    async ({ entityName, query, context }: { entityName: string; query: SearchQuery; page: number; pageSize: number; context: Context }) => {
         const contentService = new ContentService();
-        return await contentService.searchContent(entityName, query, page, pageSize, context);
+        return await contentService.searchContent(entityName, query, context);
     }
 );
 

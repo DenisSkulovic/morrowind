@@ -1,4 +1,4 @@
-import { EquipmentSlotDefinitionDTO, EquipmentSlotDefinitionsDTO } from "../proto/common";
+import { common } from "../proto/common";
 import { FormField } from "../decorator/form-field.decorator";
 import { FieldComponentEnum } from "../enum/FieldComponentEnum";
 import { Serializer } from "../serialize/serializer";
@@ -27,20 +27,39 @@ export class EquipmentSlotDefinition {
         this.allowedEntities = allowedEntities;
     }
 
-    toDTO(): EquipmentSlotDefinitionDTO {
+    toObject() {
+        return {
+            name: this.name,
+            allowedEntities: this.allowedEntities
+        };
+    }
+
+    static fromObject(data: {
+        name: string;
+        allowedEntities: string[];
+    }): EquipmentSlotDefinition {
+        return new EquipmentSlotDefinition(data.name, data.allowedEntities);
+    }
+
+    toDTO(): common.EquipmentSlotDefinitionDTO {
         return Serializer.toDTO(this);
     }
 
-    static fromDTO(dto: EquipmentSlotDefinitionDTO): EquipmentSlotDefinition {
-        const def = new EquipmentSlotDefinition(dto.name, dto.allowedEntities);
+    static fromDTO(dto: common.EquipmentSlotDefinitionDTO): EquipmentSlotDefinition {
+        const def = new EquipmentSlotDefinition(
+            dto.name,
+            dto.allowedEntities
+        );
         return Serializer.fromDTO(dto, def);
     }
 }
 
-export function serializeEquipmentSlotDefinitions(defs: EquipmentSlotDefinition[]): EquipmentSlotDefinitionsDTO {
-    return { arr: defs.map(def => def.toDTO()) }
+export function serializeEquipmentSlotDefinitions(defs: EquipmentSlotDefinition[]): common.EquipmentSlotDefinitionsDTO {
+    const message = new common.EquipmentSlotDefinitionsDTO({});
+    message.arr = defs.map(def => def.toDTO());
+    return message;
 }
 
-export function deserializeEquipmentSlotDefinitions(defsDTO: EquipmentSlotDefinitionsDTO): EquipmentSlotDefinition[] {
-    return defsDTO.arr.map(defDTO => EquipmentSlotDefinition.fromDTO(defDTO))
+export function deserializeEquipmentSlotDefinitions(defsDTO: common.EquipmentSlotDefinitionsDTO): EquipmentSlotDefinition[] {
+    return defsDTO.arr.map(defDTO => EquipmentSlotDefinition.fromDTO(defDTO));
 }

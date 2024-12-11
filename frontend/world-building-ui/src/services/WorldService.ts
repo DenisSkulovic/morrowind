@@ -1,72 +1,114 @@
-import { Context } from '../class/Context';
-import { SearchQuery } from '../class/search/SearchQuery';
-import { User } from '../dto/User';
-import { World } from '../dto/World';
-import { PresetEnum } from '../enum/entityEnums';
-import { serializeEnum } from '../enum/util';
-import { ContextDTO, PresetEnumDTO, SearchQueryDTO } from '../proto/common';
-import {
-    CreateWorldRequest, CreateWorldResponse, DeleteWorldRequest,
-    DeleteWorldResponse, DropWorldContentRequest, DropWorldContentResponse,
-    GetWorldRequest, GetWorldResponse, LoadWorldPresetRequest, LoadWorldPresetResponse,
-    SearchWorldRequest, SearchWorldResponse, UpdateWorldRequest, UpdateWorldResponse, WorldServiceClientImpl
-} from '../proto/world';
-import { rpc } from '../rpc';
+import { Context } from "../class/Context";
+import { SearchQuery } from "../class/search/SearchQuery";
+import { User } from "../dto/User";
+import { World } from "../dto/World";
+import { PresetEnum } from "../enum/entityEnums";
+import { serializeEnum } from "../enum/util";
+import { common } from "../proto/common";
+import { world } from "../proto/world";
+import { grpc } from '@improbable-eng/grpc-web';
 
 export class WorldService {
-    private client: WorldServiceClientImpl;
+    private client: world.WorldServiceClient;
 
     constructor() {
-        this.client = new WorldServiceClientImpl(rpc);
+        this.client = new world.WorldServiceClient("localhost:8080", grpc.credentials.createInsecure());
     }
 
-    async createWorld(world: World, userId: string): Promise<CreateWorldResponse> {
-        world.user = userId;
-        const request: CreateWorldRequest = { world: world.toDTO() };
-        return await this.client.createWorld(request);
+    async createWorld(worldObj: World, userId: string): Promise<world.CreateWorldResponse> {
+        worldObj.user = userId;
+        const request = new world.CreateWorldRequest();
+        request.world = worldObj.toDTO();
+        return new Promise((resolve, reject) => {
+            this.client.createWorld(request, (err, response) => {
+                if (err) reject(err);
+                else if (!response) reject(new Error('No response from server'));
+                else resolve(response);
+            });
+        });
     }
 
-    async getWorld(worldId: string): Promise<GetWorldResponse> {
-        const request: GetWorldRequest = { worldId };
-        return await this.client.getWorld(request);
+    async getWorld(worldId: string): Promise<world.GetWorldResponse> {
+        const request = new world.GetWorldRequest();
+        request.worldId = worldId;
+        return new Promise((resolve, reject) => {
+            this.client.getWorld(request, (err, response) => {
+                if (err) reject(err);
+                else if (!response) reject(new Error('No response from server'));
+                else resolve(response);
+            });
+        });
     }
 
-    async updateWorld(world: World): Promise<UpdateWorldResponse> {
-        const request: UpdateWorldRequest = { world: world.toDTO() };
-        return await this.client.updateWorld(request);
+    async updateWorld(worldObj: World): Promise<world.UpdateWorldResponse> {
+        const request = new world.UpdateWorldRequest();
+        request.world = worldObj.toDTO();
+        return new Promise((resolve, reject) => {
+            this.client.updateWorld(request, (err, response) => {
+                if (err) reject(err);
+                else if (!response) reject(new Error('No response from server'));
+                else resolve(response);
+            });
+        });
     }
 
-    async search(entityName: string, query?: SearchQuery, context?: Context): Promise<SearchWorldResponse> {
-        console.log(`[WorldService - search] query:`, query)
-        const request: SearchWorldRequest = {
-            entityName,
-            query: query?.toDTO(),
-            context: context?.toDTO()
-        };
-        console.log(`[WorldService - search] request:`, request)
-        return await this.client.search(request);
-    }
-
-    async deleteWorld(worldId: string): Promise<DeleteWorldResponse> {
-        const request: DeleteWorldRequest = { worldId };
-        return await this.client.deleteWorld(request);
-    }
-
-    async dropWorldContent(worldId: string): Promise<DropWorldContentResponse> {
-        const request: DropWorldContentRequest = { worldId };
-        return await this.client.dropWorldContent(request);
-    }
-
-    async loadWorldPreset(preset: PresetEnum, user: User, world: World): Promise<LoadWorldPresetResponse> {
-        const context: ContextDTO = {
-            userId: user.id,
-            worldId: world.id,
-            campaignId: ""
+    async search(entityName: string, query?: SearchQuery, context?: Context): Promise<world.SearchWorldResponse> {
+        const request = new world.SearchWorldRequest();
+        request.entityName = entityName;
+        if (query) {
+            request.query = query.toDTO();
         }
-        const request: LoadWorldPresetRequest = {
-            preset: serializeEnum(PresetEnum, PresetEnumDTO, preset),
-            context,
-        };
-        return await this.client.loadWorldPreset(request);
+        if (context) {
+            request.context = context.toDTO();
+        }
+        return new Promise((resolve, reject) => {
+            this.client.search(request, (err, response) => {
+                if (err) reject(err);
+                else if (!response) reject(new Error('No response from server'));
+                else resolve(response);
+            });
+        });
+    }
+
+    async deleteWorld(worldId: string): Promise<world.DeleteWorldResponse> {
+        const request = new world.DeleteWorldRequest();
+        request.worldId = worldId;
+        return new Promise((resolve, reject) => {
+            this.client.deleteWorld(request, (err, response) => {
+                if (err) reject(err);
+                else if (!response) reject(new Error('No response from server'));
+                else resolve(response);
+            });
+        });
+    }
+
+    async dropWorldContent(worldId: string): Promise<world.DropWorldContentResponse> {
+        const request = new world.DropWorldContentRequest();
+        request.worldId = worldId;
+        return new Promise((resolve, reject) => {
+            this.client.dropWorldContent(request, (err, response) => {
+                if (err) reject(err);
+                else if (!response) reject(new Error('No response from server'));
+                else resolve(response);
+            });
+        });
+    }
+
+    async loadWorldPreset(preset: PresetEnum, user: User, worldObj: World): Promise<world.LoadWorldPresetResponse> {
+        const context = new common.ContextDTO();
+        context.userId = user.id;
+        context.worldId = worldObj.id;
+        context.campaignId = "";
+
+        const request = new world.LoadWorldPresetRequest();
+        request.preset = serializeEnum(PresetEnum, common.PresetEnumDTO, preset);
+        request.context = context;
+        return new Promise((resolve, reject) => {
+            this.client.loadWorldPreset(request, (err, response) => {
+                if (err) reject(err);
+                else if (!response) reject(new Error('No response from server'));
+                else resolve(response);
+            });
+        });
     }
 }

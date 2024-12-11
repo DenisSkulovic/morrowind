@@ -1,6 +1,6 @@
 import { ContentBase } from "../../class/ContentBase";
 import { serializeEquipmentSlotDefinitions, deserializeEquipmentSlotDefinitions, EquipmentSlotDefinition } from "../../class/ItemSlotDefinition";
-import { RaceDTO } from "../../proto/common";
+import { common } from "../../proto/common";
 import { Serializable } from "../../decorator/serializable.decorator";
 import { Serializer } from "../../serialize/serializer";
 import { FormField } from "../../decorator/form-field.decorator";
@@ -30,18 +30,18 @@ export class Race extends ContentBase {
     @FormField({ component: FieldComponentEnum.NESTED_FORM, label: 'Equipment Slot Definitions' })
     equipment_slot_definitions!: EquipmentSlotDefinition[]
 
-    public toDTO(): RaceDTO {
+    public toDTO(): common.RaceDTO {
         return Serializer.toDTO(this);
     }
 
-    public static fromDTO(dto: RaceDTO): Race {
+    public static fromDTO(dto: common.RaceDTO): Race {
         const race = new Race();
         return Serializer.fromDTO(dto, race);
     }
 
     public static async search(filter: SearchQuery, context: Context): Promise<Race[]> {
         const contentService = new ContentService<Race>();
-        const { results } = await contentService.searchContent('Race', filter, 1, 100, context);
+        const { results } = await contentService.searchContent('Race', filter, context);
         return results as Race[];
     }
 }

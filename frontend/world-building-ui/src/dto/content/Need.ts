@@ -1,7 +1,7 @@
 import { ContentBase } from "../../class/ContentBase";
 import { NeedTypeEnum, NeedLayerEnum } from "../../enum/entityEnums";
 import { serializeEnum, deserializeEnum } from "../../enum/util";
-import { NeedTypeEnumDTO, NeedLayerEnumDTO, NeedDTO } from "../../proto/common";
+import { common } from "../../proto/common";
 import { Serializable } from "../../decorator/serializable.decorator";
 import { Serializer } from "../../serialize/serializer";
 import { FormField } from "../../decorator/form-field.decorator";
@@ -42,8 +42,8 @@ export class Need extends ContentBase {
         },
     })
     @Serializable({
-        serialize: (i) => serializeEnum(NeedTypeEnum, NeedTypeEnumDTO, i),
-        deserialize: (i) => deserializeEnum(NeedTypeEnumDTO, NeedTypeEnum, i)
+        serialize: type => serializeEnum(NeedTypeEnum, common.NeedTypeEnumDTO, type),
+        deserialize: type => deserializeEnum(common.NeedTypeEnumDTO, NeedTypeEnum, type),
     })
     type!: NeedTypeEnum; // "dynamic", "threshold", "external".
 
@@ -59,23 +59,23 @@ export class Need extends ContentBase {
         },
     })
     @Serializable({
-        serialize: (i) => serializeEnum(NeedLayerEnum, NeedLayerEnumDTO, i),
-        deserialize: (i) => deserializeEnum(NeedLayerEnumDTO, NeedLayerEnum, i)
+        serialize: layer => serializeEnum(NeedLayerEnum, common.NeedLayerEnumDTO, layer),
+        deserialize: layer => deserializeEnum(common.NeedLayerEnumDTO, NeedLayerEnum, layer),
     })
     layer!: NeedLayerEnum
 
-    public toDTO(): NeedDTO {
+    public toDTO(): common.NeedDTO {
         return Serializer.toDTO(this);
     }
 
-    public static fromDTO(dto: NeedDTO): Need {
+    public static fromDTO(dto: common.NeedDTO): Need {
         const need = new Need();
         return Serializer.fromDTO(dto, need);
     }
 
     public static async search(filter: SearchQuery, context: Context): Promise<Need[]> {
         const contentService = new ContentService<Need>();
-        const { results } = await contentService.searchContent('Need', filter, 1, 100, context);
+        const { results } = await contentService.searchContent('Need', filter, context);
         return results as Need[];
     }
 }

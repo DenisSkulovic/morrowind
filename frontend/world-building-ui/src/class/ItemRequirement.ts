@@ -1,4 +1,4 @@
-import { ItemRequirementDTO, ItemRequirementsDTO } from "../proto/common";
+import { common } from "../proto/common";
 import { FormField } from "../decorator/form-field.decorator";
 import { FieldComponentEnum } from "../enum/FieldComponentEnum";
 import { Serializer } from "../serialize/serializer";
@@ -35,11 +35,11 @@ export class ItemRequirement {
         this.value = value;
     }
 
-    toDTO(): ItemRequirementDTO {
+    toDTO(): common.ItemRequirementDTO {
         return Serializer.toDTO(this);
     }
 
-    static fromDTO(dto: ItemRequirementDTO): ItemRequirement {
+    static fromDTO(dto: common.ItemRequirementDTO): ItemRequirement {
         const req = new ItemRequirement(
             dto.type,
             dto.name,
@@ -51,13 +51,12 @@ export class ItemRequirement {
 
 export type ItemRequirements = ItemRequirement[]
 
-export function serializeRequirements(reqs: ItemRequirement[]): ItemRequirementsDTO {
-    return { arr: reqs.map(req => req.toDTO()) }
+export function serializeRequirements(reqs: ItemRequirement[]): common.ItemRequirementsDTO {
+    const message = new common.ItemRequirementsDTO({});
+    message.arr = reqs.map(req => req.toDTO());
+    return message;
 }
 
-export function deserializeRequirements(dtoInstructions: ItemRequirementsDTO): ItemRequirement[] {
-    return dtoInstructions.arr.map(dto => ItemRequirement.fromDTO(dto))
+export function deserializeRequirements(dtoInstructions: common.ItemRequirementsDTO): ItemRequirement[] {
+    return dtoInstructions.arr.map(dto => ItemRequirement.fromDTO(dto));
 }
-
-
-

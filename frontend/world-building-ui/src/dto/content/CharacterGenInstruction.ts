@@ -1,8 +1,8 @@
-import { serializeBackgroundCustomization, deserializeBackgroundCustomization, BackgroundCustomization } from "../../class/BackgroundCustomization";
 import { ContentBase } from "../../class/ContentBase";
+import { BackgroundCustomization } from "../../class/BackgroundCustomization";
 import { GenderEnum } from "../../enum/GenderEnum";
 import { serializeEnum, deserializeEnum } from "../../enum/util";
-import { GenderEnumDTO, CharacterGenInstructionDTO } from "../../proto/common";
+import { common } from "../../proto/common";
 import { Serializable } from "../../decorator/serializable.decorator";
 import { Serializer } from "../../serialize/serializer";
 import { FormField } from "../../decorator/form-field.decorator";
@@ -48,8 +48,8 @@ export class CharacterGenInstruction extends ContentBase {
         },
     })
     @Serializable({
-        serialize: (i: GenderEnum) => serializeEnum(GenderEnum, GenderEnumDTO, i),
-        deserialize: (i: GenderEnumDTO | undefined) => typeof i !== "undefined" ? deserializeEnum(GenderEnumDTO, GenderEnum, i) : null
+        serialize: gender => serializeEnum(GenderEnum, common.GenderEnumDTO, gender),
+        deserialize: gender => typeof gender !== "undefined" ? deserializeEnum(common.GenderEnumDTO, GenderEnum, gender) : null
     })
     gender?: GenderEnum
 
@@ -90,24 +90,21 @@ export class CharacterGenInstruction extends ContentBase {
     backgroundBlueprintId!: string
 
     @FormField({ component: FieldComponentEnum.NESTED_FORM, label: 'Background Customization', required: false })
-    @Serializable({
-        serialize: serializeBackgroundCustomization,
-        deserialize: i => i ? deserializeBackgroundCustomization(i) : null
-    })
+    @Serializable({ strategy: 'full' })
     backgroundCustomization?: BackgroundCustomization
 
-    public toDTO(): CharacterGenInstructionDTO {
+    public toDTO(): common.CharacterGenInstructionDTO {
         return Serializer.toDTO(this);
     }
 
-    public static fromDTO(dto: CharacterGenInstructionDTO): CharacterGenInstruction {
+    public static fromDTO(dto: common.CharacterGenInstructionDTO): CharacterGenInstruction {
         const chGenInst = new CharacterGenInstruction();
         return Serializer.fromDTO(dto, chGenInst);
     }
 
     public static async search(filter: SearchQuery, context: Context): Promise<CharacterGenInstruction[]> {
         const contentService = new ContentService<CharacterGenInstruction>();
-        const { results } = await contentService.searchContent('CharacterGenInstruction', filter, 1, 100, context);
+        const { results } = await contentService.searchContent('CharacterGenInstruction', filter, context);
         return results as CharacterGenInstruction[];
     }
 }

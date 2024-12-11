@@ -1,7 +1,7 @@
 import { TaggableContentBase } from "../../class/TaggableContentBase";
 import { GenderEnum } from "../../enum/GenderEnum";
 import { serializeEnum, deserializeEnum } from "../../enum/util";
-import { GenderEnumDTO, CharacterDTO } from "../../proto/common";
+import { common } from "../../proto/common";
 import { Serializable } from "../../decorator/serializable.decorator";
 import { Serializer } from "../../serialize/serializer";
 import { Birthsign } from "./Birthsign";
@@ -68,8 +68,8 @@ export class Character extends TaggableContentBase {
         },
     })
     @Serializable({
-        serialize: (i) => serializeEnum(GenderEnum, GenderEnumDTO, i),
-        deserialize: (i) => deserializeEnum(GenderEnumDTO, GenderEnum, i)
+        serialize: gender => serializeEnum(GenderEnum, common.GenderEnumDTO, gender),
+        deserialize: gender => deserializeEnum(common.GenderEnumDTO, GenderEnum, gender),
     })
     gender!: GenderEnum;
 
@@ -110,8 +110,8 @@ export class Character extends TaggableContentBase {
     @FormField({
         component: FieldComponentEnum.NESTED_FORM,
         label: 'Equipment Slots',
-        search: async (filter): Promise<FormSelectOption[]> => {
-            return (await EquipmentSlot.search(filter)).map((item: EquipmentSlot) => {
+        search: async (filter, context): Promise<FormSelectOption[]> => {
+            return (await EquipmentSlot.search(filter, context)).map((item: EquipmentSlot) => {
                 return { id: item.id, label: item.name }
             })
         }
@@ -215,18 +215,18 @@ export class Character extends TaggableContentBase {
     @Serializable()
     factions?: string[];
 
-    public toDTO(): CharacterDTO {
+    public toDTO(): common.CharacterDTO {
         return Serializer.toDTO(this);
     }
 
-    public static fromDTO(dto: CharacterDTO): Character {
+    public static fromDTO(dto: common.CharacterDTO): Character {
         const character = new Character();
         return Serializer.fromDTO(dto, character);
     }
 
     public static async search(filter: SearchQuery, context: Context): Promise<Character[]> {
         const contentService = new ContentService<Character>();
-        const { results } = await contentService.searchContent('Character', filter, 1, 100, context);
+        const { results } = await contentService.searchContent('Character', filter, context);
         return results as Character[];
     }
 }

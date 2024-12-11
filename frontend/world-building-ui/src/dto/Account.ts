@@ -1,5 +1,5 @@
 import { Serializable } from "../decorator/serializable.decorator";
-import { AccountDTO } from "../proto/common";
+import { common } from "../proto/common";
 import { Serializer } from "../serialize/serializer";
 
 export class Account {
@@ -18,11 +18,11 @@ export class Account {
     @Serializable()
     user!: string
 
-    public toDTO(): AccountDTO {
+    public toDTO(): common.AccountDTO {
         return Serializer.toDTO(this);
     }
 
-    public static fromDTO(dto: AccountDTO): Account {
+    public static fromDTO(dto: common.AccountDTO): Account {
         const account = new Account();
         return Serializer.fromDTO(dto, account);
     }

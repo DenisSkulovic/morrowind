@@ -1,7 +1,7 @@
 import { TaggableContentBase } from "../../class/TaggableContentBase";
 import { EffectTypeEnum, EffectTargetEnum, EffectModeEnum, EffectElementEnum } from "../../enum/entityEnums";
 import { serializeEnum, deserializeEnum } from "../../enum/util";
-import { EffectTypeEnumDTO, EffectTargetEnumDTO, EffectModeEnumDTO, EffectElementEnumDTO, EffectDTO } from "../../proto/common";
+import { common } from "../../proto/common";
 import { Serializable } from "../../decorator/serializable.decorator";
 import { Serializer } from "../../serialize/serializer";
 import { FormField } from "../../decorator/form-field.decorator";
@@ -40,8 +40,8 @@ export class Effect extends TaggableContentBase {
         },
     })
     @Serializable({
-        serialize: type => serializeEnum(EffectTypeEnum, EffectTypeEnumDTO, type),
-        deserialize: type => deserializeEnum(EffectTypeEnumDTO, EffectTypeEnum, type),
+        serialize: type => serializeEnum(EffectTypeEnum, common.EffectTypeEnumDTO, type),
+        deserialize: type => deserializeEnum(common.EffectTypeEnumDTO, EffectTypeEnum, type),
     })
     type!: EffectTypeEnum; // "damage", "healing", "buff", "debuff", "resistance", etc.
 
@@ -57,8 +57,8 @@ export class Effect extends TaggableContentBase {
         },
     })
     @Serializable({
-        serialize: target => serializeEnum(EffectTargetEnum, EffectTargetEnumDTO, target),
-        deserialize: target => deserializeEnum(EffectTargetEnumDTO, EffectTargetEnum, target),
+        serialize: target => serializeEnum(EffectTargetEnum, common.EffectTargetEnumDTO, target),
+        deserialize: target => deserializeEnum(common.EffectTargetEnumDTO, EffectTargetEnum, target),
     })
     target!: EffectTargetEnum; // "health", "stamina", "magic", etc.
 
@@ -74,8 +74,8 @@ export class Effect extends TaggableContentBase {
         },
     })
     @Serializable({
-        serialize: mode => serializeEnum(EffectModeEnum, EffectModeEnumDTO, mode),
-        deserialize: mode => deserializeEnum(EffectModeEnumDTO, EffectModeEnum, mode),
+        serialize: mode => serializeEnum(EffectModeEnum, common.EffectModeEnumDTO, mode),
+        deserialize: mode => deserializeEnum(common.EffectModeEnumDTO, EffectModeEnum, mode),
     })
     mode!: EffectModeEnum; // "instant", "gradual", "persistent"
 
@@ -91,23 +91,23 @@ export class Effect extends TaggableContentBase {
         },
     })
     @Serializable({
-        serialize: element => serializeEnum(EffectElementEnum, EffectElementEnumDTO, element),
-        deserialize: element => deserializeEnum(EffectElementEnumDTO, EffectElementEnum, element),
+        serialize: element => serializeEnum(EffectElementEnum, common.EffectElementEnumDTO, element),
+        deserialize: element => deserializeEnum(common.EffectElementEnumDTO, EffectElementEnum, element),
     })
     element?: EffectElementEnum;
 
-    public toDTO(): EffectDTO {
+    public toDTO(): common.EffectDTO {
         return Serializer.toDTO(this);
     }
 
-    public static fromDTO(dto: EffectDTO): Effect {
+    public static fromDTO(dto: common.EffectDTO): Effect {
         const effect = new Effect();
         return Serializer.fromDTO(dto, effect);
     }
 
     public static async search(filter: SearchQuery, context: Context): Promise<Effect[]> {
         const contentService = new ContentService<Effect>();
-        const { results } = await contentService.searchContent('Effect', filter, 1, 100, context);
+        const { results } = await contentService.searchContent('Effect', filter, context);
         return results as Effect[];
     }
 

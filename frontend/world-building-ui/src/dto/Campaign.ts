@@ -1,4 +1,4 @@
-import { CampaignDTO } from "../proto/common";
+import { common } from "../proto/common";
 import { Serializable } from "../decorator/serializable.decorator";
 import { Serializer } from "../serialize/serializer";
 
@@ -24,11 +24,11 @@ export class Campaign {
     @Serializable()
     user!: string;
 
-    public toDTO(): CampaignDTO {
+    public toDTO(): common.CampaignDTO {
         return Serializer.toDTO(this);
     }
 
-    public static fromDTO(dto: CampaignDTO): Campaign {
+    public static fromDTO(dto: common.CampaignDTO): Campaign {
         const campaign = new Campaign();
         return Serializer.fromDTO(dto, campaign);
     }

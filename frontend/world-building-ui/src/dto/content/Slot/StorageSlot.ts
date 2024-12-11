@@ -1,16 +1,31 @@
-import { ContentBase } from "../../../class/ContentBase";
-import { StorageSlotDTO, StorageGridDTO } from "../../../proto/common";
+import { TaggableContentBase } from "../../../class/TaggableContentBase";
+import { common } from "../../../proto/common";
 import { Serializable } from "../../../decorator/serializable.decorator";
 import { Serializer } from "../../../serialize/serializer";
 import { Item } from "../Item/Item";
 import { FormField } from "../../../decorator/form-field.decorator";
 import { FieldComponentEnum } from "../../../enum/FieldComponentEnum";
+import { Context } from "../../../class/Context";
+import { ContentService } from "../../../services/ContentService";
+import { SearchQuery } from "../../../class/search/SearchQuery";
+import { EntityDisplay } from "../../../decorator/entity-display.decorator";
+import { DisplayField } from "../../../decorator/display-field.decorator";
+import { FilterOption } from "../../../decorator/filter-option.decorator";
 
 export type GridSize = { width: number, height: number };
 export type StorageGridCell = string | null;
 export type StorageGrid = StorageGridCell[][];
 
-export class StorageSlot extends ContentBase {
+@EntityDisplay({
+    title: 'Storage Slots',
+    defaultSort: 'name'
+})
+export class StorageSlot extends TaggableContentBase {
+    @DisplayField({
+        order: 1,
+        displayName: 'Name'
+    })
+    @FilterOption()
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter storage slot name', required: true })
     @Serializable()
     name!: string
@@ -33,13 +48,19 @@ export class StorageSlot extends ContentBase {
     @Serializable({ strategy: 'full' })
     storedItems?: Item[];
 
-    public toDTO(): StorageSlotDTO {
+    public toDTO(): common.StorageSlotDTO {
         return Serializer.toDTO(this);
     }
 
-    public static fromDTO(dto: StorageSlotDTO): StorageSlot {
+    public static fromDTO(dto: common.StorageSlotDTO): StorageSlot {
         const storageSlot = new StorageSlot();
         return Serializer.fromDTO(dto, storageSlot);
+    }
+
+    public static async search(filter: SearchQuery, context: Context): Promise<StorageSlot[]> {
+        const contentService = new ContentService<StorageSlot>();
+        const { results } = await contentService.searchContent('StorageSlot', filter, context);
+        return results as StorageSlot[];
     }
 }
 
@@ -51,24 +72,29 @@ export function deserializeGrid(grid: number[]): GridSize {
     return { width: grid[0], height: grid[1] };
 }
 
-export function serializeGridState(gridState: StorageGrid): StorageGridDTO {
-    return {
-        cells: gridState.flatMap((row, rowIndex) =>
-            row.map((value, columnIndex) => ({
-                row: rowIndex,
-                column: columnIndex,
-                value: value || "",
-            }))
-        ),
-    };
+export function serializeGridState(gridState: StorageGrid): common.StorageGridDTO {
+    const cells = gridState.flatMap((row, rowIndex) =>
+        row.map((value, columnIndex) => {
+            const cell = new common.StorageGridCellDTO();
+            cell.row = rowIndex;
+            cell.column = columnIndex;
+            cell.value = value || "";
+            return cell;
+        })
+    );
+    const dto = new common.StorageGridDTO();
+    dto.cells = cells;
+    return dto;
 }
-export function deserializeGridState(gridState: StorageGridDTO): StorageGrid {
-    const maxRow = Math.max(...gridState.cells.map(cell => cell.row)) + 1;
-    const maxColumn = Math.max(...gridState.cells.map(cell => cell.column)) + 1;
+
+export function deserializeGridState(gridState: common.StorageGridDTO): StorageGrid {
+    const cells = gridState.cells;
+    const maxRow = Math.max(...cells.map(cell => cell.row)) + 1;
+    const maxColumn = Math.max(...cells.map(cell => cell.column)) + 1;
 
     const grid: StorageGrid = Array.from({ length: maxRow }, () => Array(maxColumn).fill(null));
 
-    gridState.cells.forEach(cell => {
+    cells.forEach(cell => {
         grid[cell.row][cell.column] = cell.value || null;
     });
 

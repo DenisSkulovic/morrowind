@@ -1,5 +1,5 @@
 import { TaggableContentBase } from "../../class/TaggableContentBase";
-import { CharacterProfessionDTO } from "../../proto/common";
+import { common } from "../../proto/common";
 import { Serializable } from "../../decorator/serializable.decorator";
 import { Serializer } from "../../serialize/serializer";
 import { FormField } from "../../decorator/form-field.decorator";
@@ -36,18 +36,18 @@ export class CharacterProfession extends TaggableContentBase {
     @Serializable()
     memoryPools!: string[]
 
-    public toDTO(): CharacterProfessionDTO {
+    public toDTO(): common.CharacterProfessionDTO {
         return Serializer.toDTO(this);
     }
 
-    public static fromDTO(dto: CharacterProfessionDTO): CharacterProfession {
+    public static fromDTO(dto: common.CharacterProfessionDTO): CharacterProfession {
         const chProfession = new CharacterProfession();
         return Serializer.fromDTO(dto, chProfession);
     }
 
     public static async search(filter: SearchQuery, context: Context): Promise<CharacterProfession[]> {
         const contentService = new ContentService<CharacterProfession>();
-        const { results } = await contentService.searchContent('CharacterProfession', filter, 1, 100, context);
+        const { results } = await contentService.searchContent('CharacterProfession', filter, context);
         return results as CharacterProfession[];
     }
 }

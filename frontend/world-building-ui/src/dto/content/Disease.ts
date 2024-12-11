@@ -1,7 +1,7 @@
 import { TaggableContentBase } from "../../class/TaggableContentBase";
 import { DiseaseSeverityEnum } from "../../enum/entityEnums";
 import { serializeEnum, deserializeEnum } from "../../enum/util";
-import { DiseaseSeverityEnumDTO, DiseaseDTO } from "../../proto/common";
+import { common } from "../../proto/common";
 import { Serializable } from "../../decorator/serializable.decorator";
 import { Serializer } from "../../serialize/serializer";
 import { FormField } from "../../decorator/form-field.decorator";
@@ -47,23 +47,23 @@ export class Disease extends TaggableContentBase {
         },
     })
     @Serializable({
-        serialize: type => serializeEnum(DiseaseSeverityEnum, DiseaseSeverityEnumDTO, type),
-        deserialize: type => deserializeEnum(DiseaseSeverityEnumDTO, DiseaseSeverityEnum, type),
+        serialize: type => serializeEnum(DiseaseSeverityEnum, common.DiseaseSeverityEnumDTO, type),
+        deserialize: type => deserializeEnum(common.DiseaseSeverityEnumDTO, DiseaseSeverityEnum, type),
     })
     severity!: DiseaseSeverityEnum;
 
-    public toDTO(): DiseaseDTO {
+    public toDTO(): common.DiseaseDTO {
         return Serializer.toDTO(this);
     }
 
-    public static fromDTO(dto: DiseaseDTO): Disease {
+    public static fromDTO(dto: common.DiseaseDTO): Disease {
         const disease = new Disease();
         return Serializer.fromDTO(dto, disease);
     }
 
     public static async search(filter: SearchQuery, context: Context): Promise<Disease[]> {
         const contentService = new ContentService<Disease>();
-        const { results } = await contentService.searchContent('Disease', filter, 1, 100, context);
+        const { results } = await contentService.searchContent('Disease', filter, context);
         return results as Disease[];
     }
 }

@@ -1,5 +1,5 @@
 import { TaggableContentBase } from "../../class/TaggableContentBase";
-import { MemoryPoolDTO } from "../../proto/common";
+import { common } from "../../proto/common";
 import { Serializable } from "../../decorator/serializable.decorator";
 import { Serializer } from "../../serialize/serializer";
 import { MemoryPoolEntry } from "./MemoryPoolEntry";
@@ -42,18 +42,18 @@ export class MemoryPool extends TaggableContentBase {
     @Serializable()
     memoryPoolEntries!: string[];
 
-    public toDTO(): MemoryPoolDTO {
+    public toDTO(): common.MemoryPoolDTO {
         return Serializer.toDTO(this);
     }
 
-    public static fromDTO(dto: MemoryPoolDTO): MemoryPool {
+    public static fromDTO(dto: common.MemoryPoolDTO): MemoryPool {
         const memoryPool = new MemoryPool();
         return Serializer.fromDTO(dto, memoryPool);
     }
 
     public static async search(filter: SearchQuery, context: Context): Promise<MemoryPool[]> {
         const contentService = new ContentService<MemoryPool>();
-        const { results } = await contentService.searchContent('MemoryPool', filter, 1, 100, context);
+        const { results } = await contentService.searchContent('MemoryPool', filter, context);
         return results as MemoryPool[];
     }
 }

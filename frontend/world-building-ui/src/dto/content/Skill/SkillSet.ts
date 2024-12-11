@@ -1,6 +1,6 @@
 import { serializeSkillImprovement, deserializeSkillImprovement, SkillImprovement } from "../../../class/SkillImprovement";
 import { TaggableContentBase } from "../../../class/TaggableContentBase";
-import { SkillSetDTO } from "../../../proto/common";
+import { common } from "../../../proto/common";
 import { Serializable } from "../../../decorator/serializable.decorator";
 import { Serializer } from "../../../serialize/serializer";
 import { FormField } from "../../../decorator/form-field.decorator";
@@ -28,18 +28,18 @@ export class SkillSet extends TaggableContentBase {
     @Serializable({ serialize: serializeSkillImprovement, deserialize: deserializeSkillImprovement })
     skillImprovement!: SkillImprovement
 
-    public toDTO(): SkillSetDTO {
+    public toDTO(): common.SkillSetDTO {
         return Serializer.toDTO(this);
     }
 
-    public static fromDTO(dto: SkillSetDTO): SkillSet {
+    public static fromDTO(dto: common.SkillSetDTO): SkillSet {
         const skillSet = new SkillSet();
         return Serializer.fromDTO(dto, skillSet);
     }
 
     public static async search(filter: SearchQuery, context: Context): Promise<SkillSet[]> {
         const contentService = new ContentService<SkillSet>();
-        const { results } = await contentService.searchContent('SkillSet', filter, 1, 100, context);
+        const { results } = await contentService.searchContent('SkillSet', filter, context);
         return results as SkillSet[];
     }
 }

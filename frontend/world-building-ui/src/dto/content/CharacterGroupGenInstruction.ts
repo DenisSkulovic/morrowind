@@ -1,6 +1,5 @@
 import { ContentBase } from "../../class/ContentBase";
 import { serializeInstruction, deserializeInstruction, BlueprintSetCombinator } from "../../class/GenerationInstruction";
-import { CharacterGroupGenInstructionDTO } from "../../proto/common";
 import { Serializable } from "../../decorator/serializable.decorator";
 import { Serializer } from "../../serialize/serializer";
 import { FormField } from "../../decorator/form-field.decorator";
@@ -11,6 +10,7 @@ import { FilterOption } from "../../decorator/filter-option.decorator";
 import { ContentService } from "../../services/ContentService";
 import { SearchQuery } from "../../class/search/SearchQuery";
 import { Context } from "../../class/Context";
+import { common } from "../../proto/common";
 
 @EntityDisplay({
     title: 'Character Group Generation Instructions',
@@ -28,18 +28,18 @@ export class CharacterGroupGenInstruction extends ContentBase {
     @Serializable({ serialize: serializeInstruction, deserialize: deserializeInstruction })
     set!: BlueprintSetCombinator;
 
-    public toDTO(): CharacterGroupGenInstructionDTO {
+    public toDTO(): common.CharacterGroupGenInstructionDTO {
         return Serializer.toDTO(this);
     }
 
-    public static fromDTO(dto: CharacterGroupGenInstructionDTO): CharacterGroupGenInstruction {
+    public static fromDTO(dto: common.CharacterGroupGenInstructionDTO): CharacterGroupGenInstruction {
         const chGrpGenInstruction = new CharacterGroupGenInstruction();
         return Serializer.fromDTO(dto, chGrpGenInstruction);
     }
 
     public static async search(filter: SearchQuery, context: Context): Promise<CharacterGroupGenInstruction[]> {
         const contentService = new ContentService<CharacterGroupGenInstruction>();
-        const { results } = await contentService.searchContent('CharacterGroupGenInstruction', filter, 1, 100, context);
+        const { results } = await contentService.searchContent('CharacterGroupGenInstruction', filter, context);
         return results as CharacterGroupGenInstruction[];
     }
 }

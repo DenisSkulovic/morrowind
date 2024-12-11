@@ -1,25 +1,28 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { GeneratorService } from '../../services/GeneratorService';
-import { GenerationInstructionDTO, CharacterGenInstructionDTO, CharacterGroupGenInstructionDTO } from '../../proto/common';
-import { Context } from '../../types';
-import { GenerateItemsResponse, GenerateCharactersResponse, GenerateCharacterGroupsResponse } from '../../proto/generator';
+import { generator } from '../../proto/generator';
 import { RequestStatusEnum } from '../../enum/RequestStatusEnum';
+import { Context } from '../../class/Context';
+import { common } from '../../proto/common';
+import { GenerationInstruction } from '../../class/GenerationInstruction';
+import { CharacterGenInstruction } from '../../dto/content/CharacterGenInstruction';
+import { CharacterGroupGenInstruction } from '../../dto/content/CharacterGroupGenInstruction';
 
 
 // Define state shape
 interface GeneratorState {
     items: {
-        data: GenerateItemsResponse | null;
+        data: generator.GenerateItemsResponse | null;
         status: RequestStatusEnum;
         error: string | null;
     };
     characters: {
-        data: GenerateCharactersResponse | null;
+        data: generator.GenerateCharactersResponse | null;
         status: RequestStatusEnum;
         error: string | null;
     };
     characterGroups: {
-        data: GenerateCharacterGroupsResponse | null;
+        data: generator.GenerateCharacterGroupsResponse | null;
         status: RequestStatusEnum;
         error: string | null;
     };
@@ -46,7 +49,7 @@ const initialState: GeneratorState = {
 // Async thunks
 export const generateItems = createAsyncThunk(
     'generator/generateItems',
-    async ({ instructions, context }: { instructions: GenerationInstructionDTO[], context: Context }) => {
+    async ({ instructions, context }: { instructions: GenerationInstruction[], context: Context }) => {
         const generatorService = new GeneratorService();
         return await generatorService.generateItems(instructions, context);
     }
@@ -54,7 +57,7 @@ export const generateItems = createAsyncThunk(
 
 export const generateCharactersCustom = createAsyncThunk(
     'generator/generateCharactersCustom',
-    async ({ instructions, context }: { instructions: CharacterGenInstructionDTO[], context: Context }) => {
+    async ({ instructions, context }: { instructions: CharacterGenInstruction[], context: Context }) => {
         const generatorService = new GeneratorService();
         return await generatorService.generateCharactersCustom(instructions, context);
     }
@@ -70,7 +73,7 @@ export const generateCharactersDB = createAsyncThunk(
 
 export const generateCharacterGroups = createAsyncThunk(
     'generator/generateCharacterGroups',
-    async ({ instructions, context }: { instructions: CharacterGroupGenInstructionDTO[], context: Context }) => {
+    async ({ instructions, context }: { instructions: CharacterGroupGenInstruction[], context: Context }) => {
         const generatorService = new GeneratorService();
         return await generatorService.generateCharacterGroups(instructions, context);
     }

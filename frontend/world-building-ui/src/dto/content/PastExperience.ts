@@ -1,7 +1,7 @@
 import { TaggableContentBase } from "../../class/TaggableContentBase";
 import { PastExperienceTypeEnum } from "../../enum/PastExperienceTypeEnum";
 import { serializeEnum, deserializeEnum } from "../../enum/util";
-import { PastExperienceTypeEnumDTO, PastExperienceDTO } from "../../proto/common";
+import { common } from "../../proto/common";
 import { Serializable } from "../../decorator/serializable.decorator";
 import { Serializer } from "../../serialize/serializer";
 import { FormField } from "../../decorator/form-field.decorator";
@@ -37,23 +37,23 @@ export class PastExperience extends TaggableContentBase {
         },
     })
     @Serializable({
-        serialize: (i) => serializeEnum(PastExperienceTypeEnum, PastExperienceTypeEnumDTO, i),
-        deserialize: (i) => deserializeEnum(PastExperienceTypeEnumDTO, PastExperienceTypeEnum, i)
+        serialize: type => serializeEnum(PastExperienceTypeEnum, common.PastExperienceTypeEnumDTO, type),
+        deserialize: type => deserializeEnum(common.PastExperienceTypeEnumDTO, PastExperienceTypeEnum, type)
     })
     expType!: PastExperienceTypeEnum
 
-    public toDTO(): PastExperienceDTO {
+    public toDTO(): common.PastExperienceDTO {
         return Serializer.toDTO(this);
     }
 
-    public static fromDTO(dto: PastExperienceDTO): PastExperience {
+    public static fromDTO(dto: common.PastExperienceDTO): PastExperience {
         const pastExperience = new PastExperience();
         return Serializer.fromDTO(dto, pastExperience);
     }
 
     public static async search(filter: SearchQuery, context: Context): Promise<PastExperience[]> {
         const contentService = new ContentService<PastExperience>();
-        const { results } = await contentService.searchContent('PastExperience', filter, 1, 100, context);
+        const { results } = await contentService.searchContent('PastExperience', filter, context);
         return results as PastExperience[];
     }
 }

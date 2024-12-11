@@ -1,7 +1,7 @@
 import { TaggableContentBase } from "../../class/TaggableContentBase";
 import { TraitTypeEnum } from "../../enum/TraitTypeEnum";
 import { serializeEnum, deserializeEnum } from "../../enum/util";
-import { TraitTypeEnumDTO, TraitDTO } from "../../proto/common";
+import { common } from "../../proto/common";
 import { Serializable } from "../../decorator/serializable.decorator";
 import { Serializer } from "../../serialize/serializer";
 import { FormField } from "../../decorator/form-field.decorator";
@@ -38,23 +38,23 @@ export class Trait extends TaggableContentBase {
         required: true
     })
     @Serializable({
-        serialize: (i) => serializeEnum(TraitTypeEnum, TraitTypeEnumDTO, i),
-        deserialize: (i) => deserializeEnum(TraitTypeEnumDTO, TraitTypeEnum, i)
+        serialize: type => serializeEnum(TraitTypeEnum, common.TraitTypeEnumDTO, type),
+        deserialize: type => deserializeEnum(common.TraitTypeEnumDTO, TraitTypeEnum, type)
     })
     traitType!: TraitTypeEnum
 
-    public toDTO(): TraitDTO {
+    public toDTO(): common.TraitDTO {
         return Serializer.toDTO(this);
     }
 
-    public static fromDTO(dto: TraitDTO): Trait {
+    public static fromDTO(dto: common.TraitDTO): Trait {
         const trait = new Trait();
         return Serializer.fromDTO(dto, trait);
     }
 
     public static async search(filter: SearchQuery, context: Context): Promise<Trait[]> {
         const contentService = new ContentService<Trait>();
-        const { results } = await contentService.searchContent('Trait', filter, 1, 100, context);
+        const { results } = await contentService.searchContent('Trait', filter, context);
         return results as Trait[];
     }
 }

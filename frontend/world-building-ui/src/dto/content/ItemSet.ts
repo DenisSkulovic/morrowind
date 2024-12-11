@@ -1,6 +1,6 @@
 import { ContentBase } from "../../class/ContentBase";
 import { serializeGenerationInstructions, deserializeGenerationInstructions, GenerationInstruction } from "../../class/GenerationInstruction";
-import { ItemSetDTO } from "../../proto/common";
+import { common } from "../../proto/common";
 import { Serializable } from "../../decorator/serializable.decorator";
 import { Serializer } from "../../serialize/serializer";
 import { FormField } from "../../decorator/form-field.decorator";
@@ -35,18 +35,18 @@ export class ItemSet extends ContentBase {
     })
     set!: GenerationInstruction[];
 
-    public toDTO(): ItemSetDTO {
+    public toDTO(): common.ItemSetDTO {
         return Serializer.toDTO(this);
     }
 
-    public static fromDTO(dto: ItemSetDTO): ItemSet {
+    public static fromDTO(dto: common.ItemSetDTO): ItemSet {
         const itemSet = new ItemSet();
         return Serializer.fromDTO(dto, itemSet);
     }
 
     public static async search(filter: SearchQuery, context: Context): Promise<ItemSet[]> {
         const contentService = new ContentService<ItemSet>();
-        const { results } = await contentService.searchContent('ItemSet', filter, 1, 100, context);
+        const { results } = await contentService.searchContent('ItemSet', filter, context);
         return results as ItemSet[];
     }
 }

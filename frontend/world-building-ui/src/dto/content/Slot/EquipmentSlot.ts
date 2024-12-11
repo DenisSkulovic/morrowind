@@ -1,12 +1,27 @@
 import { ContentBase } from "../../../class/ContentBase";
-import { EquipmentSlotDTO } from "../../../proto/common";
+import { common } from "../../../proto/common";
 import { Serializable } from "../../../decorator/serializable.decorator";
 import { Serializer } from "../../../serialize/serializer";
 import { Item } from "../Item/Item";
 import { FormField } from "../../../decorator/form-field.decorator";
 import { FieldComponentEnum } from "../../../enum/FieldComponentEnum";
+import { ContentService } from "../../../services/ContentService";
+import { Context } from "../../../class/Context";
+import { SearchQuery } from "../../../class/search/SearchQuery";
+import { EntityDisplay } from "../../../decorator/entity-display.decorator";
+import { DisplayField } from "../../../decorator/display-field.decorator";
+import { FilterOption } from "../../../decorator/filter-option.decorator";
 
+@EntityDisplay({
+    title: 'Equipment Slots',
+    defaultSort: 'name'
+})
 export class EquipmentSlot extends ContentBase {
+    @DisplayField({
+        order: 1,
+        displayName: 'Name'
+    })
+    @FilterOption()
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter equipment slot name', required: true })
     @Serializable()
     name!: string
@@ -22,18 +37,18 @@ export class EquipmentSlot extends ContentBase {
     @Serializable()
     character?: string; // The character owning this slot (i.e. left hand slot, right hand slot, head slot)
 
-    public toDTO(): EquipmentSlotDTO {
+    public toDTO(): common.EquipmentSlotDTO {
         return Serializer.toDTO(this);
     }
 
-    public static fromDTO(dto: EquipmentSlotDTO): EquipmentSlot {
+    public static fromDTO(dto: common.EquipmentSlotDTO): EquipmentSlot {
         const equipmentSlot = new EquipmentSlot();
         return Serializer.fromDTO(dto, equipmentSlot);
     }
 
-    public static async search(filter?: any): Promise<EquipmentSlot[]> {
-        // perform request to backend using the filter
-        // return array of options
-        return []
+    public static async search(filter: SearchQuery, context: Context): Promise<EquipmentSlot[]> {
+        const contentService = new ContentService<EquipmentSlot>();
+        const { results } = await contentService.searchContent('EquipmentSlot', filter, context);
+        return results as EquipmentSlot[];
     }
 }

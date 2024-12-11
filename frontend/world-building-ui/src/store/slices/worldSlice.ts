@@ -4,12 +4,12 @@ import { RequestStatusEnum } from '../../enum/RequestStatusEnum';
 import { WorldService } from '../../services/WorldService';
 import { SearchQuery } from '../../class/search/SearchQuery';
 import { QueryFilter } from '../../class/search/QueryFilter';
-import { WorldDTO } from '../../proto/common';
 import { Context } from '../../class/Context';
 import { User } from '../../dto/User';
+import { common } from '../../proto/common';
 
 interface WorldState {
-    data: WorldDTO[];
+    data: common.WorldDTO[];
     status: RequestStatusEnum;
     error: string | null;
 };

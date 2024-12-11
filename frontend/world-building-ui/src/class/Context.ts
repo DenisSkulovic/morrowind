@@ -1,8 +1,9 @@
 import { Serializable } from "../decorator/serializable.decorator";
 import { User } from "../dto/User";
 import { World } from "../dto/World";
-import { ContextDTO } from "../proto/common";
 import { Campaign } from "../dto/Campaign";
+import { common } from "../proto/common";
+import { Serializer } from "../serialize/serializer";
 
 export class Context {
     @Serializable()
@@ -20,19 +21,16 @@ export class Context {
         this.campaign = campaign;
     }
 
-    toDTO(): ContextDTO {
-        return {
-            userId: this.user?.id ?? "",
-            worldId: this.world?.id ?? "",
-            campaignId: this.campaign?.id ?? "",
-        }
+    public toDTO(): common.ContextDTO {
+        return Serializer.toDTO(this);
     }
 
-    static fromDTO(dto: ContextDTO): Context {
-        return new Context(
+    public static fromDTO(dto: common.ContextDTO): Context {
+        const context = new Context(
             { id: dto.userId } as User,
             { id: dto.worldId } as World,
-            dto.campaignId ? { id: dto.campaignId } as Campaign : undefined,
-        )
+            dto.campaignId ? { id: dto.campaignId } as Campaign : undefined
+        );
+        return Serializer.fromDTO(dto, context);
     }
 }

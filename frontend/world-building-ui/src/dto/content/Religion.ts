@@ -1,7 +1,6 @@
 import { ContentBase } from "../../class/ContentBase";
 import { serializeReligionRituals, deserializeReligionRituals, ReligionRitual } from "../../class/ReligionRitual";
-import { serializeReligionTenets, deserializeReligionTenets, ReligionTenet } from "../../class/ReligionTenet";
-import { ReligionDTO } from "../../proto/common";
+import { common } from "../../proto/common";
 import { Serializable } from "../../decorator/serializable.decorator";
 import { Serializer } from "../../serialize/serializer";
 import { FormField } from "../../decorator/form-field.decorator";
@@ -12,6 +11,7 @@ import { FilterOption } from "../../decorator/filter-option.decorator";
 import { Context } from "../../class/Context";
 import { SearchQuery } from "../../class/search/SearchQuery";
 import { ContentService } from "../../services/ContentService";
+import { ReligionTenet } from "../../class/ReligionTenet";
 
 @EntityDisplay({
     title: 'Religions',
@@ -42,25 +42,22 @@ export class Religion extends ContentBase {
     @FormField({ component: FieldComponentEnum.NESTED_FORM, label: 'Rituals' })
     rituals?: ReligionRitual[];
 
-    @Serializable({
-        serialize: serializeReligionTenets,
-        deserialize: deserializeReligionTenets
-    })
+    @Serializable({ strategy: 'full' })
     @FormField({ component: FieldComponentEnum.NESTED_FORM, label: 'Tenets' })
     tenets?: ReligionTenet[];
 
-    public toDTO(): ReligionDTO {
+    public toDTO(): common.ReligionDTO {
         return Serializer.toDTO(this);
     }
 
-    public static fromDTO(dto: ReligionDTO): Religion {
+    public static fromDTO(dto: common.ReligionDTO): Religion {
         const religion = new Religion();
         return Serializer.fromDTO(dto, religion);
     }
 
     public static async search(filter: SearchQuery, context: Context): Promise<Religion[]> {
         const contentService = new ContentService<Religion>();
-        const { results } = await contentService.searchContent('Religion', filter, 1, 100, context);
+        const { results } = await contentService.searchContent('Religion', filter, context);
         return results as Religion[];
     }
 }

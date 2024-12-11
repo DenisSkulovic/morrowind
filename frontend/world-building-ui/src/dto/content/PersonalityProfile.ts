@@ -1,6 +1,6 @@
 import { ContentBase } from "../../class/ContentBase";
 import { serializeInstruction, deserializeInstruction, GenerationInstruction } from "../../class/GenerationInstruction";
-import { PersonalityProfileDTO } from "../../proto/common";
+import { common } from "../../proto/common";
 import { Serializable } from "../../decorator/serializable.decorator";
 import { Serializer } from "../../serialize/serializer";
 import { FormField } from "../../decorator/form-field.decorator";
@@ -36,18 +36,18 @@ export class PersonalityProfile extends ContentBase {
     @FormField({ component: FieldComponentEnum.GENERATION_INSTRUCTION_FIELD, label: 'Traits' })
     traits!: GenerationInstruction[];
 
-    public toDTO(): PersonalityProfileDTO {
+    public toDTO(): common.PersonalityProfileDTO {
         return Serializer.toDTO(this);
     }
 
-    public static fromDTO(dto: PersonalityProfileDTO): PersonalityProfile {
+    public static fromDTO(dto: common.PersonalityProfileDTO): PersonalityProfile {
         const persProfile = new PersonalityProfile();
         return Serializer.fromDTO(dto, persProfile);
     }
 
     public static async search(filter: SearchQuery, context: Context): Promise<PersonalityProfile[]> {
         const contentService = new ContentService<PersonalityProfile>();
-        const { results } = await contentService.searchContent('PersonalityProfile', filter, 1, 100, context);
+        const { results } = await contentService.searchContent('PersonalityProfile', filter, context);
         return results as PersonalityProfile[];
     }
 }

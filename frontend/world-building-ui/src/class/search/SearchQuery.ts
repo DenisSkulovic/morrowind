@@ -1,4 +1,4 @@
-import { SearchQueryDTO } from "../../proto/common";
+import { common } from "../../proto/common";
 import { Serializer } from "../../serialize/serializer";
 import { QueryFilter } from "./QueryFilter";
 import { Serializable } from "../../decorator/serializable.decorator";
@@ -34,8 +34,12 @@ export class SearchQuery {
         direction: 'asc' | 'desc';
     };
 
-    public static fromDTO(dto: SearchQueryDTO): SearchQuery {
-        return new SearchQuery(
+    public toDTO(): common.SearchQueryDTO {
+        return Serializer.toDTO(this);
+    }
+
+    public static fromDTO(dto: common.SearchQueryDTO): SearchQuery {
+        const query = new SearchQuery(
             dto.page || 0,
             dto.pageSize || 10,
             dto.filters?.map(QueryFilter.fromDTO) || [],
@@ -44,19 +48,6 @@ export class SearchQuery {
                 direction: dto.sortBy.direction as 'asc' | 'desc'
             } : undefined
         );
-    }
-
-    public toDTO(): SearchQueryDTO {
-        const dto: SearchQueryDTO = {
-            filters: this.filters?.map(Serializer.toDTO) || [],
-            sortBy: this.sortBy ? {
-                field: this.sortBy.field,
-                direction: this.sortBy.direction
-            } : undefined,
-            page: this.page,
-            pageSize: this.pageSize
-        };
-
-        return dto;
+        return Serializer.fromDTO(dto, query);
     }
 }
