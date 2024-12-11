@@ -6,8 +6,9 @@ export const rpc = {
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/grpc-web',
-                    'Accept': 'application/grpc-web',
+                    'content-type': 'application/grpc-web',
+                    'accept': 'application/grpc-web',
+                    'x-grpc-web': '1',
                 },
                 body: data,
             });
@@ -25,6 +26,7 @@ export const rpc = {
 
             const buffer = await response.arrayBuffer();
             const uint8Array = new Uint8Array(buffer);
+            console.log(`uint8Array`, uint8Array)
             return uint8Array;
         } catch (error) {
             console.error('RPC request failed:', error);

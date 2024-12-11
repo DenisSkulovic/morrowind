@@ -7,9 +7,7 @@ export class GeneratorService {
     private client: GeneratorServiceClientImpl;
 
     constructor() {
-        this.client = new GeneratorServiceClientImpl(rpc, {
-            service: "GeneratorService"
-        });
+        this.client = new GeneratorServiceClientImpl(rpc);
     }
 
     async generateItems(instructions: GenerationInstructionDTO[], context: Context): Promise<GenerateItemsResponse> {

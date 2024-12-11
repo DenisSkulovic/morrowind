@@ -7,6 +7,11 @@ services:
       context: ./backend/content-service
       dockerfile: Dockerfile.dev
     container_name: content_service
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
     restart: always
     ports:
       - "50051:50051"
@@ -33,7 +38,7 @@ services:
 
   # Envoy Proxy
   envoy:
-    image: envoyproxy/envoy:v1.23.0
+    image: envoyproxy/envoy:v1.22.0
     container_name: envoy_proxy
     restart: always
     ports:
@@ -41,6 +46,7 @@ services:
       - "9901:9901" # Admin interface (optional)
     volumes:
       - ./envoy/envoy.yaml:/etc/envoy/envoy.yaml
+      - ./envoy/envoy_access.log:/var/log/envoy/envoy_access.log
     depends_on:
       - content-service
     profiles:

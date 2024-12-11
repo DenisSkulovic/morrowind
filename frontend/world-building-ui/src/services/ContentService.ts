@@ -13,9 +13,7 @@ export class ContentService<T extends ContentBase> {
     private client: ContentServiceClientImpl;
 
     constructor() {
-        this.client = new ContentServiceClientImpl(rpc, {
-            service: "ContentService"
-        });
+        this.client = new ContentServiceClientImpl(rpc);
     }
     async getContentStats(entityNames: string[] | null, context: Context): Promise<GetContentStatsResponse> {
         const request: GetContentStatsRequest = {
@@ -64,8 +62,6 @@ export class ContentService<T extends ContentBase> {
     async searchContent(
         entityName: string,
         query: SearchQuery,
-        page: number,
-        pageSize: number,
         context: Context
     ): Promise<{
         results: ContentBase[];

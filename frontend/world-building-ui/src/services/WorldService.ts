@@ -17,9 +17,7 @@ export class WorldService {
     private client: WorldServiceClientImpl;
 
     constructor() {
-        this.client = new WorldServiceClientImpl(rpc, {
-            service: "WorldService"
-        });
+        this.client = new WorldServiceClientImpl(rpc);
     }
 
     async createWorld(world: World, userId: string): Promise<CreateWorldResponse> {

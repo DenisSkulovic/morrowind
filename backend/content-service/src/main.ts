@@ -12,7 +12,7 @@ async function bootstrap() {
     app.enableCors({
         origin: '*',
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-        allowedHeaders: ['Content-Type', 'Accept', 'Authorization', 'application/x-protobuf'],
+        allowedHeaders: ['Content-Type', 'Accept', 'Authorization', 'application/x-protobuf', 'application/x-grpc-web', 'application/grpc-web', 'application/grpc-web+proto', 'x-grpc-web'],
         exposedHeaders: ['Content-Length', 'X-Kuma-Revision'],
         credentials: true,
     });
