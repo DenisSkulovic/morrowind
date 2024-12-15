@@ -1,4 +1,4 @@
-import { Item } from "../../../dto/content/Item/Item";
+import { Item } from "../../../entities/content/Item/Item";
 import React from 'react';
 import { useDrag } from 'react-dnd';
 

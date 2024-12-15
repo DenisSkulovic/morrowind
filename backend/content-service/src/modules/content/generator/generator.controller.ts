@@ -27,9 +27,9 @@ export class GeneratorController {
 
     async processContextDTO(contextDTO: ContextDTO, source: DataSourceEnum): Promise<Context> {
         const [user, world, campaign] = await Promise.all([
-            this.userService.findUser(contextDTO.userId, source),
-            this.worldService.findWorld(contextDTO.worldId, contextDTO.userId, source),
-            this.campaignService.findCampaign(contextDTO.campaignId, contextDTO.userId, source),
+            this.userService.findUser(contextDTO.user, source),
+            this.worldService.findWorld(contextDTO.world, contextDTO.user, source),
+            this.campaignService.findCampaign(contextDTO.campaign, contextDTO.user, source),
         ])
         if (!user) throw new Error("User not found")
         if (!world) throw new Error("World not found")

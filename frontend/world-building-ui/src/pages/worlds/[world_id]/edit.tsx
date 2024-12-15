@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../store/store';
 import { fetchWorlds, updateWorld } from '../../../store/slices/worldSlice';
 import { useRouter } from 'next/router';
-import { Account } from '../../../dto/Account';
-import { World } from '../../../dto/World';
+import { Account } from '../../../entities/Account';
+import { World } from '../../../entities/World';
 
 const EditWorldPage = () => {
     const router = useRouter();

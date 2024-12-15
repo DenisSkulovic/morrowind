@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
-import { Account } from '../../dto/Account';
+import { Account } from '../../entities/Account';
 import { updateAccount } from '../../store/slices/accountSlice';
 import {
     Container,

@@ -1,15 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { World } from '../../dto/World';
+import { World } from '../../class/entities/World';
 import { RequestStatusEnum } from '../../enum/RequestStatusEnum';
 import { WorldService } from '../../services/WorldService';
 import { SearchQuery } from '../../class/search/SearchQuery';
 import { QueryFilter } from '../../class/search/QueryFilter';
 import { Context } from '../../class/Context';
-import { User } from '../../dto/User';
-import { common } from '../../proto/common';
+import { User } from '../../class/entities/User';
 
 interface WorldState {
-    data: common.WorldDTO[];
+    data: World[];
     status: RequestStatusEnum;
     error: string | null;
 };
@@ -23,38 +22,44 @@ const initialState: WorldState = {
 // Async Thunks
 export const fetchWorlds = createAsyncThunk(
     'worlds/fetchWorlds',
-    async (userId: string) => {
+    async (userId: string): Promise<World[]> => {
         console.log(`[fetchWorlds] userId:`, userId)
         const user = new User();
         user.id = userId;
-        const context = new Context(user);
+
+        const context = new Context();
+        context.user = user;
         const worldService = new WorldService();
-        const query: SearchQuery = new SearchQuery(
-            1,
-            100,
-            [
-                new QueryFilter("user", "eq", userId)
-            ]);
+
+        const query = new SearchQuery();
+        query.page = 1;
+        query.pageSize = 100;
+
+        const filter = new QueryFilter();
+        filter.field = "user";
+        filter.operator = "eq";
+        filter.value = userId;
+        query.filters = [filter];
+
         console.log(`before`)
-        const response = await worldService.search("World", query, context);
+        const response: World[] = await worldService.search("World", query, context);
         console.log(`after`, response)
-        return response.worlds.map(world => World.fromDTO(world));
+        return response;
     }
 );
 
 export const createWorld = createAsyncThunk(
     'worlds/createWorld',
-    async ({ world, userId }: { world: World, userId: string }) => {
+    async ({ world, userId }: { world: World, userId: string }): Promise<World> => {
         const worldService = new WorldService();
-        const response = await worldService.createWorld(world, userId);
-        if (!response.world) throw new Error('Failed to create world');
-        return World.fromDTO(response.world);
+        const response: World = await worldService.createWorld(world, userId);
+        return response;
     }
 );
 
 export const deleteWorld = createAsyncThunk(
     'worlds/deleteWorld',
-    async (worldId: string) => {
+    async (worldId: string): Promise<string> => {
         const worldService = new WorldService();
         await worldService.deleteWorld(worldId);
         return worldId;
@@ -63,11 +68,10 @@ export const deleteWorld = createAsyncThunk(
 
 export const updateWorld = createAsyncThunk(
     'worlds/updateWorld',
-    async (world: World) => {
+    async (world: World): Promise<World> => {
         const worldService = new WorldService();
-        const response = await worldService.updateWorld(world);
-        if (!response.world) throw new Error('Failed to update world');
-        return World.fromDTO(response.world);
+        const response: World = await worldService.updateWorld(world);
+        return response;
     }
 );
 
@@ -92,7 +96,7 @@ const worldSlice = createSlice({
             .addCase(fetchWorlds.fulfilled, (state, action) => {
                 console.log(`[fetchWorlds.fulfilled] action.payload:`, action.payload)
                 state.status = RequestStatusEnum.SUCCEEDED;
-                state.data = action.payload.map(world => world.toDTO());
+                state.data = action.payload;
             })
             .addCase(fetchWorlds.rejected, (state, action) => {
                 console.log(`[fetchWorlds.rejected] action.error:`, action.error)
@@ -105,7 +109,7 @@ const worldSlice = createSlice({
             })
             .addCase(createWorld.fulfilled, (state, action) => {
                 state.status = RequestStatusEnum.SUCCEEDED;
-                state.data.push(action.payload.toDTO());
+                state.data.push(action.payload);
             })
             .addCase(createWorld.rejected, (state, action) => {
                 state.status = RequestStatusEnum.FAILED;

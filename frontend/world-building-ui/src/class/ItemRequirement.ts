@@ -1,9 +1,10 @@
-import { common } from "../proto/common";
 import { FormField } from "../decorator/form-field.decorator";
 import { FieldComponentEnum } from "../enum/FieldComponentEnum";
 import { Serializer } from "../serialize/serializer";
 import { ItemRequirementTypeEnum } from "../enum/ItemRequirementTypeEnum";
 import { FormSelectOption } from "./FormSelectOption";
+import { ItemRequirementDTO, ItemRequirementsDTO } from "../proto/common_pb";
+import { Serializable } from "../decorator/serializable.decorator";
 
 export class ItemRequirement {
     clazz = "ItemRequirement"
@@ -16,10 +17,12 @@ export class ItemRequirement {
             })
         },
     })
-    type: string;
+    @Serializable()
+    type!: string;
 
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter requirement name', required: true })
-    name: string;
+    @Serializable()
+    name!: string;
 
     @FormField({
         component: FieldComponentEnum.NUMBER_FIELD,
@@ -27,36 +30,9 @@ export class ItemRequirement {
         placeholder: 'Enter requirement value',
         required: true
     })
-    value: number | boolean;
+    @Serializable()
+    value!: number | boolean;
 
-    constructor(type: string, name: string, value: number | boolean) {
-        this.type = type;
-        this.name = name;
-        this.value = value;
-    }
-
-    toDTO(): common.ItemRequirementDTO {
-        return Serializer.toDTO(this);
-    }
-
-    static fromDTO(dto: common.ItemRequirementDTO): ItemRequirement {
-        const req = new ItemRequirement(
-            dto.type,
-            dto.name,
-            dto.number !== undefined ? dto.number : dto.flag || false
-        );
-        return Serializer.fromDTO(dto, req);
-    }
 }
 
 export type ItemRequirements = ItemRequirement[]
-
-export function serializeRequirements(reqs: ItemRequirement[]): common.ItemRequirementsDTO {
-    const message = new common.ItemRequirementsDTO({});
-    message.arr = reqs.map(req => req.toDTO());
-    return message;
-}
-
-export function deserializeRequirements(dtoInstructions: common.ItemRequirementsDTO): ItemRequirement[] {
-    return dtoInstructions.arr.map(dto => ItemRequirement.fromDTO(dto));
-}

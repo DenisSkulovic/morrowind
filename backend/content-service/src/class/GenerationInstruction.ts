@@ -84,9 +84,9 @@ export function serializeInstruction(instruction: GenerationInstruction): Genera
             gaussianProb: {
                 blueprintId: instruction.blueprintId,
                 prob: instruction.prob || 1,
-                avgQuan: instruction.avg_quan,
-                stDev: instruction.st_dev,
-                skew: instruction.skew,
+                avgQuan: instruction.avg_quan || 1,
+                stDev: instruction.st_dev || 0,
+                skew: instruction.skew || 0,
                 clazz: "BlueprintGenInstruction_Gaussian"
             },
         };
@@ -94,8 +94,8 @@ export function serializeInstruction(instruction: GenerationInstruction): Genera
     if (instruction instanceof BlueprintSetCombinator) {
         return {
             combinator: {
-                name: instruction.name,
-                prob: instruction.prob,
+                name: instruction.name || "",
+                prob: instruction.prob || 1,
                 cond: serializeEnum(ConditionEnum, ConditionEnumDTO, instruction.cond),
                 instructions: instruction.items.map(serializeInstruction),
                 clazz: "BlueprintSetCombinator"

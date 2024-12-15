@@ -9,9 +9,9 @@ import { ContentService } from '../../../../../services/ContentService';
 import { Context } from '../../../../../class/Context';
 import { RootState } from '../../../../../store/store';
 import { useRouter } from 'next/router';
-import { World } from '../../../../../dto/World';
-import { User } from '../../../../../dto/User';
-import { Account } from '../../../../../dto/Account';
+import { World } from '../../../../../entities/World';
+import { User } from '../../../../../entities/User';
+import { Account } from '../../../../../entities/Account';
 import { GetContentStatsResponse } from '../../../../../proto/content';
 import { ContentStat } from '../../../../../class/ContentStat';
 

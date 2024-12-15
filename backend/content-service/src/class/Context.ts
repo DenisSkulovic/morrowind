@@ -22,17 +22,17 @@ export class Context {
 
     toDTO(): ContextDTO {
         return {
-            userId: this.user?.id ?? "",
-            worldId: this.world?.id ?? "",
-            campaignId: this.campaign?.id ?? "",
+            user: this.user?.id ?? "",
+            world: this.world?.id ?? "",
+            campaign: this.campaign?.id ?? "",
         }
     }
 
     static fromDTO(dto: ContextDTO): Context {
         return new Context(
-            { id: dto.userId } as User,
-            { id: dto.worldId } as World,
-            dto.campaignId ? { id: dto.campaignId } as Campaign : undefined,
+            { id: dto.user } as User,
+            { id: dto.world } as World,
+            dto.campaign ? { id: dto.campaign } as Campaign : undefined,
         )
     }
 }

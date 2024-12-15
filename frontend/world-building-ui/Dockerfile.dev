@@ -11,13 +11,12 @@ RUN npm install
 COPY public/ ./public
 COPY src/ ./src
 
-COPY proto/ ./proto
-
 # Use a lightweight Node.js image to serve the app
 FROM node:18
+
 WORKDIR /usr/src/app
 COPY --from=build /usr/src/app ./
 EXPOSE 3000
 
 # Start the app
-CMD ["sh", "-c", "npm run proto:generate && npm run dev"]
+CMD ["npm", "run", "dev"]

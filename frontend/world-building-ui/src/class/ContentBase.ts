@@ -24,15 +24,7 @@ export abstract class ContentBase {
     @Serializable()
     world!: string;
 
-    public toDTO(): any {
-        throw new Error("Not implemented")
-    }
-
-    public static fromDTO(dto: any): ContentBase {
-        throw new Error("Not implemented")
-    }
-
     public static async search(filter: SearchQuery, context: Context): Promise<ContentBase[]> {
-        throw new Error("Not implemented")
+        throw new Error("Child Classes must implement this method")
     }
 }

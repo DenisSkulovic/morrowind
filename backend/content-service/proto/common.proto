@@ -4,9 +4,9 @@ package common;
 
 
 message ContextDTO {
-    string userId = 1;
-    string worldId = 2;
-    string campaignId = 3;
+    string user = 1;
+    string world = 2;
+    string campaign = 3;
 } 
 
 
@@ -1032,17 +1032,17 @@ message SearchQueryDTO {
     int32 page = 3;
     int32 pageSize = 4;
 }
-
 message QueryFilterDTO {
     string field = 1;
     string operator = 2; // eq, neq, gt, gte, lt, lte, contains, regex
     QueryFilterValueDTO value = 3;
 }
-
 message QueryFilterValueDTO {
-    string stringValue = 1;
-    int32 numberValue = 2;
-    bool boolValue = 3;
+    oneof value {
+        string stringValue = 1;
+        int32 numberValue = 2;
+        bool boolValue = 3;
+    }
 }
 
 message SortByDTO {

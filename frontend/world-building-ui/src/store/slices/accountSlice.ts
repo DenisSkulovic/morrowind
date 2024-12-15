@@ -1,26 +1,24 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { Account } from "../../dto/Account";
+import { Account } from "../../class/entities/Account";
 import { RequestStatusEnum } from "../../enum/RequestStatusEnum";
 import { AccountService } from "../../services/AccountService";
-import { common } from "../../proto/common";
+import { AccountDTO } from "../../proto/common_pb";
+import { Serializer } from "../../serialize/serializer";
 
-const mockAccount = common.AccountDTO.fromObject(
-    {
-        id: "ACCOUNT_9c82f8af6f1342ca8549b8c3d6b104ca",
-        username: "testUser",
-        email: "test12@example.com",
-        role: "admin",
-        user: "USER_df3bd4a7c1334138a9edd3c953f93840"
-    }
-)
+const mockAccount = new Account()
+mockAccount.id = "ACCOUNT_9c82f8af6f1342ca8549b8c3d6b104ca"
+mockAccount.username = "testUser"
+mockAccount.email = "test12@example.com"
+mockAccount.role = "admin"
+mockAccount.user = "USER_df3bd4a7c1334138a9edd3c953f93840"
 
 interface AccountState {
-    data: common.AccountDTO | null;
+    data: AccountDTO | null;
     status: RequestStatusEnum;
     error: string | null;
 }
 const initialState: AccountState = {
-    data: mockAccount,
+    data: Serializer.toDTO(mockAccount, new AccountDTO()),
     status: RequestStatusEnum.IDLE,
     error: null
 };
@@ -29,9 +27,8 @@ export const fetchAccount = createAsyncThunk(
     'account/fetchAccount',
     async (username: string): Promise<Account> => {
         const accountService = new AccountService();
-        const { account } = await accountService.getAccount(username);
-        if (!account) throw new Error('Account not found');
-        return Account.fromDTO(account);
+        const response: Account = await accountService.getAccount(username);
+        return response;
     }
 );
 
@@ -39,9 +36,8 @@ export const updateAccount = createAsyncThunk(
     'account/updateAccount',
     async (account: Account): Promise<Account> => {
         const accountService = new AccountService();
-        const response = await accountService.updateAccount(account.toDTO());
-        if (!response.account) throw new Error('Failed to update account');
-        return Account.fromDTO(response.account);
+        const response: Account = await accountService.updateAccount(account);
+        return response;
     }
 );
 
@@ -64,7 +60,7 @@ export const accountSlice = createSlice({
             })
             .addCase(fetchAccount.fulfilled, (state, action) => {
                 state.status = RequestStatusEnum.SUCCEEDED;
-                state.data = action.payload;
+                state.data = Serializer.toDTO(action.payload, new AccountDTO());
             })
             .addCase(fetchAccount.rejected, (state, action) => {
                 state.status = RequestStatusEnum.FAILED;
@@ -76,7 +72,7 @@ export const accountSlice = createSlice({
             })
             .addCase(updateAccount.fulfilled, (state, action) => {
                 state.status = RequestStatusEnum.SUCCEEDED;
-                state.data = action.payload;
+                state.data = Serializer.toDTO(action.payload, new AccountDTO());
             })
             .addCase(updateAccount.rejected, (state, action) => {
                 state.status = RequestStatusEnum.FAILED;

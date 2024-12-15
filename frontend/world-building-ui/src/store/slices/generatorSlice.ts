@@ -1,28 +1,28 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { GeneratorService } from '../../services/GeneratorService';
-import { generator } from '../../proto/generator';
 import { RequestStatusEnum } from '../../enum/RequestStatusEnum';
 import { Context } from '../../class/Context';
-import { common } from '../../proto/common';
 import { GenerationInstruction } from '../../class/GenerationInstruction';
-import { CharacterGenInstruction } from '../../dto/content/CharacterGenInstruction';
-import { CharacterGroupGenInstruction } from '../../dto/content/CharacterGroupGenInstruction';
+import { CharacterGenInstruction } from '../../class/entities/content/CharacterGenInstruction';
+import { CharacterGroupGenInstruction } from '../../class/entities/content/CharacterGroupGenInstruction';
+import { Character } from '../../class/entities/content/Character';
+import { Item } from '../../class/entities/content/Item/Item';
 
 
 // Define state shape
 interface GeneratorState {
     items: {
-        data: generator.GenerateItemsResponse | null;
+        data: Item[] | null;
         status: RequestStatusEnum;
         error: string | null;
     };
     characters: {
-        data: generator.GenerateCharactersResponse | null;
+        data: Character[] | null;
         status: RequestStatusEnum;
         error: string | null;
     };
     characterGroups: {
-        data: generator.GenerateCharacterGroupsResponse | null;
+        data: Character[][] | null;
         status: RequestStatusEnum;
         error: string | null;
     };

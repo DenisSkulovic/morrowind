@@ -1,6 +1,22 @@
 version: '3.8'
 
 services:
+
+  # Backend Proto Generation Service
+  backend-proto-generator:
+    image: node:18
+    container_name: backend_proto_generator
+    working_dir: /usr/src/app
+    volumes:
+      - ./backend/content-service:/usr/src/app
+    command: sh -c "npm install && npm run proto:generate"
+    profiles:
+      - backend
+      - fullstack
+    depends_on:
+      - world-db
+      - campaign-db
+
   # Backend Microservices
   content-service:
     build:
@@ -32,6 +48,7 @@ services:
     depends_on:
       - world-db
       - campaign-db
+      - backend-proto-generator
     profiles:
       - fullstack
       - backend
@@ -87,7 +104,7 @@ services:
       - fullstack
       - backend
 
-  # # Frontends
+  # Frontends
   world-building-ui:
     build:
       context: ./frontend/world-building-ui
@@ -99,11 +116,28 @@ services:
     volumes:
       - ./frontend/world-building-ui:/usr/src/app
     depends_on:
+      - frontend-proto-generator
       - content-service
       - envoy
     profiles:
       - frontend
       - fullstack
+
+  # Proto Generation Service for Frontend
+  frontend-proto-generator:
+    image: node:18
+    container_name: frontend_proto_generator
+    working_dir: /usr/src/app
+    volumes:
+      - ./frontend/world-building-ui:/usr/src/app
+    command: sh -c "npm install && npm run proto:generate"
+    profiles:
+      - frontend
+      - fullstack
+    # Ensure this service runs before the UI service
+    depends_on:
+      - world-db
+      - campaign-db
 
 volumes:
   world_db_data:

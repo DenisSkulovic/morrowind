@@ -2,15 +2,18 @@
 /**
  * @fileoverview
  * @enhanceable
+ * @suppress {missingRequire} reports error on implicit type usages.
  * @suppress {messageConventions} JS Compiler reports an error if a variable or
  *     field starts with 'MSG_' and isn't a translatable message.
  * @public
  */
 // GENERATED CODE -- DO NOT EDIT!
+/* eslint-disable */
+// @ts-nocheck
 
 var jspb = require('google-protobuf');
 var goog = jspb;
-var global = Function('return this')();
+var global = (function() { return this || window || global || self || Function('return this')(); }).call(null);
 
 goog.exportSymbol('proto.common.AccountDTO', null, global);
 goog.exportSymbol('proto.common.AddictionDTO', null, global);
@@ -96,6 +99,7 @@ goog.exportSymbol('proto.common.PreferencesDTO', null, global);
 goog.exportSymbol('proto.common.PresetEnumDTO', null, global);
 goog.exportSymbol('proto.common.QueryFilterDTO', null, global);
 goog.exportSymbol('proto.common.QueryFilterValueDTO', null, global);
+goog.exportSymbol('proto.common.QueryFilterValueDTO.ValueCase', null, global);
 goog.exportSymbol('proto.common.RaceDTO', null, global);
 goog.exportSymbol('proto.common.RacesDTO', null, global);
 goog.exportSymbol('proto.common.ReligionDTO', null, global);
@@ -2267,7 +2271,7 @@ if (goog.DEBUG && !COMPILED) {
  * @constructor
  */
 proto.common.QueryFilterValueDTO = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+  jspb.Message.initialize(this, opt_data, 0, -1, null, proto.common.QueryFilterValueDTO.oneofGroups_);
 };
 goog.inherits(proto.common.QueryFilterValueDTO, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
@@ -2330,9 +2334,9 @@ proto.common.ContextDTO.prototype.toObject = function(opt_includeInstance) {
  */
 proto.common.ContextDTO.toObject = function(includeInstance, msg) {
   var f, obj = {
-    userid: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    worldid: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    campaignid: jspb.Message.getFieldWithDefault(msg, 3, "")
+    user: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    world: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    campaign: jspb.Message.getFieldWithDefault(msg, 3, "")
   };
 
   if (includeInstance) {
@@ -2371,15 +2375,15 @@ proto.common.ContextDTO.deserializeBinaryFromReader = function(msg, reader) {
     switch (field) {
     case 1:
       var value = /** @type {string} */ (reader.readString());
-      msg.setUserid(value);
+      msg.setUser(value);
       break;
     case 2:
       var value = /** @type {string} */ (reader.readString());
-      msg.setWorldid(value);
+      msg.setWorld(value);
       break;
     case 3:
       var value = /** @type {string} */ (reader.readString());
-      msg.setCampaignid(value);
+      msg.setCampaign(value);
       break;
     default:
       reader.skipField();
@@ -2410,21 +2414,21 @@ proto.common.ContextDTO.prototype.serializeBinary = function() {
  */
 proto.common.ContextDTO.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getUserid();
+  f = message.getUser();
   if (f.length > 0) {
     writer.writeString(
       1,
       f
     );
   }
-  f = message.getWorldid();
+  f = message.getWorld();
   if (f.length > 0) {
     writer.writeString(
       2,
       f
     );
   }
-  f = message.getCampaignid();
+  f = message.getCampaign();
   if (f.length > 0) {
     writer.writeString(
       3,
@@ -2435,10 +2439,10 @@ proto.common.ContextDTO.serializeBinaryToWriter = function(message, writer) {
 
 
 /**
- * optional string userId = 1;
+ * optional string user = 1;
  * @return {string}
  */
-proto.common.ContextDTO.prototype.getUserid = function() {
+proto.common.ContextDTO.prototype.getUser = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
@@ -2447,16 +2451,16 @@ proto.common.ContextDTO.prototype.getUserid = function() {
  * @param {string} value
  * @return {!proto.common.ContextDTO} returns this
  */
-proto.common.ContextDTO.prototype.setUserid = function(value) {
+proto.common.ContextDTO.prototype.setUser = function(value) {
   return jspb.Message.setProto3StringField(this, 1, value);
 };
 
 
 /**
- * optional string worldId = 2;
+ * optional string world = 2;
  * @return {string}
  */
-proto.common.ContextDTO.prototype.getWorldid = function() {
+proto.common.ContextDTO.prototype.getWorld = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
@@ -2465,16 +2469,16 @@ proto.common.ContextDTO.prototype.getWorldid = function() {
  * @param {string} value
  * @return {!proto.common.ContextDTO} returns this
  */
-proto.common.ContextDTO.prototype.setWorldid = function(value) {
+proto.common.ContextDTO.prototype.setWorld = function(value) {
   return jspb.Message.setProto3StringField(this, 2, value);
 };
 
 
 /**
- * optional string campaignId = 3;
+ * optional string campaign = 3;
  * @return {string}
  */
-proto.common.ContextDTO.prototype.getCampaignid = function() {
+proto.common.ContextDTO.prototype.getCampaign = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
 };
 
@@ -2483,7 +2487,7 @@ proto.common.ContextDTO.prototype.getCampaignid = function() {
  * @param {string} value
  * @return {!proto.common.ContextDTO} returns this
  */
-proto.common.ContextDTO.prototype.setCampaignid = function(value) {
+proto.common.ContextDTO.prototype.setCampaign = function(value) {
   return jspb.Message.setProto3StringField(this, 3, value);
 };
 
@@ -6384,8 +6388,10 @@ proto.common.ItemDTO.deserializeBinaryFromReader = function(msg, reader) {
       msg.setDescription(value);
       break;
     case 7:
-      var value = /** @type {!Array<number>} */ (reader.readPackedInt32());
-      msg.setSizeList(value);
+      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedInt32() : [reader.readInt32()]);
+      for (var i = 0; i < values.length; i++) {
+        msg.addSize(values[i]);
+      }
       break;
     case 8:
       var value = /** @type {number} */ (reader.readInt32());
@@ -7941,8 +7947,10 @@ proto.common.ItemActionsDTO.deserializeBinaryFromReader = function(msg, reader) 
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {!Array<!proto.common.ItemActionEnumDTO>} */ (reader.readPackedEnum());
-      msg.setActionsList(value);
+      var values = /** @type {!Array<!proto.common.ItemActionEnumDTO>} */ (reader.isDelimited() ? reader.readPackedEnum() : [reader.readEnum()]);
+      for (var i = 0; i < values.length; i++) {
+        msg.addActions(values[i]);
+      }
       break;
     default:
       reader.skipField();
@@ -8138,8 +8146,10 @@ proto.common.StorageSlotDTO.deserializeBinaryFromReader = function(msg, reader) 
       msg.setWorld(value);
       break;
     case 8:
-      var value = /** @type {!Array<number>} */ (reader.readPackedInt32());
-      msg.setGridList(value);
+      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedInt32() : [reader.readInt32()]);
+      for (var i = 0; i < values.length; i++) {
+        msg.addGrid(values[i]);
+      }
       break;
     case 9:
       var value = new proto.common.StorageGridDTO;
@@ -20526,8 +20536,10 @@ proto.common.StorageSlotDefinitionDTO.deserializeBinaryFromReader = function(msg
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {!Array<number>} */ (reader.readPackedInt32());
-      msg.setGridList(value);
+      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedInt32() : [reader.readInt32()]);
+      for (var i = 0; i < values.length; i++) {
+        msg.addGrid(values[i]);
+      }
       break;
     case 2:
       var value = /** @type {string} */ (reader.readString());
@@ -32666,6 +32678,33 @@ proto.common.QueryFilterDTO.prototype.hasValue = function() {
 
 
 
+/**
+ * Oneof group definitions for this message. Each group defines the field
+ * numbers belonging to that group. When of these fields' value is set, all
+ * other fields in the group are cleared. During deserialization, if multiple
+ * fields are encountered for a group, only the last value seen will be kept.
+ * @private {!Array<!Array<number>>}
+ * @const
+ */
+proto.common.QueryFilterValueDTO.oneofGroups_ = [[1,2,3]];
+
+/**
+ * @enum {number}
+ */
+proto.common.QueryFilterValueDTO.ValueCase = {
+  VALUE_NOT_SET: 0,
+  STRINGVALUE: 1,
+  NUMBERVALUE: 2,
+  BOOLVALUE: 3
+};
+
+/**
+ * @return {proto.common.QueryFilterValueDTO.ValueCase}
+ */
+proto.common.QueryFilterValueDTO.prototype.getValueCase = function() {
+  return /** @type {proto.common.QueryFilterValueDTO.ValueCase} */(jspb.Message.computeOneofCase(this, proto.common.QueryFilterValueDTO.oneofGroups_[0]));
+};
+
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -32777,22 +32816,22 @@ proto.common.QueryFilterValueDTO.prototype.serializeBinary = function() {
  */
 proto.common.QueryFilterValueDTO.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getStringvalue();
-  if (f.length > 0) {
+  f = /** @type {string} */ (jspb.Message.getField(message, 1));
+  if (f != null) {
     writer.writeString(
       1,
       f
     );
   }
-  f = message.getNumbervalue();
-  if (f !== 0) {
+  f = /** @type {number} */ (jspb.Message.getField(message, 2));
+  if (f != null) {
     writer.writeInt32(
       2,
       f
     );
   }
-  f = message.getBoolvalue();
-  if (f) {
+  f = /** @type {boolean} */ (jspb.Message.getField(message, 3));
+  if (f != null) {
     writer.writeBool(
       3,
       f
@@ -32815,7 +32854,25 @@ proto.common.QueryFilterValueDTO.prototype.getStringvalue = function() {
  * @return {!proto.common.QueryFilterValueDTO} returns this
  */
 proto.common.QueryFilterValueDTO.prototype.setStringvalue = function(value) {
-  return jspb.Message.setProto3StringField(this, 1, value);
+  return jspb.Message.setOneofField(this, 1, proto.common.QueryFilterValueDTO.oneofGroups_[0], value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.common.QueryFilterValueDTO} returns this
+ */
+proto.common.QueryFilterValueDTO.prototype.clearStringvalue = function() {
+  return jspb.Message.setOneofField(this, 1, proto.common.QueryFilterValueDTO.oneofGroups_[0], undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.common.QueryFilterValueDTO.prototype.hasStringvalue = function() {
+  return jspb.Message.getField(this, 1) != null;
 };
 
 
@@ -32833,7 +32890,25 @@ proto.common.QueryFilterValueDTO.prototype.getNumbervalue = function() {
  * @return {!proto.common.QueryFilterValueDTO} returns this
  */
 proto.common.QueryFilterValueDTO.prototype.setNumbervalue = function(value) {
-  return jspb.Message.setProto3IntField(this, 2, value);
+  return jspb.Message.setOneofField(this, 2, proto.common.QueryFilterValueDTO.oneofGroups_[0], value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.common.QueryFilterValueDTO} returns this
+ */
+proto.common.QueryFilterValueDTO.prototype.clearNumbervalue = function() {
+  return jspb.Message.setOneofField(this, 2, proto.common.QueryFilterValueDTO.oneofGroups_[0], undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.common.QueryFilterValueDTO.prototype.hasNumbervalue = function() {
+  return jspb.Message.getField(this, 2) != null;
 };
 
 
@@ -32851,7 +32926,25 @@ proto.common.QueryFilterValueDTO.prototype.getBoolvalue = function() {
  * @return {!proto.common.QueryFilterValueDTO} returns this
  */
 proto.common.QueryFilterValueDTO.prototype.setBoolvalue = function(value) {
-  return jspb.Message.setProto3BooleanField(this, 3, value);
+  return jspb.Message.setOneofField(this, 3, proto.common.QueryFilterValueDTO.oneofGroups_[0], value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.common.QueryFilterValueDTO} returns this
+ */
+proto.common.QueryFilterValueDTO.prototype.clearBoolvalue = function() {
+  return jspb.Message.setOneofField(this, 3, proto.common.QueryFilterValueDTO.oneofGroups_[0], undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.common.QueryFilterValueDTO.prototype.hasBoolvalue = function() {
+  return jspb.Message.getField(this, 3) != null;
 };
 
 

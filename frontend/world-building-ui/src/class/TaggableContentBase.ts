@@ -1,4 +1,4 @@
-import { Tag } from "../dto/content/Tag";
+import { Tag } from "./entities/content/Tag";
 import { Serializable } from "../decorator/serializable.decorator";
 import { ContentBase } from "./ContentBase";
 import { FormField } from "../decorator/form-field.decorator";

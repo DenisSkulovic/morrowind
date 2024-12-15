@@ -5,8 +5,8 @@ import ContentForm from '../../../../../../components/entity/ContentForm';
 import { createContent } from '../../../../../../store/slices/contentSlice';
 import { ContentBase } from '../../../../../../class/ContentBase';
 import { Context } from '../../../../../../class/Context';
-import { User } from '../../../../../../dto/User';
-import { World } from '../../../../../../dto/World';
+import { User } from '../../../../../../entities/User';
+import { World } from '../../../../../../entities/World';
 import { CONTENT_ENTITY_MAP } from '../../../../../../CONTENT_ENTITY_MAP';
 import { ClassConstructor } from '../../../../../../types';
 

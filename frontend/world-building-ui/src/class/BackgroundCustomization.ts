@@ -1,10 +1,10 @@
-import { common } from "../proto/common";
 import { serializeInstruction, serializeGenerationInstructions, deserializeInstruction, deserializeGenerationInstructions } from "./GenerationInstruction";
 import type { GenerationInstruction } from "./GenerationInstruction";;
 import { FormField } from "../decorator/form-field.decorator";
 import { FieldComponentEnum } from "../enum/FieldComponentEnum";
 import { Serializable } from "../decorator/serializable.decorator";
-import { Serializer } from "../serialize/serializer";
+import { SkillAdjustmentsDTO } from "../proto/common_pb";
+import { deserializeSkillAdjustments, serializeSkillAdjustments, SkillAdjustment } from "./SkillAdjustment";
 
 export class BackgroundCustomization {
     @Serializable()
@@ -102,15 +102,12 @@ export class BackgroundCustomization {
     public skillSets?: GenerationInstruction[]
 
     @FormField({ component: FieldComponentEnum.OBJECT_FIELD, label: 'Skill Adjustments' })
-    @Serializable()
-    public skillAdjustments?: { [skillBlueprintId: string]: number }
+    @Serializable({
+        serialize: serializeSkillAdjustments,
+        deserialize: deserializeSkillAdjustments
+    })
+    public skillAdjustments?: SkillAdjustment
 
-    public toDTO(): common.BackgroundCustomizationDTO {
-        return Serializer.toDTO(this);
-    }
-
-    public static fromDTO(dto: common.BackgroundCustomizationDTO): BackgroundCustomization {
-        const customization = new BackgroundCustomization();
-        return Serializer.fromDTO(dto, customization);
-    }
 }
+
+

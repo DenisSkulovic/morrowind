@@ -6,17 +6,19 @@ import Link from 'next/link';
 import { RequestStatusEnum } from '../../enum/RequestStatusEnum';
 import { Box, Button, Card, CardActions, CardContent, CircularProgress, Container, Grid, Typography } from '@mui/material';
 import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
-import { Account } from '../../dto/Account';
-import { World } from '../../dto/World';
-import { AccountDTO } from '../../proto/common';
+import { World } from '../../class/entities/World';
+import { AccountDTO } from '../../proto/common_pb';
+import { Serializer } from '../../serialize/serializer';
+import { Account } from '../../class/entities/Account';
 
 const WorldsPage = () => {
     const dispatch = useDispatch<AppDispatch>();
     const { data: worldDTOs, status, error } = useSelector((state: RootState) => state.worlds);
-    const worlds = worldDTOs.map(worldDTO => World.fromDTO(worldDTO));
+    const worlds = worldDTOs.map(worldDTO => Serializer.fromDTO(worldDTO, new World()));
     const accountDTO: AccountDTO | null = useSelector((state: RootState) => state.account.data);
     if (!accountDTO) throw new Error('Account not found');
-    const userId: string = accountDTO.user;
+    const account: Account = Serializer.fromDTO(accountDTO, new Account());
+    const userId: string = account.user;
     console.log(`[WorldsPage] worlds:`, worlds)
     console.log(`[WorldsPage] userId:`, userId)
     useEffect(() => {

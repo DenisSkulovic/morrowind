@@ -3,14 +3,14 @@ import * as jspb from 'google-protobuf'
 
 
 export class ContextDTO extends jspb.Message {
-  getUserid(): string;
-  setUserid(value: string): ContextDTO;
+  getUser(): string;
+  setUser(value: string): ContextDTO;
 
-  getWorldid(): string;
-  setWorldid(value: string): ContextDTO;
+  getWorld(): string;
+  setWorld(value: string): ContextDTO;
 
-  getCampaignid(): string;
-  setCampaignid(value: string): ContextDTO;
+  getCampaign(): string;
+  setCampaign(value: string): ContextDTO;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): ContextDTO.AsObject;
@@ -22,9 +22,9 @@ export class ContextDTO extends jspb.Message {
 
 export namespace ContextDTO {
   export type AsObject = {
-    userid: string,
-    worldid: string,
-    campaignid: string,
+    user: string,
+    world: string,
+    campaign: string,
   }
 }
 
@@ -3929,6 +3929,8 @@ export class QueryFilterValueDTO extends jspb.Message {
   getBoolvalue(): boolean;
   setBoolvalue(value: boolean): QueryFilterValueDTO;
 
+  getValueCase(): QueryFilterValueDTO.ValueCase;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): QueryFilterValueDTO.AsObject;
   static toObject(includeInstance: boolean, msg: QueryFilterValueDTO): QueryFilterValueDTO.AsObject;
@@ -3942,6 +3944,13 @@ export namespace QueryFilterValueDTO {
     stringvalue: string,
     numbervalue: number,
     boolvalue: boolean,
+  }
+
+  export enum ValueCase { 
+    VALUE_NOT_SET = 0,
+    STRINGVALUE = 1,
+    NUMBERVALUE = 2,
+    BOOLVALUE = 3,
   }
 }
 

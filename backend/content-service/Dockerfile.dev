@@ -10,12 +10,8 @@ WORKDIR /usr/src/app
 # Copy only package.json and package-lock.json to install dependencies
 COPY package.json package-lock.json ./
 
-
-
 # Avoid long installation times (CLEARLY ONLY FOR SLOPPY EARLY DEVELOPMENT ONLY)
 COPY node_modules/ ./node_modules
-
-
 
 # Install dependencies
 RUN npm install
@@ -26,12 +22,8 @@ COPY src/ ./src
 # Copy world presets
 COPY world_presets/ ./world_presets
 
-COPY proto/ ./proto
-
-
 # Expose the gRPC server port
 EXPOSE 50051
 
 # Start the gRPC server
-CMD ["sh", "-c", "npm run proto:generate && npm run start:dev"]
-# CMD ["sh", "-c", "npm run proto:generate && npm run migrate:generate && npm run migrate:run && npm run start:dev"]
+CMD ["npm", "run", "start:dev"]

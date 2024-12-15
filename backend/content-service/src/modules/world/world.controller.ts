@@ -31,11 +31,11 @@ export class WorldController {
 
     async processContextDTO(contextDTO: ContextDTO, source: DataSourceEnum): Promise<Context> {
         const [user, world] = await Promise.all([
-            this.userService.findUser(contextDTO.userId, source),
-            this.worldService.findWorld(contextDTO.worldId, contextDTO.userId, source),
+            this.userService.findUser(contextDTO.user, source),
+            this.worldService.findWorld(contextDTO.world, contextDTO.user, source),
         ])
-        if (!user) throw new Error(`failed to find User for userId: "${contextDTO.userId}"`)
-        if (!world) throw new Error(`failed to find World for worldId: "${contextDTO.worldId}"`)
+        if (!user) throw new Error(`failed to find User for userId: "${contextDTO.user}"`)
+        if (!world) throw new Error(`failed to find World for worldId: "${contextDTO.world}"`)
         console.log(`user`, user)
         console.log(`world`, world)
         return new Context(user, world)
@@ -141,8 +141,8 @@ export class WorldController {
         console.log(`@@@context`, context)
         const worldId: string | undefined = context?.world?.id // TODO these fields should come from middleware
         const userId: string | undefined = context?.user?.id // TODO these fields should come from middleware, especially this one
-        if (!worldId) throw new Error(`unidentified world id: "${contextDTO?.worldId}"`)
-        if (!userId) throw new Error(`unidentified user id: "${contextDTO?.userId}"`)
+        if (!worldId) throw new Error(`unidentified world id: "${contextDTO?.world}"`)
+        if (!userId) throw new Error(`unidentified user id: "${contextDTO?.user}"`)
         const preset: PresetEnum = deserializeEnum(PresetEnumDTO, PresetEnum, request.preset)
         // check preset for existence in the enum
         await this.worldService.loadPresetIntoWorld(preset, worldId, userId)

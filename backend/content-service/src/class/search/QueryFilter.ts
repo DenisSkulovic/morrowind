@@ -37,12 +37,16 @@ export class QueryFilter {
     public value: string | number | boolean;
 
     public static fromDTO(dto: QueryFilterDTO): QueryFilter {
+        if (!dto.value) {
+            throw new Error('QueryFilterDTO must have a value');
+        }
+
         let value: string | number | boolean;
-        if (dto.value?.stringValue !== undefined) {
+        if (dto.value.stringValue !== undefined) {
             value = dto.value.stringValue;
-        } else if (dto.value?.numberValue !== undefined) {
+        } else if (dto.value.numberValue !== undefined) {
             value = dto.value.numberValue;
-        } else if (dto.value?.boolValue !== undefined) {
+        } else if (dto.value.boolValue !== undefined) {
             value = dto.value.boolValue;
         } else {
             throw new Error('QueryFilterDTO must have a value');
@@ -50,21 +54,21 @@ export class QueryFilter {
         return new QueryFilter(dto.field, dto.operator as Operator, value);
     }
 
-    public toDTO(filter: QueryFilter): QueryFilterDTO {
-        const dto: QueryFilterDTO = {
-            field: filter.field,
-            operator: filter.operator,
-            value: undefined
-        };
+    public toDTO(): QueryFilterDTO {
+        const value: QueryFilterValueDTO = {};
 
-        if (typeof filter.value === 'string') {
-            dto.value = { stringValue: filter.value };
-        } else if (typeof filter.value === 'number') {
-            dto.value = { numberValue: filter.value };
-        } else if (typeof filter.value === 'boolean') {
-            dto.value = { boolValue: filter.value };
+        if (typeof this.value === 'string') {
+            value.stringValue = this.value;
+        } else if (typeof this.value === 'number') {
+            value.numberValue = this.value;
+        } else if (typeof this.value === 'boolean') {
+            value.boolValue = this.value;
         }
 
-        return dto;
+        return {
+            field: this.field,
+            operator: this.operator,
+            value
+        };
     }
 }

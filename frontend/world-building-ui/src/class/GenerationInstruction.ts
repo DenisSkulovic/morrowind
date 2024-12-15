@@ -1,6 +1,6 @@
 import { ConditionEnum } from "../enum/ConditionEnum"
 import { serializeEnum, deserializeEnum } from "../enum/util"
-import { common } from "../proto/common";
+import { GenerationInstructionDTO, IdAndQuantDTO, SimpleProbDTO, ConditionEnumDTO, GaussianProbDTO, CombinatorDTO, GenerationInstructionsDTO } from "../proto/common_pb"
 import { BlueprintGenInstruction_Simple, Probability_0_to_1 } from "../types"
 
 
@@ -70,90 +70,88 @@ export class BlueprintSetCombinator {
 }
 
 
-export function serializeInstruction(instruction: GenerationInstruction): common.GenerationInstructionDTO {
-    const genDTO = new common.GenerationInstructionDTO();
+export function serializeInstruction(instruction: GenerationInstruction): GenerationInstructionDTO {
+    const dto = new GenerationInstructionDTO();
+
     if (instruction instanceof IdAndQuant) {
-        const dto = new common.IdAndQuantDTO();
-        dto.blueprintId = instruction.blueprintId;
-        dto.quantity = instruction.quantity || 1;
-        genDTO.idAndQuant = dto;
-        return genDTO
+        const idAndQuantDTO = new IdAndQuantDTO();
+        idAndQuantDTO.setBlueprintid(instruction.blueprintId);
+        idAndQuantDTO.setQuantity(instruction.quantity || 1);
+        dto.setIdandquant(idAndQuantDTO);
+    } else if (instruction instanceof ProbObject_Simple) {
+        const simpleProbDTO = new SimpleProbDTO();
+        simpleProbDTO.setCond(serializeEnum(ConditionEnum, ConditionEnumDTO, instruction.cond));
+        const probMap = simpleProbDTO.getProbMap();
+        Object.entries(instruction.prob).forEach(([key, value]) => {
+            probMap.set(key, value);
+        });
+        dto.setSimpleprob(simpleProbDTO);
+    } else if (instruction instanceof BlueprintGenInstruction_Gaussian) {
+        const gaussianProbDTO = new GaussianProbDTO();
+        gaussianProbDTO.setBlueprintid(instruction.blueprintId);
+        gaussianProbDTO.setProb(instruction.prob || 1);
+        gaussianProbDTO.setAvgquan(instruction.avg_quan || 1);
+        gaussianProbDTO.setStdev(instruction.st_dev || 0);
+        gaussianProbDTO.setSkew(instruction.skew || 0);
+        dto.setGaussianprob(gaussianProbDTO);
+    } else if (instruction instanceof BlueprintSetCombinator) {
+        const combinatorDTO = new CombinatorDTO();
+        combinatorDTO.setName(instruction.name || "");
+        combinatorDTO.setProb(instruction.prob || 1);
+        combinatorDTO.setCond(serializeEnum(ConditionEnum, ConditionEnumDTO, instruction.cond));
+        combinatorDTO.setInstructionsList(instruction.items.map(serializeInstruction));
+        dto.setCombinator(combinatorDTO);
+    } else {
+        throw new Error("Unknown GenerationInstruction type");
     }
-    if (instruction instanceof ProbObject_Simple) {
-        const dto = new common.SimpleProbDTO();
-        dto.cond = serializeEnum(ConditionEnum, common.ConditionEnumDTO, instruction.cond);
-        const probMap = new Map<string, number>();
-        probMap.set(instruction.prob.blueprintId, instruction.prob.probability);
-        dto.prob = probMap;
-        genDTO.simpleProb = dto;
-        return genDTO;
-    }
-    if (instruction instanceof BlueprintGenInstruction_Gaussian) {
-        const dto = new common.GaussianProbDTO();
-        dto.blueprintId = instruction.blueprintId;
-        dto.prob = instruction.prob || 1;
-        dto.avgQuan = instruction.avg_quan || 1;
-        dto.stDev = instruction.st_dev || 0;
-        dto.skew = instruction.skew || 0;
-        genDTO.gaussianProb = dto;
-        return genDTO;
-    }
-    if (instruction instanceof BlueprintSetCombinator) {
-        const dto = new common.CombinatorDTO();
-        dto.name = instruction.name || "";
-        dto.prob = instruction.prob || 1;
-        dto.cond = serializeEnum(ConditionEnum, common.ConditionEnumDTO, instruction.cond);
-        dto.instructions = instruction.items.map(serializeInstruction);
-        genDTO.combinator = dto;
-        return genDTO;
-    }
-    throw new Error("Unknown GenerationInstruction type");
+
+    return dto;
 }
 
-export function deserializeInstruction(dto: common.GenerationInstructionDTO): GenerationInstruction {
+export function deserializeInstruction(dto: GenerationInstructionDTO): GenerationInstruction {
     console.log(`[deserializeInstruction] instruction: `, dto)
-    if (dto.blueprintId) {
-        return dto.blueprintId
+    if (dto.getBlueprintid()) {
+        return dto.getBlueprintid()
     }
-    if (dto.idAndQuant) {
-        const idAndQuant = dto.idAndQuant;
-        return new IdAndQuant(idAndQuant.blueprintId, idAndQuant.quantity);
+    if (dto.hasIdandquant()) {
+        const idAndQuant = dto.getIdandquant();
+        return new IdAndQuant(idAndQuant!.getBlueprintid(), idAndQuant!.getQuantity());
     }
-    if (dto.simpleProb) {
-        const simpleProb = dto.simpleProb;
+    if (dto.hasSimpleprob()) {
+        const simpleProb = dto.getSimpleprob();
         return new ProbObject_Simple(
-            deserializeEnum(common.ConditionEnumDTO, ConditionEnum, simpleProb.cond),
-            simpleProb.prob
+            deserializeEnum(ConditionEnumDTO, ConditionEnum, simpleProb!.getCond()),
+            Object.fromEntries(simpleProb!.getProbMap().toArray())
         )
     }
-    if (dto.gaussianProb) {
-        const gaussianProb = dto.gaussianProb;
+    if (dto.hasGaussianprob()) {
+        const gaussianProb = dto.getGaussianprob();
         return new BlueprintGenInstruction_Gaussian(
-            gaussianProb.blueprintId,
-            gaussianProb.prob,
-            gaussianProb.avgQuan,
-            gaussianProb.stDev,
-            gaussianProb.skew
+            gaussianProb!.getBlueprintid(),
+            gaussianProb!.getProb(),
+            gaussianProb!.getAvgquan(),
+            gaussianProb!.getStdev(),
+            gaussianProb!.getSkew()
         );
     }
-    if (dto.combinator) {
-        const combinator = dto.combinator;
+    if (dto.hasCombinator()) {
+        const combinator = dto.getCombinator();
         return new BlueprintSetCombinator(
-            combinator.name,
-            combinator.prob,
-            deserializeEnum(common.ConditionEnumDTO, ConditionEnum, combinator.cond),
-            combinator.instructions.map(deserializeInstruction),
+            combinator!.getName(),
+            combinator!.getProb(),
+            deserializeEnum(ConditionEnumDTO, ConditionEnum, combinator!.getCond()),
+            combinator!.getInstructionsList().map(deserializeInstruction)
         );
     }
     throw new Error("Unknown GenerationInstructionDTO type");
 }
 
-export const serializeGenerationInstructions = (instructions: GenerationInstruction[]): common.GenerationInstructionsDTO => {
-    const dto = new common.GenerationInstructionsDTO({});
-    dto.arr = instructions.map(serializeInstruction);
+export const serializeGenerationInstructions = (instructions: GenerationInstruction[]): GenerationInstructionsDTO => {
+    const dto = new GenerationInstructionsDTO();
+    dto.setArrList(instructions.map(serializeInstruction));
     return dto;
 };
 
-export const deserializeGenerationInstructions = (dtoInstructions: common.GenerationInstructionsDTO): GenerationInstruction[] => {
-    return dtoInstructions.arr.map(deserializeInstruction)
+export const deserializeGenerationInstructions = (dtoInstructions: GenerationInstructionsDTO): GenerationInstruction[] => {
+    return dtoInstructions.getArrList().map(deserializeInstruction)
 };

@@ -4,8 +4,8 @@ import { AppDispatch, RootState } from '../../store/store';
 import { createWorld } from '../../store/slices/worldSlice';
 import { useRouter } from 'next/router';
 import { Box, Button, Container, TextField, Typography } from '@mui/material';
-import { Account } from '../../dto/Account';
-import { World } from '../../dto/World';
+import { Account } from '../../entities/Account';
+import { World } from '../../entities/World';
 
 const CreateWorldPage = () => {
     const dispatch = useDispatch<AppDispatch>();
