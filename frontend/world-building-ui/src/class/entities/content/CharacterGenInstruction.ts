@@ -11,7 +11,6 @@ import { DisplayField } from '../../../decorator/display-field.decorator';
 import { EntityDisplay } from '../../../decorator/entity-display.decorator';
 import { FilterOption } from '../../../decorator/filter-option.decorator';
 import { Context } from '../../../class/Context';
-import { ContentService } from '../../../services/ContentService';
 import { SearchQuery } from '../../../class/search/SearchQuery';
 import { GenderEnumDTO } from '../../../proto/common_pb';
 
@@ -58,7 +57,7 @@ export class CharacterGenInstruction extends ContentBase {
         component: FieldComponentEnum.SELECT_FIELD,
         label: 'Birthsign',
         search: async (filter: SearchQuery, context: Context): Promise<FormSelectOption[]> => {
-            return (await Birthsign.search(filter, context)).map((item: Birthsign) => {
+            return (await Birthsign.search<Birthsign>(filter, context)).map((item: Birthsign) => {
                 return { id: item.id, label: item.name }
             })
         }
@@ -92,11 +91,6 @@ export class CharacterGenInstruction extends ContentBase {
     @Serializable({ strategy: 'full' })
     backgroundCustomization?: BackgroundCustomization
 
-    public static async search(filter: SearchQuery, context: Context): Promise<CharacterGenInstruction[]> {
-        const contentService = new ContentService<CharacterGenInstruction>();
-        const { results } = await contentService.searchContent('CharacterGenInstruction', filter, context);
-        return results as CharacterGenInstruction[];
-    }
 }
 
 // example: Fisherman (Beginner). Beginner here would be represented by a tag, and specific memory pools will be connected. On generation, certain memories will be created, but after generation memories begin a free float.

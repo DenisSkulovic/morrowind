@@ -9,9 +9,6 @@ import { FormSelectOption } from "../../../../class/FormSelectOption";
 import { DisplayField } from "../../../../decorator/display-field.decorator";
 import { EntityDisplay } from "../../../../decorator/entity-display.decorator";
 import { FilterOption } from "../../../../decorator/filter-option.decorator";
-import { ContentService } from "../../../../services/ContentService";
-import { SearchQuery } from "../../../../class/search/SearchQuery";
-import { Context } from "../../../../class/Context";
 import { SkillCategoryEnumDTO } from "../../../../proto/common_pb";
 
 @EntityDisplay({
@@ -53,9 +50,4 @@ export class Skill extends TaggableContentBase {
     })
     category!: SkillCategoryEnum
 
-    public static async search(filter: SearchQuery, context: Context): Promise<Skill[]> {
-        const contentService = new ContentService<Skill>();
-        const { results } = await contentService.searchContent('Skill', filter, context);
-        return results as Skill[];
-    }
 }

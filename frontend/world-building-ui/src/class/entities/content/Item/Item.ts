@@ -11,7 +11,6 @@ import { Skill } from "../Skill/Skill";
 import { DisplayField } from "../../../../decorator/display-field.decorator";
 import { EntityDisplay } from "../../../../decorator/entity-display.decorator";
 import { FilterOption } from "../../../../decorator/filter-option.decorator";
-import { ContentService } from "../../../../services/ContentService";
 import { Context } from "../../../../class/Context";
 import { SearchQuery } from "../../../../class/search/SearchQuery";
 import { ItemRequirement } from "../../../../class/ItemRequirement";
@@ -64,7 +63,7 @@ export class Item extends TaggableContentBase {
         component: FieldComponentEnum.SELECT_FIELD,
         label: 'Trained Skill',
         search: async (filter: SearchQuery, context: Context): Promise<FormSelectOption[]> => {
-            return (await Skill.search(filter, context)).map((item: Skill) => {
+            return (await Skill.search<Skill>(filter, context)).map((item: Skill) => {
                 return { id: item.id, label: item.name }
             })
         },
@@ -121,9 +120,4 @@ export class Item extends TaggableContentBase {
     @Serializable()
     equipmentSlot?: string; // the equipment slot where this item sits (sword in hand, for e.g.)
 
-    public static async search(filter: SearchQuery, context: Context): Promise<Item[]> {
-        const contentService = new ContentService<Item>();
-        const { results } = await contentService.searchContent('Item', filter, context);
-        return results as Item[];
-    }
 }

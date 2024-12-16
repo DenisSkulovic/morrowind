@@ -31,7 +31,7 @@ export class WorldService {
                 else if (!response) reject(new Error('No response from server'));
                 else {
                     const worldDTO = response.getWorld();
-                    const worldResp = Serializer.fromDTO(worldDTO, World)
+                    const worldResp = Serializer.fromDTO(worldDTO, new World())
                     resolve(worldResp);
                 };
             });
@@ -47,7 +47,7 @@ export class WorldService {
                 else if (!response) reject(new Error('No response from server'));
                 else {
                     const worldDTO = response.getWorld();
-                    const worldResp = Serializer.fromDTO(worldDTO, World)
+                    const worldResp = Serializer.fromDTO(worldDTO, new World())
                     resolve(worldResp);
                 }
             });
@@ -63,22 +63,20 @@ export class WorldService {
                 else if (!response) reject(new Error('No response from server'));
                 else {
                     const worldDTO = response.getWorld();
-                    const worldResp = Serializer.fromDTO(worldDTO, World)
+                    const worldResp = Serializer.fromDTO(worldDTO, new World())
                     resolve(worldResp);
                 }
             });
         });
     }
 
-    async search(entityName: string, query: SearchQuery, context: Context): Promise<World[]> {
-        console.log(`[WorldService] search`, entityName, query, context)
+    async search(query: SearchQuery, context: Context): Promise<World[]> {
+        console.log(`[WorldService] search`, query, context)
         const request: SearchWorldRequest = new SearchWorldRequest();
-        request.setEntityname(entityName);
+        request.setEntityname("World");
         const queryDTO: SearchQueryDTO = Serializer.toDTO(query, new SearchQueryDTO())
         console.log(`[WorldService] search queryDTO`, queryDTO)
-        console.log(`before setQuery`)
         request.setQuery(queryDTO);
-        console.log(`after setQuery`)
         console.log(`[WorldService] search context`, context)
         const contextDTO = Serializer.toDTO(context, new ContextDTO())
         console.log(`[WorldService] search contextDTO`, contextDTO)
@@ -91,9 +89,12 @@ export class WorldService {
                 else if (!response) reject(new Error('No response from server'));
                 else {
                     console.log(`[WorldService] search response worlds`, response.getWorldsList())
-                    const worlds = response.getWorldsList().map(worldDTO =>
-                        Serializer.fromDTO(worldDTO, World)
+                    const worlds = response.getWorldsList().map(worldDTO => {
+                        console.log(`[WorldService] search worldDTO`, worldDTO)
+                        return Serializer.fromDTO(worldDTO, new World())
+                    }
                     );
+                    console.log(`[WorldService] search resolve`, worlds)
                     resolve(worlds);
                 }
             });

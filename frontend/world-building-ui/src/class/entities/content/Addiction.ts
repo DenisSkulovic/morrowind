@@ -5,9 +5,6 @@ import { FieldComponentEnum } from "../../../enum/FieldComponentEnum";
 import { EntityDisplay } from "../../../decorator/entity-display.decorator";
 import { FilterOption } from "../../../decorator/filter-option.decorator";
 import { DisplayField } from "../../../decorator/display-field.decorator";
-import { ContentService } from "../../../services/ContentService";
-import { SearchQuery } from "../../../class/search/SearchQuery";
-import { Context } from "../../../class/Context";
 
 @EntityDisplay({
     title: 'Addictions',
@@ -22,9 +19,4 @@ export class Addiction extends ContentBase {
     @Serializable()
     name!: string
 
-    public static async search(filter: SearchQuery, context: Context): Promise<Addiction[]> {
-        const contentService = new ContentService<Addiction>();
-        const { results } = await contentService.searchContent('Addiction', filter, context);
-        return results as Addiction[];
-    }
 }

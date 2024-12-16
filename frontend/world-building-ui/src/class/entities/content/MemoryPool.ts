@@ -8,7 +8,6 @@ import { DisplayField } from '../../../decorator/display-field.decorator';
 import { EntityDisplay } from '../../../decorator/entity-display.decorator';
 import { FilterOption } from '../../../decorator/filter-option.decorator';
 import { Context } from '../../../class/Context';
-import { ContentService } from '../../../services/ContentService';
 import { SearchQuery } from '../../../class/search/SearchQuery';
 
 @EntityDisplay({
@@ -31,7 +30,7 @@ export class MemoryPool extends TaggableContentBase {
         component: FieldComponentEnum.MULTI_SELECT_FIELD,
         label: 'Memory Pool Entries',
         search: async (filter: SearchQuery, context: Context): Promise<FormSelectOption[]> => {
-            return (await MemoryPoolEntry.search(filter, context)).map((item: MemoryPoolEntry) => {
+            return (await MemoryPoolEntry.search<MemoryPoolEntry>(filter, context)).map((item: MemoryPoolEntry) => {
                 return { id: item.id, label: item.name }
             })
         }
@@ -39,11 +38,6 @@ export class MemoryPool extends TaggableContentBase {
     @Serializable()
     memoryPoolEntries!: string[];
 
-    public static async search(filter: SearchQuery, context: Context): Promise<MemoryPool[]> {
-        const contentService = new ContentService<MemoryPool>();
-        const { results } = await contentService.searchContent('MemoryPool', filter, context);
-        return results as MemoryPool[];
-    }
 }
 
 // memory pools are collections of memory entries, memory pool entries contain a memory and some expected values for generation, and memories are collections of facts. Memory pools can be any groupings by region, topic, etc.

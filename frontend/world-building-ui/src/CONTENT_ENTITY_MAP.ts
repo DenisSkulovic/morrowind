@@ -57,7 +57,7 @@ import { Trait } from "./class/entities/content/Trait";
 import { ClassConstructor } from "./types";
 
 
-export const CONTENT_ENTITY_MAP: { [name: string]: ClassConstructor<ContentBase> } = {
+export const CONTENT_ENTITY_MAP: { [name: string]: typeof ContentBase } = {
     ItemAlcohol,
     ItemDrinkable,
     ItemPotion,

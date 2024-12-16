@@ -1,15 +1,16 @@
-import { Item } from "../../../entities/content/Item/Item";
-import React from 'react';
+import React, { useRef, useCallback } from 'react';
 import { useDrag } from 'react-dnd';
-
+import { Paper, Typography } from '@mui/material';
 
 interface DraggableItemProps {
-    item: Item;
+    item: any;
     listType: string;
     onRemove: () => void;
 }
 
 const DraggableItem: React.FC<DraggableItemProps> = ({ item, listType, onRemove }) => {
+    const localRef = useRef<HTMLDivElement | null>(null);
+
     const [{ isDragging }, dragRef] = useDrag({
         type: 'item',
         item: () => ({
@@ -17,7 +18,7 @@ const DraggableItem: React.FC<DraggableItemProps> = ({ item, listType, onRemove 
             sourceList: listType
         }),
         end: (item, monitor) => {
-            const dropResult = monitor.getDropResult();
+            const dropResult: any = monitor.getDropResult();
             if (dropResult && dropResult.listType !== listType) {
                 onRemove();
             }
@@ -27,22 +28,35 @@ const DraggableItem: React.FC<DraggableItemProps> = ({ item, listType, onRemove 
         })
     });
 
+    const setRefs = useCallback(
+        (node: HTMLDivElement | null) => {
+            // Update local ref
+            localRef.current = node;
+            // Update drag ref
+            dragRef(node);
+        },
+        [dragRef]
+    );
+
     return (
-        <div
-            ref={dragRef}
-            style={{
+        <Paper
+            component="div"
+            ref={setRefs}
+            elevation={1}
+            sx={{
                 opacity: isDragging ? 0.5 : 1,
                 cursor: 'move',
-                padding: '4px',
-                margin: '4px',
-                backgroundColor: '#fff',
-                border: '1px solid #ddd',
-                borderRadius: '4px'
+                p: 1,
+                m: 0.5,
+                backgroundColor: 'background.paper',
+                '&:hover': {
+                    backgroundColor: 'action.hover'
+                }
             }}
         >
-            {item.name}
-        </div>
+            <Typography>{item.name}</Typography>
+        </Paper>
     );
 };
 
-export default DraggableItem
+export default DraggableItem;

@@ -9,9 +9,6 @@ import { FormSelectOption } from "../../../class/FormSelectOption";
 import { DisplayField } from '../../../decorator/display-field.decorator';
 import { EntityDisplay } from '../../../decorator/entity-display.decorator';
 import { FilterOption } from '../../../decorator/filter-option.decorator';
-import { Context } from '../../../class/Context';
-import { SearchQuery } from '../../../class/search/SearchQuery';
-import { ContentService } from '../../../services/ContentService';
 import { MemoryTypeEnumDTO } from '../../../proto/common_pb';
 
 @EntityDisplay({
@@ -53,9 +50,4 @@ export class Memory extends TaggableContentBase {
     @Serializable({ strategy: 'full' })
     facts!: Fact[]
 
-    public static async search(filter: SearchQuery, context: Context): Promise<Memory[]> {
-        const contentService = new ContentService<Memory>();
-        const { results } = await contentService.searchContent('Memory', filter, context);
-        return results as Memory[];
-    }
 }

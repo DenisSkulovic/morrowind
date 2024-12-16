@@ -1,29 +1,37 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../../store/store';
-import { fetchWorlds, deleteWorld } from '../../store/slices/worldSlice';
+import { deleteWorld, searchWorlds } from '../../store/slices/worldSlice';
 import Link from 'next/link';
 import { RequestStatusEnum } from '../../enum/RequestStatusEnum';
-import { Box, Button, Card, CardActions, CardContent, CircularProgress, Container, Grid, Typography } from '@mui/material';
+import { Box, Button, Card, CardActions, CardContent, CircularProgress, Container, Grid2, Typography } from '@mui/material';
 import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import { World } from '../../class/entities/World';
-import { AccountDTO } from '../../proto/common_pb';
-import { Serializer } from '../../serialize/serializer';
 import { Account } from '../../class/entities/Account';
+import { routes } from '../../routes';
+import { useSelectorAndBuilder } from '../../hooks/useSelectorAndBuilder';
+import { Context } from '../../class/Context';
+import { User } from '../../class/entities/User';
+import { QueryFilter } from '../../class/search/QueryFilter';
+import { SearchQuery } from '../../class/search/SearchQuery';
+import { WorldService } from '../../services/WorldService';
 
 const WorldsPage = () => {
     const dispatch = useDispatch<AppDispatch>();
-    const { data: worldDTOs, status, error } = useSelector((state: RootState) => state.worlds);
-    const worlds = worldDTOs.map(worldDTO => Serializer.fromDTO(worldDTO, new World()));
-    const accountDTO: AccountDTO | null = useSelector((state: RootState) => state.account.data);
-    if (!accountDTO) throw new Error('Account not found');
-    const account: Account = Serializer.fromDTO(accountDTO, new Account());
+    const { status, error } = useSelector((state: RootState) => state.worlds);
+    const worlds: World[] = useSelectorAndBuilder<World[]>((state: RootState) => state.worlds.data, worlds => worlds.map(World.build)) || [];
+    const account: Account | null = useSelectorAndBuilder<Account>((state: RootState) => state.account.data, Account.build);
+    if (!account) throw new Error("account cannot be null")
     const userId: string = account.user;
     console.log(`[WorldsPage] worlds:`, worlds)
     console.log(`[WorldsPage] userId:`, userId)
     useEffect(() => {
         if (status === RequestStatusEnum.IDLE) {
-            dispatch(fetchWorlds(userId));
+            const user: User = User.build({ id: userId });
+            const context: Context = Context.build({ user });
+            const filter: QueryFilter = QueryFilter.build({ field: "user", operator: "eq", value: userId });
+            const query: SearchQuery = SearchQuery.build({ page: 1, pageSize: 100, filters: [filter] });
+            dispatch(searchWorlds({ query, context }));
         }
     }, [dispatch, status]);
 
@@ -56,7 +64,7 @@ const WorldsPage = () => {
                     </Typography>
                     <Button
                         component={Link}
-                        href="/worlds/create"
+                        href={routes.worldCreate()}
                         variant="contained"
                         color="primary"
                         startIcon={<AddIcon />}
@@ -65,9 +73,9 @@ const WorldsPage = () => {
                     </Button>
                 </Box>
 
-                <Grid container spacing={3}>
+                <Grid2 container spacing={3}>
                     {worlds.map((world: World) => (
-                        <Grid item xs={12} sm={6} md={4} key={world.id}>
+                        <Grid2 container={false}>
                             <Card>
                                 <CardContent>
                                     <Typography variant="h5" component="h2" gutterBottom>
@@ -80,7 +88,7 @@ const WorldsPage = () => {
                                 <CardActions>
                                     <Button
                                         component={Link}
-                                        href={`/worlds/${world.id}/edit`}
+                                        href={routes.worldEdit(world.id)}
                                         size="small"
                                         startIcon={<EditIcon />}
                                     >
@@ -96,9 +104,9 @@ const WorldsPage = () => {
                                     </Button>
                                 </CardActions>
                             </Card>
-                        </Grid>
+                        </Grid2>
                     ))}
-                </Grid>
+                </Grid2>
             </Box>
         </Container>
     );

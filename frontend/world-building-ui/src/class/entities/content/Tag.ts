@@ -3,9 +3,6 @@ import { Serializable } from "../../../decorator/serializable.decorator";
 import { FormField } from "../../../decorator/form-field.decorator";
 import { FieldComponentEnum } from "../../../enum/FieldComponentEnum";
 import { TagSubtypeEnum } from "../../../enum/entityEnums";
-import { ContentService } from "../../../services/ContentService";
-import { Context } from "../../../class/Context";
-import { SearchQuery } from "../../../class/search/SearchQuery";
 import { DisplayField } from '../../../decorator/display-field.decorator';
 import { EntityDisplay } from '../../../decorator/entity-display.decorator';
 import { FilterOption } from '../../../decorator/filter-option.decorator';
@@ -39,9 +36,4 @@ export class Tag extends ContentBase {
     })
     subtype!: TagSubtypeEnum;
 
-    public static async search(filter: SearchQuery, context: Context): Promise<Tag[]> {
-        const contentService = new ContentService<Tag>();
-        const { results } = await contentService.searchContent('Tag', filter, context);
-        return results as Tag[];
-    }
 }

@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction, ActionReducerMapBuilder } from '@reduxjs/toolkit';
 import { World } from '../../class/entities/World';
 import { RequestStatusEnum } from '../../enum/RequestStatusEnum';
 import { WorldService } from '../../services/WorldService';
@@ -6,9 +6,12 @@ import { SearchQuery } from '../../class/search/SearchQuery';
 import { QueryFilter } from '../../class/search/QueryFilter';
 import { Context } from '../../class/Context';
 import { User } from '../../class/entities/User';
+import { LooseObject } from '../../types';
+
+type WorldPlain = LooseObject
 
 interface WorldState {
-    data: World[];
+    data: WorldPlain[];
     status: RequestStatusEnum;
     error: string | null;
 };
@@ -20,30 +23,11 @@ const initialState: WorldState = {
 };
 
 // Async Thunks
-export const fetchWorlds = createAsyncThunk(
-    'worlds/fetchWorlds',
-    async (userId: string): Promise<World[]> => {
-        console.log(`[fetchWorlds] userId:`, userId)
-        const user = new User();
-        user.id = userId;
-
-        const context = new Context();
-        context.user = user;
+export const searchWorlds = createAsyncThunk(
+    'worlds/searchWorlds',
+    async ({ query, context }: { query: SearchQuery, context: Context }): Promise<World[]> => {
         const worldService = new WorldService();
-
-        const query = new SearchQuery();
-        query.page = 1;
-        query.pageSize = 100;
-
-        const filter = new QueryFilter();
-        filter.field = "user";
-        filter.operator = "eq";
-        filter.value = userId;
-        query.filters = [filter];
-
-        console.log(`before`)
-        const response: World[] = await worldService.search("World", query, context);
-        console.log(`after`, response)
+        const response: World[] = await worldService.search(query, context);
         return response;
     }
 );
@@ -84,49 +68,64 @@ const worldSlice = createSlice({
             state.data = [];
             state.status = RequestStatusEnum.IDLE;
             state.error = null;
+        },
+        setWorlds: (state, action: PayloadAction<World[]>) => {
+            state.data = action.payload.map((world: World) => world.toPlainObj());
         }
     },
-    extraReducers: (builder) => {
+    extraReducers: (builder: ActionReducerMapBuilder<WorldState>) => {
         builder
-            .addCase(fetchWorlds.pending, (state) => {
-                console.log(`[fetchWorlds.pending] state:`, state)
+            .addCase(searchWorlds.pending, (state: WorldState) => {
                 state.status = RequestStatusEnum.LOADING;
                 state.error = null;
             })
-            .addCase(fetchWorlds.fulfilled, (state, action) => {
-                console.log(`[fetchWorlds.fulfilled] action.payload:`, action.payload)
+            .addCase(searchWorlds.fulfilled, (state: WorldState, action: PayloadAction<World[]>) => {
                 state.status = RequestStatusEnum.SUCCEEDED;
-                state.data = action.payload;
+                state.data = action.payload.map((world: World) => world.toPlainObj());
             })
-            .addCase(fetchWorlds.rejected, (state, action) => {
-                console.log(`[fetchWorlds.rejected] action.error:`, action.error)
+            .addCase(searchWorlds.rejected, (state: WorldState, action) => {
                 state.status = RequestStatusEnum.FAILED;
                 state.error = action.error.message || 'Failed to fetch worlds';
             })
-            .addCase(createWorld.pending, (state) => {
+
+            .addCase(createWorld.pending, (state: WorldState) => {
                 state.status = RequestStatusEnum.LOADING;
                 state.error = null;
             })
-            .addCase(createWorld.fulfilled, (state, action) => {
+            .addCase(createWorld.fulfilled, (state: WorldState, action: PayloadAction<World>) => {
                 state.status = RequestStatusEnum.SUCCEEDED;
-                state.data.push(action.payload);
+                state.data.push(action.payload.toPlainObj());
             })
-            .addCase(createWorld.rejected, (state, action) => {
+            .addCase(createWorld.rejected, (state: WorldState, action) => {
                 state.status = RequestStatusEnum.FAILED;
                 state.error = action.error.message || 'Failed to create world';
             })
-            .addCase(deleteWorld.pending, (state) => {
+
+            .addCase(deleteWorld.pending, (state: WorldState) => {
                 state.status = RequestStatusEnum.LOADING;
                 state.error = null;
             })
-            .addCase(deleteWorld.fulfilled, (state, action) => {
+            .addCase(deleteWorld.fulfilled, (state: WorldState, action: PayloadAction<string>) => {
                 state.status = RequestStatusEnum.SUCCEEDED;
                 state.data = state.data.filter((w) => w.id !== action.payload);
             })
-            .addCase(deleteWorld.rejected, (state, action) => {
+            .addCase(deleteWorld.rejected, (state: WorldState, action) => {
                 state.status = RequestStatusEnum.FAILED;
                 state.error = action.error.message || 'Failed to delete world';
-            });
+            })
+
+            .addCase(updateWorld.pending, (state: WorldState) => {
+                state.status = RequestStatusEnum.LOADING;
+                state.error = null;
+            })
+            .addCase(updateWorld.fulfilled, (state: WorldState, action: PayloadAction<World>) => {
+                state.status = RequestStatusEnum.SUCCEEDED;
+                state.data = state.data.map((w) => w.id === action.payload.id ? action.payload.toPlainObj() : w);
+            })
+            .addCase(updateWorld.rejected, (state: WorldState, action) => {
+                state.status = RequestStatusEnum.FAILED;
+                state.error = action.error.message || 'Failed to update world';
+            })
     },
 });
 

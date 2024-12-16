@@ -3,9 +3,6 @@ import { Serializable } from "../../../../decorator/serializable.decorator";
 import { Item } from "../Item/Item";
 import { FormField } from "../../../../decorator/form-field.decorator";
 import { FieldComponentEnum } from "../../../../enum/FieldComponentEnum";
-import { ContentService } from "../../../../services/ContentService";
-import { Context } from "../../../../class/Context";
-import { SearchQuery } from "../../../../class/search/SearchQuery";
 import { EntityDisplay } from "../../../../decorator/entity-display.decorator";
 import { DisplayField } from "../../../../decorator/display-field.decorator";
 import { FilterOption } from "../../../../decorator/filter-option.decorator";
@@ -36,9 +33,4 @@ export class EquipmentSlot extends ContentBase {
     @Serializable()
     character?: string; // The character owning this slot (i.e. left hand slot, right hand slot, head slot)
 
-    public static async search(filter: SearchQuery, context: Context): Promise<EquipmentSlot[]> {
-        const contentService = new ContentService<EquipmentSlot>();
-        const { results } = await contentService.searchContent('EquipmentSlot', filter, context);
-        return results as EquipmentSlot[];
-    }
 }

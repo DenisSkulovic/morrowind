@@ -6,9 +6,6 @@ import { FieldComponentEnum } from "../../../../enum/FieldComponentEnum";
 import { EntityDisplay } from "../../../../decorator/entity-display.decorator";
 import { DisplayField } from "../../../../decorator/display-field.decorator";
 import { FilterOption } from "../../../../decorator/filter-option.decorator";
-import { ContentService } from "../../../../services/ContentService";
-import { Context } from "../../../../class/Context";
-import { SearchQuery } from "../../../../class/search/SearchQuery";
 
 @EntityDisplay({
     title: 'Skill Sets',
@@ -26,9 +23,4 @@ export class SkillSet extends TaggableContentBase {
     @Serializable({ serialize: serializeSkillImprovement, deserialize: deserializeSkillImprovement })
     skillImprovement!: SkillImprovement
 
-    public static async search(filter: SearchQuery, context: Context): Promise<SkillSet[]> {
-        const contentService = new ContentService<SkillSet>();
-        const { results } = await contentService.searchContent('SkillSet', filter, context);
-        return results as SkillSet[];
-    }
 }

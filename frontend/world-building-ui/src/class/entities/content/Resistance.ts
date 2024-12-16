@@ -8,9 +8,6 @@ import { FormSelectOption } from "../../../class/FormSelectOption";
 import { DisplayField } from "../../../decorator/display-field.decorator";
 import { EntityDisplay } from "../../../decorator/entity-display.decorator";
 import { FilterOption } from "../../../decorator/filter-option.decorator";
-import { Context } from "../../../class/Context";
-import { ContentService } from "../../../services/ContentService";
-import { SearchQuery } from "../../../class/search/SearchQuery";
 import { EffectTypeEnumDTO, EffectElementEnumDTO } from "../../../proto/common_pb";
 
 @EntityDisplay({
@@ -60,9 +57,4 @@ export class Resistance extends ContentBase {
     })
     targetEffect?: string; // "fire", "poison", "disease".
 
-    public static async search(filter: SearchQuery, context: Context): Promise<Resistance[]> {
-        const contentService = new ContentService<Resistance>();
-        const { results } = await contentService.searchContent('Resistance', filter, context);
-        return results as Resistance[];
-    }
 }

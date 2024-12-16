@@ -13,4 +13,9 @@ export class Context {
     @Serializable({ strategy: "id" })
     public campaign?: Campaign;
 
+    public static build(data: { [key: string]: any }): Context {
+        const context = new Context();
+        Object.assign(context, data);
+        return context;
+    }
 }

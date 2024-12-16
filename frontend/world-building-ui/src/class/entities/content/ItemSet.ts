@@ -6,9 +6,6 @@ import { FieldComponentEnum } from "../../../enum/FieldComponentEnum";
 import { DisplayField } from "../../../decorator/display-field.decorator";
 import { EntityDisplay } from "../../../decorator/entity-display.decorator";
 import { FilterOption } from "../../../decorator/filter-option.decorator";
-import { Context } from "../../../class/Context";
-import { ContentService } from "../../../services/ContentService";
-import { SearchQuery } from "../../../class/search/SearchQuery";
 
 @EntityDisplay({
     title: 'Item Sets',
@@ -33,9 +30,4 @@ export class ItemSet extends ContentBase {
     })
     set!: GenerationInstruction[];
 
-    public static async search(filter: SearchQuery, context: Context): Promise<ItemSet[]> {
-        const contentService = new ContentService<ItemSet>();
-        const { results } = await contentService.searchContent('ItemSet', filter, context);
-        return results as ItemSet[];
-    }
 }

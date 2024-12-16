@@ -28,7 +28,7 @@ export class AccountService {
                 else if (!response) reject(new Error('No response from server'));
                 else {
                     const accountDTO = response.getAccount();
-                    const accountResp = Serializer.fromDTO(accountDTO, Account);
+                    const accountResp = Serializer.fromDTO(accountDTO, new Account());
                     resolve(accountResp);
                 }
             });
@@ -44,7 +44,7 @@ export class AccountService {
                 else if (!response) reject(new Error('No response from server'));
                 else {
                     const accountDTO = response.getAccount();
-                    const accountResp = Serializer.fromDTO(accountDTO, Account);
+                    const accountResp = Serializer.fromDTO(accountDTO, new Account());
                     resolve(accountResp);
                 }
             });
@@ -60,7 +60,7 @@ export class AccountService {
                 else if (!response) reject(new Error('No response from server'));
                 else {
                     const accountDTO = response.getAccount();
-                    const accountResp = Serializer.fromDTO(accountDTO, Account);
+                    const accountResp = Serializer.fromDTO(accountDTO, new Account());
                     resolve(accountResp);
                 }
             });

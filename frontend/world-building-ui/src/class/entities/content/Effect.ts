@@ -8,9 +8,6 @@ import { FormSelectOption } from "../../../class/FormSelectOption";
 import { DisplayField } from '../../../decorator/display-field.decorator';
 import { EntityDisplay } from '../../../decorator/entity-display.decorator';
 import { FilterOption } from '../../../decorator/filter-option.decorator';
-import { ContentService } from '../../../services/ContentService';
-import { SearchQuery } from '../../../class/search/SearchQuery';
-import { Context } from '../../../class/Context';
 import { EffectTypeEnumDTO, EffectTargetEnumDTO, EffectModeEnumDTO, EffectElementEnumDTO } from '../../../proto/common_pb';
 
 @EntityDisplay({
@@ -94,11 +91,5 @@ export class Effect extends TaggableContentBase {
         deserialize: element => deserializeEnum(EffectElementEnumDTO, EffectElementEnum, element),
     })
     element?: EffectElementEnum;
-
-    public static async search(filter: SearchQuery, context: Context): Promise<Effect[]> {
-        const contentService = new ContentService<Effect>();
-        const { results } = await contentService.searchContent('Effect', filter, context);
-        return results as Effect[];
-    }
 
 }

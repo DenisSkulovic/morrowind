@@ -4,14 +4,13 @@ import { ContentBase } from '../../class/ContentBase';
 import { Context } from '../../class/Context';
 import { RequestStatusEnum } from '../../enum/RequestStatusEnum';
 import { SearchQuery } from '../../class/search/SearchQuery';
-import { Serializer } from '../../serialize/serializer';
 import { CONTENT_ENTITY_DTO_MAP } from '../../CONTENT_ENTITY_DTO_MAP';
+import { LooseObject } from '../../types';
 
-
-type ContentDTO = any
+type ContentPlain = LooseObject
 
 interface ContentState {
-    data: { [entity: string]: { [id: string]: ContentDTO } };
+    data: { [entity: string]: { [id: string]: ContentPlain } };
     status: RequestStatusEnum;
     error: string | null;
 }
@@ -31,7 +30,7 @@ export const createContent = createAsyncThunk(
         const dtoConstructor = CONTENT_ENTITY_DTO_MAP[entityName];
         if (!dtoConstructor) throw new Error(`DTO constructor for entity ${entityName} not found`);
         const response: ContentBase = await contentService.createContent(entityName, contentBody, context);
-        return Serializer.toDTO(response, new dtoConstructor());
+        return response.toPlainObj();
     }
 );
 
@@ -42,7 +41,7 @@ export const updateContent = createAsyncThunk(
         const dtoConstructor = CONTENT_ENTITY_DTO_MAP[entityName];
         if (!dtoConstructor) throw new Error(`DTO constructor for entity ${entityName} not found`);
         const response: ContentBase = await contentService.updateContent(entityName, contentBody, context);
-        return Serializer.toDTO(response, new dtoConstructor());
+        return response.toPlainObj();
     }
 );
 
@@ -62,7 +61,7 @@ export const searchContent = createAsyncThunk(
         if (!dtoConstructor) throw new Error(`DTO constructor for entity ${entityName} not found`);
         const response = await contentService.searchContent(entityName, query, context);
         return {
-            results: response.results.map(content => Serializer.toDTO(content, new dtoConstructor())),
+            results: response.results.map(content => content.toPlainObj()),
             totalResults: response.totalResults,
             totalPages: response.totalPages,
             currentPage: response.currentPage
@@ -77,7 +76,7 @@ export const createContentBulk = createAsyncThunk(
         const dtoConstructor = CONTENT_ENTITY_DTO_MAP[entityName];
         if (!dtoConstructor) throw new Error(`DTO constructor for entity ${entityName} not found`);
         const response: ContentBase[] = await contentService.createContentBulk(entityName, contentBodies, context);
-        return response.map(content => Serializer.toDTO(content, new dtoConstructor()));
+        return response.map(content => content.toPlainObj());
     }
 );
 
@@ -88,7 +87,7 @@ export const updateContentBulk = createAsyncThunk(
         const dtoConstructor = CONTENT_ENTITY_DTO_MAP[entityName];
         if (!dtoConstructor) throw new Error(`DTO constructor for entity ${entityName} not found`);
         const response: ContentBase[] = await contentService.updateContentBulk(entityName, contentBodies, context);
-        return response.map(content => Serializer.toDTO(content, new dtoConstructor()));
+        return response.map(content => content.toPlainObj());
     }
 );
 
@@ -121,7 +120,7 @@ const contentSlice = createSlice({
                 if (!state.data[action.meta.arg.entityName]) {
                     state.data[action.meta.arg.entityName] = {};
                 }
-                state.data[action.meta.arg.entityName][action.payload.id] = Serializer.fromDTO(action.payload, action.meta.arg.entityName);
+                state.data[action.meta.arg.entityName][action.payload.id] = action.payload;
             })
             .addCase(createContent.rejected, (state, action) => {
                 state.status = RequestStatusEnum.FAILED;
@@ -167,7 +166,7 @@ const contentSlice = createSlice({
                 if (!state.data[action.meta.arg.entityName]) {
                     state.data[action.meta.arg.entityName] = {};
                 }
-                action.payload.results.forEach((item: ContentBase) => {
+                action.payload.results.forEach((item: ContentPlain) => {
                     state.data[action.meta.arg.entityName][item.id] = item;
                 });
             })

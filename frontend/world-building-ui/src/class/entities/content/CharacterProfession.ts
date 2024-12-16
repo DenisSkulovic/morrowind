@@ -7,9 +7,6 @@ import { MemoryPool } from "./MemoryPool";
 import { DisplayField } from "../../../decorator/display-field.decorator";
 import { EntityDisplay } from "../../../decorator/entity-display.decorator";
 import { FilterOption } from "../../../decorator/filter-option.decorator";
-import { SearchQuery } from "../../../class/search/SearchQuery";
-import { Context } from "../../../class/Context";
-import { ContentService } from "../../../services/ContentService";
 
 @EntityDisplay({
     title: 'Character Professions',
@@ -26,7 +23,7 @@ export class CharacterProfession extends TaggableContentBase {
         component: FieldComponentEnum.MULTI_SELECT_FIELD,
         label: 'Memory Pools',
         search: async (filter, context): Promise<FormSelectOption[]> => {
-            return (await MemoryPool.search(filter, context)).map((item: MemoryPool) => {
+            return (await MemoryPool.search<MemoryPool>(filter, context)).map((item: MemoryPool) => {
                 return { id: item.id, label: item.name }
             })
         }
@@ -34,11 +31,6 @@ export class CharacterProfession extends TaggableContentBase {
     @Serializable()
     memoryPools!: string[]
 
-    public static async search(filter: SearchQuery, context: Context): Promise<CharacterProfession[]> {
-        const contentService = new ContentService<CharacterProfession>();
-        const { results } = await contentService.searchContent('CharacterProfession', filter, context);
-        return results as CharacterProfession[];
-    }
 }
 
 // example: Fisherman (Beginner). Beginner here would be represented by a tag, and specific memory pools will be connected. On generation, certain memories will be created, but after generation memories begin a free float.

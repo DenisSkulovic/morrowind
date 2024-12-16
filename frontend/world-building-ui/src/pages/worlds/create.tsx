@@ -1,28 +1,30 @@
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import { createWorld } from '../../store/slices/worldSlice';
 import { useRouter } from 'next/router';
-import { Box, Button, Container, TextField, Typography } from '@mui/material';
-import { Account } from '../../entities/Account';
-import { World } from '../../entities/World';
+import { Box, Container, Typography } from '@mui/material';
+import { Account } from '../../class/entities/Account';
+import { World } from '../../class/entities/World';
+import { useSelectorAndBuilder } from '../../hooks/useSelectorAndBuilder';
+import { routes } from '../../routes';
+import { FormFieldDefinition, getFormFields } from '../../decorator/form-field.decorator';
+import DynamicForm from '../../components/common/DynamicForm';
 
 const CreateWorldPage = () => {
     const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
 
-    const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
-
-    const account: Account | null = useSelector((state: RootState) => state.account.data);
+    const account: Account | null = useSelectorAndBuilder((state: RootState) => state.account.data, account => account ? Account.build(account) : null);
     if (!account) throw new Error('Account not found');
     const userId: string = account.user;
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        const world: World = { name, description } as World;
+    const formFields: FormFieldDefinition[] = getFormFields(World.prototype);
+
+    const handleSubmit = async (data: { [key: string]: any }) => {
+        const world: World = World.build({ ...data });
         await dispatch(createWorld({ world, userId }));
-        router.push('/worlds');
+        router.push(routes.worlds());
     };
 
     return (
@@ -31,36 +33,16 @@ const CreateWorldPage = () => {
                 <Typography variant="h4" component="h1" gutterBottom>
                     Create New World
                 </Typography>
-                <Box component="form" onSubmit={handleSubmit} sx={{ maxWidth: 600 }}>
-                    <Box mb={3}>
-                        <TextField
-                            fullWidth
-                            label="World Name"
-                            variant="outlined"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                        />
-                    </Box>
-                    <Box mb={3}>
-                        <TextField
-                            fullWidth
-                            label="Description"
-                            variant="outlined"
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                            multiline
-                            rows={4}
-                        />
-                    </Box>
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                        size="large"
-                    >
-                        Create World
-                    </Button>
+                <Box sx={{ maxWidth: 600 }}>
+                    <DynamicForm
+                        fields={formFields}
+                        initialValues={{
+                            name: '',
+                            description: '',
+                            campaigns: []
+                        }}
+                        onSubmit={handleSubmit}
+                    />
                 </Box>
             </Box>
         </Container>

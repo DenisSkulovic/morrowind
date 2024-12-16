@@ -7,9 +7,6 @@ import { FieldComponentEnum } from "../../../enum/FieldComponentEnum";
 import { EntityDisplay } from "../../../decorator/entity-display.decorator";
 import { FilterOption } from "../../../decorator/filter-option.decorator";
 import { DisplayField } from "../../../decorator/display-field.decorator";
-import { SearchQuery } from "../../../class/search/SearchQuery";
-import { Context } from "../../../class/Context";
-import { ContentService } from "../../../services/ContentService";
 import { SkillAdjustment } from "../../../class/SkillAdjustment";
 import { SkillAdjustmentsDTO } from "../../../proto/common_pb";
 
@@ -86,9 +83,4 @@ export class Background extends ContentBase {
     @Serializable({ strategy: 'full', getDTOInstance: () => new SkillAdjustmentsDTO() })
     skillAdjustments?: SkillAdjustment[]
 
-    public static async search(filter: SearchQuery, context: Context): Promise<Background[]> {
-        const contentService = new ContentService<Background>();
-        const { results } = await contentService.searchContent('Background', filter, context);
-        return results as Background[];
-    }
 }

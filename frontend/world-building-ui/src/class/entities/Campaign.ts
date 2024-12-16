@@ -1,4 +1,8 @@
 import { Serializable } from "../../decorator/serializable.decorator";
+import { CampaignService } from "../../services/CampaignService";
+import { LooseObject } from "../../types";
+import { Context } from "../Context";
+import { SearchQuery } from "../search/SearchQuery";
 
 export class Campaign {
     @Serializable()
@@ -22,4 +26,18 @@ export class Campaign {
     @Serializable()
     user!: string;
 
+    public static build(obj: LooseObject): Campaign {
+        const campaign = new Campaign();
+        Object.assign(campaign, obj);
+        return campaign;
+    }
+
+    public static async search(filter: SearchQuery, context: Context): Promise<Campaign[]> {
+        const campaignService = new CampaignService();
+        return campaignService.search(filter, context);
+    }
+
+    toPlainObj(): LooseObject {
+        return JSON.parse(JSON.stringify(this));
+    }
 }

@@ -37,22 +37,30 @@ export class Serializer {
         const fields = getSerializableFields(entity.constructor.prototype);
 
         fields.forEach(({ propertyKey, dtoKey, strategy, deserialize, getDTOInstance }) => {
+            console.log(`[Serializer] fromDTO propertyKey`, propertyKey)
+            console.log(`[Serializer] fromDTO dtoKey`, dtoKey)
+            console.log(`[Serializer] fromDTO strategy`, strategy)
+            console.log(`[Serializer] fromDTO deserialize`, deserialize)
+            console.log(`[Serializer] fromDTO getDTOInstance`, getDTOInstance)
             const getter = `get${dtoKey.charAt(0).toUpperCase() + dtoKey.slice(1)}`;
             if (typeof dto[getter] === "function") {
                 const value = dto[getter]();
-                const processOne = (item: any) => {
-                    if (deserialize) return deserialize(item);
-                    if (strategy === 'id') return item?.id ? { id: item.id } : null;
-                    if (strategy === 'full') {
+                console.log(`value`, value)
+                const processOne = (val: any) => {
+                    if (deserialize) return deserialize(val);
+                    else if (strategy === 'id') return val?.id ? { id: val.id } : null;
+                    else if (strategy === 'full') {
                         if (!getDTOInstance) throw new Error('getDTOInstance is not defined when strategy is "full"');
-                        return Serializer.fromDTO(item, getDTOInstance());
+                        return Serializer.fromDTO(val, getDTOInstance());
                     }
-                    return item;
+                    else return val;
                 };
 
                 if (Array.isArray(value)) {
+                    console.log(`[Serializer] fromDTO processing array`, value)
                     entity[propertyKey] = value.map(processOne);
                 } else {
+                    console.log(`[Serializer] fromDTO processing value`, value)
                     entity[propertyKey] = processOne(value);
                 }
             } else {
@@ -60,6 +68,7 @@ export class Serializer {
             }
         });
 
+        console.log(`[Serializer] fromDTO entity`, entity)
         return entity;
     }
 }

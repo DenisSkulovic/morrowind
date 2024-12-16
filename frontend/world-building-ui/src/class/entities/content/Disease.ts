@@ -8,9 +8,6 @@ import { FormSelectOption } from "../../../class/FormSelectOption";
 import { DisplayField } from '../../../decorator/display-field.decorator';
 import { EntityDisplay } from '../../../decorator/entity-display.decorator';
 import { FilterOption } from '../../../decorator/filter-option.decorator';
-import { ContentService } from '../../../services/ContentService';
-import { Context } from '../../../class/Context';
-import { SearchQuery } from '../../../class/search/SearchQuery';
 import { DiseaseSeverityEnumDTO } from '../../../proto/common_pb';
 
 @EntityDisplay({
@@ -51,9 +48,4 @@ export class Disease extends TaggableContentBase {
     })
     severity!: DiseaseSeverityEnum;
 
-    public static async search(filter: SearchQuery, context: Context): Promise<Disease[]> {
-        const contentService = new ContentService<Disease>();
-        const { results } = await contentService.searchContent('Disease', filter, context);
-        return results as Disease[];
-    }
 }

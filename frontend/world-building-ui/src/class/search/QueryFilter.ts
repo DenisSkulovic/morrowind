@@ -17,6 +17,12 @@ export class QueryFilter {
         deserialize: deserializeQueryFilterValue
     })
     public value!: string | number | boolean;
+
+    public static build(data: { [key: string]: any }): QueryFilter {
+        const filter = new QueryFilter();
+        Object.assign(filter, data);
+        return filter;
+    }
 }
 
 function serializeQueryFilterValue(value: string | number | boolean): QueryFilterValueDTO {

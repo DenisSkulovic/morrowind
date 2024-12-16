@@ -8,9 +8,6 @@ import { FormSelectOption } from "../../../class/FormSelectOption";
 import { DisplayField } from "../../../decorator/display-field.decorator";
 import { EntityDisplay } from "../../../decorator/entity-display.decorator";
 import { FilterOption } from "../../../decorator/filter-option.decorator";
-import { Context } from "../../../class/Context";
-import { SearchQuery } from "../../../class/search/SearchQuery";
-import { ContentService } from "../../../services/ContentService";
 import { TraitTypeEnumDTO } from "../../../proto/common_pb";
 
 @EntityDisplay({
@@ -42,9 +39,4 @@ export class Trait extends TaggableContentBase {
     })
     traitType!: TraitTypeEnum
 
-    public static async search(filter: SearchQuery, context: Context): Promise<Trait[]> {
-        const contentService = new ContentService<Trait>();
-        const { results } = await contentService.searchContent('Trait', filter, context);
-        return results as Trait[];
-    }
 }

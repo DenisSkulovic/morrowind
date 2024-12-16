@@ -17,4 +17,9 @@ export class SearchQuery {
     @Serializable({ strategy: 'full', getDTOInstance: () => new SortByDTO() })
     public sortBy?: SortBy;
 
+    public static build(data: { [key: string]: any }): SearchQuery {
+        const query = new SearchQuery();
+        Object.assign(query, data);
+        return query;
+    }
 }

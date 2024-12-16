@@ -6,9 +6,6 @@ import { FieldComponentEnum } from "../../../enum/FieldComponentEnum";
 import { EntityDisplay } from "../../../decorator/entity-display.decorator";
 import { DisplayField } from "../../../decorator/display-field.decorator";
 import { FilterOption } from "../../../decorator/filter-option.decorator";
-import { ContentService } from "../../../services/ContentService";
-import { SearchQuery } from "../../../class/search/SearchQuery";
-import { Context } from "../../../class/Context";
 
 @EntityDisplay({
     title: 'Character Group Generation Instructions',
@@ -26,9 +23,4 @@ export class CharacterGroupGenInstruction extends ContentBase {
     @Serializable({ serialize: serializeInstruction, deserialize: deserializeInstruction })
     set!: BlueprintSetCombinator;
 
-    public static async search(filter: SearchQuery, context: Context): Promise<CharacterGroupGenInstruction[]> {
-        const contentService = new ContentService<CharacterGroupGenInstruction>();
-        const { results } = await contentService.searchContent('CharacterGroupGenInstruction', filter, context);
-        return results as CharacterGroupGenInstruction[];
-    }
 }

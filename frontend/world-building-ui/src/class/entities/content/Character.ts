@@ -18,7 +18,6 @@ import { Addiction } from "./Addiction";
 import { DisplayField } from '../../../decorator/display-field.decorator';
 import { EntityDisplay } from '../../../decorator/entity-display.decorator';
 import { FilterOption } from '../../../decorator/filter-option.decorator';
-import { ContentService } from '../../../services/ContentService';
 import { SearchQuery } from '../../../class/search/SearchQuery';
 import { Context } from '../../../class/Context';
 import { EquipmentSlotsDTO, GenderEnumDTO } from '../../../proto/common_pb';
@@ -47,7 +46,7 @@ export class Character extends TaggableContentBase {
         component: FieldComponentEnum.SELECT_FIELD,
         label: 'Race',
         search: async (filter: SearchQuery, context: Context): Promise<FormSelectOption[]> => {
-            return (await Race.search(filter, context)).map((item: Race) => {
+            return (await Race.search<Race>(filter, context)).map((item: Race) => {
                 return { id: item.id, label: item.name }
             })
         }
@@ -78,7 +77,7 @@ export class Character extends TaggableContentBase {
         component: FieldComponentEnum.SELECT_FIELD,
         label: 'Birthsign',
         search: async (filter: SearchQuery, context: Context): Promise<FormSelectOption[]> => {
-            return (await Birthsign.search(filter, context)).map((item: Birthsign) => {
+            return (await Birthsign.search<Birthsign>(filter, context)).map((item: Birthsign) => {
                 return { id: item.id, label: item.name }
             })
         }
@@ -110,7 +109,7 @@ export class Character extends TaggableContentBase {
         component: FieldComponentEnum.NESTED_FORM,
         label: 'Equipment Slots',
         search: async (filter, context): Promise<FormSelectOption[]> => {
-            return (await EquipmentSlot.search(filter, context)).map((item: EquipmentSlot) => {
+            return (await EquipmentSlot.search<EquipmentSlot>(filter, context)).map((item: EquipmentSlot) => {
                 return { id: item.id, label: item.name }
             })
         }
@@ -122,7 +121,7 @@ export class Character extends TaggableContentBase {
         component: FieldComponentEnum.MULTI_SELECT_FIELD,
         label: 'Professions',
         search: async (filter, context): Promise<FormSelectOption[]> => {
-            return (await CharacterProfession.search(filter, context)).map((item: CharacterProfession) => {
+            return (await CharacterProfession.search<CharacterProfession>(filter, context)).map((item: CharacterProfession) => {
                 return { id: item.id, label: item.name }
             })
         }
@@ -134,7 +133,7 @@ export class Character extends TaggableContentBase {
         component: FieldComponentEnum.MULTI_SELECT_FIELD,
         label: 'Memory Pools',
         search: async (filter, context): Promise<FormSelectOption[]> => {
-            return (await MemoryPool.search(filter, context)).map((item: MemoryPool) => {
+            return (await MemoryPool.search<MemoryPool>(filter, context)).map((item: MemoryPool) => {
                 return { id: item.id, label: item.name }
             })
         }
@@ -146,7 +145,7 @@ export class Character extends TaggableContentBase {
         component: FieldComponentEnum.MULTI_SELECT_FIELD,
         label: 'Memory Pools',
         search: async (filter, context): Promise<FormSelectOption[]> => {
-            return (await MemoryPool.search(filter, context)).map((item: MemoryPool) => {
+            return (await MemoryPool.search<MemoryPool>(filter, context)).map((item: MemoryPool) => {
                 return { id: item.id, label: item.name }
             })
         }
@@ -160,7 +159,7 @@ export class Character extends TaggableContentBase {
 
     @FormField({
         component: FieldComponentEnum.MULTI_SELECT_FIELD, label: 'Traits', search: async (filter, context): Promise<FormSelectOption[]> => {
-            return (await Trait.search(filter, context)).map((item: Trait) => {
+            return (await Trait.search<Trait>(filter, context)).map((item: Trait) => {
                 return { id: item.id, label: item.name }
             })
         }
@@ -170,7 +169,7 @@ export class Character extends TaggableContentBase {
 
     @FormField({
         component: FieldComponentEnum.MULTI_SELECT_FIELD, label: 'Diseases', search: async (filter, context): Promise<FormSelectOption[]> => {
-            return (await Disease.search(filter, context)).map((item: Disease) => {
+            return (await Disease.search<Disease>(filter, context)).map((item: Disease) => {
                 return { id: item.id, label: item.name }
             })
         }
@@ -180,7 +179,7 @@ export class Character extends TaggableContentBase {
 
     @FormField({
         component: FieldComponentEnum.MULTI_SELECT_FIELD, label: 'Addictions', search: async (filter, context): Promise<FormSelectOption[]> => {
-            return (await Addiction.search(filter, context)).map((item: Addiction) => {
+            return (await Addiction.search<Addiction>(filter, context)).map((item: Addiction) => {
                 return { id: item.id, label: item.name }
             })
         }
@@ -192,7 +191,7 @@ export class Character extends TaggableContentBase {
         component: FieldComponentEnum.MULTI_SELECT_FIELD,
         label: 'Factions',
         search: async (filter, context): Promise<FormSelectOption[]> => {
-            return (await PastExperience.search(filter, context)).map((item: PastExperience) => {
+            return (await PastExperience.search<PastExperience>(filter, context)).map((item: PastExperience) => {
                 return { id: item.id, label: item.name }
             })
         }
@@ -206,7 +205,7 @@ export class Character extends TaggableContentBase {
         component: FieldComponentEnum.MULTI_SELECT_FIELD,
         label: 'Factions',
         search: async (filter, context): Promise<FormSelectOption[]> => {
-            return (await Faction.search(filter, context)).map((item: Faction) => {
+            return (await Faction.search<Faction>(filter, context)).map((item: Faction) => {
                 return { id: item.id, label: item.name }
             })
         }
@@ -214,9 +213,4 @@ export class Character extends TaggableContentBase {
     @Serializable()
     factions?: string[];
 
-    public static async search(filter: SearchQuery, context: Context): Promise<Character[]> {
-        const contentService = new ContentService<Character>();
-        const { results } = await contentService.searchContent('Character', filter, context);
-        return results as Character[];
-    }
 }

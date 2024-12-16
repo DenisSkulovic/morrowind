@@ -7,9 +7,6 @@ import { MemoryPool } from "./MemoryPool";
 import { DisplayField } from '../../../decorator/display-field.decorator';
 import { EntityDisplay } from '../../../decorator/entity-display.decorator';
 import { FilterOption } from '../../../decorator/filter-option.decorator';
-import { ContentService } from '../../../services/ContentService';
-import { Context } from '../../../class/Context';
-import { SearchQuery } from '../../../class/search/SearchQuery';
 
 @EntityDisplay({
     title: 'Memory Pool Entries',
@@ -28,7 +25,7 @@ export class MemoryPoolEntry extends ContentBase {
         component: FieldComponentEnum.SELECT_FIELD,
         label: 'Memory Pool',
         search: async (filter, context): Promise<FormSelectOption[]> => {
-            return (await MemoryPool.search(filter, context)).map((item: MemoryPool) => {
+            return (await MemoryPool.search<MemoryPool>(filter, context)).map((item: MemoryPool) => {
                 return { id: item.id, label: item.name }
             })
         }
@@ -57,9 +54,4 @@ export class MemoryPoolEntry extends ContentBase {
     @FormField({ component: FieldComponentEnum.NUMBER_FIELD, label: 'Default Importance', placeholder: 'Enter default importance', required: true })
     defaultImportance!: number;
 
-    public static async search(filter: SearchQuery, context: Context): Promise<MemoryPoolEntry[]> {
-        const contentService = new ContentService<MemoryPoolEntry>();
-        const { results } = await contentService.searchContent('MemoryPoolEntry', filter, context);
-        return results as MemoryPoolEntry[];
-    }
 }

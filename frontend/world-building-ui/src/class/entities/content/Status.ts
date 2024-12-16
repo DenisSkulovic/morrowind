@@ -11,7 +11,6 @@ import { DisplayField } from "../../../decorator/display-field.decorator";
 import { FilterOption } from "../../../decorator/filter-option.decorator";
 import { Context } from "../../../class/Context";
 import { SearchQuery } from "../../../class/search/SearchQuery";
-import { ContentService } from "../../../services/ContentService";
 import { EffectTypeEnumDTO } from "../../../proto/common_pb";
 
 @EntityDisplay({
@@ -53,7 +52,7 @@ export class Status extends ContentBase {
         component: FieldComponentEnum.MULTI_SELECT_FIELD,
         label: 'Effects',
         search: async (filter: SearchQuery, context: Context): Promise<FormSelectOption[]> => {
-            return (await Effect.search(filter, context)).map((item: Effect) => {
+            return (await Effect.search<Effect>(filter, context)).map((item: Effect) => {
                 return { id: item.id, label: item.name }
             })
         }
@@ -67,9 +66,4 @@ export class Status extends ContentBase {
     @FormField({ component: FieldComponentEnum.NUMBER_FIELD, label: 'Duration', placeholder: 'Enter duration in ticks (0 for permanent)', required: true })
     duration!: number; // Duration in ticks (0 for permanent).
 
-    public static async search(filter: SearchQuery, context: Context): Promise<Status[]> {
-        const contentService = new ContentService<Status>();
-        const { results } = await contentService.searchContent('Status', filter, context);
-        return results as Status[];
-    }
 }

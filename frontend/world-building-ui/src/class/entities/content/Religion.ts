@@ -6,9 +6,6 @@ import { FieldComponentEnum } from "../../../enum/FieldComponentEnum";
 import { DisplayField } from '../../../decorator/display-field.decorator';
 import { EntityDisplay } from '../../../decorator/entity-display.decorator';
 import { FilterOption } from '../../../decorator/filter-option.decorator';
-import { Context } from '../../../class/Context';
-import { SearchQuery } from '../../../class/search/SearchQuery';
-import { ContentService } from '../../../services/ContentService';
 import { ReligionTenet } from '../../../class/ReligionTenet';
 
 @EntityDisplay({
@@ -41,9 +38,4 @@ export class Religion extends ContentBase {
     @FormField({ component: FieldComponentEnum.NESTED_FORM, label: 'Tenets' })
     tenets?: ReligionTenet[];
 
-    public static async search(filter: SearchQuery, context: Context): Promise<Religion[]> {
-        const contentService = new ContentService<Religion>();
-        const { results } = await contentService.searchContent('Religion', filter, context);
-        return results as Religion[];
-    }
 }

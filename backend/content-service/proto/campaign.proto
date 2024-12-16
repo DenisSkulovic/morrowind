@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package campaign;
+
+import "common.proto";
+
+service CampaignService {
+    rpc getCampaign (GetCampaignRequest) returns (GetCampaignResponse);
+    rpc createCampaign (CreateCampaignRequest) returns (CreateCampaignResponse);
+    rpc updateCampaign (UpdateCampaignRequest) returns (UpdateCampaignResponse);
+    rpc deleteCampaign (DeleteCampaignRequest) returns (DeleteCampaignResponse);
+    rpc search (SearchCampaignRequest) returns (SearchCampaignResponse);
+}
+
+message UpdateCampaignRequest {
+    common.CampaignDTO campaign = 1;
+}
+
+message UpdateCampaignResponse {
+    common.CampaignDTO campaign = 1;
+}
+
+message CreateCampaignRequest {
+    common.CampaignDTO campaign = 1;
+}
+
+message CreateCampaignResponse {
+    common.CampaignDTO campaign = 1;
+}
+
+message GetCampaignRequest {
+    string campaignId = 1;
+}
+
+message GetCampaignResponse {
+    common.CampaignDTO campaign = 1;
+}
+
+message DeleteCampaignRequest {
+    string campaignId = 1;
+}
+
+message DeleteCampaignResponse {
+    // No fields required for a 200 status response
+}
+
+message SearchCampaignRequest {
+    string entityName = 1;
+    common.SearchQueryDTO query = 2;
+    common.ContextDTO context = 3;
+}
+
+message SearchCampaignResponse {
+    repeated common.CampaignDTO campaigns = 1;
+    int32 totalResults = 2;
+    int32 totalPages = 3;
+    int32 currentPage = 4;
+}
+

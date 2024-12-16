@@ -1,6 +1,13 @@
-import { Context } from "vm";
 import { Serializable } from "../decorator/serializable.decorator";
 import { SearchQuery } from "./search/SearchQuery";
+import { ContentService } from "../services/ContentService";
+import { Context } from "./Context";
+import { LooseObject } from "../types";
+
+export interface ContentBaseStatic<T extends ContentBase> {
+    new(): T; // content base constructor
+    build(obj: LooseObject): T;
+}
 
 export abstract class ContentBase {
     @Serializable()
@@ -24,7 +31,27 @@ export abstract class ContentBase {
     @Serializable()
     world!: string;
 
-    public static async search(filter: SearchQuery, context: Context): Promise<ContentBase[]> {
-        throw new Error("Child Classes must implement this method")
+    public static async search<T extends ContentBase>(
+        this: ContentBaseStatic<T>,
+        filter: SearchQuery,
+        context: Context
+    ): Promise<T[]> {
+        const className = this.name; // get class name
+        const contentService = new ContentService<T>();
+        const { results } = await contentService.searchContent(className, filter, context);
+        return results.map((result) => this.build(result));
+    }
+
+    public static build<T extends ContentBase>(
+        this: ContentBaseStatic<T>,
+        obj: LooseObject
+    ): T {
+        const instance = new this(); // create instance of child class
+        Object.assign(instance, obj);
+        return instance;
+    }
+
+    toPlainObj(): LooseObject {
+        return JSON.parse(JSON.stringify(this));
     }
 }

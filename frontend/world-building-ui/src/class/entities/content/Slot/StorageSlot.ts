@@ -3,9 +3,6 @@ import { Serializable } from "../../../../decorator/serializable.decorator";
 import { Item } from "../Item/Item";
 import { FormField } from "../../../../decorator/form-field.decorator";
 import { FieldComponentEnum } from "../../../../enum/FieldComponentEnum";
-import { Context } from "../../../../class/Context";
-import { ContentService } from "../../../../services/ContentService";
-import { SearchQuery } from "../../../../class/search/SearchQuery";
 import { EntityDisplay } from "../../../../decorator/entity-display.decorator";
 import { DisplayField } from "../../../../decorator/display-field.decorator";
 import { FilterOption } from "../../../../decorator/filter-option.decorator";
@@ -47,11 +44,6 @@ export class StorageSlot extends TaggableContentBase {
     @Serializable({ strategy: 'full', getDTOInstance: () => new ItemDTO() })
     storedItems?: Item[];
 
-    public static async search(filter: SearchQuery, context: Context): Promise<StorageSlot[]> {
-        const contentService = new ContentService<StorageSlot>();
-        const { results } = await contentService.searchContent('StorageSlot', filter, context);
-        return results as StorageSlot[];
-    }
 }
 
 

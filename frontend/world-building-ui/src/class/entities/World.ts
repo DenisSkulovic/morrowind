@@ -4,6 +4,10 @@ import { FieldComponentEnum } from "../../enum/FieldComponentEnum";
 import { DisplayField } from "../../decorator/display-field.decorator";
 import { EntityDisplay } from "../../decorator/entity-display.decorator";
 import { FilterOption } from "../../decorator/filter-option.decorator";
+import { WorldService } from "../../services/WorldService";
+import { Context } from "../Context";
+import { SearchQuery } from "../search/SearchQuery";
+import { LooseObject } from "../../types";
 
 @EntityDisplay({
     title: 'Worlds',
@@ -32,8 +36,21 @@ export class World {
 
     @DisplayField({ order: 2 })
     @FilterOption()
-    @FormField({ component: FieldComponentEnum.MULTI_SELECT_FIELD, label: 'Campaigns', required: true })
     @Serializable()
     campaigns!: string[]
 
+    public static build(obj: { [key: string]: any }): World {
+        const world = new World();
+        Object.assign(world, obj);
+        return world;
+    }
+
+    public static async search(filter: SearchQuery, context: Context): Promise<World[]> {
+        const worldService = new WorldService();
+        return worldService.search(filter, context);
+    }
+
+    toPlainObj(): LooseObject {
+        return JSON.parse(JSON.stringify(this));
+    }
 }

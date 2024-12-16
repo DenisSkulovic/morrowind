@@ -2,8 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Account } from "../../class/entities/Account";
 import { RequestStatusEnum } from "../../enum/RequestStatusEnum";
 import { AccountService } from "../../services/AccountService";
-import { AccountDTO } from "../../proto/common_pb";
-import { Serializer } from "../../serialize/serializer";
+import { LooseObject } from "../../types";
 
 const mockAccount = new Account()
 mockAccount.id = "ACCOUNT_9c82f8af6f1342ca8549b8c3d6b104ca"
@@ -12,13 +11,15 @@ mockAccount.email = "test12@example.com"
 mockAccount.role = "admin"
 mockAccount.user = "USER_df3bd4a7c1334138a9edd3c953f93840"
 
+type AccountPlain = LooseObject
+
 interface AccountState {
-    data: AccountDTO | null;
+    data: AccountPlain | null;
     status: RequestStatusEnum;
     error: string | null;
 }
 const initialState: AccountState = {
-    data: Serializer.toDTO(mockAccount, new AccountDTO()),
+    data: mockAccount.toPlainObj(),
     status: RequestStatusEnum.IDLE,
     error: null
 };
@@ -60,7 +61,7 @@ export const accountSlice = createSlice({
             })
             .addCase(fetchAccount.fulfilled, (state, action) => {
                 state.status = RequestStatusEnum.SUCCEEDED;
-                state.data = Serializer.toDTO(action.payload, new AccountDTO());
+                state.data = action.payload.toPlainObj();
             })
             .addCase(fetchAccount.rejected, (state, action) => {
                 state.status = RequestStatusEnum.FAILED;
@@ -72,7 +73,7 @@ export const accountSlice = createSlice({
             })
             .addCase(updateAccount.fulfilled, (state, action) => {
                 state.status = RequestStatusEnum.SUCCEEDED;
-                state.data = Serializer.toDTO(action.payload, new AccountDTO());
+                state.data = action.payload.toPlainObj();
             })
             .addCase(updateAccount.rejected, (state, action) => {
                 state.status = RequestStatusEnum.FAILED;

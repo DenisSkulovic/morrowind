@@ -6,9 +6,6 @@ import { FieldComponentEnum } from "../../../enum/FieldComponentEnum";
 import { DisplayField } from '../../../decorator/display-field.decorator';
 import { EntityDisplay } from '../../../decorator/entity-display.decorator';
 import { FilterOption } from '../../../decorator/filter-option.decorator';
-import { Context } from '../../../class/Context';
-import { ContentService } from '../../../services/ContentService';
-import { SearchQuery } from '../../../class/search/SearchQuery';
 
 @EntityDisplay({
     title: 'Personality Profiles',
@@ -34,9 +31,4 @@ export class PersonalityProfile extends ContentBase {
     @FormField({ component: FieldComponentEnum.GENERATION_INSTRUCTION_FIELD, label: 'Traits' })
     traits!: GenerationInstruction[];
 
-    public static async search(filter: SearchQuery, context: Context): Promise<PersonalityProfile[]> {
-        const contentService = new ContentService<PersonalityProfile>();
-        const { results } = await contentService.searchContent('PersonalityProfile', filter, context);
-        return results as PersonalityProfile[];
-    }
 }

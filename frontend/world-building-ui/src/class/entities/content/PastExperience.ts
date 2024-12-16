@@ -8,9 +8,6 @@ import { FormSelectOption } from "../../../class/FormSelectOption";
 import { DisplayField } from '../../../decorator/display-field.decorator';
 import { EntityDisplay } from '../../../decorator/entity-display.decorator';
 import { FilterOption } from '../../../decorator/filter-option.decorator';
-import { SearchQuery } from '../../../class/search/SearchQuery';
-import { Context } from '../../../class/Context';
-import { ContentService } from '../../../services/ContentService';
 import { PastExperienceTypeEnumDTO } from '../../../proto/common_pb';
 
 @EntityDisplay({
@@ -41,9 +38,4 @@ export class PastExperience extends TaggableContentBase {
     })
     expType!: PastExperienceTypeEnum
 
-    public static async search(filter: SearchQuery, context: Context): Promise<PastExperience[]> {
-        const contentService = new ContentService<PastExperience>();
-        const { results } = await contentService.searchContent('PastExperience', filter, context);
-        return results as PastExperience[];
-    }
 }

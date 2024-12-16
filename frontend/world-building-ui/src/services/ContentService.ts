@@ -62,7 +62,7 @@ export class ContentService<T extends ContentBase> {
             this.client.create(request, {}, (err, response) => {
                 if (err) reject(err);
                 else if (!response) reject(new Error('No response from server'));
-                else resolve(Serializer.fromDTO(response.getContentbody(), constructor));
+                else resolve(Serializer.fromDTO(response.getContentbody(), new constructor()));
             });
         });
     }
@@ -82,7 +82,7 @@ export class ContentService<T extends ContentBase> {
             this.client.update(request, {}, (err, response) => {
                 if (err) reject(err);
                 else if (!response) reject(new Error('No response from server'));
-                else resolve(Serializer.fromDTO(response.getContentbody(), constructor));
+                else resolve(Serializer.fromDTO(response.getContentbody(), new constructor()));
             });
         });
     }
@@ -121,7 +121,7 @@ export class ContentService<T extends ContentBase> {
                 else if (!response) reject(new Error('No response from server'));
                 else resolve({
                     results: response.getResultsList().map(contentBody =>
-                        Serializer.fromDTO(contentBody, constructor)
+                        Serializer.fromDTO(contentBody, new constructor())
                     ),
                     totalResults: response.getTotalresults(),
                     totalPages: response.getTotalpages(),
@@ -154,7 +154,7 @@ export class ContentService<T extends ContentBase> {
                 if (err) reject(err);
                 else if (!response) reject(new Error('No response from server'));
                 else resolve(response.getResponsesList().map(response =>
-                    Serializer.fromDTO(response.getContentbody(), constructor)
+                    Serializer.fromDTO(response.getContentbody(), new constructor())
                 ));
             });
         });
@@ -182,7 +182,7 @@ export class ContentService<T extends ContentBase> {
                 if (err) reject(err);
                 else if (!response) reject(new Error('No response from server'));
                 else resolve(response.getResponsesList().map(response =>
-                    Serializer.fromDTO(response.getContentbody(), constructor)
+                    Serializer.fromDTO(response.getContentbody(), new constructor())
                 ));
             });
         });

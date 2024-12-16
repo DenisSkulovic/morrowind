@@ -5,9 +5,6 @@ import { FieldComponentEnum } from "../../../enum/FieldComponentEnum";
 import { EntityDisplay } from "../../../decorator/entity-display.decorator";
 import { DisplayField } from "../../../decorator/display-field.decorator";
 import { FilterOption } from "../../../decorator/filter-option.decorator";
-import { ContentService } from "../../../services/ContentService";
-import { Context } from "../../../class/Context";
-import { SearchQuery } from "../../../class/search/SearchQuery";
 
 @EntityDisplay({
     title: 'Birthsigns',
@@ -20,9 +17,4 @@ export class Birthsign extends TaggableContentBase {
     @Serializable()
     name!: string;
 
-    public static async search(filter: SearchQuery, context: Context): Promise<Birthsign[]> {
-        const contentService = new ContentService<Birthsign>();
-        const { results } = await contentService.searchContent('Birthsign', filter, context);
-        return results as Birthsign[];
-    }
 }

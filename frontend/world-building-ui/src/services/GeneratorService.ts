@@ -28,7 +28,7 @@ export class GeneratorService {
                 else if (!response) reject(new Error('No response from server'));
                 else {
                     const items = response.getArrList().map(itemDTO =>
-                        Serializer.fromDTO(itemDTO, Item)
+                        Serializer.fromDTO(itemDTO, new Item())
                     );
                     resolve(items);
                 }
@@ -48,7 +48,7 @@ export class GeneratorService {
                 else if (!response) reject(new Error('No response from server'));
                 else {
                     const characters = response.getArrList().map(characterDTO =>
-                        Serializer.fromDTO(characterDTO, Character)
+                        Serializer.fromDTO(characterDTO, new Character())
                     );
                     resolve(characters);
                 }
@@ -67,7 +67,7 @@ export class GeneratorService {
                 else if (!response) reject(new Error('No response from server'));
                 else {
                     const characters = response.getArrList().map(characterDTO =>
-                        Serializer.fromDTO(characterDTO, Character)
+                        Serializer.fromDTO(characterDTO, new Character())
                     );
                     resolve(characters);
                 }
@@ -87,7 +87,7 @@ export class GeneratorService {
                 else {
                     const groups = response.getArrList().map(groupDTO =>
                         groupDTO.getArrList().map((characterDTO: CharacterDTO) =>
-                            Serializer.fromDTO(characterDTO, Character)
+                            Serializer.fromDTO(characterDTO, new Character())
                         )
                     );
                     resolve(groups);
