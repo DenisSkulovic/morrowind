@@ -8,6 +8,30 @@ import { Item } from "../class/entities/content/Item/Item";
 import { Character } from "../class/entities/content/Character";
 import { CharacterDTO, CharacterGenInstructionDTO, CharacterGroupGenInstructionDTO, ContextDTO, DataSourceEnumDTO } from "../proto/common_pb";
 import { GenerateItemsRequest, GenerateCharactersRequestCustom, GenerateCharactersRequestDB, GenerateCharacterGroupsRequest, GenerateCharacterGroupsResponse, GenerateCharactersResponse, GenerateItemsResponse } from "../proto/generator_pb";
+import { EquipmentSlot } from "../class/entities/content/Slot/EquipmentSlot";
+import { StorageSlot } from "../class/entities/content/Slot/StorageSlot";
+import { EntityEnum } from "../enum/EntityEnum";
+
+export type GenerationResult = {
+    [EntityEnum.Item]?: {
+        array: Item[] | null;
+        map: { [id: string]: Item } | null;
+    }
+    [EntityEnum.EquipmentSlot]?: {
+        array: EquipmentSlot[] | null;
+        map: { [id: string]: EquipmentSlot } | null;
+    }
+    [EntityEnum.StorageSlot]?: {
+        array: StorageSlot[] | null;
+        map: { [id: string]: StorageSlot } | null;
+    }
+    characterGroups?: {
+        array: Character[] | null;
+        map: { [id: string]: Character } | null;
+    }[]
+}
+
+// TODO these 4 endpoints will be unified into one, so please ignore the repetition for now
 
 export class GeneratorService {
     private client: GeneratorServiceClient;
@@ -16,7 +40,49 @@ export class GeneratorService {
         this.client = new GeneratorServiceClient("http://localhost:8080");
     }
 
-    async generateItems(instructions: GenerationInstruction[], context: Context): Promise<Item[]> {
+    private createEntityMaps<T extends { id: string }>(entities: T[]) {
+        const map: { [id: string]: T } = {};
+        entities.forEach(entity => {
+            map[entity.id] = entity;
+        });
+        return {
+            array: entities,
+            map: map
+        };
+    }
+
+    private createGenerationResponse(params: {
+        characters?: Character[][],
+        items?: Item[],
+        equipmentSlots?: EquipmentSlot[],
+        storageSlots?: StorageSlot[],
+    }): GenerationResult {
+        const { characters, items = [], equipmentSlots = [], storageSlots = [] } = params;
+
+        const response: GenerationResult = {};
+
+        if (items.length) {
+            response[EntityEnum.Item] = this.createEntityMaps(items);
+        }
+
+        if (equipmentSlots.length) {
+            response[EntityEnum.EquipmentSlot] = this.createEntityMaps(equipmentSlots);
+        }
+
+        if (storageSlots.length) {
+            response[EntityEnum.StorageSlot] = this.createEntityMaps(storageSlots);
+        }
+
+        if (characters) {
+            response.characterGroups = (characters).map(group =>
+                this.createEntityMaps(group)
+            );
+        }
+
+        return response;
+    }
+
+    async generateItems(instructions: GenerationInstruction[], context: Context): Promise<GenerationResult> {
         const instructionsDTO = instructions.map(instruction => serializeInstruction(instruction));
         const request = new GenerateItemsRequest();
         request.setSource(DataSourceEnumDTO.DATA_SOURCE_WORLD);
@@ -30,13 +96,16 @@ export class GeneratorService {
                     const items = response.getArrList().map(itemDTO =>
                         Serializer.fromDTO(itemDTO, new Item())
                     );
-                    resolve(items);
+                    resolve(this.createGenerationResponse({
+                        items,
+                        storageSlots: [] // TODO backend needs to return these
+                    }));
                 }
             });
         });
     }
 
-    async generateCharactersCustom(instructions: CharacterGenInstruction[], context: Context): Promise<Character[]> {
+    async generateCharactersCustom(instructions: CharacterGenInstruction[], context: Context): Promise<GenerationResult> {
         const instructionsDTO = instructions.map(instruction => Serializer.toDTO(instruction, new CharacterGenInstructionDTO()));
         const request = new GenerateCharactersRequestCustom();
         request.setSource(DataSourceEnumDTO.DATA_SOURCE_WORLD);
@@ -50,13 +119,18 @@ export class GeneratorService {
                     const characters = response.getArrList().map(characterDTO =>
                         Serializer.fromDTO(characterDTO, new Character())
                     );
-                    resolve(characters);
+                    resolve(this.createGenerationResponse({
+                        characters,
+                        equipmentSlots: [], // TODO backend needs to return these
+                        storageSlots: [],
+                        items: []
+                    }));
                 }
             });
         });
     }
 
-    async generateCharactersDB(instructionIds: string[], context: Context): Promise<Character[]> {
+    async generateCharactersDB(instructionIds: string[], context: Context): Promise<GenerationResult> {
         const request = new GenerateCharactersRequestDB();
         request.setSource(DataSourceEnumDTO.DATA_SOURCE_WORLD);
         request.setChargeninstructionidsList(instructionIds);
@@ -69,13 +143,18 @@ export class GeneratorService {
                     const characters = response.getArrList().map(characterDTO =>
                         Serializer.fromDTO(characterDTO, new Character())
                     );
-                    resolve(characters);
+                    resolve(this.createGenerationResponse({
+                        characters,
+                        equipmentSlots: [], // TODO backend needs to return these
+                        storageSlots: [],
+                        items: []
+                    }));
                 }
             });
         });
     }
 
-    async generateCharacterGroups(instructions: CharacterGroupGenInstruction[], context: Context): Promise<Character[][]> {
+    async generateCharacterGroups(instructions: CharacterGroupGenInstruction[], context: Context): Promise<GenerationResult> {
         const request = new GenerateCharacterGroupsRequest();
         request.setSource(DataSourceEnumDTO.DATA_SOURCE_WORLD);
         request.setArrList(instructions.map(instruction => Serializer.toDTO(instruction, new CharacterGroupGenInstructionDTO())));
@@ -90,7 +169,12 @@ export class GeneratorService {
                             Serializer.fromDTO(characterDTO, new Character())
                         )
                     );
-                    resolve(groups);
+                    resolve(this.createGenerationResponse({
+                        characters: groups,
+                        equipmentSlots: [], // TODO backend needs to return these
+                        storageSlots: [],
+                        items: [],
+                    }));
                 }
             });
         });

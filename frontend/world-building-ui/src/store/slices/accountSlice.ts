@@ -14,14 +14,18 @@ mockAccount.user = "USER_df3bd4a7c1334138a9edd3c953f93840"
 type AccountPlain = LooseObject
 
 interface AccountState {
-    data: AccountPlain | null;
-    status: RequestStatusEnum;
-    error: string | null;
+    currentAccount: {
+        data: AccountPlain | null;
+        status: RequestStatusEnum;
+        error: string | null;
+    };
 }
 const initialState: AccountState = {
-    data: mockAccount.toPlainObj(),
-    status: RequestStatusEnum.IDLE,
-    error: null
+    currentAccount: {
+        data: null,
+        status: RequestStatusEnum.IDLE,
+        error: null
+    }
 };
 
 export const fetchAccount = createAsyncThunk(
@@ -57,38 +61,38 @@ export const accountSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(fetchAccount.pending, (state) => {
-                state.status = RequestStatusEnum.LOADING;
+                state.currentAccount.status = RequestStatusEnum.LOADING;
             })
             .addCase(fetchAccount.fulfilled, (state, action) => {
-                state.status = RequestStatusEnum.SUCCEEDED;
-                state.data = action.payload.toPlainObj();
+                state.currentAccount.status = RequestStatusEnum.SUCCEEDED;
+                state.currentAccount.data = action.payload.toPlainObj();
             })
             .addCase(fetchAccount.rejected, (state, action) => {
-                state.status = RequestStatusEnum.FAILED;
-                state.error = action.error.message || 'Failed to fetch account';
+                state.currentAccount.status = RequestStatusEnum.FAILED;
+                state.currentAccount.error = action.error.message || 'Failed to fetch account';
             })
 
             .addCase(updateAccount.pending, (state) => {
-                state.status = RequestStatusEnum.LOADING;
+                state.currentAccount.status = RequestStatusEnum.LOADING;
             })
             .addCase(updateAccount.fulfilled, (state, action) => {
-                state.status = RequestStatusEnum.SUCCEEDED;
-                state.data = action.payload.toPlainObj();
+                state.currentAccount.status = RequestStatusEnum.SUCCEEDED;
+                state.currentAccount.data = action.payload.toPlainObj();
             })
             .addCase(updateAccount.rejected, (state, action) => {
-                state.status = RequestStatusEnum.FAILED;
-                state.error = action.error.message || 'Failed to update account';
+                state.currentAccount.status = RequestStatusEnum.FAILED;
+                state.currentAccount.error = action.error.message || 'Failed to update account';
             })
 
             .addCase(deleteAccount.pending, (state) => {
-                state.status = RequestStatusEnum.LOADING;
+                state.currentAccount.status = RequestStatusEnum.LOADING;
             })
             .addCase(deleteAccount.fulfilled, (state) => {
-                state.status = RequestStatusEnum.SUCCEEDED;
+                state.currentAccount.status = RequestStatusEnum.SUCCEEDED;
             })
             .addCase(deleteAccount.rejected, (state, action) => {
-                state.status = RequestStatusEnum.FAILED;
-                state.error = action.error.message || 'Failed to delete account';
+                state.currentAccount.status = RequestStatusEnum.FAILED;
+                state.currentAccount.error = action.error.message || 'Failed to delete account';
             })
     }
 });

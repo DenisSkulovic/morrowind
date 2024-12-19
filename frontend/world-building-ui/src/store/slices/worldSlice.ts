@@ -3,21 +3,25 @@ import { World } from '../../class/entities/World';
 import { RequestStatusEnum } from '../../enum/RequestStatusEnum';
 import { WorldService } from '../../services/WorldService';
 import { SearchQuery } from '../../class/search/SearchQuery';
-import { QueryFilter } from '../../class/search/QueryFilter';
 import { Context } from '../../class/Context';
-import { User } from '../../class/entities/User';
 import { LooseObject } from '../../types';
 
 type WorldPlain = LooseObject
 
 interface WorldState {
-    data: WorldPlain[];
+    data: {
+        searchedWorlds: WorldPlain[]
+        currentWorld: WorldPlain | null
+    };
     status: RequestStatusEnum;
     error: string | null;
 };
 
 const initialState: WorldState = {
-    data: [],
+    data: {
+        searchedWorlds: [],
+        currentWorld: null,
+    },
     status: RequestStatusEnum.IDLE,
     error: null,
 };
@@ -64,13 +68,16 @@ const worldSlice = createSlice({
     name: 'worlds',
     initialState,
     reducers: {
-        clearWorlds: (state) => {
-            state.data = [];
+        clearSearchedWorlds: (state) => {
+            state.data.searchedWorlds = [];
             state.status = RequestStatusEnum.IDLE;
             state.error = null;
         },
-        setWorlds: (state, action: PayloadAction<World[]>) => {
-            state.data = action.payload.map((world: World) => world.toPlainObj());
+        setSearchedWorlds: (state, action: PayloadAction<World[]>) => {
+            state.data.searchedWorlds = action.payload.map((world: World) => world.toPlainObj());
+        },
+        setCurrentWorld: (state, action: PayloadAction<World>) => {
+            state.data.currentWorld = action.payload.toPlainObj();
         }
     },
     extraReducers: (builder: ActionReducerMapBuilder<WorldState>) => {
@@ -81,7 +88,7 @@ const worldSlice = createSlice({
             })
             .addCase(searchWorlds.fulfilled, (state: WorldState, action: PayloadAction<World[]>) => {
                 state.status = RequestStatusEnum.SUCCEEDED;
-                state.data = action.payload.map((world: World) => world.toPlainObj());
+                state.data.searchedWorlds = action.payload.map((world: World) => world.toPlainObj());
             })
             .addCase(searchWorlds.rejected, (state: WorldState, action) => {
                 state.status = RequestStatusEnum.FAILED;
@@ -94,7 +101,7 @@ const worldSlice = createSlice({
             })
             .addCase(createWorld.fulfilled, (state: WorldState, action: PayloadAction<World>) => {
                 state.status = RequestStatusEnum.SUCCEEDED;
-                state.data.push(action.payload.toPlainObj());
+                state.data.searchedWorlds.push(action.payload.toPlainObj());
             })
             .addCase(createWorld.rejected, (state: WorldState, action) => {
                 state.status = RequestStatusEnum.FAILED;
@@ -107,7 +114,7 @@ const worldSlice = createSlice({
             })
             .addCase(deleteWorld.fulfilled, (state: WorldState, action: PayloadAction<string>) => {
                 state.status = RequestStatusEnum.SUCCEEDED;
-                state.data = state.data.filter((w) => w.id !== action.payload);
+                state.data.searchedWorlds = state.data.searchedWorlds.filter((w) => w.id !== action.payload);
             })
             .addCase(deleteWorld.rejected, (state: WorldState, action) => {
                 state.status = RequestStatusEnum.FAILED;
@@ -120,7 +127,7 @@ const worldSlice = createSlice({
             })
             .addCase(updateWorld.fulfilled, (state: WorldState, action: PayloadAction<World>) => {
                 state.status = RequestStatusEnum.SUCCEEDED;
-                state.data = state.data.map((w) => w.id === action.payload.id ? action.payload.toPlainObj() : w);
+                state.data.searchedWorlds = state.data.searchedWorlds.map((w) => w.id === action.payload.id ? action.payload.toPlainObj() : w);
             })
             .addCase(updateWorld.rejected, (state: WorldState, action) => {
                 state.status = RequestStatusEnum.FAILED;

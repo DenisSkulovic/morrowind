@@ -1,51 +1,43 @@
-import { useEffect, useState } from 'react';
-import { Box, Grid, Typography, Paper, Grid2 } from '@mui/material';
+import { useEffect } from 'react';
+import { Box, Typography, Paper, Grid2 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { DashboardOverview } from '../../../../../components/dashboard/DashboardOverview';
 import { GlobalSearch } from '../../../../../components/dashboard/GlobalSearch';
 import { QuickActions } from '../../../../../components/dashboard/QuickActions';
 import { RecentActivity } from '../../../../../components/dashboard/RecentActivity';
-import { ContentService } from '../../../../../services/ContentService';
-import { Context } from '../../../../../class/Context';
 import { RootState } from '../../../../../store/store';
 import { useRouter } from 'next/router';
-import { ContentStat } from '../../../../../class/ContentStat';
 import { Account } from '../../../../../class/entities/Account';
-import { User } from '../../../../../class/entities/User';
 import { World } from '../../../../../class/entities/World';
-import { GetContentStatsResponse } from '../../../../../proto/content_pb';
 import { useSelectorAndBuilder } from '../../../../../hooks/useSelectorAndBuilder';
 import { LooseObject } from '../../../../../types';
+import { loadDashboardData } from '../../../../../store/slices/dashboardSlice';
+import { ContentStat } from '../../../../../class/ContentStat';
+import { RequestStatusEnum } from '../../../../../enum/RequestStatusEnum';
 
 
 export default function Dashboard() {
     const router = useRouter();
-    const { id } = router.query;
+    const { world_id } = router.query;
     const worlds: World[] | null = useSelectorAndBuilder<World[] | null>((state: RootState) => state.worlds.data, worlds => worlds.map((w: LooseObject) => World.build(w)));
     if (!worlds) throw new Error('Worlds not found');
-    const world: World | undefined = worlds.find((w) => w.id === id);
+    const world: World | undefined = worlds.find((w) => w.id === world_id);
     if (!world) throw new Error('World not found');
 
-    const account: Account | null = useSelectorAndBuilder<Account | null>((state: RootState) => state.account.data, account => account ? Account.build(account) : null);
+    const account: Account | null = useSelectorAndBuilder<Account | null>((state: RootState) => state.account.currentAccount.data, account => account ? Account.build(account) : null);
     if (!account) throw new Error('Account not found');
 
+    const { status, error } = useSelector((state: RootState) => state.dashboard);
+
     const dispatch = useDispatch();
-    const [contentStats, setContentStats] = useState<ContentStat[]>([]);
+
+    const contentStats: ContentStat[] | null = useSelector((state: RootState) => state.dashboard.stats);
 
     useEffect(() => {
-        const context: Context = new Context(
-            { id: account.user } as User,
-            world,
-        );
-        const loadDashboardData = async () => {
-            const contentService = new ContentService();
-            const entityNames: string[] | null = null // TODO limit this to specific entities initially, and full as needed
-            const stats: GetContentStatsResponse = await contentService.getContentStats(entityNames, context);
-            setContentStats(stats.stats);
-        };
-
-        loadDashboardData();
-    }, []);
+        if (status === RequestStatusEnum.IDLE) {
+            dispatch(loadDashboardData({ world_id }));
+        }
+    }, [dispatch, status]);
 
     return (
         <Box sx={{ flexGrow: 1, p: 3 }}>

@@ -1,12 +1,23 @@
+import { EntityMetadataKeyEnum } from "../enum/EntityMetadataKeyEnum";
+
 export interface FilterOptionOptions {
     displayName?: string;
     getValue?: (entity: any) => any;
 }
 
-export function FilterOption(options: FilterOptionOptions = {}) {
+export interface FilterOptionConfig extends FilterOptionOptions {
+    field: string;
+}
+
+export function FilterOption(options: FilterOptionOptions) {
     return function (target: any, propertyKey: string) {
-        const filterOptions = Reflect.getMetadata('filterOptions', target.constructor) || [];
-        filterOptions.push({ ...options, field: propertyKey });
-        Reflect.defineMetadata('filterOptions', filterOptions, target.constructor);
+        const fields = Reflect.getMetadata(EntityMetadataKeyEnum.FILTER_OPTION, target.constructor) || [];
+        const field: FilterOptionConfig = { ...options, field: propertyKey };
+        fields.push(field);
+        Reflect.defineMetadata(EntityMetadataKeyEnum.FILTER_OPTION, fields, target.constructor);
     };
+}
+
+export const getFilterOptionConfig = (target: any): FilterOptionConfig[] => {
+    return Reflect.getMetadata(EntityMetadataKeyEnum.FILTER_OPTION, target.constructor) || [] as FilterOptionConfig[];
 }

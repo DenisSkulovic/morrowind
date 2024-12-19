@@ -4,7 +4,7 @@ import contentReducer from './slices/contentSlice';
 import generatorReducer from './slices/generatorSlice';
 import uiReducer from './slices/uiSlice';
 import worldReducer from './slices/worldSlice';
-
+import dashboardReducer from './slices/dashboardSlice';
 const store = configureStore({
     reducer: {
         account: accountReducer,
@@ -12,6 +12,7 @@ const store = configureStore({
         generator: generatorReducer,
         ui: uiReducer,
         worlds: worldReducer,
+        dashboard: dashboardReducer,
     },
 });
 

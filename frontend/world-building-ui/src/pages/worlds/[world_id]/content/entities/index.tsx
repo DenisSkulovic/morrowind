@@ -8,18 +8,31 @@ import { useDispatch } from 'react-redux';
 import { CONTENT_ENTITY_MAP } from '../../../../../CONTENT_ENTITY_MAP';
 import { ClassConstructor } from '../../../../../types';
 import { ContentBase } from '../../../../../class/ContentBase';
+import { EntityEnum } from '../../../../../enum/EntityEnum';
+import { useRouter } from 'next/router';
+import { setEntityNameInPath } from '../../../../../store/slices/contentSlice';
+import { sanitizeEntityName } from '../../../../../utils/sanitizeEntityName';
+import { DisplayFieldConfig, getDisplayFieldConfig } from '../../../../../decorator/display-field.decorator';
+import { EntityDisplayConfig, getEntityDisplayConfig } from '../../../../../decorator/entity-display.decorator';
+import { FilterOptionConfig, getFilterOptionConfig } from '../../../../../decorator/filter-option.decorator';
 
 const EntityListPage = () => {
+    const router = useRouter();
+    const { entity } = router.query;
+    const entityName: EntityEnum = sanitizeEntityName(entity);
+
     const dispatch = useDispatch();
-    const [selectedTargetEntity, setSelectedTargetEntity] = useState("");
+
+    dispatch(setEntityNameInPath(entityName));
+
     const [searchQuery, setSearchQuery] = useState('');
     const [filters, setFilters] = useState({});
     const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
-    const entityClass: ClassConstructor<ContentBase> = CONTENT_ENTITY_MAP[selectedTargetEntity];
-    const displayConfig = Reflect.getMetadata('entityDisplay', entityClass);
-    const displayFields = Reflect.getMetadata('displayFields', entityClass) || [];
-    const filterOptions = Reflect.getMetadata('filterOptions', entityClass) || [];
+    const entityClass: ClassConstructor<ContentBase> = CONTENT_ENTITY_MAP[entityName].entity;
+    const displayConfig: EntityDisplayConfig = getEntityDisplayConfig(entityClass);
+    const displayFields: DisplayFieldConfig[] = getDisplayFieldConfig(entityClass);
+    const filterOptions: FilterOptionConfig[] = getFilterOptionConfig(entityClass);
 
     const handleSearch = (query: string) => {
         setSearchQuery(query);
@@ -47,7 +60,7 @@ const EntityListPage = () => {
                             placeholder={`Search ${displayConfig.title.toLowerCase()}...`}
                         />
                         <EntityListActions
-                            entityName={selectedTargetEntity}
+                            entityName={entityName}
                             selectedIds={selectedItems}
                             onCreateNew={() => { }}
                             onDelete={() => { }}

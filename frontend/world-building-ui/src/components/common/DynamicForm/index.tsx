@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { Box, Button } from '@mui/material';
-import { FieldComponentEnum } from '../../../enum/FieldComponentEnum';
 import FIELD_COMPONENTS from '../fields/FIELD_COMPONENTS';
 import { FormFieldDefinition } from '../../../decorator/form-field.decorator';
-import { LooseObject } from '../../../types';
+import { fieldsThatNeedFetch, getDefaultValue } from '../../../config/dynamicFormConfig';
 
 interface DynamicFormProps {
     fields: FormFieldDefinition[];
@@ -23,29 +22,6 @@ export interface DynamicFormFieldProps {
     error?: string;
     readOnly?: boolean;
 }
-
-const fieldsThatNeedFetch = [
-    FieldComponentEnum.OBJECT_FIELD,
-    FieldComponentEnum.SELECT_FIELD,
-    FieldComponentEnum.MULTI_SELECT_FIELD
-];
-
-type DefaultValue = string | number | boolean | LooseObject | LooseObject[];
-const getDefaultValue = (component: FieldComponentEnum): DefaultValue => {
-    switch (component) {
-        case FieldComponentEnum.NUMBER_FIELD:
-            return 0;
-        case FieldComponentEnum.CHECKBOX_FIELD:
-            return false;
-        case FieldComponentEnum.MULTI_SELECT_FIELD:
-        case FieldComponentEnum.ITEM_LIST_FIELD:
-            return [];
-        case FieldComponentEnum.NESTED_FORM:
-            return {};
-        default:
-            return '';
-    }
-};
 
 const DynamicForm: React.FC<DynamicFormProps> = ({ fields, initialValues = {}, onSubmit, readOnly = false }) => {
     const [formData, setFormData] = useState<{ [key: string]: any }>(initialValues);

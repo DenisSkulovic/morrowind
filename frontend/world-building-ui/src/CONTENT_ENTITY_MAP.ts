@@ -1,4 +1,15 @@
-import { ContentBase } from "./class/ContentBase";
+import { ClassConstructor } from "./types";
+import {
+    AddictionDTO, BackgroundDTO, BirthsignDTO,
+    CharacterDTO, CharacterGenInstructionDTO,
+    CharacterGroupGenInstructionDTO, CharacterMemoryDTO,
+    CharacterProfessionDTO, DiseaseDTO, EffectDTO,
+    EquipmentSlotDTO, FactDTO, FactionDTO, ItemDTO,
+    ItemSetDTO, MemoryDTO, MemoryPoolDTO, MemoryPoolEntryDTO,
+    MoodDTO, NeedDTO, PastExperienceDTO, PersonalityProfileDTO,
+    RaceDTO, ReligionDTO, ResistanceDTO, SkillDTO,
+    SkillSetDTO, StatusDTO, StorageSlotDTO, TagDTO, TraitDTO
+} from "./proto/common_pb";
 import { Addiction } from "./class/entities/content/Addiction";
 import { Background } from "./class/entities/content/Background";
 import { Birthsign } from "./class/entities/content/Birthsign";
@@ -54,63 +65,261 @@ import { StorageSlot } from "./class/entities/content/Slot/StorageSlot";
 import { Status } from "./class/entities/content/Status";
 import { Tag } from "./class/entities/content/Tag";
 import { Trait } from "./class/entities/content/Trait";
-import { ClassConstructor } from "./types";
+import { EntityEnum } from "./enum/EntityEnum";
 
-
-export const CONTENT_ENTITY_MAP: { [name: string]: typeof ContentBase } = {
-    ItemAlcohol,
-    ItemDrinkable,
-    ItemPotion,
-    ItemWater,
-    ItemEdible,
-    ItemFood,
-    ItemArrow,
-    ItemConsumable,
-    ItemMisc,
-    ItemMiscCurrency,
-    ItemWeapon,
-    ItemWeaponRanged,
-    ItemWeaponLongSword,
-    ItemWeaponShortSword,
-    ItemWearable,
-    ItemWearableBackpack,
-    ItemWearableClothesPants,
-    ItemWearableClothesTorso,
-    ItemWearableCuirass,
-    ItemWearableFeet,
-    ItemWearableGreaves,
-    ItemWearableHead,
-    ItemWearableShield,
-    ItemRepairable,
-    Item,
-    PastExperience,
-    CharacterMemory,
-    Memory,
-    MemoryPool,
-    MemoryPoolEntry,
-    Skill,
-    SkillSet,
-    EquipmentSlot,
-    StorageSlot,
-    Trait,
-    Addiction,
-    Background,
-    Birthsign,
-    Character,
-    CharacterGenInstruction,
-    CharacterGroupGenInstruction,
-    CharacterProfession,
-    Disease,
-    Effect,
-    Fact,
-    Faction,
-    ItemSet,
-    Mood,
-    Need,
-    PersonalityProfile,
-    Race,
-    Religion,
-    Resistance,
-    Status,
-    Tag,
+export type EntityMap = {
+    [key in keyof typeof EntityEnum]: {
+        entity: ClassConstructor<any>;
+        dto: ClassConstructor<any>;
+        rootEntity?: ClassConstructor<any>;
+    }
 }
+
+export const CONTENT_ENTITY_MAP: EntityMap = {
+    [EntityEnum.ItemAlcohol]: {
+        entity: ItemAlcohol,
+        dto: ItemDTO,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemDrinkable]: {
+        entity: ItemDrinkable,
+        dto: ItemDTO,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemPotion]: {
+        entity: ItemPotion,
+        dto: ItemDTO,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemWater]: {
+        entity: ItemWater,
+        dto: ItemDTO,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemEdible]: {
+        entity: ItemEdible,
+        dto: ItemDTO,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemFood]: {
+        entity: ItemFood,
+        dto: ItemDTO,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemArrow]: {
+        entity: ItemArrow,
+        dto: ItemDTO,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemConsumable]: {
+        entity: ItemConsumable,
+        dto: ItemDTO,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemMisc]: {
+        entity: ItemMisc,
+        dto: ItemDTO,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemMiscCurrency]: {
+        entity: ItemMiscCurrency,
+        dto: ItemDTO,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemWeapon]: {
+        entity: ItemWeapon,
+        dto: ItemDTO,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemWeaponRanged]: {
+        entity: ItemWeaponRanged,
+        dto: ItemDTO,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemWeaponLongSword]: {
+        entity: ItemWeaponLongSword,
+        dto: ItemDTO,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemWeaponShortSword]: {
+        entity: ItemWeaponShortSword,
+        dto: ItemDTO,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemWearable]: {
+        entity: ItemWearable,
+        dto: ItemDTO,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemWearableBackpack]: {
+        entity: ItemWearableBackpack,
+        dto: ItemDTO,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemWearableClothesPants]: {
+        entity: ItemWearableClothesPants,
+        dto: ItemDTO,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemWearableClothesTorso]: {
+        entity: ItemWearableClothesTorso,
+        dto: ItemDTO,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemWearableCuirass]: {
+        entity: ItemWearableCuirass,
+        dto: ItemDTO,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemWearableFeet]: {
+        entity: ItemWearableFeet,
+        dto: ItemDTO,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemWearableGreaves]: {
+        entity: ItemWearableGreaves,
+        dto: ItemDTO,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemWearableHead]: {
+        entity: ItemWearableHead,
+        dto: ItemDTO,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemWearableShield]: {
+        entity: ItemWearableShield,
+        dto: ItemDTO,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemRepairable]: {
+        entity: ItemRepairable,
+        dto: ItemDTO,
+        rootEntity: Item
+    },
+    [EntityEnum.Item]: {
+        entity: Item,
+        dto: ItemDTO,
+    },
+    [EntityEnum.PastExperience]: {
+        entity: PastExperience,
+        dto: PastExperienceDTO,
+    },
+    [EntityEnum.CharacterMemory]: {
+        entity: CharacterMemory,
+        dto: CharacterMemoryDTO,
+    },
+    [EntityEnum.Memory]: {
+        entity: Memory,
+        dto: MemoryDTO,
+    },
+    [EntityEnum.MemoryPool]: {
+        entity: MemoryPool,
+        dto: MemoryPoolDTO,
+    },
+    [EntityEnum.MemoryPoolEntry]: {
+        entity: MemoryPoolEntry,
+        dto: MemoryPoolEntryDTO,
+    },
+    [EntityEnum.Skill]: {
+        entity: Skill,
+        dto: SkillDTO,
+    },
+    [EntityEnum.SkillSet]: {
+        entity: SkillSet,
+        dto: SkillSetDTO,
+    },
+    [EntityEnum.EquipmentSlot]: {
+        entity: EquipmentSlot,
+        dto: EquipmentSlotDTO,
+    },
+    [EntityEnum.StorageSlot]: {
+        entity: StorageSlot,
+        dto: StorageSlotDTO,
+    },
+    [EntityEnum.Trait]: {
+        entity: Trait,
+        dto: TraitDTO,
+    },
+    [EntityEnum.Addiction]: {
+        entity: Addiction,
+        dto: AddictionDTO,
+    },
+    [EntityEnum.Background]: {
+        entity: Background,
+        dto: BackgroundDTO,
+    },
+    [EntityEnum.Birthsign]: {
+        entity: Birthsign,
+        dto: BirthsignDTO,
+        rootEntity: Birthsign
+    },
+    [EntityEnum.Character]: {
+        entity: Character,
+        dto: CharacterDTO,
+    },
+    [EntityEnum.CharacterGenInstruction]: {
+        entity: CharacterGenInstruction,
+        dto: CharacterGenInstructionDTO,
+    },
+    [EntityEnum.CharacterGroupGenInstruction]: {
+        entity: CharacterGroupGenInstruction,
+        dto: CharacterGroupGenInstructionDTO,
+    },
+    [EntityEnum.CharacterProfession]: {
+        entity: CharacterProfession,
+        dto: CharacterProfessionDTO,
+    },
+    [EntityEnum.Disease]: {
+        entity: Disease,
+        dto: DiseaseDTO,
+    },
+    [EntityEnum.Effect]: {
+        entity: Effect,
+        dto: EffectDTO,
+    },
+    [EntityEnum.Fact]: {
+        entity: Fact,
+        dto: FactDTO,
+    },
+    [EntityEnum.Faction]: {
+        entity: Faction,
+        dto: FactionDTO,
+    },
+    [EntityEnum.ItemSet]: {
+        entity: ItemSet,
+        dto: ItemSetDTO,
+    },
+    [EntityEnum.Mood]: {
+        entity: Mood,
+        dto: MoodDTO,
+    },
+    [EntityEnum.Need]: {
+        entity: Need,
+        dto: NeedDTO,
+    },
+    [EntityEnum.PersonalityProfile]: {
+        entity: PersonalityProfile,
+        dto: PersonalityProfileDTO,
+    },
+    [EntityEnum.Race]: {
+        entity: Race,
+        dto: RaceDTO,
+    },
+    [EntityEnum.Religion]: {
+        entity: Religion,
+        dto: ReligionDTO,
+        rootEntity: Religion
+    },
+    [EntityEnum.Resistance]: {
+        entity: Resistance,
+        dto: ResistanceDTO,
+    },
+    [EntityEnum.Status]: {
+        entity: Status,
+        dto: StatusDTO,
+    },
+    [EntityEnum.Tag]: {
+        entity: Tag,
+        dto: TagDTO,
+    }
+};
