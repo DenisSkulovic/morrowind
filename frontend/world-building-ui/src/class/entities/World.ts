@@ -8,6 +8,7 @@ import { WorldService } from "../../services/WorldService";
 import { Context } from "../Context";
 import { SearchQuery } from "../search/SearchQuery";
 import { LooseObject } from "../../types";
+import { CampaignsDTO } from "../../proto/common_pb";
 
 @EntityDisplay({
     title: 'Worlds',
@@ -21,22 +22,46 @@ export class World {
     user!: string;
 
     @DisplayField({ order: 1 })
-    @FilterOption()
-    @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter world name', required: true })
+    @FilterOption({ displayName: 'Name' })
+    @FormField({
+        component: FieldComponentEnum.TEXT_FIELD,
+        label: 'Name',
+        placeholder: 'Enter world name',
+        required: true,
+        valueRestrictions: {
+            name: {
+                type: 'string'
+            }
+        }
+    })
     @Serializable()
     name!: string; // Name of the world, e.g., "Morrowind", "Middle-earth".
 
-    @FormField({ component: FieldComponentEnum.TEXTAREA_FIELD, label: 'Description', placeholder: 'Enter world description' })
+    @FormField({
+        component: FieldComponentEnum.TEXTAREA_FIELD,
+        label: 'Description',
+        placeholder: 'Enter world description',
+        valueRestrictions: {
+            description: {
+                type: 'string'
+            }
+        }
+    })
     @Serializable()
     description?: string; // Optional description or lore of the world.
 
-    @FormField({ component: FieldComponentEnum.OBJECT_FIELD, label: 'Settings', placeholder: 'Enter world settings' })
+    @FormField({
+        component: FieldComponentEnum.OBJECT_FIELD,
+        label: 'Settings',
+        placeholder: 'Enter world settings',
+        allowNewKeys: false,
+    })
     @Serializable()
     settings?: any; // Custom world settings (e.g., starting conditions, mechanics).
 
     @DisplayField({ order: 2 })
-    @FilterOption()
-    @Serializable()
+    @FilterOption({ displayName: 'Campaigns' })
+    @Serializable({ getArrDTOInstance: () => new CampaignsDTO() })
     campaigns!: string[]
 
     public static build(obj: { [key: string]: any }): World {

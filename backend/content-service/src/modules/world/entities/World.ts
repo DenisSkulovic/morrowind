@@ -34,6 +34,7 @@ import { Trait } from "../../content/entities/Trait";
 import { Status } from "../../content/entities/Status";
 import { Serializable } from "../../../decorator/serializable.decorator";
 import { Serializer } from "../../../serializer";
+import { ActivityRecord } from "../../activity/entities/ActivityRecord";
 
 
 
@@ -159,6 +160,9 @@ export class World extends BaseEntity {
 
     @OneToMany(() => Background, background => background.world, { onDelete: "CASCADE", })
     backgrounds!: Background[]
+
+    @OneToMany(() => ActivityRecord, activityRecord => activityRecord.world, { onDelete: "CASCADE", })
+    activityRecords!: ActivityRecord[]
 
     public toDTO(): WorldDTO {
         return Serializer.toDTO(this);

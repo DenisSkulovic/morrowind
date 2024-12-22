@@ -340,5 +340,48 @@ export class WorldServiceClient {
     this.methodDescriptorloadWorldPreset);
   }
 
+  methodDescriptorgetPresets = new grpcWeb.MethodDescriptor(
+    '/world.WorldService/getPresets',
+    grpcWeb.MethodType.UNARY,
+    world_pb.GetPresetsRequest,
+    world_pb.GetPresetsResponse,
+    (request: world_pb.GetPresetsRequest) => {
+      return request.serializeBinary();
+    },
+    world_pb.GetPresetsResponse.deserializeBinary
+  );
+
+  getPresets(
+    request: world_pb.GetPresetsRequest,
+    metadata?: grpcWeb.Metadata | null): Promise<world_pb.GetPresetsResponse>;
+
+  getPresets(
+    request: world_pb.GetPresetsRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: world_pb.GetPresetsResponse) => void): grpcWeb.ClientReadableStream<world_pb.GetPresetsResponse>;
+
+  getPresets(
+    request: world_pb.GetPresetsRequest,
+    metadata?: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: world_pb.GetPresetsResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/world.WorldService/getPresets',
+        request,
+        metadata || {},
+        this.methodDescriptorgetPresets,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/world.WorldService/getPresets',
+    request,
+    metadata || {},
+    this.methodDescriptorgetPresets);
+  }
+
 }
 

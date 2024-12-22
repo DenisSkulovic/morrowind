@@ -3,6 +3,7 @@ import { Account } from "../../class/entities/Account";
 import { RequestStatusEnum } from "../../enum/RequestStatusEnum";
 import { AccountService } from "../../services/AccountService";
 import { LooseObject } from "../../types";
+import { handlePending, handleRejected } from "../common";
 
 const mockAccount = new Account()
 mockAccount.id = "ACCOUNT_9c82f8af6f1342ca8549b8c3d6b104ca"
@@ -11,7 +12,7 @@ mockAccount.email = "test12@example.com"
 mockAccount.role = "admin"
 mockAccount.user = "USER_df3bd4a7c1334138a9edd3c953f93840"
 
-type AccountPlain = LooseObject
+export type AccountPlain = LooseObject
 
 interface AccountState {
     currentAccount: {
@@ -22,7 +23,7 @@ interface AccountState {
 }
 const initialState: AccountState = {
     currentAccount: {
-        data: null,
+        data: mockAccount.toPlainObj(),
         status: RequestStatusEnum.IDLE,
         error: null
     }
@@ -39,7 +40,8 @@ export const fetchAccount = createAsyncThunk(
 
 export const updateAccount = createAsyncThunk(
     'account/updateAccount',
-    async (account: Account): Promise<Account> => {
+    async (accountPlain: AccountPlain): Promise<Account> => {
+        const account = Account.build(accountPlain);
         const accountService = new AccountService();
         const response: Account = await accountService.updateAccount(account);
         return response;
@@ -59,41 +61,25 @@ export const accountSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder
-            .addCase(fetchAccount.pending, (state) => {
-                state.currentAccount.status = RequestStatusEnum.LOADING;
-            })
-            .addCase(fetchAccount.fulfilled, (state, action) => {
-                state.currentAccount.status = RequestStatusEnum.SUCCEEDED;
-                state.currentAccount.data = action.payload.toPlainObj();
-            })
-            .addCase(fetchAccount.rejected, (state, action) => {
-                state.currentAccount.status = RequestStatusEnum.FAILED;
-                state.currentAccount.error = action.error.message || 'Failed to fetch account';
-            })
+        builder.addCase(fetchAccount.pending, (state) => handlePending(state.currentAccount))
+        builder.addCase(fetchAccount.fulfilled, (state, action) => {
+            state.currentAccount.status = RequestStatusEnum.SUCCEEDED;
+            state.currentAccount.data = action.payload.toPlainObj();
+        })
+        builder.addCase(fetchAccount.rejected, (state, action) => handleRejected(state.currentAccount, action))
 
-            .addCase(updateAccount.pending, (state) => {
-                state.currentAccount.status = RequestStatusEnum.LOADING;
-            })
-            .addCase(updateAccount.fulfilled, (state, action) => {
-                state.currentAccount.status = RequestStatusEnum.SUCCEEDED;
-                state.currentAccount.data = action.payload.toPlainObj();
-            })
-            .addCase(updateAccount.rejected, (state, action) => {
-                state.currentAccount.status = RequestStatusEnum.FAILED;
-                state.currentAccount.error = action.error.message || 'Failed to update account';
-            })
+        builder.addCase(updateAccount.pending, (state) => handlePending(state.currentAccount))
+        builder.addCase(updateAccount.fulfilled, (state, action) => {
+            state.currentAccount.status = RequestStatusEnum.SUCCEEDED;
+            state.currentAccount.data = action.payload.toPlainObj();
+        })
+        builder.addCase(updateAccount.rejected, (state, action) => handleRejected(state.currentAccount, action))
 
-            .addCase(deleteAccount.pending, (state) => {
-                state.currentAccount.status = RequestStatusEnum.LOADING;
-            })
-            .addCase(deleteAccount.fulfilled, (state) => {
-                state.currentAccount.status = RequestStatusEnum.SUCCEEDED;
-            })
-            .addCase(deleteAccount.rejected, (state, action) => {
-                state.currentAccount.status = RequestStatusEnum.FAILED;
-                state.currentAccount.error = action.error.message || 'Failed to delete account';
-            })
+        builder.addCase(deleteAccount.pending, (state) => handlePending(state.currentAccount))
+        builder.addCase(deleteAccount.fulfilled, (state) => {
+            state.currentAccount.status = RequestStatusEnum.SUCCEEDED;
+        })
+        builder.addCase(deleteAccount.rejected, (state, action) => handleRejected(state.currentAccount, action))
     }
 });
 

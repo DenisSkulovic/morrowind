@@ -31,8 +31,7 @@ export class MemoryPool extends TaggableContentBase {
     memoryPoolEntries!: MemoryPoolEntry[];
 
     @ManyToMany(() => CharacterProfession)
-    @JoinTable()
-    characterProfessions!: CharacterProfession[]
+    characterProfessions?: CharacterProfession[]
 
     @ManyToMany(() => Tag, (tag) => tag.memoryPools)
     @Serializable({ strategy: 'id' })

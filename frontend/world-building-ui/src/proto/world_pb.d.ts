@@ -323,3 +323,37 @@ export namespace SearchWorldResponse {
   }
 }
 
+export class GetPresetsRequest extends jspb.Message {
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetPresetsRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetPresetsRequest): GetPresetsRequest.AsObject;
+  static serializeBinaryToWriter(message: GetPresetsRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetPresetsRequest;
+  static deserializeBinaryFromReader(message: GetPresetsRequest, reader: jspb.BinaryReader): GetPresetsRequest;
+}
+
+export namespace GetPresetsRequest {
+  export type AsObject = {
+  }
+}
+
+export class GetPresetsResponse extends jspb.Message {
+  getPresetsList(): Array<common_pb.PresetEnumDTO>;
+  setPresetsList(value: Array<common_pb.PresetEnumDTO>): GetPresetsResponse;
+  clearPresetsList(): GetPresetsResponse;
+  addPresets(value: common_pb.PresetEnumDTO, index?: number): GetPresetsResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetPresetsResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetPresetsResponse): GetPresetsResponse.AsObject;
+  static serializeBinaryToWriter(message: GetPresetsResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetPresetsResponse;
+  static deserializeBinaryFromReader(message: GetPresetsResponse, reader: jspb.BinaryReader): GetPresetsResponse;
+}
+
+export namespace GetPresetsResponse {
+  export type AsObject = {
+    presetsList: Array<common_pb.PresetEnumDTO>,
+  }
+}
+

@@ -12,6 +12,7 @@ service WorldService {
     rpc search (SearchWorldRequest) returns (SearchWorldResponse);
     rpc dropWorldContent (DropWorldContentRequest) returns (DropWorldContentResponse);
     rpc loadWorldPreset (LoadWorldPresetRequest) returns (LoadWorldPresetResponse);
+    rpc getPresets (GetPresetsRequest) returns (GetPresetsResponse);
 }
 
 message UpdateWorldRequest {
@@ -83,4 +84,12 @@ message SearchWorldResponse {
     int32 totalResults = 2;
     int32 totalPages = 3;
     int32 currentPage = 4;
+}
+
+message GetPresetsRequest {
+    // No fields required for a 200 status response
+}
+
+message GetPresetsResponse {
+    repeated common.PresetEnumDTO presets = 1;
 }

@@ -5,12 +5,7 @@ import { Context } from '../../class/Context';
 import { GenerationInstruction } from '../../class/GenerationInstruction';
 import { CharacterGenInstruction } from '../../class/entities/content/CharacterGenInstruction';
 import { CharacterGroupGenInstruction } from '../../class/entities/content/CharacterGroupGenInstruction';
-import { Character } from '../../class/entities/content/Character';
-import { Item } from '../../class/entities/content/Item/Item';
-import { CONTENT_ENTITY_MAP } from '../../CONTENT_ENTITY_MAP';
-import { EntityEnum } from '../../enum/EntityEnum';
-import { EquipmentSlot } from '../../class/entities/content/Slot/EquipmentSlot';
-import { StorageSlot } from '../../class/entities/content/Slot/StorageSlot';
+import { handlePending, handleRejected } from '../common';
 
 // TODO I need to implement a backend endpoint that would accept a map of entity names as key and entity array as value,
 // using that it would create TypeORM instances, interconnect, and create in DB. Some entities may be pre-existing,
@@ -82,62 +77,37 @@ const generatorSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
-        builder
-            // item generation
-            .addCase(generateItems.pending, (state) => {
-                state.generationResult.status = RequestStatusEnum.LOADING;
-                state.generationResult.error = null;
-            })
-            .addCase(generateItems.fulfilled, (state, action) => {
-                state.generationResult.status = RequestStatusEnum.SUCCEEDED;
-                state.generationResult.data = action.payload
-            })
-            .addCase(generateItems.rejected, (state, action) => {
-                state.generationResult.status = RequestStatusEnum.FAILED;
-                state.generationResult.error = action.error.message || 'Failed to generate items';
-            })
+        // item generation
+        builder.addCase(generateItems.pending, (state) => handlePending(state.generationResult))
+        builder.addCase(generateItems.fulfilled, (state, action) => {
+            state.generationResult.status = RequestStatusEnum.SUCCEEDED;
+            state.generationResult.data = action.payload
+        })
+        builder.addCase(generateItems.rejected, (state, action) => handleRejected(state.generationResult, action))
 
-            // character generation CUSTOM
-            .addCase(generateCharactersCustom.pending, (state) => {
-                state.generationResult.status = RequestStatusEnum.LOADING;
-                state.generationResult.error = null;
-            })
-            .addCase(generateCharactersCustom.fulfilled, (state, action) => {
-                state.generationResult.status = RequestStatusEnum.SUCCEEDED;
-                state.generationResult.data = action.payload
-            })
-            .addCase(generateCharactersCustom.rejected, (state, action) => {
-                state.generationResult.status = RequestStatusEnum.FAILED;
-                state.generationResult.error = action.error.message || 'Failed to generate characters';
-            })
+        // character generation CUSTOM
+        builder.addCase(generateCharactersCustom.pending, (state) => handlePending(state.generationResult))
+        builder.addCase(generateCharactersCustom.fulfilled, (state, action) => {
+            state.generationResult.status = RequestStatusEnum.SUCCEEDED;
+            state.generationResult.data = action.payload
+        })
+        builder.addCase(generateCharactersCustom.rejected, (state, action) => handleRejected(state.generationResult, action))
 
-            // character generation DB
-            .addCase(generateCharactersDB.pending, (state) => {
-                state.generationResult.status = RequestStatusEnum.LOADING;
-                state.generationResult.error = null;
-            })
-            .addCase(generateCharactersDB.fulfilled, (state, action) => {
-                state.generationResult.status = RequestStatusEnum.SUCCEEDED;
-                state.generationResult.data = action.payload
-            })
-            .addCase(generateCharactersDB.rejected, (state, action) => {
-                state.generationResult.status = RequestStatusEnum.FAILED;
-                state.generationResult.error = action.error.message || 'Failed to generate characters';
-            })
+        // character generation DB
+        builder.addCase(generateCharactersDB.pending, (state) => handlePending(state.generationResult))
+        builder.addCase(generateCharactersDB.fulfilled, (state, action) => {
+            state.generationResult.status = RequestStatusEnum.SUCCEEDED;
+            state.generationResult.data = action.payload
+        })
+        builder.addCase(generateCharactersDB.rejected, (state, action) => handleRejected(state.generationResult, action))
 
-            // character group generation
-            .addCase(generateCharacterGroups.pending, (state) => {
-                state.generationResult.status = RequestStatusEnum.LOADING;
-                state.generationResult.error = null;
-            })
-            .addCase(generateCharacterGroups.fulfilled, (state, action) => {
-                state.generationResult.status = RequestStatusEnum.SUCCEEDED;
-                state.generationResult.data = action.payload
-            })
-            .addCase(generateCharacterGroups.rejected, (state, action) => {
-                state.generationResult.status = RequestStatusEnum.FAILED;
-                state.generationResult.error = action.error.message || 'Failed to generate character groups';
-            });
+        // character group generation
+        builder.addCase(generateCharacterGroups.pending, (state) => handlePending(state.generationResult))
+        builder.addCase(generateCharacterGroups.fulfilled, (state, action) => {
+            state.generationResult.status = RequestStatusEnum.SUCCEEDED;
+            state.generationResult.data = action.payload
+        })
+        builder.addCase(generateCharacterGroups.rejected, (state, action) => handleRejected(state.generationResult, action))
     }
 });
 

@@ -12,11 +12,13 @@ interface UiState {
     options: {
         [key: string]: OptionsState;
     };
+    isPresetDialogOpen: boolean;
 }
 
 const initialState: UiState = {
     status: RequestStatusEnum.IDLE,
     options: {},
+    isPresetDialogOpen: false,
 };
 
 export const uiSlice = createSlice({
@@ -47,9 +49,12 @@ export const uiSlice = createSlice({
                 error: action.payload.error
             };
         },
+        setIsPresetDialogOpen: (state, action: PayloadAction<boolean>) => {
+            state.isPresetDialogOpen = action.payload;
+        },
     },
 });
 
-export const { setOptionsLoading, setOptionsSuccess, setOptionsError } = uiSlice.actions;
+export const { setOptionsLoading, setOptionsSuccess, setOptionsError, setIsPresetDialogOpen } = uiSlice.actions;
 
 export default uiSlice.reducer;

@@ -35,6 +35,7 @@ import { Trait } from "../../content/entities/Trait";
 import { Serializable } from "../../../decorator/serializable.decorator";
 import { Status } from "../../content/entities/Status";
 import { Serializer } from "../../../serializer";
+import { ActivityRecord } from "../../activity/entities/ActivityRecord";
 
 
 @Entity()
@@ -147,6 +148,9 @@ export class User extends BaseEntity {
 
     @OneToMany(() => Background, background => background.user, { onDelete: "CASCADE", })
     backgrounds?: Background[]
+
+    @OneToMany(() => ActivityRecord, activityRecord => activityRecord.user, { onDelete: "CASCADE", })
+    activityRecords?: ActivityRecord[]
 
     public toDTO(): UserDTO {
         return Serializer.toDTO(this);

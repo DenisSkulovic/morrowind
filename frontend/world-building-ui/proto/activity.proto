@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package activity;
+
+import "common.proto";
+
+service ActivityService {
+    rpc search(ActivitySearchRequest) returns (ActivitySearchResponse);
+    rpc clearAll(ActivityClearAllRequest) returns (ActivityClearAllResponse);
+    rpc create(ActivityCreateRequest) returns (ActivityCreateResponse);
+    rpc head(ActivityHeadRequest) returns (ActivityHeadResponse);
+}
+
+message ActivitySearchRequest {
+    string userId = 1;
+    string worldId = 2;
+    common.SearchQueryDTO search = 3;
+}
+
+message ActivitySearchResponse {
+    repeated ActivityDTO activities = 1;
+    int32 totalResults = 2;
+    int32 totalPages = 3;
+    int32 currentPage = 4;
+}
+
+message ActivityClearAllRequest {
+    string userId = 1;
+    string worldId = 2;
+}
+
+message ActivityClearAllResponse {
+    bool success = 1;
+}
+
+message ActivityCreateRequest {
+    string userId = 1;
+    string worldId = 2;
+    ActivityDTO data = 3;
+}
+
+message ActivityCreateResponse {
+    bool success = 1;
+}
+
+message ActivityHeadRequest {
+    string userId = 1;
+    string worldId = 2;
+    int32 limit = 3;
+}
+
+message ActivityHeadResponse {
+    repeated ActivityDTO activities = 1;
+}
+
+message ActivityDTO {
+    string id = 1;
+    string eventName = 2;
+    string relatedTargetEntity = 3;
+    string relatedTargetId = 4;
+    string createdAt = 5;
+    string userId = 6;
+    string worldId = 7;
+    string campaignId = 8;
+}

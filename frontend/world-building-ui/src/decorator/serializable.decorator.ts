@@ -9,6 +9,7 @@ export function Serializable(
         serialize?: (value: any) => any;
         deserialize?: (value: any) => any;
         getDTOInstance?: () => any;
+        getArrDTOInstance?: () => any;
     }) {
     return (target: any, propertyKey: string) => {
         const existingFields = Reflect.getMetadata(SERIALIZABLE_FIELDS_KEY, target) || [];
@@ -20,7 +21,8 @@ export function Serializable(
                 strategy: options?.strategy,
                 serialize: options?.serialize,
                 deserialize: options?.deserialize,
-                getDTOInstance: options?.getDTOInstance
+                getDTOInstance: options?.getDTOInstance,
+                getArrDTOInstance: options?.getArrDTOInstance
             },
         ], target);
     };
@@ -35,6 +37,7 @@ export function getSerializableFields(target: any): {
     serialize?: (value: any) => any;
     deserialize?: (value: any) => any;
     getDTOInstance?: () => any;
+    getArrDTOInstance?: () => any;
 }[] {
     return Reflect.getMetadata(SERIALIZABLE_FIELDS_KEY, target) || [];
 }

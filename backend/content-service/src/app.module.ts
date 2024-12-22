@@ -15,6 +15,7 @@ import { StorageSlotModule } from './modules/content/storage-slot/storage-slot.m
 import { InjectDataSourceModule } from './data-source/inject-datasource.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { worldDbOptions, campaignDbOptions } from './data-source/datasource-config';
+import { ActivityModule } from './modules/activity/activity.module';
 
 @Module({
     imports: [
@@ -47,6 +48,7 @@ import { worldDbOptions, campaignDbOptions } from './data-source/datasource-conf
         PresetModule,
         UserModule,
         WorldModule,
+        ActivityModule,
     ],
 })
 export class AppModule { }

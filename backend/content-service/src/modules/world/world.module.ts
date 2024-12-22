@@ -6,6 +6,7 @@ import { InjectDataSourceModule } from '../../data-source/inject-datasource.modu
 import { ContentModule } from '../content/content.module';
 import { PresetModule } from '../preset/preset.module';
 import { UserModule } from '../user/user.module';
+import { ActivityModule } from '../activity/activity.module';
 
 @Module({
     imports: [
@@ -16,6 +17,7 @@ import { UserModule } from '../user/user.module';
         forwardRef(() => ContentModule),
         forwardRef(() => UserModule),
         forwardRef(() => PresetModule),
+        forwardRef(() => ActivityModule),
     ],
     controllers: [WorldController],
     providers: [

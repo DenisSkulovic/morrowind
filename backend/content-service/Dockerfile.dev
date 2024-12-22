@@ -25,5 +25,6 @@ COPY world_presets/ ./world_presets
 # Expose the gRPC server port
 EXPOSE 50051
 
-# Start the gRPC server
-CMD ["npm", "run", "start:dev"]
+# Run migrations and start the gRPC server
+CMD npm run start:dev
+# CMD npm run migrate:generate && npm run migrate:run && npm run start:dev

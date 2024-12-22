@@ -52,16 +52,19 @@ export class WorldService implements IWorldService {
      */
     public async createWorld(name: string, description: string | undefined, user: User): Promise<World> {
         const source = DataSourceEnum.DATA_SOURCE_WORLD // can create worlds only in WORLD database
+        console.log(`[WorldService - createWorld] creating world`)
         const newWorld: World = this.getRepository(source).create({
             name,
             description,
             user
         });
+        console.log(`[WorldService - createWorld] created world`)
         return await this.getRepository(source).save(newWorld);
     }
 
     public async findWorld(worldId: string, userId: string, source: DataSourceEnum): Promise<World | null> {
         const worldRepository = this.getRepository(source)
+        console.log(`[WorldService - findWorld] finding world`)
         const worlds: World[] = await worldRepository.find({
             where: {
                 id: worldId,
@@ -69,18 +72,23 @@ export class WorldService implements IWorldService {
             }
         })
         const world: World | null = worlds[0] || null
+        console.log(`[WorldService - findWorld] found world`, world)
         return world
     }
 
     public async updateWorld(worldDTO: World): Promise<World> {
         const source = DataSourceEnum.DATA_SOURCE_WORLD;
         const repository = this.getRepository(source);
+        console.log(`[WorldService - updateWorld] finding world`)
         const world = await repository.findOne({ where: { id: worldDTO.id } });
         if (!world) {
             throw new Error(`World not found with id ${worldDTO.id}`);
         }
+        console.log(`[WorldService - updateWorld] found world`)
+        console.log(`[WorldService - updateWorld] updating world`)
         world.name = worldDTO.name;
         world.description = worldDTO.description;
+        console.log(`[WorldService - updateWorld] saving world`)
         return await repository.save(world);
     }
 
@@ -100,34 +108,51 @@ export class WorldService implements IWorldService {
         const worldRepository = this.getRepository(source);
 
         // Fetch world and user
+        console.log(`[WorldService - loadPresetIntoWorld] fetching world`)
         const world: World | null = await worldRepository.findOne({ where: { id: worldId } });
         if (!world) throw new Error(`World not found: ${worldId}`);
+        console.log(`[WorldService - loadPresetIntoWorld] fetched world`)
 
+        console.log(`[WorldService - loadPresetIntoWorld] fetching user`)
         const user = await this.userService.findUser(userId, source);
         if (!user) throw new Error(`User not found: ${userId}`);
+        console.log(`[WorldService - loadPresetIntoWorld] fetched user`)
 
         if (dropPreviousContent) {
+            console.log(`[WorldService - loadPresetIntoWorld] dropping previous content`)
             await this.dropWorldContents(worldId);
+            console.log(`[WorldService - loadPresetIntoWorld] dropped previous content`)
         }
 
         // Load preset and process it
+        console.log(`[WorldService - loadPresetIntoWorld] loading preset`)
         const preset: Preset = await this.presetService.loadPreset(presetName, pathToPresetsFolder);
+        console.log(`[WorldService - loadPresetIntoWorld] loaded preset`)
 
         for (const [entityName, blueprintsMap] of Object.entries(preset)) {
             const repository: Repository<ContentBase> = this.contentService.getRepository(entityName, source);
-            const blueprintsArr: ContentBase[] = Object.values(blueprintsMap)
+            const blueprintsArr: ContentBase[] = Object.values(blueprintsMap);
+            const totalBatches = Math.ceil(blueprintsArr.length / batchSize);
 
-            for (let i = 0; i < blueprintsArr.length; i += batchSize) {
-                const batch = blueprintsArr.slice(i, i + batchSize).map((blueprint) => {
+            for (let batchNum = 0; batchNum < totalBatches; batchNum++) {
+                const start = batchNum * batchSize;
+                const end = Math.min(start + batchSize, blueprintsArr.length);
+
+                console.log(`[WorldService - loadPresetIntoWorld] processing batch ${batchNum + 1} of ${totalBatches} for entity ${entityName}`);
+
+                const batch = blueprintsArr.slice(start, end).map((blueprint) => {
                     const entity = repository.create(blueprint);
                     entity.world = world;
                     entity.user = user;
                     entity.id = blueprint.blueprintId;
                     return entity;
                 });
+
                 await repository.save(batch);
+                console.log(`[WorldService - loadPresetIntoWorld] saved batch ${batchNum + 1} of ${totalBatches} for entity ${entityName}`);
             }
         }
+        console.log(`[WorldService - loadPresetIntoWorld] finished loading preset`)
     }
 
     /**
@@ -136,10 +161,12 @@ export class WorldService implements IWorldService {
     @TemporarilyFreezeWorld(0)
     public async dropWorldContents(worldId: string): Promise<void> {
         const source = DataSourceEnum.DATA_SOURCE_WORLD
+        console.log(`[WorldService - dropWorldContents] dropping contents`)
         for (const entityName in CONTENT_ENTITY_MAP) {
             const repository = this.contentService.getRepository(entityName, source);
             await repository.delete({ world: { id: worldId } });
         }
+        console.log(`[WorldService - dropWorldContents] dropped contents`)
     }
 
     /**
@@ -148,7 +175,9 @@ export class WorldService implements IWorldService {
     @TemporarilyFreezeWorld(0)
     public async deleteWorld(worldId: string): Promise<void> {
         const source = DataSourceEnum.DATA_SOURCE_WORLD
+        console.log(`[WorldService - deleteWorld] deleting world`)
         await this.getRepository(source).delete(worldId)
+        console.log(`[WorldService - deleteWorld] deleted world`)
     }
 
     /**
@@ -157,7 +186,10 @@ export class WorldService implements IWorldService {
      */
     public async getWorld(worldId: string): Promise<World | null> {
         const source = DataSourceEnum.DATA_SOURCE_WORLD
-        return this.getRepository(source).findOne({ where: { id: worldId }, relations: ['user'] });
+        console.log(`[WorldService - getWorld] getting world`)
+        const world = await this.getRepository(source).findOne({ where: { id: worldId }, relations: ['user'] });
+        console.log(`[WorldService - getWorld] got world`)
+        return world
     }
 
     public async searchWorlds(search: SearchQuery): Promise<{ worlds: World[], totalResults: number, totalPages: number, currentPage: number }> {

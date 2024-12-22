@@ -34,6 +34,7 @@ import { Tag } from "../../content/entities/Tag";
 import { Trait } from "../../content/entities/Trait";
 import { Status } from "../../content/entities/Status";
 import { Serializable } from "../../../decorator/serializable.decorator";
+import { ActivityRecord } from "../../activity/entities/ActivityRecord";
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })
@@ -155,6 +156,9 @@ export class Campaign extends BaseEntity {
 
     @OneToMany(() => Background, background => background.campaign, { onDelete: "CASCADE", })
     backgrounds!: Background[]
+
+    @OneToMany(() => ActivityRecord, activityRecord => activityRecord.campaign, { onDelete: "CASCADE", })
+    activityRecords!: ActivityRecord[]
 
     public toDTO(): CampaignDTO {
         return Serializer.toDTO(this);

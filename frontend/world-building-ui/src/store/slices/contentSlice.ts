@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction, Action } from '@reduxjs/toolkit';
 import { ContentService } from '../../services/ContentService';
 import { ContentBase } from '../../class/ContentBase';
 import { Context } from '../../class/Context';
@@ -7,8 +7,9 @@ import { SearchQuery } from '../../class/search/SearchQuery';
 import { CONTENT_ENTITY_MAP } from '../../CONTENT_ENTITY_MAP';
 import { LooseObject } from '../../types';
 import { EntityEnum } from '../../enum/EntityEnum';
+import { handlePending, handleRejected } from '../common';
 
-type ContentPlain = LooseObject
+export type ContentPlain = LooseObject
 
 interface ContentState {
     entityNameInPath: EntityEnum | null;
@@ -81,7 +82,7 @@ export const updateContent = createAsyncThunk(
 
 export const deleteContent = createAsyncThunk(
     'content/deleteContent',
-    async ({ entityName, id, context }: { entityName: string; id: string; context: Context }) => {
+    async ({ entityName, id, context }: { entityName: EntityEnum; id: string; context: Context }) => {
         const contentService = new ContentService();
         return await contentService.deleteContent(entityName, id, context);
     }
@@ -147,79 +148,56 @@ const contentSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
-        builder
-            .addCase(createContent.pending, (state) => {
-                state.currentEntity.status = RequestStatusEnum.LOADING;
-                state.currentEntity.error = null;
-            })
-            .addCase(createContent.fulfilled, (state, action) => {
-                state.currentEntity.status = RequestStatusEnum.SUCCEEDED;
-                if (state.currentEntity.data && !state.currentEntity.data[action.meta.arg.entityName]) {
-                    state.currentEntity.data[action.meta.arg.entityName] = {};
-                }
-                if (state.currentEntity.data) {
-                    state.currentEntity.data[action.meta.arg.entityName][action.payload.id] = action.payload;
-                }
-            })
-            .addCase(createContent.rejected, (state, action) => {
-                state.currentEntity.status = RequestStatusEnum.FAILED;
-                state.currentEntity.error = action.error.message || 'Failed to create content';
-            })
+        builder.addCase(createContent.pending, (state) => handlePending(state.currentEntity))
+        builder.addCase(createContent.fulfilled, (state, action) => {
+            state.currentEntity.status = RequestStatusEnum.SUCCEEDED;
+            if (state.currentEntity.data && !state.currentEntity.data[action.meta.arg.entityName]) {
+                state.currentEntity.data[action.meta.arg.entityName] = {};
+            }
+            if (state.currentEntity.data) {
+                state.currentEntity.data[action.meta.arg.entityName][action.payload.id] = action.payload;
+            }
+        })
+        builder.addCase(createContent.rejected, (state, action) => handleRejected(state.currentEntity, action))
 
-            .addCase(updateContent.pending, (state) => {
-                state.currentEntity.status = RequestStatusEnum.LOADING;
-                state.currentEntity.error = null;
-            })
-            .addCase(updateContent.fulfilled, (state, action) => {
-                state.currentEntity.status = RequestStatusEnum.SUCCEEDED;
-                if (state.currentEntity.data && state.currentEntity.data[action.meta.arg.entityName]) {
-                    state.currentEntity.data[action.meta.arg.entityName][action.payload.id] = action.payload;
-                }
-            })
-            .addCase(updateContent.rejected, (state, action) => {
-                state.currentEntity.status = RequestStatusEnum.FAILED;
-                state.currentEntity.error = action.error.message || 'Failed to update content';
-            })
+        builder.addCase(updateContent.pending, (state) => handlePending(state.currentEntity))
+        builder.addCase(updateContent.fulfilled, (state, action) => {
+            state.currentEntity.status = RequestStatusEnum.SUCCEEDED;
+            if (state.currentEntity.data && state.currentEntity.data[action.meta.arg.entityName]) {
+                state.currentEntity.data[action.meta.arg.entityName][action.payload.id] = action.payload;
+            }
+        })
+        builder.addCase(updateContent.rejected, (state, action) => handleRejected(state.currentEntity, action))
 
-            .addCase(deleteContent.pending, (state) => {
-                state.currentEntity.status = RequestStatusEnum.LOADING;
-                state.currentEntity.error = null;
-            })
-            .addCase(deleteContent.fulfilled, (state, action) => {
-                state.currentEntity.status = RequestStatusEnum.SUCCEEDED;
-                if (state.currentEntity.data && state.currentEntity.data[action.meta.arg.entityName]) {
-                    delete state.currentEntity.data[action.meta.arg.entityName][action.meta.arg.id];
-                }
-            })
-            .addCase(deleteContent.rejected, (state, action) => {
-                state.currentEntity.status = RequestStatusEnum.FAILED;
-                state.currentEntity.error = action.error.message || 'Failed to delete content';
-            })
+        builder.addCase(deleteContent.pending, (state) => handlePending(state.currentEntity))
+        builder.addCase(deleteContent.fulfilled, (state, action) => {
+            state.currentEntity.status = RequestStatusEnum.SUCCEEDED;
+            if (state.currentEntity.data && state.currentEntity.data[action.meta.arg.entityName]) {
+                delete state.currentEntity.data[action.meta.arg.entityName][action.meta.arg.id];
+            }
+        })
+        builder.addCase(deleteContent.rejected, (state, action) => handleRejected(state.currentEntity, action))
 
-            .addCase(searchContent.pending, (state) => {
-                state.searchedEntities.status = RequestStatusEnum.LOADING;
-                state.searchedEntities.error = null;
-            })
-            .addCase(searchContent.fulfilled, (state, action) => {
-                state.searchedEntities.status = RequestStatusEnum.SUCCEEDED;
-                if (!state.searchedEntities.map) {
-                    state.searchedEntities.map = {};
+        builder.addCase(searchContent.pending, (state) => handlePending(state.searchedEntities))
+        builder.addCase(searchContent.fulfilled, (state, action) => {
+            state.searchedEntities.status = RequestStatusEnum.SUCCEEDED;
+            if (!state.searchedEntities.map) {
+                state.searchedEntities.map = {};
+            }
+            if (!state.searchedEntities.map[action.meta.arg.entityName]) {
+                state.searchedEntities.map[action.meta.arg.entityName] = {};
+            }
+            action.payload.results.forEach((item: ContentPlain) => {
+                if (state.searchedEntities.map) {
+                    state.searchedEntities.map[action.meta.arg.entityName][item.id] = item;
                 }
-                if (!state.searchedEntities.map[action.meta.arg.entityName]) {
-                    state.searchedEntities.map[action.meta.arg.entityName] = {};
-                }
-                action.payload.results.forEach((item: ContentPlain) => {
-                    if (state.searchedEntities.map) {
-                        state.searchedEntities.map[action.meta.arg.entityName][item.id] = item;
-                    }
-                });
-            })
-            .addCase(searchContent.rejected, (state, action) => {
-                state.searchedEntities.status = RequestStatusEnum.FAILED;
-                state.searchedEntities.error = action.error.message || 'Failed to search content';
             });
+        })
+        builder.addCase(searchContent.rejected, (state, action) => handleRejected(state.searchedEntities, action));
     },
 });
+
+
 
 export const { clearSearchedContent, setEntityNameInPath } = contentSlice.actions;
 export default contentSlice.reducer;

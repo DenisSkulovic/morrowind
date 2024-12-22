@@ -6,10 +6,11 @@ import { World } from "../../class/entities/World";
 import { Context } from "../../class/Context";
 import { RequestStatusEnum } from "../../enum/RequestStatusEnum";
 import { ContentStat } from "../../class/ContentStat";
-import { CONTENT_ENTITY_MAP } from "../../CONTENT_ENTITY_MAP";
 import { RootState } from "../store";
 import { Account } from "../../class/entities/Account";
 import { entityNamesToDisplayInStats } from "../../config/worldDashboard";
+import { handlePending } from "../common";
+import { handleRejected } from "../common";
 
 
 interface DashboardState {
@@ -61,18 +62,13 @@ export const dashboardSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: (builder) => {
+        builder.addCase(loadDashboardData.pending, (state) => handlePending(state));
         builder.addCase(loadDashboardData.fulfilled, (state, action) => {
             state.stats = action.payload.stats.map(stat => ContentStat.build(stat));
             state.error = null;
             state.status = RequestStatusEnum.SUCCEEDED;
         });
-        builder.addCase(loadDashboardData.rejected, (state, action) => {
-            state.error = action.error.message || 'Failed to load dashboard data';
-            state.status = RequestStatusEnum.FAILED;
-        });
-        builder.addCase(loadDashboardData.pending, (state, action) => {
-            state.status = RequestStatusEnum.LOADING;
-        });
+        builder.addCase(loadDashboardData.rejected, (state, action) => handleRejected(state, action));
     }
 })
 

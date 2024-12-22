@@ -2,6 +2,8 @@ import { User } from "../user/entities/User";
 import {
     CreateWorldRequest, CreateWorldResponse, DeleteWorldRequest,
     DeleteWorldResponse, DropWorldContentRequest, DropWorldContentResponse,
+    GetPresetsRequest,
+    GetPresetsResponse,
     GetWorldRequest, GetWorldResponse,
     LoadWorldPresetRequest, LoadWorldPresetResponse,
     SearchWorldRequest,
@@ -12,13 +14,15 @@ import { World } from "./entities/World";
 import { DataSourceEnum } from "../../common/enum/DataSourceEnum";
 import { PresetEnum } from "../../common/enum/entityEnums";
 import { ContextDTO, PresetEnumDTO, WorldDTO } from "../../proto/common";
-import { deserializeEnum } from "../../common/enum/util";
+import { deserializeEnum, serializeEnum } from "../../common/enum/util";
 import { Controller, Inject, Logger } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
 import { WorldService } from "./world.service";
 import { UserService } from "../user/user.service";
 import { SearchQuery } from "../../class/search/SearchQuery";
 import { Context } from "../../class/Context";
+import { ActivityService } from "../activity/activity.service";
+import { ActivityRecord } from "../activity/entities/ActivityRecord";
 
 @Controller()
 export class WorldController {
@@ -27,6 +31,7 @@ export class WorldController {
     constructor(
         @Inject('IWorldService') private readonly worldService: WorldService,
         @Inject('IUserService') private readonly userService: UserService,
+        @Inject('IActivityService') private readonly activityService: ActivityService,
     ) { }
 
     async processContextDTO(contextDTO: ContextDTO, source: DataSourceEnum): Promise<Context> {
@@ -134,19 +139,44 @@ export class WorldController {
     public async loadWorldPreset(
         request: LoadWorldPresetRequest,
     ): Promise<LoadWorldPresetResponse> {
-        if (typeof request.preset !== "number" || request.preset === PresetEnumDTO.UNRECOGNIZED) throw new Error(`no preset found for preset identifier: ${request.preset}`)
+        console.log(`[WorldController - loadWorldPreset] request.preset`, request.preset)
+        if (request.preset === PresetEnumDTO.UNRECOGNIZED) throw new Error(`no preset found for preset identifier: ${request.preset}`)
         const source: DataSourceEnum = DataSourceEnum.DATA_SOURCE_WORLD
         const contextDTO: ContextDTO | undefined = request.context
         const context: Context | undefined = contextDTO ? await this.processContextDTO(contextDTO, source) : undefined
-        console.log(`@@@context`, context)
+        console.log(`[WorldController - loadWorldPreset] context`, context)
         const worldId: string | undefined = context?.world?.id // TODO these fields should come from middleware
         const userId: string | undefined = context?.user?.id // TODO these fields should come from middleware, especially this one
         if (!worldId) throw new Error(`unidentified world id: "${contextDTO?.world}"`)
         if (!userId) throw new Error(`unidentified user id: "${contextDTO?.user}"`)
         const preset: PresetEnum = deserializeEnum(PresetEnumDTO, PresetEnum, request.preset)
-        // check preset for existence in the enum
+        console.log(`[WorldController - loadWorldPreset] preset`, preset)
         await this.worldService.loadPresetIntoWorld(preset, worldId, userId)
+
+        // record activity
+        const newActivityRecord: ActivityRecord = ActivityRecord.build({
+            eventName: "WORLD_PRESET_LOADED",
+            label: `Loaded world preset: ${preset}`,
+            world: { id: worldId },
+            user: { id: userId }
+        })
+        await this.activityService.create(
+            newActivityRecord,
+            userId,
+            worldId,
+            source
+        )
+
         const response = {} // status 200
+        return response
+    }
+
+    @GrpcMethod('WorldService', 'getPresets')
+    public async getPresets(
+        request: GetPresetsRequest,
+    ): Promise<GetPresetsResponse> {
+        const presets: PresetEnum[] = Object.values(PresetEnum)
+        const response: GetPresetsResponse = { presets: presets.map(preset => serializeEnum(PresetEnum, PresetEnumDTO, preset)) }
         return response
     }
 

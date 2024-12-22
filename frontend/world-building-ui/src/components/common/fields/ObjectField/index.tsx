@@ -17,14 +17,14 @@ const RecursiveObjectField: React.FC<ObjectFieldProps> = ({
     formFieldDefinition,
     onChange,
 }) => {
-    const allowNewKeys: boolean | undefined = formFieldDefinition.allowNewKeys;
+    const allowNewKeys: boolean | undefined = formFieldDefinition.allowNewKeys || false;
     const allowedKeys: string[] | undefined = formFieldDefinition.allowedKeys;
-    if (!allowNewKeys || !allowedKeys) throw new Error('allowNewKeys and allowedKeys are required in ObjectField');
+    if (allowNewKeys && !allowedKeys) throw new Error('allowNewKeys and allowedKeys are required in ObjectField');
     const [newKey, setNewKey] = useState('');
     const [newValue, setNewValue] = useState('');
 
     const handleAddField = () => {
-        if (!allowNewKeys || (allowedKeys.length && !allowedKeys.includes(newKey))) {
+        if (!allowNewKeys || (allowedKeys && !allowedKeys.includes(newKey))) {
             return;
         }
         const updatedValue = { ...value, [newKey]: newValue };

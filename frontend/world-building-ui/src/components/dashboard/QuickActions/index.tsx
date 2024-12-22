@@ -1,14 +1,35 @@
-import { Box, Button, Typography, Grid } from '@mui/material';
+import React from 'react';
+import { Box, Button, Typography, Grid2 } from '@mui/material';
 import {
+    Settings as PresetIcon,
     Person as PersonIcon,
     Inventory as InventoryIcon,
     Psychology as TraitsIcon,
     Groups as FactionsIcon,
     Church as ReligionsIcon
 } from '@mui/icons-material';
+import { PresetDialog } from './PresetDialog';
+import { useDispatch, useSelector } from 'react-redux';
+import { setIsPresetDialogOpen } from '../../../store/slices/uiSlice';
+import { RootState } from '../../../store/store';
 
-export const QuickActions = () => {
+interface QuickActionsProps {
+    worldId: string;
+}
+
+export const QuickActions = ({ worldId }: QuickActionsProps): JSX.Element => {
+    const dispatch = useDispatch();
+    const isPresetDialogOpen = useSelector((state: RootState) => state.ui.isPresetDialogOpen);
+
+    const handleOpenPresetDialog = () => dispatch(setIsPresetDialogOpen(true));
+    const handleClosePresetDialog = () => dispatch(setIsPresetDialogOpen(false));
+
     const actions = [
+        {
+            title: 'Load Preset',
+            icon: <PresetIcon />,
+            onClick: handleOpenPresetDialog
+        },
         {
             title: 'New Character',
             icon: <PersonIcon />,
@@ -56,9 +77,9 @@ export const QuickActions = () => {
             <Typography variant="h6" gutterBottom>
                 Quick Actions
             </Typography>
-            <Grid container spacing={1}>
+            <Grid2 container spacing={1}>
                 {actions.map((action, index) => (
-                    <Grid item xs={12} key={index}>
+                    <Grid2 key={index}>
                         <Button
                             variant="outlined"
                             fullWidth
@@ -72,9 +93,11 @@ export const QuickActions = () => {
                         >
                             {action.title}
                         </Button>
-                    </Grid>
+                    </Grid2>
                 ))}
-            </Grid>
+            </Grid2>
+
+            <PresetDialog open={isPresetDialogOpen} onClose={handleClosePresetDialog} worldId={worldId} />
         </Box>
     );
 };

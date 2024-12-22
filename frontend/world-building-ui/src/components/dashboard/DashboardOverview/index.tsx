@@ -1,10 +1,10 @@
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Grid, Grid2, Typography } from '@mui/material';
 import * as MaterialIcons from '@mui/icons-material';
 import StatCard from './StatCard';
 import { ContentStat } from '../../../class/ContentStat';
 
 interface DashboardOverviewProps {
-    stats: ContentStat[]
+    stats: ContentStat[] | null
 }
 
 export const DashboardOverview = ({ stats }: DashboardOverviewProps) => {
@@ -18,8 +18,8 @@ export const DashboardOverview = ({ stats }: DashboardOverviewProps) => {
             <Typography variant="h6" gutterBottom>
                 Content Overview
             </Typography>
-            <Grid container spacing={2}>
-                {stats.map((stat, index) => (
+            <Grid2 container spacing={2}>
+                {stats && stats.map((stat, index) => (
                     <Grid item xs={12} sm={6} md={4} key={index}>
                         <StatCard
                             title={stat.title}
@@ -28,7 +28,7 @@ export const DashboardOverview = ({ stats }: DashboardOverviewProps) => {
                         />
                     </Grid>
                 ))}
-            </Grid>
+            </Grid2>
         </Box>
     );
 };

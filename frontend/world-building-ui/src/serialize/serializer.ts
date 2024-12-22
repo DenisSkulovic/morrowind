@@ -2,9 +2,10 @@ import { getSerializableFields } from "../decorator/serializable.decorator";
 
 export class Serializer {
     static toDTO(entity: any, message: any): any {
+        console.log(`[Serializer] toDTO entity`, entity)
         const fields = getSerializableFields(entity.constructor.prototype);
 
-        fields.forEach(({ propertyKey, dtoKey, strategy, serialize, getDTOInstance }) => {
+        fields.forEach(({ propertyKey, dtoKey, strategy, serialize, getDTOInstance, getArrDTOInstance }) => {
             const value = entity[propertyKey];
             const processOne = (item: any) => {
                 if (typeof item === "undefined" || item === null) return undefined;
@@ -21,15 +22,20 @@ export class Serializer {
             const setter = `set${dtoKey.charAt(0).toUpperCase() + dtoKey.slice(1)}`;
             if (typeof message[setter] === "function") {
                 if (Array.isArray(value)) {
-                    message[setter](value.map(processOne));
+                    if (!getArrDTOInstance) throw new Error('getArrDTOInstance is not defined when strategy is "arr"');
+                    const arrDTO = getArrDTOInstance();
+                    arrDTO.setArrList(value.length ? value.map(processOne) : []);
+                    message[setter](arrDTO);
                 } else {
                     message[setter](processOne(value));
                 }
             } else {
                 console.warn(`Setter not found for field: ${dtoKey}`);
             }
+            console.log(`[Serializer] toDTO message aaa`, message)
         });
 
+        console.log(`[Serializer] toDTO message`, message)
         return message;
     }
 

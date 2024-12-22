@@ -19,6 +19,7 @@ message UpdateContentRequest {
     ContentBodyDTO contentBody = 1;
     string entityName = 2;
     common.ContextDTO context = 3;
+    common.DataSourceEnumDTO source = 4;
 }
 
 message UpdateContentResponse {
@@ -29,6 +30,7 @@ message DeleteContentRequest {
     string entityName = 1;
     string id = 2;
     common.ContextDTO context = 3;
+    common.DataSourceEnumDTO source = 4;
 }
 
 message DeleteContentResponse {
@@ -38,6 +40,7 @@ message SearchContentRequest {
     string entityName = 1;
     common.SearchQueryDTO query = 2;
     common.ContextDTO context = 3;
+    common.DataSourceEnumDTO source = 4;
 }
 
 message SearchContentResponse {
@@ -50,6 +53,7 @@ message SearchContentResponse {
 message GetContentStatsRequest {
     common.ContextDTO context = 1;
     repeated string entityNames = 2;
+    common.DataSourceEnumDTO source = 3;
 }
 
 message GetContentStatsResponse {

@@ -29,6 +29,7 @@ async function bootstrap() {
                 'content',
                 'world',
                 'generator',
+                'activity',
             ],
             protoPath: [
                 join(__dirname, '../proto/common.proto'),
@@ -36,6 +37,7 @@ async function bootstrap() {
                 join(__dirname, '../proto/content.proto'),
                 join(__dirname, '../proto/world.proto'),
                 join(__dirname, '../proto/generator.proto'),
+                join(__dirname, '../proto/activity.proto'),
             ],
             loader: {
                 keepCase: true,

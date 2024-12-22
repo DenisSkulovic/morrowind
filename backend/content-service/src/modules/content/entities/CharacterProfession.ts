@@ -23,8 +23,9 @@ export class CharacterProfession extends TaggableContentBase {
     characters?: Character[];
 
     @ManyToMany(() => MemoryPool, {})
+    @JoinTable()
     @Serializable({ strategy: 'id' })
-    memoryPools!: MemoryPool[]
+    memoryPools?: MemoryPool[]
 
     @Column({ type: "varchar", length: 60 })
     @Serializable()

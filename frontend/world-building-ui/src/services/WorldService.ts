@@ -3,13 +3,15 @@ import { SearchQuery } from "../class/search/SearchQuery";
 import { User } from "../class/entities/User";
 import { World } from "../class/entities/World";
 import { PresetEnum } from "../enum/entityEnums";
-import { serializeEnum } from "../enum/util";
+import { deserializeEnum, serializeEnum } from "../enum/util";
 import { WorldServiceClient } from "../proto/WorldServiceClientPb";
 import {
     CreateWorldRequest, CreateWorldResponse, GetWorldRequest,
     GetWorldResponse, UpdateWorldRequest, UpdateWorldResponse, SearchWorldRequest,
     SearchWorldResponse, DeleteWorldRequest, DropWorldContentRequest,
-    DropWorldContentResponse, LoadWorldPresetRequest, LoadWorldPresetResponse
+    DropWorldContentResponse, LoadWorldPresetRequest, LoadWorldPresetResponse,
+    GetPresetsResponse,
+    GetPresetsRequest
 } from "../proto/world_pb";
 import { Serializer } from "../serialize/serializer";
 import { ContextDTO, PresetEnumDTO, SearchQueryDTO, WorldDTO } from "../proto/common_pb";
@@ -71,30 +73,21 @@ export class WorldService {
     }
 
     async search(query: SearchQuery, context: Context): Promise<World[]> {
-        console.log(`[WorldService] search`, query, context)
         const request: SearchWorldRequest = new SearchWorldRequest();
         request.setEntityname("World");
         const queryDTO: SearchQueryDTO = Serializer.toDTO(query, new SearchQueryDTO())
-        console.log(`[WorldService] search queryDTO`, queryDTO)
         request.setQuery(queryDTO);
-        console.log(`[WorldService] search context`, context)
         const contextDTO = Serializer.toDTO(context, new ContextDTO())
-        console.log(`[WorldService] search contextDTO`, contextDTO)
         request.setContext(contextDTO);
-        console.log(`[WorldService] search request`, request)
         return new Promise((resolve, reject) => {
             this.client.search(request, {}, (err, response: SearchWorldResponse) => {
-                console.log(`[WorldService] search response`, response)
                 if (err) reject(err);
                 else if (!response) reject(new Error('No response from server'));
                 else {
-                    console.log(`[WorldService] search response worlds`, response.getWorldsList())
                     const worlds = response.getWorldsList().map(worldDTO => {
-                        console.log(`[WorldService] search worldDTO`, worldDTO)
                         return Serializer.fromDTO(worldDTO, new World())
                     }
                     );
-                    console.log(`[WorldService] search resolve`, worlds)
                     resolve(worlds);
                 }
             });
@@ -125,10 +118,10 @@ export class WorldService {
         });
     }
 
-    async loadWorldPreset(preset: PresetEnum, user: User, worldObj: World): Promise<void> {
+    async loadWorldPreset(preset: PresetEnum, userId: string, worldId: string): Promise<void> {
         const context = new ContextDTO();
-        context.setUser(user.id);
-        context.setWorld(worldObj.id);
+        context.setUser(userId);
+        context.setWorld(worldId);
         context.setCampaign("");
 
         const request = new LoadWorldPresetRequest();
@@ -139,6 +132,19 @@ export class WorldService {
                 if (err) reject(err);
                 else if (!response) reject(new Error('No response from server'));
                 else resolve();
+            });
+        });
+    }
+
+    async getPresets(): Promise<PresetEnum[]> {
+        console.log('[WorldService] Getting presets');
+        const request = new GetPresetsRequest();
+        return new Promise((resolve, reject) => {
+            this.client.getPresets(request, {}, (err, response: GetPresetsResponse) => {
+                console.log('Response:', response);
+                if (err) reject(err);
+                else if (!response) reject(new Error('No response from server'));
+                else resolve(response.getPresetsList().map(presetDTO => deserializeEnum(PresetEnumDTO, PresetEnum, presetDTO)));
             });
         });
     }
