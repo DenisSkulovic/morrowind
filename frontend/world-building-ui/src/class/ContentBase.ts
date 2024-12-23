@@ -3,6 +3,7 @@ import { SearchQuery } from "./search/SearchQuery";
 import { ContentService } from "../services/ContentService";
 import { Context } from "./Context";
 import { LooseObject } from "../types";
+import { EntityEnum } from "../enum/EntityEnum";
 
 export interface ContentBaseStatic<T extends ContentBase> {
     new(): T; // content base constructor
@@ -36,7 +37,7 @@ export abstract class ContentBase {
         filter: SearchQuery,
         context: Context
     ): Promise<T[]> {
-        const className = this.name; // get class name
+        const className: EntityEnum = this.name as EntityEnum; // get class name
         const contentService = new ContentService<T>();
         const { results } = await contentService.searchContent(className, filter, context);
         return results.map((result) => this.build(result));
@@ -46,7 +47,7 @@ export abstract class ContentBase {
         this: ContentBaseStatic<T>,
         obj: LooseObject
     ): T {
-        const instance = new this(); // create instance of child class
+        const instance: T = new this(); // create instance of child class
         Object.assign(instance, obj);
         return instance;
     }

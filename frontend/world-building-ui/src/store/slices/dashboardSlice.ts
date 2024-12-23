@@ -1,75 +1,172 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { ContentService } from "../../services/ContentService";
-import { GetContentStatsResponse } from "../../proto/content_pb";
 import { User } from "../../class/entities/User";
 import { World } from "../../class/entities/World";
 import { Context } from "../../class/Context";
 import { RequestStatusEnum } from "../../enum/RequestStatusEnum";
 import { ContentStat } from "../../class/ContentStat";
-import { RootState } from "../store";
-import { Account } from "../../class/entities/Account";
 import { entityNamesToDisplayInStats } from "../../config/worldDashboard";
-import { handlePending } from "../common";
-import { handleRejected } from "../common";
+import { LooseObject } from "../../types";
+import { Serializer } from "../../serialize/serializer";
+import { ActivityRecordPlain } from "./worldSlice";
+import { ActivityRecordsService } from "../../services/ActivityRecordsService";
 
+export type ContentStatPlain = LooseObject
 
 interface DashboardState {
-    stats: ContentStat[] | null; // I can store the object directly as I will not serialize it again and it does not have fancy decorators and such; React wont complain about non-serializable objects
+    stats: {
+        data: ContentStatPlain[] | null;
+        status: RequestStatusEnum;
+        error: string | null;
+    }
+    activityRecordsHead: {
+        data: ActivityRecordPlain[] | null;
+        status: RequestStatusEnum,
+        error: string | null,
+    },
     status: RequestStatusEnum;
     error: string | null;
 }
 
 const initialState: DashboardState = {
-    stats: null,
+    stats: {
+        data: null,
+        status: RequestStatusEnum.IDLE,
+        error: null
+    },
+    activityRecordsHead: {
+        data: null,
+        status: RequestStatusEnum.IDLE,
+        error: null,
+    },
     status: RequestStatusEnum.IDLE,
     error: null
 }
-export const loadDashboardStats = createAsyncThunk(
-    'dashboard/loadDashboardStats',
-    async ({ context }: { context: Context }) => {
-        const contentService = new ContentService();
-        const stats: GetContentStatsResponse = await contentService.getContentStats(
-            entityNamesToDisplayInStats,
-            context
-        );
-        return stats.getStatsList();
-    }
-);
 
 export const loadDashboardData = createAsyncThunk(
     'dashboard/loadDashboardData',
-    async ({ world_id }: { world_id: string }, { getState, dispatch }) => {
-        const state = getState() as RootState;
-        const accountData = state.account.currentAccount.data;
-        if (!accountData) throw new Error('Account not found; cannot load dashboard data');
-        const account: Account = Account.build(accountData);
-        const user_id: string = account.user;
-        const context: Context = Context.build({
-            user: { id: user_id } as User,
-            world: { id: world_id } as World
-        });
+    async ({ worldId, userId }: { worldId: string, userId: string }) => {
+        const context = new Context();
+        context.world = { id: worldId } as World;
+        context.user = { id: userId } as User;
 
-        const [stats] = await Promise.all([
-            dispatch(loadDashboardStats({ context })).unwrap(),
+        const contentService = new ContentService();
+        const activityService = new ActivityRecordsService();
+
+        const [stats, activities] = await Promise.all([
+            contentService.getContentStats(entityNamesToDisplayInStats, context),
+            activityService.head(context)
         ]);
 
-        return { stats };
+        const contentStats = stats.getStatsList().map(stat =>
+            Serializer.fromDTO(stat, new ContentStat()).toPlainObj()
+        );
+        const activityRecords = activities.map(activity => activity.toPlainObj());
+
+        return {
+            stats: contentStats,
+            activities: activityRecords
+        };
+    }
+);
+
+export const refreshStats = createAsyncThunk(
+    'dashboard/refreshStats',
+    async ({ worldId, userId }: { worldId: string, userId: string }) => {
+        const context = new Context();
+        context.world = { id: worldId } as World;
+        context.user = { id: userId } as User;
+
+        const contentService = new ContentService();
+        const stats = await contentService.getContentStats(entityNamesToDisplayInStats, context);
+        return stats.getStatsList().map(stat =>
+            Serializer.fromDTO(stat, new ContentStat()).toPlainObj()
+        );
+    }
+);
+
+export const refreshActivities = createAsyncThunk(
+    'dashboard/refreshActivities',
+    async ({ worldId, userId }: { worldId: string, userId: string }) => {
+        const context = new Context();
+        context.world = { id: worldId } as World;
+        context.user = { id: userId } as User;
+
+        const activityService = new ActivityRecordsService();
+        const activities = await activityService.head(context);
+        return activities.map(activity => activity.toPlainObj());
     }
 );
 
 export const dashboardSlice = createSlice({
     name: 'dashboard',
     initialState,
-    reducers: {},
+    reducers: {
+        resetActivityRecordsHead: (state) => {
+            state.activityRecordsHead.data = null;
+            state.activityRecordsHead.status = RequestStatusEnum.IDLE;
+            state.activityRecordsHead.error = null;
+        }
+    },
     extraReducers: (builder) => {
-        builder.addCase(loadDashboardData.pending, (state) => handlePending(state));
-        builder.addCase(loadDashboardData.fulfilled, (state, action) => {
-            state.stats = action.payload.stats.map(stat => ContentStat.build(stat));
-            state.error = null;
-            state.status = RequestStatusEnum.SUCCEEDED;
+        // Load Dashboard Data
+        builder.addCase(loadDashboardData.pending, (state) => {
+            state.status = RequestStatusEnum.LOADING;
+            state.stats.status = RequestStatusEnum.LOADING;
+            state.activityRecordsHead.status = RequestStatusEnum.LOADING;
         });
-        builder.addCase(loadDashboardData.rejected, (state, action) => handleRejected(state, action));
+        builder.addCase(loadDashboardData.fulfilled, (state, action) => {
+            state.stats.data = action.payload.stats;
+            state.stats.status = RequestStatusEnum.SUCCEEDED;
+            state.stats.error = null;
+
+            state.activityRecordsHead.data = action.payload.activities;
+            state.activityRecordsHead.status = RequestStatusEnum.SUCCEEDED;
+            state.activityRecordsHead.error = null;
+
+            state.status = RequestStatusEnum.SUCCEEDED;
+            state.error = null;
+        });
+        builder.addCase(loadDashboardData.rejected, (state, action) => {
+            state.status = RequestStatusEnum.FAILED;
+            state.error = action.error.message || 'Failed to load dashboard data';
+
+            state.stats.status = RequestStatusEnum.FAILED;
+            state.stats.error = action.error.message || 'Failed to load stats';
+
+            state.activityRecordsHead.status = RequestStatusEnum.FAILED;
+            state.activityRecordsHead.error = action.error.message || 'Failed to load activities';
+        });
+
+        // Refresh Stats
+        builder.addCase(refreshStats.pending, (state) => {
+            state.stats.status = RequestStatusEnum.LOADING;
+        });
+        builder.addCase(refreshStats.fulfilled, (state, action) => {
+            state.stats.data = action.payload;
+            state.stats.status = RequestStatusEnum.SUCCEEDED;
+            state.stats.error = null;
+        });
+        builder.addCase(refreshStats.rejected, (state, action) => {
+            state.stats.status = RequestStatusEnum.FAILED;
+            state.stats.error = action.error.message || 'Failed to refresh stats';
+        });
+
+        // Refresh Activities
+        builder.addCase(refreshActivities.pending, (state) => {
+            state.activityRecordsHead.status = RequestStatusEnum.LOADING;
+        });
+        builder.addCase(refreshActivities.fulfilled, (state, action) => {
+            state.activityRecordsHead.data = action.payload;
+            state.activityRecordsHead.status = RequestStatusEnum.SUCCEEDED;
+            state.activityRecordsHead.error = null;
+        });
+        builder.addCase(refreshActivities.rejected, (state, action) => {
+            state.activityRecordsHead.status = RequestStatusEnum.FAILED;
+            state.activityRecordsHead.error = action.error.message || 'Failed to refresh activities';
+        });
     }
 })
 
+export const { resetActivityRecordsHead } = dashboardSlice.actions;
 export default dashboardSlice.reducer;

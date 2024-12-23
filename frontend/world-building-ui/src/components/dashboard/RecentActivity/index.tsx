@@ -1,18 +1,20 @@
 import { Card, CardContent, Typography, List, ListItem, ListItemText, Link } from '@mui/material';
-import { useActivityRecordsHead } from '../../../hooks/useActivityRecordsHead';
 import { ActivityRecord } from '../../../class/entities/ActivityRecord';
 import { routes } from '../../../routes';
 
 
 interface RecentActivityProps {
-    worldId: string,
+    activityRecords: ActivityRecord[] | null
+    worldId: string
     userId: string
 }
 
-export const RecentActivity = ({ worldId, userId }: RecentActivityProps): JSX.Element => {
-    const { activities, status, error } = useActivityRecordsHead(worldId, userId)
+export const RecentActivity = ({ activityRecords, worldId, userId }: RecentActivityProps): JSX.Element => {
+    if (!activityRecords) return <></>
 
-    const formatTimestamp = (date: Date) => {
+    const getCreatedAtRelativeTime = (activity: ActivityRecord) => {
+        const date = new Date(activity.createdAt)
+        if (!date) return ''
         return new Intl.RelativeTimeFormat('en', { numeric: 'auto' }).format(
             Math.floor((date.getTime() - Date.now()) / (1000 * 60)),
             'minute'
@@ -47,7 +49,7 @@ export const RecentActivity = ({ worldId, userId }: RecentActivityProps): JSX.El
                     Recent Activity
                 </Typography>
                 <List>
-                    {activities && activities.map((activity) => (
+                    {activityRecords && activityRecords.map((activity) => (
                         <ListItem key={activity.id}>
                             <ListItemText
                                 primary={
@@ -55,7 +57,7 @@ export const RecentActivity = ({ worldId, userId }: RecentActivityProps): JSX.El
                                         {getActionText(activity)}
                                     </Typography>
                                 }
-                                secondary={formatTimestamp(activity.createdAt)}
+                                secondary={getCreatedAtRelativeTime(activity)}
                             />
                         </ListItem>
                     ))}

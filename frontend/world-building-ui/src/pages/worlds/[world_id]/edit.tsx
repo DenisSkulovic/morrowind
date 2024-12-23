@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '../../../store/store';
-import { searchWorlds, updateWorld, WorldPlain } from '../../../store/slices/worldSlice';
+import { searchWorldsThunk, updateWorldThunk, WorldPlain } from '../../../store/slices/worldSlice';
 import { useRouter } from 'next/router';
 import { Account } from '../../../class/entities/Account';
 import { World } from '../../../class/entities/World';
@@ -36,14 +36,14 @@ const EditWorldPage = () => {
         const userFilter: QueryFilter = QueryFilter.build({ field: "user", operator: "eq", value: userId });
         const worldFilter: QueryFilter = QueryFilter.build({ field: "id", operator: "eq", value: world_id });
         const query = SearchQuery.build({ page: 1, pageSize: 100, filters: [userFilter, worldFilter] });
-        dispatch(searchWorlds({ query, context }));
+        dispatch(searchWorldsThunk({ query, context }));
     }, [world_id, dispatch, userId]);
 
     const formFields: FormFieldDefinition[] = getFormFields(World.prototype);
 
     const handleSubmit = async (worldPlain: WorldPlain) => {
         if (!world) throw new Error('World not found');
-        await dispatch(updateWorld({ ...world.toPlainObj(), ...worldPlain }));
+        await dispatch(updateWorldThunk({ ...world.toPlainObj(), ...worldPlain }));
         router.push(routes.worlds());
     };
 

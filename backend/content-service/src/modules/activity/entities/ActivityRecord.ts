@@ -34,20 +34,23 @@ export class ActivityRecord extends BaseEntity {
     @Serializable()
     label?: string;
 
-    @Column({ type: "varchar", length: 255 })
+    @Column({ type: "varchar", length: 255, nullable: true })
     @Serializable()
     relatedTargetEntity?: string;
 
-    @Column({ type: "varchar", length: 255 })
+    @Column({ type: "varchar", length: 255, nullable: true })
     @Serializable()
     relatedTargetId?: string;
 
-    @Column({ type: "varchar", length: 255 })
+    @Column({ type: "varchar", length: 255, nullable: true })
     @Serializable()
     relatedEntityName?: string;
 
     @CreateDateColumn()
-    @Serializable()
+    @Serializable({
+        serialize: (val: Date) => val.getTime(),
+        deserialize: (val: number) => new Date(val)
+    })
     createdAt!: Date;
 
     @ManyToOne(() => World, (world) => world.activityRecords)
@@ -63,7 +66,9 @@ export class ActivityRecord extends BaseEntity {
     campaign!: Campaign;
 
     static build(body: any) {
-        return Object.assign(new ActivityRecord(), body)
+        const activityRecord = new ActivityRecord()
+        Object.assign(activityRecord, body)
+        return activityRecord
     }
 
     toDTO(): ActivityDTO {

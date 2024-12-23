@@ -2,6 +2,7 @@ import { Serializable } from "../../decorator/serializable.decorator";
 import { ActivityEventNameEnum } from "../../enum/ActivityEventNameEnum";
 import { serializeEnum, deserializeEnum } from "../../enum/util";
 import { ActivityEventNameEnumDTO } from "../../proto/activity_pb";
+import { LooseObject } from "../../types";
 
 export class ActivityRecord {
     @Serializable()
@@ -25,7 +26,10 @@ export class ActivityRecord {
     @Serializable()
     relatedEntityName?: string
 
-    @Serializable()
+    @Serializable({
+        serialize: (val: Date) => val.getTime(),
+        deserialize: (val: number) => new Date(val)
+    })
     createdAt!: Date;
 
     @Serializable()
@@ -38,7 +42,13 @@ export class ActivityRecord {
     campaign!: string;
 
     static build(body: any): ActivityRecord {
-        return Object.assign(new ActivityRecord(), body)
+        const activityRecord = new ActivityRecord()
+        Object.assign(activityRecord, body)
+        return activityRecord
+    }
+
+    toPlainObj(): LooseObject {
+        return JSON.parse(JSON.stringify(this));
     }
 
 }

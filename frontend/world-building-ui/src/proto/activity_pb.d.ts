@@ -191,6 +191,9 @@ export class ActivityDTO extends jspb.Message {
   getId(): string;
   setId(value: string): ActivityDTO;
 
+  getLabel(): string;
+  setLabel(value: string): ActivityDTO;
+
   getEventname(): ActivityEventNameEnumDTO;
   setEventname(value: ActivityEventNameEnumDTO): ActivityDTO;
 
@@ -203,8 +206,8 @@ export class ActivityDTO extends jspb.Message {
   getRelatedentityname(): string;
   setRelatedentityname(value: string): ActivityDTO;
 
-  getCreatedat(): string;
-  setCreatedat(value: string): ActivityDTO;
+  getCreatedat(): number;
+  setCreatedat(value: number): ActivityDTO;
 
   getUser(): string;
   setUser(value: string): ActivityDTO;
@@ -226,11 +229,12 @@ export class ActivityDTO extends jspb.Message {
 export namespace ActivityDTO {
   export type AsObject = {
     id: string,
+    label: string,
     eventname: ActivityEventNameEnumDTO,
     relatedtargetentity: string,
     relatedtargetid: string,
     relatedentityname: string,
-    createdat: string,
+    createdat: number,
     user: string,
     world: string,
     campaign: string,

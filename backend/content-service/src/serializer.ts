@@ -2,11 +2,11 @@ import { getSerializableFields } from './decorator/serializable.decorator';
 
 
 export class Serializer {
-    static toDTO(entity: any): any {
-        const dto: any = {};
-        const fields = getSerializableFields(entity.constructor.prototype);
+    static toDTO(entityInstance: any): any {
+        const dtoInstance: any = {};
+        const fields = getSerializableFields(entityInstance.constructor.prototype);
         fields.forEach(({ propertyKey, dtoKey, strategy, serialize }) => {
-            const value = entity[propertyKey];
+            const value = entityInstance[propertyKey];
 
             const processOne = (item: any) => {
                 if (typeof item === "undefined" || item === null) return undefined
@@ -20,30 +20,37 @@ export class Serializer {
 
             if (Array.isArray(value)) {
                 const res = value.map((item) => processOne(item))
-                if (strategy === "full") dto[dtoKey] = { arr: res }
-                else dto[dtoKey] = res
+                if (strategy === "full") dtoInstance[dtoKey] = { arr: res }
+                else dtoInstance[dtoKey] = res
             } else {
-                dto[dtoKey] = processOne(value)
+                dtoInstance[dtoKey] = processOne(value)
             }
         });
-        return dto;
+        return dtoInstance;
     }
 
-    static fromDTO(dto: any, entity: any): any {
-        const fields = getSerializableFields(entity.constructor.prototype);
+    static fromDTO(dtoInstance: any, entityInstance: any): any {
+        const fields = getSerializableFields(entityInstance.constructor.prototype);
         fields.forEach(({ propertyKey, dtoKey, strategy, deserialize }) => {
-            const value = dto[dtoKey];
+            const value = dtoInstance[dtoKey];
             const processOne = (item: any) => {
                 if (deserialize) return deserialize(item)
-                else if (strategy === 'id') return item?.id ? { id: item.id } : null
-                return item?.fromDTO ? item.fromDTO(item) : item
+                else if (strategy === 'id') {
+                    if (item?.id) {
+                        return { id: item.id }
+                    } else {
+                        return { id: item as string }
+                    }
+                }
+                else if (strategy === 'full') return Serializer.fromDTO(item, new entityInstance.constructor())
+                else return item
             }
             if (Array.isArray(value)) {
-                entity[propertyKey] = value.map(item => processOne(item));
+                entityInstance[propertyKey] = value.map(item => processOne(item));
             } else {
-                entity[propertyKey] = processOne(value)
+                entityInstance[propertyKey] = processOne(value)
             }
         });
-        return entity;
+        return entityInstance;
     }
 }

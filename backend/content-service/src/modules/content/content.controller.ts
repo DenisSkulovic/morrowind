@@ -41,17 +41,16 @@ export class ContentController {
         const result: ContentBase = await this.contentService.create(entityName, entity, deserializeEnum(DataSourceEnumDTO, DataSourceEnum, source));
 
         // record activity
-        const newActivityRecord: ActivityRecord = ActivityRecord.build({
-            eventName: ActivityEventNameEnum.CONTENT_CREATED,
-            label: `Created content`,
-            relatedTargetEntity: entityName,
-            relatedTargetName: result.name,
-            relatedTargetId: result.id,
-            world: { id: worldId },
-            user: { id: userId }
-        })
         await this.activityService.create(
-            newActivityRecord,
+            ActivityRecord.build({
+                eventName: ActivityEventNameEnum.CONTENT_CREATED,
+                label: `Created content`,
+                relatedTargetEntity: entityName,
+                relatedTargetName: result.name,
+                relatedTargetId: result.id,
+                world: { id: worldId },
+                user: { id: userId }
+            }),
             userId,
             worldId,
             deserializeEnum(DataSourceEnumDTO, DataSourceEnum, source)
@@ -73,17 +72,16 @@ export class ContentController {
         const result = await this.contentService.update(entityName, entity, Context.fromDTO(context));
 
         // record activity
-        const newActivityRecord: ActivityRecord = ActivityRecord.build({
-            eventName: ActivityEventNameEnum.CONTENT_UPDATED,
-            label: `Updated content`,
-            relatedTargetEntity: entityName,
-            relatedTargetName: result.name,
-            relatedTargetId: result.id,
-            world: { id: worldId },
-            user: { id: userId }
-        })
         await this.activityService.create(
-            newActivityRecord,
+            ActivityRecord.build({
+                eventName: ActivityEventNameEnum.CONTENT_UPDATED,
+                label: `Updated content`,
+                relatedTargetEntity: entityName,
+                relatedTargetName: result.name,
+                relatedTargetId: result.id,
+                world: { id: worldId },
+                user: { id: userId }
+            }),
             userId,
             worldId,
             deserializeEnum(DataSourceEnumDTO, DataSourceEnum, source)
@@ -102,15 +100,19 @@ export class ContentController {
         await this.contentService.delete(entityName, id, Context.fromDTO(context));
 
         // record activity
-        const newActivityRecord: ActivityRecord = ActivityRecord.build({
-            eventName: ActivityEventNameEnum.CONTENT_DELETED,
-            label: `Deleted content`,
-            relatedTargetEntity: entityName,
-            relatedTargetId: id,
-            world: { id: worldId },
-            user: { id: userId }
-        })
-        await this.activityService.create(newActivityRecord, userId, worldId, deserializeEnum(DataSourceEnumDTO, DataSourceEnum, source));
+        await this.activityService.create(
+            ActivityRecord.build({
+                eventName: ActivityEventNameEnum.CONTENT_DELETED,
+                label: `Deleted content`,
+                relatedTargetEntity: entityName,
+                relatedTargetId: id,
+                world: { id: worldId },
+                user: { id: userId }
+            }),
+            userId,
+            worldId,
+            deserializeEnum(DataSourceEnumDTO, DataSourceEnum, source)
+        )
         return { success: true };
     }
 
@@ -142,14 +144,18 @@ export class ContentController {
         const responses: CreateContentResponse[] = results.map(result => ({ contentBody: Serializer.toDTO(result) }));
 
         // record activity
-        const newActivityRecord: ActivityRecord = ActivityRecord.build({
-            eventName: ActivityEventNameEnum.CONTENT_CREATED_BULK,
-            label: `Created ${entities.length} content in bulk`,
-            relatedTargetEntity: entityName,
-            world: { id: worldId },
-            user: { id: userId }
-        })
-        await this.activityService.create(newActivityRecord, userId, worldId, deserializeEnum(DataSourceEnumDTO, DataSourceEnum, source));
+        await this.activityService.create(
+            ActivityRecord.build({
+                eventName: ActivityEventNameEnum.CONTENT_CREATED_BULK,
+                label: `Created ${entities.length} content in bulk`,
+                relatedTargetEntity: entityName,
+                world: { id: worldId },
+                user: { id: userId }
+            }),
+            userId,
+            worldId,
+            deserializeEnum(DataSourceEnumDTO, DataSourceEnum, source)
+        )
         return { responses };
     }
 
@@ -173,14 +179,18 @@ export class ContentController {
         const responses: UpdateContentResponse[] = results.map(result => ({ contentBody: Serializer.toDTO(result) }));
 
         // record activity
-        const newActivityRecord: ActivityRecord = ActivityRecord.build({
-            eventName: ActivityEventNameEnum.CONTENT_UPDATED_BULK,
-            label: `Updated ${entities.length} content in bulk`,
-            relatedTargetEntity: entityName,
-            world: { id: worldId },
-            user: { id: userId }
-        })
-        await this.activityService.create(newActivityRecord, userId, worldId, deserializeEnum(DataSourceEnumDTO, DataSourceEnum, source));
+        await this.activityService.create(
+            ActivityRecord.build({
+                eventName: ActivityEventNameEnum.CONTENT_UPDATED_BULK,
+                label: `Updated ${entities.length} content in bulk`,
+                relatedTargetEntity: entityName,
+                world: { id: worldId },
+                user: { id: userId }
+            }),
+            userId,
+            worldId,
+            deserializeEnum(DataSourceEnumDTO, DataSourceEnum, source)
+        )
         return { responses };
     }
 
@@ -200,14 +210,18 @@ export class ContentController {
         const responses = requests.map(() => ({ success: true }));
 
         // record activity
-        const newActivityRecord: ActivityRecord = ActivityRecord.build({
-            eventName: ActivityEventNameEnum.CONTENT_DELETED_BULK,
-            label: `Deleted ${ids.length} content in bulk`,
-            relatedTargetEntity: entityName,
-            world: { id: worldId },
-            user: { id: userId }
-        })
-        await this.activityService.create(newActivityRecord, userId, worldId, deserializeEnum(DataSourceEnumDTO, DataSourceEnum, source));
+        await this.activityService.create(
+            ActivityRecord.build({
+                eventName: ActivityEventNameEnum.CONTENT_DELETED_BULK,
+                label: `Deleted ${ids.length} content in bulk`,
+                relatedTargetEntity: entityName,
+                world: { id: worldId },
+                user: { id: userId }
+            }),
+            userId,
+            worldId,
+            deserializeEnum(DataSourceEnumDTO, DataSourceEnum, source)
+        )
         return { responses };
     }
     @GrpcMethod('ContentService', 'getStats')

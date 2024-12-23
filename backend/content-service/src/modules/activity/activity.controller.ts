@@ -39,12 +39,14 @@ export class ActivityController {
             worldId,
             searchQuery
         );
-        return {
+        const response = {
             activities: result.activities.map((activity: ActivityRecord) => activity.toDTO()),
             totalResults: result.totalResults,
             totalPages: result.totalPages,
             currentPage: result.currentPage
-        };
+        }
+        console.log('[ActivityController] Search response', response)
+        return response;
     }
 
     @GrpcMethod('ActivityService', 'clearAll')
@@ -55,7 +57,9 @@ export class ActivityController {
         if (!userId) throw new Error("did not find user id in request context")
         if (!worldId) throw new Error("did not find world id in request context")
         await this.activityService.clearAll(DataSourceEnum.DATA_SOURCE_WORLD, userId, worldId);
-        return { success: true };
+        const response = { success: true }
+        console.log('[ActivityController] ClearAll response', response)
+        return response;
     }
 
     @GrpcMethod('ActivityService', 'head')
@@ -64,7 +68,9 @@ export class ActivityController {
             Method: ActivityService.head
             Request: ${JSON.stringify(request)}
         `);
+        console.log('[ActivityController] Head request.context', request.context)
         const context: Context = Serializer.fromDTO(request.context, new Context())
+        console.log('[ActivityController] Context', context)
         const userId: string = context.user.id
         const worldId: string | undefined = context.world?.id
         if (!userId) throw new Error("did not find user id in request context")
@@ -75,7 +81,9 @@ export class ActivityController {
             worldId,
             new SearchQuery(1, request.limit || 10)
         );
-        return { activities: result.activities.map(activity => activity.toDTO()) };
+        const response = { activities: result.activities.map(activity => activity.toDTO()) }
+        console.log('[ActivityController] Head response', response)
+        return response;
     }
 
     @GrpcMethod('ActivityService', 'create')
@@ -95,6 +103,8 @@ export class ActivityController {
             worldId,
             DataSourceEnum.DATA_SOURCE_WORLD
         );
-        return { success: result.length === 1 };
+        const response = { success: result.length === 1 }
+        console.log('[ActivityController] Create response', response)
+        return response;
     }
 }

@@ -16,7 +16,9 @@ export class Context {
     public campaign?: Campaign;
 
     static build(body: any) {
-        return Object.assign(new Context(), body)
+        const context = new Context()
+        Object.assign(context, body)
+        return context
     }
 
     toDTO(): ContextDTO {

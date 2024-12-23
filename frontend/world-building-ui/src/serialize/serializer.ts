@@ -19,7 +19,7 @@ export class Serializer {
                 return item;
             };
 
-            const setter = `set${dtoKey.charAt(0).toUpperCase() + dtoKey.slice(1)}`;
+            const setter = `set${dtoKey.charAt(0).toUpperCase() + dtoKey.slice(1).toLowerCase()}`;
             if (typeof message[setter] === "function") {
                 if (Array.isArray(value)) {
                     if (!getArrDTOInstance) throw new Error('getArrDTOInstance is not defined when strategy is "arr"');
@@ -48,7 +48,8 @@ export class Serializer {
             console.log(`[Serializer] fromDTO strategy`, strategy)
             console.log(`[Serializer] fromDTO deserialize`, deserialize)
             console.log(`[Serializer] fromDTO getDTOInstance`, getDTOInstance)
-            const getter = `get${dtoKey.charAt(0).toUpperCase() + dtoKey.slice(1)}`;
+            const getter = `get${dtoKey.charAt(0).toUpperCase() + dtoKey.slice(1).toLowerCase()}`;
+            console.log(`[Serializer] fromDTO getter`, getter)
             if (typeof dto[getter] === "function") {
                 const value = dto[getter]();
                 console.log(`value`, value)

@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../store/store";
 import { useEffect, useState } from "react";
-import { getPresets, loadWorldPreset, resetPresetLoading } from "../store/slices/worldSlice";
+import { getPresetsThunk, loadWorldPresetThunk, resetPresetLoading } from "../store/slices/worldSlice";
 import { RequestStatusEnum } from "../enum/RequestStatusEnum";
 import { PresetEnum } from "../enum/entityEnums";
 
@@ -14,9 +14,9 @@ export const usePresets = () => {
 
     useEffect(() => {
         if (getPresetsStatus === RequestStatusEnum.IDLE && isPresetDialogOpen) {
-            dispatch(getPresets());
+            dispatch(getPresetsThunk());
         }
     }, [dispatch, isPresetDialogOpen, getPresetsStatus]);
 
-    return { presets: data, selectedPreset, setSelectedPreset, getPresetsStatus, loadPresetsStatus, loadWorldPreset, resetPresetLoading };
+    return { presets: data, selectedPreset, setSelectedPreset, getPresetsStatus, loadPresetsStatus, loadWorldPresetThunk, resetPresetLoading };
 }

@@ -31,7 +31,8 @@ export class ActivityService implements IActivityService {
         const entity = repository.create({
             ...data,
             user: { id: userId },
-            world: { id: worldId }
+            world: { id: worldId },
+            createdAt: new Date()
         });
         return await repository.save(entity);
     }

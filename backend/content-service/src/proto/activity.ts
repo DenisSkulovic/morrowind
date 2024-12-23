@@ -117,7 +117,7 @@ export interface ActivityDTO {
   relatedTargetEntity: string;
   relatedTargetId: string;
   relatedEntityName: string;
-  createdAt: string;
+  createdAt: number;
   user: string;
   world: string;
   campaign: string;
@@ -716,7 +716,7 @@ function createBaseActivityDTO(): ActivityDTO {
     relatedTargetEntity: "",
     relatedTargetId: "",
     relatedEntityName: "",
-    createdAt: "",
+    createdAt: 0,
     user: "",
     world: "",
     campaign: "",
@@ -740,8 +740,8 @@ export const ActivityDTO: MessageFns<ActivityDTO> = {
     if (message.relatedEntityName !== "") {
       writer.uint32(42).string(message.relatedEntityName);
     }
-    if (message.createdAt !== "") {
-      writer.uint32(50).string(message.createdAt);
+    if (message.createdAt !== 0) {
+      writer.uint32(48).int64(message.createdAt);
     }
     if (message.user !== "") {
       writer.uint32(58).string(message.user);
@@ -803,11 +803,11 @@ export const ActivityDTO: MessageFns<ActivityDTO> = {
           continue;
         }
         case 6: {
-          if (tag !== 50) {
+          if (tag !== 48) {
             break;
           }
 
-          message.createdAt = reader.string();
+          message.createdAt = longToNumber(reader.int64());
           continue;
         }
         case 7: {
@@ -850,7 +850,7 @@ export const ActivityDTO: MessageFns<ActivityDTO> = {
       relatedTargetEntity: isSet(object.relatedTargetEntity) ? globalThis.String(object.relatedTargetEntity) : "",
       relatedTargetId: isSet(object.relatedTargetId) ? globalThis.String(object.relatedTargetId) : "",
       relatedEntityName: isSet(object.relatedEntityName) ? globalThis.String(object.relatedEntityName) : "",
-      createdAt: isSet(object.createdAt) ? globalThis.String(object.createdAt) : "",
+      createdAt: isSet(object.createdAt) ? globalThis.Number(object.createdAt) : 0,
       user: isSet(object.user) ? globalThis.String(object.user) : "",
       world: isSet(object.world) ? globalThis.String(object.world) : "",
       campaign: isSet(object.campaign) ? globalThis.String(object.campaign) : "",
@@ -874,8 +874,8 @@ export const ActivityDTO: MessageFns<ActivityDTO> = {
     if (message.relatedEntityName !== "") {
       obj.relatedEntityName = message.relatedEntityName;
     }
-    if (message.createdAt !== "") {
-      obj.createdAt = message.createdAt;
+    if (message.createdAt !== 0) {
+      obj.createdAt = Math.round(message.createdAt);
     }
     if (message.user !== "") {
       obj.user = message.user;
@@ -899,7 +899,7 @@ export const ActivityDTO: MessageFns<ActivityDTO> = {
     message.relatedTargetEntity = object.relatedTargetEntity ?? "";
     message.relatedTargetId = object.relatedTargetId ?? "";
     message.relatedEntityName = object.relatedEntityName ?? "";
-    message.createdAt = object.createdAt ?? "";
+    message.createdAt = object.createdAt ?? 0;
     message.user = object.user ?? "";
     message.world = object.world ?? "";
     message.campaign = object.campaign ?? "";
@@ -966,6 +966,17 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function longToNumber(int64: { toString(): string }): number {
+  const num = globalThis.Number(int64.toString());
+  if (num > globalThis.Number.MAX_SAFE_INTEGER) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  if (num < globalThis.Number.MIN_SAFE_INTEGER) {
+    throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
+  }
+  return num;
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

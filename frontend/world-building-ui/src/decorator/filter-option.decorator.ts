@@ -9,7 +9,7 @@ export interface FilterOptionConfig extends FilterOptionOptions {
     field: string;
 }
 
-export function FilterOption(options: FilterOptionOptions) {
+export function FilterOption(options: FilterOptionOptions = {}) {
     return function (target: any, propertyKey: string) {
         const fields = Reflect.getMetadata(EntityMetadataKeyEnum.FILTER_OPTION, target.constructor) || [];
         const field: FilterOptionConfig = { ...options, field: propertyKey };

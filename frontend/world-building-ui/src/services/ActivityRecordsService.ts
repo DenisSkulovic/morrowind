@@ -67,7 +67,7 @@ export class ActivityRecordsService {
                 else if (!response) throw new Error("No response from server")
                 else {
                     const success: boolean = response.getSuccess()
-                    return success
+                    resolve(success)
                 }
             })
         })
@@ -84,7 +84,7 @@ export class ActivityRecordsService {
                 else if (!response) reject(new Error("No response from server"))
                 else {
                     const activityRecords: ActivityRecord[] = response.getActivitiesList().map((dto) => Serializer.fromDTO(dto, new ActivityRecord()))
-                    return activityRecords
+                    resolve(activityRecords)
                 }
             })
         })

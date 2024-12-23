@@ -1,19 +1,12 @@
-import { useEffect } from 'react';
 import { Box, Typography, Paper, Grid2 } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
 import { DashboardOverview } from '../../../../../components/dashboard/DashboardOverview';
 import { GlobalSearch } from '../../../../../components/dashboard/GlobalSearch';
 import { QuickActions } from '../../../../../components/dashboard/QuickActions';
 import { RecentActivity } from '../../../../../components/dashboard/RecentActivity';
-import { RootState } from '../../../../../store/store';
 import { useRouter } from 'next/router';
 import { Account } from '../../../../../class/entities/Account';
-import { World } from '../../../../../class/entities/World';
-import { loadDashboardData } from '../../../../../store/slices/dashboardSlice';
-import { ContentStat } from '../../../../../class/ContentStat';
-import { RequestStatusEnum } from '../../../../../enum/RequestStatusEnum';
-import { useWorld } from '../../../../../hooks/useWorld';
 import { useAccount } from '../../../../../hooks/useAccount';
+import { useDashboardData } from '../../../../../hooks/useDashboardData';
 
 export default function Dashboard() {
     const router = useRouter();
@@ -21,19 +14,12 @@ export default function Dashboard() {
     if (typeof world_id !== 'string') throw new Error('World ID is required');
 
     const account: Account | null = useAccount();
-    const world: World | null = useWorld(world_id, account?.id || null);
+    const userId: string = account?.user || '';
 
-    const { status, error } = useSelector((state: RootState) => state.dashboard);
-
-    const dispatch = useDispatch();
-
-
-    useEffect(() => {
-        if (status === RequestStatusEnum.IDLE) {
-            loadDashboardData({ world_id });
-        }
-    }, [dispatch, status]);
-    const contentStats: ContentStat[] | null = useSelector((state: RootState) => state.dashboard.stats);
+    const {
+        stats,
+        activityRecords,
+    } = useDashboardData(world_id, userId);
 
     return (
         <Box sx={{ flexGrow: 1, p: 3 }}>
@@ -62,14 +48,14 @@ export default function Dashboard() {
                 {/* Content Overview */}
                 <Grid2 component="div">
                     <Paper sx={{ p: 2 }}>
-                        <DashboardOverview stats={contentStats} />
+                        <DashboardOverview stats={stats} />
                     </Paper>
                 </Grid2>
 
                 {/* Recent Activity */}
                 <Grid2 component="div">
                     <Paper sx={{ p: 2 }}>
-                        <RecentActivity />
+                        <RecentActivity activityRecords={activityRecords} worldId={world_id} userId={userId} />
                     </Paper>
                 </Grid2>
             </Grid2>

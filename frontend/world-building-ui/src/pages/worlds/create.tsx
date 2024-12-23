@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
-import { createWorld, WorldPlain } from '../../store/slices/worldSlice';
+import { createWorldThunk, WorldPlain } from '../../store/slices/worldSlice';
 import { useRouter } from 'next/router';
 import { Box, Container, Typography } from '@mui/material';
 import { Account } from '../../class/entities/Account';
@@ -22,7 +22,7 @@ const CreateWorldPage = () => {
     const formFields: FormFieldDefinition[] = getFormFields(World.prototype);
 
     const handleSubmit = async (worldPlain: WorldPlain) => {
-        await dispatch(createWorld({ worldPlain, userId }));
+        await dispatch(createWorldThunk({ worldPlain, userId }));
         router.push(routes.worlds());
     };
 

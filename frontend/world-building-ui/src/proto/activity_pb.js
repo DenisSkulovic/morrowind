@@ -1652,14 +1652,15 @@ proto.activity.ActivityDTO.prototype.toObject = function(opt_includeInstance) {
 proto.activity.ActivityDTO.toObject = function(includeInstance, msg) {
   var f, obj = {
     id: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    eventname: jspb.Message.getFieldWithDefault(msg, 2, 0),
-    relatedtargetentity: jspb.Message.getFieldWithDefault(msg, 3, ""),
-    relatedtargetid: jspb.Message.getFieldWithDefault(msg, 4, ""),
-    relatedentityname: jspb.Message.getFieldWithDefault(msg, 5, ""),
-    createdat: jspb.Message.getFieldWithDefault(msg, 6, ""),
-    user: jspb.Message.getFieldWithDefault(msg, 7, ""),
-    world: jspb.Message.getFieldWithDefault(msg, 8, ""),
-    campaign: jspb.Message.getFieldWithDefault(msg, 9, "")
+    label: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    eventname: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    relatedtargetentity: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    relatedtargetid: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    relatedentityname: jspb.Message.getFieldWithDefault(msg, 6, ""),
+    createdat: jspb.Message.getFieldWithDefault(msg, 7, 0),
+    user: jspb.Message.getFieldWithDefault(msg, 8, ""),
+    world: jspb.Message.getFieldWithDefault(msg, 9, ""),
+    campaign: jspb.Message.getFieldWithDefault(msg, 10, "")
   };
 
   if (includeInstance) {
@@ -1701,34 +1702,38 @@ proto.activity.ActivityDTO.deserializeBinaryFromReader = function(msg, reader) {
       msg.setId(value);
       break;
     case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setLabel(value);
+      break;
+    case 3:
       var value = /** @type {!proto.activity.ActivityEventNameEnumDTO} */ (reader.readEnum());
       msg.setEventname(value);
       break;
-    case 3:
+    case 4:
       var value = /** @type {string} */ (reader.readString());
       msg.setRelatedtargetentity(value);
       break;
-    case 4:
+    case 5:
       var value = /** @type {string} */ (reader.readString());
       msg.setRelatedtargetid(value);
       break;
-    case 5:
+    case 6:
       var value = /** @type {string} */ (reader.readString());
       msg.setRelatedentityname(value);
       break;
-    case 6:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setCreatedat(value);
-      break;
     case 7:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setUser(value);
+      var value = /** @type {number} */ (reader.readInt64());
+      msg.setCreatedat(value);
       break;
     case 8:
       var value = /** @type {string} */ (reader.readString());
-      msg.setWorld(value);
+      msg.setUser(value);
       break;
     case 9:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setWorld(value);
+      break;
+    case 10:
       var value = /** @type {string} */ (reader.readString());
       msg.setCampaign(value);
       break;
@@ -1768,59 +1773,66 @@ proto.activity.ActivityDTO.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
+  f = message.getLabel();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
   f = message.getEventname();
   if (f !== 0.0) {
     writer.writeEnum(
-      2,
+      3,
       f
     );
   }
   f = message.getRelatedtargetentity();
   if (f.length > 0) {
     writer.writeString(
-      3,
+      4,
       f
     );
   }
   f = message.getRelatedtargetid();
   if (f.length > 0) {
     writer.writeString(
-      4,
+      5,
       f
     );
   }
   f = message.getRelatedentityname();
   if (f.length > 0) {
     writer.writeString(
-      5,
+      6,
       f
     );
   }
   f = message.getCreatedat();
-  if (f.length > 0) {
-    writer.writeString(
-      6,
+  if (f !== 0) {
+    writer.writeInt64(
+      7,
       f
     );
   }
   f = message.getUser();
   if (f.length > 0) {
     writer.writeString(
-      7,
+      8,
       f
     );
   }
   f = message.getWorld();
   if (f.length > 0) {
     writer.writeString(
-      8,
+      9,
       f
     );
   }
   f = message.getCampaign();
   if (f.length > 0) {
     writer.writeString(
-      9,
+      10,
       f
     );
   }
@@ -1846,11 +1858,29 @@ proto.activity.ActivityDTO.prototype.setId = function(value) {
 
 
 /**
- * optional ActivityEventNameEnumDTO eventName = 2;
+ * optional string label = 2;
+ * @return {string}
+ */
+proto.activity.ActivityDTO.prototype.getLabel = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.activity.ActivityDTO} returns this
+ */
+proto.activity.ActivityDTO.prototype.setLabel = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional ActivityEventNameEnumDTO eventName = 3;
  * @return {!proto.activity.ActivityEventNameEnumDTO}
  */
 proto.activity.ActivityDTO.prototype.getEventname = function() {
-  return /** @type {!proto.activity.ActivityEventNameEnumDTO} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+  return /** @type {!proto.activity.ActivityEventNameEnumDTO} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
@@ -1859,33 +1889,15 @@ proto.activity.ActivityDTO.prototype.getEventname = function() {
  * @return {!proto.activity.ActivityDTO} returns this
  */
 proto.activity.ActivityDTO.prototype.setEventname = function(value) {
-  return jspb.Message.setProto3EnumField(this, 2, value);
+  return jspb.Message.setProto3EnumField(this, 3, value);
 };
 
 
 /**
- * optional string relatedTargetEntity = 3;
+ * optional string relatedTargetEntity = 4;
  * @return {string}
  */
 proto.activity.ActivityDTO.prototype.getRelatedtargetentity = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.activity.ActivityDTO} returns this
- */
-proto.activity.ActivityDTO.prototype.setRelatedtargetentity = function(value) {
-  return jspb.Message.setProto3StringField(this, 3, value);
-};
-
-
-/**
- * optional string relatedTargetId = 4;
- * @return {string}
- */
-proto.activity.ActivityDTO.prototype.getRelatedtargetid = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
 };
 
@@ -1894,16 +1906,16 @@ proto.activity.ActivityDTO.prototype.getRelatedtargetid = function() {
  * @param {string} value
  * @return {!proto.activity.ActivityDTO} returns this
  */
-proto.activity.ActivityDTO.prototype.setRelatedtargetid = function(value) {
+proto.activity.ActivityDTO.prototype.setRelatedtargetentity = function(value) {
   return jspb.Message.setProto3StringField(this, 4, value);
 };
 
 
 /**
- * optional string relatedEntityName = 5;
+ * optional string relatedTargetId = 5;
  * @return {string}
  */
-proto.activity.ActivityDTO.prototype.getRelatedentityname = function() {
+proto.activity.ActivityDTO.prototype.getRelatedtargetid = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
 };
 
@@ -1912,16 +1924,16 @@ proto.activity.ActivityDTO.prototype.getRelatedentityname = function() {
  * @param {string} value
  * @return {!proto.activity.ActivityDTO} returns this
  */
-proto.activity.ActivityDTO.prototype.setRelatedentityname = function(value) {
+proto.activity.ActivityDTO.prototype.setRelatedtargetid = function(value) {
   return jspb.Message.setProto3StringField(this, 5, value);
 };
 
 
 /**
- * optional string createdAt = 6;
+ * optional string relatedEntityName = 6;
  * @return {string}
  */
-proto.activity.ActivityDTO.prototype.getCreatedat = function() {
+proto.activity.ActivityDTO.prototype.getRelatedentityname = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
 };
 
@@ -1930,34 +1942,34 @@ proto.activity.ActivityDTO.prototype.getCreatedat = function() {
  * @param {string} value
  * @return {!proto.activity.ActivityDTO} returns this
  */
-proto.activity.ActivityDTO.prototype.setCreatedat = function(value) {
+proto.activity.ActivityDTO.prototype.setRelatedentityname = function(value) {
   return jspb.Message.setProto3StringField(this, 6, value);
 };
 
 
 /**
- * optional string user = 7;
+ * optional int64 createdAt = 7;
+ * @return {number}
+ */
+proto.activity.ActivityDTO.prototype.getCreatedat = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 7, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.activity.ActivityDTO} returns this
+ */
+proto.activity.ActivityDTO.prototype.setCreatedat = function(value) {
+  return jspb.Message.setProto3IntField(this, 7, value);
+};
+
+
+/**
+ * optional string user = 8;
  * @return {string}
  */
 proto.activity.ActivityDTO.prototype.getUser = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.activity.ActivityDTO} returns this
- */
-proto.activity.ActivityDTO.prototype.setUser = function(value) {
-  return jspb.Message.setProto3StringField(this, 7, value);
-};
-
-
-/**
- * optional string world = 8;
- * @return {string}
- */
-proto.activity.ActivityDTO.prototype.getWorld = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 8, ""));
 };
 
@@ -1966,16 +1978,16 @@ proto.activity.ActivityDTO.prototype.getWorld = function() {
  * @param {string} value
  * @return {!proto.activity.ActivityDTO} returns this
  */
-proto.activity.ActivityDTO.prototype.setWorld = function(value) {
+proto.activity.ActivityDTO.prototype.setUser = function(value) {
   return jspb.Message.setProto3StringField(this, 8, value);
 };
 
 
 /**
- * optional string campaign = 9;
+ * optional string world = 9;
  * @return {string}
  */
-proto.activity.ActivityDTO.prototype.getCampaign = function() {
+proto.activity.ActivityDTO.prototype.getWorld = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 9, ""));
 };
 
@@ -1984,8 +1996,26 @@ proto.activity.ActivityDTO.prototype.getCampaign = function() {
  * @param {string} value
  * @return {!proto.activity.ActivityDTO} returns this
  */
-proto.activity.ActivityDTO.prototype.setCampaign = function(value) {
+proto.activity.ActivityDTO.prototype.setWorld = function(value) {
   return jspb.Message.setProto3StringField(this, 9, value);
+};
+
+
+/**
+ * optional string campaign = 10;
+ * @return {string}
+ */
+proto.activity.ActivityDTO.prototype.getCampaign = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 10, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.activity.ActivityDTO} returns this
+ */
+proto.activity.ActivityDTO.prototype.setCampaign = function(value) {
+  return jspb.Message.setProto3StringField(this, 10, value);
 };
 
 

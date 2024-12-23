@@ -51,14 +51,15 @@ message ActivityHeadResponse {
 
 message ActivityDTO {
     string id = 1;
-    ActivityEventNameEnumDTO eventName = 2;
-    string relatedTargetEntity = 3;
-    string relatedTargetId = 4;
-    string relatedEntityName = 5;
-    string createdAt = 6;
-    string user = 7;
-    string world = 8;
-    string campaign = 9;
+    string label = 2;
+    ActivityEventNameEnumDTO eventName = 3;
+    string relatedTargetEntity = 4;
+    string relatedTargetId = 5;
+    string relatedEntityName = 6;
+    int64 createdAt = 7;
+    string user = 8;
+    string world = 9;
+    string campaign = 10;
 }
 
 enum ActivityEventNameEnumDTO {

@@ -19,7 +19,7 @@ interface PresetDialogProps {
 export const PresetDialog = ({ open, onClose, worldId }: PresetDialogProps): JSX.Element => {
     const account: Account | null = useAccount()
     const world: World | null = useWorld(worldId, account?.user || null)
-    const { presets, selectedPreset, setSelectedPreset, getPresetsStatus, loadPresetsStatus, loadWorldPreset, resetPresetLoading } = usePresets();
+    const { presets, selectedPreset, setSelectedPreset, getPresetsStatus, loadPresetsStatus, loadWorldPresetThunk, resetPresetLoading } = usePresets();
     const dispatch = useDispatch<AppDispatch>();
     const handlePresetChange = (event: SelectChangeEvent<PresetEnum>) => {
         setSelectedPreset(event.target.value as PresetEnum);
@@ -28,7 +28,7 @@ export const PresetDialog = ({ open, onClose, worldId }: PresetDialogProps): JSX
     const handleLoadPreset = () => {
         if (!account) throw new Error('Account not found');
         if (!selectedPreset) return;
-        dispatch(loadWorldPreset({ preset: selectedPreset, userId: account.user, worldId: worldId }));
+        dispatch(loadWorldPresetThunk({ preset: selectedPreset, userId: account.user, worldId: worldId }));
     };
 
     useEffect(() => {

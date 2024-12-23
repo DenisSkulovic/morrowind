@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../../store/store';
-import { deleteWorld, searchWorlds } from '../../store/slices/worldSlice';
+import { deleteWorldThunk, searchWorldsThunk } from '../../store/slices/worldSlice';
 import { RequestStatusEnum } from '../../enum/RequestStatusEnum';
 import { Box, Button, Card, CardActions, CardContent, CircularProgress, Container, Grid2, Typography } from '@mui/material';
 import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
@@ -28,12 +28,12 @@ const WorldsPage = () => {
             const context: Context = Context.build({ user });
             const filter: QueryFilter = QueryFilter.build({ field: "user", operator: "eq", value: userId });
             const query: SearchQuery = SearchQuery.build({ page: 1, pageSize: 100, filters: [filter] });
-            dispatch(searchWorlds({ query, context }));
+            dispatch(searchWorldsThunk({ query, context }));
         }
     }, [dispatch, searchedWorldsStatus]);
 
     const handleDelete = (id: string) => {
-        dispatch(deleteWorld(id));
+        dispatch(deleteWorldThunk(id));
     };
 
     if (searchedWorldsStatus === RequestStatusEnum.LOADING) {

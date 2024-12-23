@@ -23,6 +23,7 @@ import { SearchQuery } from "../../class/search/SearchQuery";
 import { Context } from "../../class/Context";
 import { ActivityService } from "../activity/activity.service";
 import { ActivityRecord } from "../activity/entities/ActivityRecord";
+import { ActivityEventNameEnum } from "../../enum/ActivityEventNameEnum";
 
 @Controller()
 export class WorldController {
@@ -154,14 +155,13 @@ export class WorldController {
         await this.worldService.loadPresetIntoWorld(preset, worldId, userId)
 
         // record activity
-        const newActivityRecord: ActivityRecord = ActivityRecord.build({
-            eventName: "WORLD_PRESET_LOADED",
-            label: `Loaded world preset: ${preset}`,
-            world: { id: worldId },
-            user: { id: userId }
-        })
         await this.activityService.create(
-            newActivityRecord,
+            ActivityRecord.build({
+                eventName: ActivityEventNameEnum.WORLD_PRESET_LOADED,
+                label: `Loaded world preset: ${preset}`,
+                world: { id: worldId },
+                user: { id: userId }
+            }),
             userId,
             worldId,
             source
