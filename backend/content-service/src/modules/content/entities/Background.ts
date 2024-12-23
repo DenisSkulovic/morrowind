@@ -99,7 +99,6 @@ export class Background extends ContentBase {
     }
 
     public static fromDTO(dto: BackgroundDTO): Background {
-        const pastExperience = new Background();
-        return Serializer.fromDTO(dto, pastExperience);
+        return Serializer.fromDTO(dto, new Background());
     }
 }

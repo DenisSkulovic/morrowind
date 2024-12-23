@@ -5,7 +5,10 @@ import { Serializable } from "../../../decorator/serializable.decorator";
 import { User } from "../../user/entities/User";
 import { Campaign } from "../../campaign/entities/Campaign";
 import { World } from "../../world/entities/World";
-import { ActivityDTO } from "../../../proto/activity";
+import { ActivityDTO, ActivityEventNameEnumDTO } from "../../../proto/activity";
+import { Serializer } from "../../../serializer";
+import { deserializeEnum, serializeEnum } from "../../../common/enum/util";
+import { ActivityEventNameEnum } from "../../../enum/ActivityEventNameEnum";
 
 
 @Entity()
@@ -21,8 +24,11 @@ export class ActivityRecord extends BaseEntity {
     idPrefix = "ACTIVITY_RECORD";
 
     @Column({ type: "varchar", length: 255 })
-    @Serializable()
-    eventName!: string;
+    @Serializable({
+        serialize: (val) => serializeEnum(ActivityEventNameEnum, ActivityEventNameEnumDTO, val),
+        deserialize: (val) => deserializeEnum(ActivityEventNameEnumDTO, ActivityEventNameEnum, val)
+    })
+    eventName!: ActivityEventNameEnum;
 
     @Column({ type: "varchar", length: 255 })
     @Serializable()
@@ -35,6 +41,10 @@ export class ActivityRecord extends BaseEntity {
     @Column({ type: "varchar", length: 255 })
     @Serializable()
     relatedTargetId?: string;
+
+    @Column({ type: "varchar", length: 255 })
+    @Serializable()
+    relatedEntityName?: string;
 
     @CreateDateColumn()
     @Serializable()
@@ -53,42 +63,15 @@ export class ActivityRecord extends BaseEntity {
     campaign!: Campaign;
 
     static build(body: any) {
-        const activityRecord = new ActivityRecord()
-        activityRecord.eventName = body.eventName
-        activityRecord.label = body.label
-        activityRecord.relatedTargetEntity = body.relatedTargetEntity
-        activityRecord.relatedTargetId = body.relatedTargetId
-        activityRecord.createdAt = body.createdAt
-        activityRecord.world = body.world
-        activityRecord.user = body.user
-        activityRecord.campaign = body.campaign
-        return activityRecord
+        return Object.assign(new ActivityRecord(), body)
     }
 
     toDTO(): ActivityDTO {
-        return {
-            id: this.id,
-            eventName: this.eventName,
-            relatedTargetEntity: this.relatedTargetEntity || "",
-            relatedTargetId: this.relatedTargetId || "",
-            createdAt: this.createdAt.toISOString(),
-            userId: this.user.id,
-            worldId: this.world.id,
-            campaignId: this.campaign.id,
-        }
+        return Serializer.toDTO(this)
     }
 
     static fromDTO(dto: ActivityDTO): ActivityRecord {
-        const activityRecord = new ActivityRecord()
-        activityRecord.id = dto.id
-        activityRecord.eventName = dto.eventName
-        activityRecord.relatedTargetEntity = dto.relatedTargetEntity
-        activityRecord.relatedTargetId = dto.relatedTargetId
-        activityRecord.createdAt = new Date(dto.createdAt)
-        activityRecord.world = { id: dto.worldId } as World
-        activityRecord.user = { id: dto.userId } as User
-        activityRecord.campaign = { id: dto.campaignId } as Campaign
-        return activityRecord
+        return Serializer.fromDTO(dto, new ActivityRecord())
     }
 
 }

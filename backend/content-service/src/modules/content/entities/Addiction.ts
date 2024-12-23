@@ -41,7 +41,6 @@ export class Addiction extends ContentBase {
     }
 
     public static fromDTO(dto: AddictionDTO): Addiction {
-        const addiction = new Addiction();
-        return Serializer.fromDTO(dto, addiction);
+        return Serializer.fromDTO(dto, new Addiction());
     }
 }

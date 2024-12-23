@@ -6,13 +6,75 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { SearchQueryDTO } from "./common";
+import { ContextDTO, SearchQueryDTO } from "./common";
 
 export const protobufPackage = "activity";
 
+export enum ActivityEventNameEnumDTO {
+  CONTENT_CREATED = 0,
+  CONTENT_UPDATED = 1,
+  CONTENT_DELETED = 2,
+  CONTENT_CREATED_BULK = 3,
+  CONTENT_UPDATED_BULK = 4,
+  CONTENT_DELETED_BULK = 5,
+  WORLD_PRESET_LOADED = 6,
+  UNRECOGNIZED = -1,
+}
+
+export function activityEventNameEnumDTOFromJSON(object: any): ActivityEventNameEnumDTO {
+  switch (object) {
+    case 0:
+    case "CONTENT_CREATED":
+      return ActivityEventNameEnumDTO.CONTENT_CREATED;
+    case 1:
+    case "CONTENT_UPDATED":
+      return ActivityEventNameEnumDTO.CONTENT_UPDATED;
+    case 2:
+    case "CONTENT_DELETED":
+      return ActivityEventNameEnumDTO.CONTENT_DELETED;
+    case 3:
+    case "CONTENT_CREATED_BULK":
+      return ActivityEventNameEnumDTO.CONTENT_CREATED_BULK;
+    case 4:
+    case "CONTENT_UPDATED_BULK":
+      return ActivityEventNameEnumDTO.CONTENT_UPDATED_BULK;
+    case 5:
+    case "CONTENT_DELETED_BULK":
+      return ActivityEventNameEnumDTO.CONTENT_DELETED_BULK;
+    case 6:
+    case "WORLD_PRESET_LOADED":
+      return ActivityEventNameEnumDTO.WORLD_PRESET_LOADED;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ActivityEventNameEnumDTO.UNRECOGNIZED;
+  }
+}
+
+export function activityEventNameEnumDTOToJSON(object: ActivityEventNameEnumDTO): string {
+  switch (object) {
+    case ActivityEventNameEnumDTO.CONTENT_CREATED:
+      return "CONTENT_CREATED";
+    case ActivityEventNameEnumDTO.CONTENT_UPDATED:
+      return "CONTENT_UPDATED";
+    case ActivityEventNameEnumDTO.CONTENT_DELETED:
+      return "CONTENT_DELETED";
+    case ActivityEventNameEnumDTO.CONTENT_CREATED_BULK:
+      return "CONTENT_CREATED_BULK";
+    case ActivityEventNameEnumDTO.CONTENT_UPDATED_BULK:
+      return "CONTENT_UPDATED_BULK";
+    case ActivityEventNameEnumDTO.CONTENT_DELETED_BULK:
+      return "CONTENT_DELETED_BULK";
+    case ActivityEventNameEnumDTO.WORLD_PRESET_LOADED:
+      return "WORLD_PRESET_LOADED";
+    case ActivityEventNameEnumDTO.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
 export interface ActivitySearchRequest {
-  userId: string;
-  worldId: string;
+  context: ContextDTO | undefined;
   search: SearchQueryDTO | undefined;
 }
 
@@ -24,8 +86,7 @@ export interface ActivitySearchResponse {
 }
 
 export interface ActivityClearAllRequest {
-  userId: string;
-  worldId: string;
+  context: ContextDTO | undefined;
 }
 
 export interface ActivityClearAllResponse {
@@ -33,8 +94,7 @@ export interface ActivityClearAllResponse {
 }
 
 export interface ActivityCreateRequest {
-  userId: string;
-  worldId: string;
+  context: ContextDTO | undefined;
   data: ActivityDTO | undefined;
 }
 
@@ -43,8 +103,7 @@ export interface ActivityCreateResponse {
 }
 
 export interface ActivityHeadRequest {
-  userId: string;
-  worldId: string;
+  context: ContextDTO | undefined;
   limit: number;
 }
 
@@ -54,29 +113,27 @@ export interface ActivityHeadResponse {
 
 export interface ActivityDTO {
   id: string;
-  eventName: string;
+  eventName: ActivityEventNameEnumDTO;
   relatedTargetEntity: string;
   relatedTargetId: string;
+  relatedEntityName: string;
   createdAt: string;
-  userId: string;
-  worldId: string;
-  campaignId: string;
+  user: string;
+  world: string;
+  campaign: string;
 }
 
 function createBaseActivitySearchRequest(): ActivitySearchRequest {
-  return { userId: "", worldId: "", search: undefined };
+  return { context: undefined, search: undefined };
 }
 
 export const ActivitySearchRequest: MessageFns<ActivitySearchRequest> = {
   encode(message: ActivitySearchRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.userId !== "") {
-      writer.uint32(10).string(message.userId);
-    }
-    if (message.worldId !== "") {
-      writer.uint32(18).string(message.worldId);
+    if (message.context !== undefined) {
+      ContextDTO.encode(message.context, writer.uint32(10).fork()).join();
     }
     if (message.search !== undefined) {
-      SearchQueryDTO.encode(message.search, writer.uint32(26).fork()).join();
+      SearchQueryDTO.encode(message.search, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -93,19 +150,11 @@ export const ActivitySearchRequest: MessageFns<ActivitySearchRequest> = {
             break;
           }
 
-          message.userId = reader.string();
+          message.context = ContextDTO.decode(reader, reader.uint32());
           continue;
         }
         case 2: {
           if (tag !== 18) {
-            break;
-          }
-
-          message.worldId = reader.string();
-          continue;
-        }
-        case 3: {
-          if (tag !== 26) {
             break;
           }
 
@@ -123,19 +172,15 @@ export const ActivitySearchRequest: MessageFns<ActivitySearchRequest> = {
 
   fromJSON(object: any): ActivitySearchRequest {
     return {
-      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
-      worldId: isSet(object.worldId) ? globalThis.String(object.worldId) : "",
+      context: isSet(object.context) ? ContextDTO.fromJSON(object.context) : undefined,
       search: isSet(object.search) ? SearchQueryDTO.fromJSON(object.search) : undefined,
     };
   },
 
   toJSON(message: ActivitySearchRequest): unknown {
     const obj: any = {};
-    if (message.userId !== "") {
-      obj.userId = message.userId;
-    }
-    if (message.worldId !== "") {
-      obj.worldId = message.worldId;
+    if (message.context !== undefined) {
+      obj.context = ContextDTO.toJSON(message.context);
     }
     if (message.search !== undefined) {
       obj.search = SearchQueryDTO.toJSON(message.search);
@@ -148,8 +193,9 @@ export const ActivitySearchRequest: MessageFns<ActivitySearchRequest> = {
   },
   fromPartial<I extends Exact<DeepPartial<ActivitySearchRequest>, I>>(object: I): ActivitySearchRequest {
     const message = createBaseActivitySearchRequest();
-    message.userId = object.userId ?? "";
-    message.worldId = object.worldId ?? "";
+    message.context = (object.context !== undefined && object.context !== null)
+      ? ContextDTO.fromPartial(object.context)
+      : undefined;
     message.search = (object.search !== undefined && object.search !== null)
       ? SearchQueryDTO.fromPartial(object.search)
       : undefined;
@@ -268,16 +314,13 @@ export const ActivitySearchResponse: MessageFns<ActivitySearchResponse> = {
 };
 
 function createBaseActivityClearAllRequest(): ActivityClearAllRequest {
-  return { userId: "", worldId: "" };
+  return { context: undefined };
 }
 
 export const ActivityClearAllRequest: MessageFns<ActivityClearAllRequest> = {
   encode(message: ActivityClearAllRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.userId !== "") {
-      writer.uint32(10).string(message.userId);
-    }
-    if (message.worldId !== "") {
-      writer.uint32(18).string(message.worldId);
+    if (message.context !== undefined) {
+      ContextDTO.encode(message.context, writer.uint32(10).fork()).join();
     }
     return writer;
   },
@@ -294,15 +337,7 @@ export const ActivityClearAllRequest: MessageFns<ActivityClearAllRequest> = {
             break;
           }
 
-          message.userId = reader.string();
-          continue;
-        }
-        case 2: {
-          if (tag !== 18) {
-            break;
-          }
-
-          message.worldId = reader.string();
+          message.context = ContextDTO.decode(reader, reader.uint32());
           continue;
         }
       }
@@ -315,19 +350,13 @@ export const ActivityClearAllRequest: MessageFns<ActivityClearAllRequest> = {
   },
 
   fromJSON(object: any): ActivityClearAllRequest {
-    return {
-      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
-      worldId: isSet(object.worldId) ? globalThis.String(object.worldId) : "",
-    };
+    return { context: isSet(object.context) ? ContextDTO.fromJSON(object.context) : undefined };
   },
 
   toJSON(message: ActivityClearAllRequest): unknown {
     const obj: any = {};
-    if (message.userId !== "") {
-      obj.userId = message.userId;
-    }
-    if (message.worldId !== "") {
-      obj.worldId = message.worldId;
+    if (message.context !== undefined) {
+      obj.context = ContextDTO.toJSON(message.context);
     }
     return obj;
   },
@@ -337,8 +366,9 @@ export const ActivityClearAllRequest: MessageFns<ActivityClearAllRequest> = {
   },
   fromPartial<I extends Exact<DeepPartial<ActivityClearAllRequest>, I>>(object: I): ActivityClearAllRequest {
     const message = createBaseActivityClearAllRequest();
-    message.userId = object.userId ?? "";
-    message.worldId = object.worldId ?? "";
+    message.context = (object.context !== undefined && object.context !== null)
+      ? ContextDTO.fromPartial(object.context)
+      : undefined;
     return message;
   },
 };
@@ -402,19 +432,16 @@ export const ActivityClearAllResponse: MessageFns<ActivityClearAllResponse> = {
 };
 
 function createBaseActivityCreateRequest(): ActivityCreateRequest {
-  return { userId: "", worldId: "", data: undefined };
+  return { context: undefined, data: undefined };
 }
 
 export const ActivityCreateRequest: MessageFns<ActivityCreateRequest> = {
   encode(message: ActivityCreateRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.userId !== "") {
-      writer.uint32(10).string(message.userId);
-    }
-    if (message.worldId !== "") {
-      writer.uint32(18).string(message.worldId);
+    if (message.context !== undefined) {
+      ContextDTO.encode(message.context, writer.uint32(10).fork()).join();
     }
     if (message.data !== undefined) {
-      ActivityDTO.encode(message.data, writer.uint32(26).fork()).join();
+      ActivityDTO.encode(message.data, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -431,19 +458,11 @@ export const ActivityCreateRequest: MessageFns<ActivityCreateRequest> = {
             break;
           }
 
-          message.userId = reader.string();
+          message.context = ContextDTO.decode(reader, reader.uint32());
           continue;
         }
         case 2: {
           if (tag !== 18) {
-            break;
-          }
-
-          message.worldId = reader.string();
-          continue;
-        }
-        case 3: {
-          if (tag !== 26) {
             break;
           }
 
@@ -461,19 +480,15 @@ export const ActivityCreateRequest: MessageFns<ActivityCreateRequest> = {
 
   fromJSON(object: any): ActivityCreateRequest {
     return {
-      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
-      worldId: isSet(object.worldId) ? globalThis.String(object.worldId) : "",
+      context: isSet(object.context) ? ContextDTO.fromJSON(object.context) : undefined,
       data: isSet(object.data) ? ActivityDTO.fromJSON(object.data) : undefined,
     };
   },
 
   toJSON(message: ActivityCreateRequest): unknown {
     const obj: any = {};
-    if (message.userId !== "") {
-      obj.userId = message.userId;
-    }
-    if (message.worldId !== "") {
-      obj.worldId = message.worldId;
+    if (message.context !== undefined) {
+      obj.context = ContextDTO.toJSON(message.context);
     }
     if (message.data !== undefined) {
       obj.data = ActivityDTO.toJSON(message.data);
@@ -486,8 +501,9 @@ export const ActivityCreateRequest: MessageFns<ActivityCreateRequest> = {
   },
   fromPartial<I extends Exact<DeepPartial<ActivityCreateRequest>, I>>(object: I): ActivityCreateRequest {
     const message = createBaseActivityCreateRequest();
-    message.userId = object.userId ?? "";
-    message.worldId = object.worldId ?? "";
+    message.context = (object.context !== undefined && object.context !== null)
+      ? ContextDTO.fromPartial(object.context)
+      : undefined;
     message.data = (object.data !== undefined && object.data !== null)
       ? ActivityDTO.fromPartial(object.data)
       : undefined;
@@ -554,19 +570,16 @@ export const ActivityCreateResponse: MessageFns<ActivityCreateResponse> = {
 };
 
 function createBaseActivityHeadRequest(): ActivityHeadRequest {
-  return { userId: "", worldId: "", limit: 0 };
+  return { context: undefined, limit: 0 };
 }
 
 export const ActivityHeadRequest: MessageFns<ActivityHeadRequest> = {
   encode(message: ActivityHeadRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.userId !== "") {
-      writer.uint32(10).string(message.userId);
-    }
-    if (message.worldId !== "") {
-      writer.uint32(18).string(message.worldId);
+    if (message.context !== undefined) {
+      ContextDTO.encode(message.context, writer.uint32(10).fork()).join();
     }
     if (message.limit !== 0) {
-      writer.uint32(24).int32(message.limit);
+      writer.uint32(16).int32(message.limit);
     }
     return writer;
   },
@@ -583,19 +596,11 @@ export const ActivityHeadRequest: MessageFns<ActivityHeadRequest> = {
             break;
           }
 
-          message.userId = reader.string();
+          message.context = ContextDTO.decode(reader, reader.uint32());
           continue;
         }
         case 2: {
-          if (tag !== 18) {
-            break;
-          }
-
-          message.worldId = reader.string();
-          continue;
-        }
-        case 3: {
-          if (tag !== 24) {
+          if (tag !== 16) {
             break;
           }
 
@@ -613,19 +618,15 @@ export const ActivityHeadRequest: MessageFns<ActivityHeadRequest> = {
 
   fromJSON(object: any): ActivityHeadRequest {
     return {
-      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
-      worldId: isSet(object.worldId) ? globalThis.String(object.worldId) : "",
+      context: isSet(object.context) ? ContextDTO.fromJSON(object.context) : undefined,
       limit: isSet(object.limit) ? globalThis.Number(object.limit) : 0,
     };
   },
 
   toJSON(message: ActivityHeadRequest): unknown {
     const obj: any = {};
-    if (message.userId !== "") {
-      obj.userId = message.userId;
-    }
-    if (message.worldId !== "") {
-      obj.worldId = message.worldId;
+    if (message.context !== undefined) {
+      obj.context = ContextDTO.toJSON(message.context);
     }
     if (message.limit !== 0) {
       obj.limit = Math.round(message.limit);
@@ -638,8 +639,9 @@ export const ActivityHeadRequest: MessageFns<ActivityHeadRequest> = {
   },
   fromPartial<I extends Exact<DeepPartial<ActivityHeadRequest>, I>>(object: I): ActivityHeadRequest {
     const message = createBaseActivityHeadRequest();
-    message.userId = object.userId ?? "";
-    message.worldId = object.worldId ?? "";
+    message.context = (object.context !== undefined && object.context !== null)
+      ? ContextDTO.fromPartial(object.context)
+      : undefined;
     message.limit = object.limit ?? 0;
     return message;
   },
@@ -710,13 +712,14 @@ export const ActivityHeadResponse: MessageFns<ActivityHeadResponse> = {
 function createBaseActivityDTO(): ActivityDTO {
   return {
     id: "",
-    eventName: "",
+    eventName: 0,
     relatedTargetEntity: "",
     relatedTargetId: "",
+    relatedEntityName: "",
     createdAt: "",
-    userId: "",
-    worldId: "",
-    campaignId: "",
+    user: "",
+    world: "",
+    campaign: "",
   };
 }
 
@@ -725,8 +728,8 @@ export const ActivityDTO: MessageFns<ActivityDTO> = {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
     }
-    if (message.eventName !== "") {
-      writer.uint32(18).string(message.eventName);
+    if (message.eventName !== 0) {
+      writer.uint32(16).int32(message.eventName);
     }
     if (message.relatedTargetEntity !== "") {
       writer.uint32(26).string(message.relatedTargetEntity);
@@ -734,17 +737,20 @@ export const ActivityDTO: MessageFns<ActivityDTO> = {
     if (message.relatedTargetId !== "") {
       writer.uint32(34).string(message.relatedTargetId);
     }
+    if (message.relatedEntityName !== "") {
+      writer.uint32(42).string(message.relatedEntityName);
+    }
     if (message.createdAt !== "") {
-      writer.uint32(42).string(message.createdAt);
+      writer.uint32(50).string(message.createdAt);
     }
-    if (message.userId !== "") {
-      writer.uint32(50).string(message.userId);
+    if (message.user !== "") {
+      writer.uint32(58).string(message.user);
     }
-    if (message.worldId !== "") {
-      writer.uint32(58).string(message.worldId);
+    if (message.world !== "") {
+      writer.uint32(66).string(message.world);
     }
-    if (message.campaignId !== "") {
-      writer.uint32(66).string(message.campaignId);
+    if (message.campaign !== "") {
+      writer.uint32(74).string(message.campaign);
     }
     return writer;
   },
@@ -765,11 +771,11 @@ export const ActivityDTO: MessageFns<ActivityDTO> = {
           continue;
         }
         case 2: {
-          if (tag !== 18) {
+          if (tag !== 16) {
             break;
           }
 
-          message.eventName = reader.string();
+          message.eventName = reader.int32() as any;
           continue;
         }
         case 3: {
@@ -793,7 +799,7 @@ export const ActivityDTO: MessageFns<ActivityDTO> = {
             break;
           }
 
-          message.createdAt = reader.string();
+          message.relatedEntityName = reader.string();
           continue;
         }
         case 6: {
@@ -801,7 +807,7 @@ export const ActivityDTO: MessageFns<ActivityDTO> = {
             break;
           }
 
-          message.userId = reader.string();
+          message.createdAt = reader.string();
           continue;
         }
         case 7: {
@@ -809,7 +815,7 @@ export const ActivityDTO: MessageFns<ActivityDTO> = {
             break;
           }
 
-          message.worldId = reader.string();
+          message.user = reader.string();
           continue;
         }
         case 8: {
@@ -817,7 +823,15 @@ export const ActivityDTO: MessageFns<ActivityDTO> = {
             break;
           }
 
-          message.campaignId = reader.string();
+          message.world = reader.string();
+          continue;
+        }
+        case 9: {
+          if (tag !== 74) {
+            break;
+          }
+
+          message.campaign = reader.string();
           continue;
         }
       }
@@ -832,13 +846,14 @@ export const ActivityDTO: MessageFns<ActivityDTO> = {
   fromJSON(object: any): ActivityDTO {
     return {
       id: isSet(object.id) ? globalThis.String(object.id) : "",
-      eventName: isSet(object.eventName) ? globalThis.String(object.eventName) : "",
+      eventName: isSet(object.eventName) ? activityEventNameEnumDTOFromJSON(object.eventName) : 0,
       relatedTargetEntity: isSet(object.relatedTargetEntity) ? globalThis.String(object.relatedTargetEntity) : "",
       relatedTargetId: isSet(object.relatedTargetId) ? globalThis.String(object.relatedTargetId) : "",
+      relatedEntityName: isSet(object.relatedEntityName) ? globalThis.String(object.relatedEntityName) : "",
       createdAt: isSet(object.createdAt) ? globalThis.String(object.createdAt) : "",
-      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
-      worldId: isSet(object.worldId) ? globalThis.String(object.worldId) : "",
-      campaignId: isSet(object.campaignId) ? globalThis.String(object.campaignId) : "",
+      user: isSet(object.user) ? globalThis.String(object.user) : "",
+      world: isSet(object.world) ? globalThis.String(object.world) : "",
+      campaign: isSet(object.campaign) ? globalThis.String(object.campaign) : "",
     };
   },
 
@@ -847,8 +862,8 @@ export const ActivityDTO: MessageFns<ActivityDTO> = {
     if (message.id !== "") {
       obj.id = message.id;
     }
-    if (message.eventName !== "") {
-      obj.eventName = message.eventName;
+    if (message.eventName !== 0) {
+      obj.eventName = activityEventNameEnumDTOToJSON(message.eventName);
     }
     if (message.relatedTargetEntity !== "") {
       obj.relatedTargetEntity = message.relatedTargetEntity;
@@ -856,17 +871,20 @@ export const ActivityDTO: MessageFns<ActivityDTO> = {
     if (message.relatedTargetId !== "") {
       obj.relatedTargetId = message.relatedTargetId;
     }
+    if (message.relatedEntityName !== "") {
+      obj.relatedEntityName = message.relatedEntityName;
+    }
     if (message.createdAt !== "") {
       obj.createdAt = message.createdAt;
     }
-    if (message.userId !== "") {
-      obj.userId = message.userId;
+    if (message.user !== "") {
+      obj.user = message.user;
     }
-    if (message.worldId !== "") {
-      obj.worldId = message.worldId;
+    if (message.world !== "") {
+      obj.world = message.world;
     }
-    if (message.campaignId !== "") {
-      obj.campaignId = message.campaignId;
+    if (message.campaign !== "") {
+      obj.campaign = message.campaign;
     }
     return obj;
   },
@@ -877,13 +895,14 @@ export const ActivityDTO: MessageFns<ActivityDTO> = {
   fromPartial<I extends Exact<DeepPartial<ActivityDTO>, I>>(object: I): ActivityDTO {
     const message = createBaseActivityDTO();
     message.id = object.id ?? "";
-    message.eventName = object.eventName ?? "";
+    message.eventName = object.eventName ?? 0;
     message.relatedTargetEntity = object.relatedTargetEntity ?? "";
     message.relatedTargetId = object.relatedTargetId ?? "";
+    message.relatedEntityName = object.relatedEntityName ?? "";
     message.createdAt = object.createdAt ?? "";
-    message.userId = object.userId ?? "";
-    message.worldId = object.worldId ?? "";
-    message.campaignId = object.campaignId ?? "";
+    message.user = object.user ?? "";
+    message.world = object.world ?? "";
+    message.campaign = object.campaign ?? "";
     return message;
   },
 };

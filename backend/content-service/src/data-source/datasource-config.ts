@@ -1,4 +1,4 @@
-import { DataSource, DataSourceOptions } from 'typeorm';
+import { DataSourceOptions } from 'typeorm';
 import { DataSourceEnum } from '../common/enum/DataSourceEnum';
 import { getEnvParam } from '../common/util/getEnvParam';
 import { join } from 'path';
@@ -15,11 +15,7 @@ const env = {
 }
 
 const entityPaths = [
-    join(__dirname, '../modules/content/entities/**/*.{js,ts}'),
-    join(__dirname, '../modules/account/entities/*.{js,ts}'),
-    join(__dirname, '../modules/user/entities/*.{js,ts}'),
-    join(__dirname, '../modules/world/entities/*.{js,ts}'),
-    join(__dirname, '../modules/campaign/entities/*.{js,ts}'),
+    join(__dirname, '../**/entities/**/*.{js,ts}'),
 ]
 
 export const worldDbOptions: DataSourceOptions = {

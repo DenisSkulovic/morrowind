@@ -8,6 +8,7 @@ import { Serializable } from "./decorator/serializable.decorator";
 export abstract class ContentBase extends BaseEntity {
 
     id?: string
+    name!: string
     idPrefix?: string
     type?: string
 

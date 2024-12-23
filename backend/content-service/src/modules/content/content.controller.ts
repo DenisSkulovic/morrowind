@@ -20,6 +20,7 @@ import { Context } from '../../class/Context';
 import { SearchQuery } from '../../class/search/SearchQuery';
 import { ActivityService } from '../activity/activity.service';
 import { ActivityRecord } from '../activity/entities/ActivityRecord';
+import { ActivityEventNameEnum } from '../../enum/ActivityEventNameEnum';
 
 @Controller()
 export class ContentController {
@@ -37,13 +38,14 @@ export class ContentController {
         if (!userId) throw new Error(`userId cannot be undefined`)
         if (!contentBody) throw new Error(`contentBody cannot be undefined`)
         const entity = deserializeContentBodyDTO(contentBody)
-        const result = await this.contentService.create(entityName, entity, deserializeEnum(DataSourceEnumDTO, DataSourceEnum, source));
+        const result: ContentBase = await this.contentService.create(entityName, entity, deserializeEnum(DataSourceEnumDTO, DataSourceEnum, source));
 
         // record activity
         const newActivityRecord: ActivityRecord = ActivityRecord.build({
-            eventName: "CONTENT_CREATED",
+            eventName: ActivityEventNameEnum.CONTENT_CREATED,
             label: `Created content`,
             relatedTargetEntity: entityName,
+            relatedTargetName: result.name,
             relatedTargetId: result.id,
             world: { id: worldId },
             user: { id: userId }
@@ -72,9 +74,10 @@ export class ContentController {
 
         // record activity
         const newActivityRecord: ActivityRecord = ActivityRecord.build({
-            eventName: "CONTENT_UPDATED",
+            eventName: ActivityEventNameEnum.CONTENT_UPDATED,
             label: `Updated content`,
             relatedTargetEntity: entityName,
+            relatedTargetName: result.name,
             relatedTargetId: result.id,
             world: { id: worldId },
             user: { id: userId }
@@ -100,7 +103,7 @@ export class ContentController {
 
         // record activity
         const newActivityRecord: ActivityRecord = ActivityRecord.build({
-            eventName: "CONTENT_DELETED",
+            eventName: ActivityEventNameEnum.CONTENT_DELETED,
             label: `Deleted content`,
             relatedTargetEntity: entityName,
             relatedTargetId: id,
@@ -140,7 +143,7 @@ export class ContentController {
 
         // record activity
         const newActivityRecord: ActivityRecord = ActivityRecord.build({
-            eventName: "CONTENT_CREATED_BULK",
+            eventName: ActivityEventNameEnum.CONTENT_CREATED_BULK,
             label: `Created ${entities.length} content in bulk`,
             relatedTargetEntity: entityName,
             world: { id: worldId },
@@ -171,7 +174,7 @@ export class ContentController {
 
         // record activity
         const newActivityRecord: ActivityRecord = ActivityRecord.build({
-            eventName: "CONTENT_UPDATED_BULK",
+            eventName: ActivityEventNameEnum.CONTENT_UPDATED_BULK,
             label: `Updated ${entities.length} content in bulk`,
             relatedTargetEntity: entityName,
             world: { id: worldId },
@@ -198,7 +201,7 @@ export class ContentController {
 
         // record activity
         const newActivityRecord: ActivityRecord = ActivityRecord.build({
-            eventName: "CONTENT_DELETED_BULK",
+            eventName: ActivityEventNameEnum.CONTENT_DELETED_BULK,
             label: `Deleted ${ids.length} content in bulk`,
             relatedTargetEntity: entityName,
             world: { id: worldId },

@@ -5,6 +5,7 @@ import { DataSourceEnum } from '../../common/enum/DataSourceEnum';
 import { InjectDataSourceModule } from '../../data-source/inject-datasource.module';
 import { WorldModule } from '../world/world.module';
 import { CampaignModule } from '../campaign/campaign.module';
+import { ActivityModule } from '../activity/activity.module';
 
 @Module({
     imports: [
@@ -14,6 +15,7 @@ import { CampaignModule } from '../campaign/campaign.module';
         ]),
         forwardRef(() => WorldModule),
         forwardRef(() => CampaignModule),
+        forwardRef(() => ActivityModule),
     ],
     controllers: [ContentController],
     providers: [
@@ -22,6 +24,7 @@ import { CampaignModule } from '../campaign/campaign.module';
             useClass: ContentService,
         },
         ContentService,
+
     ],
     exports: ['IContentService', ContentService],
 })

@@ -11,3 +11,5 @@ export const entityNamesToDisplayInStats = [
     EntityEnum.Faction,
     EntityEnum.Disease,
 ];
+
+export const activityRecordsHeadLimit = 10

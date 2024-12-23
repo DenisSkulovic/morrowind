@@ -33,7 +33,7 @@ export class GeneratorController {
         ])
         if (!user) throw new Error("User not found")
         if (!world) throw new Error("World not found")
-        return new Context(user, world, campaign || undefined)
+        return Context.build({ user, world, campaign: campaign || undefined })
     }
 
     @GrpcMethod('GeneratorService', 'generateItems')

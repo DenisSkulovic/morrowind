@@ -17,6 +17,9 @@ export class UpdateContentRequest extends jspb.Message {
   hasContext(): boolean;
   clearContext(): UpdateContentRequest;
 
+  getSource(): common_pb.DataSourceEnumDTO;
+  setSource(value: common_pb.DataSourceEnumDTO): UpdateContentRequest;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): UpdateContentRequest.AsObject;
   static toObject(includeInstance: boolean, msg: UpdateContentRequest): UpdateContentRequest.AsObject;
@@ -30,6 +33,7 @@ export namespace UpdateContentRequest {
     contentbody?: ContentBodyDTO.AsObject,
     entityname: string,
     context?: common_pb.ContextDTO.AsObject,
+    source: common_pb.DataSourceEnumDTO,
   }
 }
 
@@ -65,6 +69,9 @@ export class DeleteContentRequest extends jspb.Message {
   hasContext(): boolean;
   clearContext(): DeleteContentRequest;
 
+  getSource(): common_pb.DataSourceEnumDTO;
+  setSource(value: common_pb.DataSourceEnumDTO): DeleteContentRequest;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): DeleteContentRequest.AsObject;
   static toObject(includeInstance: boolean, msg: DeleteContentRequest): DeleteContentRequest.AsObject;
@@ -78,6 +85,7 @@ export namespace DeleteContentRequest {
     entityname: string,
     id: string,
     context?: common_pb.ContextDTO.AsObject,
+    source: common_pb.DataSourceEnumDTO,
   }
 }
 
@@ -113,6 +121,9 @@ export class SearchContentRequest extends jspb.Message {
   hasContext(): boolean;
   clearContext(): SearchContentRequest;
 
+  getSource(): common_pb.DataSourceEnumDTO;
+  setSource(value: common_pb.DataSourceEnumDTO): SearchContentRequest;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): SearchContentRequest.AsObject;
   static toObject(includeInstance: boolean, msg: SearchContentRequest): SearchContentRequest.AsObject;
@@ -126,6 +137,7 @@ export namespace SearchContentRequest {
     entityname: string,
     query?: common_pb.SearchQueryDTO.AsObject,
     context?: common_pb.ContextDTO.AsObject,
+    source: common_pb.DataSourceEnumDTO,
   }
 }
 
@@ -172,6 +184,9 @@ export class GetContentStatsRequest extends jspb.Message {
   clearEntitynamesList(): GetContentStatsRequest;
   addEntitynames(value: string, index?: number): GetContentStatsRequest;
 
+  getSource(): common_pb.DataSourceEnumDTO;
+  setSource(value: common_pb.DataSourceEnumDTO): GetContentStatsRequest;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetContentStatsRequest.AsObject;
   static toObject(includeInstance: boolean, msg: GetContentStatsRequest): GetContentStatsRequest.AsObject;
@@ -184,6 +199,7 @@ export namespace GetContentStatsRequest {
   export type AsObject = {
     context?: common_pb.ContextDTO.AsObject,
     entitynamesList: Array<string>,
+    source: common_pb.DataSourceEnumDTO,
   }
 }
 

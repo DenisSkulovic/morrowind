@@ -5,6 +5,7 @@ import generatorReducer from './slices/generatorSlice';
 import uiReducer from './slices/uiSlice';
 import worldReducer from './slices/worldSlice';
 import dashboardReducer from './slices/dashboardSlice';
+
 const store = configureStore({
     reducer: {
         account: accountReducer,

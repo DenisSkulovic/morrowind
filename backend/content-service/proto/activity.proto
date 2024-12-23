@@ -12,9 +12,8 @@ service ActivityService {
 }
 
 message ActivitySearchRequest {
-    string userId = 1;
-    string worldId = 2;
-    common.SearchQueryDTO search = 3;
+    common.ContextDTO context = 1;
+    common.SearchQueryDTO search = 2;
 }
 
 message ActivitySearchResponse {
@@ -25,8 +24,7 @@ message ActivitySearchResponse {
 }
 
 message ActivityClearAllRequest {
-    string userId = 1;
-    string worldId = 2;
+    common.ContextDTO context = 1;
 }
 
 message ActivityClearAllResponse {
@@ -34,9 +32,8 @@ message ActivityClearAllResponse {
 }
 
 message ActivityCreateRequest {
-    string userId = 1;
-    string worldId = 2;
-    ActivityDTO data = 3;
+    common.ContextDTO context = 1;
+    ActivityDTO data = 2;
 }
 
 message ActivityCreateResponse {
@@ -44,9 +41,8 @@ message ActivityCreateResponse {
 }
 
 message ActivityHeadRequest {
-    string userId = 1;
-    string worldId = 2;
-    int32 limit = 3;
+    common.ContextDTO context = 1;
+    int32 limit = 2;
 }
 
 message ActivityHeadResponse {
@@ -55,11 +51,22 @@ message ActivityHeadResponse {
 
 message ActivityDTO {
     string id = 1;
-    string eventName = 2;
+    ActivityEventNameEnumDTO eventName = 2;
     string relatedTargetEntity = 3;
     string relatedTargetId = 4;
-    string createdAt = 5;
-    string userId = 6;
-    string worldId = 7;
-    string campaignId = 8;
+    string relatedEntityName = 5;
+    string createdAt = 6;
+    string user = 7;
+    string world = 8;
+    string campaign = 9;
+}
+
+enum ActivityEventNameEnumDTO {
+    CONTENT_CREATED = 0;
+    CONTENT_UPDATED = 1;
+    CONTENT_DELETED = 2;
+    CONTENT_CREATED_BULK = 3;
+    CONTENT_UPDATED_BULK = 4;
+    CONTENT_DELETED_BULK = 5;
+    WORLD_PRESET_LOADED = 6;
 }

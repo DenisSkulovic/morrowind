@@ -84,8 +84,7 @@ export class CharacterGenInstruction extends ContentBase {
     }
 
     public static fromDTO(dto: CharacterGenInstructionDTO): CharacterGenInstruction {
-        const chGenInst = new CharacterGenInstruction();
-        return Serializer.fromDTO(dto, chGenInst);
+        return Serializer.fromDTO(dto, new CharacterGenInstruction());
     }
 }
 

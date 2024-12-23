@@ -14,6 +14,8 @@ import {
     ActivityCreateResponse
 } from '../../proto/activity';
 import { ActivityRecord } from './entities/ActivityRecord';
+import { Context } from '../../class/Context';
+import { Serializer } from '../../serializer';
 
 @Controller()
 export class ActivityController {
@@ -26,10 +28,15 @@ export class ActivityController {
     @GrpcMethod('ActivityService', 'search')
     public async search(request: ActivitySearchRequest): Promise<ActivitySearchResponse> {
         const searchQuery: SearchQuery | undefined = request.search ? SearchQuery.fromDTO(request.search) : undefined;
+        const context: Context = Serializer.fromDTO(request.context, new Context())
+        const userId: string = context.user.id
+        const worldId: string | undefined = context.world?.id
+        if (!userId) throw new Error("did not find user id in request context")
+        if (!worldId) throw new Error("did not find world id in request context")
         const result = await this.activityService.search(
             DataSourceEnum.DATA_SOURCE_WORLD,
-            request.userId,
-            request.worldId,
+            userId,
+            worldId,
             searchQuery
         );
         return {
@@ -42,7 +49,12 @@ export class ActivityController {
 
     @GrpcMethod('ActivityService', 'clearAll')
     public async clearAll(request: ActivityClearAllRequest): Promise<ActivityClearAllResponse> {
-        await this.activityService.clearAll(DataSourceEnum.DATA_SOURCE_WORLD, request.userId, request.worldId);
+        const context: Context = Serializer.fromDTO(request.context, new Context())
+        const userId: string = context.user.id
+        const worldId: string | undefined = context.world?.id
+        if (!userId) throw new Error("did not find user id in request context")
+        if (!worldId) throw new Error("did not find world id in request context")
+        await this.activityService.clearAll(DataSourceEnum.DATA_SOURCE_WORLD, userId, worldId);
         return { success: true };
     }
 
@@ -52,10 +64,15 @@ export class ActivityController {
             Method: ActivityService.head
             Request: ${JSON.stringify(request)}
         `);
+        const context: Context = Serializer.fromDTO(request.context, new Context())
+        const userId: string = context.user.id
+        const worldId: string | undefined = context.world?.id
+        if (!userId) throw new Error("did not find user id in request context")
+        if (!worldId) throw new Error("did not find world id in request context")
         const result = await this.activityService.search(
             DataSourceEnum.DATA_SOURCE_WORLD,
-            request.userId,
-            request.worldId,
+            userId,
+            worldId,
             new SearchQuery(1, request.limit || 10)
         );
         return { activities: result.activities.map(activity => activity.toDTO()) };
@@ -67,10 +84,15 @@ export class ActivityController {
             Method: ActivityService.create
             Request: ${JSON.stringify(request)}
         `);
+        const context: Context = Serializer.fromDTO(request.context, new Context())
+        const userId: string = context.user.id
+        const worldId: string | undefined = context.world?.id
+        if (!userId) throw new Error("did not find user id in request context")
+        if (!worldId) throw new Error("did not find world id in request context")
         const result: ActivityRecord[] = await this.activityService.create(
             request.data,
-            request.userId,
-            request.worldId,
+            userId,
+            worldId,
             DataSourceEnum.DATA_SOURCE_WORLD
         );
         return { success: result.length === 1 };

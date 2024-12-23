@@ -43,7 +43,7 @@ export class WorldController {
         if (!world) throw new Error(`failed to find World for worldId: "${contextDTO.world}"`)
         console.log(`user`, user)
         console.log(`world`, world)
-        return new Context(user, world)
+        return Context.build({ user, world })
     }
 
     @GrpcMethod('WorldService', 'createWorld')

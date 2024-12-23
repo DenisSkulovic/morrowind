@@ -151,7 +151,6 @@ export class Character extends TaggableContentBase {
     }
 
     public static fromDTO(dto: CharacterDTO): Character {
-        const character = new Character();
-        return Serializer.fromDTO(dto, character);
+        return Serializer.fromDTO(dto, new Character());
     }
 }

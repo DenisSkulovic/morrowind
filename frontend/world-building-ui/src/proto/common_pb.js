@@ -2,18 +2,15 @@
 /**
  * @fileoverview
  * @enhanceable
- * @suppress {missingRequire} reports error on implicit type usages.
  * @suppress {messageConventions} JS Compiler reports an error if a variable or
  *     field starts with 'MSG_' and isn't a translatable message.
  * @public
  */
 // GENERATED CODE -- DO NOT EDIT!
-/* eslint-disable */
-// @ts-nocheck
 
 var jspb = require('google-protobuf');
 var goog = jspb;
-var global = (function() { return this || window || global || self || Function('return this')(); }).call(null);
+var global = Function('return this')();
 
 goog.exportSymbol('proto.common.AccountDTO', null, global);
 goog.exportSymbol('proto.common.AddictionDTO', null, global);
@@ -6388,10 +6385,8 @@ proto.common.ItemDTO.deserializeBinaryFromReader = function(msg, reader) {
       msg.setDescription(value);
       break;
     case 7:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedInt32() : [reader.readInt32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addSize(values[i]);
-      }
+      var value = /** @type {!Array<number>} */ (reader.readPackedInt32());
+      msg.setSizeList(value);
       break;
     case 8:
       var value = /** @type {number} */ (reader.readInt32());
@@ -7947,10 +7942,8 @@ proto.common.ItemActionsDTO.deserializeBinaryFromReader = function(msg, reader) 
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var values = /** @type {!Array<!proto.common.ItemActionEnumDTO>} */ (reader.isDelimited() ? reader.readPackedEnum() : [reader.readEnum()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addActions(values[i]);
-      }
+      var value = /** @type {!Array<!proto.common.ItemActionEnumDTO>} */ (reader.readPackedEnum());
+      msg.setActionsList(value);
       break;
     default:
       reader.skipField();
@@ -8146,10 +8139,8 @@ proto.common.StorageSlotDTO.deserializeBinaryFromReader = function(msg, reader) 
       msg.setWorld(value);
       break;
     case 8:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedInt32() : [reader.readInt32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addGrid(values[i]);
-      }
+      var value = /** @type {!Array<number>} */ (reader.readPackedInt32());
+      msg.setGridList(value);
       break;
     case 9:
       var value = new proto.common.StorageGridDTO;
@@ -20536,10 +20527,8 @@ proto.common.StorageSlotDefinitionDTO.deserializeBinaryFromReader = function(msg
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedInt32() : [reader.readInt32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addGrid(values[i]);
-      }
+      var value = /** @type {!Array<number>} */ (reader.readPackedInt32());
+      msg.setGridList(value);
       break;
     case 2:
       var value = /** @type {string} */ (reader.readString());

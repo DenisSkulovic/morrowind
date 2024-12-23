@@ -36,7 +36,6 @@ export class Birthsign extends ContentBase {
     }
 
     public static fromDTO(dto: BirthsignDTO): Birthsign {
-        const birthsign = new Birthsign();
-        return Serializer.fromDTO(dto, birthsign);
+        return Serializer.fromDTO(dto, new Birthsign());
     }
 }

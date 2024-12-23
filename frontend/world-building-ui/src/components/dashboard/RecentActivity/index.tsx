@@ -1,43 +1,16 @@
-import { Card, CardContent, Typography, List, ListItem, ListItemText } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { Card, CardContent, Typography, List, ListItem, ListItemText, Link } from '@mui/material';
+import { useActivityRecordsHead } from '../../../hooks/useActivityRecordsHead';
+import { ActivityRecord } from '../../../class/entities/ActivityRecord';
+import { routes } from '../../../routes';
 
-interface RecentActivity {
-    id: string;
-    entityType: string; // 'character', 'item', etc
-    entityId: string;
-    action: 'created' | 'updated' | 'deleted';
-    timestamp: Date;
-    entityName: string;
+
+interface RecentActivityProps {
+    worldId: string,
+    userId: string
 }
 
-export const RecentActivity = () => {
-    const [activities, setActivities] = useState<RecentActivity[]>([]);
-
-    // In a real implementation, this would come from Redux/API
-    // Mocked for now
-    const mockActivities: RecentActivity[] = [
-        {
-            id: '1',
-            entityType: 'character',
-            entityId: 'char1',
-            action: 'created',
-            timestamp: new Date(),
-            entityName: 'Gandalf the Grey'
-        },
-        {
-            id: '2',
-            entityType: 'item',
-            entityId: 'item1',
-            action: 'updated',
-            timestamp: new Date(Date.now() - 3600000),
-            entityName: 'Glamdring'
-        }
-    ];
-
-    useEffect(() => {
-        // In real implementation, fetch from API
-        setActivities(mockActivities);
-    }, []);
+export const RecentActivity = ({ worldId, userId }: RecentActivityProps): JSX.Element => {
+    const { activities, status, error } = useActivityRecordsHead(worldId, userId)
 
     const formatTimestamp = (date: Date) => {
         return new Intl.RelativeTimeFormat('en', { numeric: 'auto' }).format(
@@ -46,17 +19,25 @@ export const RecentActivity = () => {
         );
     };
 
-    const getActionText = (activity: RecentActivity) => {
-        switch (activity.action) {
-            case 'created':
-                return 'Created new';
-            case 'updated':
-                return 'Updated';
-            case 'deleted':
-                return 'Deleted';
-            default:
-                return 'Modified';
+    const getActionText = (activity: ActivityRecord) => {
+        const label: string | undefined = activity.label
+        const getLinkTextAndHref = (): { href: string, linkText: string } => {
+            if (activity.relatedTargetId && activity.relatedEntityName && activity.relatedTargetEntity) {
+                return {
+                    linkText: `${activity.relatedEntityName} (${activity.relatedTargetEntity})`,
+                    href: routes.contentDetail(worldId, activity.relatedTargetId, activity.relatedTargetEntity)
+                }
+            }
+            else if (activity.relatedTargetEntity) {
+                return {
+                    linkText: activity.relatedTargetEntity,
+                    href: routes.contentEntity(worldId, activity.relatedTargetEntity)
+                }
+            } else return { href: "", linkText: "" }
         }
+        const { linkText, href } = getLinkTextAndHref()
+        const link = <Link href={href}>{linkText}</Link>
+        return <Typography>{label} {link}</Typography>
     };
 
     return (
@@ -66,15 +47,15 @@ export const RecentActivity = () => {
                     Recent Activity
                 </Typography>
                 <List>
-                    {activities.map((activity) => (
+                    {activities && activities.map((activity) => (
                         <ListItem key={activity.id}>
                             <ListItemText
                                 primary={
                                     <Typography>
-                                        {getActionText(activity)} {activity.entityType}: {activity.entityName}
+                                        {getActionText(activity)}
                                     </Typography>
                                 }
-                                secondary={formatTimestamp(activity.timestamp)}
+                                secondary={formatTimestamp(activity.createdAt)}
                             />
                         </ListItem>
                     ))}

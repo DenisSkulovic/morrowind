@@ -2,18 +2,15 @@
 /**
  * @fileoverview
  * @enhanceable
- * @suppress {missingRequire} reports error on implicit type usages.
  * @suppress {messageConventions} JS Compiler reports an error if a variable or
  *     field starts with 'MSG_' and isn't a translatable message.
  * @public
  */
 // GENERATED CODE -- DO NOT EDIT!
-/* eslint-disable */
-// @ts-nocheck
 
 var jspb = require('google-protobuf');
 var goog = jspb;
-var global = (function() { return this || window || global || self || Function('return this')(); }).call(null);
+var global = Function('return this')();
 
 var common_pb = require('./common_pb.js');
 goog.object.extend(proto, common_pb);
@@ -448,7 +445,8 @@ proto.content.UpdateContentRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     contentbody: (f = msg.getContentbody()) && proto.content.ContentBodyDTO.toObject(includeInstance, f),
     entityname: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    context: (f = msg.getContext()) && common_pb.ContextDTO.toObject(includeInstance, f)
+    context: (f = msg.getContext()) && common_pb.ContextDTO.toObject(includeInstance, f),
+    source: jspb.Message.getFieldWithDefault(msg, 4, 0)
   };
 
   if (includeInstance) {
@@ -498,6 +496,10 @@ proto.content.UpdateContentRequest.deserializeBinaryFromReader = function(msg, r
       var value = new common_pb.ContextDTO;
       reader.readMessage(value,common_pb.ContextDTO.deserializeBinaryFromReader);
       msg.setContext(value);
+      break;
+    case 4:
+      var value = /** @type {!proto.common.DataSourceEnumDTO} */ (reader.readEnum());
+      msg.setSource(value);
       break;
     default:
       reader.skipField();
@@ -549,6 +551,13 @@ proto.content.UpdateContentRequest.serializeBinaryToWriter = function(message, w
       3,
       f,
       common_pb.ContextDTO.serializeBinaryToWriter
+    );
+  }
+  f = message.getSource();
+  if (f !== 0.0) {
+    writer.writeEnum(
+      4,
+      f
     );
   }
 };
@@ -643,6 +652,24 @@ proto.content.UpdateContentRequest.prototype.clearContext = function() {
  */
 proto.content.UpdateContentRequest.prototype.hasContext = function() {
   return jspb.Message.getField(this, 3) != null;
+};
+
+
+/**
+ * optional common.DataSourceEnumDTO source = 4;
+ * @return {!proto.common.DataSourceEnumDTO}
+ */
+proto.content.UpdateContentRequest.prototype.getSource = function() {
+  return /** @type {!proto.common.DataSourceEnumDTO} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+};
+
+
+/**
+ * @param {!proto.common.DataSourceEnumDTO} value
+ * @return {!proto.content.UpdateContentRequest} returns this
+ */
+proto.content.UpdateContentRequest.prototype.setSource = function(value) {
+  return jspb.Message.setProto3EnumField(this, 4, value);
 };
 
 
@@ -831,7 +858,8 @@ proto.content.DeleteContentRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     entityname: jspb.Message.getFieldWithDefault(msg, 1, ""),
     id: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    context: (f = msg.getContext()) && common_pb.ContextDTO.toObject(includeInstance, f)
+    context: (f = msg.getContext()) && common_pb.ContextDTO.toObject(includeInstance, f),
+    source: jspb.Message.getFieldWithDefault(msg, 4, 0)
   };
 
   if (includeInstance) {
@@ -880,6 +908,10 @@ proto.content.DeleteContentRequest.deserializeBinaryFromReader = function(msg, r
       var value = new common_pb.ContextDTO;
       reader.readMessage(value,common_pb.ContextDTO.deserializeBinaryFromReader);
       msg.setContext(value);
+      break;
+    case 4:
+      var value = /** @type {!proto.common.DataSourceEnumDTO} */ (reader.readEnum());
+      msg.setSource(value);
       break;
     default:
       reader.skipField();
@@ -930,6 +962,13 @@ proto.content.DeleteContentRequest.serializeBinaryToWriter = function(message, w
       3,
       f,
       common_pb.ContextDTO.serializeBinaryToWriter
+    );
+  }
+  f = message.getSource();
+  if (f !== 0.0) {
+    writer.writeEnum(
+      4,
+      f
     );
   }
 };
@@ -1005,6 +1044,24 @@ proto.content.DeleteContentRequest.prototype.clearContext = function() {
  */
 proto.content.DeleteContentRequest.prototype.hasContext = function() {
   return jspb.Message.getField(this, 3) != null;
+};
+
+
+/**
+ * optional common.DataSourceEnumDTO source = 4;
+ * @return {!proto.common.DataSourceEnumDTO}
+ */
+proto.content.DeleteContentRequest.prototype.getSource = function() {
+  return /** @type {!proto.common.DataSourceEnumDTO} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+};
+
+
+/**
+ * @param {!proto.common.DataSourceEnumDTO} value
+ * @return {!proto.content.DeleteContentRequest} returns this
+ */
+proto.content.DeleteContentRequest.prototype.setSource = function(value) {
+  return jspb.Message.setProto3EnumField(this, 4, value);
 };
 
 
@@ -1172,7 +1229,8 @@ proto.content.SearchContentRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     entityname: jspb.Message.getFieldWithDefault(msg, 1, ""),
     query: (f = msg.getQuery()) && common_pb.SearchQueryDTO.toObject(includeInstance, f),
-    context: (f = msg.getContext()) && common_pb.ContextDTO.toObject(includeInstance, f)
+    context: (f = msg.getContext()) && common_pb.ContextDTO.toObject(includeInstance, f),
+    source: jspb.Message.getFieldWithDefault(msg, 4, 0)
   };
 
   if (includeInstance) {
@@ -1222,6 +1280,10 @@ proto.content.SearchContentRequest.deserializeBinaryFromReader = function(msg, r
       var value = new common_pb.ContextDTO;
       reader.readMessage(value,common_pb.ContextDTO.deserializeBinaryFromReader);
       msg.setContext(value);
+      break;
+    case 4:
+      var value = /** @type {!proto.common.DataSourceEnumDTO} */ (reader.readEnum());
+      msg.setSource(value);
       break;
     default:
       reader.skipField();
@@ -1273,6 +1335,13 @@ proto.content.SearchContentRequest.serializeBinaryToWriter = function(message, w
       3,
       f,
       common_pb.ContextDTO.serializeBinaryToWriter
+    );
+  }
+  f = message.getSource();
+  if (f !== 0.0) {
+    writer.writeEnum(
+      4,
+      f
     );
   }
 };
@@ -1367,6 +1436,24 @@ proto.content.SearchContentRequest.prototype.clearContext = function() {
  */
 proto.content.SearchContentRequest.prototype.hasContext = function() {
   return jspb.Message.getField(this, 3) != null;
+};
+
+
+/**
+ * optional common.DataSourceEnumDTO source = 4;
+ * @return {!proto.common.DataSourceEnumDTO}
+ */
+proto.content.SearchContentRequest.prototype.getSource = function() {
+  return /** @type {!proto.common.DataSourceEnumDTO} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+};
+
+
+/**
+ * @param {!proto.common.DataSourceEnumDTO} value
+ * @return {!proto.content.SearchContentRequest} returns this
+ */
+proto.content.SearchContentRequest.prototype.setSource = function(value) {
+  return jspb.Message.setProto3EnumField(this, 4, value);
 };
 
 
@@ -1660,7 +1747,8 @@ proto.content.GetContentStatsRequest.prototype.toObject = function(opt_includeIn
 proto.content.GetContentStatsRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     context: (f = msg.getContext()) && common_pb.ContextDTO.toObject(includeInstance, f),
-    entitynamesList: (f = jspb.Message.getRepeatedField(msg, 2)) == null ? undefined : f
+    entitynamesList: (f = jspb.Message.getRepeatedField(msg, 2)) == null ? undefined : f,
+    source: jspb.Message.getFieldWithDefault(msg, 3, 0)
   };
 
   if (includeInstance) {
@@ -1706,6 +1794,10 @@ proto.content.GetContentStatsRequest.deserializeBinaryFromReader = function(msg,
       var value = /** @type {string} */ (reader.readString());
       msg.addEntitynames(value);
       break;
+    case 3:
+      var value = /** @type {!proto.common.DataSourceEnumDTO} */ (reader.readEnum());
+      msg.setSource(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -1747,6 +1839,13 @@ proto.content.GetContentStatsRequest.serializeBinaryToWriter = function(message,
   if (f.length > 0) {
     writer.writeRepeatedString(
       2,
+      f
+    );
+  }
+  f = message.getSource();
+  if (f !== 0.0) {
+    writer.writeEnum(
+      3,
       f
     );
   }
@@ -1824,6 +1923,24 @@ proto.content.GetContentStatsRequest.prototype.addEntitynames = function(value, 
  */
 proto.content.GetContentStatsRequest.prototype.clearEntitynamesList = function() {
   return this.setEntitynamesList([]);
+};
+
+
+/**
+ * optional common.DataSourceEnumDTO source = 3;
+ * @return {!proto.common.DataSourceEnumDTO}
+ */
+proto.content.GetContentStatsRequest.prototype.getSource = function() {
+  return /** @type {!proto.common.DataSourceEnumDTO} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+};
+
+
+/**
+ * @param {!proto.common.DataSourceEnumDTO} value
+ * @return {!proto.content.GetContentStatsRequest} returns this
+ */
+proto.content.GetContentStatsRequest.prototype.setSource = function(value) {
+  return jspb.Message.setProto3EnumField(this, 3, value);
 };
 
 

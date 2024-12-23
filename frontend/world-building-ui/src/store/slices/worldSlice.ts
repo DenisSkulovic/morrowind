@@ -7,7 +7,8 @@ import { Context } from '../../class/Context';
 import { LooseObject } from '../../types';
 import { handlePending, handleRejected } from '../common';
 import { PresetEnum } from '../../enum/entityEnums';
-import { RootState } from '../store';
+import { ActivityRecord } from '../../class/entities/ActivityRecord';
+import { ActivityRecordsService } from '../../services/ActivityRecordsService';
 
 export type WorldPlain = LooseObject
 
@@ -31,6 +32,21 @@ interface WorldState {
         status: RequestStatusEnum;
         error: string | null;
     };
+    activityRecordsHead: {
+        data: ActivityRecord[] | null;
+        status: RequestStatusEnum,
+        error: string | null,
+    },
+    activityRecordsSearch: {
+        data: {
+            activities: ActivityRecord[];
+            totalResults: number | null;
+            totalPages: number | null;
+            currentPage: number | null;
+        } | null;
+        status: RequestStatusEnum,
+        error: string | null,
+    }
 };
 
 const initialState: WorldState = {
@@ -53,6 +69,16 @@ const initialState: WorldState = {
         status: RequestStatusEnum.IDLE,
         error: null,
     },
+    activityRecordsHead: {
+        data: null,
+        status: RequestStatusEnum.IDLE,
+        error: null,
+    },
+    activityRecordsSearch: {
+        data: null,
+        status: RequestStatusEnum.IDLE,
+        error: null,
+    }
 };
 
 // Async Thunks
@@ -107,11 +133,36 @@ export const getPresets = createAsyncThunk(
 export const loadWorldPreset = createAsyncThunk(
     'worlds/loadWorldPreset',
     async ({ preset, userId, worldId }: { preset: PresetEnum, userId: string, worldId: string }, { getState }): Promise<void> => {
-        const state = getState() as RootState;
         const worldService = new WorldService();
         await worldService.loadWorldPreset(preset, userId, worldId);
     }
 );
+
+export const searchActivityRecords = createAsyncThunk(
+    'worlds/searchActivityRecords',
+    async ({ query, context }: { query: SearchQuery, context: Context }) => {
+        const activityService = new ActivityRecordsService()
+        const response: {
+            activities: ActivityRecord[];
+            totalResults: number;
+            totalPages: number;
+            currentPage: number;
+        } = await activityService.search(query, context)
+        return response
+    }
+)
+export const getActivityRecordsHead = createAsyncThunk(
+    'worlds/getActivityRecordsHead',
+    async ({ worldId, userId, limit }: { worldId: string, userId: string, limit?: number }) => {
+        const activityService = new ActivityRecordsService()
+        const context = Context.build({
+            world: worldId,
+            user: userId
+        })
+        const response: ActivityRecord[] = await activityService.head(context, limit)
+        return response
+    }
+)
 
 // Slice
 const worldSlice = createSlice({
@@ -181,6 +232,22 @@ const worldSlice = createSlice({
             state.presetLoading.status = RequestStatusEnum.SUCCEEDED;
         })
         builder.addCase(loadWorldPreset.rejected, (state: WorldState, action) => handleRejected(state, action))
+
+        // Search Activity Records
+        builder.addCase(searchActivityRecords.pending, (state: WorldState) => handlePending(state))
+        builder.addCase(searchActivityRecords.fulfilled, (state: WorldState, action) => {
+            state.activityRecordsSearch.status = RequestStatusEnum.SUCCEEDED;
+            state.activityRecordsSearch.data = action.payload
+        })
+        builder.addCase(searchActivityRecords.rejected, (state: WorldState, action) => handleRejected(state, action))
+
+        // Activity Records Head
+        builder.addCase(getActivityRecordsHead.pending, (state: WorldState) => handlePending(state))
+        builder.addCase(getActivityRecordsHead.fulfilled, (state: WorldState, action) => {
+            state.activityRecordsHead.status = RequestStatusEnum.SUCCEEDED;
+            state.activityRecordsHead.data = action.payload
+        })
+        builder.addCase(getActivityRecordsHead.rejected, (state: WorldState, action) => handleRejected(state, action))
     },
 });
 
