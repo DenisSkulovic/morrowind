@@ -1,12 +1,12 @@
 import React from 'react';
-import { Drawer, List, ListItem, ListItemIcon, ListItemText, Collapse, Box } from '@mui/material';
+import { Drawer, List, ListItem, ListItemIcon, ListItemText, Collapse, Box, ListItemButton } from '@mui/material';
 import { Link } from 'react-router-dom';
 import {
     ExpandLess,
     ExpandMore
 } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
-import { sidebarConfig } from '../../../config/navigation';
+import { getNavItems } from '../../../../config/navigation';
 
 const DRAWER_WIDTH = 240;
 
@@ -19,14 +19,28 @@ const StyledDrawer = styled(Drawer)({
     },
 });
 
-export interface NavItem {
-    label: string;
-    path: string;
-    icon: React.ComponentType;
+export class NavItem {
+    label!: string;
+    path?: string;
+    icon!: React.ComponentType;
     children?: NavItem[];
+
+    static build(body: any) {
+        if (!body.label) throw new Error('NavItem requires a label');
+        if (!body.icon) throw new Error('NavItem requires an icon');
+        if (body.children && !Array.isArray(body.children)) throw new Error('NavItem children must be an array');
+        const navItem = new NavItem();
+        Object.assign(navItem, body);
+        return navItem;
+    }
 }
 
-const Sidebar = () => {
+interface SidebarProps {
+    accountId?: string;
+    worldId?: string;
+}
+
+const Sidebar = ({ accountId, worldId }: SidebarProps) => {
     const [openItems, setOpenItems] = React.useState<{ [key: string]: boolean }>({});
 
     const handleClick = (label: string) => {
@@ -36,14 +50,18 @@ const Sidebar = () => {
         }));
     };
 
-    const renderNavItem = (item: NavItem, depth = 0) => {
+    const navItems: NavItem[] = getNavItems(accountId, worldId)
+
+    const renderNavItem = (
+        item: NavItem,
+        depth = 0
+    ) => {
         const hasChildren = item.children && item.children.length > 0;
         const Icon = item.icon;
 
         return (
             <React.Fragment key={item.path}>
-                <ListItem
-                    button
+                <ListItemButton
                     component={hasChildren ? 'div' : Link}
                     to={hasChildren ? undefined : item.path}
                     onClick={hasChildren ? () => handleClick(item.label) : undefined}
@@ -54,9 +72,9 @@ const Sidebar = () => {
                     {hasChildren && (
                         openItems[item.label] ? <ExpandLess /> : <ExpandMore />
                     )}
-                </ListItem>
+                </ListItemButton>
 
-                {hasChildren && (
+                {hasChildren && item.children && (
                     <Collapse in={openItems[item.label]} timeout="auto" unmountOnExit>
                         <List component="div" disablePadding>
                             {item.children.map(child => renderNavItem(child, depth + 1))}
@@ -71,7 +89,7 @@ const Sidebar = () => {
         <StyledDrawer variant="permanent" anchor="left">
             <Box sx={{ overflow: 'auto' }}>
                 <List>
-                    {sidebarConfig.map(item => renderNavItem(item))}
+                    {navItems.map(item => renderNavItem(item))}
                 </List>
             </Box>
         </StyledDrawer>

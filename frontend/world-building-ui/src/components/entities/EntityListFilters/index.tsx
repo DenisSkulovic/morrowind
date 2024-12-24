@@ -1,96 +1,80 @@
-import React from 'react';
-import { Box, TextField, FormControl, InputLabel, Select, MenuItem, Chip, OutlinedInput } from '@mui/material';
-import { SelectChangeEvent } from '@mui/material/Select';
-import { Theme, useTheme } from '@mui/material/styles';
+import React, { useState, useEffect } from 'react';
+import { Box, TextField, FormControl, Button } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import { QueryFilter, QueryFilterOperatorEnum } from '../../../class/search/QueryFilter';
+import { FilterOptionConfig } from '../../../decorator/filter-option.decorator';
 
 interface EntityListFiltersProps {
-    searchTerm: string;
-    onSearchChange: (value: string) => void;
-    selectedTags: string[];
-    onTagsChange: (tags: string[]) => void;
-    availableTags: string[];
-}
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-    PaperProps: {
-        style: {
-            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-            width: 250,
-        },
-    },
-};
-
-function getStyles(tag: string, selectedTags: string[], theme: Theme) {
-    return {
-        fontWeight:
-            selectedTags.indexOf(tag) === -1
-                ? theme.typography.fontWeightRegular
-                : theme.typography.fontWeightMedium,
-    };
+    filterConfigs: FilterOptionConfig[];
+    filters: QueryFilter[];
+    onFiltersChange: (filters: QueryFilter[]) => void;
+    onSearch: (filters: QueryFilter[]) => void;
 }
 
 export const EntityListFilters: React.FC<EntityListFiltersProps> = ({
-    searchTerm,
-    onSearchChange,
-    selectedTags,
-    onTagsChange,
-    availableTags
+    filterConfigs,
+    filters,
+    onFiltersChange,
+    onSearch
 }) => {
     const theme = useTheme();
+    const [currentFilters, setCurrentFilters] = useState<QueryFilter[]>([]);
 
-    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        onSearchChange(event.target.value);
+    useEffect(() => {
+        // Clone filters on mount/update
+        setCurrentFilters(filters.map(f => QueryFilter.build({ ...f })));
+    }, [filters]);
+
+    const handleFilterChange = (field: string, value: any) => {
+        const newFilters = currentFilters.map(filter => {
+            if (filter.field === field) {
+                return QueryFilter.build({
+                    ...filter,
+                    value: value,
+                    operator: typeof value === 'string' ? QueryFilterOperatorEnum.CONTAINS : QueryFilterOperatorEnum.EQUAL
+                });
+            }
+            return filter;
+        });
+
+        // If no filter exists for this field yet, create one
+        if (!currentFilters.find(f => f.field === field)) {
+            newFilters.push(QueryFilter.build({
+                field,
+                value,
+                operator: typeof value === 'string' ? QueryFilterOperatorEnum.CONTAINS : QueryFilterOperatorEnum.EQUAL
+            }));
+        }
+
+        setCurrentFilters(newFilters);
+        onFiltersChange(newFilters);
     };
 
-    const handleTagChange = (event: SelectChangeEvent<typeof selectedTags>) => {
-        const {
-            target: { value },
-        } = event;
-        onTagsChange(typeof value === 'string' ? value.split(',') : value);
+    const getFilterValue = (field: string): any => {
+        const filter = currentFilters.find(f => f.field === field);
+        return filter ? filter.value : '';
+    };
+
+    const handleSearch = () => {
+        onSearch(currentFilters);
     };
 
     return (
-        <Box sx={{ display: 'flex', gap: 2, p: 2, alignItems: 'flex-start' }}>
-            <TextField
-                label="Search"
-                variant="outlined"
-                value={searchTerm}
-                onChange={handleSearchChange}
-                sx={{ minWidth: 200 }}
-                placeholder="Search entities..."
-            />
-
-            <FormControl sx={{ minWidth: 200 }}>
-                <InputLabel id="tag-filter-label">Tags</InputLabel>
-                <Select
-                    labelId="tag-filter-label"
-                    id="tag-filter"
-                    multiple
-                    value={selectedTags}
-                    onChange={handleTagChange}
-                    input={<OutlinedInput label="Tags" />}
-                    renderValue={(selected) => (
-                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                            {selected.map((value) => (
-                                <Chip key={value} label={value} />
-                            ))}
-                        </Box>
-                    )}
-                    MenuProps={MenuProps}
-                >
-                    {availableTags.map((tag) => (
-                        <MenuItem
-                            key={tag}
-                            value={tag}
-                            style={getStyles(tag, selectedTags, theme)}
-                        >
-                            {tag}
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
+        <Box sx={{ display: 'flex', gap: 2, p: 2, alignItems: 'flex-start', flexWrap: 'wrap' }}>
+            {filterConfigs.map((config) => (
+                <FormControl key={config.field} sx={{ minWidth: 200 }}>
+                    <TextField
+                        label={config.displayName || config.field}
+                        variant="outlined"
+                        value={getFilterValue(config.field)}
+                        onChange={(e) => handleFilterChange(config.field, e.target.value)}
+                        placeholder={`Filter by ${config.displayName || config.field}...`}
+                    />
+                </FormControl>
+            ))}
+            <Button variant="contained" color="primary" onClick={handleSearch}>
+                Search
+            </Button>
         </Box>
     );
 };

@@ -8,6 +8,7 @@ import { EntityEnum } from "../enum/EntityEnum";
 export interface ContentBaseStatic<T extends ContentBase> {
     new(): T; // content base constructor
     build(obj: LooseObject): T;
+    search(filter: SearchQuery, context: Context): Promise<T[]>;
 }
 
 export abstract class ContentBase {

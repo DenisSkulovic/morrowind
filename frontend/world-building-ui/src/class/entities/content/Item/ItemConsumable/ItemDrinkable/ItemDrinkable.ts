@@ -4,6 +4,7 @@ import { FieldComponentEnum } from "../../../../../../enum/FieldComponentEnum";
 import { ItemConsumable } from "../ItemConsumable";
 
 export class ItemDrinkable extends ItemConsumable {
+
     @FormField({ component: FieldComponentEnum.CHECKBOX_FIELD, label: 'Drinkable', required: true })
     @Serializable()
     drinkable!: boolean;

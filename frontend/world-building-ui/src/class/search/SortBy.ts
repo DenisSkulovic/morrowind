@@ -1,16 +1,26 @@
 import { Serializable } from "../../decorator/serializable.decorator";
 
-
+export enum SortByDirectionEnum {
+    ASC = 'asc',
+    DESC = 'desc'
+}
 
 export class SortBy {
     @Serializable()
     public field!: string;
 
     @Serializable()
-    public direction!: 'asc' | 'desc';
+    public direction!: SortByDirectionEnum;
 
-    constructor(field: string, direction: 'asc' | 'desc') {
-        this.field = field;
-        this.direction = direction;
+    static build(body: any): SortBy {
+        if (!body.field || typeof body.field !== 'string') {
+            throw new Error('Sort field must be a string');
+        }
+        if (!body.direction || !Object.values(SortByDirectionEnum).includes(body.direction)) {
+            throw new Error('Sort direction must be a valid SortByDirectionEnum value');
+        }
+        const newSortBy = new SortBy();
+        Object.assign(newSortBy, body);
+        return newSortBy;
     }
 }

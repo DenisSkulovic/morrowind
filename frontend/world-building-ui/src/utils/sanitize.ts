@@ -11,3 +11,11 @@ export const sanitizeEntityName = (entityName: string | string[] | undefined): E
     }
     throw new Error(`Entity name ${entityName} is not a string`);
 };
+
+export const sanitizeWorldId = (worldId: string | string[] | undefined): string => {
+    if (!worldId) throw new Error(`World ID not found in query`);
+    if (typeof worldId === 'string') {
+        return worldId;
+    }
+    throw new Error(`World ID ${worldId} is not a string`);
+};

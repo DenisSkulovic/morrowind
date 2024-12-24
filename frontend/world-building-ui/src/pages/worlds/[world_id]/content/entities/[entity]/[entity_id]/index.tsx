@@ -1,109 +1,118 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { useSearchParams } from 'next/navigation';
 import { useDispatch } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../../../../store/store';
+import { Box, Container, Typography, Button } from '@mui/material';
+import { AppDispatch } from '../../../../../../../store/store';
 import DynamicForm from '../../../../../../../components/common/DynamicForm';
-import { createContent, updateContent } from '../../../../../../../store/slices/contentSlice';
+import { updateContent } from '../../../../../../../store/slices/contentSlice';
 import { ContentBase, ContentBaseStatic } from '../../../../../../../class/ContentBase';
 import { Context } from '../../../../../../../class/Context';
 import { User } from '../../../../../../../class/entities/User';
 import { World } from '../../../../../../../class/entities/World';
-import { Account } from '../../../../../../../class/entities/Account';
 import { CONTENT_ENTITY_MAP } from '../../../../../../../CONTENT_ENTITY_MAP';
-import { ClassConstructor, LooseObject } from '../../../../../../../types';
-import { useSelectorAndBuilder } from '../../../../../../../hooks/useSelectorAndBuilder';
+import { EntityEnum } from '../../../../../../../enum/EntityEnum';
+import { sanitizeEntityName } from '../../../../../../../utils/sanitize';
 import { FormFieldDefinition, getFormFields } from '../../../../../../../decorator/form-field.decorator';
-import { Button } from '@mui/material';
+import { EntityDisplayConfig, getEntityDisplayConfig } from '../../../../../../../decorator/entity-display.decorator';
+import { BreadcrumbItem } from '../../../../../../../components/common/PageWrapper/Breadcrumbs';
 import { routes } from '../../../../../../../routes';
+import PageWrapper from '../../../../../../../components/common/PageWrapper';
+import { useEntityDetail } from '../../../../../../../hooks/useEntityDetail';
+import { useAccount } from '../../../../../../../hooks/useAccount';
+import { Account } from '../../../../../../../class/entities/Account';
+import { cloneDeep } from 'lodash';
+
+const MODE_PARAM = 'mode';
+enum ModeEnum {
+    VIEW = 'view',
+    EDIT = 'edit'
+}
 
 const EntityPage = () => {
     const router = useRouter();
-    const { entity_id, entity: targetEntity, world_id } = router.query;
+    const { world_id, entity, entity_id } = router.query;
+    const searchParams = useSearchParams();
+    const initialMode: ModeEnum = searchParams.get(MODE_PARAM) as ModeEnum;
+    const entityName: EntityEnum = sanitizeEntityName(entity);
     const dispatch = useDispatch<AppDispatch>();
-    const [isEditMode, setIsEditMode] = useState(false);
+    const [isReadOnly, setIsReadOnly] = useState(initialMode === ModeEnum.EDIT ? false : true);
+    const [editData, setEditData] = useState<any>(null);
 
-    if (!world_id) throw new Error('World not found');
-    if (typeof world_id !== 'string') throw new Error('World ID is not a string');
-
-    const worlds: World[] | null = useSelectorAndBuilder<World[] | null>((state: RootState) => state.worlds.data, worlds => worlds.map((w: LooseObject) => World.build(w)));
-    const world = worlds?.find(w => w.id === world_id);
-    if (!world) throw new Error('World not found');
-
-    const account: Account | null = useSelectorAndBuilder<Account | null>((state: RootState) => state.account.data, account => account ? Account.build(account) : null);
+    const account: Account | null = useAccount();
     if (!account) throw new Error('Account not found');
 
-    const [entityClass, setEntityClass] = useState<typeof ContentBase | null>(null);
-    const [formFields, setFormFields] = useState<FormFieldDefinition[]>([]);
+    const entityConstructor: ContentBaseStatic<ContentBase> = CONTENT_ENTITY_MAP[entityName].entity as ContentBaseStatic<ContentBase>;
+    const displayConfig: EntityDisplayConfig = getEntityDisplayConfig(entityConstructor);
+    const formFields: FormFieldDefinition[] = getFormFields(entityConstructor.prototype);
+    const { contentData, status, error } = useEntityDetail(entityName, entity_id as string, world_id as string);
 
-    // Get the entity class based on the type parameter
     useEffect(() => {
-        if (targetEntity && typeof targetEntity === 'string') {
-            const EntityClass: typeof ContentBase = CONTENT_ENTITY_MAP[targetEntity];
-            if (EntityClass) {
-                setEntityClass(EntityClass);
-                setFormFields(getFormFields(EntityClass.prototype));
-            } else {
-                console.error(`Unknown entity type: ${targetEntity}`);
-                router.push(routes.contentDashboard(world_id));
-            }
+        if (contentData) {
+            setEditData(cloneDeep(contentData.toPlainObj()));
         }
-    }, [targetEntity]);
+    }, [contentData]);
 
-    // Fetch initial data if editing existing entity
-    useEffect(() => {
-        if (entity_id && entityClass) {
-            // TODO: Add fetch logic when implementing edit functionality
-        }
-    }, [entity_id, entityClass]);
+    const context: Context = Context.build({
+        world: { id: world_id as string } as World,
+        user: { id: account.user } as User
+    });
 
     const handleSubmit = async (data: { [key: string]: any }) => {
-        try {
-            if (!targetEntity || typeof targetEntity !== 'string') return;
-            if (!entityClass) throw new Error('Entity class not found');
-
-            const user = { id: account.user } as User;
-            const context = Context.build({ user, world });
-
-            const contentBody = (entityClass as ContentBaseStatic<ContentBase>).build(data);
-
-            await dispatch(updateContent({
-                entityName: targetEntity,
-                contentBody,
-                context
-            }));
-
-            // redirect to entity list page
-            router.push(routes.contentEntity(world_id, targetEntity));
-        } catch (error) {
-            console.error('Failed to save entity:', error);
-            // TODO: Add error handling UI
-        }
+        dispatch(updateContent({
+            entityName,
+            contentBody: entityConstructor.build(data),
+            context
+        }));
+        router.push(routes.contentEntity(world_id as string, entityName));
     };
 
-    if (!entityClass || !formFields.length) {
-        return <div>Loading...</div>;
-    }
+    const handleToggleEdit = () => {
+        if (isReadOnly) {
+            // Switching to edit mode - create fresh clone of original data
+            setEditData(cloneDeep(contentData?.toPlainObj()));
+        }
+        setIsReadOnly(!isReadOnly);
+    };
+
+    const customBreadcrumbs: BreadcrumbItem[] = [
+        BreadcrumbItem.build({ label: 'Worlds', path: routes.worlds() }),
+        BreadcrumbItem.build({
+            label: displayConfig.title,
+            path: routes.contentEntity(world_id as string, entityName)
+        }),
+        BreadcrumbItem.build({
+            label: entity_id as string,
+            path: routes.contentDetail(world_id as string, entityName, entity_id as string)
+        })
+    ];
 
     return (
-        <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-                <h1>{entity_id ? `Edit ${targetEntity}` : `Create ${targetEntity}`}</h1>
-                {entity_id && (
-                    <Button
-                        variant="contained"
-                        onClick={() => setIsEditMode(!isEditMode)}
-                    >
-                        {isEditMode ? 'Cancel Edit' : 'Edit'}
-                    </Button>
-                )}
-            </div>
-            <DynamicForm
-                fields={formFields}
-                initialValues={{}}
-                onSubmit={handleSubmit}
-                readOnly={entity_id ? !isEditMode : false}
-            />
-        </div>
+        <PageWrapper customBreadcrumbs={customBreadcrumbs}>
+            <Container maxWidth="lg">
+                <Box py={4}>
+                    <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+                        <Typography variant="h4" component="h1">
+                            {entity_id ? displayConfig.title : `Create ${displayConfig.title}`}
+                        </Typography>
+                        <Button
+                            variant="contained"
+                            onClick={handleToggleEdit}
+                        >
+                            {isReadOnly ? 'Edit' : 'View'}
+                        </Button>
+                    </Box>
+                    <Box sx={{ maxWidth: 600 }}>
+                        <DynamicForm
+                            initialValues={isReadOnly ? contentData?.toPlainObj() : editData}
+                            fields={formFields}
+                            onSubmit={handleSubmit}
+                            readOnly={isReadOnly}
+                        />
+                    </Box>
+                </Box>
+            </Container>
+        </PageWrapper>
     );
 };
 

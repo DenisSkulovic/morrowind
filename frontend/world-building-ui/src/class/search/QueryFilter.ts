@@ -1,8 +1,16 @@
 import { Serializable } from "../../decorator/serializable.decorator";
-import { QueryFilterDTO, QueryFilterValueDTO } from "../../proto/common_pb";
-import { Serializer } from "../../serialize/serializer";
+import { QueryFilterValueDTO } from "../../proto/common_pb";
 
-type Operator = 'eq' | 'neq' | 'gt' | 'gte' | 'lt' | 'lte' | 'contains' | 'regex';
+export enum QueryFilterOperatorEnum {
+    EQUAL = 'eq',
+    NOT_EQUAL = 'neq',
+    GREATER_THAN = 'gt',
+    GREATER_THAN_OR_EQUAL = 'gte',
+    LESS_THAN = 'lt',
+    LESS_THAN_OR_EQUAL = 'lte',
+    CONTAINS = 'contains',
+    REGEX = 'regex'
+}
 
 
 export class QueryFilter {
@@ -10,7 +18,7 @@ export class QueryFilter {
     public field!: string;
 
     @Serializable()
-    public operator!: Operator;
+    public operator!: QueryFilterOperatorEnum;
 
     @Serializable({
         serialize: serializeQueryFilterValue,
@@ -19,6 +27,7 @@ export class QueryFilter {
     public value!: string | number | boolean;
 
     public static build(data: { [key: string]: any }): QueryFilter {
+
         const filter = new QueryFilter();
         Object.assign(filter, data);
         return filter;

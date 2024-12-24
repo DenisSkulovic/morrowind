@@ -66,10 +66,11 @@ import { Status } from "./class/entities/content/Status";
 import { Tag } from "./class/entities/content/Tag";
 import { Trait } from "./class/entities/content/Trait";
 import { EntityEnum } from "./enum/EntityEnum";
+import { ContentBase } from "./class/ContentBase";
 
 export type EntityMap = {
     [key in keyof typeof EntityEnum]: {
-        entity: ClassConstructor<any>;
+        entity: ClassConstructor<ContentBase>;
         dto: ClassConstructor<any>;
         rootEntity?: ClassConstructor<any>;
     }

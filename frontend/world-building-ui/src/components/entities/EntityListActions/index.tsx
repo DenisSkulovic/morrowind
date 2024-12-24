@@ -1,19 +1,17 @@
 import React from 'react';
 import { Box, Button, IconButton, Tooltip } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import FileCopyIcon from '@mui/icons-material/FileCopy';
 import GetAppIcon from '@mui/icons-material/GetApp';
 import AddIcon from '@mui/icons-material/Add';
+import SearchIcon from '@mui/icons-material/Search';
 import { useDispatch } from 'react-redux';
-import { createContent } from '../../../store/slices/contentSlice';
 
 interface EntityListActionsProps {
     entityName: string;
-    selectedIds: string[];
+    selectedIds: Set<string>;
     onCreateNew: () => void;
-    onDelete: (ids: string[]) => void;
-    onDuplicate: (ids: string[]) => void;
-    onExport: (ids: string[]) => void;
+    onDelete: (ids: Set<string>) => void;
+    onExport: (ids: Set<string>) => void;
 }
 
 export const EntityListActions: React.FC<EntityListActionsProps> = ({
@@ -21,11 +19,10 @@ export const EntityListActions: React.FC<EntityListActionsProps> = ({
     selectedIds,
     onCreateNew,
     onDelete,
-    onDuplicate,
-    onExport
+    onExport,
 }) => {
     const dispatch = useDispatch();
-    const hasSelection = selectedIds.length > 0;
+    const hasSelection = selectedIds.size > 0;
 
     return (
         <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', p: 2 }}>
@@ -52,18 +49,6 @@ export const EntityListActions: React.FC<EntityListActionsProps> = ({
                 </span>
             </Tooltip>
 
-            <Tooltip title={`Duplicate selected ${entityName}(s)`}>
-                <span>
-                    <IconButton
-                        color="primary"
-                        disabled={!hasSelection}
-                        onClick={() => onDuplicate(selectedIds)}
-                    >
-                        <FileCopyIcon />
-                    </IconButton>
-                </span>
-            </Tooltip>
-
             <Tooltip title={`Export selected ${entityName}(s)`}>
                 <span>
                     <IconButton
@@ -75,6 +60,7 @@ export const EntityListActions: React.FC<EntityListActionsProps> = ({
                     </IconButton>
                 </span>
             </Tooltip>
+
         </Box>
     );
 };

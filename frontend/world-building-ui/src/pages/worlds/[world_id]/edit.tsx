@@ -15,29 +15,32 @@ import { SearchQuery } from '../../../class/search/SearchQuery';
 import { QueryFilter } from '../../../class/search/QueryFilter';
 import { FormFieldDefinition, getFormFields } from '../../../decorator/form-field.decorator';
 import DynamicForm from '../../../components/common/DynamicForm';
+import PageWrapper from '../../../components/common/PageWrapper';
+import { BreadcrumbItem } from '../../../components/common/PageWrapper/Breadcrumbs';
+import { sanitizeWorldId } from '../../../utils/sanitize';
 
 const EditWorldPage = () => {
     const router = useRouter();
-    const { world_id } = router.query;
+    const worldId: string = sanitizeWorldId(router.query.world_id);
 
     const dispatch = useDispatch<AppDispatch>();
 
     const worlds: World[] | null = useSelectorAndBuilder((state: RootState) => state.worlds.searchedWorlds.data, worlds => worlds ? worlds.map((world: LooseObject) => World.build(world)) : null);
-    const world: World | undefined = worlds?.find((w) => w.id === world_id);
+    const world: World | undefined = worlds?.find((w) => w.id === worldId);
 
     const account: Account | null = useSelectorAndBuilder((state: RootState) => state.account.currentAccount.data, account => account ? Account.build(account) : null);
     if (!account) throw new Error('Account not found');
     const userId: string = account.user;
 
     useEffect(() => {
-        if (!world_id) return;
+        if (!worldId) return;
         const user: User = User.build({ id: userId });
         const context: Context = Context.build({ user });
         const userFilter: QueryFilter = QueryFilter.build({ field: "user", operator: "eq", value: userId });
-        const worldFilter: QueryFilter = QueryFilter.build({ field: "id", operator: "eq", value: world_id });
+        const worldFilter: QueryFilter = QueryFilter.build({ field: "id", operator: "eq", value: worldId });
         const query = SearchQuery.build({ page: 1, pageSize: 100, filters: [userFilter, worldFilter] });
         dispatch(searchWorldsThunk({ query, context }));
-    }, [world_id, dispatch, userId]);
+    }, [worldId, dispatch, userId]);
 
     const formFields: FormFieldDefinition[] = getFormFields(World.prototype);
 
@@ -47,23 +50,29 @@ const EditWorldPage = () => {
         router.push(routes.worlds());
     };
 
+    const customBreadcrumbs: BreadcrumbItem[] = [
+        BreadcrumbItem.build({ label: 'Worlds', path: routes.worlds() }),
+        BreadcrumbItem.build({ label: 'Edit World' }),
+    ];
     return (
-        <Container maxWidth="lg">
-            <Box py={4}>
-                <Typography variant="h4" component="h1" gutterBottom>
-                    Edit World
-                </Typography>
-                <Box sx={{ maxWidth: 600 }}>
-                    {world && (
-                        <DynamicForm
-                            fields={formFields}
-                            initialValues={world.toPlainObj()}
-                            onSubmit={handleSubmit}
-                        />
-                    )}
+        <PageWrapper customBreadcrumbs={customBreadcrumbs}>
+            <Container maxWidth="lg">
+                <Box py={4}>
+                    <Typography variant="h4" component="h1" gutterBottom>
+                        Edit World
+                    </Typography>
+                    <Box sx={{ maxWidth: 600 }}>
+                        {world && (
+                            <DynamicForm
+                                fields={formFields}
+                                initialValues={world.toPlainObj()}
+                                onSubmit={handleSubmit}
+                            />
+                        )}
+                    </Box>
                 </Box>
-            </Box>
-        </Container>
+            </Container>
+        </PageWrapper>
     );
 };
 

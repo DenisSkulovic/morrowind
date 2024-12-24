@@ -11,23 +11,26 @@ import { handlePending, handleRejected } from '../common';
 
 export type ContentPlain = LooseObject
 
+export class ContentSearchResult<T> {
+    entityName!: EntityEnum | null;
+    array!: T[];
+    map!: { [id: string]: ContentPlain };
+    totalResults!: number;
+    totalPages!: number;
+    currentPage!: number;
+    status!: RequestStatusEnum;
+    error!: string | null;
+
+    static build<T>(body: any): ContentSearchResult<T> {
+        const newResult = new ContentSearchResult<T>();
+        Object.assign(newResult, body);
+        return newResult;
+    }
+}
+
 interface ContentState {
-    entityNameInPath: EntityEnum | null;
-    currentEntity: {
-        entityName: EntityEnum | null;
-        data: ContentPlain | null;
-        status: RequestStatusEnum;
-        error: string | null;
-    };
     searchedEntities: {
-        entityName: EntityEnum | null;
-        array: ContentPlain[] | null;
-        map: { [id: string]: ContentPlain } | null;
-        totalResults: number;
-        totalPages: number;
-        currentPage: number;
-        status: RequestStatusEnum;
-        error: string | null;
+        [searchKey: string]: ContentSearchResult<ContentPlain>
     };
 
     crudStatus: RequestStatusEnum;
@@ -35,26 +38,14 @@ interface ContentState {
 }
 
 const initialState: ContentState = {
-    entityNameInPath: null,
-    currentEntity: {
-        entityName: null,
-        data: null,
-        status: RequestStatusEnum.IDLE,
-        error: null
-    },
-    searchedEntities: {
-        entityName: null,
-        array: null,
-        map: null,
-        totalResults: 0,
-        totalPages: 0,
-        currentPage: 0,
-        status: RequestStatusEnum.IDLE,
-        error: null
-    },
+    searchedEntities: {},
     crudStatus: RequestStatusEnum.IDLE,
     crudError: null
 };
+
+export const getSearchKey = (entityName: EntityEnum, query: SearchQuery) => {
+    return `${entityName}-${JSON.stringify(query)}`;
+}
 
 
 // Async thunk for creating content
@@ -128,9 +119,9 @@ export const updateContentBulk = createAsyncThunk(
 
 export const deleteContentBulk = createAsyncThunk(
     'content/deleteContentBulk',
-    async ({ entityName, ids, context }: { entityName: EntityEnum; ids: string[]; context: Context }) => {
+    async ({ entityName, ids, context }: { entityName: EntityEnum; ids: Set<string>; context: Context }) => {
         const contentService = new ContentService();
-        return await contentService.deleteContentBulk(entityName, ids, context);
+        return await contentService.deleteContentBulk(entityName, Array.from(ids), context);
     }
 );
 
@@ -138,60 +129,64 @@ const contentSlice = createSlice({
     name: 'content',
     initialState,
     reducers: {
-        setEntityNameInPath: (state, action) => {
-            state.entityNameInPath = action.payload;
-        },
         clearSearchedContent: (state) => {
-            state.searchedEntities.map = {};
-            state.searchedEntities.status = RequestStatusEnum.IDLE;
-            state.searchedEntities.error = null;
+            state.searchedEntities = {};
+        },
+        clearSearchResultsForKey: (state, action: PayloadAction<string>) => {
+            delete state.searchedEntities[action.payload];
+        },
+        setSearchResult: (state, action: PayloadAction<{ // to manually edit search results, for example when an entity was deleted/modified but we dont want to perform another search
+            entityName: EntityEnum,
+            query: SearchQuery,
+            results: ContentSearchResult<ContentPlain>
+        }>) => {
+            const searchKey: string = getSearchKey(action.payload.entityName, action.payload.query);
+            state.searchedEntities[searchKey] = action.payload.results;
         }
     },
     extraReducers: (builder) => {
-        builder.addCase(createContent.pending, (state) => handlePending(state.currentEntity))
+        // Create
+        builder.addCase(createContent.pending, (state) => handlePending(state.crudStatus))
         builder.addCase(createContent.fulfilled, (state, action) => {
-            state.currentEntity.status = RequestStatusEnum.SUCCEEDED;
-            if (state.currentEntity.data && !state.currentEntity.data[action.meta.arg.entityName]) {
-                state.currentEntity.data[action.meta.arg.entityName] = {};
-            }
-            if (state.currentEntity.data) {
-                state.currentEntity.data[action.meta.arg.entityName][action.payload.id] = action.payload;
-            }
+            state.crudStatus = RequestStatusEnum.SUCCEEDED;
         })
-        builder.addCase(createContent.rejected, (state, action) => handleRejected(state.currentEntity, action))
+        builder.addCase(createContent.rejected, (state, action) => handleRejected(state.crudStatus, action))
 
-        builder.addCase(updateContent.pending, (state) => handlePending(state.currentEntity))
+        // Update
+        builder.addCase(updateContent.pending, (state) => handlePending(state.crudStatus))
         builder.addCase(updateContent.fulfilled, (state, action) => {
-            state.currentEntity.status = RequestStatusEnum.SUCCEEDED;
-            if (state.currentEntity.data && state.currentEntity.data[action.meta.arg.entityName]) {
-                state.currentEntity.data[action.meta.arg.entityName][action.payload.id] = action.payload;
-            }
+            state.crudStatus = RequestStatusEnum.SUCCEEDED;
         })
-        builder.addCase(updateContent.rejected, (state, action) => handleRejected(state.currentEntity, action))
+        builder.addCase(updateContent.rejected, (state, action) => handleRejected(state.crudStatus, action))
 
-        builder.addCase(deleteContent.pending, (state) => handlePending(state.currentEntity))
+        // Delete
+        builder.addCase(deleteContent.pending, (state) => handlePending(state.crudStatus))
         builder.addCase(deleteContent.fulfilled, (state, action) => {
-            state.currentEntity.status = RequestStatusEnum.SUCCEEDED;
-            if (state.currentEntity.data && state.currentEntity.data[action.meta.arg.entityName]) {
-                delete state.currentEntity.data[action.meta.arg.entityName][action.meta.arg.id];
-            }
+            state.crudStatus = RequestStatusEnum.SUCCEEDED;
         })
-        builder.addCase(deleteContent.rejected, (state, action) => handleRejected(state.currentEntity, action))
+        builder.addCase(deleteContent.rejected, (state, action) => handleRejected(state.crudStatus, action))
 
+        // Search
         builder.addCase(searchContent.pending, (state) => handlePending(state.searchedEntities))
         builder.addCase(searchContent.fulfilled, (state, action) => {
-            state.searchedEntities.status = RequestStatusEnum.SUCCEEDED;
-            if (!state.searchedEntities.map) {
-                state.searchedEntities.map = {};
-            }
-            if (!state.searchedEntities.map[action.meta.arg.entityName]) {
-                state.searchedEntities.map[action.meta.arg.entityName] = {};
-            }
+            const searchKey: string = getSearchKey(action.meta.arg.entityName, action.meta.arg.query);
+            const map: { [id: string]: ContentPlain } = {};
+            const array: ContentPlain[] = [];
             action.payload.results.forEach((item: ContentPlain) => {
-                if (state.searchedEntities.map) {
-                    state.searchedEntities.map[action.meta.arg.entityName][item.id] = item;
-                }
+                map[item.id] = item;
+                array.push(item);
             });
+            const searchResult: ContentSearchResult<ContentPlain> = {
+                entityName: action.meta.arg.entityName,
+                array,
+                map,
+                totalResults: action.payload.totalResults,
+                totalPages: action.payload.totalPages,
+                currentPage: action.payload.currentPage,
+                status: RequestStatusEnum.SUCCEEDED,
+                error: null
+            };
+            state.searchedEntities[searchKey] = searchResult;
         })
         builder.addCase(searchContent.rejected, (state, action) => handleRejected(state.searchedEntities, action));
     },
@@ -199,5 +194,5 @@ const contentSlice = createSlice({
 
 
 
-export const { clearSearchedContent, setEntityNameInPath } = contentSlice.actions;
+export const { clearSearchedContent, clearSearchResultsForKey, setSearchResult } = contentSlice.actions;
 export default contentSlice.reducer;

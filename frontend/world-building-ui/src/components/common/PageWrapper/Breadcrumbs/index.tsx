@@ -2,18 +2,29 @@ import React from 'react';
 import { Breadcrumbs as MuiBreadcrumbs, Link, Typography } from '@mui/material';
 import { useLocation, Link as RouterLink } from 'react-router-dom';
 
+export class BreadcrumbItem {
+    label!: string;
+    path?: string;
+    icon?: React.ReactNode;
+
+    static build(body: any) {
+        if (!body) throw new Error('Body is required to build BreadcrumbItem');
+        if (!body.label) throw new Error('Label is required for BreadcrumbItem');
+        if (body.path && typeof body.path !== 'string') throw new Error('Path must be a string if provided');
+        if (body.icon && typeof body.icon !== 'object') throw new Error('Icon must be a React node if provided');
+        const breadcrumbItem = new BreadcrumbItem();
+        Object.assign(breadcrumbItem, body);
+        return breadcrumbItem;
+    }
+}
+
 interface BreadcrumbsProps {
-    // Optional custom breadcrumbs to override default path-based ones
-    customBreadcrumbs?: {
-        label: string;
-        path?: string;
-    }[];
+    customBreadcrumbs?: BreadcrumbItem[];
 }
 
 export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ customBreadcrumbs }) => {
     const location = useLocation();
 
-    // Generate breadcrumbs from current path if no custom ones provided
     const getBreadcrumbs = () => {
         if (customBreadcrumbs) {
             return customBreadcrumbs;

@@ -14,6 +14,8 @@ import { Context } from '../../class/Context';
 import { User } from '../../class/entities/User';
 import { QueryFilter } from '../../class/search/QueryFilter';
 import { SearchQuery } from '../../class/search/SearchQuery';
+import PageWrapper from '../../components/common/PageWrapper';
+import { BreadcrumbItem } from '../../components/common/PageWrapper/Breadcrumbs';
 
 const WorldsPage = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -38,76 +40,85 @@ const WorldsPage = () => {
 
     if (searchedWorldsStatus === RequestStatusEnum.LOADING) {
         return (
-            <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
-                <CircularProgress />
-            </Box>
+            <PageWrapper>
+                <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+                    <CircularProgress />
+                </Box>
+            </PageWrapper>
         );
     }
 
     if (searchedWorldsStatus === RequestStatusEnum.FAILED) {
         return (
-            <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
-                <Typography color="error">Error: {searchedWorldsError}</Typography>
-            </Box>
+            <PageWrapper>
+                <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+                    <Typography color="error">Error: {searchedWorldsError}</Typography>
+                </Box>
+            </PageWrapper>
         );
     }
 
+    const customBreadcrumbs: BreadcrumbItem[] = [
+        BreadcrumbItem.build({ label: 'Worlds' })
+    ];
     return (
-        <Container maxWidth="lg">
-            <Box py={4}>
-                <Box display="flex" justifyContent="space-between" alignItems="center" mb={4}>
-                    <Typography variant="h4" component="h1">
-                        Worlds
-                    </Typography>
-                    <Button
-                        component={Link}
-                        href={routes.worldCreate()}
-                        variant="contained"
-                        color="primary"
-                        startIcon={<AddIcon />}
-                    >
-                        Create New World
-                    </Button>
-                </Box>
+        <PageWrapper customBreadcrumbs={customBreadcrumbs}>
+            <Container maxWidth="lg">
+                <Box py={4}>
+                    <Box display="flex" justifyContent="space-between" alignItems="center" mb={4}>
+                        <Typography variant="h4" component="h1">
+                            Worlds
+                        </Typography>
+                        <Button
+                            component={Link}
+                            href={routes.worldCreate()}
+                            variant="contained"
+                            color="primary"
+                            startIcon={<AddIcon />}
+                        >
+                            Create New World
+                        </Button>
+                    </Box>
 
-                <Grid2 container spacing={3}>
-                    {worlds.map((world: World) => (
-                        <Grid2 key={world.id} container={false}>
-                            <Card>
-                                <CardContent>
-                                    <Link href={routes.contentDashboard(world.id)}>
-                                        <Typography variant="h5" component="h2" gutterBottom>
-                                            {world.name}
+                    <Grid2 container spacing={3}>
+                        {worlds.map((world: World) => (
+                            <Grid2 key={world.id} container={false}>
+                                <Card>
+                                    <CardContent>
+                                        <Link href={routes.worldDashboard(world.id)}>
+                                            <Typography variant="h5" component="h2" gutterBottom>
+                                                {world.name}
+                                            </Typography>
+                                        </Link>
+                                        <Typography variant="body2" color="textSecondary">
+                                            {world.description}
                                         </Typography>
-                                    </Link>
-                                    <Typography variant="body2" color="textSecondary">
-                                        {world.description}
-                                    </Typography>
-                                </CardContent>
-                                <CardActions>
-                                    <Button
-                                        component={Link}
-                                        href={routes.worldEdit(world.id)}
-                                        size="small"
-                                        startIcon={<EditIcon />}
-                                    >
-                                        Edit
-                                    </Button>
-                                    <Button
-                                        size="small"
-                                        color="error"
-                                        startIcon={<DeleteIcon />}
-                                        onClick={() => handleDelete(world.id)}
-                                    >
-                                        Delete
-                                    </Button>
-                                </CardActions>
-                            </Card>
-                        </Grid2>
-                    ))}
-                </Grid2>
-            </Box>
-        </Container>
+                                    </CardContent>
+                                    <CardActions>
+                                        <Button
+                                            component={Link}
+                                            href={routes.worldEdit(world.id)}
+                                            size="small"
+                                            startIcon={<EditIcon />}
+                                        >
+                                            Edit
+                                        </Button>
+                                        <Button
+                                            size="small"
+                                            color="error"
+                                            startIcon={<DeleteIcon />}
+                                            onClick={() => handleDelete(world.id)}
+                                        >
+                                            Delete
+                                        </Button>
+                                    </CardActions>
+                                </Card>
+                            </Grid2>
+                        ))}
+                    </Grid2>
+                </Box>
+            </Container>
+        </PageWrapper>
     );
 };
 

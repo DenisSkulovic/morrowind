@@ -3,6 +3,7 @@ import { Box, Button } from '@mui/material';
 import FIELD_COMPONENTS from '../fields/FIELD_COMPONENTS';
 import { FormFieldDefinition } from '../../../decorator/form-field.decorator';
 import { fieldsThatNeedFetch, getDefaultValue } from '../../../config/dynamicFormConfig';
+import { cloneDeep } from 'lodash';
 
 interface DynamicFormProps {
     fields: FormFieldDefinition[];
@@ -24,7 +25,7 @@ export interface DynamicFormFieldProps {
 }
 
 const DynamicForm: React.FC<DynamicFormProps> = ({ fields, initialValues = {}, onSubmit, readOnly = false }) => {
-    const [formData, setFormData] = useState<{ [key: string]: any }>(initialValues);
+    const [formData, setFormData] = useState<{ [key: string]: any }>(cloneDeep(initialValues));
 
     const handleChange = (key: string, value: any) => {
         if (readOnly) return;

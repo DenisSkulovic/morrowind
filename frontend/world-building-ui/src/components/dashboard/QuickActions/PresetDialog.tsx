@@ -59,7 +59,7 @@ export const PresetDialog = ({ open, onClose, worldId }: PresetDialogProps): JSX
                     Cancel
                 </Button>
                 <Button
-                    disabled={!selectedPreset || status === RequestStatusEnum.LOADING}
+                    disabled={!selectedPreset || loadPresetsStatus === RequestStatusEnum.LOADING}
                     onClick={handleLoadPreset}
                     color="primary"
                 >
