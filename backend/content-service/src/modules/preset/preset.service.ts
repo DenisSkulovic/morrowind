@@ -1,10 +1,12 @@
 import { join } from "path";
 import { readdirSync, readFileSync } from "fs";
 import { Injectable } from "@nestjs/common";
-import { CONTENT_ENTITY_MAP } from "../../CONTENT_ENTITY_MAP";
+import { ContentEntityMapService } from "../../CONTENT_ENTITY_MAP";
 import { ContentBase } from "../../ContentBase";
 import { PresetEnum } from "../../common/enum/entityEnums";
 import { EntityConstructor } from "../../types";
+import { EntityEnum } from "../../enum/EntityEnum";
+import { sanitizeEntityName } from "../../util/sanitizeEntityName";
 
 export class Preset {
     [entity: string]: {
@@ -73,8 +75,9 @@ export class PresetService implements IPresetService {
             const { targetEntity, ...props } = blueprintRaw;
 
             if (!targetEntity) throw new Error(`Missing targetEntity in file: ${file}`);
+            const targetEntityEnum: EntityEnum = sanitizeEntityName(targetEntity)
 
-            const EntityClass: EntityConstructor<T> = this._getBlueprintEntity(targetEntity);
+            const EntityClass: EntityConstructor<T> = this._getBlueprintEntity(targetEntityEnum);
             const entity: T = new EntityClass();
 
             // Populate entity properties
@@ -96,8 +99,8 @@ export class PresetService implements IPresetService {
     /**
      * Retrieves the constructor for the target entity.
      */
-    private _getBlueprintEntity<T extends ContentBase>(targetEntity: string): EntityConstructor<T> {
-        const EntityClass: EntityConstructor<T> | undefined = CONTENT_ENTITY_MAP[targetEntity] as EntityConstructor<T> | undefined;
+    private _getBlueprintEntity<T extends ContentBase>(targetEntity: EntityEnum): EntityConstructor<T> {
+        const EntityClass: EntityConstructor<T> | undefined = ContentEntityMapService.getEntityConstructor<T>(targetEntity)
         if (!EntityClass) throw new Error(`Unknown targetEntity: ${targetEntity}`);
         return EntityClass;
     }

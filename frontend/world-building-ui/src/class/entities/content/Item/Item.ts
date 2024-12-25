@@ -3,7 +3,7 @@ import { ItemActionEnum } from "../../../../enum/entityEnums";
 import { serializeEnum, deserializeEnum } from "../../../../enum/util";
 import { Serializable } from "../../../../decorator/serializable.decorator";
 import { StorageSlot } from "../Slot/StorageSlot";
-import { GridSize } from "../../../../class/GridSize";
+import { GridSize, serializeGrid, deserializeGrid } from "../../../../class/GridSize";
 import { FormField } from "../../../../decorator/form-field.decorator";
 import { FieldComponentEnum } from "../../../../enum/FieldComponentEnum";
 import { FormSelectOption } from "../../../../class/FormSelectOption";
@@ -15,49 +15,61 @@ import { Context } from "../../../../class/Context";
 import { SearchQuery } from "../../../../class/search/SearchQuery";
 import { ItemRequirement } from "../../../../class/ItemRequirement";
 import { StorageSlotDefinition } from "../../../../class/StorageSlotDefinition";
-import { ItemActionEnumDTO, ItemRequirementsDTO, StorageSlotDefinitionDTO, StorageSlotDTO } from "../../../../proto/common_pb";
+import { GridSizeDTO, ItemActionEnumDTO, ItemRequirementsDTO, StorageSlotDefinitionDTO, StorageSlotDTO } from "../../../../proto/common_pb";
 
 @EntityDisplay({
     title: 'Items',
     defaultSort: 'name'
 })
 export class Item extends TaggableContentBase {
-    @DisplayField({ order: 1 })
+    @DisplayField({ displayName: 'Name' })
     @FilterOption()
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter item name', required: true })
     @Serializable()
     name!: string; // Item name, e.g., "Iron Short Sword".
 
+    @DisplayField({ displayName: 'Description' })
     @FormField({ component: FieldComponentEnum.TEXTAREA_FIELD, label: 'Description', placeholder: 'Enter item description', required: false })
     @Serializable()
     description?: string; // Item description or lore.
 
     // properties
+    @DisplayField({
+        displayName: 'Size', getValue: (item: Item) => {
+            console.log(`DisplayField item`, item)
+            return `${item.size.width}x${item.size.height}`
+        }, width: 100, sortable: true
+    })
     @FormField({ component: FieldComponentEnum.OBJECT_FIELD, label: 'Size', required: true })
-    @Serializable()
+    @Serializable({
+        serialize: (size: GridSize) => serializeGrid(size),
+        deserialize: (size: GridSizeDTO) => deserializeGrid(size)
+    })
     size!: GridSize; // Grid size for grid-based inventories
 
-    @DisplayField({ order: 2 })
+    @DisplayField({ displayName: 'Weight' })
     @FilterOption()
     @FormField({ component: FieldComponentEnum.NUMBER_FIELD, label: 'Weight', placeholder: 'Enter item weight', required: true })
     @Serializable()
     weight!: number;
 
+    @DisplayField({ displayName: 'Quantity' })
     @FormField({ component: FieldComponentEnum.NUMBER_FIELD, label: 'Quantity', placeholder: 'Enter quantity', required: true })
     @Serializable()
     quantity!: number;
 
+    @DisplayField({ displayName: 'Max Quantity' })
     @FormField({ component: FieldComponentEnum.NUMBER_FIELD, label: 'Max Quantity', placeholder: 'Enter maximum quantity', required: true })
     @Serializable()
     maxQuantity!: number;
 
-    @DisplayField({ order: 3 })
+    @DisplayField({ displayName: 'Base Value' })
     @FilterOption()
     @FormField({ component: FieldComponentEnum.NUMBER_FIELD, label: 'Base Value', placeholder: 'Enter base value in gold', required: true })
     @Serializable()
     baseValue!: number; // Monetary value in gold coins. To be adjusted with skills, modifiers, attitude, etc.
 
-    @DisplayField({ order: 4 })
+    @DisplayField({ displayName: 'Trained Skill' })
     @FilterOption()
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
@@ -72,7 +84,7 @@ export class Item extends TaggableContentBase {
     @Serializable()
     trainedSkill?: string
 
-    @DisplayField({ order: 5 })
+    @DisplayField({ displayName: 'Actions' })
     @FilterOption()
     @FormField({
         component: FieldComponentEnum.MULTI_SELECT_FIELD,
@@ -86,7 +98,7 @@ export class Item extends TaggableContentBase {
     })
     @Serializable({
         serialize: (actions: ItemActionEnum[]) => actions.map(action => serializeEnum(ItemActionEnum, ItemActionEnumDTO, action)),
-        deserialize: (actions: number[]) => actions.map(action => deserializeEnum(ItemActionEnumDTO, ItemActionEnum, action)),
+        deserialize: (actions: number[] | undefined) => actions?.map(action => deserializeEnum(ItemActionEnumDTO, ItemActionEnum, action)) || [],
     })
     actions?: ItemActionEnum[];
 
@@ -95,7 +107,7 @@ export class Item extends TaggableContentBase {
     requirements?: ItemRequirement[]
 
     // flags
-    @DisplayField({ order: 6 })
+    @DisplayField({ displayName: 'Stackable' })
     @FilterOption()
     @FormField({ component: FieldComponentEnum.CHECKBOX_FIELD, label: 'Stackable', required: true })
     @Serializable()

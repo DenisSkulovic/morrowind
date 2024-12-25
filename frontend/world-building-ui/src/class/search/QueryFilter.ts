@@ -1,5 +1,8 @@
 import { Serializable } from "../../decorator/serializable.decorator";
-import { QueryFilterValueDTO } from "../../proto/common_pb";
+import { deserializeEnum } from "../../enum/util";
+import { serializeEnum } from "../../enum/util";
+import { QueryFilterDTO, QueryFilterOperatorEnumDTO, QueryFilterValueDTO } from "../../proto/common_pb";
+import { Serializer } from "../../serialize/serializer";
 
 export enum QueryFilterOperatorEnum {
     EQUAL = 'eq',
@@ -17,40 +20,46 @@ export class QueryFilter {
     @Serializable()
     public field!: string;
 
-    @Serializable()
+    @Serializable({
+        serialize: operator => serializeEnum(QueryFilterOperatorEnum, QueryFilterOperatorEnumDTO, operator),
+        deserialize: operator => deserializeEnum(QueryFilterOperatorEnumDTO, QueryFilterOperatorEnum, operator)
+    })
     public operator!: QueryFilterOperatorEnum;
 
     @Serializable({
-        serialize: serializeQueryFilterValue,
-        deserialize: deserializeQueryFilterValue
+        serialize: (value: string | number | boolean): QueryFilterValueDTO => {
+            const dto = new QueryFilterValueDTO();
+            if (typeof value === 'string') dto.setStringvalue(value);
+            if (typeof value === 'number') dto.setNumbervalue(value);
+            if (typeof value === 'boolean') dto.setBoolvalue(value);
+            return dto;
+        },
+        deserialize: (dto: QueryFilterValueDTO): string | number | boolean => {
+            switch (dto.getValueCase()) {
+                case QueryFilterValueDTO.ValueCase.STRINGVALUE:
+                    return dto.getStringvalue();
+                case QueryFilterValueDTO.ValueCase.NUMBERVALUE:
+                    return dto.getNumbervalue();
+                case QueryFilterValueDTO.ValueCase.BOOLVALUE:
+                    return dto.getBoolvalue();
+                default:
+                    throw new Error('QueryFilterValueDTO must have a value');
+            }
+        }
     })
     public value!: string | number | boolean;
 
     public static build(data: { [key: string]: any }): QueryFilter {
-
         const filter = new QueryFilter();
         Object.assign(filter, data);
         return filter;
     }
-}
 
-function serializeQueryFilterValue(value: string | number | boolean): QueryFilterValueDTO {
-    const dto = new QueryFilterValueDTO();
-    if (typeof value === 'string') dto.setStringvalue(value);
-    if (typeof value === 'number') dto.setNumbervalue(value);
-    if (typeof value === 'boolean') dto.setBoolvalue(value);
-    return dto;
-}
+    public toDTO(): QueryFilterDTO {
+        return Serializer.toDTO(this, new QueryFilterDTO());
+    }
 
-function deserializeQueryFilterValue(dto: QueryFilterValueDTO): string | number | boolean {
-    switch (dto.getValueCase()) {
-        case QueryFilterValueDTO.ValueCase.STRINGVALUE:
-            return dto.getStringvalue();
-        case QueryFilterValueDTO.ValueCase.NUMBERVALUE:
-            return dto.getNumbervalue();
-        case QueryFilterValueDTO.ValueCase.BOOLVALUE:
-            return dto.getBoolvalue();
-        default:
-            throw new Error('QueryFilterValueDTO must have a value');
+    public static fromDTO(dto: QueryFilterDTO): QueryFilter {
+        return Serializer.fromDTO(dto, new QueryFilter());
     }
 }

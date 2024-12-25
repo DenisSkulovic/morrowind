@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '../../../store/store';
 import { searchWorldsThunk, updateWorldThunk, WorldPlain } from '../../../store/slices/worldSlice';
@@ -17,11 +17,11 @@ import { FormFieldDefinition, getFormFields } from '../../../decorator/form-fiel
 import DynamicForm from '../../../components/common/DynamicForm';
 import PageWrapper from '../../../components/common/PageWrapper';
 import { BreadcrumbItem } from '../../../components/common/PageWrapper/Breadcrumbs';
-import { sanitizeWorldId } from '../../../utils/sanitize';
+import { useWorldId } from '../../../hooks/query';
 
 const EditWorldPage = () => {
     const router = useRouter();
-    const worldId: string = sanitizeWorldId(router.query.world_id);
+    const worldId: string | null = useWorldId(router.query);
 
     const dispatch = useDispatch<AppDispatch>();
 
@@ -50,12 +50,17 @@ const EditWorldPage = () => {
         router.push(routes.worlds());
     };
 
-    const customBreadcrumbs: BreadcrumbItem[] = [
-        BreadcrumbItem.build({ label: 'Worlds', path: routes.worlds() }),
-        BreadcrumbItem.build({ label: 'Edit World' }),
-    ];
+    const [customBreadcrumbs, setCustomBreadcrumbs] = useState<BreadcrumbItem[]>([])
+    useEffect(() => {
+        setCustomBreadcrumbs([
+            BreadcrumbItem.build({ label: 'Home', path: routes.home() }),
+            BreadcrumbItem.build({ label: 'Worlds', path: routes.worlds() }),
+            BreadcrumbItem.build({ label: 'Edit World' }),
+        ]);
+    }, [worldId]);
+
     return (
-        <PageWrapper customBreadcrumbs={customBreadcrumbs}>
+        <PageWrapper customBreadcrumbs={customBreadcrumbs} accountId={account?.id} worldId={worldId || ''}>
             <Container maxWidth="lg">
                 <Box py={4}>
                     <Typography variant="h4" component="h1" gutterBottom>

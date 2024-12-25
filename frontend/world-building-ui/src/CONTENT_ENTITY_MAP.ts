@@ -68,15 +68,38 @@ import { Trait } from "./class/entities/content/Trait";
 import { EntityEnum } from "./enum/EntityEnum";
 import { ContentBase } from "./class/ContentBase";
 
-export type EntityMap = {
+export type EntityMap<T extends ContentBase> = {
     [key in keyof typeof EntityEnum]: {
-        entity: ClassConstructor<ContentBase>;
+        entity: ClassConstructor<T>;
         dto: ClassConstructor<any>;
         rootEntity?: ClassConstructor<any>;
     }
 }
 
-export const CONTENT_ENTITY_MAP: EntityMap = {
+export class ContentEntityMapService {
+
+    static getEntityConstructor<T extends ContentBase>(entityName: EntityEnum): ClassConstructor<T> {
+        const entityConfig = CONTENT_ENTITY_MAP[entityName]
+        if (!entityConfig) throw new Error(`unrecognized entityName: "${entityName}"`)
+        return entityConfig.entity as ClassConstructor<T>
+    }
+
+    static getDTOConstructor<T extends ContentBase>(entityName: EntityEnum): ClassConstructor<T> {
+        const entityConfig = CONTENT_ENTITY_MAP[entityName]
+        if (!entityConfig) throw new Error(`unrecognized entityName: "${entityName}"`)
+        return entityConfig.dto as ClassConstructor<T>
+    }
+
+    static getRootEntityConstructor<T extends ContentBase>(entityName: EntityEnum): ClassConstructor<T> | null {
+        const entityConfig = CONTENT_ENTITY_MAP[entityName]
+        if (!entityConfig) throw new Error(`unrecognized entityName: "${entityName}"`)
+        return entityConfig.rootEntity ? entityConfig.rootEntity as ClassConstructor<T> : null
+    }
+
+}
+
+
+const CONTENT_ENTITY_MAP: EntityMap<ContentBase> = {
     [EntityEnum.ItemAlcohol]: {
         entity: ItemAlcohol,
         dto: ItemDTO,

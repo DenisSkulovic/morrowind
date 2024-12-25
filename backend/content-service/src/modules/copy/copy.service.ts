@@ -5,7 +5,10 @@ import { ContentBase } from '../../ContentBase';
 import { DataSourceEnum } from '../../common/enum/DataSourceEnum';
 import { TemporarilyFreezeWorld } from '../../decorator/TemporarilyFreezeWorld';
 import { Campaign } from '../campaign/entities/Campaign';
-import { CONTENT_ENTITY_MAP, isParentEntity } from '../../CONTENT_ENTITY_MAP';
+import { ContentEntityMapService } from '../../CONTENT_ENTITY_MAP';
+import { EntityEnum } from '../../enum/EntityEnum';
+import { EntityConstructor } from '../../types';
+import { sanitizeEntityName } from '../../util/sanitizeEntityName';
 
 export interface ICopyService {
 }
@@ -22,11 +25,12 @@ export class CopyService<T extends ContentBase> implements ICopyService {
     }
 
     getRepository(entityName: string, source: DataSourceEnum): Repository<T> {
-        const entity: EntityTarget<T> = CONTENT_ENTITY_MAP[entityName] as EntityTarget<T>;
-        if (!entity) {
+        const entityNameEnum: EntityEnum = sanitizeEntityName(entityName)
+        const entityConstructor: EntityConstructor<T> = ContentEntityMapService.getEntityConstructor<T>(entityNameEnum)
+        if (!entityConstructor) {
             throw new Error(`Entity "${entityName}" not found in CONTENT_ENTITY_MAP.`);
         }
-        return this.getDataSource(source).getRepository(entity);
+        return this.getDataSource(source).getRepository(entityConstructor);
     }
 
 
@@ -39,15 +43,19 @@ export class CopyService<T extends ContentBase> implements ICopyService {
 
         // Begin transaction for safety
         await this.campaignDataSource.transaction(async (manager) => {
-            for (const [entityName, EntityClass] of Object.entries(CONTENT_ENTITY_MAP)) {
-                if (!isParentEntity(EntityClass)) continue; // Skip child entities
+            for (const entityName of Object.values(EntityEnum)) {
+                const entityNameEnum: EntityEnum = sanitizeEntityName(entityName)
+                const entityConstructor: EntityConstructor<ContentBase> = ContentEntityMapService.getEntityConstructor<ContentBase>(entityNameEnum)
+                const rootEntityConstructor: EntityConstructor<ContentBase> | null = ContentEntityMapService.getRootEntityConstructor(entityNameEnum)
+                const isParentEntity: boolean = !rootEntityConstructor
+                if (isParentEntity) continue;
 
                 // Process one entity type at a time
                 await this.copyEntityType(
-                    EntityClass,
+                    entityConstructor,
                     worldId,
                     campaignId,
-                    manager.getRepository(EntityClass),
+                    manager.getRepository(entityConstructor),
                     idMapping
                 );
             }

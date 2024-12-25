@@ -79,7 +79,7 @@ export class ActivityController {
             DataSourceEnum.DATA_SOURCE_WORLD,
             userId,
             worldId,
-            new SearchQuery(1, request.limit || 10)
+            SearchQuery.build({ page: 1, pageSize: request.limit || 10 })
         );
         const response = { activities: result.activities.map(activity => activity.toDTO()) }
         console.log('[ActivityController] Head response', response)

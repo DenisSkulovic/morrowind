@@ -115,6 +115,9 @@ export class BackgroundDTO extends jspb.Message {
   hasGender(): boolean;
   clearGender(): BackgroundDTO;
 
+  getCreatedat(): number;
+  setCreatedat(value: number): BackgroundDTO;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): BackgroundDTO.AsObject;
   static toObject(includeInstance: boolean, msg: BackgroundDTO): BackgroundDTO.AsObject;
@@ -145,6 +148,7 @@ export namespace BackgroundDTO {
     world: string,
     targetentity: string,
     gender?: GenerationInstructionDTO.AsObject,
+    createdat: number,
   }
 }
 
@@ -230,6 +234,9 @@ export class EffectDTO extends jspb.Message {
   getTargetentity(): string;
   setTargetentity(value: string): EffectDTO;
 
+  getCreatedat(): number;
+  setCreatedat(value: number): EffectDTO;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): EffectDTO.AsObject;
   static toObject(includeInstance: boolean, msg: EffectDTO): EffectDTO.AsObject;
@@ -253,6 +260,7 @@ export namespace EffectDTO {
     mode: EffectModeEnumDTO,
     element: EffectElementEnumDTO,
     targetentity: string,
+    createdat: number,
   }
 }
 
@@ -309,6 +317,9 @@ export class ResistanceDTO extends jspb.Message {
   getTargetentity(): string;
   setTargetentity(value: string): ResistanceDTO;
 
+  getCreatedat(): number;
+  setCreatedat(value: number): ResistanceDTO;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): ResistanceDTO.AsObject;
   static toObject(includeInstance: boolean, msg: ResistanceDTO): ResistanceDTO.AsObject;
@@ -329,6 +340,7 @@ export namespace ResistanceDTO {
     effecttype: EffectTypeEnumDTO,
     targeteffect: string,
     targetentity: string,
+    createdat: number,
   }
 }
 
@@ -393,6 +405,9 @@ export class StatusDTO extends jspb.Message {
   getTargetentity(): string;
   setTargetentity(value: string): StatusDTO;
 
+  getCreatedat(): number;
+  setCreatedat(value: number): StatusDTO;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): StatusDTO.AsObject;
   static toObject(includeInstance: boolean, msg: StatusDTO): StatusDTO.AsObject;
@@ -415,6 +430,7 @@ export namespace StatusDTO {
     duration: number,
     description: string,
     targetentity: string,
+    createdat: number,
   }
 }
 
@@ -467,6 +483,9 @@ export class ItemSetDTO extends jspb.Message {
   getTargetentity(): string;
   setTargetentity(value: string): ItemSetDTO;
 
+  getCreatedat(): number;
+  setCreatedat(value: number): ItemSetDTO;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): ItemSetDTO.AsObject;
   static toObject(includeInstance: boolean, msg: ItemSetDTO): ItemSetDTO.AsObject;
@@ -485,6 +504,7 @@ export namespace ItemSetDTO {
     world: string,
     set?: GenerationInstructionDTO.AsObject,
     targetentity: string,
+    createdat: number,
   }
 }
 
@@ -529,10 +549,10 @@ export class ItemDTO extends jspb.Message {
   getDescription(): string;
   setDescription(value: string): ItemDTO;
 
-  getSizeList(): Array<number>;
-  setSizeList(value: Array<number>): ItemDTO;
-  clearSizeList(): ItemDTO;
-  addSize(value: number, index?: number): ItemDTO;
+  getSize(): GridSizeDTO | undefined;
+  setSize(value?: GridSizeDTO): ItemDTO;
+  hasSize(): boolean;
+  clearSize(): ItemDTO;
 
   getQuantity(): number;
   setQuantity(value: number): ItemDTO;
@@ -644,6 +664,14 @@ export class ItemDTO extends jspb.Message {
   getWeight(): number;
   setWeight(value: number): ItemDTO;
 
+  getCreatedat(): number;
+  setCreatedat(value: number): ItemDTO;
+
+  getTagsList(): Array<string>;
+  setTagsList(value: Array<string>): ItemDTO;
+  clearTagsList(): ItemDTO;
+  addTags(value: string, index?: number): ItemDTO;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): ItemDTO.AsObject;
   static toObject(includeInstance: boolean, msg: ItemDTO): ItemDTO.AsObject;
@@ -660,7 +688,7 @@ export namespace ItemDTO {
     id: string,
     name: string,
     description: string,
-    sizeList: Array<number>,
+    size?: GridSizeDTO.AsObject,
     quantity: number,
     maxquantity: number,
     basevalue: number,
@@ -693,6 +721,8 @@ export namespace ItemDTO {
     trainedskill: string,
     storageslotdefinition?: StorageSlotDefinitionsDTO.AsObject,
     weight: number,
+    createdat: number,
+    tagsList: Array<string>,
   }
 }
 
@@ -713,6 +743,28 @@ export class ItemsDTO extends jspb.Message {
 export namespace ItemsDTO {
   export type AsObject = {
     arrList: Array<ItemDTO.AsObject>,
+  }
+}
+
+export class GridSizeDTO extends jspb.Message {
+  getWidth(): number;
+  setWidth(value: number): GridSizeDTO;
+
+  getHeight(): number;
+  setHeight(value: number): GridSizeDTO;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GridSizeDTO.AsObject;
+  static toObject(includeInstance: boolean, msg: GridSizeDTO): GridSizeDTO.AsObject;
+  static serializeBinaryToWriter(message: GridSizeDTO, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GridSizeDTO;
+  static deserializeBinaryFromReader(message: GridSizeDTO, reader: jspb.BinaryReader): GridSizeDTO;
+}
+
+export namespace GridSizeDTO {
+  export type AsObject = {
+    width: number,
+    height: number,
   }
 }
 
@@ -784,6 +836,9 @@ export class StorageSlotDTO extends jspb.Message {
   getTargetentity(): string;
   setTargetentity(value: string): StorageSlotDTO;
 
+  getCreatedat(): number;
+  setCreatedat(value: number): StorageSlotDTO;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): StorageSlotDTO.AsObject;
   static toObject(includeInstance: boolean, msg: StorageSlotDTO): StorageSlotDTO.AsObject;
@@ -807,6 +862,7 @@ export namespace StorageSlotDTO {
     parentitem: string,
     storeditems?: ItemsDTO.AsObject,
     targetentity: string,
+    createdat: number,
   }
 }
 
@@ -1045,6 +1101,9 @@ export class CharacterDTO extends jspb.Message {
   clearPastexperiencesList(): CharacterDTO;
   addPastexperiences(value: string, index?: number): CharacterDTO;
 
+  getCreatedat(): number;
+  setCreatedat(value: number): CharacterDTO;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): CharacterDTO.AsObject;
   static toObject(includeInstance: boolean, msg: CharacterDTO): CharacterDTO.AsObject;
@@ -1083,6 +1142,7 @@ export namespace CharacterDTO {
     targetentity: string,
     birthera: string,
     pastexperiencesList: Array<string>,
+    createdat: number,
   }
 }
 
@@ -1138,6 +1198,9 @@ export class AddictionDTO extends jspb.Message {
   getTargetentity(): string;
   setTargetentity(value: string): AddictionDTO;
 
+  getCreatedat(): number;
+  setCreatedat(value: number): AddictionDTO;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): AddictionDTO.AsObject;
   static toObject(includeInstance: boolean, msg: AddictionDTO): AddictionDTO.AsObject;
@@ -1157,6 +1220,7 @@ export namespace AddictionDTO {
     world: string,
     charactersList: Array<string>,
     targetentity: string,
+    createdat: number,
   }
 }
 
@@ -1238,6 +1302,9 @@ export class CharacterMemoryDTO extends jspb.Message {
   getTargetentity(): string;
   setTargetentity(value: string): CharacterMemoryDTO;
 
+  getCreatedat(): number;
+  setCreatedat(value: number): CharacterMemoryDTO;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): CharacterMemoryDTO.AsObject;
   static toObject(includeInstance: boolean, msg: CharacterMemoryDTO): CharacterMemoryDTO.AsObject;
@@ -1265,6 +1332,7 @@ export namespace CharacterMemoryDTO {
     tagsList: Array<string>,
     memory: string,
     targetentity: string,
+    createdat: number,
   }
 }
 
@@ -1364,6 +1432,9 @@ export class TagDTO extends jspb.Message {
   getTargetentity(): string;
   setTargetentity(value: string): TagDTO;
 
+  getCreatedat(): number;
+  setCreatedat(value: number): TagDTO;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): TagDTO.AsObject;
   static toObject(includeInstance: boolean, msg: TagDTO): TagDTO.AsObject;
@@ -1383,6 +1454,7 @@ export namespace TagDTO {
     campaign: string,
     world: string,
     targetentity: string,
+    createdat: number,
   }
 }
 
@@ -1444,6 +1516,9 @@ export class SkillDTO extends jspb.Message {
   getTargetentity(): string;
   setTargetentity(value: string): SkillDTO;
 
+  getCreatedat(): number;
+  setCreatedat(value: number): SkillDTO;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): SkillDTO.AsObject;
   static toObject(includeInstance: boolean, msg: SkillDTO): SkillDTO.AsObject;
@@ -1465,6 +1540,7 @@ export namespace SkillDTO {
     description: string,
     category: SkillCategoryEnumDTO,
     targetentity: string,
+    createdat: number,
   }
 }
 
@@ -1523,6 +1599,9 @@ export class TraitDTO extends jspb.Message {
   getType(): TraitTypeEnumDTO;
   setType(value: TraitTypeEnumDTO): TraitDTO;
 
+  getCreatedat(): number;
+  setCreatedat(value: number): TraitDTO;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): TraitDTO.AsObject;
   static toObject(includeInstance: boolean, msg: TraitDTO): TraitDTO.AsObject;
@@ -1543,6 +1622,7 @@ export namespace TraitDTO {
     tagsList: Array<string>,
     targetentity: string,
     type: TraitTypeEnumDTO,
+    createdat: number,
   }
 }
 
@@ -1609,6 +1689,9 @@ export class DiseaseDTO extends jspb.Message {
   getTargetentity(): string;
   setTargetentity(value: string): DiseaseDTO;
 
+  getCreatedat(): number;
+  setCreatedat(value: number): DiseaseDTO;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): DiseaseDTO.AsObject;
   static toObject(includeInstance: boolean, msg: DiseaseDTO): DiseaseDTO.AsObject;
@@ -1631,6 +1714,7 @@ export namespace DiseaseDTO {
     severity: DiseaseSeverityEnumDTO,
     charactersList: Array<string>,
     targetentity: string,
+    createdat: number,
   }
 }
 
@@ -1692,6 +1776,9 @@ export class FactDTO extends jspb.Message {
   getTargetentity(): string;
   setTargetentity(value: string): FactDTO;
 
+  getCreatedat(): number;
+  setCreatedat(value: number): FactDTO;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): FactDTO.AsObject;
   static toObject(includeInstance: boolean, msg: FactDTO): FactDTO.AsObject;
@@ -1713,6 +1800,7 @@ export namespace FactDTO {
     description: string,
     weight: number,
     targetentity: string,
+    createdat: number,
   }
 }
 
@@ -1768,6 +1856,9 @@ export class FactionDTO extends jspb.Message {
   getTargetentity(): string;
   setTargetentity(value: string): FactionDTO;
 
+  getCreatedat(): number;
+  setCreatedat(value: number): FactionDTO;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): FactionDTO.AsObject;
   static toObject(includeInstance: boolean, msg: FactionDTO): FactionDTO.AsObject;
@@ -1787,6 +1878,7 @@ export namespace FactionDTO {
     world: string,
     tagsList: Array<string>,
     targetentity: string,
+    createdat: number,
   }
 }
 
@@ -1850,6 +1942,9 @@ export class MemoryPoolDTO extends jspb.Message {
   getTargetentity(): string;
   setTargetentity(value: string): MemoryPoolDTO;
 
+  getCreatedat(): number;
+  setCreatedat(value: number): MemoryPoolDTO;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): MemoryPoolDTO.AsObject;
   static toObject(includeInstance: boolean, msg: MemoryPoolDTO): MemoryPoolDTO.AsObject;
@@ -1871,6 +1966,7 @@ export namespace MemoryPoolDTO {
     memorypoolentriesList: Array<string>,
     tagsList: Array<string>,
     targetentity: string,
+    createdat: number,
   }
 }
 
@@ -1936,6 +2032,9 @@ export class MemoryPoolEntryDTO extends jspb.Message {
   getTargetentity(): string;
   setTargetentity(value: string): MemoryPoolEntryDTO;
 
+  getCreatedat(): number;
+  setCreatedat(value: number): MemoryPoolEntryDTO;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): MemoryPoolEntryDTO.AsObject;
   static toObject(includeInstance: boolean, msg: MemoryPoolEntryDTO): MemoryPoolEntryDTO.AsObject;
@@ -1959,6 +2058,7 @@ export namespace MemoryPoolEntryDTO {
     defaultclarity: number,
     defaultimportance: number,
     targetentity: string,
+    createdat: number,
   }
 }
 
@@ -2019,6 +2119,9 @@ export class CharacterProfessionDTO extends jspb.Message {
   getTargetentity(): string;
   setTargetentity(value: string): CharacterProfessionDTO;
 
+  getCreatedat(): number;
+  setCreatedat(value: number): CharacterProfessionDTO;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): CharacterProfessionDTO.AsObject;
   static toObject(includeInstance: boolean, msg: CharacterProfessionDTO): CharacterProfessionDTO.AsObject;
@@ -2039,6 +2142,7 @@ export namespace CharacterProfessionDTO {
     tagsList: Array<string>,
     memorypoolsList: Array<string>,
     targetentity: string,
+    createdat: number,
   }
 }
 
@@ -2102,6 +2206,9 @@ export class EquipmentSlotDTO extends jspb.Message {
   getTargetentity(): string;
   setTargetentity(value: string): EquipmentSlotDTO;
 
+  getCreatedat(): number;
+  setCreatedat(value: number): EquipmentSlotDTO;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): EquipmentSlotDTO.AsObject;
   static toObject(includeInstance: boolean, msg: EquipmentSlotDTO): EquipmentSlotDTO.AsObject;
@@ -2123,6 +2230,7 @@ export namespace EquipmentSlotDTO {
     equippeditem?: ItemDTO.AsObject,
     character: string,
     targetentity: string,
+    createdat: number,
   }
 }
 
@@ -2173,6 +2281,9 @@ export class BirthsignDTO extends jspb.Message {
   getTargetentity(): string;
   setTargetentity(value: string): BirthsignDTO;
 
+  getCreatedat(): number;
+  setCreatedat(value: number): BirthsignDTO;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): BirthsignDTO.AsObject;
   static toObject(includeInstance: boolean, msg: BirthsignDTO): BirthsignDTO.AsObject;
@@ -2191,6 +2302,7 @@ export namespace BirthsignDTO {
     campaign: string,
     world: string,
     targetentity: string,
+    createdat: number,
   }
 }
 
@@ -2246,6 +2358,9 @@ export class RaceDTO extends jspb.Message {
   getTargetentity(): string;
   setTargetentity(value: string): RaceDTO;
 
+  getCreatedat(): number;
+  setCreatedat(value: number): RaceDTO;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): RaceDTO.AsObject;
   static toObject(includeInstance: boolean, msg: RaceDTO): RaceDTO.AsObject;
@@ -2265,6 +2380,7 @@ export namespace RaceDTO {
     world: string,
     metadata?: Metadata.AsObject,
     targetentity: string,
+    createdat: number,
   }
 }
 
@@ -2418,6 +2534,9 @@ export class MoodDTO extends jspb.Message {
   getTargetentity(): string;
   setTargetentity(value: string): MoodDTO;
 
+  getCreatedat(): number;
+  setCreatedat(value: number): MoodDTO;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): MoodDTO.AsObject;
   static toObject(includeInstance: boolean, msg: MoodDTO): MoodDTO.AsObject;
@@ -2437,6 +2556,7 @@ export namespace MoodDTO {
     world: string,
     description: string,
     targetentity: string,
+    createdat: number,
   }
 }
 
@@ -2500,6 +2620,9 @@ export class ReligionDTO extends jspb.Message {
   getTargetentity(): string;
   setTargetentity(value: string): ReligionDTO;
 
+  getCreatedat(): number;
+  setCreatedat(value: number): ReligionDTO;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): ReligionDTO.AsObject;
   static toObject(includeInstance: boolean, msg: ReligionDTO): ReligionDTO.AsObject;
@@ -2521,6 +2644,7 @@ export namespace ReligionDTO {
     rituals?: ReligionRitualsDTO.AsObject,
     tenets?: ReligionTenetsDTO.AsObject,
     targetentity: string,
+    createdat: number,
   }
 }
 
@@ -2829,6 +2953,9 @@ export class CharacterGenInstructionDTO extends jspb.Message {
   getWorld(): string;
   setWorld(value: string): CharacterGenInstructionDTO;
 
+  getCreatedat(): number;
+  setCreatedat(value: number): CharacterGenInstructionDTO;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): CharacterGenInstructionDTO.AsObject;
   static toObject(includeInstance: boolean, msg: CharacterGenInstructionDTO): CharacterGenInstructionDTO.AsObject;
@@ -2856,6 +2983,7 @@ export namespace CharacterGenInstructionDTO {
     user: string,
     campaign: string,
     world: string,
+    createdat: number,
   }
 }
 
@@ -2911,6 +3039,9 @@ export class CharacterGroupGenInstructionDTO extends jspb.Message {
   getTargetentity(): string;
   setTargetentity(value: string): CharacterGroupGenInstructionDTO;
 
+  getCreatedat(): number;
+  setCreatedat(value: number): CharacterGroupGenInstructionDTO;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): CharacterGroupGenInstructionDTO.AsObject;
   static toObject(includeInstance: boolean, msg: CharacterGroupGenInstructionDTO): CharacterGroupGenInstructionDTO.AsObject;
@@ -2930,6 +3061,7 @@ export namespace CharacterGroupGenInstructionDTO {
     world: string,
     set?: CombinatorDTO.AsObject,
     targetentity: string,
+    createdat: number,
   }
 }
 
@@ -3208,6 +3340,9 @@ export class PastExperienceDTO extends jspb.Message {
   getTargetentity(): string;
   setTargetentity(value: string): PastExperienceDTO;
 
+  getCreatedat(): number;
+  setCreatedat(value: number): PastExperienceDTO;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): PastExperienceDTO.AsObject;
   static toObject(includeInstance: boolean, msg: PastExperienceDTO): PastExperienceDTO.AsObject;
@@ -3228,6 +3363,7 @@ export namespace PastExperienceDTO {
     tagsList: Array<string>,
     type: PastExperienceTypeEnumDTO,
     targetentity: string,
+    createdat: number,
   }
 }
 
@@ -3294,6 +3430,9 @@ export class MemoryDTO extends jspb.Message {
   getTargetentity(): string;
   setTargetentity(value: string): MemoryDTO;
 
+  getCreatedat(): number;
+  setCreatedat(value: number): MemoryDTO;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): MemoryDTO.AsObject;
   static toObject(includeInstance: boolean, msg: MemoryDTO): MemoryDTO.AsObject;
@@ -3316,6 +3455,7 @@ export namespace MemoryDTO {
     type: MemoryTypeEnumDTO,
     description: string,
     targetentity: string,
+    createdat: number,
   }
 }
 
@@ -3376,6 +3516,9 @@ export class SkillSetDTO extends jspb.Message {
   getTargetentity(): string;
   setTargetentity(value: string): SkillSetDTO;
 
+  getCreatedat(): number;
+  setCreatedat(value: number): SkillSetDTO;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): SkillSetDTO.AsObject;
   static toObject(includeInstance: boolean, msg: SkillSetDTO): SkillSetDTO.AsObject;
@@ -3396,6 +3539,7 @@ export namespace SkillSetDTO {
     tagsList: Array<string>,
     skillimprovement?: SkillImprovementDTO.AsObject,
     targetentity: string,
+    createdat: number,
   }
 }
 
@@ -3472,6 +3616,9 @@ export class PersonalityProfileDTO extends jspb.Message {
   getTargetentity(): string;
   setTargetentity(value: string): PersonalityProfileDTO;
 
+  getCreatedat(): number;
+  setCreatedat(value: number): PersonalityProfileDTO;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): PersonalityProfileDTO.AsObject;
   static toObject(includeInstance: boolean, msg: PersonalityProfileDTO): PersonalityProfileDTO.AsObject;
@@ -3492,6 +3639,7 @@ export namespace PersonalityProfileDTO {
     enneagramtype: string,
     traitsList: Array<GenerationInstructionDTO.AsObject>,
     targetentity: string,
+    createdat: number,
   }
 }
 
@@ -3551,6 +3699,9 @@ export class NeedDTO extends jspb.Message {
   getTargetentity(): string;
   setTargetentity(value: string): NeedDTO;
 
+  getCreatedat(): number;
+  setCreatedat(value: number): NeedDTO;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): NeedDTO.AsObject;
   static toObject(includeInstance: boolean, msg: NeedDTO): NeedDTO.AsObject;
@@ -3572,6 +3723,7 @@ export namespace NeedDTO {
     type: NeedTypeEnumDTO,
     layer: NeedLayerEnumDTO,
     targetentity: string,
+    createdat: number,
   }
 }
 
@@ -3619,6 +3771,9 @@ export class UserDTO extends jspb.Message {
   hasAccount(): boolean;
   clearAccount(): UserDTO;
 
+  getCreatedat(): number;
+  setCreatedat(value: number): UserDTO;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): UserDTO.AsObject;
   static toObject(includeInstance: boolean, msg: UserDTO): UserDTO.AsObject;
@@ -3634,6 +3789,7 @@ export namespace UserDTO {
     worlds?: WorldsDTO.AsObject,
     campaigns?: CampaignsDTO.AsObject,
     account?: AccountDTO.AsObject,
+    createdat: number,
   }
 }
 
@@ -3678,6 +3834,9 @@ export class AccountDTO extends jspb.Message {
   hasPreferences(): boolean;
   clearPreferences(): AccountDTO;
 
+  getCreatedat(): number;
+  setCreatedat(value: number): AccountDTO;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): AccountDTO.AsObject;
   static toObject(includeInstance: boolean, msg: AccountDTO): AccountDTO.AsObject;
@@ -3694,6 +3853,7 @@ export namespace AccountDTO {
     role: string,
     user: string,
     preferences?: PreferencesDTO.AsObject,
+    createdat: number,
   }
 }
 
@@ -3747,6 +3907,9 @@ export class WorldDTO extends jspb.Message {
   getFrozen(): boolean;
   setFrozen(value: boolean): WorldDTO;
 
+  getCreatedat(): number;
+  setCreatedat(value: number): WorldDTO;
+
   getUser(): string;
   setUser(value: string): WorldDTO;
 
@@ -3770,6 +3933,7 @@ export namespace WorldDTO {
     description: string,
     settings?: WorldSettings.AsObject,
     frozen: boolean,
+    createdat: number,
     user: string,
     campaigns?: CampaignsDTO.AsObject,
   }
@@ -3895,8 +4059,8 @@ export class QueryFilterDTO extends jspb.Message {
   getField(): string;
   setField(value: string): QueryFilterDTO;
 
-  getOperator(): string;
-  setOperator(value: string): QueryFilterDTO;
+  getOperator(): QueryFilterOperatorEnumDTO;
+  setOperator(value: QueryFilterOperatorEnumDTO): QueryFilterDTO;
 
   getValue(): QueryFilterValueDTO | undefined;
   setValue(value?: QueryFilterValueDTO): QueryFilterDTO;
@@ -3914,7 +4078,7 @@ export class QueryFilterDTO extends jspb.Message {
 export namespace QueryFilterDTO {
   export type AsObject = {
     field: string,
-    operator: string,
+    operator: QueryFilterOperatorEnumDTO,
     value?: QueryFilterValueDTO.AsObject,
   }
 }
@@ -3976,6 +4140,16 @@ export namespace SortByDTO {
   }
 }
 
+export enum QueryFilterOperatorEnumDTO { 
+  EQUAL = 0,
+  NOT_EQUAL = 1,
+  GREATER_THAN = 2,
+  GREATER_THAN_OR_EQUAL = 3,
+  LESS_THAN = 4,
+  LESS_THAN_OR_EQUAL = 5,
+  CONTAINS = 6,
+  REGEX = 7,
+}
 export enum EffectTypeEnumDTO { 
   EFFECT_TYPE_DAMAGE = 0,
   EFFECT_TYPE_HEALING = 1,

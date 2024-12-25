@@ -1,6 +1,6 @@
 import { Controller, Inject } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
-import { ContentService } from './content.service';
+import { ContentSearchResult, ContentService } from './content.service';
 import { ContentBase } from '../../ContentBase';
 import {
     ContentBodyDTO, CreateContentRequest, CreateContentResponse,
@@ -12,7 +12,7 @@ import {
 } from '../../proto/content';
 import { deserializeEnum } from '../../common/enum/util';
 import { DataSourceEnum } from '../../common/enum/DataSourceEnum';
-import { CONTENT_ENTITY_MAP } from '../../CONTENT_ENTITY_MAP';
+import { ContentEntityMapService } from '../../CONTENT_ENTITY_MAP';
 import { EntityConstructor } from '../../types';
 import { Serializer } from '../../serializer';
 import { DataSourceEnumDTO } from '../../proto/common';
@@ -21,6 +21,8 @@ import { SearchQuery } from '../../class/search/SearchQuery';
 import { ActivityService } from '../activity/activity.service';
 import { ActivityRecord } from '../activity/entities/ActivityRecord';
 import { ActivityEventNameEnum } from '../../enum/ActivityEventNameEnum';
+import { EntityEnum } from '../../enum/EntityEnum';
+import { sanitizeEntityName } from '../../util/sanitizeEntityName';
 
 @Controller()
 export class ContentController {
@@ -118,10 +120,28 @@ export class ContentController {
 
     @GrpcMethod('ContentService', 'search')
     async search(request: SearchContentRequest): Promise<SearchContentResponse> {
+        console.log(`[ContentController] search`, request);
         const { entityName, query, context } = request;
+        const entityNameEnum: EntityEnum = sanitizeEntityName(entityName)
+
+        const rootEntityConstructor: EntityConstructor<ContentBase> | null = ContentEntityMapService.getRootEntityConstructor<ContentBase>(entityNameEnum)
+
         if (!context) throw new Error(`context cannot be undefined`)
         if (!query) throw new Error(`query cannot be undefined`)
-        return this.contentService.search(entityName, SearchQuery.fromDTO(query), Context.fromDTO(context));
+        const result: ContentSearchResult<ContentBase> = await this.contentService.search(entityName, SearchQuery.fromDTO(query), Context.fromDTO(context));
+        const response: SearchContentResponse = {
+            results: result.results.map((content: ContentBase) => {
+                const dtoFieldName: string = rootEntityConstructor ? rootEntityConstructor.name : entityName;
+                return {
+                    [dtoFieldName]: Serializer.toDTO(content)
+                }
+            }),
+            totalResults: result.totalResults,
+            totalPages: result.totalPages,
+            currentPage: result.currentPage
+        }
+        console.log(`[ContentController] search result`, response);
+        return response;
     }
 
     @GrpcMethod('ContentService', 'createBulk')
@@ -235,7 +255,8 @@ export class ContentController {
 
 function deserializeContentBodyDTO(contentBody: ContentBodyDTO) {
     const [entityName, data] = Object.entries(contentBody)[0] // taking the first because prot syntax for "oneof" allows for only one key-value pair
-    const entityConstructor: EntityConstructor<ContentBase> | undefined = CONTENT_ENTITY_MAP[entityName] as EntityConstructor<ContentBase> | undefined
+    const entityNameEnum: EntityEnum = sanitizeEntityName(entityName)
+    const entityConstructor: EntityConstructor<ContentBase> | undefined = ContentEntityMapService.getEntityConstructor<ContentBase>(entityNameEnum)
     if (!entityConstructor) throw new Error(`unrecognized entityName: "${entityName}"`)
     const entity = new entityConstructor()
     return Serializer.fromDTO(data, entity)

@@ -1,4 +1,5 @@
 import { EntityMetadataKeyEnum } from "../enum/EntityMetadataKeyEnum";
+import { ClassConstructor } from "../types";
 
 export interface FilterOptionOptions {
     displayName?: string;
@@ -18,6 +19,6 @@ export function FilterOption(options: FilterOptionOptions = {}) {
     };
 }
 
-export const getFilterOptionConfig = (target: any): FilterOptionConfig[] => {
-    return Reflect.getMetadata(EntityMetadataKeyEnum.FILTER_OPTION, target.constructor) || [] as FilterOptionConfig[];
+export const getFilterOptionConfig = (cls: ClassConstructor<any>): FilterOptionConfig[] => {
+    return Reflect.getMetadata(EntityMetadataKeyEnum.FILTER_OPTION, cls) || [] as FilterOptionConfig[];
 }

@@ -1,12 +1,12 @@
 import React from 'react';
-import { Drawer, List, ListItem, ListItemIcon, ListItemText, Collapse, Box, ListItemButton } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Drawer, List, ListItem, ListItemIcon, ListItemText, Collapse, Box, ListItemButton, Link } from '@mui/material';
 import {
     ExpandLess,
     ExpandMore
 } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 import { getNavItems } from '../../../../config/navigation';
+import { useNavItems } from '../../../../hooks/useNavItems';
 
 const DRAWER_WIDTH = 240;
 
@@ -50,7 +50,7 @@ const Sidebar = ({ accountId, worldId }: SidebarProps) => {
         }));
     };
 
-    const navItems: NavItem[] = getNavItems(accountId, worldId)
+    const navItems: NavItem[] = useNavItems(accountId, worldId)
 
     const renderNavItem = (
         item: NavItem,
@@ -63,7 +63,7 @@ const Sidebar = ({ accountId, worldId }: SidebarProps) => {
             <React.Fragment key={item.path}>
                 <ListItemButton
                     component={hasChildren ? 'div' : Link}
-                    to={hasChildren ? undefined : item.path}
+                    href={hasChildren ? undefined : item.path}
                     onClick={hasChildren ? () => handleClick(item.label) : undefined}
                     sx={{ pl: depth * 2 }}
                 >

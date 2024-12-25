@@ -3,11 +3,11 @@ import { Box, Button, IconButton, Tooltip } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import GetAppIcon from '@mui/icons-material/GetApp';
 import AddIcon from '@mui/icons-material/Add';
-import SearchIcon from '@mui/icons-material/Search';
 import { useDispatch } from 'react-redux';
+import { EntityEnum } from '../../../enum/EntityEnum';
 
 interface EntityListActionsProps {
-    entityName: string;
+    entityName: EntityEnum | null;
     selectedIds: Set<string>;
     onCreateNew: () => void;
     onDelete: (ids: Set<string>) => void;

@@ -14,7 +14,7 @@ import { setIsPresetDialogOpen } from '../../../store/slices/uiSlice';
 import { RootState } from '../../../store/store';
 
 interface QuickActionsProps {
-    worldId: string;
+    worldId: string | null;
 }
 
 export const QuickActions = ({ worldId }: QuickActionsProps): JSX.Element => {

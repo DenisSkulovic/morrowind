@@ -9,7 +9,7 @@ import { ActivityRecordPlain } from "../store/slices/worldSlice";
 import { RootState, AppDispatch } from "../store/store";
 import { useSelectorAndBuilder } from "./useSelectorAndBuilder";
 
-export const useDashboardData = (worldId: string, userId: string) => {
+export const useDashboardData = (worldId: string | null, userId: string) => {
     const dispatch = useDispatch<AppDispatch>();
 
     const { status: dashboardStatus, error: dashboardError } = useSelector((state: RootState) => state.dashboard);
@@ -26,24 +26,24 @@ export const useDashboardData = (worldId: string, userId: string) => {
     const statusesToWatch_stats: RequestStatusEnum[] = [contentCrudStatus, presetLoadingStatus]
     statusesToWatch_activities.forEach((watchedStatus: RequestStatusEnum) => {
         useEffect(() => {
-            if (watchedStatus === RequestStatusEnum.SUCCEEDED) {
+            if (watchedStatus === RequestStatusEnum.SUCCEEDED && worldId) {
                 dispatch(refreshActivities({ worldId, userId: userId }))
             }
-        }, [dispatch, watchedStatus])
+        }, [dispatch, watchedStatus, worldId])
     })
     statusesToWatch_stats.forEach((watchedStatus: RequestStatusEnum) => {
         useEffect(() => {
-            if (watchedStatus === RequestStatusEnum.SUCCEEDED) {
+            if (watchedStatus === RequestStatusEnum.SUCCEEDED && worldId) {
                 dispatch(refreshStats({ worldId, userId: userId }))
             }
-        }, [dispatch, watchedStatus])
+        }, [dispatch, watchedStatus, worldId])
     })
 
     useEffect(() => {
-        if (dashboardStatus === RequestStatusEnum.IDLE) {
+        if (dashboardStatus === RequestStatusEnum.IDLE && worldId) {
             dispatch(loadDashboardData({ worldId, userId: userId }));
         }
-    }, [dispatch, dashboardStatus]);
+    }, [dispatch, dashboardStatus, worldId]);
 
     return {
         stats,

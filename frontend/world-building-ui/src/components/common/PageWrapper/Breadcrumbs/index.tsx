@@ -1,6 +1,5 @@
 import React from 'react';
 import { Breadcrumbs as MuiBreadcrumbs, Link, Typography } from '@mui/material';
-import { useLocation, Link as RouterLink } from 'react-router-dom';
 
 export class BreadcrumbItem {
     label!: string;
@@ -23,7 +22,7 @@ interface BreadcrumbsProps {
 }
 
 export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ customBreadcrumbs }) => {
-    const location = useLocation();
+    const location = typeof window !== 'undefined' ? window.location : { pathname: '' };
 
     const getBreadcrumbs = () => {
         if (customBreadcrumbs) {
@@ -47,15 +46,6 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ customBreadcrumbs }) =
 
     return (
         <MuiBreadcrumbs aria-label="breadcrumb">
-            <Link
-                component={RouterLink}
-                to="/"
-                color="inherit"
-                underline="hover"
-            >
-                Dashboard
-            </Link>
-
             {breadcrumbs.map((crumb, index) => {
                 const isLast = index === breadcrumbs.length - 1;
 
@@ -73,8 +63,7 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ customBreadcrumbs }) =
                 return (
                     <Link
                         key={crumb.label}
-                        component={RouterLink}
-                        to={crumb.path || '#'}
+                        href={crumb.path || '#'}
                         color="inherit"
                         underline="hover"
                     >

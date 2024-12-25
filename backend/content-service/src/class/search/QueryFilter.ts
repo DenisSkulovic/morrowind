@@ -1,24 +1,30 @@
-import { QueryFilterDTO, QueryFilterValueDTO } from "../../proto/common";
+import { QueryFilterDTO, QueryFilterOperatorEnumDTO, QueryFilterValueDTO } from "../../proto/common";
 import { Serializable } from "../../decorator/serializable.decorator";
+import { serializeEnum } from "../../common/enum/util";
+import { deserializeEnum } from "../../common/enum/util";
+import { Serializer } from "../../serializer";
 
-type Operator = 'eq' | 'neq' | 'gt' | 'gte' | 'lt' | 'lte' | 'contains' | 'regex';
+export enum QueryFilterOperatorEnum {
+    EQUAL = 'eq',
+    NOT_EQUAL = 'neq',
+    GREATER_THAN = 'gt',
+    GREATER_THAN_OR_EQUAL = 'gte',
+    LESS_THAN = 'lt',
+    LESS_THAN_OR_EQUAL = 'lte',
+    CONTAINS = 'contains',
+    REGEX = 'regex'
+}
 
 export class QueryFilter {
-    constructor(
-        field: string,
-        operator: Operator,
-        value: string | number | boolean
-    ) {
-        this.field = field;
-        this.operator = operator;
-        this.value = value;
-    }
 
     @Serializable()
-    public field: string;
+    public field!: string;
 
-    @Serializable()
-    public operator: Operator;
+    @Serializable({
+        serialize: operator => serializeEnum(QueryFilterOperatorEnum, QueryFilterOperatorEnumDTO, operator),
+        deserialize: operator => deserializeEnum(QueryFilterOperatorEnumDTO, QueryFilterOperatorEnum, operator)
+    })
+    public operator!: QueryFilterOperatorEnum;
 
     @Serializable({
         serialize: (value: string | number | boolean) => {
@@ -34,41 +40,19 @@ export class QueryFilter {
             throw new Error('QueryFilterDTO must have a value');
         }
     })
-    public value: string | number | boolean;
+    public value!: string | number | boolean;
+
+    static build(body: any): QueryFilter {
+        const filter = new QueryFilter()
+        Object.assign(filter, body)
+        return filter
+    }
 
     public static fromDTO(dto: QueryFilterDTO): QueryFilter {
-        if (!dto.value) {
-            throw new Error('QueryFilterDTO must have a value');
-        }
-
-        let value: string | number | boolean;
-        if (dto.value.stringValue !== undefined) {
-            value = dto.value.stringValue;
-        } else if (dto.value.numberValue !== undefined) {
-            value = dto.value.numberValue;
-        } else if (dto.value.boolValue !== undefined) {
-            value = dto.value.boolValue;
-        } else {
-            throw new Error('QueryFilterDTO must have a value');
-        }
-        return new QueryFilter(dto.field, dto.operator as Operator, value);
+        return Serializer.fromDTO(dto, new QueryFilter());
     }
 
     public toDTO(): QueryFilterDTO {
-        const value: QueryFilterValueDTO = {};
-
-        if (typeof this.value === 'string') {
-            value.stringValue = this.value;
-        } else if (typeof this.value === 'number') {
-            value.numberValue = this.value;
-        } else if (typeof this.value === 'boolean') {
-            value.boolValue = this.value;
-        }
-
-        return {
-            field: this.field,
-            operator: this.operator,
-            value
-        };
+        return Serializer.toDTO(this);
     }
 }

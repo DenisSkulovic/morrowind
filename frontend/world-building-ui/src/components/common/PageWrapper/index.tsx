@@ -7,24 +7,24 @@ import { BreadcrumbItem, Breadcrumbs } from './Breadcrumbs';
 interface PageWrapperProps {
     children: React.ReactNode;
     customBreadcrumbs?: BreadcrumbItem[];
+    accountId?: string;
+    worldId?: string;
 }
 
-const PageWrapper = ({ children, customBreadcrumbs }: PageWrapperProps) => {
+const PageWrapper = ({ children, customBreadcrumbs, accountId, worldId }: PageWrapperProps) => {
     const [sidebarOpen, setSidebarOpen] = useState(true);
-
     const handleMenuClick = () => setSidebarOpen(!sidebarOpen);
 
     return (
         <Box sx={{ display: 'flex' }}>
             <Topbar onMenuClick={handleMenuClick} />
-            <Sidebar />
+            <Sidebar accountId={accountId} worldId={worldId} />
             <Box
                 component="main"
                 sx={{
                     flexGrow: 1,
                     p: 3,
                     mt: 8,
-                    ml: '240px', // Match DRAWER_WIDTH from Sidebar
                 }}
             >
                 <Breadcrumbs customBreadcrumbs={customBreadcrumbs} />

@@ -1,4 +1,6 @@
 import { Serializable } from "../../decorator/serializable.decorator";
+import { Serializer } from "../../serialize/serializer";
+import { SortByDTO } from "../../proto/common_pb";
 
 export enum SortByDirectionEnum {
     ASC = 'asc',
@@ -22,5 +24,13 @@ export class SortBy {
         const newSortBy = new SortBy();
         Object.assign(newSortBy, body);
         return newSortBy;
+    }
+
+    public toDTO(): SortByDTO {
+        return Serializer.toDTO(this, new SortByDTO());
+    }
+
+    public static fromDTO(dto: SortByDTO): SortBy {
+        return Serializer.fromDTO(dto, new SortBy());
     }
 }

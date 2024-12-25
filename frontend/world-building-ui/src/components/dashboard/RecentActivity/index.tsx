@@ -5,7 +5,7 @@ import { routes } from '../../../routes';
 
 interface RecentActivityProps {
     activityRecords: ActivityRecord[] | null
-    worldId: string
+    worldId: string | null
     userId: string
 }
 
@@ -27,13 +27,13 @@ export const RecentActivity = ({ activityRecords, worldId, userId }: RecentActiv
             if (activity.relatedTargetId && activity.relatedEntityName && activity.relatedTargetEntity) {
                 return {
                     linkText: `${activity.relatedEntityName} (${activity.relatedTargetEntity})`,
-                    href: routes.contentDetail(worldId, activity.relatedTargetId, activity.relatedTargetEntity)
+                    href: routes.contentDetail(worldId || '', activity.relatedTargetId, activity.relatedTargetEntity)
                 }
             }
             else if (activity.relatedTargetEntity) {
                 return {
                     linkText: activity.relatedTargetEntity,
-                    href: routes.contentEntity(worldId, activity.relatedTargetEntity)
+                    href: routes.contentEntity(worldId || '', activity.relatedTargetEntity)
                 }
             } else return { href: "", linkText: "" }
         }

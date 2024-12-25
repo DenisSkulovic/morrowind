@@ -65,9 +65,12 @@ export class Campaign extends BaseEntity {
     @Serializable({ strategy: 'id' })
     world!: World;
 
-    @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
-    @Serializable()
-    createdAt!: number;
+    @Column({ type: "timestamp", nullable: true })
+    @Serializable({
+        serialize: (val: Date) => val.getTime(),
+        deserialize: (val: number) => new Date(val)
+    })
+    createdAt?: Date;
 
     @ManyToOne(() => User, user => user.campaigns, {})
     @Serializable({ strategy: 'id' })

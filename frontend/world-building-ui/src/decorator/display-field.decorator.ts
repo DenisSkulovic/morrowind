@@ -1,9 +1,11 @@
 import { EntityMetadataKeyEnum } from "../enum/EntityMetadataKeyEnum";
+import { ClassConstructor } from "../types";
 
 export interface DisplayFieldOptions {
-    order: number;
     displayName?: string;
     getValue?: (entity: any) => any;
+    width?: number;
+    sortable?: boolean;
 }
 
 export interface DisplayFieldConfig extends DisplayFieldOptions {
@@ -11,14 +13,14 @@ export interface DisplayFieldConfig extends DisplayFieldOptions {
 }
 
 export function DisplayField(options: DisplayFieldOptions) {
-    return function (target: any, propertyKey: string) {
-        const fields = Reflect.getMetadata(EntityMetadataKeyEnum.DISPLAY_FIELD, target.constructor) || [];
+    return function (cls: any, propertyKey: string) {
+        const fields = Reflect.getMetadata(EntityMetadataKeyEnum.DISPLAY_FIELD, cls.constructor) || [];
         const field: DisplayFieldConfig = { ...options, field: propertyKey };
         fields.push(field);
-        Reflect.defineMetadata(EntityMetadataKeyEnum.DISPLAY_FIELD, fields, target.constructor);
+        Reflect.defineMetadata(EntityMetadataKeyEnum.DISPLAY_FIELD, fields, cls.constructor);
     };
 }
 
-export const getDisplayFieldConfig = (target: any): DisplayFieldConfig[] => {
-    return Reflect.getMetadata(EntityMetadataKeyEnum.DISPLAY_FIELD, target.constructor) || [] as DisplayFieldConfig[];
+export const getDisplayFieldConfig = (cls: ClassConstructor<any>): DisplayFieldConfig[] => {
+    return Reflect.getMetadata(EntityMetadataKeyEnum.DISPLAY_FIELD, cls) || [] as DisplayFieldConfig[];
 }

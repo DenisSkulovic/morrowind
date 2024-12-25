@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import { createWorldThunk, WorldPlain } from '../../store/slices/worldSlice';
@@ -34,12 +34,17 @@ const CreateWorldPage = () => {
         campaigns: []
     }).toPlainObj();
 
-    const customBreadcrumbs: BreadcrumbItem[] = [
-        BreadcrumbItem.build({ label: 'Worlds', path: routes.worlds() }),
-        BreadcrumbItem.build({ label: 'Create World' })
-    ];
+    const [customBreadcrumbs, setCustomBreadcrumbs] = useState<BreadcrumbItem[]>([])
+    useEffect(() => {
+        setCustomBreadcrumbs([
+            BreadcrumbItem.build({ label: 'Home', path: routes.home() }),
+            BreadcrumbItem.build({ label: 'Worlds', path: routes.worlds() }),
+            BreadcrumbItem.build({ label: 'Create World' })
+        ]);
+    }, []);
+
     return (
-        <PageWrapper customBreadcrumbs={customBreadcrumbs}>
+        <PageWrapper customBreadcrumbs={customBreadcrumbs} accountId={account?.id}>
             <Container maxWidth="lg">
                 <Box py={4}>
                     <Typography variant="h4" component="h1" gutterBottom>

@@ -4,7 +4,7 @@ import { ContentBase } from '../../class/ContentBase';
 import { Context } from '../../class/Context';
 import { RequestStatusEnum } from '../../enum/RequestStatusEnum';
 import { SearchQuery } from '../../class/search/SearchQuery';
-import { CONTENT_ENTITY_MAP } from '../../CONTENT_ENTITY_MAP';
+import { ContentEntityMapService } from '../../CONTENT_ENTITY_MAP';
 import { LooseObject } from '../../types';
 import { EntityEnum } from '../../enum/EntityEnum';
 import { handlePending, handleRejected } from '../common';
@@ -51,9 +51,10 @@ export const getSearchKey = (entityName: EntityEnum, query: SearchQuery) => {
 // Async thunk for creating content
 export const createContent = createAsyncThunk(
     'content/createContent',
-    async ({ entityName, contentBody, context }: { entityName: EntityEnum; contentBody: ContentBase; context: Context }) => {
+    async ({ entityName, contentBody, context }: { entityName: EntityEnum | null; contentBody: ContentBase; context: Context }) => {
+        if (!entityName) throw new Error(`Entity name not found`);
         const contentService = new ContentService();
-        const dtoConstructor = CONTENT_ENTITY_MAP[entityName].dto;
+        const dtoConstructor = ContentEntityMapService.getDTOConstructor<ContentBase>(entityName);
         if (!dtoConstructor) throw new Error(`DTO constructor for entity ${entityName} not found`);
         const response: ContentBase = await contentService.createContent(entityName, contentBody, context);
         return response.toPlainObj();
@@ -62,9 +63,10 @@ export const createContent = createAsyncThunk(
 
 export const updateContent = createAsyncThunk(
     'content/updateContent',
-    async ({ entityName, contentBody, context }: { entityName: EntityEnum; contentBody: ContentBase; context: Context }) => {
+    async ({ entityName, contentBody, context }: { entityName: EntityEnum | null; contentBody: ContentBase; context: Context }) => {
+        if (!entityName) throw new Error(`Entity name not found`);
         const contentService = new ContentService();
-        const dtoConstructor = CONTENT_ENTITY_MAP[entityName].dto;
+        const dtoConstructor = ContentEntityMapService.getDTOConstructor<ContentBase>(entityName);
         if (!dtoConstructor) throw new Error(`DTO constructor for entity ${entityName} not found`);
         const response: ContentBase = await contentService.updateContent(entityName, contentBody, context);
         return response.toPlainObj();
@@ -73,7 +75,8 @@ export const updateContent = createAsyncThunk(
 
 export const deleteContent = createAsyncThunk(
     'content/deleteContent',
-    async ({ entityName, id, context }: { entityName: EntityEnum; id: string; context: Context }) => {
+    async ({ entityName, id, context }: { entityName: EntityEnum | null; id: string; context: Context }) => {
+        if (!entityName) throw new Error(`Entity name not found`);
         const contentService = new ContentService();
         return await contentService.deleteContent(entityName, id, context);
     }
@@ -81,11 +84,15 @@ export const deleteContent = createAsyncThunk(
 
 export const searchContent = createAsyncThunk(
     'content/searchContent',
-    async ({ entityName, query, context }: { entityName: EntityEnum; query: SearchQuery; context: Context }) => {
+    async ({ entityName, query, context }: { entityName: EntityEnum | null; query: SearchQuery; context: Context }) => {
+        console.log('[searchContent] searchContent', entityName, query, context);
+        if (!entityName) throw new Error(`Entity name not found`);
         const contentService = new ContentService();
-        const dtoConstructor = CONTENT_ENTITY_MAP[entityName].dto;
+        const dtoConstructor = ContentEntityMapService.getDTOConstructor<ContentBase>(entityName);
         if (!dtoConstructor) throw new Error(`DTO constructor for entity ${entityName} not found`);
+        console.log('[searchContent] before contentService.searchContent', query);
         const response = await contentService.searchContent(entityName, query, context);
+        console.log('[searchContent] after contentService.searchContent', response);
         return {
             results: response.results.map(content => content.toPlainObj()),
             totalResults: response.totalResults,
@@ -97,9 +104,10 @@ export const searchContent = createAsyncThunk(
 
 export const createContentBulk = createAsyncThunk(
     'content/createContentBulk',
-    async ({ entityName, contentBodies, context }: { entityName: EntityEnum; contentBodies: ContentBase[]; context: Context }) => {
+    async ({ entityName, contentBodies, context }: { entityName: EntityEnum | null; contentBodies: ContentBase[]; context: Context }) => {
+        if (!entityName) throw new Error(`Entity name not found`);
         const contentService = new ContentService();
-        const dtoConstructor = CONTENT_ENTITY_MAP[entityName].dto;
+        const dtoConstructor = ContentEntityMapService.getDTOConstructor<ContentBase>(entityName);
         if (!dtoConstructor) throw new Error(`DTO constructor for entity ${entityName} not found`);
         const response: ContentBase[] = await contentService.createContentBulk(entityName, contentBodies, context);
         return response.map(content => content.toPlainObj());
@@ -108,9 +116,10 @@ export const createContentBulk = createAsyncThunk(
 
 export const updateContentBulk = createAsyncThunk(
     'content/updateContentBulk',
-    async ({ entityName, contentBodies, context }: { entityName: EntityEnum; contentBodies: ContentBase[]; context: Context }) => {
+    async ({ entityName, contentBodies, context }: { entityName: EntityEnum | null; contentBodies: ContentBase[]; context: Context }) => {
+        if (!entityName) throw new Error(`Entity name not found`);
         const contentService = new ContentService();
-        const dtoConstructor = CONTENT_ENTITY_MAP[entityName].dto;
+        const dtoConstructor = ContentEntityMapService.getDTOConstructor<ContentBase>(entityName);
         if (!dtoConstructor) throw new Error(`DTO constructor for entity ${entityName} not found`);
         const response: ContentBase[] = await contentService.updateContentBulk(entityName, contentBodies, context);
         return response.map(content => content.toPlainObj());
@@ -119,7 +128,8 @@ export const updateContentBulk = createAsyncThunk(
 
 export const deleteContentBulk = createAsyncThunk(
     'content/deleteContentBulk',
-    async ({ entityName, ids, context }: { entityName: EntityEnum; ids: Set<string>; context: Context }) => {
+    async ({ entityName, ids, context }: { entityName: EntityEnum | null; ids: Set<string>; context: Context }) => {
+        if (!entityName) throw new Error(`Entity name not found`);
         const contentService = new ContentService();
         return await contentService.deleteContentBulk(entityName, Array.from(ids), context);
     }
@@ -136,10 +146,11 @@ const contentSlice = createSlice({
             delete state.searchedEntities[action.payload];
         },
         setSearchResult: (state, action: PayloadAction<{ // to manually edit search results, for example when an entity was deleted/modified but we dont want to perform another search
-            entityName: EntityEnum,
+            entityName: EntityEnum | null,
             query: SearchQuery,
             results: ContentSearchResult<ContentPlain>
         }>) => {
+            if (!action.payload.entityName) throw new Error(`Entity name not found at setSearchResult`);
             const searchKey: string = getSearchKey(action.payload.entityName, action.payload.query);
             state.searchedEntities[searchKey] = action.payload.results;
         }
@@ -169,6 +180,7 @@ const contentSlice = createSlice({
         // Search
         builder.addCase(searchContent.pending, (state) => handlePending(state.searchedEntities))
         builder.addCase(searchContent.fulfilled, (state, action) => {
+            if (!action.meta.arg.entityName) throw new Error(`Entity name not found at fulfilled case of searchContent, which means the search was performed with an invalid entity name`);
             const searchKey: string = getSearchKey(action.meta.arg.entityName, action.meta.arg.query);
             const map: { [id: string]: ContentPlain } = {};
             const array: ContentPlain[] = [];

@@ -1,4 +1,4 @@
-import { TableInheritance, Entity, OneToMany, BaseEntity, OneToOne, BeforeInsert, PrimaryColumn } from "typeorm";
+import { TableInheritance, Entity, OneToMany, BaseEntity, OneToOne, BeforeInsert, PrimaryColumn, Column } from "typeorm";
 import { Campaign } from "../../campaign/entities/Campaign";
 import { World } from "../../world/entities/World";
 
@@ -52,6 +52,13 @@ export class User extends BaseEntity {
         this.id = `${this.idPrefix}_${randomUUID().replace(/-/g, "")}`;
     }
     idPrefix = "USER";
+
+    @Column({ type: "timestamp", nullable: true })
+    @Serializable({
+        serialize: (val: Date) => val.getTime(),
+        deserialize: (val: number) => new Date(val)
+    })
+    createdAt?: Date;
 
     @OneToOne(() => Account, (account) => account.user, {})
     @Serializable({ strategy: 'id' })

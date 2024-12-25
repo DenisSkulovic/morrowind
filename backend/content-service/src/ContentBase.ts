@@ -21,6 +21,11 @@ export abstract class ContentBase extends BaseEntity {
     @Serializable()
     blueprintId!: string;
 
+    @Column({ type: "timestamp", nullable: true })
+    @Serializable({
+        serialize: (val: Date) => val.getTime(),
+        deserialize: (val: number) => new Date(val)
+    }) createdAt?: Date;
 
     @Column({ type: "json", nullable: true })
     @Serializable()

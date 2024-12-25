@@ -1,8 +1,23 @@
 import { getSerializableFields } from "../decorator/serializable.decorator";
 
+export const getSetterFuncName = (dto: any, dtoKey: string): string => {
+    const singleSetter: string = `set${dtoKey.charAt(0).toUpperCase() + dtoKey.slice(1).toLowerCase()}`;
+    const listSetter: string = `${singleSetter}List`;
+    if (typeof dto[singleSetter] === "function") return singleSetter
+    if (typeof dto[listSetter] === "function") return listSetter
+    throw new Error(`Setter not found for field: ${dtoKey}; setter: ${singleSetter} or ${listSetter}`);
+}
+export const getGetterFuncName = (dto: any, dtoKey: string): string => {
+    const singleGetter: string = `get${dtoKey.charAt(0).toUpperCase() + dtoKey.slice(1).toLowerCase()}`;
+    const listGetter: string = `${singleGetter}List`;
+    if (typeof dto[singleGetter] === "function") return singleGetter
+    if (typeof dto[listGetter] === "function") return listGetter
+    throw new Error(`Getter not found for field: ${dtoKey}; getter: ${singleGetter} or ${listGetter}`);
+}
+
 export class Serializer {
-    static toDTO(entity: any, message: any): any {
-        console.log(`[Serializer] toDTO entity`, entity)
+    static toDTO(entity: any, dto: any): any {
+        console.log('toDTO', entity, dto);
         const fields = getSerializableFields(entity.constructor.prototype);
 
         fields.forEach(({ propertyKey, dtoKey, strategy, serialize, getDTOInstance, getArrDTOInstance }) => {
@@ -13,69 +28,50 @@ export class Serializer {
                 if (strategy === 'id') return item?.id || "";
                 if (strategy === 'full') {
                     if (!getDTOInstance) throw new Error('getDTOInstance is not defined when strategy is "full"');
-                    const submessage = getDTOInstance();
-                    return item?.toDTO ? Serializer.toDTO(item, submessage) : item;
+                    const subDto = getDTOInstance();
+                    return item?.toDTO ? Serializer.toDTO(item, subDto) : item;
                 }
                 return item;
             };
 
-            const setter = `set${dtoKey.charAt(0).toUpperCase() + dtoKey.slice(1).toLowerCase()}`;
-            if (typeof message[setter] === "function") {
-                if (Array.isArray(value)) {
-                    if (!getArrDTOInstance) throw new Error('getArrDTOInstance is not defined when strategy is "arr"');
-                    const arrDTO = getArrDTOInstance();
-                    arrDTO.setArrList(value.length ? value.map(processOne) : []);
-                    message[setter](arrDTO);
-                } else {
-                    message[setter](processOne(value));
-                }
+            const setter: string = getSetterFuncName(dto, dtoKey);
+            const isArray = setter.endsWith('List');
+            if (isArray) {
+                dto[setter](value.length ? value.map(processOne) : []);
             } else {
-                console.warn(`Setter not found for field: ${dtoKey}`);
+                dto[setter](processOne(value));
             }
-            console.log(`[Serializer] toDTO message aaa`, message)
         });
-
-        console.log(`[Serializer] toDTO message`, message)
-        return message;
+        return dto;
     }
 
     static fromDTO(dto: any, entity: any): any {
+        console.log('fromDTO', dto, entity);
         const fields = getSerializableFields(entity.constructor.prototype);
 
         fields.forEach(({ propertyKey, dtoKey, strategy, deserialize, getDTOInstance }) => {
-            console.log(`[Serializer] fromDTO propertyKey`, propertyKey)
-            console.log(`[Serializer] fromDTO dtoKey`, dtoKey)
-            console.log(`[Serializer] fromDTO strategy`, strategy)
-            console.log(`[Serializer] fromDTO deserialize`, deserialize)
-            console.log(`[Serializer] fromDTO getDTOInstance`, getDTOInstance)
-            const getter = `get${dtoKey.charAt(0).toUpperCase() + dtoKey.slice(1).toLowerCase()}`;
-            console.log(`[Serializer] fromDTO getter`, getter)
-            if (typeof dto[getter] === "function") {
-                const value = dto[getter]();
-                console.log(`value`, value)
-                const processOne = (val: any) => {
-                    if (deserialize) return deserialize(val);
-                    else if (strategy === 'id') return val?.id ? { id: val.id } : null;
-                    else if (strategy === 'full') {
-                        if (!getDTOInstance) throw new Error('getDTOInstance is not defined when strategy is "full"');
-                        return Serializer.fromDTO(val, getDTOInstance());
-                    }
-                    else return val;
-                };
 
-                if (Array.isArray(value)) {
-                    console.log(`[Serializer] fromDTO processing array`, value)
-                    entity[propertyKey] = value.map(processOne);
-                } else {
-                    console.log(`[Serializer] fromDTO processing value`, value)
-                    entity[propertyKey] = processOne(value);
+            const processOne = (val: any) => {
+                if (deserialize) return deserialize(val);
+                else if (strategy === 'id') return val?.id ? { id: val.id } : null;
+                else if (strategy === 'full') {
+                    if (!getDTOInstance) throw new Error('getDTOInstance is not defined when strategy is "full"');
+                    return Serializer.fromDTO(val, getDTOInstance());
                 }
+                else return val;
+            };
+
+            const getter: string = getGetterFuncName(dto, dtoKey);
+            const isArray = getter.endsWith('List');
+            if (isArray) {
+                const value = dto[getter]() || [];
+                entity[propertyKey] = value.map((val: any) => processOne(val));
             } else {
-                console.warn(`Getter not found for field: ${dtoKey}`);
+                const value = dto[getter]();
+                entity[propertyKey] = processOne(value);
             }
         });
 
-        console.log(`[Serializer] fromDTO entity`, entity)
         return entity;
     }
 }

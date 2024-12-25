@@ -11,7 +11,7 @@ import { Tag } from "../Tag";
 import { Serializer } from "../../../../serializer";
 import { Serializable } from "../../../../decorator/serializable.decorator";
 import { StorageSlotDefinition, deserializeStorageSlotDefinitions, serializeStorageSlotDefinitions } from "../../../../class/StorageSlotDefinition";
-import { serializeRequirements, deserializeRequirements, ItemRequirements, ItemRequirement, serializeRequirement, deserializeRequirement } from "../../../../class/ItemRequirement";
+import { ItemRequirement, serializeRequirement, deserializeRequirement } from "../../../../class/ItemRequirement";
 import { deserializeEnum, serializeEnum } from "../../../../common/enum/util";
 
 
@@ -144,7 +144,6 @@ export class Item extends TaggableContentBase {
         const item = new Item();
         return Serializer.fromDTO(dto, item);
     }
-
 
 
 }

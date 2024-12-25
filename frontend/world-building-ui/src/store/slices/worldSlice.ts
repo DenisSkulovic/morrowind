@@ -9,10 +9,29 @@ import { handlePending, handleRejected } from '../common';
 import { PresetEnum } from '../../enum/entityEnums';
 import { ActivityRecord } from '../../class/entities/ActivityRecord';
 import { ActivityRecordsService } from '../../services/ActivityRecordsService';
-import { User } from '../../class/entities/User';
 
 export type WorldPlain = LooseObject
 export type ActivityRecordPlain = LooseObject
+
+export class WorldSearchResult<T> {
+    array!: T[];
+    map!: { [id: string]: T };
+    totalResults!: number;
+    totalPages!: number;
+    currentPage!: number;
+    status!: RequestStatusEnum;
+    error!: string | null;
+
+    static build<T>(body: any): WorldSearchResult<T> {
+        const newResult = new WorldSearchResult<T>();
+        Object.assign(newResult, body);
+        return newResult;
+    }
+}
+
+export const getSearchKey = (query: SearchQuery) => {
+    return `worlds-${JSON.stringify(query)}`;
+}
 
 interface WorldState {
     currentWorld: {
@@ -21,9 +40,7 @@ interface WorldState {
         error: string | null;
     };
     searchedWorlds: {
-        data: WorldPlain[];
-        status: RequestStatusEnum;
-        error: string | null;
+        [searchKey: string]: WorldSearchResult<WorldPlain>;
     };
     presets: {
         data: PresetEnum[];
@@ -53,11 +70,7 @@ const initialState: WorldState = {
         status: RequestStatusEnum.IDLE,
         error: null,
     },
-    searchedWorlds: {
-        data: [],
-        status: RequestStatusEnum.IDLE,
-        error: null,
-    },
+    searchedWorlds: {},
     presets: {
         data: [],
         status: RequestStatusEnum.IDLE,
@@ -76,10 +89,20 @@ const initialState: WorldState = {
 };
 
 // Async Thunks
-export const searchWorldsCall = async ({ query, context }: { query: SearchQuery, context: Context }): Promise<WorldPlain[]> => {
+export const searchWorldsCall = async ({ query, context }: { query: SearchQuery, context: Context }): Promise<{
+    results: WorldPlain[],
+    totalResults: number,
+    totalPages: number,
+    currentPage: number
+}> => {
     const worldService = new WorldService();
     const response: World[] = await worldService.search(query, context);
-    return response.map((world: World) => world.toPlainObj());
+    return {
+        results: response.map((world: World) => world.toPlainObj()),
+        totalResults: response.length,
+        totalPages: 1,
+        currentPage: 1
+    };
 }
 export const searchWorldsThunk = createAsyncThunk(
     'worlds/searchWorlds',
@@ -158,12 +181,10 @@ const worldSlice = createSlice({
     initialState,
     reducers: {
         clearSearchedWorlds: (state) => {
-            state.searchedWorlds.data = [];
-            state.searchedWorlds.status = RequestStatusEnum.IDLE;
-            state.searchedWorlds.error = null;
+            state.searchedWorlds = {};
         },
-        setSearchedWorlds: (state, action: PayloadAction<WorldPlain[]>) => {
-            state.searchedWorlds.data = action.payload;
+        clearSearchResultsForKey: (state, action: PayloadAction<string>) => {
+            delete state.searchedWorlds[action.payload];
         },
         setCurrentWorld: (state, action: PayloadAction<WorldPlain>) => {
             state.currentWorld.data = action.payload;
@@ -172,38 +193,76 @@ const worldSlice = createSlice({
             state.presetLoading.status = RequestStatusEnum.IDLE;
             state.presetLoading.error = null;
         },
-
     },
     extraReducers: (builder: ActionReducerMapBuilder<WorldState>) => {
         // Search Worlds
-        builder.addCase(searchWorldsThunk.pending, (state: WorldState) => handlePending(state))
-        builder.addCase(searchWorldsThunk.fulfilled, (state: WorldState, action: PayloadAction<WorldPlain[]>) => {
-            state.searchedWorlds.status = RequestStatusEnum.SUCCEEDED;
-            state.searchedWorlds.data = action.payload;
+        builder.addCase(searchWorldsThunk.pending, (state: WorldState, action) => {
+            const searchKey: string = getSearchKey(action.meta.arg.query);
+            state.searchedWorlds[searchKey] = WorldSearchResult.build({
+                array: [],
+                map: {},
+                status: RequestStatusEnum.LOADING,
+                error: null
+            });
         })
-        builder.addCase(searchWorldsThunk.rejected, (state: WorldState, action) => handleRejected(state, action))
+        builder.addCase(searchWorldsThunk.fulfilled, (state: WorldState, action) => {
+            const searchKey: string = getSearchKey(action.meta.arg.query);
+            const map: { [id: string]: WorldPlain } = {};
+            const array: WorldPlain[] = [];
+            action.payload.results.forEach((item: WorldPlain) => {
+                map[item.id] = item;
+                array.push(item);
+            });
+            state.searchedWorlds[searchKey] = WorldSearchResult.build({
+                array,
+                map,
+                totalResults: action.payload.totalResults,
+                totalPages: action.payload.totalPages,
+                currentPage: action.payload.currentPage,
+                status: RequestStatusEnum.SUCCEEDED,
+                error: null
+            });
+        })
+        builder.addCase(searchWorldsThunk.rejected, (state: WorldState, action) => {
+            const searchKey: string = getSearchKey(action.meta.arg.query);
+            state.searchedWorlds[searchKey] = WorldSearchResult.build({
+                array: [],
+                map: {},
+                status: RequestStatusEnum.FAILED,
+                error: action.error.message || 'Failed to search worlds'
+            });
+        })
 
         // Create World
         builder.addCase(createWorldThunk.pending, (state: WorldState) => handlePending(state))
         builder.addCase(createWorldThunk.fulfilled, (state: WorldState, action: PayloadAction<WorldPlain>) => {
-            state.searchedWorlds.status = RequestStatusEnum.SUCCEEDED;
-            state.searchedWorlds.data.push(action.payload);
+            state.currentWorld.status = RequestStatusEnum.SUCCEEDED;
         })
         builder.addCase(createWorldThunk.rejected, (state: WorldState, action) => handleRejected(state, action))
 
         // Delete World
         builder.addCase(deleteWorldThunk.pending, (state: WorldState) => handlePending(state))
         builder.addCase(deleteWorldThunk.fulfilled, (state: WorldState, action: PayloadAction<string>) => {
-            state.searchedWorlds.status = RequestStatusEnum.SUCCEEDED;
-            state.searchedWorlds.data = state.searchedWorlds.data.filter((w: WorldPlain) => w.id !== action.payload);
+            state.currentWorld.status = RequestStatusEnum.SUCCEEDED;
+            // Update all search results to remove the deleted world
+            Object.keys(state.searchedWorlds).forEach(key => {
+                const result = state.searchedWorlds[key];
+                result.array = result.array.filter(w => w.id !== action.payload);
+                delete result.map[action.payload];
+            });
         })
         builder.addCase(deleteWorldThunk.rejected, (state: WorldState, action) => handleRejected(state, action))
 
         // Update World
         builder.addCase(updateWorldThunk.pending, (state: WorldState) => handlePending(state))
         builder.addCase(updateWorldThunk.fulfilled, (state: WorldState, action: PayloadAction<WorldPlain>) => {
-            state.searchedWorlds.status = RequestStatusEnum.SUCCEEDED;
-            state.searchedWorlds.data = state.searchedWorlds.data.map((w: WorldPlain) => w.id === action.payload.id ? action.payload : w);
+            state.currentWorld.status = RequestStatusEnum.SUCCEEDED;
+            // Update all search results with the updated world
+            Object.keys(state.searchedWorlds).forEach(key => {
+                const result = state.searchedWorlds[key];
+                result.array = result.array.map(w => w.id === action.payload.id ? action.payload : w);
+                result.map[action.payload.id] = action.payload;
+            });
         })
         builder.addCase(updateWorldThunk.rejected, (state: WorldState, action) => handleRejected(state, action))
 
@@ -234,9 +293,8 @@ const worldSlice = createSlice({
             }
         })
         builder.addCase(searchActivityRecordsThunk.rejected, (state: WorldState, action) => handleRejected(state, action))
-
     },
 });
 
-export const { clearSearchedWorlds, setSearchedWorlds, setCurrentWorld, resetPresetLoading } = worldSlice.actions;
+export const { clearSearchedWorlds, clearSearchResultsForKey, setCurrentWorld, resetPresetLoading } = worldSlice.actions;
 export default worldSlice.reducer;

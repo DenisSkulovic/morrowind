@@ -10,11 +10,13 @@ import { useDashboardData } from '../../../../../hooks/useDashboardData';
 import { BreadcrumbItem } from '../../../../../components/common/PageWrapper/Breadcrumbs';
 import PageWrapper from '../../../../../components/common/PageWrapper';
 import { routes } from '../../../../../routes';
-import { sanitizeWorldId } from '../../../../../utils/sanitize';
+import { useWorldId } from '../../../../../hooks/query';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
 export default function Dashboard() {
     const router = useRouter();
-    const worldId: string = sanitizeWorldId(router.query.world_id);
+    const worldId: string | null = useWorldId(router.query);
 
     const account: Account | null = useAccount();
     const userId: string = account?.user || '';
@@ -24,13 +26,17 @@ export default function Dashboard() {
         activityRecords,
     } = useDashboardData(worldId, userId);
 
-    const customBreadcrumbs: BreadcrumbItem[] = [
-        BreadcrumbItem.build({ label: 'Worlds', path: routes.worlds() }),
-        BreadcrumbItem.build({ label: 'Dashboard' })
-    ];
+    const [customBreadcrumbs, setCustomBreadcrumbs] = useState<BreadcrumbItem[]>([])
+    useEffect(() => {
+        setCustomBreadcrumbs([
+            BreadcrumbItem.build({ label: 'Home', path: routes.home() }),
+            BreadcrumbItem.build({ label: 'Worlds', path: routes.worlds() }),
+            BreadcrumbItem.build({ label: 'Dashboard' })
+        ]);
+    }, [worldId]);
 
     return (
-        <PageWrapper customBreadcrumbs={customBreadcrumbs}>
+        <PageWrapper customBreadcrumbs={customBreadcrumbs} accountId={account?.id} worldId={worldId || ''}>
             <Box sx={{ flexGrow: 1, p: 3 }}>
                 <Grid2 container spacing={3}>
                     {/* Header */}

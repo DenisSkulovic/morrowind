@@ -1,7 +1,7 @@
 import { ContentBase } from '../class/ContentBase';
 import { Context } from '../class/Context';
 import { SearchQuery } from '../class/search/SearchQuery';
-import { CONTENT_ENTITY_MAP } from '../CONTENT_ENTITY_MAP';
+import { ContentEntityMapService } from '../CONTENT_ENTITY_MAP';
 import { ContextDTO, DataSourceEnumDTO, SearchQueryDTO } from '../proto/common_pb';
 import {
     CreateContentRequest,
@@ -13,10 +13,12 @@ import {
     UpdateBulkContentRequest,
     DeleteBulkContentRequest,
     GetContentStatsResponse,
+    ContentBodyDTO,
 } from "../proto/content_pb";
 import { ContentServiceClient } from "../proto/ContentServiceClientPb";
-import { Serializer } from '../serialize/serializer';
+import { getGetterFuncName, Serializer } from '../serialize/serializer';
 import { EntityEnum } from '../enum/EntityEnum';
+import { ClassConstructor } from '../types';
 
 export class SearchContentResults {
     results!: ContentBase[];
@@ -35,7 +37,7 @@ export class ContentService<T extends ContentBase> {
     async getContentStats(entityNames: string[] | null, context: Context): Promise<GetContentStatsResponse> {
         const request = new GetContentStatsRequest();
         request.setContext(Serializer.toDTO(context, new ContextDTO()));
-        request.setEntitynamesList(entityNames || Object.keys(CONTENT_ENTITY_MAP));
+        request.setEntitynamesList(entityNames || Object.keys(EntityEnum));
         return new Promise((resolve, reject) => {
             this.client.getStats(request, {}, (err, response) => {
                 if (err) reject(err);
@@ -48,9 +50,9 @@ export class ContentService<T extends ContentBase> {
     async createContent(entityName: EntityEnum, contentObj: T, context: Context): Promise<T> {
         const request = new CreateContentRequest();
         request.setSource(DataSourceEnumDTO.DATA_SOURCE_WORLD);
-        const entityConfig = CONTENT_ENTITY_MAP[entityName];
-        if (!entityConfig) throw new Error(`Entity config for ${entityName} not found`);
-        request.setContentbody(Serializer.toDTO(contentObj, new entityConfig.dto()));
+        const entityConstructor = ContentEntityMapService.getEntityConstructor<T>(entityName);
+        const dtoConstructor = ContentEntityMapService.getDTOConstructor<T>(entityName);
+        request.setContentbody(Serializer.toDTO(contentObj, new dtoConstructor()));
         request.setEntityname(entityName);
         request.setContext(Serializer.toDTO(context, new ContextDTO()));
 
@@ -58,16 +60,17 @@ export class ContentService<T extends ContentBase> {
             this.client.create(request, {}, (err, response) => {
                 if (err) reject(err);
                 else if (!response) reject(new Error('No response from server'));
-                else resolve(Serializer.fromDTO(response.getContentbody(), new entityConfig.entity()));
+                else resolve(Serializer.fromDTO(response.getContentbody(), new entityConstructor()));
             });
         });
     }
 
     async updateContent(entityName: EntityEnum, contentObj: T, context: Context): Promise<T> {
         const request = new UpdateContentRequest();
-        const entityConfig = CONTENT_ENTITY_MAP[entityName];
-        if (!entityConfig) throw new Error(`Entity config for ${entityName} not found`);
-        request.setContentbody(Serializer.toDTO(contentObj, new entityConfig.dto()));
+        const entityConstructor = ContentEntityMapService.getEntityConstructor<T>(entityName);
+        const dtoConstructor = ContentEntityMapService.getDTOConstructor<T>(entityName);
+
+        request.setContentbody(Serializer.toDTO(contentObj, new dtoConstructor()));
         request.setEntityname(entityName);
         request.setContext(Serializer.toDTO(context, new ContextDTO()));
 
@@ -75,7 +78,7 @@ export class ContentService<T extends ContentBase> {
             this.client.update(request, {}, (err, response) => {
                 if (err) reject(err);
                 else if (!response) reject(new Error('No response from server'));
-                else resolve(Serializer.fromDTO(response.getContentbody(), new entityConfig.entity()));
+                else resolve(Serializer.fromDTO(response.getContentbody(), new entityConstructor()));
             });
         });
     }
@@ -105,17 +108,24 @@ export class ContentService<T extends ContentBase> {
         request.setQuery(Serializer.toDTO(query, new SearchQueryDTO()));
         request.setContext(Serializer.toDTO(context, new ContextDTO()));
 
-        const entityConfig = CONTENT_ENTITY_MAP[entityName];
-        if (!entityConfig) throw new Error(`Entity config for ${entityName} not found`);
+        const entityConstructor: ClassConstructor<T> = ContentEntityMapService.getEntityConstructor<T>(entityName);
+        const rootEntityConstructor: ClassConstructor<T> | null = ContentEntityMapService.getRootEntityConstructor<T>(entityName);
 
         return new Promise((resolve, reject) => {
             this.client.search(request, {}, (err, response) => {
+                console.log(`[ContentService] search result`, response);
                 if (err) reject(err);
                 else if (!response) reject(new Error('No response from server'));
                 else resolve({
-                    results: response.getResultsList().map(contentBody =>
-                        Serializer.fromDTO(contentBody, new entityConfig.entity())
-                    ),
+                    results: response.getResultsList().map((contentBodyDTO: ContentBodyDTO) => {
+                        const dtoFieldName: string = rootEntityConstructor ? rootEntityConstructor.name : entityName;
+                        console.log('dtoFieldName', dtoFieldName);
+                        const getter: string = getGetterFuncName(contentBodyDTO, dtoFieldName);
+                        console.log('getter', getter);
+                        const contentBody = (contentBodyDTO as any)[getter]();
+                        console.log('contentBody', contentBody);
+                        return Serializer.fromDTO(contentBody, new entityConstructor())
+                    }),
                     totalResults: response.getTotalresults(),
                     totalPages: response.getTotalpages(),
                     currentPage: response.getCurrentpage(),
@@ -125,14 +135,14 @@ export class ContentService<T extends ContentBase> {
     }
 
     async createContentBulk(entityName: EntityEnum, contentBodies: T[], context: Context): Promise<T[]> {
-        const entityConfig = CONTENT_ENTITY_MAP[entityName];
-        if (!entityConfig) throw new Error(`Entity config for ${entityName} not found`);
+        const entityConstructor: ClassConstructor<T> = ContentEntityMapService.getEntityConstructor<T>(entityName);
+        const dtoConstructor: ClassConstructor<T> = ContentEntityMapService.getDTOConstructor<T>(entityName);
 
         const requests = contentBodies.map(contentBody => {
             const req = new CreateContentRequest();
             req.setSource(DataSourceEnumDTO.DATA_SOURCE_WORLD);
             req.setEntityname(entityName);
-            req.setContentbody(Serializer.toDTO(contentBody, new entityConfig.dto()));
+            req.setContentbody(Serializer.toDTO(contentBody, new dtoConstructor()));
             req.setContext(Serializer.toDTO(context, new ContextDTO()));
             return req;
         });
@@ -145,20 +155,20 @@ export class ContentService<T extends ContentBase> {
                 if (err) reject(err);
                 else if (!response) reject(new Error('No response from server'));
                 else resolve(response.getResponsesList().map(response =>
-                    Serializer.fromDTO(response.getContentbody(), new entityConfig.entity())
+                    Serializer.fromDTO(response.getContentbody(), new entityConstructor())
                 ));
             });
         });
     }
 
     async updateContentBulk(entityName: EntityEnum, contentBodies: T[], context: Context): Promise<T[]> {
-        const entityConfig = CONTENT_ENTITY_MAP[entityName];
-        if (!entityConfig) throw new Error(`Entity config for ${entityName} not found`);
+        const entityConstructor: ClassConstructor<T> = ContentEntityMapService.getEntityConstructor<T>(entityName);
+        const dtoConstructor: ClassConstructor<T> = ContentEntityMapService.getDTOConstructor<T>(entityName);
 
         const requests = contentBodies.map(contentBody => {
             const req = new UpdateContentRequest();
             req.setEntityname(entityName);
-            req.setContentbody(Serializer.toDTO(contentBody, new entityConfig.dto()));
+            req.setContentbody(Serializer.toDTO(contentBody, new dtoConstructor()));
             req.setContext(Serializer.toDTO(context, new ContextDTO()));
             return req;
         });
@@ -171,7 +181,7 @@ export class ContentService<T extends ContentBase> {
                 if (err) reject(err);
                 else if (!response) reject(new Error('No response from server'));
                 else resolve(response.getResponsesList().map(response =>
-                    Serializer.fromDTO(response.getContentbody(), new entityConfig.entity())
+                    Serializer.fromDTO(response.getContentbody(), new entityConstructor())
                 ));
             });
         });

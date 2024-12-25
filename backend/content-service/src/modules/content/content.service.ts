@@ -1,7 +1,7 @@
 import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource, EntityTarget, FindOptionsWhere, Repository } from 'typeorm';
-import { CONTENT_ENTITY_MAP } from '../../CONTENT_ENTITY_MAP';
+import { ContentEntityMapService } from '../../CONTENT_ENTITY_MAP';
 import { DataSourceEnum } from '../../common/enum/DataSourceEnum';
 import { ContentBase } from '../../ContentBase';
 import { MakeSureWorldIsNotFrozen } from '../../decorator/MakeSureWorldIsNotFrozen';
@@ -11,10 +11,27 @@ import { SearchQuery } from '../../class/search/SearchQuery';
 import { Context } from '../../class/Context';
 import { ContentStatDTO } from '../../proto/content';
 import { World } from '../world/entities/World';
+import { QueryFilterOperatorEnum } from '../../class/search/QueryFilter';
+import { EntityEnum } from '../../enum/EntityEnum';
+import { EntityConstructor } from '../../types';
+import { sanitizeEntityName } from '../../util/sanitizeEntityName';
 
 type DynamicWhere<T> = FindOptionsWhere<T> & {
     [key: string]: any;
 };
+
+export class ContentSearchResult<T> {
+    results!: T[];
+    totalResults!: number;
+    totalPages!: number;
+    currentPage!: number;
+
+    static build<T>(body: any) {
+        const result = new ContentSearchResult<T>();
+        Object.assign(result, body);
+        return result;
+    }
+}
 
 @Injectable()
 export class ContentService<T extends ContentBase> {
@@ -29,11 +46,12 @@ export class ContentService<T extends ContentBase> {
     }
 
     public getRepository(entityName: string, source: DataSourceEnum): Repository<T> {
-        const entity: EntityTarget<T> = CONTENT_ENTITY_MAP[entityName] as EntityTarget<T>;
-        if (!entity) {
+        const entityNameEnum: EntityEnum = sanitizeEntityName(entityName)
+        const entityConstructor: EntityConstructor<T> = ContentEntityMapService.getEntityConstructor<T>(entityNameEnum)
+        if (!entityConstructor) {
             throw new Error(`Entity "${entityName}" not found in CONTENT_ENTITY_MAP.`);
         }
-        return this.getDataSource(source).getRepository(entity);
+        return this.getDataSource(source).getRepository(entityConstructor);
     }
 
     async create(entityName: string, entity: T, source: DataSourceEnum): Promise<any> {
@@ -50,8 +68,9 @@ export class ContentService<T extends ContentBase> {
         const repository = this.getRepository(entityName, DataSourceEnum.DATA_SOURCE_WORLD);
         await repository.delete(id);
     }
-    async search(entityName: string, query: SearchQuery, context: Context): Promise<any> {
+    async search(entityName: string, query: SearchQuery, context: Context): Promise<ContentSearchResult<T>> {
         const repository = this.getRepository(entityName, DataSourceEnum.DATA_SOURCE_WORLD);
+
 
         // Build where clause from query filters
         const where: any = {};
@@ -59,53 +78,53 @@ export class ContentService<T extends ContentBase> {
             for (const filter of query.filters) {
                 where[filter.field] = {};
                 switch (filter.operator) {
-                    case 'eq':
+                    case QueryFilterOperatorEnum.EQUAL:
                         where[filter.field] = filter.value;
                         break;
-                    case 'neq':
+                    case QueryFilterOperatorEnum.NOT_EQUAL:
                         where[filter.field] = { not: filter.value };
                         break;
-                    case 'gt':
+                    case QueryFilterOperatorEnum.GREATER_THAN:
                         where[filter.field] = { gt: filter.value };
                         break;
-                    case 'gte':
+                    case QueryFilterOperatorEnum.GREATER_THAN_OR_EQUAL:
                         where[filter.field] = { gte: filter.value };
                         break;
-                    case 'lt':
+                    case QueryFilterOperatorEnum.LESS_THAN:
                         where[filter.field] = { lt: filter.value };
                         break;
-                    case 'lte':
+                    case QueryFilterOperatorEnum.LESS_THAN_OR_EQUAL:
                         where[filter.field] = { lte: filter.value };
                         break;
-                    case 'contains':
+                    case QueryFilterOperatorEnum.CONTAINS:
                         where[filter.field] = { contains: filter.value };
                         break;
-                    case 'regex':
+                    case QueryFilterOperatorEnum.REGEX:
                         where[filter.field] = { regex: filter.value };
                         break;
                 }
             }
-
-            // Build order options from sortBy
-            const order: any = {};
-            if (query.sortBy) {
-                order[query.sortBy.field] = query.sortBy.direction;
-            }
-
-            const [results, total] = await repository.findAndCount({
-                where,
-                order,
-                skip: (query.page - 1) * query.pageSize,
-                take: query.pageSize
-            });
-
-            return {
-                results,
-                totalResults: total,
-                totalPages: Math.ceil(total / query.pageSize),
-                currentPage: query.page
-            };
         }
+
+        // Build order options from sortBy
+        const order: any = {};
+        if (query.sortBy) {
+            order[query.sortBy.field] = query.sortBy.direction;
+        }
+
+        const [results, total] = await repository.findAndCount({
+            where,
+            order,
+            skip: (query.page - 1) * query.pageSize,
+            take: query.pageSize
+        });
+
+        const result = new ContentSearchResult<T>();
+        result.results = results;
+        result.totalResults = total;
+        result.totalPages = Math.ceil(total / query.pageSize);
+        result.currentPage = query.page;
+        return result;
     }
 
     async createBulk(entityName: string, entities: T[], source: DataSourceEnum): Promise<T[]> {

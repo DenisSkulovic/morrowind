@@ -14,13 +14,14 @@ import {
 } from '@mui/material';
 import { Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import { ContentBase } from '../../../class/ContentBase';
-import { SearchQuery } from '../../../class/search/SearchQuery';
 import { SortBy, SortByDirectionEnum } from '../../../class/search/SortBy';
 import { ContentSearchResult } from '../../../store/slices/contentSlice';
+import { DisplayFieldConfig } from '../../../decorator/display-field.decorator';
 
 interface EntityListTableProps<T extends ContentBase> {
-    query: SearchQuery;
-    result: ContentSearchResult<T>;
+    page: number;
+    pageSize: number;
+    result: ContentSearchResult<T> | null;
     resultsPerPageOptions: number[];
     onEdit: (entity: T) => void;
     onDelete: (entity: T) => void;
@@ -28,16 +29,12 @@ interface EntityListTableProps<T extends ContentBase> {
     onSetPage: (page: number) => void;
     onSetRowsPerPage: (rowsPerPage: number) => void;
     onSort: (sortBy: SortBy) => void;
-    columns: {
-        field: string;
-        headerName: string;
-        sortable?: boolean;
-        width?: number;
-    }[];
+    columns: DisplayFieldConfig[];
 }
 
 export const EntityListTable = <T extends ContentBase>({
-    query,
+    page,
+    pageSize,
     result,
     resultsPerPageOptions,
     onEdit,
@@ -53,6 +50,7 @@ export const EntityListTable = <T extends ContentBase>({
     const [order, setOrder] = useState<SortByDirectionEnum>(SortByDirectionEnum.ASC);
 
     const handleCheckAllChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (!result) throw new Error('Result is null');
         let newSelected: Set<string> = new Set();
 
         if (event.target.checked) {
@@ -85,10 +83,26 @@ export const EntityListTable = <T extends ContentBase>({
 
     const isSelected = (id: string) => selected.has(id);
 
-    const emptyRows = Math.max(0, query.pageSize - (result.array.length - (query.page - 1) * query.pageSize));
+    const getEmptyRows = () => {
+        if (!result) return 0;
+        if (!result.array) return 0;
+        return Math.max(0, pageSize - (result.array.length - (page - 1) * pageSize));
+    }
+    const emptyRows = getEmptyRows();
 
-    const isSomeSelected: boolean = selected.size > 0 && selected.size < result.array.length;
-    const isAllSelected: boolean = result.array.length > 0 && selected.size === result.array.length;
+    const getIsSomeSelected = () => {
+        if (!result) return false;
+        if (!result.array) return false;
+        return selected.size > 0 && selected.size < result.array.length;
+    }
+    const isSomeSelected: boolean = getIsSomeSelected();
+
+    const getIsAllSelected = () => {
+        if (!result) return false;
+        if (!result.array) return false;
+        return result.array.length > 0 && selected.size === result.array.length;
+    }
+    const isAllSelected: boolean = getIsAllSelected();
 
     const handleSort = (field: string, order: SortByDirectionEnum) => {
         onSort(SortBy.build({ field, direction: order }));
@@ -121,10 +135,10 @@ export const EntityListTable = <T extends ContentBase>({
                                             direction={orderBy === column.field ? order : SortByDirectionEnum.ASC}
                                             onClick={() => handleSort(column.field, order)}
                                         >
-                                            {column.headerName}
+                                            {column.displayName || column.field}
                                         </TableSortLabel>
                                     ) : (
-                                        column.headerName
+                                        column.displayName || column.field
                                     )}
                                 </TableCell>
                             ))}
@@ -133,7 +147,7 @@ export const EntityListTable = <T extends ContentBase>({
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {result.array.map((entity: T) => {
+                        {result?.array.map((entity: T) => {
                             const isItemSelected: boolean = isSelected(entity.id);
                             return (
                                 <TableRow
@@ -151,7 +165,7 @@ export const EntityListTable = <T extends ContentBase>({
                                     {/* Cells for the table */}
                                     {columns.map((column) => (
                                         <TableCell key={column.field}>
-                                            {entity[column.field as keyof ContentBase]}
+                                            {column.getValue ? column.getValue(entity) : entity[column.field as keyof ContentBase]}
                                         </TableCell>
                                     ))}
                                     {/* Actions cell */}
@@ -177,9 +191,9 @@ export const EntityListTable = <T extends ContentBase>({
             <TablePagination
                 rowsPerPageOptions={resultsPerPageOptions}
                 component="div"
-                count={result.totalResults}
-                rowsPerPage={query.pageSize}
-                page={query.page}
+                count={result?.totalResults || 0}
+                rowsPerPage={pageSize}
+                page={page}
                 onPageChange={(_, page) => onSetPage(page)}
                 onRowsPerPageChange={(event) => onSetRowsPerPage(parseInt(event.target.value, 10))}
             />

@@ -3,7 +3,9 @@ import { ContentBase } from "../../../ContentBase";
 import { EntityConstructor } from "../../../types";
 import { Item } from "../entities/Item/Item";
 import { EquipmentSlot } from "../entities/Slot/EquipmentSlot";
-import { CONTENT_ENTITY_MAP } from "../../../CONTENT_ENTITY_MAP";
+import { ContentEntityMapService } from "../../../CONTENT_ENTITY_MAP";
+import { EntityEnum } from "../../../enum/EntityEnum";
+import { sanitizeEntityName } from "../../../util/sanitizeEntityName";
 
 @Injectable()
 export class EquipmentSlotService {
@@ -30,7 +32,8 @@ export class EquipmentSlotService {
 
             // Iterate through allowed entities in priority order
             for (const entityName of allowedEntities) {
-                const entityConstructor: EntityConstructor<ContentBase> | undefined = CONTENT_ENTITY_MAP[entityName] as EntityConstructor<ContentBase> | undefined;
+                const entityNameEnum: EntityEnum = sanitizeEntityName(entityName)
+                const entityConstructor: EntityConstructor<ContentBase> | undefined = ContentEntityMapService.getEntityConstructor<ContentBase>(entityNameEnum)
                 if (!entityConstructor) throw new Error(`unrecognized entity name in allowedEntities: "${entityName}" of equipment slot: "${slot.name}"`)
 
                 // Filter items that can be placed in this slot

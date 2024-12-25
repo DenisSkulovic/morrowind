@@ -39,6 +39,13 @@ export class Account extends BaseEntity {
     @Column({ type: "json", nullable: true })
     preferences?: any; // User-specific preferences/settings.
 
+    @Column({ type: "timestamp", nullable: true })
+    @Serializable({
+        serialize: (val: Date) => val.getTime(),
+        deserialize: (val: number) => new Date(val)
+    })
+    createdAt?: Date;
+
     @OneToOne(() => User, (user) => user.account, { cascade: true })
     @JoinColumn()
     @Serializable({ strategy: 'id' })

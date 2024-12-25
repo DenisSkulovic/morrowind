@@ -10,42 +10,38 @@ import { ContentBase, ContentBaseStatic } from '../../../../../../../class/Conte
 import { Context } from '../../../../../../../class/Context';
 import { User } from '../../../../../../../class/entities/User';
 import { World } from '../../../../../../../class/entities/World';
-import { CONTENT_ENTITY_MAP } from '../../../../../../../CONTENT_ENTITY_MAP';
+import { ContentEntityMapService } from '../../../../../../../CONTENT_ENTITY_MAP';
 import { EntityEnum } from '../../../../../../../enum/EntityEnum';
-import { sanitizeEntityName } from '../../../../../../../utils/sanitize';
+import { useEntityName, useEntityId, useWorldId } from '../../../../../../../hooks/query';
 import { FormFieldDefinition, getFormFields } from '../../../../../../../decorator/form-field.decorator';
 import { EntityDisplayConfig, getEntityDisplayConfig } from '../../../../../../../decorator/entity-display.decorator';
 import { BreadcrumbItem } from '../../../../../../../components/common/PageWrapper/Breadcrumbs';
-import { routes } from '../../../../../../../routes';
+import { PAGE_MODE_PARAM, PageModeEnum, routes } from '../../../../../../../routes';
 import PageWrapper from '../../../../../../../components/common/PageWrapper';
 import { useEntityDetail } from '../../../../../../../hooks/useEntityDetail';
 import { useAccount } from '../../../../../../../hooks/useAccount';
 import { Account } from '../../../../../../../class/entities/Account';
 import { cloneDeep } from 'lodash';
 
-const MODE_PARAM = 'mode';
-enum ModeEnum {
-    VIEW = 'view',
-    EDIT = 'edit'
-}
+
 
 const EntityPage = () => {
     const router = useRouter();
-    const { world_id, entity, entity_id } = router.query;
+    const worldId: string | null = useWorldId(router.query);
+    const entityName: EntityEnum | null = useEntityName(router.query);
+    const entityId: string | null = useEntityId(router.query);
     const searchParams = useSearchParams();
-    const initialMode: ModeEnum = searchParams.get(MODE_PARAM) as ModeEnum;
-    const entityName: EntityEnum = sanitizeEntityName(entity);
+    const initialMode: PageModeEnum = searchParams.get(PAGE_MODE_PARAM) as PageModeEnum;
     const dispatch = useDispatch<AppDispatch>();
-    const [isReadOnly, setIsReadOnly] = useState(initialMode === ModeEnum.EDIT ? false : true);
+    const [isReadOnly, setIsReadOnly] = useState(initialMode === PageModeEnum.EDIT ? false : true);
     const [editData, setEditData] = useState<any>(null);
 
     const account: Account | null = useAccount();
-    if (!account) throw new Error('Account not found');
 
-    const entityConstructor: ContentBaseStatic<ContentBase> = CONTENT_ENTITY_MAP[entityName].entity as ContentBaseStatic<ContentBase>;
-    const displayConfig: EntityDisplayConfig = getEntityDisplayConfig(entityConstructor);
-    const formFields: FormFieldDefinition[] = getFormFields(entityConstructor.prototype);
-    const { contentData, status, error } = useEntityDetail(entityName, entity_id as string, world_id as string);
+    const entityConstructor: ContentBaseStatic<ContentBase> | null = entityName ? ContentEntityMapService.getEntityConstructor<ContentBase>(entityName) as ContentBaseStatic<ContentBase> : null;
+    const displayConfig: EntityDisplayConfig | null = entityConstructor ? getEntityDisplayConfig(entityConstructor) : null;
+    const formFields: FormFieldDefinition[] = entityConstructor ? getFormFields(entityConstructor.prototype) : [];
+    const { contentData, status, error } = useEntityDetail(entityName, entityId, worldId);
 
     useEffect(() => {
         if (contentData) {
@@ -54,17 +50,19 @@ const EntityPage = () => {
     }, [contentData]);
 
     const context: Context = Context.build({
-        world: { id: world_id as string } as World,
-        user: { id: account.user } as User
+        world: { id: worldId } as World,
+        user: { id: account?.user || '' } as User
     });
 
     const handleSubmit = async (data: { [key: string]: any }) => {
+        if (!entityName) throw new Error(`Entity name not found`);
+        if (!entityConstructor) throw new Error(`Entity constructor not found`);
         dispatch(updateContent({
             entityName,
             contentBody: entityConstructor.build(data),
             context
         }));
-        router.push(routes.contentEntity(world_id as string, entityName));
+        router.push(routes.contentEntity(worldId || '', entityName || ''));
     };
 
     const handleToggleEdit = () => {
@@ -75,25 +73,34 @@ const EntityPage = () => {
         setIsReadOnly(!isReadOnly);
     };
 
-    const customBreadcrumbs: BreadcrumbItem[] = [
-        BreadcrumbItem.build({ label: 'Worlds', path: routes.worlds() }),
-        BreadcrumbItem.build({
-            label: displayConfig.title,
-            path: routes.contentEntity(world_id as string, entityName)
-        }),
-        BreadcrumbItem.build({
-            label: entity_id as string,
-            path: routes.contentDetail(world_id as string, entityName, entity_id as string)
-        })
-    ];
+    const getTitle = () => {
+        if (entityId) return displayConfig?.title || '';
+        return `Create ${displayConfig?.title || ''}`;
+    }
+
+    const [customBreadcrumbs, setCustomBreadcrumbs] = useState<BreadcrumbItem[]>([])
+    useEffect(() => {
+        setCustomBreadcrumbs([
+            BreadcrumbItem.build({ label: 'Home', path: routes.home() }),
+            BreadcrumbItem.build({ label: 'Worlds', path: routes.worlds() }),
+            BreadcrumbItem.build({
+                label: displayConfig?.title || 'PLACEHOLDER',
+                path: routes.contentEntity(worldId || '', entityName || '')
+            }),
+            BreadcrumbItem.build({
+                label: entityId || 'PLACEHOLDER',
+                path: routes.contentDetail(worldId || '', entityName || '', entityId || '')
+            })
+        ]);
+    }, [worldId, entityName, entityId]);
 
     return (
-        <PageWrapper customBreadcrumbs={customBreadcrumbs}>
+        <PageWrapper customBreadcrumbs={customBreadcrumbs} accountId={account?.id} worldId={worldId || ''}>
             <Container maxWidth="lg">
                 <Box py={4}>
                     <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
                         <Typography variant="h4" component="h1">
-                            {entity_id ? displayConfig.title : `Create ${displayConfig.title}`}
+                            {getTitle()}
                         </Typography>
                         <Button
                             variant="contained"

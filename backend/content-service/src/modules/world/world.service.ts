@@ -1,6 +1,6 @@
 // This service creates a World, populates it with initial default content, resets it or deletes it.
 
-import { CONTENT_ENTITY_MAP } from "../../CONTENT_ENTITY_MAP";
+import { ContentEntityMapService } from "../../CONTENT_ENTITY_MAP";
 import { World } from "./entities/World";
 import { TemporarilyFreezeWorld } from "../../decorator/TemporarilyFreezeWorld";
 import { DataSource, FindManyOptions, FindOptionsWhere, Repository } from "typeorm";
@@ -15,6 +15,7 @@ import { ContentBase } from "../../ContentBase";
 import { Preset, PresetService } from "../preset/preset.service";
 import { join } from "path";
 import { SearchQuery } from "../../class/search/SearchQuery";
+import { EntityEnum } from "../../enum/EntityEnum";
 
 const pathToPresetsFolder = join(__dirname, "../../../world_presets")
 
@@ -162,7 +163,7 @@ export class WorldService implements IWorldService {
     public async dropWorldContents(worldId: string): Promise<void> {
         const source = DataSourceEnum.DATA_SOURCE_WORLD
         console.log(`[WorldService - dropWorldContents] dropping contents`)
-        for (const entityName in CONTENT_ENTITY_MAP) {
+        for (const entityName of Object.values(EntityEnum)) {
             const repository = this.contentService.getRepository(entityName, source);
             await repository.delete({ world: { id: worldId } });
         }

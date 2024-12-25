@@ -73,6 +73,13 @@ export class World extends BaseEntity {
     @Serializable()
     frozen!: boolean;
 
+    @Column({ type: "timestamp", nullable: true })
+    @Serializable({
+        serialize: (val: Date) => val.getTime(),
+        deserialize: (val: number) => new Date(val)
+    })
+    createdAt?: Date;
+
     @OneToMany(() => Campaign, (campaign) => campaign.world, {})
     @Serializable({ strategy: 'id' })
     campaigns!: Campaign[]

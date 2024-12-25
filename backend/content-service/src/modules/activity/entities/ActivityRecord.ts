@@ -51,7 +51,7 @@ export class ActivityRecord extends BaseEntity {
         serialize: (val: Date) => val.getTime(),
         deserialize: (val: number) => new Date(val)
     })
-    createdAt!: Date;
+    createdAt?: Date;
 
     @ManyToOne(() => World, (world) => world.activityRecords)
     @JoinColumn({ name: "worldId" })

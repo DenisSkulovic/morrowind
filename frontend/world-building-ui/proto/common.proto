@@ -33,6 +33,7 @@ message BackgroundDTO {
     string world = 18;
     string targetEntity = 19;
     GenerationInstructionDTO gender = 20;
+    int32 createdAt = 21;
 }
 message BackgroundsDTO {
     repeated BackgroundDTO arr = 1;
@@ -64,6 +65,7 @@ message EffectDTO {
     EffectModeEnumDTO mode = 11;
     EffectElementEnumDTO element = 12;
     string targetEntity = 13;
+    int32 createdAt = 14;
 }
 message EffectsDTO {
     repeated EffectDTO arr = 1;
@@ -84,6 +86,7 @@ message ResistanceDTO {
     EffectTypeEnumDTO effectType = 8;
     string targetEffect = 9;
     string targetEntity = 10;
+    int32 createdAt = 11;
 }
 message ResistancesDTO {
     repeated ResistanceDTO arr = 1;
@@ -106,6 +109,7 @@ message StatusDTO {
     int32 duration = 10;
     string description = 11;
     string targetEntity = 12;
+    int32 createdAt = 13;
 }
 message StatusesDTO {
     repeated StatusDTO arr = 1;
@@ -124,6 +128,7 @@ message ItemSetDTO {
     string world = 6;
     GenerationInstructionDTO set = 7;
     string targetEntity = 8;
+    int32 createdAt = 9;
 }
 message ItemSetsDTO {
     repeated ItemSetDTO arr = 1;
@@ -140,7 +145,7 @@ message ItemDTO {
     string id = 4;
     string name = 5;
     string description = 6;
-    repeated int32 size = 7;
+    GridSizeDTO size = 7;
     int32 quantity = 8;
     int32 maxQuantity = 9;
     int32 baseValue = 10;
@@ -173,12 +178,18 @@ message ItemDTO {
     string trainedSkill = 37;
     StorageSlotDefinitionsDTO storageSlotDefinition = 38;
     float weight = 39;
+    int32 createdAt = 40;
+    repeated string tags = 41;
 }
 message ItemsDTO {
     repeated ItemDTO arr = 1;
 }
 // #######################################################################################
 
+message GridSizeDTO {
+    int32 width = 1;
+    int32 height = 2;
+}
 
 
 // #######################################################################################
@@ -204,6 +215,7 @@ message StorageSlotDTO {
     string parentItem = 11;
     ItemsDTO storedItems = 12;
     string targetEntity = 13;
+    int32 createdAt = 14;
 }
 message StorageSlotsDTO {
     repeated StorageSlotDTO arr = 1;
@@ -277,6 +289,7 @@ message CharacterDTO {
     string targetEntity = 26;
     string birthEra = 27;
     repeated string pastExperiences = 28;
+    int32 createdAt = 29;
 }
 message CharactersDTO {
     repeated CharacterDTO arr = 1;
@@ -296,6 +309,7 @@ message AddictionDTO {
     string world = 7;
     repeated string characters = 8;
     string targetEntity = 9;
+    int32 createdAt = 10;
 }
 message AddictionsDTO {
     repeated AddictionDTO arr = 1;
@@ -323,6 +337,7 @@ message CharacterMemoryDTO {
     repeated string tags = 15;
     string memory = 16;
     string targetEntity = 17;
+    int32 createdAt = 18;
 }
 message CharacterMemoriesDTO {
     repeated CharacterMemoryDTO arr = 1;
@@ -355,6 +370,7 @@ message TagDTO {
     string campaign = 7;
     string world = 8;
     string targetEntity = 9;
+    int32 createdAt = 10;
 }
 message TagsDTO {
     repeated TagDTO arr = 1;
@@ -376,6 +392,7 @@ message SkillDTO {
     string description = 9;
     SkillCategoryEnumDTO category = 10;
     string targetEntity = 11;
+    int32 createdAt = 12;
 }
 message SkillsDTO {
     repeated SkillDTO arr = 1;
@@ -396,6 +413,7 @@ message TraitDTO {
     repeated string tags = 8;
     string targetEntity = 9;
     TraitTypeEnumDTO type = 10;
+    int32 createdAt = 11;
 }
 message TraitsDTO {
     repeated TraitDTO arr = 1;
@@ -418,6 +436,7 @@ message DiseaseDTO {
     DiseaseSeverityEnumDTO severity = 10;
     repeated string characters = 11;
     string targetEntity = 12;
+    int32 createdAt = 13;
 }
 message DiseasesDTO { 
     repeated DiseaseDTO arr = 1;
@@ -439,6 +458,7 @@ message FactDTO {
     string description = 9;
     int32 weight = 10;
     string targetEntity = 11;
+    int32 createdAt = 12;
 }
 message FactsDTO {
     repeated FactDTO arr = 1;
@@ -458,6 +478,7 @@ message FactionDTO {
     string world = 7;
     repeated string tags = 8;
     string targetEntity = 9;
+    int32 createdAt = 10;
 }
 message FactionsDTO {
     repeated FactionDTO arr = 1;
@@ -479,6 +500,7 @@ message MemoryPoolDTO {
     repeated string memoryPoolEntries = 9;
     repeated string tags = 10;
     string targetEntity = 11;
+    int32 createdAt = 12;
 }
 message MemoryPoolsDTO {
     repeated MemoryPoolDTO arr = 1;
@@ -502,6 +524,7 @@ message MemoryPoolEntryDTO {
     int32 defaultClarity = 11;
     int32 defaultImportance = 12;
     string targetEntity = 13;
+    int32 createdAt = 14;
 }
 message MemoryPoolEntriesDTO {
     repeated MemoryPoolEntryDTO arr = 1;
@@ -522,6 +545,7 @@ message CharacterProfessionDTO {
     repeated string tags = 8;
     repeated string memoryPools = 9;
     string targetEntity = 10;
+    int32 createdAt = 11;
 }
 message CharacterProfessionsDTO {
     repeated CharacterProfessionDTO arr = 1;
@@ -543,6 +567,7 @@ message EquipmentSlotDTO {
     ItemDTO equippedItem = 9;
     string character = 10;
     string targetEntity = 11;
+    int32 createdAt = 12;
 }
 message EquipmentSlotsDTO {
     repeated EquipmentSlotDTO arr = 1;
@@ -561,6 +586,7 @@ message BirthsignDTO {
     string campaign = 6;
     string world = 7;
     string targetEntity = 8;
+    int32 createdAt = 9;
 }
 message BirthsignsDTO {
     repeated BirthsignDTO arr = 1;
@@ -580,6 +606,7 @@ message RaceDTO {
     string world = 7;
     Metadata metadata = 8;
     string targetEntity = 9;
+    int32 createdAt = 10;
 }
 message RacesDTO {
     repeated RaceDTO arr = 1;
@@ -626,6 +653,7 @@ message MoodDTO {
     string world = 7;
     string description = 8;
     string targetEntity = 9;
+    int32 createdAt = 10;
 }
 message MoodsDTO {
     repeated MoodDTO arr = 1;
@@ -647,6 +675,7 @@ message ReligionDTO {
     ReligionRitualsDTO rituals = 9;
     ReligionTenetsDTO tenets = 10;
     string targetEntity = 11;
+    int32 createdAt = 12;
 }
 message ReligionsDTO {
     repeated ReligionDTO arr = 1;
@@ -738,6 +767,7 @@ message CharacterGenInstructionDTO {
     string user = 15;
     string campaign = 16;
     string world = 17;
+    int32 createdAt = 18;
 }
 message CharacterGenInstructions {
     repeated CharacterGenInstructionDTO arr = 1;
@@ -757,6 +787,7 @@ message CharacterGroupGenInstructionDTO {
     string world = 7;
     CombinatorDTO set = 8;
     string targetEntity = 9;
+    int32 createdAt = 10;
 }
 message CharacterGroupGenInstructionsDTO {
     repeated CharacterGroupGenInstructionDTO arr = 1;
@@ -844,6 +875,7 @@ message PastExperienceDTO {
     repeated string tags = 8;
     PastExperienceTypeEnumDTO type = 9;
     string targetEntity = 10;
+    int32 createdAt = 11;
 }
 message PastExperiencesDTO {
     repeated PastExperienceDTO arr = 1;
@@ -866,6 +898,7 @@ message MemoryDTO {
     MemoryTypeEnumDTO type = 10;
     string description = 11;
     string targetEntity = 12;
+    int32 createdAt = 13;
 }
 message MemoriesDTO {
     repeated MemoryDTO arr = 1;
@@ -886,6 +919,7 @@ message SkillSetDTO {
     repeated string tags = 8;
     SkillImprovementDTO skillImprovement = 9;
     string targetEntity = 10;
+    int32 createdAt = 11;
 }
 message SkillSetsDTO {
     repeated SkillSetDTO arr = 1;
@@ -914,6 +948,7 @@ message PersonalityProfileDTO {
     string enneagramType = 8;
     repeated GenerationInstructionDTO traits = 9;
     string targetEntity = 10;
+    int32 createdAt = 11;
 }
 message PersonalityProfilesDTO {
     repeated PersonalityProfileDTO arr = 1;
@@ -935,6 +970,7 @@ message NeedDTO {
     NeedTypeEnumDTO type = 9;
     NeedLayerEnumDTO layer = 10;
     string targetEntity = 11;
+    int32 createdAt = 12;
 }
 message NeedsDTO {
     repeated NeedDTO arr = 1;
@@ -952,6 +988,7 @@ message UserDTO {
     WorldsDTO worlds = 3;
     CampaignsDTO campaigns = 4;
     AccountDTO account = 5;
+    int32 createdAt = 6;
 }
 message UsersDTO {
     repeated UserDTO arr = 1;
@@ -968,6 +1005,7 @@ message AccountDTO {
     string role = 4;
     string user = 5;
     PreferencesDTO preferences = 6;
+    int32 createdAt = 7;
 }
 // #######################################################################################
 
@@ -996,10 +1034,9 @@ message WorldDTO {
     string description = 3;
     WorldSettings settings = 4;
     bool frozen = 5;
-
-    // relations
-    string user = 6;                      
-    CampaignsDTO campaigns = 7;    
+    int32 createdAt = 6;
+    string user = 7;                      
+    CampaignsDTO campaigns = 8;    
 }
 message WorldsDTO {
     repeated WorldDTO arr = 1;
@@ -1034,8 +1071,18 @@ message SearchQueryDTO {
 }
 message QueryFilterDTO {
     string field = 1;
-    string operator = 2; // eq, neq, gt, gte, lt, lte, contains, regex
+    QueryFilterOperatorEnumDTO operator = 2;
     QueryFilterValueDTO value = 3;
+}
+enum QueryFilterOperatorEnumDTO {
+    EQUAL = 0; // eq
+    NOT_EQUAL = 1; // neq
+    GREATER_THAN = 2; // gt
+    GREATER_THAN_OR_EQUAL = 3; // gte
+    LESS_THAN = 4; // lt
+    LESS_THAN_OR_EQUAL = 5; // lte
+    CONTAINS = 6; // contains
+    REGEX = 7; // regex
 }
 message QueryFilterValueDTO {
     oneof value {

@@ -42,6 +42,6 @@ export function FormField(options: FormFieldOptions) {
     };
 }
 
-export function getFormFields(target: any): FormFieldDefinition[] {
-    return Reflect.getMetadata(EntityMetadataKeyEnum.FORM_FIELD, target) || [];
+export function getFormFields(cls: ClassConstructor<any>): FormFieldDefinition[] {
+    return Reflect.getMetadata(EntityMetadataKeyEnum.FORM_FIELD, cls) || [];
 }

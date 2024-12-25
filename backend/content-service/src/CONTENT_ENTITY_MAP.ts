@@ -55,74 +55,221 @@ import { StorageSlot } from "./modules/content/entities/Slot/StorageSlot";
 import { Tag } from "./modules/content/entities/Tag";
 import { Trait } from "./modules/content/entities/Trait";
 import { Status } from "./modules/content/entities/Status";
+import { EntityEnum } from "./enum/EntityEnum";
+import { EntityConstructor } from "./types";
 
-
-/**
- * Checks if the given entity is a parent entity with its own table.
- */
-export function isParentEntity(entity: EntityTarget<any>): boolean {
-    const metadata = getMetadataArgsStorage();
-    const entityMetadata = metadata.tables.find(
-        (table) => table.target === entity
-    );
-    return !!entityMetadata; // Returns true if the entity has its own table
+export type EntityMap<T extends ContentBase> = {
+    [key in keyof typeof EntityEnum]: {
+        entity: EntityTarget<T>;
+        rootEntity?: EntityTarget<T>;
+    }
 }
 
 
-export const CONTENT_ENTITY_MAP: { [name: string]: EntityTarget<ContentBase> } = {
-    ItemAlcohol,
-    ItemDrinkable,
-    ItemPotion,
-    ItemWater,
-    ItemEdible,
-    ItemFood,
-    ItemArrow,
-    ItemConsumable,
-    ItemMisc,
-    ItemMiscCurrency,
-    ItemWeapon,
-    ItemWeaponRanged,
-    ItemWeaponLongSword,
-    ItemWeaponShortSword,
-    ItemWearable,
-    ItemWearableBackpack,
-    ItemWearableClothesPants,
-    ItemWearableClothesTorso,
-    ItemWearableCuirass,
-    ItemWearableFeet,
-    ItemWearableGreaves,
-    ItemWearableHead,
-    ItemWearableShield,
-    ItemRepairable,
-    Item,
-    PastExperience,
-    CharacterMemory,
-    Memory,
-    MemoryPool,
-    MemoryPoolEntry,
-    Skill,
-    SkillSet,
-    EquipmentSlot,
-    StorageSlot,
-    Trait,
-    Addiction,
-    Background,
-    Birthsign,
-    Character,
-    CharacterGenInstruction,
-    CharacterGroupGenInstruction,
-    CharacterProfession,
-    Disease,
-    Effect,
-    Fact,
-    Faction,
-    ItemSet,
-    Mood,
-    Need,
-    PersonalityProfile,
-    Race,
-    Religion,
-    Resistance,
-    Status,
-    Tag,
+export class ContentEntityMapService {
+    static getEntityConstructor<T extends ContentBase>(entityName: EntityEnum): EntityConstructor<T> {
+        const entityConfig = CONTENT_ENTITY_MAP[entityName]
+        if (!entityConfig) throw new Error(`unrecognized entityName: "${entityName}"`)
+        return entityConfig.entity as EntityConstructor<T>
+    }
+
+    static getRootEntityConstructor<T extends ContentBase>(entityName: EntityEnum): EntityConstructor<T> | null {
+        const entityConfig = CONTENT_ENTITY_MAP[entityName]
+        if (!entityConfig) throw new Error(`unrecognized entityName: "${entityName}"`)
+        return entityConfig.rootEntity ? entityConfig.rootEntity as EntityConstructor<T> : null
+    }
 }
+
+const CONTENT_ENTITY_MAP: EntityMap<ContentBase> = {
+    [EntityEnum.ItemAlcohol]: {
+        entity: ItemAlcohol,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemDrinkable]: {
+        entity: ItemDrinkable,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemPotion]: {
+        entity: ItemPotion,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemWater]: {
+        entity: ItemWater,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemEdible]: {
+        entity: ItemEdible,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemFood]: {
+        entity: ItemFood,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemArrow]: {
+        entity: ItemArrow,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemConsumable]: {
+        entity: ItemConsumable,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemMisc]: {
+        entity: ItemMisc,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemMiscCurrency]: {
+        entity: ItemMiscCurrency,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemWeapon]: {
+        entity: ItemWeapon,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemWeaponRanged]: {
+        entity: ItemWeaponRanged,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemWeaponLongSword]: {
+        entity: ItemWeaponLongSword,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemWeaponShortSword]: {
+        entity: ItemWeaponShortSword,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemWearable]: {
+        entity: ItemWearable,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemWearableBackpack]: {
+        entity: ItemWearableBackpack,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemWearableClothesPants]: {
+        entity: ItemWearableClothesPants,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemWearableClothesTorso]: {
+        entity: ItemWearableClothesTorso,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemWearableCuirass]: {
+        entity: ItemWearableCuirass,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemWearableFeet]: {
+        entity: ItemWearableFeet,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemWearableGreaves]: {
+        entity: ItemWearableGreaves,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemWearableHead]: {
+        entity: ItemWearableHead,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemWearableShield]: {
+        entity: ItemWearableShield,
+        rootEntity: Item
+    },
+    [EntityEnum.ItemRepairable]: {
+        entity: ItemRepairable,
+        rootEntity: Item
+    },
+    [EntityEnum.Item]: {
+        entity: Item
+    },
+    [EntityEnum.PastExperience]: {
+        entity: PastExperience
+    },
+    [EntityEnum.CharacterMemory]: {
+        entity: CharacterMemory
+    },
+    [EntityEnum.Memory]: {
+        entity: Memory
+    },
+    [EntityEnum.MemoryPool]: {
+        entity: MemoryPool
+    },
+    [EntityEnum.MemoryPoolEntry]: {
+        entity: MemoryPoolEntry
+    },
+    [EntityEnum.Skill]: {
+        entity: Skill
+    },
+    [EntityEnum.SkillSet]: {
+        entity: SkillSet
+    },
+    [EntityEnum.EquipmentSlot]: {
+        entity: EquipmentSlot
+    },
+    [EntityEnum.StorageSlot]: {
+        entity: StorageSlot
+    },
+    [EntityEnum.Trait]: {
+        entity: Trait
+    },
+    [EntityEnum.Addiction]: {
+        entity: Addiction
+    },
+    [EntityEnum.Background]: {
+        entity: Background
+    },
+    [EntityEnum.Birthsign]: {
+        entity: Birthsign,
+        rootEntity: Birthsign
+    },
+    [EntityEnum.Character]: {
+        entity: Character
+    },
+    [EntityEnum.CharacterGenInstruction]: {
+        entity: CharacterGenInstruction
+    },
+    [EntityEnum.CharacterGroupGenInstruction]: {
+        entity: CharacterGroupGenInstruction
+    },
+    [EntityEnum.CharacterProfession]: {
+        entity: CharacterProfession
+    },
+    [EntityEnum.Disease]: {
+        entity: Disease
+    },
+    [EntityEnum.Effect]: {
+        entity: Effect
+    },
+    [EntityEnum.Fact]: {
+        entity: Fact
+    },
+    [EntityEnum.Faction]: {
+        entity: Faction
+    },
+    [EntityEnum.ItemSet]: {
+        entity: ItemSet
+    },
+    [EntityEnum.Mood]: {
+        entity: Mood
+    },
+    [EntityEnum.Need]: {
+        entity: Need
+    },
+    [EntityEnum.PersonalityProfile]: {
+        entity: PersonalityProfile
+    },
+    [EntityEnum.Race]: {
+        entity: Race
+    },
+    [EntityEnum.Religion]: {
+        entity: Religion,
+        rootEntity: Religion
+    },
+    [EntityEnum.Resistance]: {
+        entity: Resistance
+    },
+    [EntityEnum.Status]: {
+        entity: Status
+    },
+    [EntityEnum.Tag]: {
+        entity: Tag
+    }
+};
