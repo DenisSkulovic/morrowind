@@ -9,19 +9,20 @@ import { DisplayField } from "../../../decorator/display-field.decorator";
 import { EntityDisplay } from "../../../decorator/entity-display.decorator";
 import { FilterOption } from "../../../decorator/filter-option.decorator";
 import { TraitTypeEnumDTO } from "../../../proto/common_pb";
+import { SerializeStrategyEnum } from "../../../serialize/serializer";
 
 @EntityDisplay({
     title: 'Traits',
     defaultSort: 'name'
 })
 export class Trait extends TaggableContentBase {
-    @DisplayField({ order: 1 })
+    @DisplayField()
     @FilterOption()
     @Serializable()
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter trait name', required: true })
     name!: string;
 
-    @DisplayField({ order: 2 })
+    @DisplayField()
     @FilterOption()
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
@@ -33,10 +34,7 @@ export class Trait extends TaggableContentBase {
         },
         required: true
     })
-    @Serializable({
-        serialize: type => serializeEnum(TraitTypeEnum, TraitTypeEnumDTO, type),
-        deserialize: type => deserializeEnum(TraitTypeEnumDTO, TraitTypeEnum, type)
-    })
+    @Serializable({ strategy: SerializeStrategyEnum.ENUM, internalEnum: TraitTypeEnum, protoEnum: TraitTypeEnumDTO })
     traitType!: TraitTypeEnum
 
 }

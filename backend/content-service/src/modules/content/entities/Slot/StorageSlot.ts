@@ -5,8 +5,9 @@ import { StorageGridDTO, StorageSlotDTO } from "../../../../proto/common";
 import { Campaign } from "../../../campaign/entities/Campaign";
 import { User } from "../../../user/entities/User";
 import { World } from "../../../world/entities/World";
-import { Serializer } from "../../../../serializer";
+import { Serializer, SerializeStrategyEnum } from "../../../../serializer";
 import { Serializable } from "../../../../decorator/serializable.decorator";
+import { GridSize } from "../../../../class/GridSize";
 
 export type StorageGridCell = string | null;
 export type StorageGrid = StorageGridCell[][];
@@ -24,8 +25,8 @@ export class StorageSlot extends ContentBase {
     name!: string
 
     @Column({ type: "jsonb", nullable: true })
-    @Serializable({ serialize: serializeGrid, deserialize: deserializeGrid })
-    grid!: [number, number];
+    @Serializable({ strategy: SerializeStrategyEnum.FULL })
+    grid!: GridSize;
 
     @Column({ type: "jsonb", default: [] })
     @Serializable({ serialize: serializeGridState, deserialize: deserializeGridState })
@@ -36,23 +37,23 @@ export class StorageSlot extends ContentBase {
     maxWeight!: number;
 
     @ManyToOne(() => Item, (parentItem) => parentItem.storageSlot, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     parentItem!: Item;
 
     @OneToMany(() => Item, (storedItem) => storedItem.storageSlot, { cascade: true })
-    @Serializable({ strategy: 'full' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     storedItems?: Item[];
 
     @ManyToOne(() => User, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     user!: User;
 
     @ManyToOne(() => Campaign, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     campaign?: Campaign;
 
     @ManyToOne(() => World, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     world!: World;
 
     public toDTO(): StorageSlotDTO {
@@ -60,21 +61,10 @@ export class StorageSlot extends ContentBase {
     }
 
     public static fromDTO(dto: StorageSlotDTO): StorageSlot {
-        const storageSlot = new StorageSlot();
-        return Serializer.fromDTO(dto, storageSlot);
+        return Serializer.fromDTO(dto, new StorageSlot());
     }
 }
 
-
-
-
-export function serializeGrid(grid: [number, number]): number[] {
-    return [grid[0], grid[1]];
-}
-export function deserializeGrid(grid: number[]): [number, number] {
-    if (grid.length !== 2) throw new Error("Invalid grid array length. Expected [rows, columns], i.e. length of 2.");
-    return [grid[0], grid[1]];
-}
 
 
 export function serializeGridState(gridState: StorageGrid): StorageGridDTO {

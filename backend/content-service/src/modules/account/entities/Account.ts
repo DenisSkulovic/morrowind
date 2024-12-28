@@ -4,7 +4,7 @@ import { randomUUID } from "crypto";
 import { AccountRoleEnum } from "../../../common/enum/AccountRoleEnum";
 import { AccountDTO } from "../../../proto/common";
 import { Serializable } from "../../../decorator/serializable.decorator";
-import { Serializer } from "../../../serializer";
+import { Serializer, SerializeStrategyEnum } from "../../../serializer";
 
 
 
@@ -40,15 +40,12 @@ export class Account extends BaseEntity {
     preferences?: any; // User-specific preferences/settings.
 
     @Column({ type: "timestamp", nullable: true })
-    @Serializable({
-        serialize: (val: Date) => val.getTime(),
-        deserialize: (val: number) => new Date(val)
-    })
+    @Serializable({ strategy: SerializeStrategyEnum.DATE })
     createdAt?: Date;
 
     @OneToOne(() => User, (user) => user.account, { cascade: true })
     @JoinColumn()
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     user!: User
 
 

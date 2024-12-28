@@ -7,6 +7,8 @@ import { DisplayField } from '../../../decorator/display-field.decorator';
 import { EntityDisplay } from '../../../decorator/entity-display.decorator';
 import { FilterOption } from '../../../decorator/filter-option.decorator';
 import { ReligionTenet } from '../../../class/ReligionTenet';
+import { ReligionRitualDTO, ReligionRitualsDTO, ReligionTenetDTO, ReligionTenetsDTO } from "../../../proto/common_pb";
+import { SerializeStrategyEnum } from "../../../serialize/serializer";
 
 @EntityDisplay({
     title: 'Religions',
@@ -14,7 +16,6 @@ import { ReligionTenet } from '../../../class/ReligionTenet';
 })
 export class Religion extends ContentBase {
     @DisplayField({
-        order: 1,
         displayName: 'Name'
     })
     @FilterOption()
@@ -23,18 +24,17 @@ export class Religion extends ContentBase {
     name!: string;
 
     @DisplayField({
-        order: 2,
         displayName: 'Description'
     })
     @Serializable()
     @FormField({ component: FieldComponentEnum.TEXTAREA_FIELD, label: 'Description', placeholder: 'Enter religion description', required: true })
     description!: string;
 
-    @Serializable({ strategy: 'full', getDTOInstance: () => new ReligionRitual() })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, dtoClass: ReligionRitualDTO, dtoArrClass: ReligionRitualsDTO })
     @FormField({ component: FieldComponentEnum.NESTED_FORM, label: 'Rituals' })
     rituals?: ReligionRitual[];
 
-    @Serializable({ strategy: 'full' })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, dtoClass: ReligionTenetDTO, dtoArrClass: ReligionTenetsDTO })
     @FormField({ component: FieldComponentEnum.NESTED_FORM, label: 'Tenets' })
     tenets?: ReligionTenet[];
 

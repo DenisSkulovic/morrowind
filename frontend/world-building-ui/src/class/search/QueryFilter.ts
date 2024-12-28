@@ -2,7 +2,7 @@ import { Serializable } from "../../decorator/serializable.decorator";
 import { deserializeEnum } from "../../enum/util";
 import { serializeEnum } from "../../enum/util";
 import { QueryFilterDTO, QueryFilterOperatorEnumDTO, QueryFilterValueDTO } from "../../proto/common_pb";
-import { Serializer } from "../../serialize/serializer";
+import Serializer, { SerializeStrategyEnum } from "../../serialize/serializer";
 
 export enum QueryFilterOperatorEnum {
     EQUAL = 'eq',
@@ -20,18 +20,16 @@ export class QueryFilter {
     @Serializable()
     public field!: string;
 
-    @Serializable({
-        serialize: operator => serializeEnum(QueryFilterOperatorEnum, QueryFilterOperatorEnumDTO, operator),
-        deserialize: operator => deserializeEnum(QueryFilterOperatorEnumDTO, QueryFilterOperatorEnum, operator)
-    })
+    @Serializable({ strategy: SerializeStrategyEnum.ENUM, internalEnum: QueryFilterOperatorEnum, protoEnum: QueryFilterOperatorEnumDTO })
     public operator!: QueryFilterOperatorEnum;
 
     @Serializable({
         serialize: (value: string | number | boolean): QueryFilterValueDTO => {
             const dto = new QueryFilterValueDTO();
             if (typeof value === 'string') dto.setStringvalue(value);
-            if (typeof value === 'number') dto.setNumbervalue(value);
-            if (typeof value === 'boolean') dto.setBoolvalue(value);
+            else if (typeof value === 'number') dto.setNumbervalue(value);
+            else if (typeof value === 'boolean') dto.setBoolvalue(value);
+            else throw new Error('QueryFilterDTO must have a value');
             return dto;
         },
         deserialize: (dto: QueryFilterValueDTO): string | number | boolean => {

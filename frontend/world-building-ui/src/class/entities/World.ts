@@ -8,20 +8,20 @@ import { WorldService } from "../../services/WorldService";
 import { Context } from "../Context";
 import { SearchQuery } from "../search/SearchQuery";
 import { LooseObject } from "../../types";
-import { CampaignsDTO } from "../../proto/common_pb";
+import { Entity } from "../Entity";
 
 @EntityDisplay({
     title: 'Worlds',
     defaultSort: 'name'
 })
-export class World {
+export class World extends Entity {
     @Serializable()
     id!: string;
 
     @Serializable()
     user!: string;
 
-    @DisplayField({ order: 1 })
+    @DisplayField()
     @FilterOption({ displayName: 'Name' })
     @FormField({
         component: FieldComponentEnum.TEXT_FIELD,
@@ -59,10 +59,10 @@ export class World {
     @Serializable()
     settings?: any; // Custom world settings (e.g., starting conditions, mechanics).
 
-    @DisplayField({ order: 2 })
+    @DisplayField()
     @FilterOption({ displayName: 'Campaigns' })
-    @Serializable({ getArrDTOInstance: () => new CampaignsDTO() })
-    campaigns!: string[]
+    @Serializable()
+    campaigns?: string[]
 
     public static build(obj: { [key: string]: any }): World {
         const world = new World();

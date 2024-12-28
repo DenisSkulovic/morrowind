@@ -1,33 +1,21 @@
-import { ReligionTenetDTO, ReligionTenetsDTO } from "../proto/common";
+import { Serializable } from "../decorator/serializable.decorator";
+import { ReligionTenetDTO } from "../proto/common";
+import { Serializer } from "../serializer";
 
 export class ReligionTenet {
+    @Serializable()
     clazz = "ReligionTenet"
-    constructor(
-        public name: string,
-        public description: string,
-    ) { }
+
+    @Serializable()
+    name!: string
+
+    @Serializable()
+    description!: string
+
     toDTO(): ReligionTenetDTO {
-        return serializeReligionTenet(this)
+        return Serializer.toDTO(this)
     }
     static fromDTO(dto: ReligionTenetDTO): ReligionTenet {
-        return deserializeReligionTenet(dto)
+        return Serializer.fromDTO(dto, new ReligionTenet())
     }
-}
-export type ReligionTenets = ReligionTenet[]
-
-export function serializeReligionTenet(tenet: ReligionTenet): ReligionTenetDTO {
-    return tenet
-}
-export function deserializeReligionTenet(tenetDTO: ReligionTenetDTO): ReligionTenet {
-    return new ReligionTenet(
-        tenetDTO.name,
-        tenetDTO.description,
-    )
-}
-
-export function serializeReligionTenets(tenets: ReligionTenets): ReligionTenetsDTO {
-    return { arr: tenets.map((tenet) => serializeReligionTenet(tenet)) }
-}
-export function deserializeReligionTenets(tenetDTO: ReligionTenetsDTO): ReligionTenets {
-    return tenetDTO.arr.map((tenet) => deserializeReligionTenet(tenet))
 }

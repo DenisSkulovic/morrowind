@@ -6,34 +6,37 @@ import { FieldComponentEnum } from "../../../enum/FieldComponentEnum";
 import { DisplayField } from "../../../decorator/display-field.decorator";
 import { EntityDisplay } from "../../../decorator/entity-display.decorator";
 import { FilterOption } from "../../../decorator/filter-option.decorator";
-import { FactStatusesDTO } from "../../../proto/common_pb";
+import { CharacterDTO, FactStatusDTO, FactStatusesDTO, MemoryDTO } from "../../../proto/common_pb";
+import { Character } from "./Character";
+import { Memory } from "./Memory";
+import { SerializeStrategyEnum } from "../../../serialize/serializer";
 
 @EntityDisplay({
     title: 'Character Memories',
     defaultSort: 'name'
 })
 export class CharacterMemory extends TaggableContentBase {
-    @DisplayField({ order: 1 })
+    @DisplayField()
     @FilterOption()
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter name', required: true })
     @Serializable()
     name!: string;
 
-    @DisplayField({ order: 2 })
+    @DisplayField()
     @FilterOption()
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Character', placeholder: 'Enter character', required: true })
-    @Serializable()
-    character!: string;
+    @Serializable({ strategy: SerializeStrategyEnum.ID, dtoClass: CharacterDTO })
+    character!: Character;
 
     @FormField({ component: FieldComponentEnum.TEXTAREA_FIELD, label: 'Memory', placeholder: 'Enter memory', required: true })
-    @Serializable()
-    memory!: string;
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, dtoClass: MemoryDTO })
+    memory!: Memory;
 
     @FormField({ component: FieldComponentEnum.NESTED_FORM, label: 'Fact Status', required: false })
-    @Serializable({ strategy: 'full', getDTOInstance: () => new FactStatusesDTO() })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, dtoClass: FactStatusDTO, dtoArrClass: FactStatusesDTO })
     factStatus?: FactStatus[];
 
-    @DisplayField({ order: 3 })
+    @DisplayField()
     @FilterOption()
     @FormField({ component: FieldComponentEnum.NUMBER_FIELD, label: 'Importance', placeholder: 'Enter importance', required: true })
     @Serializable()

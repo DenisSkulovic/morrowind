@@ -9,19 +9,21 @@ import { EntityDisplay } from '../../../decorator/entity-display.decorator';
 import { FilterOption } from '../../../decorator/filter-option.decorator';
 import { Context } from '../../../class/Context';
 import { SearchQuery } from '../../../class/search/SearchQuery';
+import { MemoryPoolEntriesDTO, MemoryPoolEntryDTO } from "../../../proto/common_pb";
+import { SerializeStrategyEnum } from "../../../serialize/serializer";
 
 @EntityDisplay({
     title: 'Memory Pools',
     defaultSort: 'name'
 })
 export class MemoryPool extends TaggableContentBase {
-    @DisplayField({ order: 1 })
+    @DisplayField()
     @FilterOption()
     @Serializable()
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter memory pool name', required: true })
     name!: string;
 
-    @DisplayField({ order: 2 })
+    @DisplayField()
     @Serializable()
     @FormField({ component: FieldComponentEnum.TEXTAREA_FIELD, label: 'Description', placeholder: 'Enter memory pool description' })
     description?: string;
@@ -35,8 +37,8 @@ export class MemoryPool extends TaggableContentBase {
             })
         }
     })
-    @Serializable()
-    memoryPoolEntries!: string[];
+    @Serializable({ strategy: SerializeStrategyEnum.ID, dtoClass: MemoryPoolEntryDTO, dtoArrClass: MemoryPoolEntriesDTO })
+    memoryPoolEntries!: MemoryPoolEntry[];
 
 }
 

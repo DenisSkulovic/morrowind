@@ -1,8 +1,6 @@
 import { QueryFilterDTO, QueryFilterOperatorEnumDTO, QueryFilterValueDTO } from "../../proto/common";
 import { Serializable } from "../../decorator/serializable.decorator";
-import { serializeEnum } from "../../common/enum/util";
-import { deserializeEnum } from "../../common/enum/util";
-import { Serializer } from "../../serializer";
+import { Serializer, SerializeStrategyEnum } from "../../serializer";
 
 export enum QueryFilterOperatorEnum {
     EQUAL = 'eq',
@@ -20,10 +18,7 @@ export class QueryFilter {
     @Serializable()
     public field!: string;
 
-    @Serializable({
-        serialize: operator => serializeEnum(QueryFilterOperatorEnum, QueryFilterOperatorEnumDTO, operator),
-        deserialize: operator => deserializeEnum(QueryFilterOperatorEnumDTO, QueryFilterOperatorEnum, operator)
-    })
+    @Serializable({ strategy: SerializeStrategyEnum.ENUM, internalEnum: QueryFilterOperatorEnum, protoEnum: QueryFilterOperatorEnumDTO })
     public operator!: QueryFilterOperatorEnum;
 
     @Serializable({
@@ -31,7 +26,7 @@ export class QueryFilter {
             if (typeof value === 'string') return { stringValue: value };
             if (typeof value === 'number') return { numberValue: value };
             if (typeof value === 'boolean') return { boolValue: value };
-            return {};
+            throw new Error('QueryFilterDTO must have a value');
         },
         deserialize: (dto: QueryFilterValueDTO | undefined) => {
             if (dto?.stringValue !== undefined) return dto.stringValue;

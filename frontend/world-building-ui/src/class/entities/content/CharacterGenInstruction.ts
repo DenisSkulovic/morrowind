@@ -13,6 +13,7 @@ import { FilterOption } from '../../../decorator/filter-option.decorator';
 import { Context } from '../../../class/Context';
 import { SearchQuery } from '../../../class/search/SearchQuery';
 import { GenderEnumDTO } from '../../../proto/common_pb';
+import { SerializeStrategyEnum } from "../../../serialize/serializer";
 
 @EntityDisplay({
     title: 'Character Generation Instructions',
@@ -20,7 +21,6 @@ import { GenderEnumDTO } from '../../../proto/common_pb';
 })
 export class CharacterGenInstruction extends ContentBase {
     @DisplayField({
-        order: 1,
         displayName: 'Name',
         getValue: (inst: CharacterGenInstruction) => inst.firstName || inst.lastName ?
             `${inst.firstName || ''} ${inst.lastName || ''}`.trim() : 'Unnamed'
@@ -34,7 +34,7 @@ export class CharacterGenInstruction extends ContentBase {
     @Serializable()
     lastName?: string
 
-    @DisplayField({ order: 2 })
+    @DisplayField()
     @FilterOption()
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
@@ -51,7 +51,7 @@ export class CharacterGenInstruction extends ContentBase {
     })
     gender?: GenderEnum
 
-    @DisplayField({ order: 3 })
+    @DisplayField()
     @FilterOption()
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
@@ -81,14 +81,14 @@ export class CharacterGenInstruction extends ContentBase {
     @Serializable()
     birthDay?: number
 
-    @DisplayField({ order: 4 })
+    @DisplayField()
     @FilterOption()
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Background Blueprint ID', placeholder: 'Enter background blueprint ID', required: true })
     @Serializable()
     backgroundBlueprintId!: string
 
     @FormField({ component: FieldComponentEnum.NESTED_FORM, label: 'Background Customization', required: false })
-    @Serializable({ strategy: 'full' })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL })
     backgroundCustomization?: BackgroundCustomization
 
 }

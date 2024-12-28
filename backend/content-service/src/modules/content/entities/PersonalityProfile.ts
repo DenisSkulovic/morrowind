@@ -4,7 +4,7 @@ import { PersonalityProfileDTO } from "../../../proto/common";
 import { Campaign } from "../../campaign/entities/Campaign";
 import { User } from "../../user/entities/User";
 import { World } from "../../world/entities/World";
-import { Serializer } from "../../../serializer";
+import { Serializer, SerializeStrategyEnum } from "../../../serializer";
 import { Serializable } from "../../../decorator/serializable.decorator";
 import { serializeInstruction, deserializeInstruction, GenerationInstruction } from "../../../class/GenerationInstruction";
 
@@ -26,22 +26,19 @@ export class PersonalityProfile extends ContentBase {
     enneagramType!: string; // Enneagram type with wing as a string.
 
     @Column("jsonb")
-    @Serializable({
-        serialize: serializeInstruction,
-        deserialize: deserializeInstruction,
-    })
+    @Serializable({ serialize: serializeInstruction, deserialize: deserializeInstruction, })
     traits!: GenerationInstruction[];
 
     @ManyToOne(() => User, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     user!: User;
 
     @ManyToOne(() => Campaign, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     campaign?: Campaign;
 
     @ManyToOne(() => World, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     world!: World;
 
     public toDTO(): PersonalityProfileDTO {
@@ -49,7 +46,6 @@ export class PersonalityProfile extends ContentBase {
     }
 
     public static fromDTO(dto: PersonalityProfileDTO): PersonalityProfile {
-        const persProfile = new PersonalityProfile();
-        return Serializer.fromDTO(dto, persProfile);
+        return Serializer.fromDTO(dto, new PersonalityProfile());
     }
 }

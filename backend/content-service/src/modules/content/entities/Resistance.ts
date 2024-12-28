@@ -7,7 +7,7 @@ import { Campaign } from "../../campaign/entities/Campaign";
 import { User } from "../../user/entities/User";
 import { World } from "../../world/entities/World";
 import { Serializable } from "../../../decorator/serializable.decorator";
-import { Serializer } from "../../../serializer";
+import { Serializer, SerializeStrategyEnum } from "../../../serializer";
 
 @Entity()
 export class Resistance extends ContentBase {
@@ -22,10 +22,7 @@ export class Resistance extends ContentBase {
     name!: string;
 
     @Column({ type: "enum", enum: Object.values(EffectTypeEnum) })
-    @Serializable({
-        serialize: (i) => serializeEnum(EffectTypeEnum, EffectTypeEnumDTO, i),
-        deserialize: (i) => deserializeEnum(EffectTypeEnumDTO, EffectTypeEnum, i)
-    })
+    @Serializable({ strategy: SerializeStrategyEnum.ENUM, internalEnum: EffectTypeEnum, protoEnum: EffectTypeEnumDTO })
     effectType!: string; // Matches Effect.type
 
     @Column({ nullable: true })
@@ -33,15 +30,15 @@ export class Resistance extends ContentBase {
     targetEffect?: string; // "fire", "poison", "disease".
 
     @ManyToOne(() => User, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     user!: User;
 
     @ManyToOne(() => Campaign, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     campaign?: Campaign;
 
     @ManyToOne(() => World, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     world!: World;
 
 
@@ -50,7 +47,6 @@ export class Resistance extends ContentBase {
     }
 
     public static fromDTO(dto: ResistanceDTO): Resistance {
-        const resistance = new Resistance();
-        return Serializer.fromDTO(dto, resistance);
+        return Serializer.fromDTO(dto, new Resistance());
     }
 }

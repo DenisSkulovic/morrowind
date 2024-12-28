@@ -7,13 +7,15 @@ import { MemoryPool } from "./MemoryPool";
 import { DisplayField } from "../../../decorator/display-field.decorator";
 import { EntityDisplay } from "../../../decorator/entity-display.decorator";
 import { FilterOption } from "../../../decorator/filter-option.decorator";
+import { MemoryPoolDTO, MemoryPoolsDTO } from "../../../proto/common_pb";
+import { SerializeStrategyEnum } from "../../../serialize/serializer";
 
 @EntityDisplay({
     title: 'Character Professions',
     defaultSort: 'name'
 })
 export class CharacterProfession extends TaggableContentBase {
-    @DisplayField({ order: 1 })
+    @DisplayField()
     @FilterOption()
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter profession name', required: true })
     @Serializable()
@@ -28,8 +30,8 @@ export class CharacterProfession extends TaggableContentBase {
             })
         }
     })
-    @Serializable()
-    memoryPools!: string[]
+    @Serializable({ strategy: SerializeStrategyEnum.ID, dtoClass: MemoryPoolDTO, dtoArrClass: MemoryPoolsDTO })
+    memoryPools!: MemoryPool[];
 
 }
 

@@ -12,13 +12,13 @@ import { FilterOption } from "../../../../decorator/filter-option.decorator";
     defaultSort: 'name'
 })
 export class SkillSet extends TaggableContentBase {
-    @DisplayField({ order: 1 })
+    @DisplayField()
     @FilterOption()
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter skill set name', required: true })
     @Serializable()
     name!: string
 
-    @DisplayField({ order: 2 })
+    @DisplayField()
     @FormField({ component: FieldComponentEnum.OBJECT_FIELD, label: 'Skill Improvement', required: true })
     @Serializable({ serialize: serializeSkillImprovement, deserialize: deserializeSkillImprovement })
     skillImprovement!: SkillImprovement

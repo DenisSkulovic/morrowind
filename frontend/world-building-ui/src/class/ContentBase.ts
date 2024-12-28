@@ -4,6 +4,14 @@ import { ContentService } from "../services/ContentService";
 import { Context } from "./Context";
 import { LooseObject } from "../types";
 import { EntityEnum } from "../enum/EntityEnum";
+import { Entity } from "./Entity";
+import { UserDTO } from "../proto/common_pb";
+import { CampaignDTO } from "../proto/common_pb";
+import { Campaign } from "./entities/Campaign";
+import { WorldDTO } from "../proto/common_pb";
+import { World } from "./entities/World";
+import { User } from "./entities/User";
+import { SerializeStrategyEnum } from "../serialize/serializer";
 
 export interface ContentBaseStatic<T extends ContentBase> {
     new(): T; // content base constructor
@@ -11,7 +19,7 @@ export interface ContentBaseStatic<T extends ContentBase> {
     search(filter: SearchQuery, context: Context): Promise<T[]>;
 }
 
-export abstract class ContentBase {
+export abstract class ContentBase extends Entity {
     @Serializable()
     id!: string;
 
@@ -24,14 +32,14 @@ export abstract class ContentBase {
     @Serializable()
     targetEntity!: string;
 
-    @Serializable()
-    user!: string;
+    @Serializable({ strategy: SerializeStrategyEnum.ID, dtoClass: UserDTO })
+    user!: User;
 
-    @Serializable()
-    campaign?: string;
+    @Serializable({ strategy: SerializeStrategyEnum.ID, dtoClass: CampaignDTO })
+    campaign?: Campaign;
 
-    @Serializable()
-    world!: string;
+    @Serializable({ strategy: SerializeStrategyEnum.ID, dtoClass: WorldDTO })
+    world?: World;
 
     public static async search<T extends ContentBase>(
         this: ContentBaseStatic<T>,

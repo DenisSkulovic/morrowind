@@ -11,13 +11,13 @@ import { FilterOption } from '../../../decorator/filter-option.decorator';
     defaultSort: 'name'
 })
 export class Mood extends ContentBase {
-    @DisplayField({ order: 1 })
+    @DisplayField()
     @FilterOption()
     @Serializable()
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter mood name', required: true })
     name!: string;
 
-    @DisplayField({ order: 2 })
+    @DisplayField()
     @Serializable()
     @FormField({ component: FieldComponentEnum.TEXTAREA_FIELD, label: 'Description', placeholder: 'Enter mood description', required: true })
     description!: string;

@@ -1,77 +1,133 @@
 import { getSerializableFields } from "../decorator/serializable.decorator";
+import { deserializeEnum, serializeEnum } from "../enum/util";
 
-export const getSetterFuncName = (dto: any, dtoKey: string): string => {
-    const singleSetter: string = `set${dtoKey.charAt(0).toUpperCase() + dtoKey.slice(1).toLowerCase()}`;
-    const listSetter: string = `${singleSetter}List`;
-    if (typeof dto[singleSetter] === "function") return singleSetter
-    if (typeof dto[listSetter] === "function") return listSetter
-    throw new Error(`Setter not found for field: ${dtoKey}; setter: ${singleSetter} or ${listSetter}`);
-}
-export const getGetterFuncName = (dto: any, dtoKey: string): string => {
-    const singleGetter: string = `get${dtoKey.charAt(0).toUpperCase() + dtoKey.slice(1).toLowerCase()}`;
-    const listGetter: string = `${singleGetter}List`;
-    if (typeof dto[singleGetter] === "function") return singleGetter
-    if (typeof dto[listGetter] === "function") return listGetter
-    throw new Error(`Getter not found for field: ${dtoKey}; getter: ${singleGetter} or ${listGetter}`);
+export type GeneratedProtoDTO = { [key: string]: any }
+
+export enum SerializeStrategyEnum {
+    ID = 'id',
+    FULL = 'full',
+    ENUM = 'enum',
+    DATE = 'date'
 }
 
-export class Serializer {
-    static toDTO(entity: any, dto: any): any {
-        console.log('toDTO', entity, dto);
-        const fields = getSerializableFields(entity.constructor.prototype);
+class Serializer {
+    static toDTO(instance: any, protoDTO: GeneratedProtoDTO): any {
+        console.log('[Serializer] toDTO', instance, protoDTO);
+        const fields = getSerializableFields(instance.constructor.prototype);
 
-        fields.forEach(({ propertyKey, dtoKey, strategy, serialize, getDTOInstance, getArrDTOInstance }) => {
-            const value = entity[propertyKey];
+        fields.forEach(({ propertyKey, dtoKey, strategy, serialize, dtoClass, dtoArrClass, internalEnum, protoEnum }) => {
+            const value = instance[propertyKey];
+
+            const processDtoArray = (arr: any[], dtoArrClass: any) => {
+                if (!([SerializeStrategyEnum.ID, SerializeStrategyEnum.FULL].includes(strategy))) throw new Error(`dtoArrClass was provided, but strategy is not "${SerializeStrategyEnum.FULL}" or "${SerializeStrategyEnum.ID}"; class: ${instance.constructor.name}; propertyKey: ${propertyKey}; dtoKey: ${dtoKey}`);
+                if (!dtoClass) throw new Error(`dtoClass is not defined when strategy is "${SerializeStrategyEnum.FULL}"; class: ${instance.constructor.name}; propertyKey: ${propertyKey}; dtoKey: ${dtoKey}`);
+                const dtoArr = new dtoArrClass();
+                if (!dtoArr.setArrList) throw new Error(`setArrList is not defined in dtoArrClass; class: ${dtoArrClass.name}`);
+                const dtoArrList: any[] = arr.map(item => Serializer.toDTO(item, new dtoClass()));
+                dtoArr.setArrList(dtoArrList);
+                return dtoArr;
+            }
+            const processArray = (arr: any[]) => {
+                if (!arr.length) return [];
+                return arr.map(processOne);
+            }
             const processOne = (item: any) => {
                 if (typeof item === "undefined" || item === null) return undefined;
-                if (serialize) return serialize(item);
-                if (strategy === 'id') return item?.id || "";
-                if (strategy === 'full') {
-                    if (!getDTOInstance) throw new Error('getDTOInstance is not defined when strategy is "full"');
-                    const subDto = getDTOInstance();
+                if (strategy === SerializeStrategyEnum.DATE) return item.getTime();
+                if (strategy === SerializeStrategyEnum.ID) return item?.id || "";
+                if (strategy === SerializeStrategyEnum.ENUM) return serializeEnum(internalEnum, protoEnum, item);
+                if (strategy === SerializeStrategyEnum.FULL) {
+                    if (!dtoClass) throw new Error(`dtoClass is not defined when strategy is "${SerializeStrategyEnum.FULL}"; class: ${instance.constructor.name}; propertyKey: ${propertyKey}; dtoKey: ${dtoKey}`);
+                    const subDto = new dtoClass();
                     return item?.toDTO ? Serializer.toDTO(item, subDto) : item;
                 }
                 return item;
             };
 
-            const setter: string = getSetterFuncName(dto, dtoKey);
-            const isArray = setter.endsWith('List');
-            if (isArray) {
-                dto[setter](value.length ? value.map(processOne) : []);
+            const { setter, isArray } = Serializer.getSetterFuncName(protoDTO, dtoKey);
+            const isDTOArray: boolean = !!dtoArrClass;
+            if (serialize) {
+                protoDTO[setter](serialize(value))
+            } else if (isDTOArray) {
+                protoDTO[setter](processDtoArray(value, dtoArrClass));
+            } else if (isArray) {
+                protoDTO[setter](processArray(value));
             } else {
-                dto[setter](processOne(value));
+                protoDTO[setter](processOne(value));
             }
         });
-        return dto;
+        return protoDTO;
     }
 
-    static fromDTO(dto: any, entity: any): any {
-        console.log('fromDTO', dto, entity);
-        const fields = getSerializableFields(entity.constructor.prototype);
+    static fromDTO(protoDTO: any, instance: any): any {
+        console.log('[Serializer] fromDTO', protoDTO, instance);
+        const fields = getSerializableFields(instance.constructor.prototype);
 
-        fields.forEach(({ propertyKey, dtoKey, strategy, deserialize, getDTOInstance }) => {
+        fields.forEach(({ propertyKey, dtoKey, strategy, deserialize, internalEnum, protoEnum }) => {
 
-            const processOne = (val: any) => {
-                if (deserialize) return deserialize(val);
-                else if (strategy === 'id') return val?.id ? { id: val.id } : null;
-                else if (strategy === 'full') {
-                    if (!getDTOInstance) throw new Error('getDTOInstance is not defined when strategy is "full"');
-                    return Serializer.fromDTO(val, getDTOInstance());
-                }
-                else return val;
+            const processArray = (arr: any[]) => {
+                return arr.map(processOne);
+            }
+
+            const processOne = (item: any) => {
+                if (strategy === SerializeStrategyEnum.DATE) return item ? new Date(item) : undefined;
+                if (strategy === SerializeStrategyEnum.ID) return item?.id ? { id: item.id } : null;
+                if (strategy === SerializeStrategyEnum.ENUM) return deserializeEnum(protoEnum, internalEnum, item);
+                if (strategy === SerializeStrategyEnum.FULL) return Serializer.fromDTO(protoDTO, new instance.constructor());
+                return item;
             };
 
-            const getter: string = getGetterFuncName(dto, dtoKey);
-            const isArray = getter.endsWith('List');
-            if (isArray) {
-                const value = dto[getter]() || [];
-                entity[propertyKey] = value.map((val: any) => processOne(val));
+            const { getter, isArray } = Serializer.getGetterFuncName(protoDTO, dtoKey);
+            const value = protoDTO[getter]() || [];
+            if (deserialize) {
+                instance[propertyKey] = deserialize(value);
+            } else if (isArray) {
+                instance[propertyKey] = processArray(value)
             } else {
-                const value = dto[getter]();
-                entity[propertyKey] = processOne(value);
+                instance[propertyKey] = processOne(value);
             }
         });
 
-        return entity;
+        return instance;
+    }
+
+    static getSetterFuncName(protoDTO: any, dtoKey: string): { setter: string, isArray: boolean } {
+        const res = {
+            setter: '',
+            isArray: false
+        }
+        const singleSetter: string = `set${dtoKey.charAt(0).toUpperCase() + dtoKey.slice(1).toLowerCase()}`;
+        const listSetter: string = `${singleSetter}List`;
+        if (typeof protoDTO[singleSetter] === "function") {
+            res.setter = singleSetter;
+            res.isArray = false;
+        }
+        if (typeof protoDTO[listSetter] === "function") {
+            res.setter = listSetter;
+            res.isArray = true;
+        }
+        if (!res.setter) throw new Error(`Setter not found for field: ${dtoKey}; setter: ${singleSetter} or ${listSetter}`);
+        return res;
+    }
+
+    static getGetterFuncName(protoDTO: any, dtoKey: string): { getter: string, isArray: boolean } {
+        const res = {
+            getter: '',
+            isArray: false
+        }
+        const singleGetter: string = `get${dtoKey.charAt(0).toUpperCase() + dtoKey.slice(1).toLowerCase()}`;
+        const listGetter: string = `${singleGetter}List`;
+        if (typeof protoDTO[singleGetter] === "function") {
+            res.getter = singleGetter;
+            res.isArray = false;
+        }
+        if (typeof protoDTO[listGetter] === "function") {
+            res.getter = listGetter;
+            res.isArray = true;
+        }
+        if (!res.getter) throw new Error(`Getter not found for field: ${dtoKey}; getter: ${singleGetter} or ${listGetter}`);
+        return res;
     }
 }
+
+export default Serializer;

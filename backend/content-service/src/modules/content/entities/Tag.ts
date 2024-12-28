@@ -13,13 +13,13 @@ import { Disease } from "./Disease";
 import { Effect } from "./Effect";
 import { Fact } from "./Fact";
 import { Faction } from "./Faction";
-import { TagDTO } from "../../../proto/common";
+import { TagDTO, TagSubtypeEnumDTO } from "../../../proto/common";
 import { TagSubtypeEnum } from "../../../common/enum/entityEnums";
 import { Campaign } from "../../campaign/entities/Campaign";
 import { User } from "../../user/entities/User";
 import { World } from "../../world/entities/World";
 import { Serializable } from "../../../decorator/serializable.decorator";
-import { Serializer } from "../../../serializer";
+import { Serializer, SerializeStrategyEnum } from "../../../serializer";
 
 
 @Entity()
@@ -35,7 +35,7 @@ export class Tag extends ContentBase {
     label!: string; // The tag's name (e.g., "dunmeri", "rare")
 
     @Column({ type: "enum", enum: Object.values(TagSubtypeEnum) })
-    @Serializable()
+    @Serializable({ strategy: SerializeStrategyEnum.ENUM, internalEnum: TagSubtypeEnum, protoEnum: TagSubtypeEnumDTO })
     subtype!: string;
 
     @ManyToMany(() => Item, (i) => i.tags)
@@ -91,15 +91,15 @@ export class Tag extends ContentBase {
     factions?: Faction[];
 
     @ManyToOne(() => User, { nullable: true, })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     user!: User;
 
     @ManyToOne(() => Campaign, { nullable: true, })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     campaign?: Campaign;
 
     @ManyToOne(() => World, { nullable: true, })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     world!: World;
 
     public toDTO(): TagDTO {
@@ -107,7 +107,6 @@ export class Tag extends ContentBase {
     }
 
     public static fromDTO(dto: TagDTO): Tag {
-        const tag = new Tag();
-        return Serializer.fromDTO(dto, tag);
+        return Serializer.fromDTO(dto, new Tag());
     }
 }

@@ -1,7 +1,7 @@
 import { SearchQueryDTO } from "../../proto/common";
 import { QueryFilter } from "./QueryFilter";
 import { Serializable } from "../../decorator/serializable.decorator";
-import { Serializer } from "../../serializer";
+import { Serializer, SerializeStrategyEnum } from "../../serializer";
 
 export class SearchQuery {
     @Serializable()
@@ -10,7 +10,7 @@ export class SearchQuery {
     @Serializable()
     public pageSize!: number;
 
-    @Serializable({ strategy: 'full' })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true })
     public filters?: QueryFilter[];
 
     @Serializable()

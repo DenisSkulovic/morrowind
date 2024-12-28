@@ -1,17 +1,15 @@
 import { Serializable } from "../../decorator/serializable.decorator";
 import { ActivityEventNameEnum } from "../../enum/ActivityEventNameEnum";
-import { serializeEnum, deserializeEnum } from "../../enum/util";
 import { ActivityEventNameEnumDTO } from "../../proto/activity_pb";
 import { LooseObject } from "../../types";
+import { Entity } from "../Entity";
 
-export class ActivityRecord {
+import { SerializeStrategyEnum } from "../../serialize/serializer";
+export class ActivityRecord extends Entity {
     @Serializable()
     id!: string;
 
-    @Serializable({
-        serialize: (val) => serializeEnum(ActivityEventNameEnum, ActivityEventNameEnumDTO, val),
-        deserialize: (val) => deserializeEnum(ActivityEventNameEnumDTO, ActivityEventNameEnum, val)
-    })
+    @Serializable({ strategy: SerializeStrategyEnum.ENUM, internalEnum: ActivityEventNameEnum, protoEnum: ActivityEventNameEnumDTO })
     eventName!: ActivityEventNameEnum;
 
     @Serializable()
@@ -26,10 +24,7 @@ export class ActivityRecord {
     @Serializable()
     relatedEntityName?: string
 
-    @Serializable({
-        serialize: (val: Date) => val.getTime(),
-        deserialize: (val: number) => new Date(val)
-    })
+    @Serializable()
     createdAt!: Date;
 
     @Serializable()

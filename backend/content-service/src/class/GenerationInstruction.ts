@@ -70,7 +70,8 @@ export class BlueprintSetCombinator {
 }
 
 
-export function serializeInstruction(instruction: GenerationInstruction): GenerationInstructionDTO {
+export function serializeInstruction(instruction?: GenerationInstruction): GenerationInstructionDTO | undefined {
+    if (!instruction) return undefined
     if (instruction instanceof IdAndQuant) {
         return {
             idAndQuant: {
@@ -92,12 +93,17 @@ export function serializeInstruction(instruction: GenerationInstruction): Genera
         };
     }
     if (instruction instanceof BlueprintSetCombinator) {
+        const instructions = []
+        for (const item of instruction.items) {
+            const serializedItem: GenerationInstructionDTO | undefined = serializeInstruction(item)
+            if (serializedItem) instructions.push(serializedItem)
+        }
         return {
             combinator: {
                 name: instruction.name || "",
                 prob: instruction.prob || 1,
                 cond: serializeEnum(ConditionEnum, ConditionEnumDTO, instruction.cond),
-                instructions: instruction.items.map(serializeInstruction),
+                instructions,
                 clazz: "BlueprintSetCombinator"
             },
         };
@@ -105,8 +111,8 @@ export function serializeInstruction(instruction: GenerationInstruction): Genera
     throw new Error("Unknown GenerationInstruction type");
 }
 
-export function deserializeInstruction(dto: GenerationInstructionDTO): GenerationInstruction {
-    console.log(`[deserializeInstruction] instruction: `, dto)
+export function deserializeInstruction(dto?: GenerationInstructionDTO): GenerationInstruction | undefined {
+    if (!dto) return undefined
     if (dto.blueprintId) {
         return dto.blueprintId
     }
@@ -130,19 +136,34 @@ export function deserializeInstruction(dto: GenerationInstructionDTO): Generatio
     }
     if (dto.combinator) {
         const { name, prob, cond, instructions } = dto.combinator;
+        const items: GenerationInstruction[] = []
+        for (const item of instructions) {
+            const deserializedItem: GenerationInstruction | undefined = deserializeInstruction(item)
+            if (deserializedItem) items.push(deserializedItem)
+        }
         return new BlueprintSetCombinator(
             name,
             prob,
             deserializeEnum(ConditionEnumDTO, ConditionEnum, cond),
-            instructions.map(deserializeInstruction),
+            items,
         );
     }
     throw new Error("Unknown GenerationInstructionDTO type");
 }
 
 export const serializeGenerationInstructions = (instructions: GenerationInstruction[]): GenerationInstructionsDTO => {
-    return { arr: instructions.map(serializeInstruction) }
+    const serializedInstructions: GenerationInstructionDTO[] = []
+    for (const item of instructions) {
+        const serializedItem: GenerationInstructionDTO | undefined = serializeInstruction(item)
+        if (serializedItem) serializedInstructions.push(serializedItem)
+    }
+    return { arr: serializedInstructions }
 };
 export const deserializeGenerationInstructions = (dtoInstructions: GenerationInstructionsDTO): GenerationInstruction[] => {
-    return dtoInstructions.arr.map(deserializeInstruction)
+    const items: GenerationInstruction[] = []
+    for (const item of dtoInstructions.arr) {
+        const deserializedItem: GenerationInstruction | undefined = deserializeInstruction(item)
+        if (deserializedItem) items.push(deserializedItem)
+    }
+    return items
 };

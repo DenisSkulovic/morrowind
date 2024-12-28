@@ -3,8 +3,9 @@ import { CampaignService } from "../../services/CampaignService";
 import { LooseObject } from "../../types";
 import { Context } from "../Context";
 import { SearchQuery } from "../search/SearchQuery";
+import { Entity } from "../Entity";
 
-export class Campaign {
+export class Campaign extends Entity {
     @Serializable()
     id!: string;
 

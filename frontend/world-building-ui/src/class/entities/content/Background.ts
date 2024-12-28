@@ -1,5 +1,8 @@
 import { ContentBase } from "../../../class/ContentBase";
-import { serializeInstruction, deserializeInstruction, serializeGenerationInstructions, deserializeGenerationInstructions } from "../../../class/GenerationInstruction";
+import {
+    serializeInstruction, deserializeInstruction,
+    serializeGenerationInstructions, deserializeGenerationInstructions
+} from "../../../class/GenerationInstruction";
 import type { GenerationInstruction } from "../../../class/GenerationInstruction"
 import { Serializable } from "../../../decorator/serializable.decorator";
 import { FormField } from "../../../decorator/form-field.decorator";
@@ -8,16 +11,15 @@ import { EntityDisplay } from "../../../decorator/entity-display.decorator";
 import { FilterOption } from "../../../decorator/filter-option.decorator";
 import { DisplayField } from "../../../decorator/display-field.decorator";
 import { SkillAdjustment } from "../../../class/SkillAdjustment";
-import { SkillAdjustmentsDTO } from "../../../proto/common_pb";
+import { SkillAdjustmentDTO } from "../../../proto/common_pb";
+import { SerializeStrategyEnum } from "../../../serialize/serializer";
 
 @EntityDisplay({
     title: 'Backgrounds',
     defaultSort: 'name'
 })
 export class Background extends ContentBase {
-    @DisplayField({
-        order: 1
-    })
+    @DisplayField()
     @FilterOption()
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter background name', required: true })
     @Serializable()
@@ -28,59 +30,59 @@ export class Background extends ContentBase {
     gender?: GenerationInstruction
 
     @FormField({ component: FieldComponentEnum.GENERATION_INSTRUCTION_FIELD, label: 'Factions', required: false })
-    @Serializable({ serialize: serializeGenerationInstructions, deserialize: i => i ? deserializeGenerationInstructions(i) : null })
+    @Serializable({ serialize: serializeGenerationInstructions, deserialize: deserializeGenerationInstructions })
     faction?: GenerationInstruction[];
 
     @FormField({ component: FieldComponentEnum.GENERATION_INSTRUCTION_FIELD, label: 'Diseases', required: false })
-    @Serializable({ serialize: serializeGenerationInstructions, deserialize: i => i ? deserializeGenerationInstructions(i) : null })
+    @Serializable({ serialize: serializeGenerationInstructions, deserialize: deserializeGenerationInstructions })
     disease?: GenerationInstruction[];
 
     @FormField({ component: FieldComponentEnum.GENERATION_INSTRUCTION_FIELD, label: 'Addictions', required: false })
-    @Serializable({ serialize: serializeGenerationInstructions, deserialize: i => i ? deserializeGenerationInstructions(i) : null })
+    @Serializable({ serialize: serializeGenerationInstructions, deserialize: deserializeGenerationInstructions })
     addiction?: GenerationInstruction[];
 
     @FormField({ component: FieldComponentEnum.GENERATION_INSTRUCTION_FIELD, label: 'Professions', required: false })
-    @Serializable({ serialize: serializeGenerationInstructions, deserialize: i => i ? deserializeGenerationInstructions(i) : null })
+    @Serializable({ serialize: serializeGenerationInstructions, deserialize: deserializeGenerationInstructions })
     profession?: GenerationInstruction[];
 
     @FormField({ component: FieldComponentEnum.GENERATION_INSTRUCTION_FIELD, label: 'Race', required: false })
-    @Serializable({ serialize: serializeGenerationInstructions, deserialize: i => i ? deserializeGenerationInstructions(i) : null })
+    @Serializable({ serialize: serializeGenerationInstructions, deserialize: deserializeGenerationInstructions })
     race?: GenerationInstruction[];
 
     @FormField({ component: FieldComponentEnum.GENERATION_INSTRUCTION_FIELD, label: 'Religion', required: false })
-    @Serializable({ serialize: serializeGenerationInstructions, deserialize: i => i ? deserializeGenerationInstructions(i) : null })
+    @Serializable({ serialize: serializeGenerationInstructions, deserialize: deserializeGenerationInstructions })
     religion?: GenerationInstruction[];
 
     @FormField({ component: FieldComponentEnum.GENERATION_INSTRUCTION_FIELD, label: 'Personality', required: false })
-    @Serializable({ serialize: serializeGenerationInstructions, deserialize: i => i ? deserializeGenerationInstructions(i) : null })
+    @Serializable({ serialize: serializeGenerationInstructions, deserialize: deserializeGenerationInstructions })
     personality?: GenerationInstruction[];
 
     @FormField({ component: FieldComponentEnum.GENERATION_INSTRUCTION_FIELD, label: 'Items', required: false })
-    @Serializable({ serialize: serializeGenerationInstructions, deserialize: i => i ? deserializeGenerationInstructions(i) : null })
+    @Serializable({ serialize: serializeGenerationInstructions, deserialize: deserializeGenerationInstructions })
     items?: GenerationInstruction[];
 
     @FormField({ component: FieldComponentEnum.GENERATION_INSTRUCTION_FIELD, label: 'Item Sets', required: false })
-    @Serializable({ serialize: serializeGenerationInstructions, deserialize: i => i ? deserializeGenerationInstructions(i) : null })
+    @Serializable({ serialize: serializeGenerationInstructions, deserialize: deserializeGenerationInstructions })
     itemSets?: GenerationInstruction[];
 
     @FormField({ component: FieldComponentEnum.GENERATION_INSTRUCTION_FIELD, label: 'Childhood Past Experiences', required: false })
-    @Serializable({ serialize: serializeGenerationInstructions, deserialize: i => i ? deserializeGenerationInstructions(i) : null })
+    @Serializable({ serialize: serializeGenerationInstructions, deserialize: deserializeGenerationInstructions })
     pastExpChild?: GenerationInstruction[]
 
     @FormField({ component: FieldComponentEnum.GENERATION_INSTRUCTION_FIELD, label: 'Adult Past Experiences', required: false })
-    @Serializable({ serialize: serializeGenerationInstructions, deserialize: i => i ? deserializeGenerationInstructions(i) : null })
+    @Serializable({ serialize: serializeGenerationInstructions, deserialize: deserializeGenerationInstructions })
     pastExpAdult?: GenerationInstruction[]
 
     @FormField({ component: FieldComponentEnum.GENERATION_INSTRUCTION_FIELD, label: 'Memory Pools', required: false })
-    @Serializable({ serialize: serializeGenerationInstructions, deserialize: i => i ? deserializeGenerationInstructions(i) : null })
+    @Serializable({ serialize: serializeGenerationInstructions, deserialize: deserializeGenerationInstructions })
     memoryPools?: GenerationInstruction[]
 
     @FormField({ component: FieldComponentEnum.GENERATION_INSTRUCTION_FIELD, label: 'Skill Sets', required: false })
-    @Serializable({ serialize: serializeGenerationInstructions, deserialize: i => i ? deserializeGenerationInstructions(i) : null })
+    @Serializable({ serialize: serializeGenerationInstructions, deserialize: deserializeGenerationInstructions })
     skillSets?: GenerationInstruction[]
 
     @FormField({ component: FieldComponentEnum.GENERATION_INSTRUCTION_FIELD, label: 'Skill Adjustments', required: false })
-    @Serializable({ strategy: 'full', getDTOInstance: () => new SkillAdjustmentsDTO() })
-    skillAdjustments?: SkillAdjustment[]
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, dtoClass: SkillAdjustmentDTO })
+    skillAdjustments?: SkillAdjustment
 
 }

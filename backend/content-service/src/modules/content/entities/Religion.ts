@@ -5,9 +5,9 @@ import { Campaign } from "../../campaign/entities/Campaign";
 import { User } from "../../user/entities/User";
 import { World } from "../../world/entities/World";
 import { Serializable } from "../../../decorator/serializable.decorator";
-import { ReligionRituals, deserializeReligionRituals, serializeReligionRituals } from "../../../class/ReligionRitual";
-import { ReligionTenets, deserializeReligionTenets, serializeReligionTenets } from "../../../class/ReligionTenet";
-import { Serializer } from "../../../serializer";
+import { ReligionRitual } from "../../../class/ReligionRitual";
+import { ReligionTenet } from "../../../class/ReligionTenet";
+import { Serializer, SerializeStrategyEnum } from "../../../serializer";
 
 @Entity()
 export class Religion extends ContentBase {
@@ -36,32 +36,26 @@ export class Religion extends ContentBase {
      * A list of common rituals or practices for this religion.
      */
     @Column("jsonb", { nullable: true })
-    @Serializable({
-        serialize: serializeReligionRituals,
-        deserialize: deserializeReligionRituals
-    })
-    rituals?: ReligionRituals;
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true })
+    rituals?: ReligionRitual[];
 
     /**
      * A list of moral or behavioral principles associated with the religion.
      */
     @Column("jsonb", { nullable: true })
-    @Serializable({
-        serialize: serializeReligionTenets,
-        deserialize: deserializeReligionTenets
-    })
-    tenets?: ReligionTenets;
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true })
+    tenets?: ReligionTenet[];
 
     @ManyToOne(() => User, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     user!: User;
 
     @ManyToOne(() => Campaign, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     campaign?: Campaign;
 
     @ManyToOne(() => World, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     world!: World;
 
     public toDTO(): ReligionDTO {
@@ -69,7 +63,6 @@ export class Religion extends ContentBase {
     }
 
     public static fromDTO(dto: ReligionDTO): Religion {
-        const religion = new Religion();
-        return Serializer.fromDTO(dto, religion);
+        return Serializer.fromDTO(dto, new Religion());
     }
 }

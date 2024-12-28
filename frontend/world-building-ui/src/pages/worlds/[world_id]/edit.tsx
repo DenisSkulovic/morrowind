@@ -42,7 +42,7 @@ const EditWorldPage = () => {
         dispatch(searchWorldsThunk({ query, context }));
     }, [worldId, dispatch, userId]);
 
-    const formFields: FormFieldDefinition[] = getFormFields(World.prototype);
+    const formFields: FormFieldDefinition[] = getFormFields(World);
 
     const handleSubmit = async (worldPlain: WorldPlain) => {
         if (!world) throw new Error('World not found');

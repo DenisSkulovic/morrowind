@@ -17,7 +17,7 @@ export const DashboardOverview = ({ stats }: DashboardOverviewProps) => {
                     <Grid2 key={index}>
                         <StatCard
                             title={stat.title}
-                            value={stat.count}
+                            value={stat.count || 0}
                             icon={stat.icon}
                         />
                     </Grid2>

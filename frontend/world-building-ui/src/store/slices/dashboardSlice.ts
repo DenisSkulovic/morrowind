@@ -7,7 +7,7 @@ import { RequestStatusEnum } from "../../enum/RequestStatusEnum";
 import { ContentStat } from "../../class/ContentStat";
 import { entityNamesToDisplayInStats } from "../../config/worldDashboard";
 import { LooseObject } from "../../types";
-import { Serializer } from "../../serialize/serializer";
+import Serializer from "../../serialize/serializer";
 import { ActivityRecordPlain } from "./worldSlice";
 import { ActivityRecordsService } from "../../services/ActivityRecordsService";
 
@@ -46,9 +46,10 @@ const initialState: DashboardState = {
 export const loadDashboardData = createAsyncThunk(
     'dashboard/loadDashboardData',
     async ({ worldId, userId }: { worldId: string, userId: string }) => {
-        const context = new Context();
-        context.world = { id: worldId } as World;
-        context.user = { id: userId } as User;
+        const context = Context.build({
+            world: { id: worldId } as World,
+            user: { id: userId } as User
+        });
 
         const contentService = new ContentService();
         const activityService = new ActivityRecordsService();
@@ -73,9 +74,10 @@ export const loadDashboardData = createAsyncThunk(
 export const refreshStats = createAsyncThunk(
     'dashboard/refreshStats',
     async ({ worldId, userId }: { worldId: string, userId: string }) => {
-        const context = new Context();
-        context.world = { id: worldId } as World;
-        context.user = { id: userId } as User;
+        const context = Context.build({
+            world: { id: worldId } as World,
+            user: { id: userId } as User
+        });
 
         const contentService = new ContentService();
         const stats = await contentService.getContentStats(entityNamesToDisplayInStats, context);
@@ -88,9 +90,10 @@ export const refreshStats = createAsyncThunk(
 export const refreshActivities = createAsyncThunk(
     'dashboard/refreshActivities',
     async ({ worldId, userId }: { worldId: string, userId: string }) => {
-        const context = new Context();
-        context.world = { id: worldId } as World;
-        context.user = { id: userId } as User;
+        const context = Context.build({
+            world: { id: worldId } as World,
+            user: { id: userId } as User
+        });
 
         const activityService = new ActivityRecordsService();
         const activities = await activityService.head(context);

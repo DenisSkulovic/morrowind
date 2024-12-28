@@ -16,18 +16,13 @@ export const useWorlds = (query: SearchQuery, userId: string | null): {
     const previousSearchKey = useRef<string>(searchKey);
 
     const searchResult: WorldSearchResult<World> | null = useSelector((state: RootState) => {
-        console.log('1')
         const result: WorldSearchResult<WorldPlain> | undefined = state.worlds.searchedWorlds[searchKey];
-        console.log('2')
         if (!result) return null;
-        console.log('3')
         const worldsArray: World[] = result.array.map(world => World.build(world));
-        console.log('4')
         const worldsMap: { [key: string]: World } = {};
         for (const world of result.array) {
             worldsMap[world.id] = World.build(world);
         }
-        console.log('5')
         return WorldSearchResult.build({
             array: worldsArray,
             map: worldsMap,

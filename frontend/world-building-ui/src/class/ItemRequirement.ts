@@ -1,9 +1,7 @@
 import { FormField } from "../decorator/form-field.decorator";
 import { FieldComponentEnum } from "../enum/FieldComponentEnum";
-import { Serializer } from "../serialize/serializer";
 import { ItemRequirementTypeEnum } from "../enum/ItemRequirementTypeEnum";
 import { FormSelectOption } from "./FormSelectOption";
-import { ItemRequirementDTO, ItemRequirementsDTO } from "../proto/common_pb";
 import { Serializable } from "../decorator/serializable.decorator";
 
 export class ItemRequirement {

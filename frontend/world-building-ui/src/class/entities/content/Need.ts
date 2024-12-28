@@ -1,6 +1,5 @@
 import { ContentBase } from "../../../class/ContentBase";
 import { NeedTypeEnum, NeedLayerEnum } from "../../../enum/entityEnums";
-import { serializeEnum, deserializeEnum } from "../../../enum/util";
 import { Serializable } from "../../../decorator/serializable.decorator";
 import { FormField } from "../../../decorator/form-field.decorator";
 import { FieldComponentEnum } from "../../../enum/FieldComponentEnum";
@@ -9,24 +8,25 @@ import { DisplayField } from '../../../decorator/display-field.decorator';
 import { EntityDisplay } from '../../../decorator/entity-display.decorator';
 import { FilterOption } from '../../../decorator/filter-option.decorator';
 import { NeedTypeEnumDTO, NeedLayerEnumDTO } from '../../../proto/common_pb';
+import { SerializeStrategyEnum } from "../../../serialize/serializer";
 
 @EntityDisplay({
     title: 'Needs',
     defaultSort: 'name'
 })
 export class Need extends ContentBase {
-    @DisplayField({ order: 1 })
+    @DisplayField()
     @FilterOption()
     @Serializable()
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter need name', required: true })
     name!: string;
 
-    @DisplayField({ order: 2 })
+    @DisplayField()
     @Serializable()
     @FormField({ component: FieldComponentEnum.TEXTAREA_FIELD, label: 'Description', placeholder: 'Enter need description', required: true })
     description!: string;
 
-    @DisplayField({ order: 3 })
+    @DisplayField()
     @FilterOption()
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
@@ -37,13 +37,10 @@ export class Need extends ContentBase {
             })
         },
     })
-    @Serializable({
-        serialize: type => serializeEnum(NeedTypeEnum, NeedTypeEnumDTO, type),
-        deserialize: type => deserializeEnum(NeedTypeEnumDTO, NeedTypeEnum, type),
-    })
+    @Serializable({ strategy: SerializeStrategyEnum.ENUM, internalEnum: NeedTypeEnum, protoEnum: NeedTypeEnumDTO })
     type!: NeedTypeEnum; // "dynamic", "threshold", "external".
 
-    @DisplayField({ order: 4 })
+    @DisplayField()
     @FilterOption()
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
@@ -54,10 +51,7 @@ export class Need extends ContentBase {
             })
         },
     })
-    @Serializable({
-        serialize: layer => serializeEnum(NeedLayerEnum, NeedLayerEnumDTO, layer),
-        deserialize: layer => deserializeEnum(NeedLayerEnumDTO, NeedLayerEnum, layer),
-    })
+    @Serializable({ strategy: SerializeStrategyEnum.ENUM, internalEnum: NeedLayerEnum, protoEnum: NeedLayerEnumDTO })
     layer!: NeedLayerEnum
 
 }

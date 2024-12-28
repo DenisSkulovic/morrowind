@@ -12,7 +12,7 @@ export interface DisplayFieldConfig extends DisplayFieldOptions {
     field: string;
 }
 
-export function DisplayField(options: DisplayFieldOptions) {
+export function DisplayField(options: DisplayFieldOptions = {}) {
     return function (cls: any, propertyKey: string) {
         const fields = Reflect.getMetadata(EntityMetadataKeyEnum.DISPLAY_FIELD, cls.constructor) || [];
         const field: DisplayFieldConfig = { ...options, field: propertyKey };

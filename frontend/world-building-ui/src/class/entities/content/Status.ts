@@ -1,6 +1,5 @@
 import { ContentBase } from "../../../class/ContentBase";
 import { EffectTypeEnum } from "../../../enum/entityEnums";
-import { serializeEnum, deserializeEnum } from "../../../enum/util";
 import { Serializable } from "../../../decorator/serializable.decorator";
 import { FormField } from "../../../decorator/form-field.decorator";
 import { FieldComponentEnum } from "../../../enum/FieldComponentEnum";
@@ -12,13 +11,14 @@ import { FilterOption } from "../../../decorator/filter-option.decorator";
 import { Context } from "../../../class/Context";
 import { SearchQuery } from "../../../class/search/SearchQuery";
 import { EffectTypeEnumDTO } from "../../../proto/common_pb";
+import { SerializeStrategyEnum } from "../../../serialize/serializer";
 
 @EntityDisplay({
     title: 'Statuses',
     defaultSort: 'name'
 })
 export class Status extends ContentBase {
-    @DisplayField({ order: 1 })
+    @DisplayField()
     @FilterOption()
     @Serializable()
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter status name', required: true })
@@ -28,7 +28,7 @@ export class Status extends ContentBase {
     @FormField({ component: FieldComponentEnum.TEXTAREA_FIELD, label: 'Description', placeholder: 'Enter status description', required: true })
     description!: string;
 
-    @DisplayField({ order: 2 })
+    @DisplayField()
     @FilterOption()
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
@@ -40,13 +40,10 @@ export class Status extends ContentBase {
         },
         required: true
     })
-    @Serializable({
-        serialize: type => serializeEnum(EffectTypeEnum, EffectTypeEnumDTO, type),
-        deserialize: type => deserializeEnum(EffectTypeEnumDTO, EffectTypeEnum, type)
-    })
+    @Serializable({ strategy: SerializeStrategyEnum.ENUM, internalEnum: EffectTypeEnum, protoEnum: EffectTypeEnumDTO })
     type!: EffectTypeEnum;
 
-    @DisplayField({ order: 3 })
+    @DisplayField()
     @FilterOption()
     @FormField({
         component: FieldComponentEnum.MULTI_SELECT_FIELD,
@@ -57,10 +54,10 @@ export class Status extends ContentBase {
             })
         }
     })
-    @Serializable()
-    effects!: string[]; // Links to associated Effect IDs.
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
+    effects!: Effect[]; // Links to associated Effect IDs.
 
-    @DisplayField({ order: 4 })
+    @DisplayField()
     @FilterOption()
     @Serializable()
     @FormField({ component: FieldComponentEnum.NUMBER_FIELD, label: 'Duration', placeholder: 'Enter duration in ticks (0 for permanent)', required: true })

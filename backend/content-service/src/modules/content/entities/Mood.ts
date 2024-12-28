@@ -9,7 +9,7 @@ import { Campaign } from "../../campaign/entities/Campaign";
 import { User } from "../../user/entities/User";
 import { World } from "../../world/entities/World";
 import { Serializable } from "../../../decorator/serializable.decorator";
-import { Serializer } from "../../../serializer";
+import { Serializer, SerializeStrategyEnum } from "../../../serializer";
 
 @Entity()
 export class Mood extends ContentBase {
@@ -28,15 +28,15 @@ export class Mood extends ContentBase {
     description!: string;
 
     @ManyToOne(() => User, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     user!: User;
 
     @ManyToOne(() => Campaign, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     campaign?: Campaign;
 
     @ManyToOne(() => World, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     world!: World;
 
 
@@ -45,7 +45,6 @@ export class Mood extends ContentBase {
     }
 
     public static fromDTO(dto: MoodDTO): Mood {
-        const mood = new Mood();
-        return Serializer.fromDTO(dto, mood);
+        return Serializer.fromDTO(dto, new Mood());
     }
 }

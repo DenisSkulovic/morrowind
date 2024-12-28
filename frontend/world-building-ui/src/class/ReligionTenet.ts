@@ -11,7 +11,6 @@ import { FilterOption } from "../decorator/filter-option.decorator";
 })
 export class ReligionTenet {
     @DisplayField({
-        order: 1,
         displayName: 'Name'
     })
     @FilterOption()
@@ -20,7 +19,6 @@ export class ReligionTenet {
     name!: string;
 
     @DisplayField({
-        order: 2,
         displayName: 'Description'
     })
     @FilterOption()

@@ -3,14 +3,15 @@ import { GenerationInstruction, serializeInstruction } from "../class/Generation
 import { CharacterGenInstruction } from "../class/entities/content/CharacterGenInstruction";
 import { CharacterGroupGenInstruction } from "../class/entities/content/CharacterGroupGenInstruction";
 import { GeneratorServiceClient } from "../proto/GeneratorServiceClientPb";
-import { Serializer } from "../serialize/serializer";
+import Serializer from "../serialize/serializer";
 import { Item } from "../class/entities/content/Item/Item";
 import { Character } from "../class/entities/content/Character";
-import { CharacterDTO, CharacterGenInstructionDTO, CharacterGroupGenInstructionDTO, ContextDTO, DataSourceEnumDTO } from "../proto/common_pb";
+import { CharacterDTO, CharacterGenInstructionDTO, CharacterGroupGenInstructionDTO, ContextDTO, DataSourceEnumDTO, GenerationInstructionDTO } from "../proto/common_pb";
 import { GenerateItemsRequest, GenerateCharactersRequestCustom, GenerateCharactersRequestDB, GenerateCharacterGroupsRequest, GenerateCharacterGroupsResponse, GenerateCharactersResponse, GenerateItemsResponse } from "../proto/generator_pb";
 import { EquipmentSlot } from "../class/entities/content/Slot/EquipmentSlot";
 import { StorageSlot } from "../class/entities/content/Slot/StorageSlot";
 import { EntityEnum } from "../enum/EntityEnum";
+import { backendURL } from "../config";
 
 export type GenerationResult = {
     [EntityEnum.Item]?: {
@@ -37,7 +38,7 @@ export class GeneratorService {
     private client: GeneratorServiceClient;
 
     constructor() {
-        this.client = new GeneratorServiceClient("http://localhost:8080");
+        this.client = new GeneratorServiceClient(backendURL);
     }
 
     private createEntityMaps<T extends { id: string }>(entities: T[]) {
@@ -83,7 +84,11 @@ export class GeneratorService {
     }
 
     async generateItems(instructions: GenerationInstruction[], context: Context): Promise<GenerationResult> {
-        const instructionsDTO = instructions.map(instruction => serializeInstruction(instruction));
+        const instructionsDTO: GenerationInstructionDTO[] = [];
+        instructions.forEach(instruction => {
+            const instructionDTO = serializeInstruction(instruction);
+            if (instructionDTO) instructionsDTO.push(instructionDTO);
+        });
         const request = new GenerateItemsRequest();
         request.setSource(DataSourceEnumDTO.DATA_SOURCE_WORLD);
         request.setArrList(instructionsDTO);

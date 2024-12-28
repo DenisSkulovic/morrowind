@@ -1,6 +1,7 @@
 import { Card, CardContent, Typography, List, ListItem, ListItemText, Link } from '@mui/material';
 import { ActivityRecord } from '../../../class/entities/ActivityRecord';
 import { routes } from '../../../routes';
+import { getCreatedAtRelativeTime } from '../../../utils/getCreatedAtRelativeTime';
 
 
 interface RecentActivityProps {
@@ -11,15 +12,6 @@ interface RecentActivityProps {
 
 export const RecentActivity = ({ activityRecords, worldId, userId }: RecentActivityProps): JSX.Element => {
     if (!activityRecords) return <></>
-
-    const getCreatedAtRelativeTime = (activity: ActivityRecord) => {
-        const date = new Date(activity.createdAt)
-        if (!date) return ''
-        return new Intl.RelativeTimeFormat('en', { numeric: 'auto' }).format(
-            Math.floor((date.getTime() - Date.now()) / (1000 * 60)),
-            'minute'
-        );
-    };
 
     const getActionText = (activity: ActivityRecord) => {
         const label: string | undefined = activity.label
@@ -42,6 +34,11 @@ export const RecentActivity = ({ activityRecords, worldId, userId }: RecentActiv
         return <Typography>{label} {link}</Typography>
     };
 
+    const getCreatedAgo = (activity: ActivityRecord) => {
+        if (!activity.createdAt) return ''
+        return getCreatedAtRelativeTime(new Date(activity.createdAt))
+    }
+
     return (
         <Card>
             <CardContent>
@@ -57,7 +54,7 @@ export const RecentActivity = ({ activityRecords, worldId, userId }: RecentActiv
                                         {getActionText(activity)}
                                     </Typography>
                                 }
-                                secondary={getCreatedAtRelativeTime(activity)}
+                                secondary={getCreatedAgo(activity)}
                             />
                         </ListItem>
                     ))}

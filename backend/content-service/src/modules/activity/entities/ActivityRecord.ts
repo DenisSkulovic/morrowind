@@ -6,7 +6,7 @@ import { User } from "../../user/entities/User";
 import { Campaign } from "../../campaign/entities/Campaign";
 import { World } from "../../world/entities/World";
 import { ActivityDTO, ActivityEventNameEnumDTO } from "../../../proto/activity";
-import { Serializer } from "../../../serializer";
+import { Serializer, SerializeStrategyEnum } from "../../../serializer";
 import { deserializeEnum, serializeEnum } from "../../../common/enum/util";
 import { ActivityEventNameEnum } from "../../../enum/ActivityEventNameEnum";
 
@@ -24,10 +24,7 @@ export class ActivityRecord extends BaseEntity {
     idPrefix = "ACTIVITY_RECORD";
 
     @Column({ type: "varchar", length: 255 })
-    @Serializable({
-        serialize: (val) => serializeEnum(ActivityEventNameEnum, ActivityEventNameEnumDTO, val),
-        deserialize: (val) => deserializeEnum(ActivityEventNameEnumDTO, ActivityEventNameEnum, val)
-    })
+    @Serializable({ strategy: SerializeStrategyEnum.ENUM, internalEnum: ActivityEventNameEnum, protoEnum: ActivityEventNameEnumDTO })
     eventName!: ActivityEventNameEnum;
 
     @Column({ type: "varchar", length: 255 })
@@ -47,10 +44,7 @@ export class ActivityRecord extends BaseEntity {
     relatedEntityName?: string;
 
     @CreateDateColumn()
-    @Serializable({
-        serialize: (val: Date) => val.getTime(),
-        deserialize: (val: number) => new Date(val)
-    })
+    @Serializable({ strategy: SerializeStrategyEnum.DATE })
     createdAt?: Date;
 
     @ManyToOne(() => World, (world) => world.activityRecords)

@@ -8,11 +8,12 @@ import { World } from "../../../world/entities/World";
 import { EquipmentSlot } from "../Slot/EquipmentSlot";
 import { StorageSlot } from "../Slot/StorageSlot";
 import { Tag } from "../Tag";
-import { Serializer } from "../../../../serializer";
+import { Serializer, SerializeStrategyEnum } from "../../../../serializer";
 import { Serializable } from "../../../../decorator/serializable.decorator";
-import { StorageSlotDefinition, deserializeStorageSlotDefinitions, serializeStorageSlotDefinitions } from "../../../../class/StorageSlotDefinition";
-import { ItemRequirement, serializeRequirement, deserializeRequirement } from "../../../../class/ItemRequirement";
+import { StorageSlotDefinition } from "../../../../class/StorageSlotDefinition";
+import { ItemRequirement } from "../../../../class/ItemRequirement";
 import { deserializeEnum, serializeEnum } from "../../../../common/enum/util";
+import { GridSize } from "../../../../class/GridSize";
 
 
 
@@ -36,8 +37,8 @@ export class Item extends TaggableContentBase {
 
     // properties
     @Column({ type: "jsonb", nullable: true })
-    @Serializable()
-    size!: [number, number]; // Grid size for grid-based inventories
+    @Serializable({ strategy: SerializeStrategyEnum.FULL })
+    size!: GridSize; // Grid size for grid-based inventories
 
     @Column({ default: 0, type: "float" })
     @Serializable()
@@ -60,17 +61,11 @@ export class Item extends TaggableContentBase {
     trainedSkill?: string
 
     @Column({ type: "jsonb", nullable: true })
-    @Serializable({
-        serialize: (actions: ItemActionEnum[]) => actions.map(action => serializeEnum(ItemActionEnum, ItemActionEnumDTO, action)),
-        deserialize: (actions: number[]) => actions.map(action => deserializeEnum(ItemActionEnumDTO, ItemActionEnum, action)),
-    })
+    @Serializable({ strategy: SerializeStrategyEnum.ENUM, internalEnum: ItemActionEnum, protoEnum: ItemActionEnumDTO })
     actions?: ItemActionEnum[];
 
     @Column({ type: "jsonb", default: null, nullable: true })
-    @Serializable({
-        serialize: serializeRequirement,
-        deserialize: deserializeRequirement
-    })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true })
     requirements?: ItemRequirement[]
 
     // flags
@@ -96,7 +91,7 @@ export class Item extends TaggableContentBase {
 
     // slots
     @ManyToOne(() => StorageSlot, storageSlot => storageSlot.parentItem)
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     storageSlot?: StorageSlot; // the slot where this item is stored (in a backpack section, for e.g., for in a pocket)
 
     @Column({ type: "jsonb", nullable: true })
@@ -104,36 +99,33 @@ export class Item extends TaggableContentBase {
     gridPosition?: { x: number; y: number }; // Item's top-left corner on the grid inside a storage slot
 
     @OneToMany(() => StorageSlot, storageSlot => storageSlot.storedItems)
-    @Serializable({ strategy: 'full' })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true })
     storageSlots?: StorageSlot[]; // the storage slots this item itself has (this is a backpack and it has 3 sections, i.e. slots)
 
     @Column("jsonb", { nullable: true })
-    @Serializable({
-        serialize: serializeStorageSlotDefinitions,
-        deserialize: deserializeStorageSlotDefinitions
-    })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true })
     storageSlotDefinition?: StorageSlotDefinition[]; // the storage slots this item itself has (this is a backpack and it has 3 sections, i.e. slots)
 
     @ManyToOne(() => EquipmentSlot, equipmentSlot => equipmentSlot.equippedItem)
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     equipmentSlot?: EquipmentSlot; // the equipment slot where this item sits (sword in hand, for e.g.)
 
 
     @ManyToMany(() => Tag, (tag) => tag.items)
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     tags?: | Tag[];
 
     // context
     @ManyToOne(() => User, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     user!: User;
 
     @ManyToOne(() => Campaign, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     campaign?: Campaign;
 
     @ManyToOne(() => World, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     world!: World;
 
     public toDTO(): ItemDTO {
@@ -141,8 +133,7 @@ export class Item extends TaggableContentBase {
     }
 
     public static fromDTO(dto: ItemDTO): Item {
-        const item = new Item();
-        return Serializer.fromDTO(dto, item);
+        return Serializer.fromDTO(dto, new Item());
     }
 
 

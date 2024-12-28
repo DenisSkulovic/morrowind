@@ -9,6 +9,7 @@ import { DisplayField } from '../../../decorator/display-field.decorator';
 import { EntityDisplay } from '../../../decorator/entity-display.decorator';
 import { FilterOption } from '../../../decorator/filter-option.decorator';
 import { EffectTypeEnumDTO, EffectTargetEnumDTO, EffectModeEnumDTO, EffectElementEnumDTO } from '../../../proto/common_pb';
+import { SerializeStrategyEnum } from "../../../serialize/serializer";
 
 @EntityDisplay({
     title: 'Effects',
@@ -16,7 +17,6 @@ import { EffectTypeEnumDTO, EffectTargetEnumDTO, EffectModeEnumDTO, EffectElemen
 })
 export class Effect extends TaggableContentBase {
     @DisplayField({
-        order: 1,
         displayName: 'Name'
     })
     @FilterOption()
@@ -24,7 +24,7 @@ export class Effect extends TaggableContentBase {
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter effect name', required: true })
     name!: string;
 
-    @DisplayField({ order: 2 })
+    @DisplayField()
     @FilterOption()
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
@@ -35,13 +35,10 @@ export class Effect extends TaggableContentBase {
             })
         },
     })
-    @Serializable({
-        serialize: type => serializeEnum(EffectTypeEnum, EffectTypeEnumDTO, type),
-        deserialize: type => deserializeEnum(EffectTypeEnumDTO, EffectTypeEnum, type),
-    })
+    @Serializable({ strategy: SerializeStrategyEnum.ENUM, internalEnum: EffectTypeEnum, protoEnum: EffectTypeEnumDTO })
     type!: EffectTypeEnum; // "damage", "healing", "buff", "debuff", "resistance", etc.
 
-    @DisplayField({ order: 3 })
+    @DisplayField()
     @FilterOption()
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
@@ -52,13 +49,10 @@ export class Effect extends TaggableContentBase {
             })
         },
     })
-    @Serializable({
-        serialize: target => serializeEnum(EffectTargetEnum, EffectTargetEnumDTO, target),
-        deserialize: target => deserializeEnum(EffectTargetEnumDTO, EffectTargetEnum, target),
-    })
+    @Serializable({ strategy: SerializeStrategyEnum.ENUM, internalEnum: EffectTargetEnum, protoEnum: EffectTargetEnumDTO })
     target!: EffectTargetEnum; // "health", "stamina", "magic", etc.
 
-    @DisplayField({ order: 4 })
+    @DisplayField()
     @FilterOption()
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
@@ -69,13 +63,10 @@ export class Effect extends TaggableContentBase {
             })
         },
     })
-    @Serializable({
-        serialize: mode => serializeEnum(EffectModeEnum, EffectModeEnumDTO, mode),
-        deserialize: mode => deserializeEnum(EffectModeEnumDTO, EffectModeEnum, mode),
-    })
+    @Serializable({ strategy: SerializeStrategyEnum.ENUM, internalEnum: EffectModeEnum, protoEnum: EffectModeEnumDTO })
     mode!: EffectModeEnum; // "instant", "gradual", "persistent"
 
-    @DisplayField({ order: 5 })
+    @DisplayField()
     @FilterOption()
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
@@ -86,10 +77,7 @@ export class Effect extends TaggableContentBase {
             })
         },
     })
-    @Serializable({
-        serialize: element => serializeEnum(EffectElementEnum, EffectElementEnumDTO, element),
-        deserialize: element => deserializeEnum(EffectElementEnumDTO, EffectElementEnum, element),
-    })
+    @Serializable({ strategy: SerializeStrategyEnum.ENUM, internalEnum: EffectElementEnum, protoEnum: EffectElementEnumDTO })
     element?: EffectElementEnum;
 
 }

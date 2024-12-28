@@ -1,8 +1,8 @@
 import { QueryFilter } from "./QueryFilter";
 import { Serializable } from "../../decorator/serializable.decorator";
-import { QueryFilterDTO, SearchQueryDTO, SortByDTO } from "../../proto/common_pb";
+import { QueryFilterDTO, QueryFiltersDTO, SearchQueryDTO, SortByDTO } from "../../proto/common_pb";
 import { SortBy } from "./SortBy";
-import { Serializer } from "../../serialize/serializer";
+import Serializer, { SerializeStrategyEnum } from "../../serialize/serializer";
 
 
 export class SearchQuery {
@@ -12,10 +12,10 @@ export class SearchQuery {
     @Serializable()
     public pageSize!: number;
 
-    @Serializable({ strategy: 'full', getDTOInstance: () => new QueryFilterDTO() })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, dtoClass: QueryFilterDTO, dtoArrClass: QueryFiltersDTO })
     public filters?: QueryFilter[];
 
-    @Serializable({ strategy: 'full', getDTOInstance: () => new SortByDTO() })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, dtoClass: SortByDTO })
     public sortBy?: SortBy;
 
     public static build(data: { [key: string]: any }): SearchQuery {

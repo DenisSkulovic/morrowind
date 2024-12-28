@@ -21,7 +21,7 @@ const CreateWorldPage = () => {
     if (!account) throw new Error('Account not found');
     const userId: string = account.user;
 
-    const formFields: FormFieldDefinition[] = getFormFields(World.prototype);
+    const formFields: FormFieldDefinition[] = getFormFields(World);
 
     const handleSubmit = async (worldPlain: WorldPlain) => {
         await dispatch(createWorldThunk({ worldPlain, userId }));

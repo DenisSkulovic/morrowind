@@ -16,9 +16,10 @@ import {
     ContentBodyDTO,
 } from "../proto/content_pb";
 import { ContentServiceClient } from "../proto/ContentServiceClientPb";
-import { getGetterFuncName, Serializer } from '../serialize/serializer';
+import Serializer from '../serialize/serializer';
 import { EntityEnum } from '../enum/EntityEnum';
 import { ClassConstructor } from '../types';
+import { backendURL } from '../config';
 
 export class SearchContentResults {
     results!: ContentBase[];
@@ -31,7 +32,7 @@ export class ContentService<T extends ContentBase> {
     private client: ContentServiceClient;
 
     constructor() {
-        this.client = new ContentServiceClient("http://localhost:8080");
+        this.client = new ContentServiceClient(backendURL);
     }
 
     async getContentStats(entityNames: string[] | null, context: Context): Promise<GetContentStatsResponse> {
@@ -120,7 +121,7 @@ export class ContentService<T extends ContentBase> {
                     results: response.getResultsList().map((contentBodyDTO: ContentBodyDTO) => {
                         const dtoFieldName: string = rootEntityConstructor ? rootEntityConstructor.name : entityName;
                         console.log('dtoFieldName', dtoFieldName);
-                        const getter: string = getGetterFuncName(contentBodyDTO, dtoFieldName);
+                        const { getter } = Serializer.getGetterFuncName(contentBodyDTO, dtoFieldName);
                         console.log('getter', getter);
                         const contentBody = (contentBodyDTO as any)[getter]();
                         console.log('contentBody', contentBody);

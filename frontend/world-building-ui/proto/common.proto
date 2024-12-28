@@ -810,7 +810,7 @@ message BackgroundCustomizationDTO {
     GenerationInstructionsDTO pastExpChild = 9;
     GenerationInstructionsDTO pastExpAdult = 10;
     GenerationInstructionsDTO skillSets = 11;
-    SkillAdjustmentsDTO skillAdjustments = 12;
+    SkillAdjustmentDTO skillAdjustments = 12;
     GenerationInstructionsDTO personality = 13;
     GenerationInstructionDTO gender = 14;
     string clazz = 15;
@@ -820,8 +820,11 @@ message BackgroundCustomizationDTO {
 
 
 // #######################################################################################
-message SkillAdjustmentsDTO {
+message SkillAdjustmentDTO {
     map<string, int32> skillAdjustments = 1;
+}
+message SkillAdjustmentsDTO {
+    repeated SkillAdjustmentDTO arr = 1;
 }
 // #######################################################################################
 
@@ -982,13 +985,10 @@ message NeedsDTO {
 // #######################################################################################
 message UserDTO {
     string id = 1;
-
-    // relations
-    BackgroundsDTO backgrounds = 2;
-    WorldsDTO worlds = 3;
-    CampaignsDTO campaigns = 4;
-    AccountDTO account = 5;
-    int32 createdAt = 6;
+    repeated string worlds = 2;
+    repeated string campaigns = 3;
+    string account = 4;
+    int32 createdAt = 5;
 }
 message UsersDTO {
     repeated UserDTO arr = 1;
@@ -1036,7 +1036,7 @@ message WorldDTO {
     bool frozen = 5;
     int32 createdAt = 6;
     string user = 7;                      
-    CampaignsDTO campaigns = 8;    
+    repeated string campaigns = 8;    
 }
 message WorldsDTO {
     repeated WorldDTO arr = 1;
@@ -1064,7 +1064,7 @@ message CampaignsDTO {
 
 
 message SearchQueryDTO {
-    repeated QueryFilterDTO filters = 1;
+    QueryFiltersDTO filters = 1;
     SortByDTO sortBy = 2;
     int32 page = 3;
     int32 pageSize = 4;
@@ -1073,6 +1073,9 @@ message QueryFilterDTO {
     string field = 1;
     QueryFilterOperatorEnumDTO operator = 2;
     QueryFilterValueDTO value = 3;
+}
+message QueryFiltersDTO {
+    repeated QueryFilterDTO arr = 1;
 }
 enum QueryFilterOperatorEnumDTO {
     EQUAL = 0; // eq
@@ -1094,7 +1097,11 @@ message QueryFilterValueDTO {
 
 message SortByDTO {
     string field = 1;
-    string direction = 2;
+    SortByDirectionEnumDTO direction = 2;
+}
+enum SortByDirectionEnumDTO {
+    ASC = 0;
+    DESC = 1;
 }
 
 

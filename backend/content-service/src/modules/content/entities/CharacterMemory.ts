@@ -7,9 +7,9 @@ import { CharacterMemoryDTO } from "../../../proto/common";
 import { Campaign } from "../../campaign/entities/Campaign";
 import { User } from "../../user/entities/User";
 import { World } from "../../world/entities/World";
-import { Serializer } from "../../../serializer";
+import { Serializer, SerializeStrategyEnum } from "../../../serializer";
 import { Serializable } from "../../../decorator/serializable.decorator";
-import { FactStatus, deserializeFactStatuses, serializeFactStatuses } from "../../../class/FactStatus";
+import { FactStatus } from "../../../class/FactStatus";
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })
@@ -25,15 +25,15 @@ export class CharacterMemory extends TaggableContentBase {
     name!: string;
 
     @ManyToOne(() => Character, character => character.characterMemories)
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     character!: Character;
 
     @ManyToOne(() => Memory, memory => memory.id)
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     memory!: Memory;
 
     @Column("jsonb", { default: null, nullable: true })
-    @Serializable({ serialize: serializeFactStatuses, deserialize: deserializeFactStatuses })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true })
     factStatus?: FactStatus[];
 
     @Column({ default: 1 })
@@ -57,19 +57,19 @@ export class CharacterMemory extends TaggableContentBase {
     lastUpdatedAt?: number; // Last time the memory was reinforced/pruned
 
     @ManyToMany(() => Tag, (tag) => tag.characterMemories)
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     tags?: Tag[];
 
     @ManyToOne(() => User, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     user!: User;
 
     @ManyToOne(() => Campaign, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     campaign?: Campaign;
 
     @ManyToOne(() => World, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     world!: World;
 
     public toDTO(): CharacterMemoryDTO {

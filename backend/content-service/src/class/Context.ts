@@ -3,16 +3,16 @@ import { User } from "../modules/user/entities/User";
 import { World } from "../modules/world/entities/World";
 import { ContextDTO } from "../proto/common";
 import { Serializable } from "../decorator/serializable.decorator";
-import { Serializer } from "../serializer";
+import { Serializer, SerializeStrategyEnum } from "../serializer";
 
 export class Context {
-    @Serializable({ strategy: "id" })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     public user!: User;
 
-    @Serializable({ strategy: "id" })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     public world?: World;
 
-    @Serializable({ strategy: "id" })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     public campaign?: Campaign;
 
     static build(body: any) {

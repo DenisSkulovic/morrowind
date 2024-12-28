@@ -1,37 +1,25 @@
-import { StorageSlotDefinitionDTO, StorageSlotDefinitionsDTO } from "../proto/common"
+import { Serializable } from "../decorator/serializable.decorator"
+import { StorageSlotDefinitionDTO } from "../proto/common"
+import { Serializer, SerializeStrategyEnum } from "../serializer"
+import { GridSize } from "./GridSize"
 
 export class StorageSlotDefinition {
+    @Serializable()
     clazz = "StorageSlotDefinition"
-    constructor(
-        public name: string,
-        public grid: [number, number],
-        public maxWeight: number
-    ) { }
+
+    @Serializable()
+    name!: string
+
+    @Serializable({ strategy: SerializeStrategyEnum.FULL })
+    grid!: GridSize
+
+    @Serializable()
+    maxWeight!: number
+
     toDTO(): StorageSlotDefinitionDTO {
-        return serializeStorageSlotDefinition(this)
+        return Serializer.toDTO(this)
     }
     static fromDTO(dto: StorageSlotDefinitionDTO): StorageSlotDefinition {
-        return deserializeStorageSlotDefinition(dto)
+        return Serializer.fromDTO(dto, new StorageSlotDefinition())
     }
-}
-export type StorageSlotDefinitions = StorageSlotDefinition[]
-export function serializeStorageSlotDefinition(stSlDef: StorageSlotDefinition): StorageSlotDefinitionDTO {
-    return stSlDef
-}
-export function deserializeStorageSlotDefinition(stSlDefDTO: StorageSlotDefinitionDTO): StorageSlotDefinition {
-    return new StorageSlotDefinition(
-        stSlDefDTO.name,
-        [stSlDefDTO.grid[0], stSlDefDTO.grid[1]],
-        stSlDefDTO.maxWeight
-    )
-}
-export function serializeStorageSlotDefinitions(stSlDefs: StorageSlotDefinitions): StorageSlotDefinitionsDTO {
-    return {
-        arr: stSlDefs
-    }
-}
-export function deserializeStorageSlotDefinitions(stSlDefsDTO: StorageSlotDefinitionsDTO): StorageSlotDefinitions {
-    return stSlDefsDTO.arr.map(stSlDefDTO => {
-        return deserializeStorageSlotDefinition(stSlDefDTO)
-    })
 }

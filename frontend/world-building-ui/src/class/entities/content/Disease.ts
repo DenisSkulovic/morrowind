@@ -9,6 +9,7 @@ import { DisplayField } from '../../../decorator/display-field.decorator';
 import { EntityDisplay } from '../../../decorator/entity-display.decorator';
 import { FilterOption } from '../../../decorator/filter-option.decorator';
 import { DiseaseSeverityEnumDTO } from '../../../proto/common_pb';
+import { SerializeStrategyEnum } from "../../../serialize/serializer";
 
 @EntityDisplay({
     title: 'Diseases',
@@ -16,7 +17,6 @@ import { DiseaseSeverityEnumDTO } from '../../../proto/common_pb';
 })
 export class Disease extends TaggableContentBase {
     @DisplayField({
-        order: 1,
         displayName: 'Name'
     })
     @FilterOption()
@@ -29,7 +29,6 @@ export class Disease extends TaggableContentBase {
     description!: string;
 
     @DisplayField({
-        order: 2,
         displayName: 'Severity'
     })
     @FilterOption()
@@ -42,10 +41,7 @@ export class Disease extends TaggableContentBase {
             })
         },
     })
-    @Serializable({
-        serialize: type => serializeEnum(DiseaseSeverityEnum, DiseaseSeverityEnumDTO, type),
-        deserialize: type => deserializeEnum(DiseaseSeverityEnumDTO, DiseaseSeverityEnum, type),
-    })
+    @Serializable({ strategy: SerializeStrategyEnum.ENUM, internalEnum: DiseaseSeverityEnum, protoEnum: DiseaseSeverityEnumDTO })
     severity!: DiseaseSeverityEnum;
 
 }

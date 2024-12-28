@@ -3,7 +3,7 @@ import { ItemActionEnum } from "../../../../enum/entityEnums";
 import { serializeEnum, deserializeEnum } from "../../../../enum/util";
 import { Serializable } from "../../../../decorator/serializable.decorator";
 import { StorageSlot } from "../Slot/StorageSlot";
-import { GridSize, serializeGrid, deserializeGrid } from "../../../../class/GridSize";
+import { GridSize } from "../../../../class/GridSize";
 import { FormField } from "../../../../decorator/form-field.decorator";
 import { FieldComponentEnum } from "../../../../enum/FieldComponentEnum";
 import { FormSelectOption } from "../../../../class/FormSelectOption";
@@ -15,7 +15,8 @@ import { Context } from "../../../../class/Context";
 import { SearchQuery } from "../../../../class/search/SearchQuery";
 import { ItemRequirement } from "../../../../class/ItemRequirement";
 import { StorageSlotDefinition } from "../../../../class/StorageSlotDefinition";
-import { GridSizeDTO, ItemActionEnumDTO, ItemRequirementsDTO, StorageSlotDefinitionDTO, StorageSlotDTO } from "../../../../proto/common_pb";
+import { GridSizeDTO, ItemActionEnumDTO, ItemRequirementDTO, ItemRequirementsDTO, StorageSlotDefinitionDTO, StorageSlotDefinitionsDTO, StorageSlotDTO, StorageSlotsDTO } from "../../../../proto/common_pb";
+import { SerializeStrategyEnum } from "../../../../serialize/serializer";
 
 @EntityDisplay({
     title: 'Items',
@@ -35,16 +36,12 @@ export class Item extends TaggableContentBase {
 
     // properties
     @DisplayField({
-        displayName: 'Size', getValue: (item: Item) => {
-            console.log(`DisplayField item`, item)
-            return `${item.size.width}x${item.size.height}`
-        }, width: 100, sortable: true
+        displayName: 'Size',
+        getValue: (item: Item) => `${item.size.width}x${item.size.height}`,
+        width: 100,
     })
     @FormField({ component: FieldComponentEnum.OBJECT_FIELD, label: 'Size', required: true })
-    @Serializable({
-        serialize: (size: GridSize) => serializeGrid(size),
-        deserialize: (size: GridSizeDTO) => deserializeGrid(size)
-    })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, dtoClass: GridSizeDTO })
     size!: GridSize; // Grid size for grid-based inventories
 
     @DisplayField({ displayName: 'Weight' })
@@ -96,14 +93,11 @@ export class Item extends TaggableContentBase {
         },
         required: false
     })
-    @Serializable({
-        serialize: (actions: ItemActionEnum[]) => actions.map(action => serializeEnum(ItemActionEnum, ItemActionEnumDTO, action)),
-        deserialize: (actions: number[] | undefined) => actions?.map(action => deserializeEnum(ItemActionEnumDTO, ItemActionEnum, action)) || [],
-    })
+    @Serializable({ strategy: SerializeStrategyEnum.ENUM, internalEnum: ItemActionEnum, protoEnum: ItemActionEnumDTO })
     actions?: ItemActionEnum[];
 
     @FormField({ component: FieldComponentEnum.NESTED_FORM, label: 'Requirements', required: false })
-    @Serializable({ strategy: 'full', getDTOInstance: () => new ItemRequirementsDTO() })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, dtoClass: ItemRequirementDTO, dtoArrClass: ItemRequirementsDTO })
     requirements?: ItemRequirement[]
 
     // flags
@@ -121,11 +115,11 @@ export class Item extends TaggableContentBase {
     gridPosition?: { x: number; y: number }; // Item's top-left corner on the grid inside a storage slot
 
     @FormField({ component: FieldComponentEnum.NESTED_FORM, label: 'Storage Slots', required: false })
-    @Serializable({ strategy: 'full', getDTOInstance: () => new StorageSlotDTO() })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, dtoClass: StorageSlotDTO, dtoArrClass: StorageSlotsDTO })
     storageSlots?: StorageSlot[]; // the storage slots this item itself has (this is a backpack and it has 3 sections, i.e. slots)
 
     @FormField({ component: FieldComponentEnum.NESTED_FORM, label: 'Storage Slot Definitions', required: false })
-    @Serializable({ strategy: 'full', getDTOInstance: () => new StorageSlotDefinitionDTO() })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, dtoClass: StorageSlotDefinitionDTO, dtoArrClass: StorageSlotDefinitionsDTO })
     storageSlotDefinition?: StorageSlotDefinition[]; // the storage slots this item itself has (this is a backpack and it has 3 sections, i.e. slots)
 
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Equipment Slot', placeholder: 'Enter equipment slot', required: false })

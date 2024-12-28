@@ -8,7 +8,7 @@ import { Campaign } from "../../campaign/entities/Campaign";
 import { User } from "../../user/entities/User";
 import { World } from "../../world/entities/World";
 import { Serializable } from "../../../decorator/serializable.decorator";
-import { Serializer } from "../../../serializer";
+import { Serializer, SerializeStrategyEnum } from "../../../serializer";
 
 @Entity()
 export class Effect extends TaggableContentBase {
@@ -23,48 +23,36 @@ export class Effect extends TaggableContentBase {
     name!: string;
 
     @Column({ type: "enum", enum: Object.values(EffectTypeEnum) })
-    @Serializable({
-        serialize: type => serializeEnum(EffectTypeEnum, EffectTypeEnumDTO, type),
-        deserialize: type => deserializeEnum(EffectTypeEnumDTO, EffectTypeEnum, type),
-    })
+    @Serializable({ strategy: SerializeStrategyEnum.ENUM, internalEnum: EffectTypeEnum, protoEnum: EffectTypeEnumDTO })
     type!: EffectTypeEnum; // "damage", "healing", "buff", "debuff", "resistance", etc.
 
     @Column({ type: "enum", enum: Object.values(EffectTargetEnum) })
-    @Serializable({
-        serialize: target => serializeEnum(EffectTargetEnum, EffectTargetEnumDTO, target),
-        deserialize: target => deserializeEnum(EffectTargetEnumDTO, EffectTargetEnum, target),
-    })
+    @Serializable({ strategy: SerializeStrategyEnum.ENUM, internalEnum: EffectTargetEnum, protoEnum: EffectTargetEnumDTO })
     target!: EffectTargetEnum; // "health", "stamina", "magic", etc.
 
     @Column({ type: "enum", enum: Object.values(EffectModeEnum) })
-    @Serializable({
-        serialize: mode => serializeEnum(EffectModeEnum, EffectModeEnumDTO, mode),
-        deserialize: mode => deserializeEnum(EffectModeEnumDTO, EffectModeEnum, mode),
-    })
+    @Serializable({ strategy: SerializeStrategyEnum.ENUM, internalEnum: EffectModeEnum, protoEnum: EffectModeEnumDTO })
     mode!: EffectModeEnum; // "instant", "gradual", "persistent"
 
     @Column({ type: "enum", enum: Object.values(EffectElementEnum), nullable: true })
-    @Serializable({
-        serialize: element => serializeEnum(EffectElementEnum, EffectElementEnumDTO, element),
-        deserialize: element => deserializeEnum(EffectElementEnumDTO, EffectElementEnum, element),
-    })
+    @Serializable({ strategy: SerializeStrategyEnum.ENUM, internalEnum: EffectElementEnum, protoEnum: EffectElementEnumDTO })
     element?: EffectElementEnum;
 
 
     @ManyToMany(() => Tag, (tag) => tag.effects, {})
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     tags?: Tag[];
 
     @ManyToOne(() => User, { nullable: true, })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     user!: User;
 
     @ManyToOne(() => Campaign, { nullable: true, })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     campaign?: Campaign;
 
     @ManyToOne(() => World, { nullable: true, })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     world!: World;
 
     public toDTO(): EffectDTO {
@@ -72,8 +60,7 @@ export class Effect extends TaggableContentBase {
     }
 
     public static fromDTO(dto: EffectDTO): Effect {
-        const effect = new Effect();
-        return Serializer.fromDTO(dto, effect);
+        return Serializer.fromDTO(dto, new Effect());
     }
 
 }

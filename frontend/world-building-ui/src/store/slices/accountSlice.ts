@@ -4,13 +4,16 @@ import { RequestStatusEnum } from "../../enum/RequestStatusEnum";
 import { AccountService } from "../../services/AccountService";
 import { LooseObject } from "../../types";
 import { handlePending, handleRejected } from "../common";
+import { User } from "../../class/entities/User";
 
-const mockAccount = new Account()
-mockAccount.id = "ACCOUNT_9c82f8af6f1342ca8549b8c3d6b104ca"
-mockAccount.username = "testUser"
-mockAccount.email = "test12@example.com"
-mockAccount.role = "admin"
-mockAccount.user = "USER_df3bd4a7c1334138a9edd3c953f93840"
+const mockAccount = Account.build({
+    id: "ACCOUNT_9c82f8af6f1342ca8549b8c3d6b104ca",
+    username: "testUser",
+    email: "test12@example.com",
+    role: "admin",
+    user: "USER_df3bd4a7c1334138a9edd3c953f93840"
+})
+
 
 export type AccountPlain = LooseObject
 

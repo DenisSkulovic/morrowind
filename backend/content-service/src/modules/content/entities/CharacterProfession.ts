@@ -8,7 +8,7 @@ import { Campaign } from "../../campaign/entities/Campaign";
 import { User } from "../../user/entities/User";
 import { World } from "../../world/entities/World";
 import { Serializable } from "../../../decorator/serializable.decorator";
-import { Serializer } from "../../../serializer";
+import { Serializer, SerializeStrategyEnum } from "../../../serializer";
 
 @Entity()
 export class CharacterProfession extends TaggableContentBase {
@@ -24,7 +24,7 @@ export class CharacterProfession extends TaggableContentBase {
 
     @ManyToMany(() => MemoryPool, {})
     @JoinTable()
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     memoryPools?: MemoryPool[]
 
     @Column({ type: "varchar", length: 60 })
@@ -33,19 +33,19 @@ export class CharacterProfession extends TaggableContentBase {
 
 
     @ManyToMany(() => Tag, (tag) => tag.characterProfessions, {})
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     tags?: Tag[];
 
     @ManyToOne(() => User, { nullable: true, })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     user!: User;
 
     @ManyToOne(() => Campaign, { nullable: true, })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     campaign?: Campaign;
 
     @ManyToOne(() => World, { nullable: true, })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     world!: World;
 
 

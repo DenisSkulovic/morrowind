@@ -1,40 +1,23 @@
 import { FactStatusEnum } from "../common/enum/entityEnums";
-import { deserializeEnum, serializeEnum } from "../common/enum/util";
-import { FactStatusDTO, FactStatusEnumDTO, FactStatusesDTO } from "../proto/common";
+import { Serializable } from "../decorator/serializable.decorator";
+import { FactStatusDTO, FactStatusEnumDTO } from "../proto/common";
+import { Serializer, SerializeStrategyEnum } from "../serializer";
 
 export class FactStatus {
+    @Serializable()
     clazz = "FactStatus"
-    constructor(
-        public factId: string,
-        public status: FactStatusEnum,
-    ) { }
+
+    @Serializable()
+    factId!: string
+
+    @Serializable({ strategy: SerializeStrategyEnum.ENUM, internalEnum: FactStatusEnum, protoEnum: FactStatusEnumDTO })
+    status!: FactStatusEnum
 
     toDTO() {
-        return serializeFactStatus(this)
+        return Serializer.toDTO(this)
     }
 
     static fromDTO(dto: FactStatusDTO): FactStatus {
-        return deserializeFactStatus(dto)
+        return Serializer.fromDTO(dto, new FactStatus())
     }
-}
-
-export function serializeFactStatus(st: FactStatus): FactStatusDTO {
-    return {
-        factId: st.factId,
-        status: serializeEnum(FactStatusEnum, FactStatusEnumDTO, st.status),
-        clazz: st.clazz
-    }
-}
-export function deserializeFactStatus(dtoSt: FactStatusDTO): FactStatus {
-    return new FactStatus(
-        dtoSt.factId,
-        deserializeEnum(FactStatusEnumDTO, FactStatusEnum, dtoSt.status),
-    )
-}
-
-export function serializeFactStatuses(statuses: FactStatus[]): FactStatusesDTO {
-    return { arr: statuses.map(status => serializeFactStatus(status)) }
-}
-export function deserializeFactStatuses(statusesDTO: FactStatusesDTO): FactStatus[] {
-    return statusesDTO.arr.map(statusDTO => deserializeFactStatus(statusDTO))
 }

@@ -6,19 +6,21 @@ import { FieldComponentEnum } from "../../../enum/FieldComponentEnum";
 import { EntityDisplay } from "../../../decorator/entity-display.decorator";
 import { DisplayField } from "../../../decorator/display-field.decorator";
 import { FilterOption } from "../../../decorator/filter-option.decorator";
+import { EquipmentSlotDefinitionDTO, EquipmentSlotDefinitionsDTO } from "../../../proto/common_pb";
+import { SerializeStrategyEnum } from "../../../serialize/serializer";
 
 @EntityDisplay({
     title: 'Races',
     defaultSort: 'name'
 })
 export class Race extends ContentBase {
-    @DisplayField({ order: 1 })
+    @DisplayField()
     @FilterOption()
     @Serializable()
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter race name', required: true })
     name!: string;
 
-    @Serializable({ strategy: 'full', getDTOInstance: () => new EquipmentSlotDefinition() })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, dtoClass: EquipmentSlotDefinitionDTO, dtoArrClass: EquipmentSlotDefinitionsDTO })
     @FormField({ component: FieldComponentEnum.NESTED_FORM, label: 'Equipment Slot Definitions' })
     equipment_slot_definitions!: EquipmentSlotDefinition[]
 

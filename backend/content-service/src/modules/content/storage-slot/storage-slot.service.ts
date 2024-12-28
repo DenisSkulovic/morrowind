@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { Item } from "../entities/Item/Item";
 import { StorageGrid, StorageSlot } from "../entities/Slot/StorageSlot";
+import { GridSize } from "../../../class/GridSize";
 
 export interface IStorageSlotService {
     addItemToStorageSlot(storageSlot: StorageSlot, item: Item, autoOrganize: boolean): void
@@ -79,13 +80,13 @@ export class StorageSlotService implements IStorageSlotService {
     ): { placedItems: Item[]; unplacedItems: Item[] } {
         // Sort items by size (largest first), then by weight
         items.sort((a, b) =>
-            (b.size![0] * b.size![1]) - (a.size![0] * a.size![1]) ||
+            (b.size!.width * b.size!.height) - (a.size!.width * a.size!.height) ||
             b.weight - a.weight
         );
 
         // Sort slots by available space and weight limit (smallest first)
         storageSlots.sort((a, b) =>
-            (a.grid![0] * a.grid![1]) - (b.grid![0] * b.grid![1]) ||
+            (a.grid!.width * a.grid!.height) - (b.grid!.width * b.grid!.height) ||
             (a.maxWeight! - a.storedItems!.reduce((sum, i) => sum + i.weight, 0))
         );
 
@@ -134,7 +135,7 @@ export class StorageSlotService implements IStorageSlotService {
     ): boolean {
 
 
-        const [width, height] = item.size!;
+        const { width, height } = item.size!;
         const { x, y } = gridPosition;
 
         // Check bounds
@@ -152,7 +153,7 @@ export class StorageSlotService implements IStorageSlotService {
 
     private _placeItemIntoGrid(grid: StorageGrid, item: Item, gridPosition: { x: number; y: number }): void {
         if (!item.id) throw new Error("cannot place item into grid when item has no id; are you trying to place an item that doesn't exist yet?")
-        const [width, height] = item.size!;
+        const { width, height } = item.size!;
         const { x, y } = gridPosition;
 
         for (let i = x; i < x + width; i++) {
@@ -166,7 +167,7 @@ export class StorageSlotService implements IStorageSlotService {
 
     private _removeItemFromGrid(grid: StorageGrid, item: Item): void {
         const { x, y } = item.gridPosition!;
-        const [width, height] = item.size!;
+        const { width, height } = item.size!;
 
         for (let i = x; i < x + width; i++) {
             for (let j = y; j < y + height; j++) {
@@ -220,7 +221,7 @@ export class StorageSlotService implements IStorageSlotService {
         }
 
         // Sort items by size (largest first)
-        items.sort((a, b) => (b.size![0] * b.size![1]) - (a.size![0] * a.size![1]));
+        items.sort((a, b) => (b.size!.width * b.size!.height) - (a.size!.width * a.size!.height));
 
         // Place items
         items.forEach((item) => {
@@ -234,18 +235,18 @@ export class StorageSlotService implements IStorageSlotService {
 
     private _findPlacementForItemInGrid(
         gridCells: StorageGrid,
-        grid: [number, number],
+        grid: GridSize,
         item: Item
     ): { x: number; y: number } | null {
-        const [itemWidth, itemHeight] = item.size!;
+        const { width, height } = item.size!;
 
-        for (let x = 0; x <= grid[0] - itemWidth; x++) {
-            for (let y = 0; y <= grid[1] - itemHeight; y++) {
+        for (let x = 0; x <= grid.width - width; x++) {
+            for (let y = 0; y <= grid.height - height; y++) {
                 let canPlace = true;
 
                 // Check if the item fits in the grid without collision
-                for (let i = x; i < x + itemWidth; i++) {
-                    for (let j = y; j < y + itemHeight; j++) {
+                for (let i = x; i < x + width; i++) {
+                    for (let j = y; j < y + height; j++) {
                         const isCellOccupied = gridCells[i][j]
                         if (isCellOccupied) {
                             canPlace = false;
@@ -270,11 +271,11 @@ export class StorageSlotService implements IStorageSlotService {
         position: { x: number; y: number }
     ): void {
         if (!item.id) throw new Error("cannot place item into grid when item has no id; are you trying to place an item that doesn't exist yet?")
-        const [itemWidth, itemHeight] = item.size!;
+        const { width, height } = item.size!;
         const { x, y } = position;
 
-        for (let i = x; i < x + itemWidth; i++) {
-            for (let j = y; j < y + itemHeight; j++) {
+        for (let i = x; i < x + width; i++) {
+            for (let j = y; j < y + height; j++) {
                 gridCells[i][j] = item.id;
             }
         }

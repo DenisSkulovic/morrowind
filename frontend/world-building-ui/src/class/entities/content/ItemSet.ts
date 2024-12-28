@@ -12,22 +12,19 @@ import { FilterOption } from "../../../decorator/filter-option.decorator";
     defaultSort: 'name'
 })
 export class ItemSet extends ContentBase {
-    @DisplayField({ order: 1 })
+    @DisplayField()
     @FilterOption()
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter item set name', required: true })
     @Serializable()
     name!: string;
 
-    @DisplayField({ order: 2 })
+    @DisplayField()
     @FormField({ component: FieldComponentEnum.TEXTAREA_FIELD, label: 'Description', placeholder: 'Enter item set description', required: true })
     @Serializable()
     description!: string;
 
     @FormField({ component: FieldComponentEnum.GENERATION_INSTRUCTION_FIELD, label: 'Generation Instructions', required: true })
-    @Serializable({
-        serialize: serializeGenerationInstructions,
-        deserialize: deserializeGenerationInstructions
-    })
+    @Serializable({ serialize: serializeGenerationInstructions, deserialize: deserializeGenerationInstructions })
     set!: GenerationInstruction[];
 
 }

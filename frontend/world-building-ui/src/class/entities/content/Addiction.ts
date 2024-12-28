@@ -11,9 +11,7 @@ import { DisplayField } from "../../../decorator/display-field.decorator";
     defaultSort: 'name'
 })
 export class Addiction extends ContentBase {
-    @DisplayField({
-        order: 1
-    })
+    @DisplayField()
     @FilterOption()
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter addiction name', required: true })
     @Serializable()

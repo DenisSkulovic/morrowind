@@ -11,7 +11,7 @@ import { FilterOption } from "../../../decorator/filter-option.decorator";
     defaultSort: 'name'
 })
 export class Birthsign extends TaggableContentBase {
-    @DisplayField({ order: 1 })
+    @DisplayField()
     @FilterOption()
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter birthsign name', required: true })
     @Serializable()

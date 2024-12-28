@@ -8,7 +8,7 @@ import { serializeEnum, deserializeEnum } from "../../../common/enum/util";
 import { Campaign } from "../../campaign/entities/Campaign";
 import { User } from "../../user/entities/User";
 import { World } from "../../world/entities/World";
-import { Serializer } from "../../../serializer";
+import { Serializer, SerializeStrategyEnum } from "../../../serializer";
 import { Serializable } from "../../../decorator/serializable.decorator";
 
 @Entity()
@@ -28,31 +28,28 @@ export class Memory extends TaggableContentBase {
     description!: string
 
     @Column({ type: "enum", enum: Object.values(MemoryTypeEnum) }) // bad to have this default, but I dont have a better idea yet, need to come back to the types later
-    @Serializable({
-        serialize: (i) => serializeEnum(MemoryTypeEnum, MemoryTypeEnumDTO, i),
-        deserialize: (i) => deserializeEnum(MemoryTypeEnumDTO, MemoryTypeEnum, i)
-    })
+    @Serializable({ strategy: SerializeStrategyEnum.ENUM, internalEnum: MemoryTypeEnum, protoEnum: MemoryTypeEnumDTO })
     type!: MemoryTypeEnum // TODO need to properly conceptualize types of memories and what that means. Maybe better to do it with tags?
 
     @ManyToMany(() => Fact, fact => fact.memories)
     @JoinTable()
-    @Serializable({ strategy: 'full' })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true })
     facts!: Fact[]
 
     @ManyToMany(() => Tag, (tag) => tag.memories)
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     tags?: Tag[];
 
     @ManyToOne(() => User, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     user!: User;
 
     @ManyToOne(() => Campaign, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     campaign?: Campaign;
 
     @ManyToOne(() => World, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     world!: World;
 
     public toDTO(): MemoryDTO {
@@ -60,7 +57,6 @@ export class Memory extends TaggableContentBase {
     }
 
     public static fromDTO(dto: MemoryDTO): Memory {
-        const memory = new Memory();
-        return Serializer.fromDTO(dto, memory);
+        return Serializer.fromDTO(dto, new Memory());
     }
 }

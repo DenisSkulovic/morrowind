@@ -8,7 +8,6 @@ import { RequestStatusEnum } from '../../enum/RequestStatusEnum';
 import { World } from '../../class/entities/World';
 import { Account } from '../../class/entities/Account';
 import { routes } from '../../routes';
-import { useSelectorAndBuilder } from '../../hooks/useSelectorAndBuilder';
 import { QueryFilter } from '../../class/search/QueryFilter';
 import { SearchQuery } from '../../class/search/SearchQuery';
 import PageWrapper from '../../components/common/PageWrapper';
@@ -33,25 +32,6 @@ const WorldsPage = () => {
         dispatch(deleteWorldThunk(id));
     };
 
-    if (result?.status === RequestStatusEnum.LOADING) {
-        return (
-            <PageWrapper accountId={account?.id}>
-                <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
-                    <CircularProgress />
-                </Box>
-            </PageWrapper>
-        );
-    }
-
-    if (result?.status === RequestStatusEnum.FAILED) {
-        return (
-            <PageWrapper accountId={account?.id}>
-                <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
-                    <Typography color="error">Error: {result?.error}</Typography>
-                </Box>
-            </PageWrapper>
-        );
-    }
 
     const [customBreadcrumbs, setCustomBreadcrumbs] = useState<BreadcrumbItem[]>([])
     useEffect(() => {
@@ -61,7 +41,13 @@ const WorldsPage = () => {
         ]);
     }, []);
 
-    return (
+    return result?.status === RequestStatusEnum.FAILED ? (
+        <PageWrapper accountId={account?.id}>
+            <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+                <Typography color="error">Error: {result?.error}</Typography>
+            </Box>
+        </PageWrapper>
+    ) : (
         <PageWrapper customBreadcrumbs={customBreadcrumbs} accountId={account?.id}>
             <Container maxWidth="lg">
                 <Box py={4}>
@@ -119,7 +105,7 @@ const WorldsPage = () => {
                 </Box>
             </Container>
         </PageWrapper>
-    );
+    )
 };
 
 export default WorldsPage;

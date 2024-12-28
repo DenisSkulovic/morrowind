@@ -33,7 +33,7 @@ import { Tag } from "../../content/entities/Tag";
 import { Trait } from "../../content/entities/Trait";
 import { Status } from "../../content/entities/Status";
 import { Serializable } from "../../../decorator/serializable.decorator";
-import { Serializer } from "../../../serializer";
+import { Serializer, SerializeStrategyEnum } from "../../../serializer";
 import { ActivityRecord } from "../../activity/entities/ActivityRecord";
 
 
@@ -54,7 +54,7 @@ export class World extends BaseEntity {
     idPrefix = "WORLD";
 
     @ManyToOne(() => User)
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     user!: User;
 
     @Column({ type: "varchar", length: 255 })
@@ -74,14 +74,11 @@ export class World extends BaseEntity {
     frozen!: boolean;
 
     @Column({ type: "timestamp", nullable: true })
-    @Serializable({
-        serialize: (val: Date) => val.getTime(),
-        deserialize: (val: number) => new Date(val)
-    })
+    @Serializable({ strategy: SerializeStrategyEnum.DATE })
     createdAt?: Date;
 
     @OneToMany(() => Campaign, (campaign) => campaign.world, {})
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     campaigns!: Campaign[]
 
     @OneToMany(() => Item, item => item.world, { onDelete: "CASCADE", })

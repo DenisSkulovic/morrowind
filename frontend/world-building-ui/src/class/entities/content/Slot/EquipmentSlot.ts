@@ -1,12 +1,10 @@
 import { ContentBase } from "../../../../class/ContentBase";
 import { Serializable } from "../../../../decorator/serializable.decorator";
-import { Item } from "../Item/Item";
 import { FormField } from "../../../../decorator/form-field.decorator";
 import { FieldComponentEnum } from "../../../../enum/FieldComponentEnum";
 import { EntityDisplay } from "../../../../decorator/entity-display.decorator";
 import { DisplayField } from "../../../../decorator/display-field.decorator";
 import { FilterOption } from "../../../../decorator/filter-option.decorator";
-import { EquipmentSlotDTO } from "../../../../proto/common_pb";
 
 @EntityDisplay({
     title: 'Equipment Slots',
@@ -14,7 +12,6 @@ import { EquipmentSlotDTO } from "../../../../proto/common_pb";
 })
 export class EquipmentSlot extends ContentBase {
     @DisplayField({
-        order: 1,
         displayName: 'Name'
     })
     @FilterOption()
@@ -27,8 +24,8 @@ export class EquipmentSlot extends ContentBase {
     allowedEntities!: string[] // e.g. ["ItemWeapon", "ItemMiscFishingRod"] for hand, or ["ItemWearableHelmet"] for a head slot
 
     @FormField({ component: FieldComponentEnum.ITEM_LIST_FIELD, label: 'Equipped Item', required: false })
-    @Serializable({ strategy: 'full', getDTOInstance: () => new EquipmentSlotDTO() })
-    equippedItem?: Item;
+    @Serializable()
+    equippedItem?: string;
 
     @Serializable()
     character?: string; // The character owning this slot (i.e. left hand slot, right hand slot, head slot)

@@ -2,12 +2,11 @@ import { Column, Entity, ManyToOne, PrimaryColumn } from "typeorm";
 import { ContentBase } from "../../../ContentBase";
 import { EffectTypeEnumDTO, StatusDTO } from "../../../proto/common";
 import { EffectTypeEnum } from "../../../common/enum/entityEnums";
-import { serializeEnum, deserializeEnum } from "../../../common/enum/util";
 import { Campaign } from "../../campaign/entities/Campaign";
 import { User } from "../../user/entities/User";
 import { World } from "../../world/entities/World";
 import { Serializable } from "../../../decorator/serializable.decorator";
-import { Serializer } from "../../../serializer";
+import { Serializer, SerializeStrategyEnum } from "../../../serializer";
 
 
 @Entity()
@@ -28,10 +27,7 @@ export class Status extends ContentBase {
     description!: string;
 
     @Column({ type: "enum", enum: Object.values(EffectTypeEnum) })
-    @Serializable({
-        serialize: (i) => serializeEnum(EffectTypeEnum, EffectTypeEnumDTO, i),
-        deserialize: (i) => deserializeEnum(EffectTypeEnumDTO, EffectTypeEnum, i)
-    })
+    @Serializable({ strategy: SerializeStrategyEnum.ENUM, internalEnum: EffectTypeEnum, protoEnum: EffectTypeEnumDTO })
     type!: EffectTypeEnum;
 
     @Column("simple-array", { nullable: true })
@@ -43,15 +39,15 @@ export class Status extends ContentBase {
     duration!: number; // Duration in ticks (0 for permanent).
 
     @ManyToOne(() => User, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     user!: User;
 
     @ManyToOne(() => Campaign, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     campaign?: Campaign;
 
     @ManyToOne(() => World, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     world!: World;
 
     public toDTO(): StatusDTO {
@@ -59,7 +55,6 @@ export class Status extends ContentBase {
     }
 
     public static fromDTO(dto: StatusDTO): Status {
-        const status = new Status();
-        return Serializer.fromDTO(dto, status);
+        return Serializer.fromDTO(dto, new Status());
     }
 }

@@ -2,15 +2,16 @@ import { Serializable } from "../decorator/serializable.decorator";
 import { User } from "./entities/User";
 import { World } from "./entities/World";
 import { Campaign } from "./entities/Campaign";
+import { SerializeStrategyEnum } from "../serialize/serializer";
 
 export class Context {
-    @Serializable({ strategy: "id" })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     public user!: User;
 
-    @Serializable({ strategy: "id" })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     public world?: World;
 
-    @Serializable({ strategy: "id" })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     public campaign?: Campaign;
 
     public static build(data: { [key: string]: any }): Context {

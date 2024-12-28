@@ -5,8 +5,8 @@ import { Campaign } from "../../campaign/entities/Campaign";
 import { User } from "../../user/entities/User";
 import { World } from "../../world/entities/World";
 import { Serializable } from "../../../decorator/serializable.decorator";
-import { EquipmentSlotDefinitions, serializeEquipmentSlotDefinitions, deserializeEquipmentSlotDefinitions } from "../../../class/ItemSlotDefinition";
-import { Serializer } from "../../../serializer";
+import { Serializer, SerializeStrategyEnum } from "../../../serializer";
+import { EquipmentSlotDefinition } from "../../../class/ItemSlotDefinition";
 
 // TODO somehow I need a way to connect races to needs, but also add needs through other ways, like an addiction. Also, a layer of modifiers, so that I can adjust the rate of decay and thresholds with %.
 
@@ -23,22 +23,19 @@ export class Race extends ContentBase {
     name!: string;
 
     @Column("jsonb")
-    @Serializable({
-        serialize: serializeEquipmentSlotDefinitions,
-        deserialize: deserializeEquipmentSlotDefinitions,
-    })
-    equipment_slot_definitions!: EquipmentSlotDefinitions
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true })
+    equipment_slot_definitions!: EquipmentSlotDefinition[]
 
     @ManyToOne(() => User, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     user!: User;
 
     @ManyToOne(() => Campaign, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     campaign?: Campaign;
 
     @ManyToOne(() => World, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     world!: World;
 
     public toDTO(): RaceDTO {
@@ -46,7 +43,6 @@ export class Race extends ContentBase {
     }
 
     public static fromDTO(dto: RaceDTO): Race {
-        const race = new Race();
-        return Serializer.fromDTO(dto, race);
+        return Serializer.fromDTO(dto, new Race());
     }
 }

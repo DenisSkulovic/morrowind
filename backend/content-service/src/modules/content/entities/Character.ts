@@ -17,7 +17,7 @@ import { serializeEnum, deserializeEnum } from "../../../common/enum/util";
 import { Campaign } from "../../campaign/entities/Campaign";
 import { User } from "../../user/entities/User";
 import { World } from "../../world/entities/World";
-import { Serializer } from "../../../serializer";
+import { Serializer, SerializeStrategyEnum } from "../../../serializer";
 import { Serializable } from "../../../decorator/serializable.decorator";
 import { PastExperience } from "./PastExperience";
 
@@ -48,7 +48,7 @@ export class Character extends TaggableContentBase {
     lastName!: string;
 
     @ManyToOne(() => Race)
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     race!: Race;
 
     @Column({ type: "enum", enum: Object.values(GenderEnum) })
@@ -59,7 +59,7 @@ export class Character extends TaggableContentBase {
     gender!: GenderEnum;
 
     @ManyToOne(() => Birthsign)
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     birthsign?: Birthsign;
 
     @Column({ default: null, nullable: true })
@@ -84,20 +84,20 @@ export class Character extends TaggableContentBase {
 
     @OneToMany(() => EquipmentSlot, eqiupmentSlot => eqiupmentSlot.character)
     @JoinTable()
-    @Serializable({ strategy: 'full' })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true })
     equipmentSlots!: EquipmentSlot[];
 
     @ManyToMany(() => CharacterProfession, profession => profession.characters)
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     professions!: CharacterProfession[];
 
     @ManyToMany(() => MemoryPool)
     @JoinTable()
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     memoryPools!: MemoryPool[];
 
     @OneToMany(() => CharacterMemory, charMemory => charMemory.character)
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     characterMemories!: CharacterMemory[];
 
     @Column({ type: "varchar", length: 3 })
@@ -106,44 +106,44 @@ export class Character extends TaggableContentBase {
 
     @ManyToMany(() => Trait)
     @JoinTable()
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     traits!: Trait[];
 
     @ManyToMany(() => Disease)
     @JoinTable()
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     diseases?: Disease[];
 
     @ManyToMany(() => Addiction)
     @JoinTable()
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     addictions?: Addiction[];
 
     @ManyToMany(() => PastExperience)
     @JoinTable()
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     pastExperiences?: PastExperience[];
 
     @ManyToMany(() => Faction, (faction) => faction.characters)
     @JoinTable()
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     factions?: Faction[];
 
     @ManyToMany(() => Tag, (tag) => tag.characters)
     @JoinTable()
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     tags?: Tag[];
 
     @ManyToOne(() => User, { nullable: true, })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     user!: User;
 
     @ManyToOne(() => Campaign, { nullable: true, })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     campaign?: Campaign;
 
     @ManyToOne(() => World, { nullable: true, })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     world!: World;
 
     public toDTO(): CharacterDTO {

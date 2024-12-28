@@ -4,7 +4,7 @@
         "name": "Beer",
         "description": "A potent local liquor brewed from fermented grains.",
         "weight": 1,
-        "size": [1, 1],
+        "size": { "width": 1, "height": 1 },
         "stackable": true,
         "maxQuantity": 6,
         "baseValue": 8,

@@ -34,7 +34,7 @@ import { Tag } from "../../content/entities/Tag";
 import { Trait } from "../../content/entities/Trait";
 import { Serializable } from "../../../decorator/serializable.decorator";
 import { Status } from "../../content/entities/Status";
-import { Serializer } from "../../../serializer";
+import { Serializer, SerializeStrategyEnum } from "../../../serializer";
 import { ActivityRecord } from "../../activity/entities/ActivityRecord";
 
 
@@ -54,22 +54,19 @@ export class User extends BaseEntity {
     idPrefix = "USER";
 
     @Column({ type: "timestamp", nullable: true })
-    @Serializable({
-        serialize: (val: Date) => val.getTime(),
-        deserialize: (val: number) => new Date(val)
-    })
+    @Serializable({ strategy: SerializeStrategyEnum.DATE })
     createdAt?: Date;
 
     @OneToOne(() => Account, (account) => account.user, {})
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     account!: Account
 
     @OneToMany(() => World, (world) => world.user, { onDelete: "CASCADE", })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     worlds?: World[];
 
     @OneToMany(() => Campaign, (campaign) => campaign.user, { onDelete: "CASCADE", })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     campaigns?: Campaign[];
 
     @OneToMany(() => Item, item => item.user, { onDelete: "CASCADE", })

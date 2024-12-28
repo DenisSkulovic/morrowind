@@ -13,7 +13,6 @@ export class ReligionRitual {
     clazz = "ReligionRitual"
 
     @DisplayField({
-        order: 1,
         displayName: 'Name'
     })
     @FilterOption()
@@ -22,7 +21,6 @@ export class ReligionRitual {
     name!: string;
 
     @DisplayField({
-        order: 2,
         displayName: 'Description'
     })
     @FilterOption()

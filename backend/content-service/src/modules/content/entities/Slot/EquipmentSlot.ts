@@ -6,7 +6,7 @@ import { EquipmentSlotDTO } from "../../../../proto/common";
 import { Campaign } from "../../../campaign/entities/Campaign";
 import { User } from "../../../user/entities/User";
 import { World } from "../../../world/entities/World";
-import { Serializer } from "../../../../serializer";
+import { Serializer, SerializeStrategyEnum } from "../../../../serializer";
 import { Serializable } from "../../../../decorator/serializable.decorator";
 
 @Entity()
@@ -27,23 +27,23 @@ export class EquipmentSlot extends ContentBase {
 
     @OneToOne(() => Item, { nullable: true })
     @JoinColumn()
-    @Serializable({ strategy: 'full' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     equippedItem?: Item;
 
     @ManyToOne(() => Character, (character) => character.equipmentSlots, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     character?: Character; // The character owning this slot (i.e. left hand slot, right hand slot, head slot)
 
     @ManyToOne(() => User, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     user!: User;
 
     @ManyToOne(() => Campaign, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     campaign?: Campaign;
 
     @ManyToOne(() => World, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     world!: World;
 
     public toDTO(): EquipmentSlotDTO {
@@ -51,7 +51,6 @@ export class EquipmentSlot extends ContentBase {
     }
 
     public static fromDTO(dto: EquipmentSlotDTO): EquipmentSlot {
-        const equipmentSlot = new EquipmentSlot();
-        return Serializer.fromDTO(dto, equipmentSlot);
+        return Serializer.fromDTO(dto, new EquipmentSlot());
     }
 }

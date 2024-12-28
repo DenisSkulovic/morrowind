@@ -3141,8 +3141,8 @@ export class BackgroundCustomizationDTO extends jspb.Message {
   hasSkillsets(): boolean;
   clearSkillsets(): BackgroundCustomizationDTO;
 
-  getSkilladjustments(): SkillAdjustmentsDTO | undefined;
-  setSkilladjustments(value?: SkillAdjustmentsDTO): BackgroundCustomizationDTO;
+  getSkilladjustments(): SkillAdjustmentDTO | undefined;
+  setSkilladjustments(value?: SkillAdjustmentDTO): BackgroundCustomizationDTO;
   hasSkilladjustments(): boolean;
   clearSkilladjustments(): BackgroundCustomizationDTO;
 
@@ -3180,16 +3180,36 @@ export namespace BackgroundCustomizationDTO {
     pastexpchild?: GenerationInstructionsDTO.AsObject,
     pastexpadult?: GenerationInstructionsDTO.AsObject,
     skillsets?: GenerationInstructionsDTO.AsObject,
-    skilladjustments?: SkillAdjustmentsDTO.AsObject,
+    skilladjustments?: SkillAdjustmentDTO.AsObject,
     personality?: GenerationInstructionsDTO.AsObject,
     gender?: GenerationInstructionDTO.AsObject,
     clazz: string,
   }
 }
 
-export class SkillAdjustmentsDTO extends jspb.Message {
+export class SkillAdjustmentDTO extends jspb.Message {
   getSkilladjustmentsMap(): jspb.Map<string, number>;
-  clearSkilladjustmentsMap(): SkillAdjustmentsDTO;
+  clearSkilladjustmentsMap(): SkillAdjustmentDTO;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): SkillAdjustmentDTO.AsObject;
+  static toObject(includeInstance: boolean, msg: SkillAdjustmentDTO): SkillAdjustmentDTO.AsObject;
+  static serializeBinaryToWriter(message: SkillAdjustmentDTO, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): SkillAdjustmentDTO;
+  static deserializeBinaryFromReader(message: SkillAdjustmentDTO, reader: jspb.BinaryReader): SkillAdjustmentDTO;
+}
+
+export namespace SkillAdjustmentDTO {
+  export type AsObject = {
+    skilladjustmentsMap: Array<[string, number]>,
+  }
+}
+
+export class SkillAdjustmentsDTO extends jspb.Message {
+  getArrList(): Array<SkillAdjustmentDTO>;
+  setArrList(value: Array<SkillAdjustmentDTO>): SkillAdjustmentsDTO;
+  clearArrList(): SkillAdjustmentsDTO;
+  addArr(value?: SkillAdjustmentDTO, index?: number): SkillAdjustmentDTO;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): SkillAdjustmentsDTO.AsObject;
@@ -3201,7 +3221,7 @@ export class SkillAdjustmentsDTO extends jspb.Message {
 
 export namespace SkillAdjustmentsDTO {
   export type AsObject = {
-    skilladjustmentsMap: Array<[string, number]>,
+    arrList: Array<SkillAdjustmentDTO.AsObject>,
   }
 }
 
@@ -3751,25 +3771,18 @@ export class UserDTO extends jspb.Message {
   getId(): string;
   setId(value: string): UserDTO;
 
-  getBackgrounds(): BackgroundsDTO | undefined;
-  setBackgrounds(value?: BackgroundsDTO): UserDTO;
-  hasBackgrounds(): boolean;
-  clearBackgrounds(): UserDTO;
+  getWorldsList(): Array<string>;
+  setWorldsList(value: Array<string>): UserDTO;
+  clearWorldsList(): UserDTO;
+  addWorlds(value: string, index?: number): UserDTO;
 
-  getWorlds(): WorldsDTO | undefined;
-  setWorlds(value?: WorldsDTO): UserDTO;
-  hasWorlds(): boolean;
-  clearWorlds(): UserDTO;
+  getCampaignsList(): Array<string>;
+  setCampaignsList(value: Array<string>): UserDTO;
+  clearCampaignsList(): UserDTO;
+  addCampaigns(value: string, index?: number): UserDTO;
 
-  getCampaigns(): CampaignsDTO | undefined;
-  setCampaigns(value?: CampaignsDTO): UserDTO;
-  hasCampaigns(): boolean;
-  clearCampaigns(): UserDTO;
-
-  getAccount(): AccountDTO | undefined;
-  setAccount(value?: AccountDTO): UserDTO;
-  hasAccount(): boolean;
-  clearAccount(): UserDTO;
+  getAccount(): string;
+  setAccount(value: string): UserDTO;
 
   getCreatedat(): number;
   setCreatedat(value: number): UserDTO;
@@ -3785,10 +3798,9 @@ export class UserDTO extends jspb.Message {
 export namespace UserDTO {
   export type AsObject = {
     id: string,
-    backgrounds?: BackgroundsDTO.AsObject,
-    worlds?: WorldsDTO.AsObject,
-    campaigns?: CampaignsDTO.AsObject,
-    account?: AccountDTO.AsObject,
+    worldsList: Array<string>,
+    campaignsList: Array<string>,
+    account: string,
     createdat: number,
   }
 }
@@ -3913,10 +3925,10 @@ export class WorldDTO extends jspb.Message {
   getUser(): string;
   setUser(value: string): WorldDTO;
 
-  getCampaigns(): CampaignsDTO | undefined;
-  setCampaigns(value?: CampaignsDTO): WorldDTO;
-  hasCampaigns(): boolean;
-  clearCampaigns(): WorldDTO;
+  getCampaignsList(): Array<string>;
+  setCampaignsList(value: Array<string>): WorldDTO;
+  clearCampaignsList(): WorldDTO;
+  addCampaigns(value: string, index?: number): WorldDTO;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): WorldDTO.AsObject;
@@ -3935,7 +3947,7 @@ export namespace WorldDTO {
     frozen: boolean,
     createdat: number,
     user: string,
-    campaigns?: CampaignsDTO.AsObject,
+    campaignsList: Array<string>,
   }
 }
 
@@ -4022,10 +4034,10 @@ export namespace CampaignsDTO {
 }
 
 export class SearchQueryDTO extends jspb.Message {
-  getFiltersList(): Array<QueryFilterDTO>;
-  setFiltersList(value: Array<QueryFilterDTO>): SearchQueryDTO;
-  clearFiltersList(): SearchQueryDTO;
-  addFilters(value?: QueryFilterDTO, index?: number): QueryFilterDTO;
+  getFilters(): QueryFiltersDTO | undefined;
+  setFilters(value?: QueryFiltersDTO): SearchQueryDTO;
+  hasFilters(): boolean;
+  clearFilters(): SearchQueryDTO;
 
   getSortby(): SortByDTO | undefined;
   setSortby(value?: SortByDTO): SearchQueryDTO;
@@ -4048,7 +4060,7 @@ export class SearchQueryDTO extends jspb.Message {
 
 export namespace SearchQueryDTO {
   export type AsObject = {
-    filtersList: Array<QueryFilterDTO.AsObject>,
+    filters?: QueryFiltersDTO.AsObject,
     sortby?: SortByDTO.AsObject,
     page: number,
     pagesize: number,
@@ -4080,6 +4092,26 @@ export namespace QueryFilterDTO {
     field: string,
     operator: QueryFilterOperatorEnumDTO,
     value?: QueryFilterValueDTO.AsObject,
+  }
+}
+
+export class QueryFiltersDTO extends jspb.Message {
+  getArrList(): Array<QueryFilterDTO>;
+  setArrList(value: Array<QueryFilterDTO>): QueryFiltersDTO;
+  clearArrList(): QueryFiltersDTO;
+  addArr(value?: QueryFilterDTO, index?: number): QueryFilterDTO;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): QueryFiltersDTO.AsObject;
+  static toObject(includeInstance: boolean, msg: QueryFiltersDTO): QueryFiltersDTO.AsObject;
+  static serializeBinaryToWriter(message: QueryFiltersDTO, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): QueryFiltersDTO;
+  static deserializeBinaryFromReader(message: QueryFiltersDTO, reader: jspb.BinaryReader): QueryFiltersDTO;
+}
+
+export namespace QueryFiltersDTO {
+  export type AsObject = {
+    arrList: Array<QueryFilterDTO.AsObject>,
   }
 }
 
@@ -4122,8 +4154,8 @@ export class SortByDTO extends jspb.Message {
   getField(): string;
   setField(value: string): SortByDTO;
 
-  getDirection(): string;
-  setDirection(value: string): SortByDTO;
+  getDirection(): SortByDirectionEnumDTO;
+  setDirection(value: SortByDirectionEnumDTO): SortByDTO;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): SortByDTO.AsObject;
@@ -4136,7 +4168,7 @@ export class SortByDTO extends jspb.Message {
 export namespace SortByDTO {
   export type AsObject = {
     field: string,
-    direction: string,
+    direction: SortByDirectionEnumDTO,
   }
 }
 
@@ -4149,6 +4181,10 @@ export enum QueryFilterOperatorEnumDTO {
   LESS_THAN_OR_EQUAL = 5,
   CONTAINS = 6,
   REGEX = 7,
+}
+export enum SortByDirectionEnumDTO { 
+  ASC = 0,
+  DESC = 1,
 }
 export enum EffectTypeEnumDTO { 
   EFFECT_TYPE_DAMAGE = 0,

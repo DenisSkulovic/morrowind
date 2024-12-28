@@ -10,6 +10,7 @@ import { DisplayField } from "../../../../decorator/display-field.decorator";
 import { EntityDisplay } from "../../../../decorator/entity-display.decorator";
 import { FilterOption } from "../../../../decorator/filter-option.decorator";
 import { SkillCategoryEnumDTO } from "../../../../proto/common_pb";
+import { SerializeStrategyEnum } from "../../../../serialize/serializer";
 
 @EntityDisplay({
     title: 'Skills',
@@ -17,7 +18,6 @@ import { SkillCategoryEnumDTO } from "../../../../proto/common_pb";
 })
 export class Skill extends TaggableContentBase {
     @DisplayField({
-        order: 1,
         displayName: 'Name'
     })
     @FilterOption()
@@ -30,7 +30,6 @@ export class Skill extends TaggableContentBase {
     description!: string
 
     @DisplayField({
-        order: 2,
         displayName: 'Category'
     })
     @FilterOption()
@@ -44,10 +43,7 @@ export class Skill extends TaggableContentBase {
         },
         required: true
     })
-    @Serializable({
-        serialize: category => serializeEnum(SkillCategoryEnum, SkillCategoryEnumDTO, category),
-        deserialize: category => deserializeEnum(SkillCategoryEnumDTO, SkillCategoryEnum, category)
-    })
+    @Serializable({ strategy: SerializeStrategyEnum.ENUM, internalEnum: SkillCategoryEnum, protoEnum: SkillCategoryEnumDTO })
     category!: SkillCategoryEnum
 
 }

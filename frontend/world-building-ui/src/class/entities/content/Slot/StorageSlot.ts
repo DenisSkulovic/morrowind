@@ -1,13 +1,12 @@
 import { TaggableContentBase } from "../../../../class/TaggableContentBase";
 import { Serializable } from "../../../../decorator/serializable.decorator";
-import { Item } from "../Item/Item";
 import { FormField } from "../../../../decorator/form-field.decorator";
 import { FieldComponentEnum } from "../../../../enum/FieldComponentEnum";
 import { EntityDisplay } from "../../../../decorator/entity-display.decorator";
 import { DisplayField } from "../../../../decorator/display-field.decorator";
 import { FilterOption } from "../../../../decorator/filter-option.decorator";
-import { StorageGridDTO, StorageGridCellDTO, ItemDTO } from "../../../../proto/common_pb";
-import { deserializeGrid, GridSize, serializeGrid } from "../../../../class/GridSize";
+import { StorageGridDTO, StorageGridCellDTO } from "../../../../proto/common_pb";
+import { GridSize } from "../../../../class/GridSize";
 
 export type StorageGridCell = string | null;
 export type StorageGrid = StorageGridCell[][];
@@ -18,7 +17,6 @@ export type StorageGrid = StorageGridCell[][];
 })
 export class StorageSlot extends TaggableContentBase {
     @DisplayField({
-        order: 1,
         displayName: 'Name'
     })
     @FilterOption()
@@ -27,7 +25,7 @@ export class StorageSlot extends TaggableContentBase {
     name!: string
 
     @FormField({ component: FieldComponentEnum.OBJECT_FIELD, label: 'Grid Size', required: true })
-    @Serializable({ serialize: serializeGrid, deserialize: deserializeGrid })
+    @Serializable()
     grid!: GridSize;
 
     @Serializable({ serialize: serializeGridState, deserialize: deserializeGridState })
@@ -41,8 +39,8 @@ export class StorageSlot extends TaggableContentBase {
     parentItem!: string;
 
     @FormField({ component: FieldComponentEnum.ITEM_LIST_FIELD, label: 'Stored Items', required: false })
-    @Serializable({ strategy: 'full', getDTOInstance: () => new ItemDTO() })
-    storedItems?: Item[];
+    @Serializable()
+    storedItems?: string[];
 
 }
 

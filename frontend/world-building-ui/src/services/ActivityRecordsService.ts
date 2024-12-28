@@ -1,17 +1,18 @@
 import { Context } from "../class/Context";
 import { ActivityRecord } from "../class/entities/ActivityRecord";
 import { SearchQuery } from "../class/search/SearchQuery";
+import { backendURL } from "../config";
 import { activityRecordsHeadLimit } from "../config/worldDashboard";
 import { ActivityClearAllRequest, ActivityClearAllResponse, ActivityCreateRequest, ActivityCreateResponse, ActivityDTO, ActivityHeadRequest, ActivityHeadResponse, ActivitySearchRequest, ActivitySearchResponse, } from "../proto/activity_pb";
 import { ActivityServiceClient } from "../proto/ActivityServiceClientPb";
 import { ContextDTO, SearchQueryDTO } from "../proto/common_pb";
-import { Serializer } from "../serialize/serializer";
+import Serializer from "../serialize/serializer";
 
 export class ActivityRecordsService {
     private client: ActivityServiceClient
 
     constructor() {
-        this.client = new ActivityServiceClient("http://localhost:8080");
+        this.client = new ActivityServiceClient(backendURL);
     }
 
     async search(query: SearchQuery, context: Context): Promise<{

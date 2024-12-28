@@ -1,12 +1,14 @@
 import { Serializable } from "../../decorator/serializable.decorator";
 import { LooseObject } from "../../types";
+import { Entity } from "../Entity";
 
-export class User {
+
+export class User extends Entity {
     @Serializable()
     id!: string;
 
     @Serializable()
-    account!: string
+    account!: string;
 
     @Serializable()
     worlds?: string[];

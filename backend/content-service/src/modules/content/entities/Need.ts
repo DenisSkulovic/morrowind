@@ -7,7 +7,7 @@ import { Campaign } from "../../campaign/entities/Campaign";
 import { User } from "../../user/entities/User";
 import { World } from "../../world/entities/World";
 import { Serializable } from "../../../decorator/serializable.decorator";
-import { Serializer } from "../../../serializer";
+import { Serializer, SerializeStrategyEnum } from "../../../serializer";
 
 @Entity()
 export class Need extends ContentBase {
@@ -36,32 +36,26 @@ export class Need extends ContentBase {
      * Hunger is a dynamic need. Safety is an external need as it is based on the world around the NPC. 
      */
     @Column({ type: "enum", enum: Object.values(NeedTypeEnum) })
-    @Serializable({
-        serialize: (i) => serializeEnum(NeedTypeEnum, NeedTypeEnumDTO, i),
-        deserialize: (i) => deserializeEnum(NeedTypeEnumDTO, NeedTypeEnum, i)
-    })
+    @Serializable({ strategy: SerializeStrategyEnum.ENUM, internalEnum: NeedTypeEnum, protoEnum: NeedTypeEnumDTO })
     type!: NeedTypeEnum; // "dynamic", "threshold", "external".
 
     /**
      * Need layer according to Maslow pyramid
      */
     @Column({ type: "enum", enum: Object.values(NeedLayerEnum) })
-    @Serializable({
-        serialize: (i) => serializeEnum(NeedLayerEnum, NeedLayerEnumDTO, i),
-        deserialize: (i) => deserializeEnum(NeedLayerEnumDTO, NeedLayerEnum, i)
-    })
+    @Serializable({ strategy: SerializeStrategyEnum.ENUM, internalEnum: NeedLayerEnum, protoEnum: NeedLayerEnumDTO })
     layer!: NeedLayerEnum
 
     @ManyToOne(() => User, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     user!: User;
 
     @ManyToOne(() => Campaign, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     campaign?: Campaign;
 
     @ManyToOne(() => World, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     world!: World;
 
     public toDTO(): NeedDTO {
@@ -69,7 +63,6 @@ export class Need extends ContentBase {
     }
 
     public static fromDTO(dto: NeedDTO): Need {
-        const need = new Need();
-        return Serializer.fromDTO(dto, need);
+        return Serializer.fromDTO(dto, new Need());
     }
 }

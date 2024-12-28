@@ -5,7 +5,7 @@ import { TraitDTO, TraitTypeEnumDTO } from "../../../proto/common";
 import { Campaign } from "../../campaign/entities/Campaign";
 import { User } from "../../user/entities/User";
 import { World } from "../../world/entities/World";
-import { Serializer } from "../../../serializer";
+import { Serializer, SerializeStrategyEnum } from "../../../serializer";
 import { Serializable } from "../../../decorator/serializable.decorator";
 import { TraitTypeEnum } from "../../../common/enum/TraitTypeEnum";
 import { deserializeEnum, serializeEnum } from "../../../common/enum/util";
@@ -23,26 +23,23 @@ export class Trait extends TaggableContentBase {
     name!: string;
 
     @Column({ type: "enum", enum: Object.values(TraitTypeEnum) })
-    @Serializable({
-        serialize: (i) => serializeEnum(TraitTypeEnum, TraitTypeEnumDTO, i),
-        deserialize: (i) => deserializeEnum(TraitTypeEnumDTO, TraitTypeEnum, i)
-    })
+    @Serializable({ strategy: SerializeStrategyEnum.ENUM, internalEnum: TraitTypeEnum, protoEnum: TraitTypeEnumDTO })
     traitType!: TraitTypeEnum
 
     @ManyToMany(() => Tag, (tag) => tag.traits, {})
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     tags?: Tag[];
 
     @ManyToOne(() => User, { nullable: true, })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     user!: User;
 
     @ManyToOne(() => Campaign, { nullable: true, })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     campaign?: Campaign;
 
     @ManyToOne(() => World, { nullable: true, })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     world!: World;
 
     public toDTO(): TraitDTO {
@@ -50,7 +47,6 @@ export class Trait extends TaggableContentBase {
     }
 
     public static fromDTO(dto: TraitDTO): Trait {
-        const trait = new Trait();
-        return Serializer.fromDTO(dto, trait);
+        return Serializer.fromDTO(dto, new Trait());
     }
 }

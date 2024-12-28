@@ -4,7 +4,7 @@ import { User } from "../../user/entities/User";
 
 import { randomUUID } from "crypto";
 import { CampaignDTO } from "../../../proto/common";
-import { Serializer } from "../../../serializer";
+import { Serializer, SerializeStrategyEnum } from "../../../serializer";
 import { Addiction } from "../../content/entities/Addiction";
 import { Background } from "../../content/entities/Background";
 import { Birthsign } from "../../content/entities/Birthsign";
@@ -62,18 +62,15 @@ export class Campaign extends BaseEntity {
     dynamicState?: any;
 
     @ManyToOne(() => World, (world) => world.campaigns, {})
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     world!: World;
 
     @Column({ type: "timestamp", nullable: true })
-    @Serializable({
-        serialize: (val: Date) => val.getTime(),
-        deserialize: (val: number) => new Date(val)
-    })
+    @Serializable({ strategy: SerializeStrategyEnum.DATE })
     createdAt?: Date;
 
     @ManyToOne(() => User, user => user.campaigns, {})
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     user!: User;
 
     @OneToMany(() => Item, item => item.campaign, { onDelete: "CASCADE", })

@@ -13,14 +13,15 @@ import {
     GetPresetsResponse,
     GetPresetsRequest
 } from "../proto/world_pb";
-import { Serializer } from "../serialize/serializer";
+import Serializer from "../serialize/serializer";
 import { ContextDTO, PresetEnumDTO, SearchQueryDTO, WorldDTO } from "../proto/common_pb";
+import { backendURL } from "../config";
 
 export class WorldService {
     private client: WorldServiceClient;
 
     constructor() {
-        this.client = new WorldServiceClient("http://localhost:8080");
+        this.client = new WorldServiceClient(backendURL);
     }
 
     async createWorld(worldObj: World, userId: string): Promise<World> {
@@ -73,12 +74,20 @@ export class WorldService {
     }
 
     async search(query: SearchQuery, context: Context): Promise<World[]> {
+        console.log('[WorldService] search query', query);
         const request: SearchWorldRequest = new SearchWorldRequest();
+        console.log('[WorldService] instantiated search request');
         request.setEntityname("World");
+        console.log('[WorldService] set entity name');
         const queryDTO: SearchQueryDTO = Serializer.toDTO(query, new SearchQueryDTO())
+        console.log('[WorldService] serialized search query', queryDTO);
         request.setQuery(queryDTO);
+        console.log('[WorldService] set search query');
         const contextDTO = Serializer.toDTO(context, new ContextDTO())
+        console.log('[WorldService] serialized search context', contextDTO);
         request.setContext(contextDTO);
+        console.log('[WorldService] set search context');
+        console.log('[WorldService] search request', request);
         return new Promise((resolve, reject) => {
             this.client.search(request, {}, (err, response: SearchWorldResponse) => {
                 if (err) reject(err);

@@ -1,6 +1,5 @@
 import { ContentBase } from "../../../class/ContentBase";
 import { EffectElementEnum, EffectTypeEnum } from "../../../enum/entityEnums";
-import { serializeEnum, deserializeEnum } from "../../../enum/util";
 import { Serializable } from "../../../decorator/serializable.decorator";
 import { FormField } from "../../../decorator/form-field.decorator";
 import { FieldComponentEnum } from "../../../enum/FieldComponentEnum";
@@ -9,19 +8,20 @@ import { DisplayField } from "../../../decorator/display-field.decorator";
 import { EntityDisplay } from "../../../decorator/entity-display.decorator";
 import { FilterOption } from "../../../decorator/filter-option.decorator";
 import { EffectTypeEnumDTO, EffectElementEnumDTO } from "../../../proto/common_pb";
+import { SerializeStrategyEnum } from "../../../serialize/serializer";
 
 @EntityDisplay({
     title: 'Resistances',
     defaultSort: 'name'
 })
 export class Resistance extends ContentBase {
-    @DisplayField({ order: 1 })
+    @DisplayField()
     @FilterOption()
     @Serializable()
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter resistance name', required: true })
     name!: string;
 
-    @DisplayField({ order: 2 })
+    @DisplayField()
     @FilterOption()
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
@@ -33,13 +33,10 @@ export class Resistance extends ContentBase {
         },
         required: true
     })
-    @Serializable({
-        serialize: type => serializeEnum(EffectTypeEnum, EffectTypeEnumDTO, type),
-        deserialize: type => deserializeEnum(EffectTypeEnumDTO, EffectTypeEnum, type)
-    })
-    effectType!: string; // Matches Effect.type
+    @Serializable({ strategy: SerializeStrategyEnum.ENUM, internalEnum: EffectTypeEnum, protoEnum: EffectTypeEnumDTO })
+    effectType!: EffectTypeEnum; // Matches Effect.type
 
-    @DisplayField({ order: 3 })
+    @DisplayField()
     @FilterOption()
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
@@ -51,10 +48,7 @@ export class Resistance extends ContentBase {
             })
         }
     })
-    @Serializable({
-        serialize: element => serializeEnum(EffectElementEnum, EffectElementEnumDTO, element),
-        deserialize: element => deserializeEnum(EffectElementEnumDTO, EffectElementEnum, element)
-    })
-    targetEffect?: string; // "fire", "poison", "disease".
+    @Serializable({ strategy: SerializeStrategyEnum.ENUM, internalEnum: EffectElementEnum, protoEnum: EffectElementEnumDTO })
+    targetEffect?: EffectElementEnum; // "fire", "poison", "disease".
 
 }

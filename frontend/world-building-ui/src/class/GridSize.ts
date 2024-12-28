@@ -1,5 +1,4 @@
 import { Serializable } from "../decorator/serializable.decorator";
-import { GridSizeDTO } from "../proto/common_pb";
 
 export class GridSize {
     @Serializable()

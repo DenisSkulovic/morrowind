@@ -8,7 +8,7 @@ import { Campaign } from "../../campaign/entities/Campaign";
 import { User } from "../../user/entities/User";
 import { World } from "../../world/entities/World";
 import { Serializable } from "../../../decorator/serializable.decorator";
-import { Serializer } from "../../../serializer";
+import { Serializer, SerializeStrategyEnum } from "../../../serializer";
 import { deserializeEnum, serializeEnum } from "../../../common/enum/util";
 
 
@@ -29,29 +29,26 @@ export class Disease extends TaggableContentBase {
     description!: string;
 
     @Column({ type: "enum", enum: Object.values(DiseaseSeverityEnum) })
-    @Serializable({
-        serialize: type => serializeEnum(DiseaseSeverityEnum, DiseaseSeverityEnumDTO, type),
-        deserialize: type => deserializeEnum(DiseaseSeverityEnumDTO, DiseaseSeverityEnum, type),
-    })
+    @Serializable({ strategy: SerializeStrategyEnum.ENUM, internalEnum: DiseaseSeverityEnum, protoEnum: DiseaseSeverityEnumDTO })
     severity!: string;
 
     @ManyToMany(() => Character, {})
     characters?: Character[];
 
     @ManyToMany(() => Tag, (tag) => tag.diseases, {})
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     tags?: Tag[];
 
     @ManyToOne(() => User, { nullable: true, })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     user!: User;
 
     @ManyToOne(() => Campaign, { nullable: true, })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     campaign?: Campaign;
 
     @ManyToOne(() => World, { nullable: true, })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     world!: World;
 
     public toDTO(): DiseaseDTO {
@@ -59,7 +56,6 @@ export class Disease extends TaggableContentBase {
     }
 
     public static fromDTO(dto: DiseaseDTO): Disease {
-        const disease = new Disease();
-        return Serializer.fromDTO(dto, disease);
+        return Serializer.fromDTO(dto, new Disease());
     }
 }

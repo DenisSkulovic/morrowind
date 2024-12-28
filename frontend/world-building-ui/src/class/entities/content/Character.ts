@@ -1,6 +1,5 @@
 import { TaggableContentBase } from "../../../class/TaggableContentBase";
 import { GenderEnum } from "../../../enum/GenderEnum";
-import { serializeEnum, deserializeEnum } from "../../../enum/util";
 import { Serializable } from "../../../decorator/serializable.decorator";
 import { Birthsign } from "./Birthsign";
 import { Race } from "./Race";
@@ -20,7 +19,19 @@ import { EntityDisplay } from '../../../decorator/entity-display.decorator';
 import { FilterOption } from '../../../decorator/filter-option.decorator';
 import { SearchQuery } from '../../../class/search/SearchQuery';
 import { Context } from '../../../class/Context';
-import { EquipmentSlotsDTO, GenderEnumDTO } from '../../../proto/common_pb';
+import {
+    AddictionDTO,
+    AddictionsDTO, BirthsignDTO, CharacterMemoriesDTO,
+    CharacterMemoryDTO,
+    CharacterProfessionDTO,
+    CharacterProfessionsDTO, DiseaseDTO, DiseasesDTO, EquipmentSlotDTO, EquipmentSlotsDTO,
+    FactionDTO,
+    FactionsDTO, GenderEnumDTO, MemoryPoolDTO, MemoryPoolsDTO,
+    PastExperienceDTO,
+    PastExperiencesDTO, RaceDTO, TraitDTO, TraitsDTO
+} from '../../../proto/common_pb';
+import { CharacterMemory } from "./CharacterMemory";
+import { SerializeStrategyEnum } from "../../../serialize/serializer";
 
 @EntityDisplay({
     title: 'Characters',
@@ -28,7 +39,6 @@ import { EquipmentSlotsDTO, GenderEnumDTO } from '../../../proto/common_pb';
 })
 export class Character extends TaggableContentBase {
     @DisplayField({
-        order: 1,
         displayName: 'Name',
         getValue: (char: Character) => `${char.firstName} ${char.lastName}`
     })
@@ -40,7 +50,7 @@ export class Character extends TaggableContentBase {
     @Serializable()
     lastName!: string;
 
-    @DisplayField({ order: 2 })
+    @DisplayField()
     @FilterOption()
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
@@ -51,10 +61,10 @@ export class Character extends TaggableContentBase {
             })
         }
     })
-    @Serializable()
-    race!: string;
+    @Serializable({ strategy: SerializeStrategyEnum.ID, dtoClass: RaceDTO })
+    race!: Race;
 
-    @DisplayField({ order: 3 })
+    @DisplayField()
     @FilterOption()
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
@@ -65,13 +75,10 @@ export class Character extends TaggableContentBase {
             })
         },
     })
-    @Serializable({
-        serialize: gender => serializeEnum(GenderEnum, GenderEnumDTO, gender),
-        deserialize: gender => deserializeEnum(GenderEnumDTO, GenderEnum, gender),
-    })
+    @Serializable({ strategy: SerializeStrategyEnum.ENUM, internalEnum: GenderEnum, protoEnum: GenderEnumDTO })
     gender!: GenderEnum;
 
-    @DisplayField({ order: 4 })
+    @DisplayField()
     @FilterOption()
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
@@ -82,8 +89,8 @@ export class Character extends TaggableContentBase {
             })
         }
     })
-    @Serializable()
-    birthsign?: string;
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, dtoClass: BirthsignDTO })
+    birthsign?: Birthsign;
 
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Birth Era', placeholder: 'Enter birth era' })
     @Serializable()
@@ -114,7 +121,7 @@ export class Character extends TaggableContentBase {
             })
         }
     })
-    @Serializable({ strategy: 'full', getDTOInstance: () => new EquipmentSlotsDTO() })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, dtoClass: EquipmentSlotDTO, dtoArrClass: EquipmentSlotsDTO })
     equipmentSlots!: EquipmentSlot[];
 
     @FormField({
@@ -126,8 +133,8 @@ export class Character extends TaggableContentBase {
             })
         }
     })
-    @Serializable()
-    professions!: string[];
+    @Serializable({ strategy: SerializeStrategyEnum.ID, dtoClass: CharacterProfessionDTO, dtoArrClass: CharacterProfessionsDTO })
+    professions!: CharacterProfession[];
 
     @FormField({
         component: FieldComponentEnum.MULTI_SELECT_FIELD,
@@ -138,8 +145,8 @@ export class Character extends TaggableContentBase {
             })
         }
     })
-    @Serializable()
-    memoryPools!: string[];
+    @Serializable({ strategy: SerializeStrategyEnum.ID, dtoClass: MemoryPoolDTO, dtoArrClass: MemoryPoolsDTO })
+    memoryPools!: MemoryPool[];
 
     @FormField({
         component: FieldComponentEnum.MULTI_SELECT_FIELD,
@@ -150,8 +157,8 @@ export class Character extends TaggableContentBase {
             })
         }
     })
-    @Serializable()
-    characterMemories!: string[];
+    @Serializable({ strategy: SerializeStrategyEnum.ID, dtoClass: CharacterMemoryDTO, dtoArrClass: CharacterMemoriesDTO })
+    characterMemories!: CharacterMemory[];
 
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Enneagram Type', placeholder: 'Enter enneagram type' })
     @Serializable()
@@ -164,8 +171,8 @@ export class Character extends TaggableContentBase {
             })
         }
     })
-    @Serializable()
-    traits!: string[];
+    @Serializable({ strategy: SerializeStrategyEnum.ID, dtoClass: TraitDTO, dtoArrClass: TraitsDTO })
+    traits!: Trait[];
 
     @FormField({
         component: FieldComponentEnum.MULTI_SELECT_FIELD, label: 'Diseases', search: async (filter, context): Promise<FormSelectOption[]> => {
@@ -174,8 +181,8 @@ export class Character extends TaggableContentBase {
             })
         }
     })
-    @Serializable()
-    diseases?: string[];
+    @Serializable({ strategy: SerializeStrategyEnum.ID, dtoClass: DiseaseDTO, dtoArrClass: DiseasesDTO })
+    diseases?: Disease[];
 
     @FormField({
         component: FieldComponentEnum.MULTI_SELECT_FIELD, label: 'Addictions', search: async (filter, context): Promise<FormSelectOption[]> => {
@@ -184,8 +191,8 @@ export class Character extends TaggableContentBase {
             })
         }
     })
-    @Serializable()
-    addictions?: string[];
+    @Serializable({ strategy: SerializeStrategyEnum.ID, dtoClass: AddictionDTO, dtoArrClass: AddictionsDTO })
+    addictions?: Addiction[];
 
     @FormField({
         component: FieldComponentEnum.MULTI_SELECT_FIELD,
@@ -196,10 +203,10 @@ export class Character extends TaggableContentBase {
             })
         }
     })
-    @Serializable()
-    pastExperiences?: string[];
+    @Serializable({ strategy: SerializeStrategyEnum.ID, dtoClass: PastExperienceDTO, dtoArrClass: PastExperiencesDTO })
+    pastExperiences?: PastExperience[];
 
-    @DisplayField({ order: 5 })
+    @DisplayField()
     @FilterOption()
     @FormField({
         component: FieldComponentEnum.MULTI_SELECT_FIELD,
@@ -210,7 +217,7 @@ export class Character extends TaggableContentBase {
             })
         }
     })
-    @Serializable()
-    factions?: string[];
+    @Serializable({ strategy: SerializeStrategyEnum.ID, dtoClass: FactionDTO, dtoArrClass: FactionsDTO })
+    factions?: Faction[];
 
 }

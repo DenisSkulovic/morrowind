@@ -1,6 +1,6 @@
 import { Serializable } from "../../decorator/serializable.decorator";
-import { Serializer } from "../../serialize/serializer";
-import { SortByDTO } from "../../proto/common_pb";
+import Serializer, { SerializeStrategyEnum } from "../../serialize/serializer";
+import { SortByDirectionEnumDTO, SortByDTO } from "../../proto/common_pb";
 
 export enum SortByDirectionEnum {
     ASC = 'asc',
@@ -11,7 +11,7 @@ export class SortBy {
     @Serializable()
     public field!: string;
 
-    @Serializable()
+    @Serializable({ strategy: SerializeStrategyEnum.ENUM, internalEnum: SortByDirectionEnum, protoEnum: SortByDirectionEnumDTO })
     public direction!: SortByDirectionEnum;
 
     static build(body: any): SortBy {

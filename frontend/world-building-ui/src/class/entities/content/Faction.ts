@@ -11,7 +11,7 @@ import { FilterOption } from "../../../decorator/filter-option.decorator";
     defaultSort: 'name'
 })
 export class Faction extends TaggableContentBase {
-    @DisplayField({ order: 1 })
+    @DisplayField()
     @FilterOption()
     @Serializable()
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter faction name', required: true })

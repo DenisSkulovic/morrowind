@@ -9,7 +9,8 @@ import { FormSelectOption } from "../../../class/FormSelectOption";
 import { DisplayField } from '../../../decorator/display-field.decorator';
 import { EntityDisplay } from '../../../decorator/entity-display.decorator';
 import { FilterOption } from '../../../decorator/filter-option.decorator';
-import { MemoryTypeEnumDTO } from '../../../proto/common_pb';
+import { FactDTO, FactsDTO, MemoryTypeEnumDTO } from '../../../proto/common_pb';
+import { SerializeStrategyEnum } from "../../../serialize/serializer";
 
 @EntityDisplay({
     title: 'Memories',
@@ -17,7 +18,6 @@ import { MemoryTypeEnumDTO } from '../../../proto/common_pb';
 })
 export class Memory extends TaggableContentBase {
     @DisplayField({
-        order: 1,
         displayName: 'Name'
     })
     @FilterOption()
@@ -29,7 +29,7 @@ export class Memory extends TaggableContentBase {
     @FormField({ component: FieldComponentEnum.TEXTAREA_FIELD, label: 'Description', placeholder: 'Enter memory description', required: true })
     description!: string
 
-    @DisplayField({ order: 2 })
+    @DisplayField()
     @FilterOption()
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
@@ -40,14 +40,11 @@ export class Memory extends TaggableContentBase {
             })
         },
     })
-    @Serializable({
-        serialize: type => serializeEnum(MemoryTypeEnum, MemoryTypeEnumDTO, type),
-        deserialize: type => deserializeEnum(MemoryTypeEnumDTO, MemoryTypeEnum, type),
-    })
+    @Serializable({ strategy: SerializeStrategyEnum.ENUM, internalEnum: MemoryTypeEnum, protoEnum: MemoryTypeEnumDTO })
     type!: MemoryTypeEnum // TODO need to properly conceptualize types of memories and what that means. Maybe better to do it with tags?
 
     @FormField({ component: FieldComponentEnum.OBJECT_FIELD, label: 'Facts', placeholder: 'Enter facts', required: true })
-    @Serializable({ strategy: 'full' })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, dtoClass: FactDTO, dtoArrClass: FactsDTO })
     facts!: Fact[]
 
 }

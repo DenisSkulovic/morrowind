@@ -6,7 +6,7 @@ import { Campaign } from "../../../campaign/entities/Campaign";
 import { User } from "../../../user/entities/User";
 import { World } from "../../../world/entities/World";
 import { Serializable } from "../../../../decorator/serializable.decorator";
-import { Serializer } from "../../../../serializer";
+import { Serializer, SerializeStrategyEnum } from "../../../../serializer";
 import { serializeSkillImprovement, deserializeSkillImprovement, SkillImprovement } from "../../../../class/SkillImprovement";
 
 @Entity()
@@ -26,19 +26,19 @@ export class SkillSet extends TaggableContentBase {
     skillImprovement!: SkillImprovement
 
     @ManyToMany(() => Tag, (tag) => tag.skills)
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     tags?: Tag[];
 
     @ManyToOne(() => User, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     user!: User;
 
     @ManyToOne(() => Campaign, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     campaign?: Campaign;
 
     @ManyToOne(() => World, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     world!: World;
 
     public toDTO(): SkillSetDTO {
@@ -46,7 +46,6 @@ export class SkillSet extends TaggableContentBase {
     }
 
     public static fromDTO(dto: SkillSetDTO): SkillSet {
-        const skillSet = new SkillSet();
-        return Serializer.fromDTO(dto, skillSet);
+        return Serializer.fromDTO(dto, new SkillSet());
     }
 }

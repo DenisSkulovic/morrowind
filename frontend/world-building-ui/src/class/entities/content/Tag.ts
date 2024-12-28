@@ -13,7 +13,6 @@ import { FilterOption } from '../../../decorator/filter-option.decorator';
 })
 export class Tag extends ContentBase {
     @DisplayField({
-        order: 1,
         displayName: 'Label'
     })
     @FilterOption()
@@ -21,7 +20,7 @@ export class Tag extends ContentBase {
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Label', placeholder: 'Enter tag label', required: true })
     label!: string; // The tag's name (e.g., "dunmeri", "rare")
 
-    @DisplayField({ order: 2 })
+    @DisplayField()
     @FilterOption()
     @Serializable()
     @FormField({

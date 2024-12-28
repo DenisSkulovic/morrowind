@@ -7,18 +7,20 @@ import {
     GetCampaignResponse, UpdateCampaignRequest, UpdateCampaignResponse, SearchCampaignRequest,
     SearchCampaignResponse, DeleteCampaignRequest
 } from "../proto/campaign_pb";
-import { Serializer } from "../serialize/serializer";
+import Serializer from "../serialize/serializer";
 import { CampaignDTO, ContextDTO, SearchQueryDTO } from "../proto/common_pb";
+import { User } from "../class/entities/User";
+import { backendURL } from "../config";
 
 export class CampaignService {
     private client: CampaignServiceClient;
 
     constructor() {
-        this.client = new CampaignServiceClient("http://localhost:8080");
+        this.client = new CampaignServiceClient(backendURL);
     }
 
     async createCampaign(campaignObj: Campaign, userId: string): Promise<Campaign> {
-        campaignObj.user = userId;
+        campaignObj.user = User.build({ id: userId });
         const request = new CreateCampaignRequest();
         request.setCampaign(Serializer.toDTO(campaignObj, new CampaignDTO()));
         return new Promise((resolve, reject) => {

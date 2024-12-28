@@ -7,7 +7,7 @@ import { Campaign } from "../../campaign/entities/Campaign";
 import { User } from "../../user/entities/User";
 import { World } from "../../world/entities/World";
 import { Serializable } from "../../../decorator/serializable.decorator";
-import { Serializer } from "../../../serializer";
+import { Serializer, SerializeStrategyEnum } from "../../../serializer";
 
 @Entity()
 export class MemoryPoolEntry extends ContentBase {
@@ -22,11 +22,11 @@ export class MemoryPoolEntry extends ContentBase {
     name!: string;
 
     @ManyToOne(() => MemoryPool, (memoryPool) => memoryPool.memoryPoolEntries)
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     memoryPool!: MemoryPool;
 
     @ManyToOne(() => Memory, (memory) => memory.id)
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     memory!: Memory;
 
     @Column("float", { default: 1.0 })
@@ -42,15 +42,15 @@ export class MemoryPoolEntry extends ContentBase {
     defaultImportance!: number;
 
     @ManyToOne(() => User, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     user!: User;
 
     @ManyToOne(() => Campaign, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     campaign?: Campaign;
 
     @ManyToOne(() => World, { nullable: true })
-    @Serializable({ strategy: 'id' })
+    @Serializable({ strategy: SerializeStrategyEnum.ID })
     world!: World;
 
     public toDTO(): MemoryPoolEntryDTO {
@@ -58,7 +58,6 @@ export class MemoryPoolEntry extends ContentBase {
     }
 
     public static fromDTO(dto: MemoryPoolEntryDTO): MemoryPoolEntry {
-        const memoryPoolEntry = new MemoryPoolEntry();
-        return Serializer.fromDTO(dto, memoryPoolEntry);
+        return Serializer.fromDTO(dto, new MemoryPoolEntry());
     }
 }

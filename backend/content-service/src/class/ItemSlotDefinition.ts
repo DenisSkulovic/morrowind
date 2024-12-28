@@ -1,33 +1,22 @@
-import { EquipmentSlotDefinitionDTO, EquipmentSlotDefinitionsDTO } from "../proto/common";
+import { Serializable } from "../decorator/serializable.decorator";
+import { EquipmentSlotDefinitionDTO } from "../proto/common";
+import { Serializer } from "../serializer";
 
 export class EquipmentSlotDefinition {
+    @Serializable()
     clazz = "EquipmentSlotDefinition"
-    constructor(
-        public name: string,
-        public allowedEntities: string[]
-    ) { }
+
+    @Serializable()
+    name!: string
+
+    @Serializable()
+    allowedEntities!: string[]
+
     toDTO(): EquipmentSlotDefinitionDTO {
-        return serializeEquipmentSlotDefinition(this)
+        return Serializer.toDTO(this)
     }
+
     static fromDTO(dto: EquipmentSlotDefinitionDTO): EquipmentSlotDefinition {
-        return deserializeEquipmentSlotDefinition(dto)
+        return Serializer.fromDTO(dto, new EquipmentSlotDefinition())
     }
-}
-export type EquipmentSlotDefinitions = EquipmentSlotDefinition[]
-
-export function serializeEquipmentSlotDefinition(itSlDefinition: EquipmentSlotDefinition): EquipmentSlotDefinitionDTO {
-    return itSlDefinition
-}
-export function deserializeEquipmentSlotDefinition(itSlDefinitionDTO: EquipmentSlotDefinitionDTO): EquipmentSlotDefinition {
-    return new EquipmentSlotDefinition(
-        itSlDefinitionDTO.name,
-        itSlDefinitionDTO.allowedEntities
-    )
-}
-
-export function serializeEquipmentSlotDefinitions(itSlDefinitions: EquipmentSlotDefinitions): EquipmentSlotDefinitionsDTO {
-    return { arr: itSlDefinitions.map((def) => serializeEquipmentSlotDefinition(def)) }
-}
-export function deserializeEquipmentSlotDefinitions(itSlDefinitionsDTO: EquipmentSlotDefinitionsDTO): EquipmentSlotDefinitions {
-    return itSlDefinitionsDTO.arr.map((defDTO) => deserializeEquipmentSlotDefinition(defDTO))
 }

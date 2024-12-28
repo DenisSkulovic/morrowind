@@ -1,7 +1,8 @@
 import { Serializable } from "../../decorator/serializable.decorator";
 import { LooseObject } from "../../types";
+import { Entity } from "../Entity";
 
-export class Account {
+export class Account extends Entity {
     @Serializable()
     id!: string;
 
@@ -15,7 +16,7 @@ export class Account {
     role!: string;
 
     @Serializable()
-    user!: string
+    user!: string;
 
     public static build(obj: LooseObject): Account {
         const account = new Account();
