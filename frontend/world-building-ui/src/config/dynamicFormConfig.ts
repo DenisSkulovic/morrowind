@@ -20,7 +20,8 @@ const defaultValueMap: Record<FieldComponentEnum, DefaultValue> = {
     [FieldComponentEnum.SELECT_FIELD]: '',
     [FieldComponentEnum.OBJECT_FIELD]: '',
     [FieldComponentEnum.RADIO_FIELD]: '',
-    [FieldComponentEnum.GENERATION_INSTRUCTION_FIELD]: ''
+    [FieldComponentEnum.GENERATION_INSTRUCTION_FIELD]: '',
+    [FieldComponentEnum.DATE_FIELD]: new Date()
 };
 
 export const getDefaultValue = (component: FieldComponentEnum): DefaultValue => {

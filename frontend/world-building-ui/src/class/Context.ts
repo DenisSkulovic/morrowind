@@ -3,6 +3,9 @@ import { User } from "./entities/User";
 import { World } from "./entities/World";
 import { Campaign } from "./entities/Campaign";
 import { SerializeStrategyEnum } from "../serialize/serializer";
+import { LooseObject } from "../types";
+
+export type ContextPlain = LooseObject
 
 export class Context {
     @Serializable({ strategy: SerializeStrategyEnum.ID })
@@ -21,5 +24,9 @@ export class Context {
         const context = new Context();
         Object.assign(context, data);
         return context;
+    }
+
+    toPlainObj(): LooseObject {
+        return JSON.parse(JSON.stringify(this));
     }
 }

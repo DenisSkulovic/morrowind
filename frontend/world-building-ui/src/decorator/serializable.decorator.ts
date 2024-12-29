@@ -10,6 +10,7 @@ export function Serializable(
         protoEnum?: any;
         serialize?: (value: any) => any;
         deserialize?: (value: any) => any;
+        internalClass?: any;
         dtoClass?: any;
         dtoArrClass?: any;
     }) {
@@ -25,6 +26,7 @@ export function Serializable(
                 protoEnum: options?.protoEnum,
                 serialize: options?.serialize,
                 deserialize: options?.deserialize,
+                internalClass: options?.internalClass,
                 dtoClass: options?.dtoClass,
                 dtoArrClass: options?.dtoArrClass,
             },
@@ -42,6 +44,7 @@ export function getSerializableFields(target: any): {
     protoEnum?: any;
     serialize?: (value: any) => any;
     deserialize?: (value: any) => any;
+    internalClass?: any;
     dtoClass?: any;
     dtoArrClass?: any;
 }[] {

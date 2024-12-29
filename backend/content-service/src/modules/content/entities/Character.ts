@@ -84,7 +84,7 @@ export class Character extends TaggableContentBase {
 
     @OneToMany(() => EquipmentSlot, eqiupmentSlot => eqiupmentSlot.character)
     @JoinTable()
-    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true, internalClass: EquipmentSlot })
     equipmentSlots!: EquipmentSlot[];
 
     @ManyToMany(() => CharacterProfession, profession => profession.characters)

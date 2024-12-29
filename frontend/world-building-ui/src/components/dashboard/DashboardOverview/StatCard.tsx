@@ -1,17 +1,12 @@
 import { Box, Typography } from '@mui/material';
-import * as MaterialIcons from '@mui/icons-material';
 
 interface StatCardProps {
     title: string;
     value: number;
-    icon: string;
+    Icon: React.ComponentType;
 }
 
-const StatCard = ({ title, value, icon }: StatCardProps) => {
-    const getIcon = (iconName: string) => {
-        const Icon = (MaterialIcons as any)[iconName];
-        return Icon ? <Icon /> : null;
-    };
+const StatCard = ({ title, value, Icon }: StatCardProps) => {
     return (
         <Box sx={{
             p: 2,
@@ -27,7 +22,7 @@ const StatCard = ({ title, value, icon }: StatCardProps) => {
                 alignItems: 'center',
                 color: 'primary.main'
             }}>
-                {getIcon(icon)}
+                {Icon && <Icon />}
             </Box>
             <Box>
                 <Typography variant="h6" component="div">

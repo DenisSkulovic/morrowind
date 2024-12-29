@@ -6,7 +6,7 @@ import { FormSelectOption } from "../../../class/FormSelectOption";
 import { MemoryPool } from "./MemoryPool";
 import { DisplayField } from "../../../decorator/display-field.decorator";
 import { EntityDisplay } from "../../../decorator/entity-display.decorator";
-import { FilterOption } from "../../../decorator/filter-option.decorator";
+import { FilterOption, FilterOptionTypeEnum } from "../../../decorator/filter-option.decorator";
 import { MemoryPoolDTO, MemoryPoolsDTO } from "../../../proto/common_pb";
 import { SerializeStrategyEnum } from "../../../serialize/serializer";
 
@@ -16,11 +16,15 @@ import { SerializeStrategyEnum } from "../../../serialize/serializer";
 })
 export class CharacterProfession extends TaggableContentBase {
     @DisplayField()
-    @FilterOption()
+    @FilterOption({ type: FilterOptionTypeEnum.TEXT })
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter profession name', required: true })
     @Serializable()
     name!: string; // E.g., "Fisherman", "Kwama Egg Miner", "Imperial Soldier"
 
+    @DisplayField({
+        displayName: 'No. of Memory Pools',
+        getValue: (entity: CharacterProfession) => entity.memoryPools.length
+    })
     @FormField({
         component: FieldComponentEnum.MULTI_SELECT_FIELD,
         label: 'Memory Pools',
@@ -30,7 +34,7 @@ export class CharacterProfession extends TaggableContentBase {
             })
         }
     })
-    @Serializable({ strategy: SerializeStrategyEnum.ID, dtoClass: MemoryPoolDTO, dtoArrClass: MemoryPoolsDTO })
+    @Serializable({ strategy: SerializeStrategyEnum.ID, internalClass: MemoryPool, dtoClass: MemoryPoolDTO, dtoArrClass: MemoryPoolsDTO })
     memoryPools!: MemoryPool[];
 
 }

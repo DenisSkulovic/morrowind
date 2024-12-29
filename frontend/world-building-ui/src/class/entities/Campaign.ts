@@ -38,7 +38,4 @@ export class Campaign extends Entity {
         return campaignService.search(filter, context);
     }
 
-    toPlainObj(): LooseObject {
-        return JSON.parse(JSON.stringify(this));
-    }
 }

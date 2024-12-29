@@ -4,6 +4,7 @@ import { Campaign } from "./modules/campaign/entities/Campaign";
 import { User } from "./modules/user/entities/User";
 import { World } from "./modules/world/entities/World";
 import { Serializable } from "./decorator/serializable.decorator";
+import { SerializeStrategyEnum } from "./serializer";
 
 export abstract class ContentBase extends BaseEntity {
 
@@ -22,10 +23,8 @@ export abstract class ContentBase extends BaseEntity {
     blueprintId!: string;
 
     @Column({ type: "timestamp", nullable: true })
-    @Serializable({
-        serialize: (val: Date) => val.getTime(),
-        deserialize: (val: number) => new Date(val)
-    }) createdAt?: Date;
+    @Serializable({ strategy: SerializeStrategyEnum.DATE })
+    createdAt?: Date;
 
     @Column({ type: "json", nullable: true })
     @Serializable()

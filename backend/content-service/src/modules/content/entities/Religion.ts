@@ -36,14 +36,14 @@ export class Religion extends ContentBase {
      * A list of common rituals or practices for this religion.
      */
     @Column("jsonb", { nullable: true })
-    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true, internalClass: ReligionRitual })
     rituals?: ReligionRitual[];
 
     /**
      * A list of moral or behavioral principles associated with the religion.
      */
     @Column("jsonb", { nullable: true })
-    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true, internalClass: ReligionTenet })
     tenets?: ReligionTenet[];
 
     @ManyToOne(() => User, { nullable: true })

@@ -9,10 +9,10 @@ import { FormSelectOption } from "../../../class/FormSelectOption";
 import { Birthsign } from "./Birthsign";
 import { DisplayField } from '../../../decorator/display-field.decorator';
 import { EntityDisplay } from '../../../decorator/entity-display.decorator';
-import { FilterOption } from '../../../decorator/filter-option.decorator';
+import { FilterOption, FilterOptionTypeEnum } from '../../../decorator/filter-option.decorator';
 import { Context } from '../../../class/Context';
 import { SearchQuery } from '../../../class/search/SearchQuery';
-import { GenderEnumDTO } from '../../../proto/common_pb';
+import { BackgroundCustomizationDTO, GenderEnumDTO } from '../../../proto/common_pb';
 import { SerializeStrategyEnum } from "../../../serialize/serializer";
 
 @EntityDisplay({
@@ -21,21 +21,23 @@ import { SerializeStrategyEnum } from "../../../serialize/serializer";
 })
 export class CharacterGenInstruction extends ContentBase {
     @DisplayField({
-        displayName: 'Name',
-        getValue: (inst: CharacterGenInstruction) => inst.firstName || inst.lastName ?
-            `${inst.firstName || ''} ${inst.lastName || ''}`.trim() : 'Unnamed'
+        displayName: 'First Name'
     })
-    @FilterOption()
+    @FilterOption({ type: FilterOptionTypeEnum.TEXT })
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'First Name', placeholder: 'Enter first name', required: false })
     @Serializable()
     firstName?: string
 
+    @DisplayField({
+        displayName: 'Last Name'
+    })
+    @FilterOption({ type: FilterOptionTypeEnum.TEXT })
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Last Name', placeholder: 'Enter last name', required: false })
     @Serializable()
     lastName?: string
 
     @DisplayField()
-    @FilterOption()
+    @FilterOption({ type: FilterOptionTypeEnum.SELECT, enum: GenderEnum })
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
         label: 'Gender',
@@ -52,7 +54,6 @@ export class CharacterGenInstruction extends ContentBase {
     gender?: GenderEnum
 
     @DisplayField()
-    @FilterOption()
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
         label: 'Birthsign',
@@ -65,30 +66,44 @@ export class CharacterGenInstruction extends ContentBase {
     @Serializable()
     birthsign?: string
 
-    @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Birth Era', placeholder: 'Enter birth era', required: false })
+    @DisplayField()
+    @FilterOption({ type: FilterOptionTypeEnum.NUMBER_EXACT, min: 1 })
+    @FormField({ component: FieldComponentEnum.NUMBER_FIELD, label: 'Birth Era', placeholder: 'Enter birth era', required: false })
     @Serializable()
-    birthEra?: string
+    birthEra?: number
 
+    @DisplayField()
+    @FilterOption({ type: FilterOptionTypeEnum.NUMBER_RANGE, min: 1 })
     @FormField({ component: FieldComponentEnum.NUMBER_FIELD, label: 'Birth Year', placeholder: 'Enter birth year', required: false })
     @Serializable()
     birthYear?: number
 
-    @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Birth Month', placeholder: 'Enter birth month', required: false })
+    @DisplayField()
+    @FilterOption({ type: FilterOptionTypeEnum.NUMBER_RANGE, min: 1, max: 12 })
+    @FormField({ component: FieldComponentEnum.NUMBER_FIELD, label: 'Birth Month', placeholder: 'Enter birth month', required: false })
     @Serializable()
-    birthMonth?: string
+    birthMonth?: number
 
+    @DisplayField()
+    @FilterOption({ type: FilterOptionTypeEnum.NUMBER_RANGE, min: 1, max: 31 })
     @FormField({ component: FieldComponentEnum.NUMBER_FIELD, label: 'Birth Day', placeholder: 'Enter birth day', required: false })
     @Serializable()
     birthDay?: number
 
     @DisplayField()
-    @FilterOption()
+    @FilterOption({ type: FilterOptionTypeEnum.TEXT })
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Background Blueprint ID', placeholder: 'Enter background blueprint ID', required: true })
     @Serializable()
     backgroundBlueprintId!: string
 
+    @DisplayField({
+        displayName: 'Has Background Customization',
+        getValue: (entity: CharacterGenInstruction) => {
+            return entity.backgroundCustomization ? 'Yes' : 'No'
+        }
+    })
     @FormField({ component: FieldComponentEnum.NESTED_FORM, label: 'Background Customization', required: false })
-    @Serializable({ strategy: SerializeStrategyEnum.FULL })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, internalClass: BackgroundCustomization, dtoClass: BackgroundCustomizationDTO })
     backgroundCustomization?: BackgroundCustomization
 
 }

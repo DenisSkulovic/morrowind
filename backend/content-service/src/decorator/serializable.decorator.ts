@@ -12,6 +12,7 @@ export function Serializable(
         internalEnum?: any;
         protoEnum?: any;
         asDtoArray?: boolean;
+        internalClass?: any;
     }) {
     return (target: any, propertyKey: string) => {
         const existingFields = Reflect.getMetadata(SERIALIZABLE_FIELDS_KEY, target) || [];
@@ -25,7 +26,8 @@ export function Serializable(
                 deserialize: options?.deserialize,
                 internalEnum: options?.internalEnum,
                 protoEnum: options?.protoEnum,
-                asDtoArray: options?.asDtoArray
+                asDtoArray: options?.asDtoArray,
+                internalClass: options?.internalClass
             },
         ], target);
     };
@@ -41,6 +43,7 @@ export function getSerializableFields(target: any): {
     internalEnum?: any;
     protoEnum?: any;
     asDtoArray?: boolean;
+    internalClass?: any;
 }[] {
     return Reflect.getMetadata(SERIALIZABLE_FIELDS_KEY, target) || [];
 }

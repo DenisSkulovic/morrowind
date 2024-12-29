@@ -6,7 +6,7 @@ import { FieldComponentEnum } from "../../../enum/FieldComponentEnum";
 import { FormSelectOption } from "../../../class/FormSelectOption";
 import { DisplayField } from '../../../decorator/display-field.decorator';
 import { EntityDisplay } from '../../../decorator/entity-display.decorator';
-import { FilterOption } from '../../../decorator/filter-option.decorator';
+import { FilterOption, FilterOptionTypeEnum } from '../../../decorator/filter-option.decorator';
 import { Context } from '../../../class/Context';
 import { SearchQuery } from '../../../class/search/SearchQuery';
 import { MemoryPoolEntriesDTO, MemoryPoolEntryDTO } from "../../../proto/common_pb";
@@ -18,16 +18,21 @@ import { SerializeStrategyEnum } from "../../../serialize/serializer";
 })
 export class MemoryPool extends TaggableContentBase {
     @DisplayField()
-    @FilterOption()
+    @FilterOption({ type: FilterOptionTypeEnum.TEXT })
     @Serializable()
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter memory pool name', required: true })
     name!: string;
 
     @DisplayField()
+    @FilterOption({ type: FilterOptionTypeEnum.TEXT })
     @Serializable()
     @FormField({ component: FieldComponentEnum.TEXTAREA_FIELD, label: 'Description', placeholder: 'Enter memory pool description' })
     description?: string;
 
+    @DisplayField({
+        displayName: 'No. of Memory Pool Entries',
+        getValue: (memoryPoolEntries) => memoryPoolEntries?.length || 0
+    })
     @FormField({
         component: FieldComponentEnum.MULTI_SELECT_FIELD,
         label: 'Memory Pool Entries',
@@ -37,7 +42,7 @@ export class MemoryPool extends TaggableContentBase {
             })
         }
     })
-    @Serializable({ strategy: SerializeStrategyEnum.ID, dtoClass: MemoryPoolEntryDTO, dtoArrClass: MemoryPoolEntriesDTO })
+    @Serializable({ strategy: SerializeStrategyEnum.ID, internalClass: MemoryPoolEntry, dtoClass: MemoryPoolEntryDTO, dtoArrClass: MemoryPoolEntriesDTO })
     memoryPoolEntries!: MemoryPoolEntry[];
 
 }

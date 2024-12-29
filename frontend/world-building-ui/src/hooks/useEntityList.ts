@@ -4,7 +4,7 @@ import { EntityEnum } from "../enum/EntityEnum";
 import { AppDispatch, RootState } from "../store/store";
 import { ContentBase, ContentBaseStatic } from "../class/ContentBase";
 import { SearchQuery } from "../class/search/SearchQuery";
-import { ContentPlain, ContentSearchResult, getSearchKey, searchContent, clearSearchResultsForKey } from "../store/slices/contentSlice";
+import { ContentPlain, ContentSearchResult, getSearchKey, searchContent, clearSearchResultsForKey, ContentSearchResultPlain } from "../store/slices/contentSlice";
 import { Context } from "../class/Context";
 import { useAccount } from "./useAccount";
 import { World } from "../class/entities/World";
@@ -31,8 +31,9 @@ export const useEntityList = <T extends ContentBase>(entityName: EntityEnum | nu
     const searchKey: string = entityName ? getSearchKey(entityName, query) : '';
 
     const searchResult: ContentSearchResult<T> | null = useSelector((state: RootState) => {
-        const searchResult: ContentSearchResult<ContentPlain> | undefined = state.content.searchedEntities[searchKey];
-        if (!searchResult || !entityConstructor) return null;
+        const searchResultPlain: ContentSearchResultPlain | undefined = state.content.searchedEntities[searchKey];
+        if (!searchResultPlain || !entityConstructor) return null;
+        const searchResult: ContentSearchResult<ContentPlain> = ContentSearchResult.build(searchResultPlain);
         const entitiesArray: T[] = searchResult.array.map(entity => entityConstructor.build(entity));
         const entitiesMap: { [key: string]: T } = {};
         for (const entity of searchResult.array) {

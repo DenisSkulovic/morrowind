@@ -25,6 +25,7 @@ import { Account } from '../../../../../../class/entities/Account';
 import { useAccount } from '../../../../../../hooks/useAccount';
 import { Context } from '../../../../../../class/Context';
 import { World } from '../../../../../../class/entities/World';
+import { cloneDeep } from 'lodash';
 
 const resultsPerPageOptions: number[] = [10, 25, 50, 100];
 const defaultResultsPerPage: number = resultsPerPageOptions[0];
@@ -80,12 +81,12 @@ const EntityListPage = <T extends ContentBase>() => {
 
     const handleSort = (sortBy: SortBy) => {
         query.sortBy = sortBy;
-        setQuery(query);
+        setQuery(cloneDeep(query));
     };
 
     const handleFilterChange = (newFilters: any) => {
         query.filters = newFilters;
-        setQuery(query);
+        setQuery(cloneDeep(query));
     };
 
     const handleSelectionChange = (selectedIds: Set<string>) => {
@@ -101,7 +102,7 @@ const EntityListPage = <T extends ContentBase>() => {
         dispatch(deleteContentBulk({
             entityName,
             ids,
-            context
+            context: context.toPlainObj()
         }));
         // update the result
         if (!result) return;
@@ -109,8 +110,8 @@ const EntityListPage = <T extends ContentBase>() => {
         result.map = Object.fromEntries(Object.entries(result.map).filter(([id]) => !ids.has(id)));
         dispatch(setSearchResult({
             entityName,
-            query,
-            results: result
+            query: query.toPlainObj(),
+            results: result.toPlainObj()
         }));
     };
 
@@ -119,7 +120,7 @@ const EntityListPage = <T extends ContentBase>() => {
         dispatch(deleteContent({
             entityName,
             id: entity.id,
-            context
+            context: context.toPlainObj()
         }));
         // update the result
         if (!result) return;
@@ -127,19 +128,21 @@ const EntityListPage = <T extends ContentBase>() => {
         delete result.map[entity.id];
         dispatch(setSearchResult({
             entityName,
-            query,
-            results: result
+            query: query.toPlainObj(),
+            results: result.toPlainObj()
         }));
     };
 
     const handleSetPage = (page: number) => {
+        console.log('handleSetPage', page);
         query.page = page;
-        setQuery(query);
+        setQuery(cloneDeep(query));
     };
 
     const handleSetRowsPerPage = (rowsPerPage: number) => {
+        console.log('handleSetRowsPerPage', rowsPerPage);
         query.pageSize = rowsPerPage;
-        setQuery(query);
+        setQuery(cloneDeep(query));
     };
 
     const handleEntityExport = (ids: Set<string>) => {
@@ -151,7 +154,8 @@ const EntityListPage = <T extends ContentBase>() => {
         setCustomBreadcrumbs([
             BreadcrumbItem.build({ label: 'Home', path: routes.home() }),
             BreadcrumbItem.build({ label: 'Worlds', path: routes.worlds() }),
-            BreadcrumbItem.build({ label: displayConfig?.title || 'PLACEHOLDER' })
+            BreadcrumbItem.build({ label: `${worldId}`, path: routes.worldDetail(worldId || '') }),
+            BreadcrumbItem.build({ label: displayConfig?.title || entityName || 'PLACEHOLDER' })
         ]);
     }, [worldId, entityName]);
 

@@ -12,34 +12,35 @@ export enum SerializeStrategyEnum {
 
 class Serializer {
     static toDTO(instance: any, protoDTO: GeneratedProtoDTO): any {
-        console.log('[Serializer] toDTO', instance, protoDTO);
+        const className = instance.constructor.name;
+        // console.log(`[Serializer - toDTO - ${className}] instance`, instance, protoDTO);
         const fields = getSerializableFields(instance.constructor.prototype);
 
         fields.forEach(({ propertyKey, dtoKey, strategy, serialize, dtoClass, dtoArrClass, internalEnum, protoEnum }) => {
+            // console.log(`[Serializer - toDTO - ${className}] propertyKey: ${propertyKey}, dtoKey: ${dtoKey}, strategy: ${strategy}, serialize: ${!!serialize}, dtoClass: ${dtoClass}, dtoArrClass: ${dtoArrClass}, internalEnum: ${internalEnum}, protoEnum: ${protoEnum}`);
             const value = instance[propertyKey];
 
             const processDtoArray = (arr: any[], dtoArrClass: any) => {
-                if (!([SerializeStrategyEnum.ID, SerializeStrategyEnum.FULL].includes(strategy))) throw new Error(`dtoArrClass was provided, but strategy is not "${SerializeStrategyEnum.FULL}" or "${SerializeStrategyEnum.ID}"; class: ${instance.constructor.name}; propertyKey: ${propertyKey}; dtoKey: ${dtoKey}`);
-                if (!dtoClass) throw new Error(`dtoClass is not defined when strategy is "${SerializeStrategyEnum.FULL}"; class: ${instance.constructor.name}; propertyKey: ${propertyKey}; dtoKey: ${dtoKey}`);
+                if (!([SerializeStrategyEnum.ID, SerializeStrategyEnum.FULL].includes(strategy))) throw new Error(`[Serializer - toDTO - ${className}] dtoArrClass was provided, but strategy is not "${SerializeStrategyEnum.FULL}" or "${SerializeStrategyEnum.ID}"; class: ${className}; propertyKey: ${propertyKey}; dtoKey: ${dtoKey}`);
+                if (!dtoClass) throw new Error(`[Serializer - toDTO - ${className}] dtoClass is not defined when strategy is "${SerializeStrategyEnum.FULL}"; class: ${className}; propertyKey: ${propertyKey}; dtoKey: ${dtoKey}`);
                 const dtoArr = new dtoArrClass();
-                if (!dtoArr.setArrList) throw new Error(`setArrList is not defined in dtoArrClass; class: ${dtoArrClass.name}`);
+                if (!dtoArr.setArrList) throw new Error(`[Serializer - toDTO - ${className}] setArrList is not defined in dtoArrClass; class: ${dtoArrClass.name}`);
                 const dtoArrList: any[] = arr.map(item => Serializer.toDTO(item, new dtoClass()));
                 dtoArr.setArrList(dtoArrList);
                 return dtoArr;
             }
             const processArray = (arr: any[]) => {
-                if (!arr.length) return [];
+                if (!arr.length) return undefined;
                 return arr.map(processOne);
             }
             const processOne = (item: any) => {
                 if (typeof item === "undefined" || item === null) return undefined;
-                if (strategy === SerializeStrategyEnum.DATE) return item.getTime();
+                if (strategy === SerializeStrategyEnum.DATE) return item ? item.getTime() : undefined;
                 if (strategy === SerializeStrategyEnum.ID) return item?.id || "";
-                if (strategy === SerializeStrategyEnum.ENUM) return serializeEnum(internalEnum, protoEnum, item);
+                if (strategy === SerializeStrategyEnum.ENUM) return item ? serializeEnum(internalEnum, protoEnum, item) : undefined;
                 if (strategy === SerializeStrategyEnum.FULL) {
-                    if (!dtoClass) throw new Error(`dtoClass is not defined when strategy is "${SerializeStrategyEnum.FULL}"; class: ${instance.constructor.name}; propertyKey: ${propertyKey}; dtoKey: ${dtoKey}`);
-                    const subDto = new dtoClass();
-                    return item?.toDTO ? Serializer.toDTO(item, subDto) : item;
+                    if (!dtoClass) throw new Error(`[Serializer - toDTO - ${className}] dtoClass is not defined when strategy is "${SerializeStrategyEnum.FULL}"; class: ${className}; propertyKey: ${propertyKey}; dtoKey: ${dtoKey}`);
+                    return item ? Serializer.toDTO(item, new dtoClass()) : undefined;
                 }
                 return item;
             };
@@ -60,29 +61,34 @@ class Serializer {
     }
 
     static fromDTO(protoDTO: any, instance: any): any {
-        console.log('[Serializer] fromDTO', protoDTO, instance);
+        const className = instance.constructor.name;
+        // console.log(`[Serializer - fromDTO - ${className}] protoDTO`, protoDTO, instance);
         const fields = getSerializableFields(instance.constructor.prototype);
 
-        fields.forEach(({ propertyKey, dtoKey, strategy, deserialize, internalEnum, protoEnum }) => {
-
-            const processArray = (arr: any[]) => {
-                return arr.map(processOne);
-            }
+        fields.forEach(({ propertyKey, dtoKey, strategy, deserialize, internalClass, dtoArrClass, internalEnum, protoEnum }) => {
+            // console.log(`[Serializer - fromDTO - ${className}] propertyKey: ${propertyKey}, dtoKey: ${dtoKey}, strategy: ${strategy}, received deserialize: ${!!deserialize}, internalEnum: ${internalEnum}, protoEnum: ${protoEnum}`);
 
             const processOne = (item: any) => {
+                if (typeof item === "undefined" || item === null) return undefined;
                 if (strategy === SerializeStrategyEnum.DATE) return item ? new Date(item) : undefined;
                 if (strategy === SerializeStrategyEnum.ID) return item?.id ? { id: item.id } : null;
-                if (strategy === SerializeStrategyEnum.ENUM) return deserializeEnum(protoEnum, internalEnum, item);
-                if (strategy === SerializeStrategyEnum.FULL) return Serializer.fromDTO(protoDTO, new instance.constructor());
+                if (strategy === SerializeStrategyEnum.ENUM) return item ? deserializeEnum(protoEnum, internalEnum, item) : undefined;
+                if (strategy === SerializeStrategyEnum.FULL) {
+                    if (!internalClass) throw new Error(`[Serializer - fromDTO - ${className}] internalClass is not defined when strategy is "${SerializeStrategyEnum.FULL}"; class: ${className}; propertyKey: ${propertyKey}; dtoKey: ${dtoKey}`);
+                    return item ? Serializer.fromDTO(item, new internalClass()) : undefined;
+                }
                 return item;
             };
 
             const { getter, isArray } = Serializer.getGetterFuncName(protoDTO, dtoKey);
-            const value = protoDTO[getter]() || [];
-            if (deserialize) {
+            const value = protoDTO[getter]();
+
+            if (dtoArrClass) {
+                return value ? value.getArrList().map(processOne) : undefined;
+            } else if (deserialize) {
                 instance[propertyKey] = deserialize(value);
             } else if (isArray) {
-                instance[propertyKey] = processArray(value)
+                instance[propertyKey] = value?.map(processOne);
             } else {
                 instance[propertyKey] = processOne(value);
             }

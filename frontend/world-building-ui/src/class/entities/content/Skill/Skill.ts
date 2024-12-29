@@ -3,12 +3,10 @@ import { Serializable } from "../../../../decorator/serializable.decorator";
 import { FormField } from "../../../../decorator/form-field.decorator";
 import { FieldComponentEnum } from "../../../../enum/FieldComponentEnum";
 import { SkillCategoryEnum } from "../../../../enum/entityEnums";
-import { deserializeEnum } from "../../../../enum/util";
-import { serializeEnum } from "../../../../enum/util";
 import { FormSelectOption } from "../../../../class/FormSelectOption";
 import { DisplayField } from "../../../../decorator/display-field.decorator";
 import { EntityDisplay } from "../../../../decorator/entity-display.decorator";
-import { FilterOption } from "../../../../decorator/filter-option.decorator";
+import { FilterOption, FilterOptionTypeEnum } from "../../../../decorator/filter-option.decorator";
 import { SkillCategoryEnumDTO } from "../../../../proto/common_pb";
 import { SerializeStrategyEnum } from "../../../../serialize/serializer";
 
@@ -20,11 +18,15 @@ export class Skill extends TaggableContentBase {
     @DisplayField({
         displayName: 'Name'
     })
-    @FilterOption()
+    @FilterOption({ type: FilterOptionTypeEnum.TEXT })
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter skill name', required: true })
     @Serializable()
     name!: string
 
+    @DisplayField({
+        displayName: 'Description'
+    })
+    @FilterOption({ type: FilterOptionTypeEnum.TEXT })
     @FormField({ component: FieldComponentEnum.TEXTAREA_FIELD, label: 'Description', placeholder: 'Enter skill description', required: true })
     @Serializable()
     description!: string
@@ -32,7 +34,7 @@ export class Skill extends TaggableContentBase {
     @DisplayField({
         displayName: 'Category'
     })
-    @FilterOption()
+    @FilterOption({ type: FilterOptionTypeEnum.SELECT, enum: SkillCategoryEnum })
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
         label: 'Category',

@@ -3,6 +3,8 @@ import { FieldComponentEnum } from "../enum/FieldComponentEnum";
 import { ItemRequirementTypeEnum } from "../enum/ItemRequirementTypeEnum";
 import { FormSelectOption } from "./FormSelectOption";
 import { Serializable } from "../decorator/serializable.decorator";
+import { SerializeStrategyEnum } from "../serialize/serializer";
+import { ItemRequirementTypeEnumDTO } from "../proto/common_pb";
 
 export class ItemRequirement {
     clazz = "ItemRequirement"
@@ -15,8 +17,8 @@ export class ItemRequirement {
             })
         },
     })
-    @Serializable()
-    type!: string;
+    @Serializable({ strategy: SerializeStrategyEnum.ENUM, internalEnum: ItemRequirementTypeEnum, protoEnum: ItemRequirementTypeEnumDTO })
+    type!: ItemRequirementTypeEnum;
 
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter requirement name', required: true })
     @Serializable()
@@ -24,12 +26,12 @@ export class ItemRequirement {
 
     @FormField({
         component: FieldComponentEnum.NUMBER_FIELD,
-        label: 'Value',
+        label: 'Number Requirement',
         placeholder: 'Enter requirement value',
         required: true
     })
     @Serializable()
-    value!: number | boolean;
+    number!: number
 
 }
 

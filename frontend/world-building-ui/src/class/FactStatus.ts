@@ -1,7 +1,6 @@
 import { FormField } from "../decorator/form-field.decorator";
 import { FieldComponentEnum } from "../enum/FieldComponentEnum";
 import { FactStatusEnum } from "../enum/entityEnums";
-import { deserializeEnum, serializeEnum } from "../enum/util";
 import { FormSelectOption } from "./FormSelectOption";
 import { Serializable } from "../decorator/serializable.decorator";
 import { FactStatusEnumDTO } from "../proto/common_pb";

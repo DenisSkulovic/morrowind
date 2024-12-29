@@ -3,7 +3,9 @@ import type { GenerationInstruction } from "./GenerationInstruction";;
 import { FormField } from "../decorator/form-field.decorator";
 import { FieldComponentEnum } from "../enum/FieldComponentEnum";
 import { Serializable } from "../decorator/serializable.decorator";
-import { deserializeSkillAdjustments, serializeSkillAdjustments, SkillAdjustment } from "./SkillAdjustment";
+import { SkillAdjustment } from "./SkillAdjustment";
+import { SkillAdjustmentDTO } from "../proto/common_pb";
+import { SerializeStrategyEnum } from "../serialize/serializer";
 
 export class BackgroundCustomization {
     @Serializable()
@@ -65,7 +67,7 @@ export class BackgroundCustomization {
     public skillSets?: GenerationInstruction[]
 
     @FormField({ component: FieldComponentEnum.OBJECT_FIELD, label: 'Skill Adjustments' })
-    @Serializable({ serialize: serializeSkillAdjustments, deserialize: deserializeSkillAdjustments })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, internalClass: SkillAdjustment, dtoClass: SkillAdjustmentDTO })
     public skillAdjustments?: SkillAdjustment
 
 }

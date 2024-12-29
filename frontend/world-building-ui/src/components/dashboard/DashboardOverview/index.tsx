@@ -1,6 +1,7 @@
 import { Box, Grid2, Typography } from '@mui/material';
 import StatCard from './StatCard';
 import { ContentStat } from '../../../class/ContentStat';
+import { entityToIcon } from '../../../config/worldDashboard';
 
 interface DashboardOverviewProps {
     stats: ContentStat[] | null
@@ -18,7 +19,7 @@ export const DashboardOverview = ({ stats }: DashboardOverviewProps) => {
                         <StatCard
                             title={stat.title}
                             value={stat.count || 0}
-                            icon={stat.icon}
+                            Icon={entityToIcon[stat.title as keyof typeof entityToIcon]}
                         />
                     </Grid2>
                 ))}

@@ -1,16 +1,16 @@
 import { createSlice, createAsyncThunk, PayloadAction, Action } from '@reduxjs/toolkit';
 import { ContentService } from '../../services/ContentService';
 import { ContentBase } from '../../class/ContentBase';
-import { Context } from '../../class/Context';
+import { Context, ContextPlain } from '../../class/Context';
 import { RequestStatusEnum } from '../../enum/RequestStatusEnum';
-import { SearchQuery } from '../../class/search/SearchQuery';
+import { SearchQuery, SearchQueryPlain } from '../../class/search/SearchQuery';
 import { ContentEntityMapService } from '../../CONTENT_ENTITY_MAP';
 import { LooseObject } from '../../types';
 import { EntityEnum } from '../../enum/EntityEnum';
 import { handlePending, handleRejected } from '../common';
 
 export type ContentPlain = LooseObject
-
+export type ContentSearchResultPlain = LooseObject
 export class ContentSearchResult<T> {
     entityName!: EntityEnum | null;
     array!: T[];
@@ -26,21 +26,28 @@ export class ContentSearchResult<T> {
         Object.assign(newResult, body);
         return newResult;
     }
+
+    toPlainObj(): ContentSearchResultPlain {
+        return JSON.parse(JSON.stringify(this));
+    }
 }
 
 interface ContentState {
     searchedEntities: {
-        [searchKey: string]: ContentSearchResult<ContentPlain>
+        [searchKey: string]: ContentSearchResultPlain
     };
-
-    crudStatus: RequestStatusEnum;
-    crudError: string | null;
+    crud: {
+        status: RequestStatusEnum;
+        error: string | null;
+    }
 }
 
 const initialState: ContentState = {
     searchedEntities: {},
-    crudStatus: RequestStatusEnum.IDLE,
-    crudError: null
+    crud: {
+        status: RequestStatusEnum.IDLE,
+        error: null
+    }
 };
 
 export const getSearchKey = (entityName: EntityEnum, query: SearchQuery) => {
@@ -51,47 +58,47 @@ export const getSearchKey = (entityName: EntityEnum, query: SearchQuery) => {
 // Async thunk for creating content
 export const createContent = createAsyncThunk(
     'content/createContent',
-    async ({ entityName, contentBody, context }: { entityName: EntityEnum | null; contentBody: ContentBase; context: Context }) => {
+    async ({ entityName, contentBody, context }: { entityName: EntityEnum | null; contentBody: ContentBase; context: ContextPlain }) => {
         if (!entityName) throw new Error(`Entity name not found`);
         const contentService = new ContentService();
         const dtoConstructor = ContentEntityMapService.getDTOConstructor<ContentBase>(entityName);
         if (!dtoConstructor) throw new Error(`DTO constructor for entity ${entityName} not found`);
-        const response: ContentBase = await contentService.createContent(entityName, contentBody, context);
+        const response: ContentBase = await contentService.createContent(entityName, contentBody, Context.build(context));
         return response.toPlainObj();
     }
 );
 
 export const updateContent = createAsyncThunk(
     'content/updateContent',
-    async ({ entityName, contentBody, context }: { entityName: EntityEnum | null; contentBody: ContentBase; context: Context }) => {
+    async ({ entityName, contentBody, context }: { entityName: EntityEnum | null; contentBody: ContentBase; context: ContextPlain }) => {
         if (!entityName) throw new Error(`Entity name not found`);
         const contentService = new ContentService();
         const dtoConstructor = ContentEntityMapService.getDTOConstructor<ContentBase>(entityName);
         if (!dtoConstructor) throw new Error(`DTO constructor for entity ${entityName} not found`);
-        const response: ContentBase = await contentService.updateContent(entityName, contentBody, context);
+        const response: ContentBase = await contentService.updateContent(entityName, contentBody, Context.build(context));
         return response.toPlainObj();
     }
 );
 
 export const deleteContent = createAsyncThunk(
     'content/deleteContent',
-    async ({ entityName, id, context }: { entityName: EntityEnum | null; id: string; context: Context }) => {
+    async ({ entityName, id, context }: { entityName: EntityEnum | null; id: string; context: ContextPlain }) => {
         if (!entityName) throw new Error(`Entity name not found`);
         const contentService = new ContentService();
-        return await contentService.deleteContent(entityName, id, context);
+        return await contentService.deleteContent(entityName, id, Context.build(context));
     }
 );
 
 export const searchContent = createAsyncThunk(
     'content/searchContent',
-    async ({ entityName, query, context }: { entityName: EntityEnum | null; query: SearchQuery; context: Context }) => {
+    async ({ entityName, query, context }: { entityName: EntityEnum | null; query: SearchQuery; context: ContextPlain }) => {
         console.log('[searchContent] searchContent', entityName, query, context);
         if (!entityName) throw new Error(`Entity name not found`);
         const contentService = new ContentService();
         const dtoConstructor = ContentEntityMapService.getDTOConstructor<ContentBase>(entityName);
         if (!dtoConstructor) throw new Error(`DTO constructor for entity ${entityName} not found`);
         console.log('[searchContent] before contentService.searchContent', query);
-        const response = await contentService.searchContent(entityName, query, context);
+        const response = await contentService.searchContent(entityName, query, Context.build(context));
         console.log('[searchContent] after contentService.searchContent', response);
         return {
             results: response.results.map(content => content.toPlainObj()),
@@ -104,34 +111,34 @@ export const searchContent = createAsyncThunk(
 
 export const createContentBulk = createAsyncThunk(
     'content/createContentBulk',
-    async ({ entityName, contentBodies, context }: { entityName: EntityEnum | null; contentBodies: ContentBase[]; context: Context }) => {
+    async ({ entityName, contentBodies, context }: { entityName: EntityEnum | null; contentBodies: ContentBase[]; context: ContextPlain }) => {
         if (!entityName) throw new Error(`Entity name not found`);
         const contentService = new ContentService();
         const dtoConstructor = ContentEntityMapService.getDTOConstructor<ContentBase>(entityName);
         if (!dtoConstructor) throw new Error(`DTO constructor for entity ${entityName} not found`);
-        const response: ContentBase[] = await contentService.createContentBulk(entityName, contentBodies, context);
+        const response: ContentBase[] = await contentService.createContentBulk(entityName, contentBodies, Context.build(context));
         return response.map(content => content.toPlainObj());
     }
 );
 
 export const updateContentBulk = createAsyncThunk(
     'content/updateContentBulk',
-    async ({ entityName, contentBodies, context }: { entityName: EntityEnum | null; contentBodies: ContentBase[]; context: Context }) => {
+    async ({ entityName, contentBodies, context }: { entityName: EntityEnum | null; contentBodies: ContentBase[]; context: ContextPlain }) => {
         if (!entityName) throw new Error(`Entity name not found`);
         const contentService = new ContentService();
         const dtoConstructor = ContentEntityMapService.getDTOConstructor<ContentBase>(entityName);
         if (!dtoConstructor) throw new Error(`DTO constructor for entity ${entityName} not found`);
-        const response: ContentBase[] = await contentService.updateContentBulk(entityName, contentBodies, context);
+        const response: ContentBase[] = await contentService.updateContentBulk(entityName, contentBodies, Context.build(context));
         return response.map(content => content.toPlainObj());
     }
 );
 
 export const deleteContentBulk = createAsyncThunk(
     'content/deleteContentBulk',
-    async ({ entityName, ids, context }: { entityName: EntityEnum | null; ids: Set<string>; context: Context }) => {
+    async ({ entityName, ids, context }: { entityName: EntityEnum | null; ids: Set<string>; context: ContextPlain }) => {
         if (!entityName) throw new Error(`Entity name not found`);
         const contentService = new ContentService();
-        return await contentService.deleteContentBulk(entityName, Array.from(ids), context);
+        return await contentService.deleteContentBulk(entityName, Array.from(ids), Context.build(context));
     }
 );
 
@@ -147,35 +154,35 @@ const contentSlice = createSlice({
         },
         setSearchResult: (state, action: PayloadAction<{ // to manually edit search results, for example when an entity was deleted/modified but we dont want to perform another search
             entityName: EntityEnum | null,
-            query: SearchQuery,
-            results: ContentSearchResult<ContentPlain>
+            query: SearchQueryPlain,
+            results: ContentSearchResultPlain
         }>) => {
             if (!action.payload.entityName) throw new Error(`Entity name not found at setSearchResult`);
-            const searchKey: string = getSearchKey(action.payload.entityName, action.payload.query);
+            const searchKey: string = getSearchKey(action.payload.entityName, SearchQuery.build(action.payload.query));
             state.searchedEntities[searchKey] = action.payload.results;
         }
     },
     extraReducers: (builder) => {
         // Create
-        builder.addCase(createContent.pending, (state) => handlePending(state.crudStatus))
+        builder.addCase(createContent.pending, (state) => handlePending(state.crud))
         builder.addCase(createContent.fulfilled, (state, action) => {
-            state.crudStatus = RequestStatusEnum.SUCCEEDED;
+            state.crud.status = RequestStatusEnum.SUCCEEDED;
         })
-        builder.addCase(createContent.rejected, (state, action) => handleRejected(state.crudStatus, action))
+        builder.addCase(createContent.rejected, (state, action) => handleRejected(state.crud, action))
 
         // Update
-        builder.addCase(updateContent.pending, (state) => handlePending(state.crudStatus))
+        builder.addCase(updateContent.pending, (state) => handlePending(state.crud))
         builder.addCase(updateContent.fulfilled, (state, action) => {
-            state.crudStatus = RequestStatusEnum.SUCCEEDED;
+            state.crud.status = RequestStatusEnum.SUCCEEDED;
         })
-        builder.addCase(updateContent.rejected, (state, action) => handleRejected(state.crudStatus, action))
+        builder.addCase(updateContent.rejected, (state, action) => handleRejected(state.crud, action))
 
         // Delete
-        builder.addCase(deleteContent.pending, (state) => handlePending(state.crudStatus))
+        builder.addCase(deleteContent.pending, (state) => handlePending(state.crud))
         builder.addCase(deleteContent.fulfilled, (state, action) => {
-            state.crudStatus = RequestStatusEnum.SUCCEEDED;
+            state.crud.status = RequestStatusEnum.SUCCEEDED;
         })
-        builder.addCase(deleteContent.rejected, (state, action) => handleRejected(state.crudStatus, action))
+        builder.addCase(deleteContent.rejected, (state, action) => handleRejected(state.crud, action))
 
         // Search
         builder.addCase(searchContent.pending, (state) => handlePending(state.searchedEntities))
@@ -188,7 +195,7 @@ const contentSlice = createSlice({
                 map[item.id] = item;
                 array.push(item);
             });
-            const searchResult: ContentSearchResult<ContentPlain> = {
+            const searchResult: ContentSearchResultPlain = ContentSearchResult.build({
                 entityName: action.meta.arg.entityName,
                 array,
                 map,
@@ -197,7 +204,7 @@ const contentSlice = createSlice({
                 currentPage: action.payload.currentPage,
                 status: RequestStatusEnum.SUCCEEDED,
                 error: null
-            };
+            }).toPlainObj();
             state.searchedEntities[searchKey] = searchResult;
         })
         builder.addCase(searchContent.rejected, (state, action) => handleRejected(state.searchedEntities, action));

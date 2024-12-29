@@ -10,7 +10,7 @@ export class SearchQuery {
     @Serializable()
     public pageSize!: number;
 
-    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true, internalClass: QueryFilter })
     public filters?: QueryFilter[];
 
     @Serializable()

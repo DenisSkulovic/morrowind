@@ -10,7 +10,7 @@ import { FormSelectOption } from "../../../../class/FormSelectOption";
 import { Skill } from "../Skill/Skill";
 import { DisplayField } from "../../../../decorator/display-field.decorator";
 import { EntityDisplay } from "../../../../decorator/entity-display.decorator";
-import { FilterOption } from "../../../../decorator/filter-option.decorator";
+import { FilterOption, FilterOptionTypeEnum } from "../../../../decorator/filter-option.decorator";
 import { Context } from "../../../../class/Context";
 import { SearchQuery } from "../../../../class/search/SearchQuery";
 import { ItemRequirement } from "../../../../class/ItemRequirement";
@@ -24,7 +24,7 @@ import { SerializeStrategyEnum } from "../../../../serialize/serializer";
 })
 export class Item extends TaggableContentBase {
     @DisplayField({ displayName: 'Name' })
-    @FilterOption()
+    @FilterOption({ type: FilterOptionTypeEnum.TEXT })
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter item name', required: true })
     @Serializable()
     name!: string; // Item name, e.g., "Iron Short Sword".
@@ -41,33 +41,41 @@ export class Item extends TaggableContentBase {
         width: 100,
     })
     @FormField({ component: FieldComponentEnum.OBJECT_FIELD, label: 'Size', required: true })
-    @Serializable({ strategy: SerializeStrategyEnum.FULL, dtoClass: GridSizeDTO })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, internalClass: GridSize, dtoClass: GridSizeDTO })
     size!: GridSize; // Grid size for grid-based inventories
 
     @DisplayField({ displayName: 'Weight' })
-    @FilterOption()
+    @FilterOption({ type: FilterOptionTypeEnum.NUMBER_RANGE, min: 0 })
     @FormField({ component: FieldComponentEnum.NUMBER_FIELD, label: 'Weight', placeholder: 'Enter item weight', required: true })
     @Serializable()
     weight!: number;
 
     @DisplayField({ displayName: 'Quantity' })
+    @FilterOption({ type: FilterOptionTypeEnum.NUMBER_RANGE, min: 0 })
     @FormField({ component: FieldComponentEnum.NUMBER_FIELD, label: 'Quantity', placeholder: 'Enter quantity', required: true })
     @Serializable()
     quantity!: number;
 
     @DisplayField({ displayName: 'Max Quantity' })
+    @FilterOption({ type: FilterOptionTypeEnum.NUMBER_RANGE, min: 0 })
     @FormField({ component: FieldComponentEnum.NUMBER_FIELD, label: 'Max Quantity', placeholder: 'Enter maximum quantity', required: true })
     @Serializable()
     maxQuantity!: number;
 
     @DisplayField({ displayName: 'Base Value' })
-    @FilterOption()
+    @FilterOption({ type: FilterOptionTypeEnum.NUMBER_RANGE, min: 0 })
     @FormField({ component: FieldComponentEnum.NUMBER_FIELD, label: 'Base Value', placeholder: 'Enter base value in gold', required: true })
     @Serializable()
     baseValue!: number; // Monetary value in gold coins. To be adjusted with skills, modifiers, attitude, etc.
 
     @DisplayField({ displayName: 'Trained Skill' })
-    @FilterOption()
+    @FilterOption({
+        type: FilterOptionTypeEnum.MULTI_SELECT, getSelectOptions: async (filter: SearchQuery, context: Context) => {
+            return (await Skill.search<Skill>(filter, context)).map((item: Skill) => {
+                return { id: item.id, label: item.name }
+            })
+        }
+    })
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
         label: 'Trained Skill',
@@ -82,7 +90,7 @@ export class Item extends TaggableContentBase {
     trainedSkill?: string
 
     @DisplayField({ displayName: 'Actions' })
-    @FilterOption()
+    @FilterOption({ type: FilterOptionTypeEnum.MULTI_SELECT, enum: ItemActionEnum })
     @FormField({
         component: FieldComponentEnum.MULTI_SELECT_FIELD,
         label: 'Actions',
@@ -96,13 +104,17 @@ export class Item extends TaggableContentBase {
     @Serializable({ strategy: SerializeStrategyEnum.ENUM, internalEnum: ItemActionEnum, protoEnum: ItemActionEnumDTO })
     actions?: ItemActionEnum[];
 
+    @DisplayField({
+        displayName: 'Requirements',
+        getValue: (item: Item) => item.requirements ? `${item.requirements.map(r => `${r.type}: ${r.name} (${r.number})`).join(', ')}` : ''
+    })
     @FormField({ component: FieldComponentEnum.NESTED_FORM, label: 'Requirements', required: false })
-    @Serializable({ strategy: SerializeStrategyEnum.FULL, dtoClass: ItemRequirementDTO, dtoArrClass: ItemRequirementsDTO })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, internalClass: ItemRequirement, dtoClass: ItemRequirementDTO, dtoArrClass: ItemRequirementsDTO })
     requirements?: ItemRequirement[]
 
     // flags
     @DisplayField({ displayName: 'Stackable' })
-    @FilterOption()
+    @FilterOption({ type: FilterOptionTypeEnum.BOOLEAN })
     @FormField({ component: FieldComponentEnum.CHECKBOX_FIELD, label: 'Stackable', required: true })
     @Serializable()
     stackable!: boolean;
@@ -115,11 +127,11 @@ export class Item extends TaggableContentBase {
     gridPosition?: { x: number; y: number }; // Item's top-left corner on the grid inside a storage slot
 
     @FormField({ component: FieldComponentEnum.NESTED_FORM, label: 'Storage Slots', required: false })
-    @Serializable({ strategy: SerializeStrategyEnum.FULL, dtoClass: StorageSlotDTO, dtoArrClass: StorageSlotsDTO })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, internalClass: StorageSlot, dtoClass: StorageSlotDTO, dtoArrClass: StorageSlotsDTO })
     storageSlots?: StorageSlot[]; // the storage slots this item itself has (this is a backpack and it has 3 sections, i.e. slots)
 
     @FormField({ component: FieldComponentEnum.NESTED_FORM, label: 'Storage Slot Definitions', required: false })
-    @Serializable({ strategy: SerializeStrategyEnum.FULL, dtoClass: StorageSlotDefinitionDTO, dtoArrClass: StorageSlotDefinitionsDTO })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, internalClass: StorageSlotDefinition, dtoClass: StorageSlotDefinitionDTO, dtoArrClass: StorageSlotDefinitionsDTO })
     storageSlotDefinition?: StorageSlotDefinition[]; // the storage slots this item itself has (this is a backpack and it has 3 sections, i.e. slots)
 
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Equipment Slot', placeholder: 'Enter equipment slot', required: false })

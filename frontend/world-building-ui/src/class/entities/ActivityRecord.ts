@@ -42,8 +42,4 @@ export class ActivityRecord extends Entity {
         return activityRecord
     }
 
-    toPlainObj(): LooseObject {
-        return JSON.parse(JSON.stringify(this));
-    }
-
 }

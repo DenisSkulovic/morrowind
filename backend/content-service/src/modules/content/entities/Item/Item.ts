@@ -65,7 +65,7 @@ export class Item extends TaggableContentBase {
     actions?: ItemActionEnum[];
 
     @Column({ type: "jsonb", default: null, nullable: true })
-    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true, internalClass: ItemRequirement })
     requirements?: ItemRequirement[]
 
     // flags
@@ -99,11 +99,11 @@ export class Item extends TaggableContentBase {
     gridPosition?: { x: number; y: number }; // Item's top-left corner on the grid inside a storage slot
 
     @OneToMany(() => StorageSlot, storageSlot => storageSlot.storedItems)
-    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true, internalClass: StorageSlot })
     storageSlots?: StorageSlot[]; // the storage slots this item itself has (this is a backpack and it has 3 sections, i.e. slots)
 
     @Column("jsonb", { nullable: true })
-    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true, internalClass: StorageSlotDefinition })
     storageSlotDefinition?: StorageSlotDefinition[]; // the storage slots this item itself has (this is a backpack and it has 3 sections, i.e. slots)
 
     @ManyToOne(() => EquipmentSlot, equipmentSlot => equipmentSlot.equippedItem)

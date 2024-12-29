@@ -32,13 +32,13 @@ export abstract class ContentBase extends Entity {
     @Serializable()
     targetEntity!: string;
 
-    @Serializable({ strategy: SerializeStrategyEnum.ID, dtoClass: UserDTO })
+    @Serializable({ strategy: SerializeStrategyEnum.ID, internalClass: User, dtoClass: UserDTO })
     user!: User;
 
-    @Serializable({ strategy: SerializeStrategyEnum.ID, dtoClass: CampaignDTO })
+    @Serializable({ strategy: SerializeStrategyEnum.ID, internalClass: Campaign, dtoClass: CampaignDTO })
     campaign?: Campaign;
 
-    @Serializable({ strategy: SerializeStrategyEnum.ID, dtoClass: WorldDTO })
+    @Serializable({ strategy: SerializeStrategyEnum.ID, internalClass: World, dtoClass: WorldDTO })
     world?: World;
 
     public static async search<T extends ContentBase>(
@@ -61,7 +61,4 @@ export abstract class ContentBase extends Entity {
         return instance;
     }
 
-    toPlainObj(): LooseObject {
-        return JSON.parse(JSON.stringify(this));
-    }
 }

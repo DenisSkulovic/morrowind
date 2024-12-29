@@ -33,7 +33,7 @@ export class Memory extends TaggableContentBase {
 
     @ManyToMany(() => Fact, fact => fact.memories)
     @JoinTable()
-    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true, internalClass: Fact })
     facts!: Fact[]
 
     @ManyToMany(() => Tag, (tag) => tag.memories)

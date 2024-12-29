@@ -23,8 +23,4 @@ export class Account extends Entity {
         Object.assign(account, obj);
         return account;
     }
-
-    toPlainObj(): LooseObject {
-        return JSON.parse(JSON.stringify(this));
-    }
 }

@@ -6,7 +6,7 @@ import { FieldComponentEnum } from "../../../enum/FieldComponentEnum";
 import { FormSelectOption } from "../../../class/FormSelectOption";
 import { DisplayField } from '../../../decorator/display-field.decorator';
 import { EntityDisplay } from '../../../decorator/entity-display.decorator';
-import { FilterOption } from '../../../decorator/filter-option.decorator';
+import { FilterOption, FilterOptionTypeEnum } from '../../../decorator/filter-option.decorator';
 import { NeedTypeEnumDTO, NeedLayerEnumDTO } from '../../../proto/common_pb';
 import { SerializeStrategyEnum } from "../../../serialize/serializer";
 
@@ -16,7 +16,7 @@ import { SerializeStrategyEnum } from "../../../serialize/serializer";
 })
 export class Need extends ContentBase {
     @DisplayField()
-    @FilterOption()
+    @FilterOption({ type: FilterOptionTypeEnum.TEXT })
     @Serializable()
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter need name', required: true })
     name!: string;
@@ -27,7 +27,7 @@ export class Need extends ContentBase {
     description!: string;
 
     @DisplayField()
-    @FilterOption()
+    @FilterOption({ type: FilterOptionTypeEnum.SELECT, enum: NeedTypeEnum })
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
         label: 'Need Type',
@@ -41,7 +41,7 @@ export class Need extends ContentBase {
     type!: NeedTypeEnum; // "dynamic", "threshold", "external".
 
     @DisplayField()
-    @FilterOption()
+    @FilterOption({ type: FilterOptionTypeEnum.SELECT, enum: NeedLayerEnum })
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
         label: 'Need Layer',

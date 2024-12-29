@@ -1,13 +1,12 @@
 import { TaggableContentBase } from "../../../class/TaggableContentBase";
 import { EffectTypeEnum, EffectTargetEnum, EffectModeEnum, EffectElementEnum } from "../../../enum/entityEnums";
-import { serializeEnum, deserializeEnum } from "../../../enum/util";
 import { Serializable } from "../../../decorator/serializable.decorator";
 import { FormField } from "../../../decorator/form-field.decorator";
 import { FieldComponentEnum } from "../../../enum/FieldComponentEnum";
 import { FormSelectOption } from "../../../class/FormSelectOption";
 import { DisplayField } from '../../../decorator/display-field.decorator';
 import { EntityDisplay } from '../../../decorator/entity-display.decorator';
-import { FilterOption } from '../../../decorator/filter-option.decorator';
+import { FilterOption, FilterOptionTypeEnum } from '../../../decorator/filter-option.decorator';
 import { EffectTypeEnumDTO, EffectTargetEnumDTO, EffectModeEnumDTO, EffectElementEnumDTO } from '../../../proto/common_pb';
 import { SerializeStrategyEnum } from "../../../serialize/serializer";
 
@@ -19,13 +18,13 @@ export class Effect extends TaggableContentBase {
     @DisplayField({
         displayName: 'Name'
     })
-    @FilterOption()
+    @FilterOption({ type: FilterOptionTypeEnum.TEXT })
     @Serializable()
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter effect name', required: true })
     name!: string;
 
     @DisplayField()
-    @FilterOption()
+    @FilterOption({ type: FilterOptionTypeEnum.SELECT, enum: EffectTypeEnum })
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
         label: 'Effect Type',
@@ -39,7 +38,7 @@ export class Effect extends TaggableContentBase {
     type!: EffectTypeEnum; // "damage", "healing", "buff", "debuff", "resistance", etc.
 
     @DisplayField()
-    @FilterOption()
+    @FilterOption({ type: FilterOptionTypeEnum.SELECT, enum: EffectTargetEnum })
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
         label: 'Effect Target',
@@ -53,7 +52,7 @@ export class Effect extends TaggableContentBase {
     target!: EffectTargetEnum; // "health", "stamina", "magic", etc.
 
     @DisplayField()
-    @FilterOption()
+    @FilterOption({ type: FilterOptionTypeEnum.SELECT, enum: EffectModeEnum })
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
         label: 'Effect Mode',
@@ -67,7 +66,7 @@ export class Effect extends TaggableContentBase {
     mode!: EffectModeEnum; // "instant", "gradual", "persistent"
 
     @DisplayField()
-    @FilterOption()
+    @FilterOption({ type: FilterOptionTypeEnum.SELECT, enum: EffectElementEnum })
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
         label: 'Effect Element',

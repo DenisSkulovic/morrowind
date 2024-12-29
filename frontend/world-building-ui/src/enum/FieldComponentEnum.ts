@@ -10,7 +10,7 @@ export enum FieldComponentEnum {
     GENERATION_INSTRUCTION_FIELD = "GenerationInstructionField",
     NESTED_FORM = "NestedForm",
     ITEM_LIST_FIELD = "ItemListField",
-    // DATE_FIELD = "DateField",
+    DATE_FIELD = "DateField",
     // RICH_TEXT_FIELD = "RichTextField",
     // FILE_FIELD = "FileField",
     // COLOR_FIELD = "ColorField",

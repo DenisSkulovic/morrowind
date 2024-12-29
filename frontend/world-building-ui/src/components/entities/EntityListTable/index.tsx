@@ -83,13 +83,6 @@ export const EntityListTable = <T extends ContentBase>({
 
     const isSelected = (id: string) => selected.has(id);
 
-    const getEmptyRows = () => {
-        if (!result) return 0;
-        if (!result.array) return 0;
-        return Math.max(0, pageSize - (result.array.length - (page - 1) * pageSize));
-    }
-    const emptyRows = getEmptyRows();
-
     const getIsSomeSelected = () => {
         if (!result) return false;
         if (!result.array) return false;
@@ -180,11 +173,6 @@ export const EntityListTable = <T extends ContentBase>({
                                 </TableRow>
                             );
                         })}
-                        {emptyRows > 0 && (
-                            <TableRow style={{ height: 53 * emptyRows }}>
-                                <TableCell colSpan={columns.length + 2} />
-                            </TableRow>
-                        )}
                     </TableBody>
                 </Table>
             </TableContainer>
@@ -193,8 +181,8 @@ export const EntityListTable = <T extends ContentBase>({
                 component="div"
                 count={result?.totalResults || 0}
                 rowsPerPage={pageSize}
-                page={page}
-                onPageChange={(_, page) => onSetPage(page)}
+                page={page - 1}
+                onPageChange={(_, page) => onSetPage(page + 1)}
                 onRowsPerPageChange={(event) => onSetRowsPerPage(parseInt(event.target.value, 10))}
             />
         </Paper>

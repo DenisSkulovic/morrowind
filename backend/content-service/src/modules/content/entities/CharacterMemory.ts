@@ -33,7 +33,7 @@ export class CharacterMemory extends TaggableContentBase {
     memory!: Memory;
 
     @Column("jsonb", { default: null, nullable: true })
-    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true, internalClass: FactStatus })
     factStatus?: FactStatus[];
 
     @Column({ default: 1 })

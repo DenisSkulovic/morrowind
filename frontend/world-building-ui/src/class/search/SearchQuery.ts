@@ -3,7 +3,9 @@ import { Serializable } from "../../decorator/serializable.decorator";
 import { QueryFilterDTO, QueryFiltersDTO, SearchQueryDTO, SortByDTO } from "../../proto/common_pb";
 import { SortBy } from "./SortBy";
 import Serializer, { SerializeStrategyEnum } from "../../serialize/serializer";
+import { LooseObject } from "../../types";
 
+export type SearchQueryPlain = LooseObject;
 
 export class SearchQuery {
     @Serializable()
@@ -12,10 +14,10 @@ export class SearchQuery {
     @Serializable()
     public pageSize!: number;
 
-    @Serializable({ strategy: SerializeStrategyEnum.FULL, dtoClass: QueryFilterDTO, dtoArrClass: QueryFiltersDTO })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, internalClass: QueryFilter, dtoClass: QueryFilterDTO, dtoArrClass: QueryFiltersDTO })
     public filters?: QueryFilter[];
 
-    @Serializable({ strategy: SerializeStrategyEnum.FULL, dtoClass: SortByDTO })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, internalClass: SortBy, dtoClass: SortByDTO })
     public sortBy?: SortBy;
 
     public static build(data: { [key: string]: any }): SearchQuery {
@@ -30,5 +32,9 @@ export class SearchQuery {
 
     public static fromDTO(dto: SearchQueryDTO): SearchQuery {
         return Serializer.fromDTO(dto, new SearchQuery());
+    }
+
+    toPlainObj(): SearchQueryPlain {
+        return JSON.parse(JSON.stringify(this));
     }
 }

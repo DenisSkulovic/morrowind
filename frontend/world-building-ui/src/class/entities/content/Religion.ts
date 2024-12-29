@@ -5,7 +5,7 @@ import { FormField } from "../../../decorator/form-field.decorator";
 import { FieldComponentEnum } from "../../../enum/FieldComponentEnum";
 import { DisplayField } from '../../../decorator/display-field.decorator';
 import { EntityDisplay } from '../../../decorator/entity-display.decorator';
-import { FilterOption } from '../../../decorator/filter-option.decorator';
+import { FilterOption, FilterOptionTypeEnum } from '../../../decorator/filter-option.decorator';
 import { ReligionTenet } from '../../../class/ReligionTenet';
 import { ReligionRitualDTO, ReligionRitualsDTO, ReligionTenetDTO, ReligionTenetsDTO } from "../../../proto/common_pb";
 import { SerializeStrategyEnum } from "../../../serialize/serializer";
@@ -18,7 +18,7 @@ export class Religion extends ContentBase {
     @DisplayField({
         displayName: 'Name'
     })
-    @FilterOption()
+    @FilterOption({ type: FilterOptionTypeEnum.TEXT })
     @Serializable()
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter religion name', required: true })
     name!: string;
@@ -27,14 +27,15 @@ export class Religion extends ContentBase {
         displayName: 'Description'
     })
     @Serializable()
+    @FilterOption({ type: FilterOptionTypeEnum.TEXT })
     @FormField({ component: FieldComponentEnum.TEXTAREA_FIELD, label: 'Description', placeholder: 'Enter religion description', required: true })
     description!: string;
 
-    @Serializable({ strategy: SerializeStrategyEnum.FULL, dtoClass: ReligionRitualDTO, dtoArrClass: ReligionRitualsDTO })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, internalClass: ReligionRitual, dtoClass: ReligionRitualDTO, dtoArrClass: ReligionRitualsDTO })
     @FormField({ component: FieldComponentEnum.NESTED_FORM, label: 'Rituals' })
     rituals?: ReligionRitual[];
 
-    @Serializable({ strategy: SerializeStrategyEnum.FULL, dtoClass: ReligionTenetDTO, dtoArrClass: ReligionTenetsDTO })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, internalClass: ReligionTenet, dtoClass: ReligionTenetDTO, dtoArrClass: ReligionTenetsDTO })
     @FormField({ component: FieldComponentEnum.NESTED_FORM, label: 'Tenets' })
     tenets?: ReligionTenet[];
 

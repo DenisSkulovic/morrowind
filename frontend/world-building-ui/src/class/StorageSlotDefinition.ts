@@ -13,7 +13,7 @@ export class StorageSlotDefinition {
     name!: string;
 
     @FormField({ component: FieldComponentEnum.OBJECT_FIELD, label: 'Grid Size', placeholder: 'Enter grid dimensions', required: true })
-    @Serializable({ strategy: SerializeStrategyEnum.FULL, dtoClass: GridSizeDTO })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, internalClass: GridSize, dtoClass: GridSizeDTO })
     grid!: GridSize;
 
     @FormField({ component: FieldComponentEnum.NUMBER_FIELD, label: 'Max Weight', placeholder: 'Enter maximum weight', required: true })

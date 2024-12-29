@@ -22,7 +22,5 @@ export class User extends Entity {
         return user;
     }
 
-    toPlainObj(): LooseObject {
-        return JSON.parse(JSON.stringify(this));
-    }
+
 }

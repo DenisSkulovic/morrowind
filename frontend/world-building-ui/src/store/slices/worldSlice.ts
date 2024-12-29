@@ -3,7 +3,7 @@ import { World } from '../../class/entities/World';
 import { RequestStatusEnum } from '../../enum/RequestStatusEnum';
 import { WorldService } from '../../services/WorldService';
 import { SearchQuery } from '../../class/search/SearchQuery';
-import { Context } from '../../class/Context';
+import { Context, ContextPlain } from '../../class/Context';
 import { LooseObject } from '../../types';
 import { handlePending, handleRejected } from '../common';
 import { PresetEnum } from '../../enum/entityEnums';
@@ -89,14 +89,14 @@ const initialState: WorldState = {
 };
 
 // Async Thunks
-export const searchWorldsCall = async ({ query, context }: { query: SearchQuery, context: Context }): Promise<{
+export const searchWorldsCall = async ({ query, context }: { query: SearchQuery, context: ContextPlain }): Promise<{
     results: WorldPlain[],
     totalResults: number,
     totalPages: number,
     currentPage: number
 }> => {
     const worldService = new WorldService();
-    const response: World[] = await worldService.search(query, context);
+    const response: World[] = await worldService.search(query, Context.build(context));
     return {
         results: response.map((world: World) => world.toPlainObj()),
         totalResults: response.length,
@@ -159,14 +159,14 @@ export const loadWorldPresetThunk = createAsyncThunk(
     loadWorldPresetCall
 );
 
-export const searchActivityRecordsCall = async ({ query, context }: { query: SearchQuery, context: Context }) => {
+export const searchActivityRecordsCall = async ({ query, context }: { query: SearchQuery, context: ContextPlain }) => {
     const activityService = new ActivityRecordsService()
     const response: {
         activities: ActivityRecord[];
         totalResults: number;
         totalPages: number;
         currentPage: number;
-    } = await activityService.search(query, context)
+    } = await activityService.search(query, Context.build(context))
     return response
 }
 export const searchActivityRecordsThunk = createAsyncThunk(

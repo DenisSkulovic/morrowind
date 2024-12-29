@@ -85,6 +85,7 @@ export class ContentService<T extends ContentBase> {
     }
 
     async deleteContent(entityName: EntityEnum, id: string, context: Context): Promise<void> {
+        console.log(`[ContentService] deleteContent`, entityName, id, context);
         const request = new DeleteContentRequest();
         request.setEntityname(entityName);
         request.setId(id);
@@ -92,6 +93,7 @@ export class ContentService<T extends ContentBase> {
 
         return new Promise((resolve, reject) => {
             this.client.delete(request, {}, (err, response) => {
+                console.log(`[ContentService] deleteContent response, err: ${err}, response: ${response}`);
                 if (err) reject(err);
                 else if (!response) reject(new Error('No response from server'));
                 else resolve();

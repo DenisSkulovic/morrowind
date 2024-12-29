@@ -7,7 +7,7 @@ import { Effect } from "./Effect";
 import { FormSelectOption } from "../../../class/FormSelectOption";
 import { EntityDisplay } from "../../../decorator/entity-display.decorator";
 import { DisplayField } from "../../../decorator/display-field.decorator";
-import { FilterOption } from "../../../decorator/filter-option.decorator";
+import { FilterOption, FilterOptionTypeEnum } from "../../../decorator/filter-option.decorator";
 import { Context } from "../../../class/Context";
 import { SearchQuery } from "../../../class/search/SearchQuery";
 import { EffectTypeEnumDTO } from "../../../proto/common_pb";
@@ -19,7 +19,7 @@ import { SerializeStrategyEnum } from "../../../serialize/serializer";
 })
 export class Status extends ContentBase {
     @DisplayField()
-    @FilterOption()
+    @FilterOption({ type: FilterOptionTypeEnum.TEXT })
     @Serializable()
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter status name', required: true })
     name!: string;
@@ -29,7 +29,7 @@ export class Status extends ContentBase {
     description!: string;
 
     @DisplayField()
-    @FilterOption()
+    @FilterOption({ type: FilterOptionTypeEnum.SELECT, enum: EffectTypeEnum })
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
         label: 'Type',
@@ -44,7 +44,6 @@ export class Status extends ContentBase {
     type!: EffectTypeEnum;
 
     @DisplayField()
-    @FilterOption()
     @FormField({
         component: FieldComponentEnum.MULTI_SELECT_FIELD,
         label: 'Effects',
@@ -58,7 +57,7 @@ export class Status extends ContentBase {
     effects!: Effect[]; // Links to associated Effect IDs.
 
     @DisplayField()
-    @FilterOption()
+    @FilterOption({ type: FilterOptionTypeEnum.NUMBER_RANGE })
     @Serializable()
     @FormField({ component: FieldComponentEnum.NUMBER_FIELD, label: 'Duration', placeholder: 'Enter duration in ticks (0 for permanent)', required: true })
     duration!: number; // Duration in ticks (0 for permanent).

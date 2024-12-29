@@ -6,7 +6,7 @@ import { FieldComponentEnum } from "../../../enum/FieldComponentEnum";
 import { FormSelectOption } from "../../../class/FormSelectOption";
 import { DisplayField } from '../../../decorator/display-field.decorator';
 import { EntityDisplay } from '../../../decorator/entity-display.decorator';
-import { FilterOption } from '../../../decorator/filter-option.decorator';
+import { FilterOption, FilterOptionTypeEnum } from '../../../decorator/filter-option.decorator';
 import { PastExperienceTypeEnumDTO } from '../../../proto/common_pb';
 import { SerializeStrategyEnum } from "../../../serialize/serializer";
 
@@ -16,13 +16,13 @@ import { SerializeStrategyEnum } from "../../../serialize/serializer";
 })
 export class PastExperience extends TaggableContentBase {
     @DisplayField()
-    @FilterOption()
+    @FilterOption({ type: FilterOptionTypeEnum.TEXT })
     @Serializable()
     @FormField({ component: FieldComponentEnum.TEXT_FIELD, label: 'Name', placeholder: 'Enter past experience name', required: true })
     name!: string;
 
     @DisplayField()
-    @FilterOption()
+    @FilterOption({ type: FilterOptionTypeEnum.SELECT, enum: PastExperienceTypeEnum })
     @FormField({
         component: FieldComponentEnum.SELECT_FIELD,
         label: 'Experience Type',

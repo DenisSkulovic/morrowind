@@ -14,7 +14,7 @@ export class Serializer {
         const dtoInstance: any = {};
         const fields = getSerializableFields(entityInstance.constructor.prototype);
 
-        fields.forEach(({ propertyKey, dtoKey, strategy, asDtoArray, serialize, internalEnum, protoEnum }) => {
+        fields.forEach(({ propertyKey, dtoKey, strategy, asDtoArray, serialize, internalClass, internalEnum, protoEnum }) => {
             const value = entityInstance[propertyKey];
 
             const processArray = (arr: any[]) => {
@@ -27,7 +27,7 @@ export class Serializer {
                 if (strategy === SerializeStrategyEnum.DATE) return item?.getTime();
                 if (strategy === SerializeStrategyEnum.ID) return item?.id || "";
                 if (strategy === SerializeStrategyEnum.ENUM) return serializeEnum(internalEnum, protoEnum, item);
-                if (strategy === SerializeStrategyEnum.FULL) return item?.toDTO ? item.toDTO() : item;
+                if (strategy === SerializeStrategyEnum.FULL) return item ? Serializer.toDTO(item) : undefined;
                 return item;
             };
 
@@ -51,7 +51,7 @@ export class Serializer {
         console.log('[Serializer] fromDTO', dtoInstance);
         const fields = getSerializableFields(entityInstance.constructor.prototype);
 
-        fields.forEach(({ propertyKey, dtoKey, strategy, asDtoArray, deserialize, internalEnum, protoEnum }) => {
+        fields.forEach(({ propertyKey, dtoKey, strategy, asDtoArray, deserialize, internalClass, internalEnum, protoEnum }) => {
             const value = dtoInstance[dtoKey];
 
             const processDTOArray = (dtoArr: any) => {
@@ -69,7 +69,10 @@ export class Serializer {
                 if (strategy === SerializeStrategyEnum.DATE) return item ? new Date(item) : undefined;
                 if (strategy === SerializeStrategyEnum.ID) return item?.id ? { id: item.id } : { id: item as string };
                 if (strategy === SerializeStrategyEnum.ENUM) return deserializeEnum(protoEnum, internalEnum, item);
-                if (strategy === SerializeStrategyEnum.FULL) return Serializer.fromDTO(item, new entityInstance.constructor());
+                if (strategy === SerializeStrategyEnum.FULL) {
+                    if (!internalClass) throw new Error(`Internal class not set for ${propertyKey}`);
+                    return Serializer.fromDTO(item, new internalClass());
+                }
                 return item;
             };
 

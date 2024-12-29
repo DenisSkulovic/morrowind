@@ -20,7 +20,7 @@ export class ItemWeapon extends ItemRepairable {
 
     @Column({ nullable: true })
     @Serializable()
-    range?: string; // Range in feet for ranged weapons, e.g., "30/120".
+    range?: number; // Range in meters
 
     @Column({ default: false })
     @Serializable()

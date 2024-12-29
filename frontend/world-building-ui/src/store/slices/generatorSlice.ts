@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { GenerationResult, GeneratorService } from '../../services/GeneratorService';
 import { RequestStatusEnum } from '../../enum/RequestStatusEnum';
-import { Context } from '../../class/Context';
+import { Context, ContextPlain } from '../../class/Context';
 import { GenerationInstruction } from '../../class/GenerationInstruction';
 import { CharacterGenInstruction } from '../../class/entities/content/CharacterGenInstruction';
 import { CharacterGroupGenInstruction } from '../../class/entities/content/CharacterGroupGenInstruction';
@@ -35,33 +35,33 @@ const initialState: GeneratorState = {
 // Async thunks
 export const generateItems = createAsyncThunk(
     'generator/generateItems',
-    async ({ instructions, context }: { instructions: GenerationInstruction[], context: Context }) => {
+    async ({ instructions, context }: { instructions: GenerationInstruction[], context: ContextPlain }) => {
         const generatorService = new GeneratorService();
-        return await generatorService.generateItems(instructions, context);
+        return await generatorService.generateItems(instructions, Context.build(context));
     }
 );
 
 export const generateCharactersCustom = createAsyncThunk(
     'generator/generateCharactersCustom',
-    async ({ instructions, context }: { instructions: CharacterGenInstruction[], context: Context }) => {
+    async ({ instructions, context }: { instructions: CharacterGenInstruction[], context: ContextPlain }) => {
         const generatorService = new GeneratorService();
-        return await generatorService.generateCharactersCustom(instructions, context);
+        return await generatorService.generateCharactersCustom(instructions, Context.build(context));
     }
 );
 
 export const generateCharactersDB = createAsyncThunk(
     'generator/generateCharactersDB',
-    async ({ instructionIds, context }: { instructionIds: string[], context: Context }) => {
+    async ({ instructionIds, context }: { instructionIds: string[], context: ContextPlain }) => {
         const generatorService = new GeneratorService();
-        return await generatorService.generateCharactersDB(instructionIds, context);
+        return await generatorService.generateCharactersDB(instructionIds, Context.build(context));
     }
 );
 
 export const generateCharacterGroups = createAsyncThunk(
     'generator/generateCharacterGroups',
-    async ({ instructions, context }: { instructions: CharacterGroupGenInstruction[], context: Context }) => {
+    async ({ instructions, context }: { instructions: CharacterGroupGenInstruction[], context: ContextPlain }) => {
         const generatorService = new GeneratorService();
-        return await generatorService.generateCharacterGroups(instructions, context);
+        return await generatorService.generateCharacterGroups(instructions, Context.build(context));
     }
 );
 

@@ -81,6 +81,11 @@ function getCharactersNavItem(worldId: string) {
             }),
             NavItem.build({
                 label: 'Personality Profiles',
+                path: routes.contentEntity(worldId, 'PersonalityProfile'),
+                icon: PersonalityIcon
+            }),
+            NavItem.build({
+                label: 'Traits',
                 path: routes.contentEntity(worldId, 'Trait'),
                 icon: PersonalityIcon
             }),

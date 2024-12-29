@@ -1,23 +1,21 @@
 import { Serializable } from "../decorator/serializable.decorator";
-import { ItemRequirementDTO, ItemRequirementsDTO } from "../proto/common";
-import { Serializer } from "../serializer";
+import { ItemRequirementTypeEnum } from "../enum/ItemRequirementTypeEnum";
+import { ItemRequirementDTO, ItemRequirementTypeEnumDTO } from "../proto/common";
+import { Serializer, SerializeStrategyEnum } from "../serializer";
 
 
 export class ItemRequirement {
     @Serializable()
     clazz = "ItemRequirement"
 
-    @Serializable()
-    type!: string
+    @Serializable({ strategy: SerializeStrategyEnum.ENUM, internalEnum: ItemRequirementTypeEnum, protoEnum: ItemRequirementTypeEnumDTO })
+    type!: ItemRequirementTypeEnum
 
     @Serializable()
     name!: string
 
     @Serializable()
     number!: number
-
-    @Serializable()
-    flag!: boolean
 
     toDTO(): ItemRequirementDTO {
         return Serializer.toDTO(this)

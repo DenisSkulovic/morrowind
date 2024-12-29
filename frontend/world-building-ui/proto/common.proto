@@ -244,7 +244,7 @@ message StorageGridCellDTO {
 
 // #######################################################################################
 message ItemRequirementDTO {
-    string type = 1; // The outer "type" key
+    ItemRequirementTypeEnumDTO type = 1; // The outer "type" key
     string name = 2; // The inner "name" key
     oneof value {
         int32 number = 3; // Numerical value
@@ -412,7 +412,7 @@ message TraitDTO {
     string world = 7;
     repeated string tags = 8;
     string targetEntity = 9;
-    TraitTypeEnumDTO type = 10;
+    TraitTypeEnumDTO traitType = 10;
     int32 createdAt = 11;
 }
 message TraitsDTO {
@@ -1221,4 +1221,8 @@ enum DiseaseSeverityEnumDTO {
     DISEASE_SEVERITY_MILD = 0;
     DISEASE_SEVERITY_MODERATE = 1;
     DISEASE_SEVERITY_SEVERE = 2;
+}
+enum ItemRequirementTypeEnumDTO {
+    ITEM_REQUIREMENT_SKILL = 0;
+    ITEM_REQUIREMENT_ATTRIBUTE = 1;
 }

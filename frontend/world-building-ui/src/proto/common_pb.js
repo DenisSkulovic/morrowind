@@ -2,18 +2,15 @@
 /**
  * @fileoverview
  * @enhanceable
- * @suppress {missingRequire} reports error on implicit type usages.
  * @suppress {messageConventions} JS Compiler reports an error if a variable or
  *     field starts with 'MSG_' and isn't a translatable message.
  * @public
  */
 // GENERATED CODE -- DO NOT EDIT!
-/* eslint-disable */
-// @ts-nocheck
 
 var jspb = require('google-protobuf');
 var goog = jspb;
-var global = (function() { return this || window || global || self || Function('return this')(); }).call(null);
+var global = Function('return this')();
 
 goog.exportSymbol('proto.common.AccountDTO', null, global);
 goog.exportSymbol('proto.common.AddictionDTO', null, global);
@@ -73,6 +70,7 @@ goog.exportSymbol('proto.common.ItemActionsDTO', null, global);
 goog.exportSymbol('proto.common.ItemDTO', null, global);
 goog.exportSymbol('proto.common.ItemRequirementDTO', null, global);
 goog.exportSymbol('proto.common.ItemRequirementDTO.ValueCase', null, global);
+goog.exportSymbol('proto.common.ItemRequirementTypeEnumDTO', null, global);
 goog.exportSymbol('proto.common.ItemRequirementsDTO', null, global);
 goog.exportSymbol('proto.common.ItemSetDTO', null, global);
 goog.exportSymbol('proto.common.ItemSetsDTO', null, global);
@@ -8404,10 +8402,8 @@ proto.common.ItemActionsDTO.deserializeBinaryFromReader = function(msg, reader) 
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var values = /** @type {!Array<!proto.common.ItemActionEnumDTO>} */ (reader.isDelimited() ? reader.readPackedEnum() : [reader.readEnum()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addActions(values[i]);
-      }
+      var value = /** @type {!Array<!proto.common.ItemActionEnumDTO>} */ (reader.readPackedEnum());
+      msg.setActionsList(value);
       break;
     default:
       reader.skipField();
@@ -8604,10 +8600,8 @@ proto.common.StorageSlotDTO.deserializeBinaryFromReader = function(msg, reader) 
       msg.setWorld(value);
       break;
     case 8:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedInt32() : [reader.readInt32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addGrid(values[i]);
-      }
+      var value = /** @type {!Array<number>} */ (reader.readPackedInt32());
+      msg.setGridList(value);
       break;
     case 9:
       var value = new proto.common.StorageGridDTO;
@@ -9664,7 +9658,7 @@ proto.common.ItemRequirementDTO.prototype.toObject = function(opt_includeInstanc
  */
 proto.common.ItemRequirementDTO.toObject = function(includeInstance, msg) {
   var f, obj = {
-    type: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    type: jspb.Message.getFieldWithDefault(msg, 1, 0),
     name: jspb.Message.getFieldWithDefault(msg, 2, ""),
     number: jspb.Message.getFieldWithDefault(msg, 3, 0),
     flag: jspb.Message.getBooleanFieldWithDefault(msg, 4, false),
@@ -9706,7 +9700,7 @@ proto.common.ItemRequirementDTO.deserializeBinaryFromReader = function(msg, read
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {string} */ (reader.readString());
+      var value = /** @type {!proto.common.ItemRequirementTypeEnumDTO} */ (reader.readEnum());
       msg.setType(value);
       break;
     case 2:
@@ -9755,8 +9749,8 @@ proto.common.ItemRequirementDTO.prototype.serializeBinary = function() {
 proto.common.ItemRequirementDTO.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
   f = message.getType();
-  if (f.length > 0) {
-    writer.writeString(
+  if (f !== 0.0) {
+    writer.writeEnum(
       1,
       f
     );
@@ -9793,20 +9787,20 @@ proto.common.ItemRequirementDTO.serializeBinaryToWriter = function(message, writ
 
 
 /**
- * optional string type = 1;
- * @return {string}
+ * optional ItemRequirementTypeEnumDTO type = 1;
+ * @return {!proto.common.ItemRequirementTypeEnumDTO}
  */
 proto.common.ItemRequirementDTO.prototype.getType = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+  return /** @type {!proto.common.ItemRequirementTypeEnumDTO} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
 /**
- * @param {string} value
+ * @param {!proto.common.ItemRequirementTypeEnumDTO} value
  * @return {!proto.common.ItemRequirementDTO} returns this
  */
 proto.common.ItemRequirementDTO.prototype.setType = function(value) {
-  return jspb.Message.setProto3StringField(this, 1, value);
+  return jspb.Message.setProto3EnumField(this, 1, value);
 };
 
 
@@ -14554,7 +14548,7 @@ proto.common.TraitDTO.toObject = function(includeInstance, msg) {
     world: jspb.Message.getFieldWithDefault(msg, 7, ""),
     tagsList: (f = jspb.Message.getRepeatedField(msg, 8)) == null ? undefined : f,
     targetentity: jspb.Message.getFieldWithDefault(msg, 9, ""),
-    type: jspb.Message.getFieldWithDefault(msg, 10, 0),
+    traittype: jspb.Message.getFieldWithDefault(msg, 10, 0),
     createdat: jspb.Message.getFieldWithDefault(msg, 11, 0)
   };
 
@@ -14631,7 +14625,7 @@ proto.common.TraitDTO.deserializeBinaryFromReader = function(msg, reader) {
       break;
     case 10:
       var value = /** @type {!proto.common.TraitTypeEnumDTO} */ (reader.readEnum());
-      msg.setType(value);
+      msg.setTraittype(value);
       break;
     case 11:
       var value = /** @type {number} */ (reader.readInt32());
@@ -14730,7 +14724,7 @@ proto.common.TraitDTO.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = message.getType();
+  f = message.getTraittype();
   if (f !== 0.0) {
     writer.writeEnum(
       10,
@@ -14948,10 +14942,10 @@ proto.common.TraitDTO.prototype.setTargetentity = function(value) {
 
 
 /**
- * optional TraitTypeEnumDTO type = 10;
+ * optional TraitTypeEnumDTO traitType = 10;
  * @return {!proto.common.TraitTypeEnumDTO}
  */
-proto.common.TraitDTO.prototype.getType = function() {
+proto.common.TraitDTO.prototype.getTraittype = function() {
   return /** @type {!proto.common.TraitTypeEnumDTO} */ (jspb.Message.getFieldWithDefault(this, 10, 0));
 };
 
@@ -14960,7 +14954,7 @@ proto.common.TraitDTO.prototype.getType = function() {
  * @param {!proto.common.TraitTypeEnumDTO} value
  * @return {!proto.common.TraitDTO} returns this
  */
-proto.common.TraitDTO.prototype.setType = function(value) {
+proto.common.TraitDTO.prototype.setTraittype = function(value) {
   return jspb.Message.setProto3EnumField(this, 10, value);
 };
 
@@ -21473,10 +21467,8 @@ proto.common.StorageSlotDefinitionDTO.deserializeBinaryFromReader = function(msg
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedInt32() : [reader.readInt32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addGrid(values[i]);
-      }
+      var value = /** @type {!Array<number>} */ (reader.readPackedInt32());
+      msg.setGridList(value);
       break;
     case 2:
       var value = /** @type {string} */ (reader.readString());
@@ -34857,6 +34849,14 @@ proto.common.DiseaseSeverityEnumDTO = {
   DISEASE_SEVERITY_MILD: 0,
   DISEASE_SEVERITY_MODERATE: 1,
   DISEASE_SEVERITY_SEVERE: 2
+};
+
+/**
+ * @enum {number}
+ */
+proto.common.ItemRequirementTypeEnumDTO = {
+  ITEM_REQUIREMENT_SKILL: 0,
+  ITEM_REQUIREMENT_ATTRIBUTE: 1
 };
 
 goog.object.extend(exports, proto.common);

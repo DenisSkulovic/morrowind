@@ -30,7 +30,7 @@ export const RecentActivity = ({ activityRecords, worldId, userId }: RecentActiv
             } else return { href: "", linkText: "" }
         }
         const { linkText, href } = getLinkTextAndHref()
-        const link = <Link href={href}>{linkText}</Link>
+        const link = href && linkText ? <Link href={href}>{linkText}</Link> : ''
         return <Typography>{label} {link}</Typography>
     };
 

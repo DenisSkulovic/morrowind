@@ -23,7 +23,7 @@ export class Race extends ContentBase {
     name!: string;
 
     @Column("jsonb")
-    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true, internalClass: EquipmentSlotDefinition })
     equipment_slot_definitions!: EquipmentSlotDefinition[]
 
     @ManyToOne(() => User, { nullable: true })

@@ -933,8 +933,8 @@ export namespace StorageGridCellDTO {
 }
 
 export class ItemRequirementDTO extends jspb.Message {
-  getType(): string;
-  setType(value: string): ItemRequirementDTO;
+  getType(): ItemRequirementTypeEnumDTO;
+  setType(value: ItemRequirementTypeEnumDTO): ItemRequirementDTO;
 
   getName(): string;
   setName(value: string): ItemRequirementDTO;
@@ -960,7 +960,7 @@ export class ItemRequirementDTO extends jspb.Message {
 
 export namespace ItemRequirementDTO {
   export type AsObject = {
-    type: string,
+    type: ItemRequirementTypeEnumDTO,
     name: string,
     number: number,
     flag: boolean,
@@ -1596,8 +1596,8 @@ export class TraitDTO extends jspb.Message {
   getTargetentity(): string;
   setTargetentity(value: string): TraitDTO;
 
-  getType(): TraitTypeEnumDTO;
-  setType(value: TraitTypeEnumDTO): TraitDTO;
+  getTraittype(): TraitTypeEnumDTO;
+  setTraittype(value: TraitTypeEnumDTO): TraitDTO;
 
   getCreatedat(): number;
   setCreatedat(value: number): TraitDTO;
@@ -1621,7 +1621,7 @@ export namespace TraitDTO {
     world: string,
     tagsList: Array<string>,
     targetentity: string,
-    type: TraitTypeEnumDTO,
+    traittype: TraitTypeEnumDTO,
     createdat: number,
   }
 }
@@ -4298,4 +4298,8 @@ export enum DiseaseSeverityEnumDTO {
   DISEASE_SEVERITY_MILD = 0,
   DISEASE_SEVERITY_MODERATE = 1,
   DISEASE_SEVERITY_SEVERE = 2,
+}
+export enum ItemRequirementTypeEnumDTO { 
+  ITEM_REQUIREMENT_SKILL = 0,
+  ITEM_REQUIREMENT_ATTRIBUTE = 1,
 }

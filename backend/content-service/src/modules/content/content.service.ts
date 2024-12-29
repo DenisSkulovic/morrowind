@@ -1,16 +1,13 @@
 import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
-import { DataSource, EntityTarget, FindOptionsWhere, Repository } from 'typeorm';
+import { DataSource, FindOptionsWhere, Repository, Like } from 'typeorm';
 import { ContentEntityMapService } from '../../CONTENT_ENTITY_MAP';
 import { DataSourceEnum } from '../../common/enum/DataSourceEnum';
 import { ContentBase } from '../../ContentBase';
-import { MakeSureWorldIsNotFrozen } from '../../decorator/MakeSureWorldIsNotFrozen';
 import { WorldService } from '../world/world.service';
-import { ContentStat } from '../../class/ContentStat';
 import { SearchQuery } from '../../class/search/SearchQuery';
 import { Context } from '../../class/Context';
 import { ContentStatDTO } from '../../proto/content';
-import { World } from '../world/entities/World';
 import { QueryFilterOperatorEnum } from '../../class/search/QueryFilter';
 import { EntityEnum } from '../../enum/EntityEnum';
 import { EntityConstructor } from '../../types';
@@ -69,37 +66,52 @@ export class ContentService<T extends ContentBase> {
         await repository.delete(id);
     }
     async search(entityName: string, query: SearchQuery, context: Context): Promise<ContentSearchResult<T>> {
+        console.log(`[ContentService] search`, entityName, query, context)
         const repository = this.getRepository(entityName, DataSourceEnum.DATA_SOURCE_WORLD);
 
-
         // Build where clause from query filters
-        const where: any = {};
+        if (!context.user?.id) throw new Error('User in Context is required to search content');
+        if (!context.world?.id) throw new Error('World in Context is required to search content');
+        const where: any = {
+            user: { id: context.user.id },
+            world: { id: context.world.id }
+        };
+        if (context.campaign?.id) where.campaign = { id: context.campaign.id };
+
         if (query.filters) {
             for (const filter of query.filters) {
                 where[filter.field] = {};
                 switch (filter.operator) {
                     case QueryFilterOperatorEnum.EQUAL:
+                        if (!["string", "number"].includes(typeof filter.value)) throw new Error(`Filter value for EQUAL must be a string or number, got ${typeof filter.value}`);
                         where[filter.field] = filter.value;
                         break;
                     case QueryFilterOperatorEnum.NOT_EQUAL:
+                        if (!["string", "number"].includes(typeof filter.value)) throw new Error(`Filter value for NOT_EQUAL must be a string or number, got ${typeof filter.value}`);
                         where[filter.field] = { not: filter.value };
                         break;
                     case QueryFilterOperatorEnum.GREATER_THAN:
+                        if (!["number"].includes(typeof filter.value)) throw new Error(`Filter value for GREATER_THAN must be a string, got ${typeof filter.value}`);
                         where[filter.field] = { gt: filter.value };
                         break;
                     case QueryFilterOperatorEnum.GREATER_THAN_OR_EQUAL:
+                        if (!["number"].includes(typeof filter.value)) throw new Error(`Filter value for GREATER_THAN_OR_EQUAL must be a number, got ${typeof filter.value}`);
                         where[filter.field] = { gte: filter.value };
                         break;
                     case QueryFilterOperatorEnum.LESS_THAN:
+                        if (!["number"].includes(typeof filter.value)) throw new Error(`Filter value for LESS_THAN must be a number, got ${typeof filter.value}`);
                         where[filter.field] = { lt: filter.value };
                         break;
                     case QueryFilterOperatorEnum.LESS_THAN_OR_EQUAL:
+                        if (!["number"].includes(typeof filter.value)) throw new Error(`Filter value for LESS_THAN_OR_EQUAL must be a number, got ${typeof filter.value}`);
                         where[filter.field] = { lte: filter.value };
                         break;
                     case QueryFilterOperatorEnum.CONTAINS:
-                        where[filter.field] = { contains: filter.value };
+                        if (!["string"].includes(typeof filter.value)) throw new Error(`Filter value for CONTAINS must be a string, got ${typeof filter.value}`);
+                        where[filter.field] = Like(`%${filter.value}%`);
                         break;
                     case QueryFilterOperatorEnum.REGEX:
+                        if (!["string"].includes(typeof filter.value)) throw new Error(`Filter value for REGEX must be a string, got ${typeof filter.value}`);
                         where[filter.field] = { regex: filter.value };
                         break;
                 }
@@ -112,11 +124,14 @@ export class ContentService<T extends ContentBase> {
             order[query.sortBy.field] = query.sortBy.direction;
         }
 
+        const skip = (query.page - 1) * query.pageSize
+        const take = query.pageSize
+        console.log(`[ContentService] search where, order, skip, take`, where, order, skip, take)
         const [results, total] = await repository.findAndCount({
             where,
             order,
-            skip: (query.page - 1) * query.pageSize,
-            take: query.pageSize
+            skip,
+            take
         });
 
         const result = new ContentSearchResult<T>();

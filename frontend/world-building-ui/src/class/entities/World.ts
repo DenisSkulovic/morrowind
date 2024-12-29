@@ -75,7 +75,4 @@ export class World extends Entity {
         return worldService.search(filter, context);
     }
 
-    toPlainObj(): LooseObject {
-        return JSON.parse(JSON.stringify(this));
-    }
 }
