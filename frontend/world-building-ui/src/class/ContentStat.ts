@@ -1,4 +1,6 @@
 import { Serializable } from "../decorator/serializable.decorator";
+import { EntityEnum } from "../enum/EntityEnum";
+import { SerializeStrategyEnum } from "../serialize/serializer";
 import { LooseObject } from "../types";
 
 export class ContentStat {
@@ -13,6 +15,9 @@ export class ContentStat {
 
     @Serializable()
     icon!: string;
+
+    @Serializable() // TODO thought of using an actual enum (EntityEnum) instead of string, but it would be a pain to serialize/deserialize
+    entity!: string;
 
     public static build(data: LooseObject): ContentStat {
         const contentStat = new ContentStat();

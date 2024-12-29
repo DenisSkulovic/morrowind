@@ -18,6 +18,15 @@ export class ContentStat {
     @Serializable()
     icon!: string
 
+    @Serializable() // thought of using an actual enum (EntityEnum) instead of string, but it would be a pain to serialize/deserialize
+    entity!: string
+
+    static build(body: Partial<ContentStat>): ContentStat {
+        const stat = new ContentStat()
+        Object.assign(stat, body)
+        return stat
+    }
+
     toDTO() {
         return Serializer.toDTO(this)
     }

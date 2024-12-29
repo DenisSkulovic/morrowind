@@ -1,8 +1,15 @@
+
+
 export function serializeEnum<T extends object, E extends object>(fromEnum: T, toEnum: E, value: string): E[keyof E] {
-    const entry = Object.entries(fromEnum).find(([enumKey, enumValue]) => enumValue === value);
-    if (!entry) throw new Error(`Enum serialization failed: ${value} not found in ${JSON.stringify(fromEnum)}`);
+    const entry = Object.entries(fromEnum).find(([enumKey, enumValue]) =>
+        enumValue === value || enumKey === value
+    );
+
+    if (!entry) throw new Error(`Enum serialization failed: value '${value}' not found in source enum ${JSON.stringify(fromEnum)}`);
     const key: keyof E = entry[0] as keyof E
-    return toEnum[key]
+    const result = toEnum[key];
+    if (result === undefined) throw new Error(`Enum serialization failed: key '${String(key)}' not found in target enum ${JSON.stringify(toEnum)}`);
+    return result;
 }
 
 export function deserializeEnum<T extends object, E extends object>(fromEnum: T, toEnum: E, protoValue: number | string): E[keyof E] {
@@ -13,7 +20,9 @@ export function deserializeEnum<T extends object, E extends object>(fromEnum: T,
             return key === protoValue
         }
     });
-    if (!entry) throw new Error(`Enum deserialization failed: ${protoValue} not found in ${JSON.stringify(fromEnum)}`);
+    if (!entry) throw new Error(`Enum deserialization failed: value '${protoValue}' not found in source enum ${JSON.stringify(fromEnum)}`);
     const key: keyof E = entry[0] as keyof E
-    return toEnum[key];
+    const result = toEnum[key];
+    if (result === undefined) throw new Error(`Enum deserialization failed: key '${String(key)}' not found in target enum ${JSON.stringify(toEnum)}`);
+    return result;
 }

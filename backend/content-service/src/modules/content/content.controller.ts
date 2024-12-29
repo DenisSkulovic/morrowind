@@ -8,7 +8,8 @@ import {
     DeleteContentResponse, SearchContentRequest, SearchContentResponse,
     CreateBulkContentRequest, CreateBulkContentResponse, UpdateBulkContentRequest,
     UpdateBulkContentResponse, DeleteBulkContentRequest, DeleteBulkContentResponse,
-    GetContentStatsRequest, GetContentStatsResponse
+    GetContentStatsRequest, GetContentStatsResponse,
+    ContentStatDTO
 } from '../../proto/content';
 import { deserializeEnum } from '../../common/enum/util';
 import { DataSourceEnum } from '../../common/enum/DataSourceEnum';
@@ -21,8 +22,11 @@ import { SearchQuery } from '../../class/search/SearchQuery';
 import { ActivityService } from '../activity/activity.service';
 import { ActivityRecord } from '../activity/entities/ActivityRecord';
 import { ActivityEventNameEnum } from '../../enum/ActivityEventNameEnum';
-import { EntityEnum } from '../../enum/EntityEnum';
+import { EntityEnum } from '../../common/enum/EntityEnum';
 import { sanitizeEntityName } from '../../util/sanitizeEntityName';
+import { ContentStat } from '../../class/ContentStat';
+import { World } from '../world/entities/World';
+import { User } from '../user/entities/User';
 
 @Controller()
 export class ContentController {
@@ -48,10 +52,9 @@ export class ContentController {
                 eventName: ActivityEventNameEnum.CONTENT_CREATED,
                 label: `Created content`,
                 relatedTargetEntity: entityName,
-                relatedTargetName: result.name,
                 relatedTargetId: result.id,
-                world: { id: worldId },
-                user: { id: userId }
+                world: { id: worldId } as World,
+                user: { id: userId } as User
             }),
             userId,
             worldId,
@@ -79,10 +82,9 @@ export class ContentController {
                 eventName: ActivityEventNameEnum.CONTENT_UPDATED,
                 label: `Updated content`,
                 relatedTargetEntity: entityName,
-                relatedTargetName: result.name,
                 relatedTargetId: result.id,
-                world: { id: worldId },
-                user: { id: userId }
+                world: { id: worldId } as World,
+                user: { id: userId } as User
             }),
             userId,
             worldId,
@@ -108,8 +110,8 @@ export class ContentController {
                 label: `Deleted content`,
                 relatedTargetEntity: entityName,
                 relatedTargetId: id,
-                world: { id: worldId },
-                user: { id: userId }
+                world: { id: worldId } as World,
+                user: { id: userId } as User
             }),
             userId,
             worldId,
@@ -169,8 +171,8 @@ export class ContentController {
                 eventName: ActivityEventNameEnum.CONTENT_CREATED_BULK,
                 label: `Created ${entities.length} content in bulk`,
                 relatedTargetEntity: entityName,
-                world: { id: worldId },
-                user: { id: userId }
+                world: { id: worldId } as World,
+                user: { id: userId } as User
             }),
             userId,
             worldId,
@@ -204,8 +206,8 @@ export class ContentController {
                 eventName: ActivityEventNameEnum.CONTENT_UPDATED_BULK,
                 label: `Updated ${entities.length} content in bulk`,
                 relatedTargetEntity: entityName,
-                world: { id: worldId },
-                user: { id: userId }
+                world: { id: worldId } as World,
+                user: { id: userId } as User
             }),
             userId,
             worldId,
@@ -235,8 +237,8 @@ export class ContentController {
                 eventName: ActivityEventNameEnum.CONTENT_DELETED_BULK,
                 label: `Deleted ${ids.length} content in bulk`,
                 relatedTargetEntity: entityName,
-                world: { id: worldId },
-                user: { id: userId }
+                world: { id: worldId } as World,
+                user: { id: userId } as User
             }),
             userId,
             worldId,
@@ -248,8 +250,12 @@ export class ContentController {
     async getStats(request: GetContentStatsRequest): Promise<GetContentStatsResponse> {
         const { context, entityNames } = request;
         if (!context) throw new Error(`context cannot be undefined`)
-        const stats = await this.contentService.getStats(entityNames, Context.fromDTO(context));
-        return { stats };
+        const entityNamesEnum: EntityEnum[] = entityNames.map((entityName: string) => sanitizeEntityName(entityName))
+        const stats: ContentStat[] = await this.contentService.getStats(entityNamesEnum, Context.fromDTO(context));
+        const dtoStats: ContentStatDTO[] = stats.map(stat => Serializer.toDTO(stat));
+        const response: GetContentStatsResponse = { stats: dtoStats };
+        console.log(`[ContentController] getStats response`, response);
+        return response;
     }
 }
 

@@ -28,7 +28,7 @@ export function getNavItems(accountId?: string, worldId?: string) {
     const items: NavItem[] = []
     items.push(getHomeItem())
     if (accountId) {
-        items.push(getAccountNavItem(accountId))
+        items.push(getAccountNavItem())
         items.push(getWorldsNavItem())
         if (worldId) {
             items.push(getWorldDashboardNavItem(worldId))
@@ -48,10 +48,10 @@ function getHomeItem() {
         icon: HomeIcon
     });
 }
-function getAccountNavItem(accountId: string) {
+function getAccountNavItem() {
     return NavItem.build({
         label: 'Account',
-        path: routes.userProfile(accountId),
+        path: routes.userProfile(),
         icon: AccountIcon
     })
 }

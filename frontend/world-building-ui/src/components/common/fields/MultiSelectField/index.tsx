@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { FormControl, InputLabel, Select, MenuItem, Chip, Box, CircularProgress } from '@mui/material';
+import { FormControl, InputLabel, Select, MenuItem, Chip, Box, CircularProgress, FormHelperText } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
 import { AppDispatch, RootState } from '../../../../store/store';
 import { setOptionsLoading, setOptionsSuccess, setOptionsError } from '../../../../store/slices/uiSlice';
@@ -15,6 +15,7 @@ interface MultiSelectFieldProps extends DynamicFormFieldProps {
     fetchFn: (filter: string) => Promise<any[]>;
     filter: string;
     reduxKey: string;
+    error?: string;
 }
 
 const MultiSelectField: React.FC<MultiSelectFieldProps> = ({
@@ -23,11 +24,12 @@ const MultiSelectField: React.FC<MultiSelectFieldProps> = ({
     onChange,
     fetchFn,
     filter,
-    reduxKey
+    reduxKey,
+    error
 }) => {
     if (!reduxKey) throw new Error('Redux key is required in MultiSelectField');
     const dispatch = useDispatch<AppDispatch>();
-    const { data: options, status, error } = useSelector(
+    const { data: options, status: optionsStatus, error: optionsError } = useSelector(
         (state: RootState) => state.ui.options[reduxKey] || { data: [], status: RequestStatusEnum.IDLE, error: null }
     );
 
@@ -52,40 +54,54 @@ const MultiSelectField: React.FC<MultiSelectFieldProps> = ({
     const { label, required = false, disabled = false } = formFieldDefinition;
 
     return (
-        <FormControl fullWidth required={required} disabled={disabled}>
-            <InputLabel>{label}</InputLabel>
-            <Select
-                multiple
-                value={value}
-                onChange={handleChange}
-                label={label}
-                error={!!error}
-                renderValue={(selected) => (
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                        {selected.map((value) => (
-                            <Chip key={value} label={options.find(opt => opt.id === value)?.label || value} />
-                        ))}
-                    </Box>
-                )}
-            >
-                {status === RequestStatusEnum.LOADING ? (
-                    <MenuItem disabled>
-                        <CircularProgress size={20} />
-                        Loading...
-                    </MenuItem>
-                ) : error ? (
-                    <MenuItem disabled>
-                        Error: {error}
-                    </MenuItem>
-                ) : (
-                    options.map((option) => (
-                        <MenuItem key={option.id} value={option.id}>
-                            {option.label}
+        <>
+            <FormControl fullWidth required={required} disabled={disabled} sx={{ mb: 2 }}>
+                <InputLabel>{label}</InputLabel>
+                <Select
+                    multiple
+                    value={value}
+                    onChange={handleChange}
+                    label={label}
+                    error={!!optionsError}
+                    renderValue={(selected) => (
+                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, p: 0.5 }}>
+                            {selected.map((value) => (
+                                <Chip
+                                    key={value}
+                                    label={options.find(opt => opt.id === value)?.label || value}
+                                    sx={{ m: 0.25 }}
+                                />
+                            ))}
+                        </Box>
+                    )}
+                    MenuProps={{
+                        PaperProps: {
+                            style: {
+                                maxHeight: 250
+                            }
+                        }
+                    }}
+                >
+                    {optionsStatus === RequestStatusEnum.LOADING ? (
+                        <MenuItem disabled sx={{ p: 2 }}>
+                            <CircularProgress size={20} sx={{ mr: 1 }} />
+                            Loading...
                         </MenuItem>
-                    ))
-                )}
-            </Select>
-        </FormControl>
+                    ) : optionsError ? (
+                        <MenuItem disabled sx={{ p: 2 }}>
+                            Error: {optionsError}
+                        </MenuItem>
+                    ) : (
+                        options.map((option) => (
+                            <MenuItem key={option.id} value={option.id} sx={{ py: 1 }}>
+                                {option.label}
+                            </MenuItem>
+                        ))
+                    )}
+                </Select>
+            </FormControl>
+            {error && <FormHelperText>{error}</FormHelperText>}
+        </>
     );
 };
 

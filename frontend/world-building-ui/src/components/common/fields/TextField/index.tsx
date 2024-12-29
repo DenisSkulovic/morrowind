@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormControl, InputLabel, TextField as MuiTextField } from '@mui/material';
+import { FormControl, FormHelperText, InputLabel, TextField as MuiTextField } from '@mui/material';
 import { DynamicFormFieldProps } from '../../DynamicForm';
 import { FormFieldDefinition } from '../../../../decorator/form-field.decorator';
 
@@ -21,17 +21,25 @@ const TextField: React.FC<TextFieldProps> = ({
     };
 
     return (
-        <FormControl fullWidth required={formFieldDefinition.required} disabled={formFieldDefinition.disabled}>
-            <InputLabel>{formFieldDefinition.label}</InputLabel>
-            <MuiTextField
-                value={value}
-                onChange={handleChange}
-                placeholder={formFieldDefinition.placeholder}
-                error={!!error}
-                helperText={error}
+        <>
+            <FormControl
                 fullWidth
-            />
-        </FormControl>
+                required={formFieldDefinition.required}
+                disabled={formFieldDefinition.disabled}
+                sx={{ mt: 1, mb: 1 }}
+            >
+                <InputLabel shrink>{formFieldDefinition.label}</InputLabel>
+                <MuiTextField
+                    value={value}
+                    onChange={handleChange}
+                    placeholder={formFieldDefinition.placeholder}
+                    fullWidth
+                    variant="outlined"
+                    sx={{ mt: 1 }}
+                />
+            </FormControl>
+            {error && <FormHelperText>{error}</FormHelperText>}
+        </>
     );
 };
 

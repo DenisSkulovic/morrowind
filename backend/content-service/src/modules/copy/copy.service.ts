@@ -6,7 +6,7 @@ import { DataSourceEnum } from '../../common/enum/DataSourceEnum';
 import { TemporarilyFreezeWorld } from '../../decorator/TemporarilyFreezeWorld';
 import { Campaign } from '../campaign/entities/Campaign';
 import { ContentEntityMapService } from '../../CONTENT_ENTITY_MAP';
-import { EntityEnum } from '../../enum/EntityEnum';
+import { EntityEnum } from '../../common/enum/EntityEnum';
 import { EntityConstructor } from '../../types';
 import { sanitizeEntityName } from '../../util/sanitizeEntityName';
 

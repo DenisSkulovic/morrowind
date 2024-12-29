@@ -1,12 +1,14 @@
 import { Box, Typography } from '@mui/material';
+import Link from 'next/link';
 
 interface StatCardProps {
     title: string;
     value: number;
     Icon: React.ComponentType;
+    link: string;
 }
 
-const StatCard = ({ title, value, Icon }: StatCardProps) => {
+const StatCard = ({ title, value, Icon, link }: StatCardProps) => {
     return (
         <Box sx={{
             p: 2,
@@ -29,7 +31,9 @@ const StatCard = ({ title, value, Icon }: StatCardProps) => {
                     {value}
                 </Typography>
                 <Typography color="text.secondary" variant="body2">
-                    {title}
+                    <Link href={link}>
+                        {title}
+                    </Link>
                 </Typography>
             </Box>
         </Box>

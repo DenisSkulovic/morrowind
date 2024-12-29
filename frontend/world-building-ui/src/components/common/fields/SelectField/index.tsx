@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { FormControl, InputLabel, Select, MenuItem, CircularProgress } from '@mui/material';
+import { FormControl, InputLabel, Select, MenuItem, CircularProgress, Box, FormHelperText } from '@mui/material';
 import { AppDispatch, RootState } from '../../../../store/store';
 import { setOptionsLoading, setOptionsSuccess, setOptionsError } from '../../../../store/slices/uiSlice';
 import { RequestStatusEnum } from '../../../../enum/RequestStatusEnum';
@@ -14,6 +14,7 @@ interface SelectFieldProps extends DynamicFormFieldProps {
     fetchFn: (filter: string) => Promise<any[]>;
     filter: string;
     reduxKey: string;
+    error?: string;
 }
 
 const SelectField: React.FC<SelectFieldProps> = ({
@@ -22,11 +23,12 @@ const SelectField: React.FC<SelectFieldProps> = ({
     onChange,
     fetchFn,
     filter,
-    reduxKey
+    reduxKey,
+    error
 }) => {
     if (!reduxKey) throw new Error('Redux key is required in SelectField');
     const dispatch = useDispatch<AppDispatch>();
-    const { data: options, status, error } = useSelector(
+    const { data: options, status: optionsStatus, error: optionsError } = useSelector(
         (state: RootState) => state.ui.options[reduxKey] || { data: [], status: RequestStatusEnum.IDLE, error: null }
     );
 
@@ -46,37 +48,44 @@ const SelectField: React.FC<SelectFieldProps> = ({
     const { label, required = false, placeholder, disabled = false } = formFieldDefinition;
 
     return (
-        <FormControl fullWidth required={required} disabled={disabled}>
-            <InputLabel>{label}</InputLabel>
-            <Select
-                value={value}
-                onChange={(e) => onChange(e.target.value)}
-                label={label}
-                error={!!error}
-            >
-                {placeholder && (
-                    <MenuItem value="">
-                        <em>{placeholder}</em>
-                    </MenuItem>
-                )}
-                {status === RequestStatusEnum.LOADING ? (
-                    <MenuItem disabled>
-                        <CircularProgress size={20} />
-                        Loading...
-                    </MenuItem>
-                ) : error ? (
-                    <MenuItem disabled>
-                        Error: {error}
-                    </MenuItem>
-                ) : (
-                    options.map((option: { id: string; label: string }) => (
-                        <MenuItem key={option.id} value={option.id}>
-                            {option.label}
+        <>
+            <FormControl fullWidth required={required} disabled={disabled} sx={{ my: 1 }}>
+                <InputLabel>{label}</InputLabel>
+                <Select
+                    value={value}
+                    onChange={(e) => onChange(e.target.value)}
+                    label={label}
+                    error={!!optionsError}
+                >
+                    {placeholder && (
+                        <MenuItem value="">
+                            <em>{placeholder}</em>
                         </MenuItem>
-                    ))
-                )}
-            </Select>
-        </FormControl>
+                    )}
+                    {optionsStatus === RequestStatusEnum.LOADING ? (
+                        <MenuItem disabled>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, py: 0.5 }}>
+                                <CircularProgress size={20} />
+                                Loading...
+                            </Box>
+                        </MenuItem>
+                    ) : optionsError ? (
+                        <MenuItem disabled>
+                            <Box sx={{ py: 0.5 }}>
+                                Error: {optionsError}
+                            </Box>
+                        </MenuItem>
+                    ) : (
+                        options.map((option: { id: string; label: string }) => (
+                            <MenuItem key={option.id} value={option.id}>
+                                {option.label}
+                            </MenuItem>
+                        ))
+                    )}
+                </Select>
+            </FormControl>
+            {error && <FormHelperText>{error}</FormHelperText>}
+        </>
     );
 };
 

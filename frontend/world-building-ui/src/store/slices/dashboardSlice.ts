@@ -5,11 +5,12 @@ import { World } from "../../class/entities/World";
 import { Context } from "../../class/Context";
 import { RequestStatusEnum } from "../../enum/RequestStatusEnum";
 import { ContentStat } from "../../class/ContentStat";
-import { entityNamesToDisplayInStats } from "../../config/worldDashboard";
+import { dashboardConfig } from "../../config/dashboardWorld";
 import { LooseObject } from "../../types";
 import Serializer from "../../serialize/serializer";
 import { ActivityRecordPlain } from "./worldSlice";
 import { ActivityRecordsService } from "../../services/ActivityRecordsService";
+import { EntityEnum } from "../../enum/EntityEnum";
 
 export type ContentStatPlain = LooseObject
 
@@ -45,7 +46,7 @@ const initialState: DashboardState = {
 
 export const loadDashboardData = createAsyncThunk(
     'dashboard/loadDashboardData',
-    async ({ worldId, userId }: { worldId: string, userId: string }) => {
+    async ({ worldId, userId, showAllStats }: { worldId: string, userId: string, showAllStats: boolean }) => {
         const context = Context.build({
             world: { id: worldId } as World,
             user: { id: userId } as User
@@ -53,6 +54,8 @@ export const loadDashboardData = createAsyncThunk(
 
         const contentService = new ContentService();
         const activityService = new ActivityRecordsService();
+
+        const entityNamesToDisplayInStats: EntityEnum[] = dashboardConfig.getEntityNames(showAllStats)
 
         const [stats, activities] = await Promise.all([
             contentService.getContentStats(entityNamesToDisplayInStats, context),
@@ -73,13 +76,14 @@ export const loadDashboardData = createAsyncThunk(
 
 export const refreshStats = createAsyncThunk(
     'dashboard/refreshStats',
-    async ({ worldId, userId }: { worldId: string, userId: string }) => {
+    async ({ worldId, userId, showAllStats }: { worldId: string, userId: string, showAllStats: boolean }) => {
         const context = Context.build({
             world: { id: worldId } as World,
             user: { id: userId } as User
         });
 
         const contentService = new ContentService();
+        const entityNamesToDisplayInStats: EntityEnum[] = dashboardConfig.getEntityNames(showAllStats)
         const stats = await contentService.getContentStats(entityNamesToDisplayInStats, context);
         return stats.getStatsList().map(stat =>
             Serializer.fromDTO(stat, new ContentStat()).toPlainObj()

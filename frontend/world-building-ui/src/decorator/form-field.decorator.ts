@@ -7,13 +7,6 @@ import { ClassConstructor } from '../types';
 import { EntityMetadataKeyEnum } from '../enum/EntityMetadataKeyEnum';
 
 
-export type FormFieldValueType = 'string' | 'number' | 'boolean';
-export interface FormFieldValueRestriction {
-    type: FormFieldValueType;
-    min?: number;
-    max?: number;
-    pattern?: RegExp;
-}
 export interface FormFieldOptions {
     component: FieldComponentEnum;
     label?: string;
@@ -22,7 +15,7 @@ export interface FormFieldOptions {
     disabled?: boolean;
     search?: (filter: SearchQuery, context: Context) => Promise<FormSelectOption[]>;
     nestedClass?: ClassConstructor<any>;
-    valueRestrictions?: { [key: string]: FormFieldValueRestriction };
+    validate?: (value: any) => void | Error;
     maxItems?: number;
     acceptTypes?: string[];
     listType?: string;
@@ -45,3 +38,28 @@ export function FormField(options: FormFieldOptions) {
 export function getFormFields(cls: ClassConstructor<any>): FormFieldDefinition[] {
     return Reflect.getMetadata(EntityMetadataKeyEnum.FORM_FIELD, cls) || [];
 }
+
+
+export const validateField = (field: FormFieldDefinition, value: any): string | undefined => {
+    // Check required field
+    if (field.required && (value === undefined || value === null || value === '')) {
+        return `${field.label || field.field} is required`;
+    }
+
+    // Run custom validation if provided
+    if (field.validate) {
+        try {
+            const validationResult = field.validate(value);
+            if (validationResult instanceof Error) {
+                return validationResult.message;
+            }
+        } catch (error) {
+            if (error instanceof Error) {
+                return error.message;
+            }
+            return 'Validation error occurred';
+        }
+    }
+
+    return undefined;
+};

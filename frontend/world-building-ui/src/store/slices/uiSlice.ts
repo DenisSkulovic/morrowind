@@ -1,5 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { enableMapSet } from "immer";
 import { RequestStatusEnum } from "../../enum/RequestStatusEnum";
+
+enableMapSet();
 
 interface OptionsState {
     data: { id: string; label: string }[];
@@ -13,12 +16,14 @@ interface UiState {
         [key: string]: OptionsState;
     };
     isPresetDialogOpen: boolean;
+    loadingKeys: string[];
 }
 
 const initialState: UiState = {
     status: RequestStatusEnum.IDLE,
     options: {},
     isPresetDialogOpen: false,
+    loadingKeys: [],
 };
 
 export const uiSlice = createSlice({
@@ -52,9 +57,24 @@ export const uiSlice = createSlice({
         setIsPresetDialogOpen: (state, action: PayloadAction<boolean>) => {
             state.isPresetDialogOpen = action.payload;
         },
+        addLoadingKey: (state, action: PayloadAction<string>) => {
+            if (!state.loadingKeys.includes(action.payload)) {
+                state.loadingKeys.push(action.payload);
+            }
+        },
+        removeLoadingKey: (state, action: PayloadAction<string>) => {
+            state.loadingKeys = state.loadingKeys.filter(key => key !== action.payload);
+        },
     },
 });
 
-export const { setOptionsLoading, setOptionsSuccess, setOptionsError, setIsPresetDialogOpen } = uiSlice.actions;
+export const {
+    addLoadingKey,
+    removeLoadingKey,
+    setOptionsLoading,
+    setOptionsSuccess,
+    setOptionsError,
+    setIsPresetDialogOpen
+} = uiSlice.actions;
 
 export default uiSlice.reducer;

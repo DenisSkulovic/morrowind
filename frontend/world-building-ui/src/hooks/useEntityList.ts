@@ -10,6 +10,7 @@ import { useAccount } from "./useAccount";
 import { World } from "../class/entities/World";
 import { User } from "../class/entities/User";
 import { ContentEntityMapService } from "../CONTENT_ENTITY_MAP";
+import { useLoading } from "./useLoading";
 
 export const useEntityList = <T extends ContentBase>(entityName: EntityEnum | null, query: SearchQuery, world_id: string | null): {
     forceSearch: () => void;
@@ -17,6 +18,8 @@ export const useEntityList = <T extends ContentBase>(entityName: EntityEnum | nu
 } => {
     const dispatch = useDispatch<AppDispatch>();
     const account = useAccount();
+
+    const { addLoadingKey, removeLoadingKey } = useLoading();
 
     const [context, setContext] = useState<Context | null>(null);
     useEffect(() => {
@@ -55,12 +58,16 @@ export const useEntityList = <T extends ContentBase>(entityName: EntityEnum | nu
     const search = (entityName: EntityEnum | null, query: SearchQuery) => {
         console.log('[useEntityList] search', entityName, query, context);
         if (!context) throw new Error('Context not found');
+        const key = `entityList-searchContent-${entityName}-${query.toString()}`
+        addLoadingKey(key)
         dispatch(searchContent({ entityName, query, context })).then(() => {
             if (previousSearchKey.current !== searchKey) {
                 dispatch(clearSearchResultsForKey(previousSearchKey.current));
                 previousSearchKey.current = searchKey;
                 previousSearchQuery.current = query;
             }
+        }).finally(() => {
+            removeLoadingKey(key)
         });
     }
 

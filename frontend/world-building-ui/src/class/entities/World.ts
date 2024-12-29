@@ -3,7 +3,7 @@ import { FormField } from "../../decorator/form-field.decorator";
 import { FieldComponentEnum } from "../../enum/FieldComponentEnum";
 import { DisplayField } from "../../decorator/display-field.decorator";
 import { EntityDisplay } from "../../decorator/entity-display.decorator";
-import { FilterOption } from "../../decorator/filter-option.decorator";
+import { FilterOption, FilterOptionTypeEnum } from "../../decorator/filter-option.decorator";
 import { WorldService } from "../../services/WorldService";
 import { Context } from "../Context";
 import { SearchQuery } from "../search/SearchQuery";
@@ -22,17 +22,12 @@ export class World extends Entity {
     user!: string;
 
     @DisplayField()
-    @FilterOption({ displayName: 'Name' })
+    @FilterOption({ displayName: 'Name', type: FilterOptionTypeEnum.TEXT })
     @FormField({
         component: FieldComponentEnum.TEXT_FIELD,
         label: 'Name',
         placeholder: 'Enter world name',
         required: true,
-        valueRestrictions: {
-            name: {
-                type: 'string'
-            }
-        }
     })
     @Serializable()
     name!: string; // Name of the world, e.g., "Morrowind", "Middle-earth".
@@ -41,11 +36,6 @@ export class World extends Entity {
         component: FieldComponentEnum.TEXTAREA_FIELD,
         label: 'Description',
         placeholder: 'Enter world description',
-        valueRestrictions: {
-            description: {
-                type: 'string'
-            }
-        }
     })
     @Serializable()
     description?: string; // Optional description or lore of the world.
@@ -59,8 +49,7 @@ export class World extends Entity {
     @Serializable()
     settings?: any; // Custom world settings (e.g., starting conditions, mechanics).
 
-    @DisplayField()
-    @FilterOption({ displayName: 'Campaigns' })
+    @DisplayField({ getValue: (world: World) => world.campaigns?.map(campaign => campaign).join(', ') })
     @Serializable()
     campaigns?: string[]
 

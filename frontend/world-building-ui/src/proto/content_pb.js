@@ -2,15 +2,18 @@
 /**
  * @fileoverview
  * @enhanceable
+ * @suppress {missingRequire} reports error on implicit type usages.
  * @suppress {messageConventions} JS Compiler reports an error if a variable or
  *     field starts with 'MSG_' and isn't a translatable message.
  * @public
  */
 // GENERATED CODE -- DO NOT EDIT!
+/* eslint-disable */
+// @ts-nocheck
 
 var jspb = require('google-protobuf');
 var goog = jspb;
-var global = Function('return this')();
+var global = (function() { return this || window || global || self || Function('return this')(); }).call(null);
 
 var common_pb = require('./common_pb.js');
 goog.object.extend(proto, common_pb);
@@ -2139,7 +2142,8 @@ proto.content.ContentStatDTO.toObject = function(includeInstance, msg) {
     title: jspb.Message.getFieldWithDefault(msg, 1, ""),
     type: jspb.Message.getFieldWithDefault(msg, 2, ""),
     count: jspb.Message.getFieldWithDefault(msg, 3, 0),
-    icon: jspb.Message.getFieldWithDefault(msg, 4, "")
+    icon: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    entity: jspb.Message.getFieldWithDefault(msg, 5, "")
   };
 
   if (includeInstance) {
@@ -2191,6 +2195,10 @@ proto.content.ContentStatDTO.deserializeBinaryFromReader = function(msg, reader)
     case 4:
       var value = /** @type {string} */ (reader.readString());
       msg.setIcon(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setEntity(value);
       break;
     default:
       reader.skipField();
@@ -2246,6 +2254,13 @@ proto.content.ContentStatDTO.serializeBinaryToWriter = function(message, writer)
   if (f.length > 0) {
     writer.writeString(
       4,
+      f
+    );
+  }
+  f = message.getEntity();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
       f
     );
   }
@@ -2321,6 +2336,24 @@ proto.content.ContentStatDTO.prototype.getIcon = function() {
  */
 proto.content.ContentStatDTO.prototype.setIcon = function(value) {
   return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional string entity = 5;
+ * @return {string}
+ */
+proto.content.ContentStatDTO.prototype.getEntity = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.content.ContentStatDTO} returns this
+ */
+proto.content.ContentStatDTO.prototype.setEntity = function(value) {
+  return jspb.Message.setProto3StringField(this, 5, value);
 };
 
 

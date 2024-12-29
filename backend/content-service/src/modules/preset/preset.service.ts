@@ -5,7 +5,7 @@ import { ContentEntityMapService } from "../../CONTENT_ENTITY_MAP";
 import { ContentBase } from "../../ContentBase";
 import { PresetEnum } from "../../common/enum/entityEnums";
 import { EntityConstructor } from "../../types";
-import { EntityEnum } from "../../enum/EntityEnum";
+import { EntityEnum } from "../../common/enum/EntityEnum";
 import { sanitizeEntityName } from "../../util/sanitizeEntityName";
 
 export class Preset {

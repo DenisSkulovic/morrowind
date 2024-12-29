@@ -21,10 +21,15 @@ export default function Dashboard() {
     const account: Account | null = useAccount();
     const userId: string = account?.user || '';
 
+    const [showAllStats, setShowAllStats] = useState(false);
+    const handleToggleShowAllStats = () => {
+        setShowAllStats(prev => !prev);
+    }
+
     const {
         stats,
         activityRecords,
-    } = useDashboardData(worldId, userId);
+    } = useDashboardData(worldId, userId, showAllStats);
 
     const [customBreadcrumbs, setCustomBreadcrumbs] = useState<BreadcrumbItem[]>([])
     useEffect(() => {
@@ -63,7 +68,7 @@ export default function Dashboard() {
                     {/* Content Overview */}
                     <Grid2 component="div">
                         <Paper sx={{ p: 2 }}>
-                            <DashboardOverview stats={stats} />
+                            <DashboardOverview stats={stats} showAll={showAllStats} toggleShowAll={handleToggleShowAllStats} worldId={worldId || ''} />
                         </Paper>
                     </Grid2>
 

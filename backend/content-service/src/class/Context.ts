@@ -15,7 +15,7 @@ export class Context {
     @Serializable({ strategy: SerializeStrategyEnum.ID })
     public campaign?: Campaign;
 
-    static build(body: any) {
+    static build(body: Partial<Context>) {
         const context = new Context()
         Object.assign(context, body)
         return context

@@ -159,8 +159,8 @@ export class WorldController {
             ActivityRecord.build({
                 eventName: ActivityEventNameEnum.WORLD_PRESET_LOADED,
                 label: `Loaded world preset: ${preset}`,
-                world: { id: worldId },
-                user: { id: userId }
+                world: { id: worldId } as World,
+                user: { id: userId } as User
             }),
             userId,
             worldId,

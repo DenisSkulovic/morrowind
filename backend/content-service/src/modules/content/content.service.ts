@@ -9,9 +9,11 @@ import { SearchQuery } from '../../class/search/SearchQuery';
 import { Context } from '../../class/Context';
 import { ContentStatDTO } from '../../proto/content';
 import { QueryFilterOperatorEnum } from '../../class/search/QueryFilter';
-import { EntityEnum } from '../../enum/EntityEnum';
+import { EntityEnum } from '../../common/enum/EntityEnum';
 import { EntityConstructor } from '../../types';
 import { sanitizeEntityName } from '../../util/sanitizeEntityName';
+import { ContentStat } from '../../class/ContentStat';
+import { Serializer } from '../../serializer';
 
 type DynamicWhere<T> = FindOptionsWhere<T> & {
     [key: string]: any;
@@ -156,9 +158,10 @@ export class ContentService<T extends ContentBase> {
         const repository = this.getRepository(entityName, DataSourceEnum.DATA_SOURCE_WORLD);
         await repository.delete(ids);
     }
-    async getStats(entityNames: string[], context: Context): Promise<ContentStatDTO[]> {
+
+    async getStats(entityNames: EntityEnum[], context: Context): Promise<ContentStat[]> {
         if (!context.world) throw new Error('World is required');
-        const stats: ContentStatDTO[] = [];
+        const stats: ContentStat[] = [];
         for (const entityName of entityNames) {
             const repository = this.getRepository(entityName, DataSourceEnum.DATA_SOURCE_WORLD);
             const count = await repository.count({
@@ -166,13 +169,15 @@ export class ContentService<T extends ContentBase> {
                     world: { id: context.world.id }
                 } as FindOptionsWhere<T>
             });
-            stats.push({
+            const stat: ContentStat = ContentStat.build({
                 title: entityName,
                 type: entityName,
                 count: count,
-                icon: ''
-            });
+                icon: '',
+                entity: entityName,
+            })
+            stats.push(stat);
         }
-        return stats;
+        return stats
     }
 }

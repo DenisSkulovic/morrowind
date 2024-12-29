@@ -2,7 +2,7 @@ import { Card, CardContent, Typography, List, ListItem, ListItemText, Link } fro
 import { ActivityRecord } from '../../../class/entities/ActivityRecord';
 import { routes } from '../../../routes';
 import { getCreatedAtRelativeTime } from '../../../utils/getCreatedAtRelativeTime';
-
+import { useEffect, useState } from 'react';
 
 interface RecentActivityProps {
     activityRecords: ActivityRecord[] | null
@@ -10,7 +10,20 @@ interface RecentActivityProps {
     userId: string
 }
 
+const rerenderIntervalMs = 1000;
+
 export const RecentActivity = ({ activityRecords, worldId, userId }: RecentActivityProps): JSX.Element => {
+    // Force a re-render every second to update the relative timestamps (e.g. "2 minutes ago" -> "3 minutes ago")
+    const [currentTime, setCurrentTime] = useState(new Date());
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setCurrentTime(new Date());
+        }, rerenderIntervalMs);
+
+        return () => clearInterval(timer);
+    }, []);
+
     if (!activityRecords) return <></>
 
     const getActionText = (activity: ActivityRecord) => {

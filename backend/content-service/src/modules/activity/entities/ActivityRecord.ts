@@ -59,7 +59,7 @@ export class ActivityRecord extends BaseEntity {
     @JoinColumn({ name: "campaignId" })
     campaign!: Campaign;
 
-    static build(body: any) {
+    static build(body: Partial<ActivityRecord>) {
         const activityRecord = new ActivityRecord()
         Object.assign(activityRecord, body)
         return activityRecord

@@ -154,7 +154,7 @@ const EntityListPage = <T extends ContentBase>() => {
         setCustomBreadcrumbs([
             BreadcrumbItem.build({ label: 'Home', path: routes.home() }),
             BreadcrumbItem.build({ label: 'Worlds', path: routes.worlds() }),
-            BreadcrumbItem.build({ label: `${worldId}`, path: routes.worldDetail(worldId || '') }),
+            BreadcrumbItem.build({ label: `${worldId}`, path: routes.worldDashboard(worldId || '') }),
             BreadcrumbItem.build({ label: displayConfig?.title || entityName || 'PLACEHOLDER' })
         ]);
     }, [worldId, entityName]);
@@ -174,6 +174,7 @@ const EntityListPage = <T extends ContentBase>() => {
                                 filters={query.filters || []}
                                 onFiltersChange={handleFilterChange}
                                 onSearch={handleSearch}
+                                context={context}
                             />
                         </Box>
                         <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>

@@ -62,7 +62,7 @@ class Serializer {
 
     static fromDTO(protoDTO: any, instance: any): any {
         const className = instance.constructor.name;
-        // console.log(`[Serializer - fromDTO - ${className}] protoDTO`, protoDTO, instance);
+        console.log(`[Serializer - fromDTO - ${className}] protoDTO`, protoDTO, instance);
         const fields = getSerializableFields(instance.constructor.prototype);
 
         fields.forEach(({ propertyKey, dtoKey, strategy, deserialize, internalClass, dtoArrClass, internalEnum, protoEnum }) => {

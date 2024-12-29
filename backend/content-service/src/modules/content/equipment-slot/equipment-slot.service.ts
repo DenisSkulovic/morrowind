@@ -4,7 +4,7 @@ import { EntityConstructor } from "../../../types";
 import { Item } from "../entities/Item/Item";
 import { EquipmentSlot } from "../entities/Slot/EquipmentSlot";
 import { ContentEntityMapService } from "../../../CONTENT_ENTITY_MAP";
-import { EntityEnum } from "../../../enum/EntityEnum";
+import { EntityEnum } from "../../../common/enum/EntityEnum";
 import { sanitizeEntityName } from "../../../util/sanitizeEntityName";
 
 @Injectable()

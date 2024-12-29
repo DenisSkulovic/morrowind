@@ -14,7 +14,7 @@ const defaultValueMap: Record<FieldComponentEnum, DefaultValue> = {
     [FieldComponentEnum.CHECKBOX_FIELD]: false,
     [FieldComponentEnum.MULTI_SELECT_FIELD]: [],
     [FieldComponentEnum.ITEM_LIST_FIELD]: [],
-    [FieldComponentEnum.NESTED_FORM]: {},
+    [FieldComponentEnum.NESTED_FORM]: [],
     [FieldComponentEnum.TEXT_FIELD]: '',
     [FieldComponentEnum.TEXTAREA_FIELD]: '',
     [FieldComponentEnum.SELECT_FIELD]: '',

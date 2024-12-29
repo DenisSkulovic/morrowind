@@ -53,7 +53,7 @@ const AccountPage = () => {
     }, []);
 
     return (
-        <PageWrapper customBreadcrumbs={customBreadcrumbs}>
+        <PageWrapper accountId={account?.id} customBreadcrumbs={customBreadcrumbs}>
             <Container maxWidth="md">
                 <Box sx={{ py: 4 }}>
                     <Typography variant="h4" component="h1" gutterBottom>

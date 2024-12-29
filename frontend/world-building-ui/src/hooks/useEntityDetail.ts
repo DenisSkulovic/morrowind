@@ -14,10 +14,12 @@ import { useAccount } from "./useAccount";
 import { Account } from "../class/entities/Account";
 import { World } from "../class/entities/World";
 import { User } from "../class/entities/User";
-import { ClassConstructor } from "../types";
+import { useLoading } from "./useLoading";
 
 export const useEntityDetail = (entityName: EntityEnum | null, entityId: string | null, worldId: string | null) => {
     const dispatch = useDispatch<AppDispatch>();
+
+    const { addLoadingKey, removeLoadingKey } = useLoading();
 
     const account: Account | null = useAccount();
 
@@ -54,7 +56,11 @@ export const useEntityDetail = (entityName: EntityEnum | null, entityId: string 
 
     useEffect(() => {
         if (status === RequestStatusEnum.IDLE && entityName) {
-            dispatch(searchContent({ entityName, query, context }));
+            const key = 'entityDetail-searchContent'
+            addLoadingKey(key)
+            dispatch(searchContent({ entityName, query, context })).finally(() => {
+                removeLoadingKey(key)
+            });
         }
     }, [dispatch, entityName, entityId]);
 

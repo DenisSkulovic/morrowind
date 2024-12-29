@@ -236,6 +236,9 @@ export class ContentStatDTO extends jspb.Message {
   getIcon(): string;
   setIcon(value: string): ContentStatDTO;
 
+  getEntity(): string;
+  setEntity(value: string): ContentStatDTO;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): ContentStatDTO.AsObject;
   static toObject(includeInstance: boolean, msg: ContentStatDTO): ContentStatDTO.AsObject;
@@ -250,6 +253,7 @@ export namespace ContentStatDTO {
     type: string,
     count: number,
     icon: string,
+    entity: string,
   }
 }
 

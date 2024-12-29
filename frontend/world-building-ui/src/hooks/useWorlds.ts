@@ -6,11 +6,13 @@ import { User } from '../class/entities/User';
 import { SearchQuery } from '../class/search/SearchQuery';
 import { AppDispatch, RootState } from '../store/store';
 import { World } from '../class/entities/World';
+import { useLoading } from "./useLoading";
 
 export const useWorlds = (query: SearchQuery, userId: string | null): {
     result: WorldSearchResult<World> | null;
 } => {
     const dispatch = useDispatch<AppDispatch>();
+    const { addLoadingKey, removeLoadingKey } = useLoading();
 
     const searchKey = getSearchKey(query);
     const previousSearchKey = useRef<string>(searchKey);
@@ -36,6 +38,8 @@ export const useWorlds = (query: SearchQuery, userId: string | null): {
 
     useEffect(() => {
         if (!previousSearchKey.current || previousSearchKey.current !== searchKey || !searchResult) {
+            const key = 'worlds-searchWorlds'
+            addLoadingKey(key)
             dispatch(searchWorldsThunk({
                 query,
                 context: Context.build({
@@ -46,6 +50,8 @@ export const useWorlds = (query: SearchQuery, userId: string | null): {
                     dispatch(clearSearchResultsForKey(previousSearchKey.current));
                     previousSearchKey.current = searchKey;
                 }
+            }).finally(() => {
+                removeLoadingKey(key)
             });
         }
     }, [previousSearchKey.current, searchKey]);

@@ -15,7 +15,7 @@ import { ContentBase } from "../../ContentBase";
 import { Preset, PresetService } from "../preset/preset.service";
 import { join } from "path";
 import { SearchQuery } from "../../class/search/SearchQuery";
-import { EntityEnum } from "../../enum/EntityEnum";
+import { EntityEnum } from "../../common/enum/EntityEnum";
 
 const pathToPresetsFolder = join(__dirname, "../../../world_presets")
 

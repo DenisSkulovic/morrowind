@@ -15,6 +15,7 @@ export class Serializer {
         const fields = getSerializableFields(entityInstance.constructor.prototype);
 
         fields.forEach(({ propertyKey, dtoKey, strategy, asDtoArray, serialize, internalClass, internalEnum, protoEnum }) => {
+            console.log(`[Serializer] toDTO - ${propertyKey}`, entityInstance[propertyKey]);
             const value = entityInstance[propertyKey];
 
             const processArray = (arr: any[]) => {
@@ -26,7 +27,7 @@ export class Serializer {
                 if (typeof item === "undefined" || item === null) return undefined;
                 if (strategy === SerializeStrategyEnum.DATE) return item?.getTime();
                 if (strategy === SerializeStrategyEnum.ID) return item?.id || "";
-                if (strategy === SerializeStrategyEnum.ENUM) return serializeEnum(internalEnum, protoEnum, item);
+                if (strategy === SerializeStrategyEnum.ENUM) return item ? serializeEnum(internalEnum, protoEnum, item) : undefined;
                 if (strategy === SerializeStrategyEnum.FULL) return item ? Serializer.toDTO(item) : undefined;
                 return item;
             };
@@ -68,7 +69,7 @@ export class Serializer {
             const processOne = (item: any) => {
                 if (strategy === SerializeStrategyEnum.DATE) return item ? new Date(item) : undefined;
                 if (strategy === SerializeStrategyEnum.ID) return item?.id ? { id: item.id } : { id: item as string };
-                if (strategy === SerializeStrategyEnum.ENUM) return deserializeEnum(protoEnum, internalEnum, item);
+                if (strategy === SerializeStrategyEnum.ENUM) return item ? deserializeEnum(protoEnum, internalEnum, item) : undefined;
                 if (strategy === SerializeStrategyEnum.FULL) {
                     if (!internalClass) throw new Error(`Internal class not set for ${propertyKey}`);
                     return Serializer.fromDTO(item, new internalClass());

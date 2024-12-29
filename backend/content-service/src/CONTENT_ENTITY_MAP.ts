@@ -55,7 +55,7 @@ import { StorageSlot } from "./modules/content/entities/Slot/StorageSlot";
 import { Tag } from "./modules/content/entities/Tag";
 import { Trait } from "./modules/content/entities/Trait";
 import { Status } from "./modules/content/entities/Status";
-import { EntityEnum } from "./enum/EntityEnum";
+import { EntityEnum } from "./common/enum/EntityEnum";
 import { EntityConstructor } from "./types";
 
 export type EntityMap<T extends ContentBase> = {

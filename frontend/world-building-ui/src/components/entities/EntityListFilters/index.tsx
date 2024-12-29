@@ -11,7 +11,7 @@ interface EntityListFiltersProps {
     filters: QueryFilter[];
     onFiltersChange: (filters: QueryFilter[]) => void;
     onSearch: (filters: QueryFilter[]) => void;
-    context: Context;
+    context: Context | null | undefined;
 }
 
 export const EntityListFilters: React.FC<EntityListFiltersProps> = ({
@@ -33,7 +33,7 @@ export const EntityListFilters: React.FC<EntityListFiltersProps> = ({
     useEffect(() => {
         // Load select options for any configs that need them
         filterConfigs.forEach(async (config) => {
-            if (config.type === FilterOptionTypeEnum.SELECT && config.getSelectOptions) {
+            if (config.type === FilterOptionTypeEnum.SELECT && config.getSelectOptions && context) {
                 const query = SearchQuery.build({ page: 1, pageSize: 100 });
                 const options = await config.getSelectOptions(query, context);
                 setSelectOptions(prev => ({

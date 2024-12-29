@@ -1,7 +1,7 @@
 import React from 'react';
 import { GenerationInstruction, IdAndQuant, ProbObject_Simple, BlueprintGenInstruction_Gaussian, BlueprintSetCombinator } from '../../../../class/GenerationInstruction';
 import { ConditionEnum } from '../../../../enum/ConditionEnum';
-import { Box, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { Box, FormControl, FormHelperText, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import { BlueprintGenInstruction_Simple } from '../../../../types';
 import { DynamicFormFieldProps } from '../../DynamicForm';
 import { FormFieldDefinition } from '../../../../decorator/form-field.decorator';
@@ -10,12 +10,14 @@ interface GenerationInstructionFieldProps extends DynamicFormFieldProps {
     formFieldDefinition: FormFieldDefinition;
     value: GenerationInstruction;
     onChange: (newValue: GenerationInstruction) => void;
+    error?: string;
 }
 
 const GenerationInstructionField: React.FC<GenerationInstructionFieldProps> = ({
     value,
     onChange,
-    formFieldDefinition
+    formFieldDefinition,
+    error
 }) => {
     const handleStringChange = (value: string) => {
         onChange(value);
@@ -63,7 +65,7 @@ const GenerationInstructionField: React.FC<GenerationInstructionFieldProps> = ({
     const renderInstructionEditor = (instruction: GenerationInstruction) => {
         if (typeof instruction === 'string') {
             return (
-                <Box>
+                <Box sx={{ mt: 1, mb: 1 }}>
                     <TextField
                         fullWidth
                         value={instruction}
@@ -75,7 +77,7 @@ const GenerationInstructionField: React.FC<GenerationInstructionFieldProps> = ({
 
         if (instruction instanceof IdAndQuant) {
             return (
-                <Box sx={{ display: 'flex', gap: 2 }}>
+                <Box sx={{ display: 'flex', gap: 2, mt: 1, mb: 1 }}>
                     <TextField
                         fullWidth
                         value={instruction.blueprintId}
@@ -85,6 +87,7 @@ const GenerationInstructionField: React.FC<GenerationInstructionFieldProps> = ({
                         type="number"
                         value={instruction.quantity || 1}
                         onChange={(e) => handleIdAndQuantChange(instruction, 'quantity', e.target.value)}
+                        sx={{ minWidth: '100px' }}
                     />
                 </Box>
             );
@@ -92,7 +95,7 @@ const GenerationInstructionField: React.FC<GenerationInstructionFieldProps> = ({
 
         if (instruction instanceof ProbObject_Simple) {
             return (
-                <Box sx={{ display: 'flex', gap: 2 }}>
+                <Box sx={{ display: 'flex', gap: 2, mt: 1, mb: 1 }}>
                     <FormControl fullWidth>
                         <Select
                             value={instruction.cond}
@@ -114,7 +117,7 @@ const GenerationInstructionField: React.FC<GenerationInstructionFieldProps> = ({
 
         if (instruction instanceof BlueprintGenInstruction_Gaussian) {
             return (
-                <Box sx={{ display: 'flex', gap: 2 }}>
+                <Box sx={{ display: 'flex', gap: 2, mt: 1, mb: 1 }}>
                     <TextField
                         fullWidth
                         value={instruction.blueprintId}
@@ -125,11 +128,13 @@ const GenerationInstructionField: React.FC<GenerationInstructionFieldProps> = ({
                         inputProps={{ min: 0, max: 1, step: 0.1 }}
                         value={instruction.prob || 1}
                         onChange={(e) => handleGaussianChange(instruction, 'prob', e.target.value)}
+                        sx={{ minWidth: '100px' }}
                     />
                     <TextField
                         type="number"
                         value={instruction.avg_quan || 1}
                         onChange={(e) => handleGaussianChange(instruction, 'avg_quan', e.target.value)}
+                        sx={{ minWidth: '100px' }}
                     />
                 </Box>
             );
@@ -137,7 +142,7 @@ const GenerationInstructionField: React.FC<GenerationInstructionFieldProps> = ({
 
         if (instruction instanceof BlueprintSetCombinator) {
             return (
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1, mb: 1 }}>
                     <TextField
                         fullWidth
                         placeholder="Name"
@@ -155,7 +160,7 @@ const GenerationInstructionField: React.FC<GenerationInstructionFieldProps> = ({
                         </Select>
                     </FormControl>
                     {instruction.items.map((item, index) => (
-                        <Box key={index}>
+                        <Box key={index} sx={{ pl: 2 }}>
                             {renderInstructionEditor(item)}
                         </Box>
                     ))}
@@ -167,10 +172,13 @@ const GenerationInstructionField: React.FC<GenerationInstructionFieldProps> = ({
     };
 
     return (
-        <FormControl fullWidth>
-            <InputLabel>{formFieldDefinition.label}</InputLabel>
-            {renderInstructionEditor(value)}
-        </FormControl>
+        <>
+            <FormControl fullWidth>
+                <InputLabel sx={{ mb: 1 }}>{formFieldDefinition.label}</InputLabel>
+                {renderInstructionEditor(value)}
+            </FormControl>
+            {error && <FormHelperText>{error}</FormHelperText>}
+        </>
     );
 };
 

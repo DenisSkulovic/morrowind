@@ -37,7 +37,7 @@ export class QueryFilter {
     })
     public value!: string | number | boolean;
 
-    static build(body: any): QueryFilter {
+    static build(body: Partial<QueryFilter>): QueryFilter {
         const filter = new QueryFilter()
         Object.assign(filter, body)
         return filter

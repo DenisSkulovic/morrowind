@@ -19,7 +19,7 @@ export class SearchQuery {
         direction: 'asc' | 'desc';
     };
 
-    static build(body: any): SearchQuery {
+    static build(body: Partial<SearchQuery>): SearchQuery {
         const query = new SearchQuery()
         Object.assign(query, body)
         return query

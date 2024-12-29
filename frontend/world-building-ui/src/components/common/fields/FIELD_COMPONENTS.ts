@@ -11,6 +11,7 @@ import SelectField from "./SelectField";
 import Textareafield from "./Textareafield";
 import TextField from "./TextField";
 import NestedFormField from "./NestedFormField";
+import DateField from "./DateField";
 
 const FIELD_COMPONENTS: { [key in FieldComponentEnum]: FC<any> } = {
     [FieldComponentEnum.SELECT_FIELD]: SelectField,
@@ -24,6 +25,7 @@ const FIELD_COMPONENTS: { [key in FieldComponentEnum]: FC<any> } = {
     [FieldComponentEnum.GENERATION_INSTRUCTION_FIELD]: GenerationInstructionField,
     [FieldComponentEnum.ITEM_LIST_FIELD]: ItemListField,
     [FieldComponentEnum.NESTED_FORM]: NestedFormField,
+    [FieldComponentEnum.DATE_FIELD]: DateField,
 };
 
 export default FIELD_COMPONENTS

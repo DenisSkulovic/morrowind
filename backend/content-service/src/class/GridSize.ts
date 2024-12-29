@@ -10,7 +10,7 @@ export class GridSize {
     @Serializable()
     height!: number;
 
-    static build(body: any): GridSize {
+    static build(body: Partial<GridSize>): GridSize {
         const grid = new GridSize()
         Object.assign(grid, body)
         return grid

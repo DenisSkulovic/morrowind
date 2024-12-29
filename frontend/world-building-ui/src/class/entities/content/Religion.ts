@@ -32,11 +32,11 @@ export class Religion extends ContentBase {
     description!: string;
 
     @Serializable({ strategy: SerializeStrategyEnum.FULL, internalClass: ReligionRitual, dtoClass: ReligionRitualDTO, dtoArrClass: ReligionRitualsDTO })
-    @FormField({ component: FieldComponentEnum.NESTED_FORM, label: 'Rituals' })
+    @FormField({ component: FieldComponentEnum.NESTED_FORM, label: 'Rituals', nestedClass: ReligionRitual })
     rituals?: ReligionRitual[];
 
     @Serializable({ strategy: SerializeStrategyEnum.FULL, internalClass: ReligionTenet, dtoClass: ReligionTenetDTO, dtoArrClass: ReligionTenetsDTO })
-    @FormField({ component: FieldComponentEnum.NESTED_FORM, label: 'Tenets' })
+    @FormField({ component: FieldComponentEnum.NESTED_FORM, label: 'Tenets', nestedClass: ReligionTenet })
     tenets?: ReligionTenet[];
 
 }

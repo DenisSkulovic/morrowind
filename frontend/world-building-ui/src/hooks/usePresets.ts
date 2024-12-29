@@ -4,9 +4,11 @@ import { useEffect, useState } from "react";
 import { getPresetsThunk, loadWorldPresetThunk, resetPresetLoading } from "../store/slices/worldSlice";
 import { RequestStatusEnum } from "../enum/RequestStatusEnum";
 import { PresetEnum } from "../enum/entityEnums";
+import { useLoading } from "./useLoading";
 
 export const usePresets = () => {
     const dispatch = useDispatch<AppDispatch>();
+    const { addLoadingKey, removeLoadingKey } = useLoading();
     const { data, status: getPresetsStatus, error } = useSelector((state: RootState) => state.worlds.presets);
     const isPresetDialogOpen = useSelector((state: RootState) => state.ui.isPresetDialogOpen);
     const { status: loadPresetsStatus, error: loadPresetsError } = useSelector((state: RootState) => state.worlds.presetLoading);
@@ -14,7 +16,11 @@ export const usePresets = () => {
 
     useEffect(() => {
         if (getPresetsStatus === RequestStatusEnum.IDLE && isPresetDialogOpen) {
-            dispatch(getPresetsThunk());
+            const key = 'presets-getPresets'
+            addLoadingKey(key)
+            dispatch(getPresetsThunk()).finally(() => {
+                removeLoadingKey(key)
+            });
         }
     }, [dispatch, isPresetDialogOpen, getPresetsStatus]);
 

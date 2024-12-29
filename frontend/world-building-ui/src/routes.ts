@@ -7,9 +7,8 @@ export enum PageModeEnum {
 export const routes = {
     home: () => "/",
     worlds: () => "/worlds",
-    userProfile: (accountId: string) => `/account/${accountId}`,
+    userProfile: () => `/account`,
     worldCreate: () => "/worlds/create",
-    worldDetail: (world_id: string) => `/worlds/${world_id}`,
     worldEdit: (world_id: string) => `/worlds/${world_id}/edit`,
     worldDashboard: (world_id: string) => `/worlds/${world_id}/content/dashboard`,
     contents: (world_id: string) => `/worlds/${world_id}/content/entities`,
