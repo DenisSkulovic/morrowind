@@ -19,9 +19,10 @@ import { routes } from '../../routes';
 import { Account } from '../../class/entities/Account';
 import { cloneDeep } from 'lodash';
 import { useAccount } from '../../hooks/useAccount';
-
+import { useLoading } from '../../hooks/useLoading';
 const AccountPage = () => {
     const dispatch = useDispatch<AppDispatch>();
+    const { addLoadingKey, removeLoadingKey } = useLoading();
     const account: Account | null = useAccount();
     const [email, setEmail] = useState(account?.email || '');
     const [username, setUsername] = useState(account?.username || '');
@@ -41,7 +42,11 @@ const AccountPage = () => {
         const accountClone: Account = cloneDeep(account)
         accountClone.email = email;
         accountClone.username = username;
-        await dispatch(updateAccount(accountClone));
+        const loadingKey = 'updateAccount';
+        addLoadingKey(loadingKey);
+        dispatch(updateAccount(accountClone)).finally(() => {
+            removeLoadingKey(loadingKey);
+        });
     };
 
     const [customBreadcrumbs, setCustomBreadcrumbs] = useState<BreadcrumbItem[]>([])

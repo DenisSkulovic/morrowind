@@ -22,11 +22,16 @@ import { useEntityDetail } from '../../../../../../../hooks/useEntityDetail';
 import { useAccount } from '../../../../../../../hooks/useAccount';
 import { Account } from '../../../../../../../class/entities/Account';
 import { cloneDeep } from 'lodash';
+import { useLoading } from '../../../../../../../hooks/useLoading';
+import { useToastStack } from '../../../../../../../hooks/useToastStack';
+import { useWorld } from '../../../../../../../hooks/useWorld';
 
 
 
 const EntityPage = () => {
     const router = useRouter();
+    const { addLoadingKey, removeLoadingKey } = useLoading();
+    const { addError, addSuccess } = useToastStack();
     const worldId: string | null = useWorldId(router.query);
     const entityName: EntityEnum | null = useEntityName(router.query);
     const entityId: string | null = useEntityId(router.query);
@@ -34,9 +39,11 @@ const EntityPage = () => {
     const initialMode: PageModeEnum = searchParams.get(PAGE_MODE_PARAM) as PageModeEnum;
     const dispatch = useDispatch<AppDispatch>();
     const [isReadOnly, setIsReadOnly] = useState(initialMode === PageModeEnum.EDIT ? false : true);
-    const [editData, setEditData] = useState<any>(null);
+    const [formData, setFormData] = useState<{ [key: string]: any }>({});
+    const [editFormData, setEditFormData] = useState<{ [key: string]: any }>({});
 
     const account: Account | null = useAccount();
+    const world: World | null = useWorld(worldId, account?.user || null);
 
     const entityConstructor: ContentBaseStatic<ContentBase> | null = entityName ? ContentEntityMapService.getEntityConstructor<ContentBase>(entityName) as ContentBaseStatic<ContentBase> : null;
     const displayConfig: EntityDisplayConfig | null = entityConstructor ? getEntityDisplayConfig(entityConstructor) : null;
@@ -44,32 +51,67 @@ const EntityPage = () => {
     const { contentData, status, error } = useEntityDetail(entityName, entityId, worldId);
 
     useEffect(() => {
+        console.log('[EntityPage] useEffect recompute');
         if (contentData) {
-            setEditData(cloneDeep(contentData.toPlainObj()));
-        }
+            setFormData(cloneDeep(contentData.toPlainObj()));
+            resetEditFormData()
+        };
     }, [contentData]);
 
-    const context: Context = Context.build({
-        world: { id: worldId } as World,
-        user: { id: account?.user || '' } as User
-    });
+    const resetEditFormData = () => {
+        setEditFormData(cloneDeep(formData));
+    }
+
+    const handleChange = (data: { [key: string]: any }) => {
+        setEditFormData(data);
+    }
 
     const handleSubmit = async (data: { [key: string]: any }) => {
         if (!entityName) throw new Error(`Entity name not found`);
+        const userId = account?.user;
+        if (!userId) throw new Error(`User not found`);
+        if (!worldId) throw new Error(`World ID not found`);
         if (!entityConstructor) throw new Error(`Entity constructor not found`);
+        const contentBody = entityConstructor.build(data);
+        const context: Context = Context.build({
+            world: { id: worldId } as World,
+            user: { id: userId } as User
+        });
+        const key = `updateContent-${worldId}-${entityName}-${entityId}`
+        addLoadingKey(key)
         dispatch(updateContent({
             entityName,
-            contentBody: entityConstructor.build(data),
+            contentBody,
             context
-        }));
+        })).then((result: any) => {
+            console.log('[updateContent handleSubmit] result', result);
+            if (result.error) {
+                addError([
+                    {
+                        text: 'Error',
+                        color: 'error',
+                        sx: { fontWeight: 'bold' }
+                    },
+                    {
+                        text: result.error.message,
+                        href: routes.contentEntity(worldId || '', entityName || ''),
+                        color: 'error',
+                    }
+                ]);
+            } else {
+                addSuccess([
+                    {
+                        text: `${displayConfig?.title || entityName} "${data.name || data.title || ''}" updated successfully`,
+                    }
+                ]);
+            }
+        }).finally(() => {
+            removeLoadingKey(key)
+        });
         router.push(routes.contentEntity(worldId || '', entityName || ''));
     };
 
     const handleToggleEdit = () => {
-        if (isReadOnly) {
-            // Switching to edit mode - create fresh clone of original data
-            setEditData(cloneDeep(contentData?.toPlainObj()));
-        }
         setIsReadOnly(!isReadOnly);
     };
 
@@ -83,13 +125,14 @@ const EntityPage = () => {
         setCustomBreadcrumbs([
             BreadcrumbItem.build({ label: 'Home', path: routes.home() }),
             BreadcrumbItem.build({ label: 'Worlds', path: routes.worlds() }),
+            BreadcrumbItem.build({ label: world?.name || 'PLACEHOLDER', path: routes.worldDashboard(worldId || '') }),
             BreadcrumbItem.build({
-                label: displayConfig?.title || 'PLACEHOLDER',
+                label: displayConfig?.title || entityName || 'PLACEHOLDER',
                 path: routes.contentEntity(worldId || '', entityName || '')
             }),
             BreadcrumbItem.build({
                 label: entityId || 'PLACEHOLDER',
-                path: routes.contentDetail(worldId || '', entityName || '', entityId || '')
+                path: routes.contentDetail(worldId || '', entityName || '', formData.name || '')
             })
         ]);
     }, [worldId, entityName, entityId]);
@@ -105,15 +148,17 @@ const EntityPage = () => {
                         <Button
                             variant="contained"
                             onClick={handleToggleEdit}
+                            color={isReadOnly ? 'primary' : 'error'}
                         >
-                            {isReadOnly ? 'Edit' : 'View'}
+                            {isReadOnly ? 'Edit' : 'Cancel Edit'}
                         </Button>
                     </Box>
                     <Box sx={{ maxWidth: 600 }}>
                         <DynamicForm
-                            initialValues={isReadOnly ? contentData?.toPlainObj() : editData}
+                            formData={isReadOnly ? formData : editFormData}
                             fields={formFields}
                             onSubmit={handleSubmit}
+                            onChange={handleChange}
                             readOnly={isReadOnly}
                         />
                     </Box>

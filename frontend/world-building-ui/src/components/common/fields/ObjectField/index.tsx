@@ -5,20 +5,22 @@ import AddIcon from '@mui/icons-material/Add';
 import { DynamicFormFieldProps } from '../../DynamicForm';
 import { FormFieldDefinition } from '../../../../decorator/form-field.decorator';
 import { LooseObject } from '../../../../types';
+import { ErrorComp } from '../../DynamicForm/ErrorComp';
 
 interface ObjectFieldProps extends DynamicFormFieldProps {
     formFieldDefinition: FormFieldDefinition;
     value: LooseObject;
     onChange: (newValue: LooseObject) => void;
-    error?: string;
 }
 
 const RecursiveObjectField: React.FC<ObjectFieldProps> = ({
     value = {},
     formFieldDefinition,
     onChange,
-    error
+    error,
+    readOnly
 }) => {
+    if (error && typeof error === 'object') throw new Error('Received error as object. ObjectField does not support nested errors.');
     const allowNewKeys: boolean | undefined = formFieldDefinition.allowNewKeys || false;
     const allowedKeys: string[] | undefined = formFieldDefinition.allowedKeys;
     if (allowNewKeys && !allowedKeys) throw new Error('allowNewKeys and allowedKeys are required in ObjectField');
@@ -52,7 +54,7 @@ const RecursiveObjectField: React.FC<ObjectFieldProps> = ({
                 {Object.entries(value).map(([key, val]) => (
                     <Box key={key} sx={{ display: 'flex', alignItems: 'center', mb: 2, gap: 1 }}>
                         <TextField
-                            disabled
+                            disabled={readOnly}
                             value={key}
                             label="Key"
                             size="small"
@@ -64,9 +66,11 @@ const RecursiveObjectField: React.FC<ObjectFieldProps> = ({
                                 value={val}
                                 onChange={(newVal) => handleValueChange(key, newVal)}
                                 formFieldDefinition={formFieldDefinition}
+                                readOnly={readOnly}
                             />
                         ) : (
                             <TextField
+                                disabled={readOnly}
                                 value={val}
                                 onChange={(e) => handleValueChange(key, e.target.value)}
                                 label="Value"
@@ -87,6 +91,7 @@ const RecursiveObjectField: React.FC<ObjectFieldProps> = ({
                 {allowNewKeys && (
                     <Box sx={{ display: 'flex', alignItems: 'center', mt: 2, gap: 1 }}>
                         <TextField
+                            disabled={readOnly}
                             value={newKey}
                             onChange={(e) => setNewKey(e.target.value)}
                             label="New Key"
@@ -94,6 +99,7 @@ const RecursiveObjectField: React.FC<ObjectFieldProps> = ({
                             sx={{ flexBasis: '40%' }}
                         />
                         <TextField
+                            disabled={readOnly}
                             value={newValue}
                             onChange={(e) => setNewValue(e.target.value)}
                             label="New Value"
@@ -105,7 +111,7 @@ const RecursiveObjectField: React.FC<ObjectFieldProps> = ({
                             onClick={handleAddField}
                             variant="outlined"
                             size="small"
-                            disabled={!newKey || !newValue}
+                            disabled={!newKey || !newValue || readOnly}
                             sx={{ ml: 1 }}
                         >
                             Add
@@ -113,7 +119,7 @@ const RecursiveObjectField: React.FC<ObjectFieldProps> = ({
                     </Box>
                 )}
             </Box>
-            {error && <FormHelperText>{error}</FormHelperText>}
+            <ErrorComp text={error} />
         </>
     );
 };

@@ -3,11 +3,10 @@ import { ContentStat } from "../class/ContentStat";
 import { ActivityRecord } from "../class/entities/ActivityRecord";
 import { RequestStatusEnum } from "../enum/RequestStatusEnum";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ContentStatPlain, refreshActivities, refreshStats, loadDashboardData } from "../store/slices/dashboardSlice";
 import { ActivityRecordPlain } from "../store/slices/worldSlice";
 import { RootState, AppDispatch } from "../store/store";
-import { useSelectorAndBuilder } from "./useSelectorAndBuilder";
 import { useLoading } from "./useLoading";
 
 export const useDashboardData = (worldId: string | null, userId: string, showAllStats: boolean) => {
@@ -19,9 +18,22 @@ export const useDashboardData = (worldId: string | null, userId: string, showAll
     const { crud } = useSelector((state: RootState) => state.content)
     const contentCrudStatus: RequestStatusEnum = crud.status
     const { status: presetLoadingStatus } = useSelector((state: RootState) => state.worlds.presetLoading)
-    const stats: ContentStat[] | null = useSelectorAndBuilder((state: RootState) => state.dashboard.stats.data, (stats) => stats.map((stat: ContentStatPlain) => ContentStat.build(stat)));
+    const [stats, setStats] = useState<ContentStat[] | null>(null);
+    const [activityRecords, setActivityRecords] = useState<ActivityRecord[] | null>(null);
     const { status: statsStatus, error: statsError } = useSelector((state: RootState) => state.dashboard.stats);
-    const activityRecords: ActivityRecord[] | null = useSelectorAndBuilder((state: RootState) => state.dashboard.activityRecordsHead.data, (activities) => activities.map((activity: ActivityRecordPlain) => ActivityRecord.build(activity)));
+    const statsData = useSelector((state: RootState) => state.dashboard.stats.data);
+    useEffect(() => {
+        if (statsData) {
+            setStats(statsData.map((stat: ContentStatPlain) => ContentStat.build(stat)));
+        }
+    }, [statsData]);
+
+    const activityRecordsData = useSelector((state: RootState) => state.dashboard.activityRecordsHead.data);
+    useEffect(() => {
+        if (activityRecordsData) {
+            setActivityRecords(activityRecordsData.map((activity: ActivityRecordPlain) => ActivityRecord.build(activity)));
+        }
+    }, [activityRecordsData]);
     const { status: activityRecordsStatus, error: activityRecordsError } = useSelector((state: RootState) => state.dashboard.activityRecordsHead);
 
 

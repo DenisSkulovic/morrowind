@@ -51,17 +51,28 @@ export class ContentService<T extends ContentBase> {
     async createContent(entityName: EntityEnum, contentObj: T, context: Context): Promise<T> {
         const request = new CreateContentRequest();
         request.setSource(DataSourceEnumDTO.DATA_SOURCE_WORLD);
-        const entityConstructor = ContentEntityMapService.getEntityConstructor<T>(entityName);
-        const dtoConstructor = ContentEntityMapService.getDTOConstructor<T>(entityName);
-        request.setContentbody(Serializer.toDTO(contentObj, new dtoConstructor()));
         request.setEntityname(entityName);
         request.setContext(Serializer.toDTO(context, new ContextDTO()));
-
+        const entityConstructor = ContentEntityMapService.getEntityConstructor<T>(entityName);
+        const dtoConstructor = ContentEntityMapService.getDTOConstructor<T>(entityName);
+        const dto = Serializer.toDTO(contentObj, new dtoConstructor());
+        const contentBodyDTO: any = new ContentBodyDTO();
+        const { setter } = Serializer.getSetterFuncName(contentBodyDTO, entityName);
+        contentBodyDTO[setter](dto);
+        request.setContentbody(contentBodyDTO);
+        console.log('[createContent] request', request);
         return new Promise((resolve, reject) => {
             this.client.create(request, {}, (err, response) => {
+                console.log('[createContent] after createContent', err, response);
                 if (err) reject(err);
                 else if (!response) reject(new Error('No response from server'));
-                else resolve(Serializer.fromDTO(response.getContentbody(), new entityConstructor()));
+                else {
+                    const contentBody = response.getContentbody();
+                    const { getter } = Serializer.getGetterFuncName(contentBody, entityName);
+                    const content = (contentBody as any)[getter]();
+                    console.log('[createContent] content', content);
+                    resolve(Serializer.fromDTO(content, new entityConstructor()));
+                }
             });
         });
     }
@@ -79,7 +90,12 @@ export class ContentService<T extends ContentBase> {
             this.client.update(request, {}, (err, response) => {
                 if (err) reject(err);
                 else if (!response) reject(new Error('No response from server'));
-                else resolve(Serializer.fromDTO(response.getContentbody(), new entityConstructor()));
+                else {
+                    const contentBody = response.getContentbody();
+                    const { getter } = Serializer.getGetterFuncName(contentBody, entityName);
+                    const content = (contentBody as any)[getter]();
+                    resolve(Serializer.fromDTO(content, new entityConstructor()));
+                }
             });
         });
     }

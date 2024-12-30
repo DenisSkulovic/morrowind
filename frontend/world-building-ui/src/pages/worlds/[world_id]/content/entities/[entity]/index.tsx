@@ -93,6 +93,12 @@ const EntityListPage = <T extends ContentBase>() => {
         setSelectedIds(selectedIds);
     };
 
+    const handleCreateNew = () => {
+        if (!entityName) throw new Error('Entity name not found');
+        if (!worldId) throw new Error('World id not found');
+        router.push(routes.contentCreate(worldId, entityName));
+    };
+
     const handleEntityEdit = (entity: T) => {
         router.push(routes.contentDetail(worldId || '', entityName || '', entity.id, PageModeEnum.EDIT));
     };
@@ -181,7 +187,7 @@ const EntityListPage = <T extends ContentBase>() => {
                             <EntityListActions
                                 entityName={entityName}
                                 selectedIds={selectedIds}
-                                onCreateNew={() => { }}
+                                onCreateNew={handleCreateNew}
                                 onDelete={handleEntityDeleteBulk}
                                 onExport={handleEntityExport}
                             />

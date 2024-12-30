@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { enableMapSet } from "immer";
 import { RequestStatusEnum } from "../../enum/RequestStatusEnum";
+import { PopupTypeEnum } from "../../enum/PopupTypeEnum";
 
 enableMapSet();
 
@@ -10,6 +11,20 @@ interface OptionsState {
     error: string | null;
 }
 
+export interface ToastTextSegment {
+    text: string;
+    href?: string; // Optional URL for making this segment clickable
+    color?: 'primary' | 'secondary' | 'error' | 'warning' | 'info' | 'success'; // MUI color options
+    sx?: Record<string, any>; // Custom styles using MUI's sx prop format
+}
+
+export interface ToastData {
+    id: string;
+    title: ToastTextSegment[]; // Array of text segments for the title
+    description?: ToastTextSegment[]; // Array of text segments for the description
+    type: PopupTypeEnum;
+}
+
 interface UiState {
     status: RequestStatusEnum;
     options: {
@@ -17,6 +32,9 @@ interface UiState {
     };
     isPresetDialogOpen: boolean;
     loadingKeys: string[];
+    toasts: {
+        [key: string]: ToastData;
+    };
 }
 
 const initialState: UiState = {
@@ -24,6 +42,7 @@ const initialState: UiState = {
     options: {},
     isPresetDialogOpen: false,
     loadingKeys: [],
+    toasts: {},
 };
 
 export const uiSlice = createSlice({
@@ -65,6 +84,12 @@ export const uiSlice = createSlice({
         removeLoadingKey: (state, action: PayloadAction<string>) => {
             state.loadingKeys = state.loadingKeys.filter(key => key !== action.payload);
         },
+        addToast: (state, action: PayloadAction<ToastData>) => {
+            state.toasts[action.payload.id] = action.payload;
+        },
+        removeToast: (state, action: PayloadAction<string>) => {
+            delete state.toasts[action.payload];
+        },
     },
 });
 
@@ -74,7 +99,9 @@ export const {
     setOptionsLoading,
     setOptionsSuccess,
     setOptionsError,
-    setIsPresetDialogOpen
+    setIsPresetDialogOpen,
+    addToast,
+    removeToast
 } = uiSlice.actions;
 
 export default uiSlice.reducer;

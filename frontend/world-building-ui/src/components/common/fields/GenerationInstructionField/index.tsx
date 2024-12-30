@@ -5,20 +5,22 @@ import { Box, FormControl, FormHelperText, InputLabel, MenuItem, Select, TextFie
 import { BlueprintGenInstruction_Simple } from '../../../../types';
 import { DynamicFormFieldProps } from '../../DynamicForm';
 import { FormFieldDefinition } from '../../../../decorator/form-field.decorator';
+import { ErrorComp } from '../../DynamicForm/ErrorComp';
 
 interface GenerationInstructionFieldProps extends DynamicFormFieldProps {
     formFieldDefinition: FormFieldDefinition;
     value: GenerationInstruction;
     onChange: (newValue: GenerationInstruction) => void;
-    error?: string;
 }
 
 const GenerationInstructionField: React.FC<GenerationInstructionFieldProps> = ({
     value,
     onChange,
     formFieldDefinition,
-    error
+    error,
+    readOnly
 }) => {
+    if (error && typeof error === 'object') throw new Error('Received error as object. GenerationInstructionField does not support nested errors.');
     const handleStringChange = (value: string) => {
         onChange(value);
     };
@@ -70,6 +72,7 @@ const GenerationInstructionField: React.FC<GenerationInstructionFieldProps> = ({
                         fullWidth
                         value={instruction}
                         onChange={(e) => handleStringChange(e.target.value)}
+                        disabled={readOnly}
                     />
                 </Box>
             );
@@ -82,12 +85,14 @@ const GenerationInstructionField: React.FC<GenerationInstructionFieldProps> = ({
                         fullWidth
                         value={instruction.blueprintId}
                         onChange={(e) => handleIdAndQuantChange(instruction, 'blueprintId', e.target.value)}
+                        disabled={readOnly}
                     />
                     <TextField
                         type="number"
                         value={instruction.quantity || 1}
                         onChange={(e) => handleIdAndQuantChange(instruction, 'quantity', e.target.value)}
                         sx={{ minWidth: '100px' }}
+                        disabled={readOnly}
                     />
                 </Box>
             );
@@ -100,6 +105,7 @@ const GenerationInstructionField: React.FC<GenerationInstructionFieldProps> = ({
                         <Select
                             value={instruction.cond}
                             onChange={(e) => handleProbObjectChange(instruction, 'cond', e.target.value as ConditionEnum)}
+                            disabled={readOnly}
                         >
                             {Object.values(ConditionEnum).map(cond => (
                                 <MenuItem key={cond} value={cond}>{cond}</MenuItem>
@@ -110,6 +116,7 @@ const GenerationInstructionField: React.FC<GenerationInstructionFieldProps> = ({
                         fullWidth
                         value={instruction.prob}
                         onChange={(e) => handleProbObjectChange(instruction, 'prob', e.target.value)}
+                        disabled={readOnly}
                     />
                 </Box>
             );
@@ -122,6 +129,7 @@ const GenerationInstructionField: React.FC<GenerationInstructionFieldProps> = ({
                         fullWidth
                         value={instruction.blueprintId}
                         onChange={(e) => handleGaussianChange(instruction, 'blueprintId', e.target.value)}
+                        disabled={readOnly}
                     />
                     <TextField
                         type="number"
@@ -129,12 +137,14 @@ const GenerationInstructionField: React.FC<GenerationInstructionFieldProps> = ({
                         value={instruction.prob || 1}
                         onChange={(e) => handleGaussianChange(instruction, 'prob', e.target.value)}
                         sx={{ minWidth: '100px' }}
+                        disabled={readOnly}
                     />
                     <TextField
                         type="number"
                         value={instruction.avg_quan || 1}
                         onChange={(e) => handleGaussianChange(instruction, 'avg_quan', e.target.value)}
                         sx={{ minWidth: '100px' }}
+                        disabled={readOnly}
                     />
                 </Box>
             );
@@ -148,11 +158,13 @@ const GenerationInstructionField: React.FC<GenerationInstructionFieldProps> = ({
                         placeholder="Name"
                         value={instruction.name || ''}
                         onChange={(e) => handleCombinatorChange(instruction, 'name', e.target.value)}
+                        disabled={readOnly}
                     />
                     <FormControl fullWidth>
                         <Select
                             value={instruction.cond}
                             onChange={(e) => handleCombinatorChange(instruction, 'cond', e.target.value as ConditionEnum)}
+                            disabled={readOnly}
                         >
                             {Object.values(ConditionEnum).map(cond => (
                                 <MenuItem key={cond} value={cond}>{cond}</MenuItem>
@@ -177,7 +189,7 @@ const GenerationInstructionField: React.FC<GenerationInstructionFieldProps> = ({
                 <InputLabel sx={{ mb: 1 }}>{formFieldDefinition.label}</InputLabel>
                 {renderInstructionEditor(value)}
             </FormControl>
-            {error && <FormHelperText>{error}</FormHelperText>}
+            <ErrorComp text={error} />
         </>
     );
 };

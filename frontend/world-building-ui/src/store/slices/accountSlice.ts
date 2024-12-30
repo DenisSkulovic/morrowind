@@ -17,7 +17,7 @@ const mockAccount = Account.build({
 
 export type AccountPlain = LooseObject
 
-interface AccountState {
+export interface AccountState {
     currentAccount: {
         data: AccountPlain | null;
         status: RequestStatusEnum;

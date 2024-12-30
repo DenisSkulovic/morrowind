@@ -34,7 +34,7 @@ export const getSearchKey = (query: SearchQuery) => {
 }
 
 interface WorldState {
-    currentWorld: {
+    crud: {
         data: WorldPlain | null;
         status: RequestStatusEnum;
         error: string | null;
@@ -65,7 +65,7 @@ interface WorldState {
 };
 
 const initialState: WorldState = {
-    currentWorld: {
+    crud: {
         data: null,
         status: RequestStatusEnum.IDLE,
         error: null,
@@ -186,9 +186,6 @@ const worldSlice = createSlice({
         clearSearchResultsForKey: (state, action: PayloadAction<string>) => {
             delete state.searchedWorlds[action.payload];
         },
-        setCurrentWorld: (state, action: PayloadAction<WorldPlain>) => {
-            state.currentWorld.data = action.payload;
-        },
         resetPresetLoading: (state) => {
             state.presetLoading.status = RequestStatusEnum.IDLE;
             state.presetLoading.error = null;
@@ -236,14 +233,14 @@ const worldSlice = createSlice({
         // Create World
         builder.addCase(createWorldThunk.pending, (state: WorldState) => handlePending(state))
         builder.addCase(createWorldThunk.fulfilled, (state: WorldState, action: PayloadAction<WorldPlain>) => {
-            state.currentWorld.status = RequestStatusEnum.SUCCEEDED;
+            state.crud.status = RequestStatusEnum.SUCCEEDED;
         })
         builder.addCase(createWorldThunk.rejected, (state: WorldState, action) => handleRejected(state, action))
 
         // Delete World
         builder.addCase(deleteWorldThunk.pending, (state: WorldState) => handlePending(state))
         builder.addCase(deleteWorldThunk.fulfilled, (state: WorldState, action: PayloadAction<string>) => {
-            state.currentWorld.status = RequestStatusEnum.SUCCEEDED;
+            state.crud.status = RequestStatusEnum.SUCCEEDED;
             // Update all search results to remove the deleted world
             Object.keys(state.searchedWorlds).forEach(key => {
                 const result = state.searchedWorlds[key];
@@ -256,7 +253,7 @@ const worldSlice = createSlice({
         // Update World
         builder.addCase(updateWorldThunk.pending, (state: WorldState) => handlePending(state))
         builder.addCase(updateWorldThunk.fulfilled, (state: WorldState, action: PayloadAction<WorldPlain>) => {
-            state.currentWorld.status = RequestStatusEnum.SUCCEEDED;
+            state.crud.status = RequestStatusEnum.SUCCEEDED;
             // Update all search results with the updated world
             Object.keys(state.searchedWorlds).forEach(key => {
                 const result = state.searchedWorlds[key];
@@ -296,5 +293,5 @@ const worldSlice = createSlice({
     },
 });
 
-export const { clearSearchedWorlds, clearSearchResultsForKey, setCurrentWorld, resetPresetLoading } = worldSlice.actions;
+export const { clearSearchedWorlds, clearSearchResultsForKey, resetPresetLoading } = worldSlice.actions;
 export default worldSlice.reducer;

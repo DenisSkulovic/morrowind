@@ -2,7 +2,7 @@ import React from 'react';
 import { FormControl, InputLabel, Box, Button, IconButton, FormHelperText } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
-import { getFormFields, FormFieldDefinition } from '../../../../decorator/form-field.decorator';
+import { getFormFields, FormFieldDefinition, DynamicFormErrors } from '../../../../decorator/form-field.decorator';
 import DynamicForm, { DynamicFormFieldProps } from '../../DynamicForm';
 import { LooseObject } from '../../../../types';
 
@@ -11,7 +11,6 @@ interface NestedFormFieldProps extends DynamicFormFieldProps {
     value: LooseObject[] | null;
     onChange: (value: LooseObject[] | null) => void;
     key: string;
-    error?: string;
 }
 
 const NestedFormField: React.FC<NestedFormFieldProps> = ({
@@ -19,8 +18,11 @@ const NestedFormField: React.FC<NestedFormFieldProps> = ({
     value = [],
     onChange,
     key,
-    error
+    error,
+    readOnly
 }) => {
+    if (error && typeof error === 'string') throw new Error('Received error as string. NestedFormField only supports nested errors.');
+    const errors = error as DynamicFormErrors;
     if (value && !Array.isArray(value)) throw new Error('Value in NestedFormField must be an array');
     const nestedClass = formFieldDefinition.nestedClass;
     if (!nestedClass) throw new Error('"nestedClass" is required in NestedFormField');
@@ -51,7 +53,7 @@ const NestedFormField: React.FC<NestedFormFieldProps> = ({
     return (
         <>
             <Box sx={{ mt: 3, mb: 2 }}>
-                <FormControl fullWidth required={formFieldDefinition.required}>
+                <FormControl fullWidth required={formFieldDefinition.required} disabled={formFieldDefinition.disabled || readOnly}>
                     <InputLabel sx={{ position: 'relative', transform: 'none', mb: 1 }}>
                         {formFieldDefinition.label}
                     </InputLabel>
@@ -85,23 +87,25 @@ const NestedFormField: React.FC<NestedFormFieldProps> = ({
                                 <DynamicForm
                                     asFormComponent={false}
                                     fields={fields}
-                                    initialValues={item}
+                                    formData={item}
                                     onChange={(formData) => handleFormChange(index, formData)}
+                                    errors={errors}
                                 />
                             </Box>
                         ))}
-                        <Button
-                            startIcon={<AddIcon />}
-                            onClick={handleAddItem}
-                            variant="outlined"
-                            fullWidth
-                        >
-                            Add {formFieldDefinition.label}
-                        </Button>
+                        {!formFieldDefinition.disabled && !readOnly && (
+                            <Button
+                                startIcon={<AddIcon />}
+                                onClick={handleAddItem}
+                                variant="outlined"
+                                fullWidth
+                            >
+                                Add {formFieldDefinition.label}
+                            </Button>
+                        )}
                     </Box>
                 </FormControl>
             </Box>
-            {error && <FormHelperText>{error}</FormHelperText>}
         </>
     );
 };

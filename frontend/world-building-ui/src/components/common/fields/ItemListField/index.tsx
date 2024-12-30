@@ -5,20 +5,22 @@ import { DynamicFormFieldProps } from '../../DynamicForm';
 import { Item } from '../../../../class/entities/content/Item/Item';
 import DraggableItem from '../../DraggableItem';
 import { FormFieldDefinition } from '../../../../decorator/form-field.decorator';
+import { ErrorComp } from '../../DynamicForm/ErrorComp';
 
 interface ItemListFieldProps extends DynamicFormFieldProps {
     formFieldDefinition: FormFieldDefinition;
     value: Item[];
     onChange: (newValue: Item[]) => void;
-    error?: string;
 }
 
 const ItemListField: React.FC<ItemListFieldProps> = ({
     formFieldDefinition,
     value: items,
     onChange,
-    error
+    error,
+    readOnly
 }) => {
+    if (error && typeof error === 'object') throw new Error('Received error as object. ItemListField does not support nested errors.');
     const maxItems = formFieldDefinition.maxItems;
     const acceptTypes = formFieldDefinition.acceptTypes || ['item'];
     const listType: string | undefined = formFieldDefinition.listType;
@@ -28,14 +30,15 @@ const ItemListField: React.FC<ItemListFieldProps> = ({
     const [{ isOver }, dropRef] = useDrop({
         accept: acceptTypes,
         drop: (droppedItem: Item) => {
-            if (!maxItems || items.length < maxItems) {
+            if (!readOnly && (!maxItems || items.length < maxItems)) {
                 const newItems = [...items, droppedItem];
                 onChange(newItems);
             }
         },
         collect: (monitor) => ({
             isOver: monitor.isOver()
-        })
+        }),
+        canDrop: () => !readOnly
     });
 
     const setDropRef = useCallback(
@@ -56,12 +59,13 @@ const ItemListField: React.FC<ItemListFieldProps> = ({
                     sx={{
                         minHeight: '100px',
                         p: 2,
-                        bgcolor: isOver ? 'action.hover' : 'background.paper',
+                        bgcolor: isOver && !readOnly ? 'action.hover' : 'background.paper',
                         border: '1px dashed',
-                        borderColor: 'divider',
+                        borderColor: readOnly ? 'action.disabled' : 'divider',
                         transition: 'background-color 0.2s ease',
                         borderRadius: 1,
-                        overflow: 'hidden'
+                        overflow: 'hidden',
+                        opacity: readOnly ? 0.7 : 1
                     }}
                 >
                     <Box sx={{
@@ -76,15 +80,18 @@ const ItemListField: React.FC<ItemListFieldProps> = ({
                                 item={item}
                                 listType={listType}
                                 onRemove={() => {
-                                    const newItems = items.filter((_, i) => i !== index);
-                                    onChange(newItems);
+                                    if (!readOnly) {
+                                        const newItems = items.filter((_, i) => i !== index);
+                                        onChange(newItems);
+                                    }
                                 }}
+                                readOnly={readOnly}
                             />
                         ))}
                     </Box>
                 </Paper>
             </div>
-            {error && <FormHelperText>{error}</FormHelperText>}
+            <ErrorComp text={error} />
         </>
     );
 };

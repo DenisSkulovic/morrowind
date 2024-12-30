@@ -39,6 +39,7 @@ export function getFormFields(cls: ClassConstructor<any>): FormFieldDefinition[]
     return Reflect.getMetadata(EntityMetadataKeyEnum.FORM_FIELD, cls) || [];
 }
 
+export type DynamicFormErrors = { [key: string]: string | DynamicFormErrors }; // recursive type for nested errors
 
 export const validateField = (field: FormFieldDefinition, value: any): string | undefined => {
     // Check required field
@@ -62,4 +63,27 @@ export const validateField = (field: FormFieldDefinition, value: any): string | 
     }
 
     return undefined;
+};
+
+export const validateForm = (fields: FormFieldDefinition[], formData: { [key: string]: any }): DynamicFormErrors => {
+    const errors: DynamicFormErrors = {};
+
+    fields.forEach(field => {
+        if (field.component === FieldComponentEnum.NESTED_FORM && field.nestedClass) {
+            // Handle nested form validation recursively
+            const nestedFields = getFormFields(field.nestedClass);
+            const nestedErrors: DynamicFormErrors = validateForm(nestedFields, formData[field.field] || {});
+            if (Object.keys(nestedErrors).length > 0) {
+                errors[field.field] = nestedErrors;
+            }
+        } else {
+            // Handle regular field validation
+            const error = validateField(field, formData[field.field]);
+            if (error) {
+                errors[field.field] = error;
+            }
+        }
+    });
+
+    return errors;
 };

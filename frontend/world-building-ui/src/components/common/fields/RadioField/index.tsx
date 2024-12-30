@@ -2,20 +2,22 @@ import React from 'react';
 import { FormControl, InputLabel, RadioGroup, FormControlLabel, Radio, Box, FormHelperText } from '@mui/material';
 import { DynamicFormFieldProps } from '../../DynamicForm';
 import { FormFieldDefinition } from '../../../../decorator/form-field.decorator';
+import { ErrorComp } from '../../DynamicForm/ErrorComp';
 
 interface RadioFieldProps extends DynamicFormFieldProps {
     formFieldDefinition: FormFieldDefinition;
     value: string;
     onChange: (newValue: string) => void;
-    error?: string;
 }
 
 const RadioField: React.FC<RadioFieldProps> = ({
     formFieldDefinition,
     value,
     onChange,
-    error
+    error,
+    readOnly
 }) => {
+    if (error && typeof error === 'object') throw new Error('Received error as object. RadioField does not support nested errors.');
     const radioOptions: { value: string; label: string }[] | undefined = formFieldDefinition.radioOptions;
     if (!radioOptions) throw new Error('radioOptions is required in RadioField');
 
@@ -25,7 +27,7 @@ const RadioField: React.FC<RadioFieldProps> = ({
 
     return (
         <>
-            <FormControl fullWidth required={formFieldDefinition.required} sx={{ mt: 1, mb: 1 }}>
+            <FormControl fullWidth required={formFieldDefinition.required} disabled={readOnly} sx={{ mt: 1, mb: 1 }}>
                 <InputLabel sx={{ mb: 1 }}>{formFieldDefinition.label}</InputLabel>
                 <RadioGroup
                     value={value}
@@ -43,7 +45,7 @@ const RadioField: React.FC<RadioFieldProps> = ({
                     ))}
                 </RadioGroup>
             </FormControl>
-            {error && <FormHelperText>{error}</FormHelperText>}
+            <ErrorComp text={error} />
         </>
     );
 };

@@ -14,6 +14,9 @@ import { EntityConstructor } from '../../types';
 import { sanitizeEntityName } from '../../util/sanitizeEntityName';
 import { ContentStat } from '../../class/ContentStat';
 import { Serializer } from '../../serializer';
+import { World } from '../world/entities/World';
+import { User } from '../user/entities/User';
+import { Campaign } from '../campaign/entities/Campaign';
 
 type DynamicWhere<T> = FindOptionsWhere<T> & {
     [key: string]: any;
@@ -53,32 +56,47 @@ export class ContentService<T extends ContentBase> {
         return this.getDataSource(source).getRepository(entityConstructor);
     }
 
-    async create(entityName: string, entity: T, source: DataSourceEnum): Promise<any> {
+    async create(entityName: string, entity: T, source: DataSourceEnum, userId: string, worldId: string, campaignId?: string): Promise<any> {
         const repository = this.getRepository(entityName, source);
+        entity.world = { id: worldId } as World
+        entity.user = { id: userId } as User
+        if (campaignId) entity.campaign = { id: campaignId } as Campaign
+        console.log(`[ContentService] create`, entity)
+
         return await repository.save(entity);
     }
 
-    async update(entityName: string, entity: T, context: Context): Promise<any> {
+    async update(entityName: string, entity: T, userId: string, worldId: string, campaignId?: string): Promise<any> {
         const repository = this.getRepository(entityName, DataSourceEnum.DATA_SOURCE_WORLD);
+        entity.world = { id: worldId } as World
+        entity.user = { id: userId } as User
+        if (campaignId) entity.campaign = { id: campaignId } as Campaign
+        console.log(`[ContentService] update`, entity)
         return await repository.save(entity);
     }
 
-    async delete(entityName: string, id: string, context: Context): Promise<void> {
+    async delete(entityName: string, id: string, userId: string, worldId: string, campaignId?: string): Promise<void> {
         const repository = this.getRepository(entityName, DataSourceEnum.DATA_SOURCE_WORLD);
-        await repository.delete(id);
+        const where: any = {
+            id,
+            user: { id: userId },
+            world: { id: worldId },
+        };
+        if (campaignId) where.campaign = { id: campaignId };
+        console.log(`[ContentService] delete`, where)
+        await repository.delete(where);
     }
-    async search(entityName: string, query: SearchQuery, context: Context): Promise<ContentSearchResult<T>> {
-        console.log(`[ContentService] search`, entityName, query, context)
+
+    async search(entityName: string, query: SearchQuery, userId: string, worldId: string, campaignId?: string): Promise<ContentSearchResult<T>> {
+        console.log(`[ContentService] search`, entityName, query, userId, worldId, campaignId)
         const repository = this.getRepository(entityName, DataSourceEnum.DATA_SOURCE_WORLD);
 
         // Build where clause from query filters
-        if (!context.user?.id) throw new Error('User in Context is required to search content');
-        if (!context.world?.id) throw new Error('World in Context is required to search content');
         const where: any = {
-            user: { id: context.user.id },
-            world: { id: context.world.id }
+            user: { id: userId },
+            world: { id: worldId }
         };
-        if (context.campaign?.id) where.campaign = { id: context.campaign.id };
+        if (campaignId) where.campaign = { id: campaignId };
 
         if (query.filters) {
             for (const filter of query.filters) {
@@ -149,26 +167,26 @@ export class ContentService<T extends ContentBase> {
         return await repository.save(entities);
     }
 
-    async updateBulk(entityName: string, entities: T[], context: Context): Promise<T[]> {
+    async updateBulk(entityName: string, entities: T[], userId: string, worldId: string, campaignId?: string): Promise<T[]> {
         const repository = this.getRepository(entityName, DataSourceEnum.DATA_SOURCE_WORLD);
         return await repository.save(entities);
     }
 
-    async deleteBulk(entityName: string, ids: string[], context: Context): Promise<void> {
+    async deleteBulk(entityName: string, ids: string[], userId: string, worldId: string, campaignId?: string): Promise<void> {
         const repository = this.getRepository(entityName, DataSourceEnum.DATA_SOURCE_WORLD);
         await repository.delete(ids);
     }
 
-    async getStats(entityNames: EntityEnum[], context: Context): Promise<ContentStat[]> {
-        if (!context.world) throw new Error('World is required');
+    async getStats(entityNames: EntityEnum[], userId: string, worldId: string, campaignId?: string): Promise<ContentStat[]> {
         const stats: ContentStat[] = [];
         for (const entityName of entityNames) {
             const repository = this.getRepository(entityName, DataSourceEnum.DATA_SOURCE_WORLD);
-            const count = await repository.count({
-                where: {
-                    world: { id: context.world.id }
-                } as FindOptionsWhere<T>
-            });
+            const where: any = {
+                user: { id: userId },
+                world: { id: worldId }
+            };
+            if (campaignId) where.campaign = { id: campaignId };
+            const count = await repository.count({ where });
             const stat: ContentStat = ContentStat.build({
                 title: entityName,
                 type: entityName,

@@ -24,7 +24,16 @@ export class Serializer {
             }
 
             const processOne = (item: any | undefined | null) => {
-                if (typeof item === "undefined" || item === null) return undefined;
+                // Return undefined for empty/null/undefined values
+                if (
+                    typeof item === "undefined" ||
+                    item === null ||
+                    item === "" ||
+                    (Array.isArray(item) && item.length === 0) ||
+                    (typeof item === "object" && Object.keys(item).length === 0)
+                ) {
+                    return undefined;
+                }
                 if (strategy === SerializeStrategyEnum.DATE) return item?.getTime();
                 if (strategy === SerializeStrategyEnum.ID) return item?.id || "";
                 if (strategy === SerializeStrategyEnum.ENUM) return item ? serializeEnum(internalEnum, protoEnum, item) : undefined;
@@ -67,6 +76,7 @@ export class Serializer {
                 return arr.map(processOne);
             }
             const processOne = (item: any) => {
+                if (typeof item === "undefined" || item === null || item === "") return undefined;
                 if (strategy === SerializeStrategyEnum.DATE) return item ? new Date(item) : undefined;
                 if (strategy === SerializeStrategyEnum.ID) return item?.id ? { id: item.id } : { id: item as string };
                 if (strategy === SerializeStrategyEnum.ENUM) return item ? deserializeEnum(protoEnum, internalEnum, item) : undefined;

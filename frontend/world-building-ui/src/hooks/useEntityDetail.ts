@@ -1,9 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { EntityEnum } from "../enum/EntityEnum";
 import { RequestStatusEnum } from "../enum/RequestStatusEnum";
 import { AppDispatch, RootState } from "../store/store";
-import { useSelectorAndBuilder } from "./useSelectorAndBuilder";
 import { ContentEntityMapService } from "../CONTENT_ENTITY_MAP";
 import { ContentBase, ContentBaseStatic } from "../class/ContentBase";
 import { SearchQuery } from "../class/search/SearchQuery";
@@ -40,26 +39,42 @@ export const useEntityDetail = (entityName: EntityEnum | null, entityId: string 
         ]
     });
     const searchKey: string | null = entityName ? getSearchKey(entityName, query) : null;
-    const contentData: ContentBase | null = useSelectorAndBuilder((state: RootState) => {
-        if (!searchKey) return null;
-        if (!entityId) return null;
-        const entity = state.content.searchedEntities[searchKey];
-        if (!entity || !entity.map) return null;
-        return entity.map[entityId];
-    }, (data) => entityConstructor ? entityConstructor.build(data) : null);
-    const { status, error } = useSelector((state: RootState) => {
-        if (!searchKey) return { status: RequestStatusEnum.IDLE, error: null };
-        const entity = state.content.searchedEntities[searchKey];
-        if (!entity || !entity.map) return { status: RequestStatusEnum.IDLE, error: null };
-        return { status: entity.status, error: entity.error };
-    });
+    const searchesCache = useSelector((state: RootState) => state.content.searchedEntities);
+    const [contentData, setContentData] = useState<ContentBase | null>(null);
+    useEffect(() => {
+        if (!searchKey) return;
+        if (!entityId) return;
+        const entity = searchesCache[searchKey];
+        if (!entity || !entity.map) return;
+        const builtEntity = entityConstructor ? entityConstructor.build(entity.map[entityId]) : null;
+        setContentData(builtEntity);
+    }, [searchKey, searchesCache, entityId]);
+
+    const [status, setStatus] = useState(RequestStatusEnum.IDLE);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (!searchKey) {
+            setStatus(RequestStatusEnum.IDLE);
+            setError(null);
+            return;
+        }
+        const entity = searchesCache[searchKey];
+        if (!entity || !entity.map) {
+            setStatus(RequestStatusEnum.IDLE);
+            setError(null);
+            return;
+        }
+        setStatus(entity.status);
+        setError(entity.error);
+    }, [searchKey, searchesCache]);
 
     useEffect(() => {
         if (status === RequestStatusEnum.IDLE && entityName) {
-            const key = 'entityDetail-searchContent'
-            addLoadingKey(key)
+            const loadingKey = 'entityDetail-searchContent'
+            addLoadingKey(loadingKey)
             dispatch(searchContent({ entityName, query, context })).finally(() => {
-                removeLoadingKey(key)
+                removeLoadingKey(loadingKey)
             });
         }
     }, [dispatch, entityName, entityId]);

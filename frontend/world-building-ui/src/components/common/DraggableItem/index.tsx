@@ -6,9 +6,11 @@ interface DraggableItemProps {
     item: any;
     listType: string;
     onRemove: () => void;
+    disabled?: boolean;
+    readOnly?: boolean;
 }
 
-const DraggableItem: React.FC<DraggableItemProps> = ({ item, listType, onRemove }) => {
+const DraggableItem: React.FC<DraggableItemProps> = ({ item, listType, onRemove, disabled, readOnly }) => {
     const localRef = useRef<HTMLDivElement | null>(null);
 
     const [{ isDragging }, dragRef] = useDrag({
@@ -25,7 +27,8 @@ const DraggableItem: React.FC<DraggableItemProps> = ({ item, listType, onRemove 
         },
         collect: (monitor) => ({
             isDragging: monitor.isDragging()
-        })
+        }),
+        canDrag: () => !disabled && !readOnly
     });
 
     const setRefs = useCallback(
@@ -44,13 +47,13 @@ const DraggableItem: React.FC<DraggableItemProps> = ({ item, listType, onRemove 
             ref={setRefs}
             elevation={1}
             sx={{
-                opacity: isDragging ? 0.5 : 1,
-                cursor: 'move',
+                opacity: isDragging ? 0.5 : disabled ? 0.7 : 1,
+                cursor: disabled ? 'default' : 'move',
                 p: 1,
                 m: 0.5,
                 backgroundColor: 'background.paper',
                 '&:hover': {
-                    backgroundColor: 'action.hover'
+                    backgroundColor: disabled ? 'background.paper' : 'action.hover'
                 }
             }}
         >

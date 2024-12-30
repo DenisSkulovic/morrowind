@@ -59,11 +59,14 @@ export const getSearchKey = (entityName: EntityEnum, query: SearchQuery) => {
 export const createContent = createAsyncThunk(
     'content/createContent',
     async ({ entityName, contentBody, context }: { entityName: EntityEnum | null; contentBody: ContentBase; context: ContextPlain }) => {
+        console.log('[createContent] createContent', entityName, contentBody, context);
         if (!entityName) throw new Error(`Entity name not found`);
         const contentService = new ContentService();
         const dtoConstructor = ContentEntityMapService.getDTOConstructor<ContentBase>(entityName);
         if (!dtoConstructor) throw new Error(`DTO constructor for entity ${entityName} not found`);
+        console.log('[createContent] before contentService.createContent', contentBody);
         const response: ContentBase = await contentService.createContent(entityName, contentBody, Context.build(context));
+        console.log('[createContent] after contentService.createContent', response);
         return response.toPlainObj();
     }
 );

@@ -1,8 +1,15 @@
+import { useEffect } from "react";
+import { useState } from "react";
 import { Account } from "../class/entities/Account";
 import { RootState } from "../store/store";
-import { useSelectorAndBuilder } from "./useSelectorAndBuilder";
+import { useSelector } from "react-redux";
 
 export const useAccount = () => {
-    const account = useSelectorAndBuilder<Account | null>((state: RootState) => state.account.currentAccount.data, account => account ? Account.build(account) : null);
+    const [account, setAccount] = useState<Account | null>(null);
+    const { data: accountData } = useSelector((state: RootState) => state.account.currentAccount);
+    useEffect(() => {
+        const builtAccount = accountData ? Account.build(accountData) : null;
+        setAccount(builtAccount);
+    }, [accountData]);
     return account;
 };

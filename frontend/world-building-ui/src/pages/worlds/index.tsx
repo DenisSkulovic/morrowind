@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Box, Button, Card, CardActions, CardContent, CircularProgress, Container, Grid2, Typography, Link } from '@mui/material';
 import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
-import { RootState, AppDispatch } from '../../store/store';
+import { AppDispatch } from '../../store/store';
 import { deleteWorldThunk } from '../../store/slices/worldSlice';
 import { RequestStatusEnum } from '../../enum/RequestStatusEnum';
 import { World } from '../../class/entities/World';
@@ -14,9 +14,11 @@ import PageWrapper from '../../components/common/PageWrapper';
 import { BreadcrumbItem } from '../../components/common/PageWrapper/Breadcrumbs';
 import { useWorlds } from '../../hooks/useWorlds';
 import { useAccount } from '../../hooks/useAccount';
+import { useLoading } from '../../hooks/useLoading';
 
 const WorldsPage = () => {
     const dispatch = useDispatch<AppDispatch>();
+    const { addLoadingKey, removeLoadingKey } = useLoading();
 
     const account: Account | null = useAccount()
     const userId: string | null = account?.user || null;
@@ -29,7 +31,10 @@ const WorldsPage = () => {
     const { result } = useWorlds(query, userId)
 
     const handleDelete = (id: string) => {
-        dispatch(deleteWorldThunk(id));
+        addLoadingKey('deleteWorld');
+        dispatch(deleteWorldThunk(id)).finally(() => {
+            removeLoadingKey('deleteWorld');
+        });
     };
 
 

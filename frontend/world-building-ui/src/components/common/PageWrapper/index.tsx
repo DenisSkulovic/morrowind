@@ -4,6 +4,7 @@ import Topbar from './Topbar';
 import Sidebar from './Sidebar';
 import { BreadcrumbItem, Breadcrumbs } from './Breadcrumbs';
 import { LoadingOverlay } from '../LoadingOverlay';
+import ToastStack from './ToastStack';
 
 interface PageWrapperProps {
     children: React.ReactNode;
@@ -17,22 +18,25 @@ const PageWrapper = ({ children, customBreadcrumbs, accountId, worldId }: PageWr
     const handleMenuClick = () => setSidebarOpen(!sidebarOpen);
 
     return (
-        <Box sx={{ display: 'flex' }}>
-            <LoadingOverlay />
-            <Topbar onMenuClick={handleMenuClick} />
-            <Sidebar accountId={accountId} worldId={worldId} />
-            <Box
-                component="main"
-                sx={{
-                    flexGrow: 1,
-                    p: 3,
-                    mt: 8,
-                }}
-            >
-                <Breadcrumbs customBreadcrumbs={customBreadcrumbs} />
-                {children}
+        <>
+            <Box sx={{ display: 'flex' }}>
+                <LoadingOverlay />
+                <Topbar onMenuClick={handleMenuClick} />
+                <Sidebar accountId={accountId} worldId={worldId} />
+                <Box
+                    component="main"
+                    sx={{
+                        flexGrow: 1,
+                        p: 3,
+                        mt: 8,
+                    }}
+                >
+                    <Breadcrumbs customBreadcrumbs={customBreadcrumbs} />
+                    {children}
+                </Box>
             </Box>
-        </Box>
+            <ToastStack />
+        </>
     );
 };
 

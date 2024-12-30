@@ -1,38 +1,53 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { AppDispatch, RootState } from '../../store/store';
+import { AppDispatch } from '../../store/store';
 import { createWorldThunk, WorldPlain } from '../../store/slices/worldSlice';
 import { useRouter } from 'next/router';
 import { Box, Container, Typography } from '@mui/material';
-import { Account } from '../../class/entities/Account';
 import { World } from '../../class/entities/World';
-import { useSelectorAndBuilder } from '../../hooks/useSelectorAndBuilder';
 import { routes } from '../../routes';
-import { FormFieldDefinition, getFormFields } from '../../decorator/form-field.decorator';
+import { DynamicFormErrors, FormFieldDefinition, getFormFields, validateForm } from '../../decorator/form-field.decorator';
 import DynamicForm from '../../components/common/DynamicForm';
 import PageWrapper from '../../components/common/PageWrapper';
 import { BreadcrumbItem } from '../../components/common/PageWrapper/Breadcrumbs';
+import { useAccount } from '../../hooks/useAccount';
+import { useLoading } from '../../hooks/useLoading';
 
 const CreateWorldPage = () => {
     const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
 
-    const account: Account | null = useSelectorAndBuilder((state: RootState) => state.account.currentAccount.data, account => account ? Account.build(account) : null);
+    const { addLoadingKey, removeLoadingKey } = useLoading();
+
+    const account = useAccount();
     if (!account) throw new Error('Account not found');
     const userId: string = account.user;
 
     const formFields: FormFieldDefinition[] = getFormFields(World);
 
-    const handleSubmit = async (worldPlain: WorldPlain) => {
-        await dispatch(createWorldThunk({ worldPlain, userId }));
-        router.push(routes.worlds());
-    };
+    const [formData, setFormData] = useState<WorldPlain>({});
+    const [errors, setErrors] = useState<DynamicFormErrors>({});
+    const [showErrors, setShowErrors] = useState<boolean>(false);
 
-    const initialWorld: WorldPlain = World.build({
-        name: '',
-        description: '',
-        campaigns: []
-    }).toPlainObj();
+    const handleChange = (newFormData: WorldPlain) => {
+        setFormData(newFormData);
+    };
+    const handleSubmit = async () => {
+        const errors = validateForm(formFields, formData);
+        setErrors(errors);
+        if (Object.keys(errors).length > 0) {
+            setShowErrors(true);
+            return;
+        }
+        setShowErrors(false);
+
+        const loadingKey = 'createWorld';
+        addLoadingKey(loadingKey);
+        dispatch(createWorldThunk({ worldPlain: formData, userId })).finally(() => {
+            removeLoadingKey(loadingKey);
+            router.push(routes.worlds());
+        });
+    };
 
     const [customBreadcrumbs, setCustomBreadcrumbs] = useState<BreadcrumbItem[]>([])
     useEffect(() => {
@@ -53,8 +68,11 @@ const CreateWorldPage = () => {
                     <Box sx={{ maxWidth: 600 }}>
                         <DynamicForm
                             fields={formFields}
-                            initialValues={initialWorld}
+                            formData={formData}
+                            onChange={handleChange}
                             onSubmit={handleSubmit}
+                            errors={errors}
+                            showErrors={showErrors}
                         />
                     </Box>
                 </Box>

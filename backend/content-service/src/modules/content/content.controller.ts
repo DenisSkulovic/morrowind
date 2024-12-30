@@ -37,14 +37,17 @@ export class ContentController {
 
     @GrpcMethod('ContentService', 'create')
     async create(request: CreateContentRequest): Promise<CreateContentResponse> {
+        console.log(`[ContentController] create`, request);
         const { entityName, contentBody, source, context } = request;
         const worldId = context?.world
         const userId = context?.user
+        const campaignId = context?.campaign
         if (!worldId) throw new Error(`worldId cannot be undefined`)
         if (!userId) throw new Error(`userId cannot be undefined`)
         if (!contentBody) throw new Error(`contentBody cannot be undefined`)
         const entity = deserializeContentBodyDTO(contentBody)
-        const result: ContentBase = await this.contentService.create(entityName, entity, deserializeEnum(DataSourceEnumDTO, DataSourceEnum, source));
+        const sourceEnum: DataSourceEnum = deserializeEnum(DataSourceEnumDTO, DataSourceEnum, source)
+        const result: ContentBase = await this.contentService.create(entityName, entity, sourceEnum, userId, worldId, campaignId);
 
         // record activity
         await this.activityService.create(
@@ -61,7 +64,11 @@ export class ContentController {
             deserializeEnum(DataSourceEnumDTO, DataSourceEnum, source)
         )
 
-        return { contentBody: Serializer.toDTO(result) };
+        return {
+            contentBody: {
+                [entityName]: Serializer.toDTO(result)
+            }
+        };
     }
 
     @GrpcMethod('ContentService', 'update')
@@ -69,12 +76,13 @@ export class ContentController {
         const { entityName, contentBody, context, source } = request;
         const worldId = context?.world
         const userId = context?.user
+        const campaignId = context?.campaign
         if (!worldId) throw new Error(`worldId cannot be undefined`)
         if (!userId) throw new Error(`userId cannot be undefined`)
         if (!contentBody) throw new Error(`contentBody cannot be undefined`)
         const entity = deserializeContentBodyDTO(contentBody)
 
-        const result = await this.contentService.update(entityName, entity, Context.fromDTO(context));
+        const result = await this.contentService.update(entityName, entity, userId, worldId, campaignId);
 
         // record activity
         await this.activityService.create(
@@ -91,7 +99,11 @@ export class ContentController {
             deserializeEnum(DataSourceEnumDTO, DataSourceEnum, source)
         )
 
-        return { contentBody: Serializer.toDTO(result) };
+        return {
+            contentBody: {
+                [entityName]: Serializer.toDTO(result)
+            }
+        };
     }
 
     @GrpcMethod('ContentService', 'delete')
@@ -99,9 +111,10 @@ export class ContentController {
         const { entityName, id, context, source } = request;
         const worldId = context?.world
         const userId = context?.user
+        const campaignId = context?.campaign
         if (!worldId) throw new Error(`worldId cannot be undefined`)
         if (!userId) throw new Error(`userId cannot be undefined`)
-        await this.contentService.delete(entityName, id, Context.fromDTO(context));
+        await this.contentService.delete(entityName, id, userId, worldId, campaignId);
 
         // record activity
         await this.activityService.create(
@@ -130,7 +143,12 @@ export class ContentController {
 
         if (!context) throw new Error(`context cannot be undefined`)
         if (!query) throw new Error(`query cannot be undefined`)
-        const result: ContentSearchResult<ContentBase> = await this.contentService.search(entityName, SearchQuery.fromDTO(query), Context.fromDTO(context));
+        const userId = context?.user
+        const worldId = context?.world
+        const campaignId = context?.campaign
+        if (!userId) throw new Error(`userId cannot be undefined`)
+        if (!worldId) throw new Error(`worldId cannot be undefined`)
+        const result: ContentSearchResult<ContentBase> = await this.contentService.search(entityName, SearchQuery.fromDTO(query), userId, worldId, campaignId);
         const response: SearchContentResponse = {
             results: result.results.map((content: ContentBase) => {
                 const dtoFieldName: string = rootEntityConstructor ? rootEntityConstructor.name : entityName;
@@ -190,6 +208,7 @@ export class ContentController {
         if (!context) throw new Error(`context cannot be undefined`)
         const worldId = context?.world
         const userId = context?.user
+        const campaignId = context?.campaign
         if (!worldId) throw new Error(`worldId cannot be undefined`)
         if (!userId) throw new Error(`userId cannot be undefined`)
         const entities = requests.map(req => {
@@ -197,7 +216,7 @@ export class ContentController {
             return deserializeContentBodyDTO(req.contentBody);
         });
 
-        const results = await this.contentService.updateBulk(entityName, entities, Context.fromDTO(context));
+        const results = await this.contentService.updateBulk(entityName, entities, userId, worldId, campaignId);
         const responses: UpdateContentResponse[] = results.map(result => ({ contentBody: Serializer.toDTO(result) }));
 
         // record activity
@@ -226,9 +245,10 @@ export class ContentController {
         if (!context) throw new Error(`context cannot be undefined`)
         const worldId: string | undefined = context?.world
         const userId: string | undefined = context?.user
+        const campaignId = context?.campaign
         if (!worldId) throw new Error(`worldId cannot be undefined`)
         if (!userId) throw new Error(`userId cannot be undefined`)
-        await this.contentService.deleteBulk(entityName, ids, Context.fromDTO(context));
+        await this.contentService.deleteBulk(entityName, ids, userId, worldId, campaignId);
         const responses = requests.map(() => ({ success: true }));
 
         // record activity
@@ -251,7 +271,12 @@ export class ContentController {
         const { context, entityNames } = request;
         if (!context) throw new Error(`context cannot be undefined`)
         const entityNamesEnum: EntityEnum[] = entityNames.map((entityName: string) => sanitizeEntityName(entityName))
-        const stats: ContentStat[] = await this.contentService.getStats(entityNamesEnum, Context.fromDTO(context));
+        const userId = context?.user
+        const worldId = context?.world
+        const campaignId = context?.campaign
+        if (!userId) throw new Error(`userId cannot be undefined`)
+        if (!worldId) throw new Error(`worldId cannot be undefined`)
+        const stats: ContentStat[] = await this.contentService.getStats(entityNamesEnum, userId, worldId, campaignId);
         const dtoStats: ContentStatDTO[] = stats.map(stat => Serializer.toDTO(stat));
         const response: GetContentStatsResponse = { stats: dtoStats };
         console.log(`[ContentController] getStats response`, response);

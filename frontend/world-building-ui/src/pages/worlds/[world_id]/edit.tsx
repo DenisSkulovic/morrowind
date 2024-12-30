@@ -5,7 +5,6 @@ import { searchWorldsThunk, updateWorldThunk, WorldPlain } from '../../../store/
 import { useRouter } from 'next/router';
 import { Account } from '../../../class/entities/Account';
 import { World } from '../../../class/entities/World';
-import { useSelectorAndBuilder } from '../../../hooks/useSelectorAndBuilder';
 import { LooseObject } from '../../../types';
 import { routes } from '../../../routes';
 import { Box, Container, Typography } from '@mui/material';
@@ -13,41 +12,71 @@ import { User } from '../../../class/entities/User';
 import { Context } from '../../../class/Context';
 import { SearchQuery } from '../../../class/search/SearchQuery';
 import { QueryFilter } from '../../../class/search/QueryFilter';
-import { FormFieldDefinition, getFormFields } from '../../../decorator/form-field.decorator';
+import { DynamicFormErrors, FormFieldDefinition, getFormFields, validateForm } from '../../../decorator/form-field.decorator';
 import DynamicForm from '../../../components/common/DynamicForm';
 import PageWrapper from '../../../components/common/PageWrapper';
 import { BreadcrumbItem } from '../../../components/common/PageWrapper/Breadcrumbs';
 import { useWorldId } from '../../../hooks/query';
-
+import { useAccount } from '../../../hooks/useAccount';
+import { useWorld } from '../../../hooks/useWorld';
+import { useLoading } from '../../../hooks/useLoading';
 const EditWorldPage = () => {
     const router = useRouter();
     const worldId: string | null = useWorldId(router.query);
 
+    const { addLoadingKey, removeLoadingKey } = useLoading();
+
     const dispatch = useDispatch<AppDispatch>();
 
-    const worlds: World[] | null = useSelectorAndBuilder((state: RootState) => state.worlds.searchedWorlds.data, worlds => worlds ? worlds.map((world: LooseObject) => World.build(world)) : null);
-    const world: World | undefined = worlds?.find((w) => w.id === worldId);
+    const account: Account | null = useAccount();
+    const world: World | null = useWorld(worldId, account?.user || null);
 
-    const account: Account | null = useSelectorAndBuilder((state: RootState) => state.account.currentAccount.data, account => account ? Account.build(account) : null);
-    if (!account) throw new Error('Account not found');
-    const userId: string = account.user;
+    const [formData, setFormData] = useState<WorldPlain>({});
+    const [errors, setErrors] = useState<DynamicFormErrors>({});
+    const [showErrors, setShowErrors] = useState<boolean>(false);
 
     useEffect(() => {
+        const userId: string = account?.user || '';
+        if (!userId) throw new Error('Account not found');
         if (!worldId) return;
         const user: User = User.build({ id: userId });
         const context: Context = Context.build({ user });
         const userFilter: QueryFilter = QueryFilter.build({ field: "user", operator: "eq", value: userId });
         const worldFilter: QueryFilter = QueryFilter.build({ field: "id", operator: "eq", value: worldId });
         const query = SearchQuery.build({ page: 1, pageSize: 100, filters: [userFilter, worldFilter] });
-        dispatch(searchWorldsThunk({ query, context }));
-    }, [worldId, dispatch, userId]);
+        addLoadingKey('searchWorlds');
+        dispatch(searchWorldsThunk({ query, context })).finally(() => {
+            removeLoadingKey('searchWorlds');
+        });
+    }, [worldId, dispatch, account?.user]);
+
+    useEffect(() => {
+        if (world) {
+            setFormData(world.toPlainObj());
+        }
+    }, [world]);
 
     const formFields: FormFieldDefinition[] = getFormFields(World);
 
     const handleSubmit = async (worldPlain: WorldPlain) => {
         if (!world) throw new Error('World not found');
-        await dispatch(updateWorldThunk({ ...world.toPlainObj(), ...worldPlain }));
-        router.push(routes.worlds());
+        const errors = validateForm(formFields, worldPlain);
+        setErrors(errors);
+        if (Object.keys(errors).length > 0) {
+            setShowErrors(true);
+            return;
+        }
+        setShowErrors(false);
+        const loadingKey = 'updateWorld';
+        addLoadingKey(loadingKey);
+        await dispatch(updateWorldThunk({ ...world.toPlainObj(), ...worldPlain })).finally(() => {
+            removeLoadingKey(loadingKey);
+            router.push(routes.worlds());
+        });
+    };
+
+    const handleChange = (newFormData: WorldPlain) => {
+        setFormData(newFormData);
     };
 
     const [customBreadcrumbs, setCustomBreadcrumbs] = useState<BreadcrumbItem[]>([])
@@ -70,8 +99,11 @@ const EditWorldPage = () => {
                         {world && (
                             <DynamicForm
                                 fields={formFields}
-                                initialValues={world.toPlainObj()}
+                                formData={formData}
+                                onChange={handleChange}
                                 onSubmit={handleSubmit}
+                                errors={errors}
+                                showErrors={showErrors}
                             />
                         )}
                     </Box>

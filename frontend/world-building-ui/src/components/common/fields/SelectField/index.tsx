@@ -6,6 +6,7 @@ import { setOptionsLoading, setOptionsSuccess, setOptionsError } from '../../../
 import { RequestStatusEnum } from '../../../../enum/RequestStatusEnum';
 import { DynamicFormFieldProps } from '../../DynamicForm';
 import { FormFieldDefinition } from '../../../../decorator/form-field.decorator';
+import { ErrorComp } from '../../DynamicForm/ErrorComp';
 
 interface SelectFieldProps extends DynamicFormFieldProps {
     formFieldDefinition: FormFieldDefinition;
@@ -14,7 +15,6 @@ interface SelectFieldProps extends DynamicFormFieldProps {
     fetchFn: (filter: string) => Promise<any[]>;
     filter: string;
     reduxKey: string;
-    error?: string;
 }
 
 const SelectField: React.FC<SelectFieldProps> = ({
@@ -24,8 +24,10 @@ const SelectField: React.FC<SelectFieldProps> = ({
     fetchFn,
     filter,
     reduxKey,
-    error
+    error,
+    readOnly
 }) => {
+    if (error && typeof error === 'object') throw new Error('Received error as object. SelectField does not support nested errors.');
     if (!reduxKey) throw new Error('Redux key is required in SelectField');
     const dispatch = useDispatch<AppDispatch>();
     const { data: options, status: optionsStatus, error: optionsError } = useSelector(
@@ -49,7 +51,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
 
     return (
         <>
-            <FormControl fullWidth required={required} disabled={disabled} sx={{ my: 1 }}>
+            <FormControl fullWidth required={required} disabled={disabled || readOnly} sx={{ my: 1 }}>
                 <InputLabel>{label}</InputLabel>
                 <Select
                     value={value}
@@ -84,7 +86,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
                     )}
                 </Select>
             </FormControl>
-            {error && <FormHelperText>{error}</FormHelperText>}
+            <ErrorComp text={error} />
         </>
     );
 };

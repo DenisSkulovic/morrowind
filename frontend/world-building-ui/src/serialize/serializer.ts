@@ -12,29 +12,37 @@ export enum SerializeStrategyEnum {
 
 class Serializer {
     static toDTO(instance: any, protoDTO: GeneratedProtoDTO): any {
+        if (!instance) throw new Error(`[Serializer - toDTO] instance cannot be undefined`);
+        if (!protoDTO) throw new Error(`[Serializer - toDTO] protoDTO cannot be undefined`);
         const className = instance.constructor.name;
         // console.log(`[Serializer - toDTO - ${className}] instance`, instance, protoDTO);
         const fields = getSerializableFields(instance.constructor.prototype);
 
-        fields.forEach(({ propertyKey, dtoKey, strategy, serialize, dtoClass, dtoArrClass, internalEnum, protoEnum }) => {
+        fields.forEach(({ propertyKey, dtoKey, strategy, serialize, dtoClass, dtoArrClass, internalEnum, protoEnum, required }) => {
             // console.log(`[Serializer - toDTO - ${className}] propertyKey: ${propertyKey}, dtoKey: ${dtoKey}, strategy: ${strategy}, serialize: ${!!serialize}, dtoClass: ${dtoClass}, dtoArrClass: ${dtoArrClass}, internalEnum: ${internalEnum}, protoEnum: ${protoEnum}`);
-            const value = instance[propertyKey];
+            const value: any | undefined = instance[propertyKey];
+
+            // check if required field is undefined
+            if (required && typeof value === 'undefined') throw new Error(`[Serializer - toDTO - ${className}] Required field is undefined; class: ${className}; propertyKey: ${propertyKey}; dtoKey: ${dtoKey}; strategy: ${strategy}; value: ${value}; instance: ${JSON.stringify(instance)}`);
+            // Return early if value is null/undefined and not required
+            if (!required && (value === null || typeof value === 'undefined')) return;
 
             const processDtoArray = (arr: any[], dtoArrClass: any) => {
-                if (!([SerializeStrategyEnum.ID, SerializeStrategyEnum.FULL].includes(strategy))) throw new Error(`[Serializer - toDTO - ${className}] dtoArrClass was provided, but strategy is not "${SerializeStrategyEnum.FULL}" or "${SerializeStrategyEnum.ID}"; class: ${className}; propertyKey: ${propertyKey}; dtoKey: ${dtoKey}`);
+                if (!arr) return undefined;
+                if (!strategy || !([SerializeStrategyEnum.ID, SerializeStrategyEnum.FULL].includes(strategy))) throw new Error(`[Serializer - toDTO - ${className}] dtoArrClass was provided, but strategy is not "${SerializeStrategyEnum.FULL}" or "${SerializeStrategyEnum.ID}"; class: ${className}; propertyKey: ${propertyKey}; dtoKey: ${dtoKey}`);
                 if (!dtoClass) throw new Error(`[Serializer - toDTO - ${className}] dtoClass is not defined when strategy is "${SerializeStrategyEnum.FULL}"; class: ${className}; propertyKey: ${propertyKey}; dtoKey: ${dtoKey}`);
                 const dtoArr = new dtoArrClass();
                 if (!dtoArr.setArrList) throw new Error(`[Serializer - toDTO - ${className}] setArrList is not defined in dtoArrClass; class: ${dtoArrClass.name}`);
-                const dtoArrList: any[] = arr.map(item => Serializer.toDTO(item, new dtoClass()));
+                const dtoArrList: any[] = arr.filter(item => item != null).map(item => Serializer.toDTO(item, new dtoClass()));
                 dtoArr.setArrList(dtoArrList);
                 return dtoArr;
             }
             const processArray = (arr: any[]) => {
-                if (!arr.length) return undefined;
-                return arr.map(processOne);
+                if (!arr || !arr.length) return undefined;
+                return arr.filter(item => item != null).map(processOne);
             }
             const processOne = (item: any) => {
-                if (typeof item === "undefined" || item === null) return undefined;
+                if (item === null || typeof item === 'undefined') return undefined;
                 if (strategy === SerializeStrategyEnum.DATE) return item ? item.getTime() : undefined;
                 if (strategy === SerializeStrategyEnum.ID) return item?.id || "";
                 if (strategy === SerializeStrategyEnum.ENUM) return item ? serializeEnum(internalEnum, protoEnum, item) : undefined;
@@ -47,20 +55,28 @@ class Serializer {
 
             const { setter, isArray } = Serializer.getSetterFuncName(protoDTO, dtoKey);
             const isDTOArray: boolean = !!dtoArrClass;
+
+            let processedValue;
             if (serialize) {
-                protoDTO[setter](serialize(value))
+                processedValue = serialize(value);
             } else if (isDTOArray) {
-                protoDTO[setter](processDtoArray(value, dtoArrClass));
+                processedValue = processDtoArray(value, dtoArrClass);
             } else if (isArray) {
-                protoDTO[setter](processArray(value));
+                processedValue = processArray(value);
             } else {
-                protoDTO[setter](processOne(value));
+                processedValue = processOne(value);
+            }
+
+            if (processedValue !== undefined) {
+                protoDTO[setter](processedValue);
             }
         });
         return protoDTO;
     }
 
     static fromDTO(protoDTO: any, instance: any): any {
+        if (!protoDTO) throw new Error(`[Serializer - fromDTO] protoDTO cannot be undefined`);
+        if (!instance) throw new Error(`[Serializer - fromDTO] instance cannot be undefined`);
         const className = instance.constructor.name;
         console.log(`[Serializer - fromDTO - ${className}] protoDTO`, protoDTO, instance);
         const fields = getSerializableFields(instance.constructor.prototype);

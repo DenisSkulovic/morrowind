@@ -7,6 +7,7 @@ import { setOptionsLoading, setOptionsSuccess, setOptionsError } from '../../../
 import { DynamicFormFieldProps } from '../../DynamicForm';
 import { RequestStatusEnum } from '../../../../enum/RequestStatusEnum';
 import { FormFieldDefinition } from '../../../../decorator/form-field.decorator';
+import { ErrorComp } from '../../DynamicForm/ErrorComp';
 
 interface MultiSelectFieldProps extends DynamicFormFieldProps {
     formFieldDefinition: FormFieldDefinition;
@@ -15,7 +16,6 @@ interface MultiSelectFieldProps extends DynamicFormFieldProps {
     fetchFn: (filter: string) => Promise<any[]>;
     filter: string;
     reduxKey: string;
-    error?: string;
 }
 
 const MultiSelectField: React.FC<MultiSelectFieldProps> = ({
@@ -25,8 +25,10 @@ const MultiSelectField: React.FC<MultiSelectFieldProps> = ({
     fetchFn,
     filter,
     reduxKey,
-    error
+    error,
+    readOnly
 }) => {
+    if (error && typeof error === 'object') throw new Error('Received error as object. MultiSelectField does not support nested errors.');
     if (!reduxKey) throw new Error('Redux key is required in MultiSelectField');
     const dispatch = useDispatch<AppDispatch>();
     const { data: options, status: optionsStatus, error: optionsError } = useSelector(
@@ -55,7 +57,7 @@ const MultiSelectField: React.FC<MultiSelectFieldProps> = ({
 
     return (
         <>
-            <FormControl fullWidth required={required} disabled={disabled} sx={{ mb: 2 }}>
+            <FormControl fullWidth required={required} disabled={disabled || readOnly} sx={{ mb: 2 }}>
                 <InputLabel>{label}</InputLabel>
                 <Select
                     multiple
@@ -100,7 +102,7 @@ const MultiSelectField: React.FC<MultiSelectFieldProps> = ({
                     )}
                 </Select>
             </FormControl>
-            {error && <FormHelperText>{error}</FormHelperText>}
+            <ErrorComp text={error} />
         </>
     );
 };

@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import { Box, Button } from '@mui/material';
 import FIELD_COMPONENTS from '../fields/FIELD_COMPONENTS';
-import { FormFieldDefinition, validateField } from '../../../decorator/form-field.decorator';
+import { DynamicFormErrors, FormFieldDefinition, validateField } from '../../../decorator/form-field.decorator';
 import { fieldsThatNeedFetch, getDefaultValue } from '../../../config/dynamicFormConfig';
 import { cloneDeep } from 'lodash';
 
-export type DynamicFormErrors = { [key: string]: string | DynamicFormErrors }; // recursive type for nested errors
 
 interface DynamicFormProps {
     fields: FormFieldDefinition[];
-    initialValues?: { [key: string]: any };
+    formData: { [key: string]: any };
     onSubmit?: (data: { [key: string]: any }) => void;
     onChange?: (data: { [key: string]: any }) => void;
     readOnly?: boolean;
@@ -26,62 +25,32 @@ export interface DynamicFormFieldProps {
     fetchFn?: (filter?: any) => Promise<{ id: string; label: string }[]>;
     filter?: any;
     reduxKey?: string;
-    error?: string;
+    error?: string | DynamicFormErrors;
     readOnly?: boolean;
 }
 
 const DynamicForm: React.FC<DynamicFormProps> = ({
     fields,
-    initialValues = {},
+    formData,
     onSubmit,
     onChange,
     readOnly = false,
     asFormComponent = true,
-    showErrors = false
+    showErrors = false,
+    errors
 }) => {
-    const [formData, setFormData] = useState<{ [key: string]: any }>(cloneDeep(initialValues));
-
-    const validateForm = (): { [key: string]: string } | void => {
-        const newErrors: { [key: string]: string } = {};
-        let isValid = true;
-
-        fields.forEach(field => {
-            const error = validateField(field, formData[field.field]);
-            if (error) {
-                newErrors[field.field] = error;
-                isValid = false;
-            }
-        });
-
-        setErrors(newErrors);
-        return isValid;
-    };
 
     const handleFieldValueChange = (key: string, value: any) => {
         if (readOnly) throw new Error('readOnly prop is true but something was edited; did you forget to disable the inputs?');
-
         const newFormData = { ...formData, [key]: value };
-        setFormData(newFormData);
         if (onChange) onChange(newFormData);
-
-        if (!showErrors) return
-        const field = fields.find(f => f.field === key);
-        if (field) {
-            const error = validateField(field, value);
-            setErrors(prev => ({
-                ...prev,
-                [key]: error || ''
-            }));
-        }
     };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (!onSubmit) throw new Error('onSubmit prop is required when clicking submit button');
         if (readOnly) throw new Error('readOnly prop is true when clicking submit button; did you forget to disable/hide the submit button?');
-
-        const isValid: boolean = validateForm();
-        if (isValid) onSubmit(formData);
+        onSubmit(formData);
     };
 
     const renderField = (formFieldDefinition: FormFieldDefinition) => {
@@ -96,7 +65,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
             value: formData[formFieldDefinition.field] ?? defaultValue,
             onChange: (value: any) => handleFieldValueChange(formFieldDefinition.field, value),
             readOnly,
-            error: showErrors ? errors[formFieldDefinition.field] : undefined
+            error: showErrors && errors ? errors[formFieldDefinition.field] : undefined
         };
 
         const isNeedsFetch = fieldsThatNeedFetch.includes(formFieldDefinition.component);
