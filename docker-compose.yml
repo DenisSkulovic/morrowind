@@ -2,6 +2,28 @@ version: '3.8'
 
 services:
 
+  server:
+    build:
+      context: ./backend/ai-service
+    environment:
+      - ROLE=server
+    command: python3 server.py
+    ports:
+      - "50051:50051"
+    depends_on:
+      - redis
+
+  ai-service-worker:
+    build:
+      context: ./backend/ai-service
+    environment:
+      - ROLE=worker
+    command: python3 worker.py
+    ports:
+      - "50052:50052"
+    depends_on:
+      - redis
+
   # Backend Proto Generation Service
   backend-proto-generator:
     image: node:18
