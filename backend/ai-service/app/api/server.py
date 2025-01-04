@@ -2,20 +2,16 @@ import grpc
 import os
 from concurrent import futures
 from redis import Redis
+from dotenv import load_dotenv
 
-# Import your proto-generated classes
 import ai_service_openai_v1_pb2_grpc as openai_v1_grpc
+from services.ai_service_openai_v1 import AiServiceOpenAIv1Handler
 
-# Import your service implementation
-from ai_service_openai_v1 import AiServiceOpenAIv1Handler
-
-# Redis connection for queue and result storage
-redis_client = Redis(host="localhost", port=6379, decode_responses=True)
+# Load environment variables from .env
+load_dotenv()
 
 # Registry to map service names to handler implementations
 SERVICE_REGISTRY = {}
-
-DEFAULT_PORT = 50051
 
 # List of services to be registered. Add more services here.
 services = [
@@ -57,8 +53,8 @@ def serve():
         pb2_grpc.add_AiServiceOpenAIv1Servicer_to_server(SERVICE_REGISTRY[service["name"]], server)
 
 
-    # Get port from environment variable, default to DEFAULT_PORT if not set
-    port = int(os.getenv("GRPC_SERVER_PORT", DEFAULT_PORT))
+    # Get port from environment variable
+    port = int(os.getenv("GRPC_SERVER_PORT"x))
 
     # Bind to port and start the server
     server.add_insecure_port(f"[::]:{port}")

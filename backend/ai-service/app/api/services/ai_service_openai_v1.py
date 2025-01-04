@@ -1,12 +1,17 @@
 import grpc
+import os
 from concurrent import futures
 from redis.asyncio import Redis
 
 import ai_service_openai_v1_pb2_grpc as pb2_grpc
 import ai_service_openai_v1_pb2 as pb2
 
+redis_host = os.getenv("REDIS_HOST", "localhost")
+redis_port = os.getenv("REDIS_PORT", 6379)
+openai_api_key = os.getenv("OPENAI_API_KEY")
+
 # Redis connection for queue and result storage
-redis_client = Redis(host='localhost', port=6379, decode_responses=True)
+redis_client = Redis(host=redis_host, port=redis_port, decode_responses=True)
 
 class AiServiceOpenAIv1Handler(pb2_grpc.AiServiceOpenAIv1Servicer):
 
@@ -30,16 +35,19 @@ class AiServiceOpenAIv1Handler(pb2_grpc.AiServiceOpenAIv1Servicer):
         }
         await redis_client.rpush("ai_task_queue", task)
         
+        # Create metadata for response
+        metadata = pb2.AiResponseMetadata(
+            timestamp=request.metadata.timestamp,
+            useCase=request.metadata.useCase,
+            context=request.metadata.context
+        )
+
         # Respond to client with queued status
         response = pb2.AiResponse(
             requestId=request_id,
             success=True,
             status="queued",
-            metadata=pb2.AiResponseMetadata(
-                timestamp=request.metadata.timestamp,
-                useCase=request.metadata.useCase,
-                context=request.metadata.context
-            )
+            metadata=metadata
         )
         return response
 
@@ -52,20 +60,26 @@ class AiServiceOpenAIv1Handler(pb2_grpc.AiServiceOpenAIv1Servicer):
                 errorMessage="Task not found",
             )
 
+        # Create metadata for response
+        metadata = pb2.AiResponseMetadata(
+            timestamp=int(result.get("timestamp", 0)),
+            useCase=result.get("useCase", ""),
+            context=result.get("context", "")
+        )
+
+        # Determine if this is the last response
+        isLast = True if result.get("status") == "completed" else False
+
         return pb2.CheckStatusResponse(
             requestId=result["requestId"],
             status=result["status"],
             output=result.get("output", ""),
             errorMessage=result.get("errorMessage", ""),
-            metadata=pb2.AiResponseMetadata(
-                timestamp=int(result.get("timestamp", 0)),
-                useCase=result.get("useCase", ""),
-                context=result.get("context", "")
-            ),
-            isLast=True if result.get("status") == "completed" else False
+            metadata=metadata,
+            isLast=isLast
         )
 
-    def InterruptRequest(self, request, context):
+    async def Interrupt(self, request, context):
         interrupted = await redis_client.set(f"interrupt:{request.requestId}", "true")
         return pb2.InterruptResponse(
             requestId=request.requestId,

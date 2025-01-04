@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import { Transport } from '@nestjs/microservices';
 import { join } from 'path';
 
-const CONTENT_SERVICE_PORT = process.env.CONTENT_SERVICE_PORT || 50051;
+const DIALOGUE_SERVICE_PORT = process.env.DIALOGUE_SERVICE_PORT || 50052;
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule, {
@@ -20,26 +20,18 @@ async function bootstrap() {
     });
     console.log(`[ContentService - bootstrap] CORS enabled`);
 
-    // Configure gRPC to listen on port CONTENT_SERVICE_PORT
+    // Configure gRPC to listen on port DIALOGUE_SERVICE_PORT
     app.connectMicroservice({
         transport: Transport.GRPC,
         options: {
-            url: `0.0.0.0:${CONTENT_SERVICE_PORT}`,
+            url: `0.0.0.0:${DIALOGUE_SERVICE_PORT}`,
             package: [
-                'common',
-                'account',
-                'content',
-                'world',
-                'generator',
-                'activity',
+                'dialogue',
             ],
             protoPath: [
                 join(__dirname, '../proto/common.proto'),
-                join(__dirname, '../proto/account.proto'),
-                join(__dirname, '../proto/content.proto'),
-                join(__dirname, '../proto/world.proto'),
-                join(__dirname, '../proto/generator.proto'),
-                join(__dirname, '../proto/activity.proto'),
+                join(__dirname, '../proto/dialogue.proto'),
+                join(__dirname, '../proto/ai_service_openai_v1.proto'),
             ],
             loader: {
                 keepCase: true,
@@ -52,8 +44,8 @@ async function bootstrap() {
     });
 
     await app.startAllMicroservices();
-    await app.listen(CONTENT_SERVICE_PORT);
-    console.log(`Application is running on http://localhost:${CONTENT_SERVICE_PORT}`);
+    await app.listen(DIALOGUE_SERVICE_PORT);
+    console.log(`Application is running on http://localhost:${DIALOGUE_SERVICE_PORT}`);
 }
 
 bootstrap();

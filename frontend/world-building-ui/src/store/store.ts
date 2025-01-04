@@ -5,6 +5,7 @@ import generatorReducer from './slices/generatorSlice';
 import uiReducer from './slices/uiSlice';
 import worldReducer from './slices/worldSlice';
 import dashboardReducer from './slices/dashboardSlice';
+import dialogueReducer from './slices/dialogueSlice';
 
 const store = configureStore({
     reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
         ui: uiReducer,
         worlds: worldReducer,
         dashboard: dashboardReducer,
+        dialogue: dialogueReducer,
     },
 });
 

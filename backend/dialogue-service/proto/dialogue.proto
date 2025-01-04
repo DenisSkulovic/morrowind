@@ -6,21 +6,20 @@ import "common.proto";
 
 service DialogueService {
     rpc StartDialogue(StartDialogueRequest) returns (StartDialogueResponse);
+    rpc GenerateResponseOptions(GenerateResponseOptionsRequest) returns (GenerateResponseOptionsResponse);
     rpc SendMessage(SendMessageRequest) returns (stream MessageChunk);
+    rpc InterruptDialogue(InterruptDialogueRequest) returns (InterruptDialogueResponse);
     rpc EndDialogue(EndDialogueRequest) returns (EndDialogueResponse);
 }
 
-message StartDialogueRequest {
-    string initiatorCharacterId = 1;
-    repeated string targetCharacterIds = 2;
-    common.ContextDTO context = 3;
+message InterruptDialogueRequest {
+    string sessionId = 1;
 }
 
-message StartDialogueResponse {
+message InterruptDialogueResponse {
     string sessionId = 1;
-    repeated CharacterDialogueInitiationDTO characterResponses = 2;
-    string narration = 3; // Optional field for AI narration describing the overall scene
 }
+
 
 message CharacterDialogueInitiationDTO {
     common.CharacterDTO character = 1;
@@ -96,18 +95,7 @@ message QuestDTO {
 
 
 
-syntax = "proto3";
 
-package dialogue;
-
-import "common.proto";
-
-service DialogueService {
-    rpc StartDialogue(StartDialogueRequest) returns (StartDialogueResponse);
-    rpc GenerateResponseOptions(GenerateResponseOptionsRequest) returns (GenerateResponseOptionsResponse);
-    rpc SendMessage(SendMessageRequest) returns (stream MessageChunk);
-    rpc EndDialogue(EndDialogueRequest) returns (EndDialogueResponse);
-}
 
 // Request to start dialogue with multiple characters
 message StartDialogueRequest {
@@ -116,13 +104,19 @@ message StartDialogueRequest {
     common.ContextDTO initialContext = 3;
 }
 
-// Response when dialogue starts
 message StartDialogueResponse {
-    string sessionId = 1;
-    repeated CharacterDialogueInitiationDTO characterResponses = 2;
-    string narration = 3; // Scene narration
-    DialogueStateDTO dialogueState = 4; // Initial state of the dialogue
+    string sessionId = 1;                       // Dialogue session ID
+    DialogueStateDTO initialState = 2;         // Initial state of the dialogue
+    repeated DialogueResponseOptionDTO suggestedResponses = 3; // AI-suggested responses
+    string narration = 4;                      // Optional AI narration for the initial scene
 }
+
+message SendMessageRequest {
+    string sessionId = 1;                       // Dialogue session ID
+    ResponseSelectionDTO responseSelection = 2; // Player's response choice
+}
+
+
 
 // Generates response options based on dialogue state and player goal
 message GenerateResponseOptionsRequest {
@@ -153,6 +147,22 @@ message CharacterDialogueStateDTO {
     repeated string observedTraits = 4;    // Traits observed by the player during the dialogue
     repeated string revealedFacts = 5;     // Facts revealed about this character
 }
+
+message DialogueResponseOptionDTO {
+    string id = 1;                            // Unique identifier for the response
+    string text = 2;                          // Pre-generated response text
+    GoalEnumDTO goal = 3;                     // Goal this response aims to achieve
+    AchieveGoalStrategyEnumDTO strategy = 4;  // Strategy this response employs
+    ActionEnumDTO action = 5;                 // Action executed by this response
+    int32 projectedOpinionChange = 6;         // Estimated effect on the counterpart's opinion (-100 to 100)
+    string tone = 7;                          // Descriptive tone, e.g., "polite," "aggressive"
+}
+
+message ResponseSelectionDTO {
+    string sessionId = 1;                        // Dialogue session ID
+    DialogueResponseOptionDTO selectedResponse = 2;              // Chosen response from suggested options
+}
+
 
 
 message DialogueActionDTO {
@@ -364,12 +374,12 @@ enum GoalEnumDTO {
 
 // Represents the evolving state of the dialogue
 message DialogueStateDTO {
-    string topic = 1; // Current topic of discussion
-    string subTopic = 2; // More specific focus within the topic
-    common.PlayerGoalDTO currentGoal = 3; // Current player goal
-    repeated common.PlayerGoalDTO secondaryGoals = 4; // Secondary goals or objectives
-    repeated string discussedTopics = 5; // Topics already discussed
-    CharacterAttitudeEnumDTO collectiveAttitude = 6; // Overall mood of the group
+    string sessionId = 1;                       // Unique ID for the dialogue session
+    string currentTopic = 2;                    // Current topic of discussion
+    string subTopic = 3;                        // Current subtopic, if any
+    GoalEnumDTO currentGoal = 4;                // Overall goal of the dialogue
+    repeated string discussedTopics = 5;        // Topics already discussed
+    repeated CharacterDialogueStateDTO participants = 6; // States of all dialogue participants
 }
 
 
@@ -382,43 +392,31 @@ message SendMessageRequest {
 
 // Streamed message chunks for dynamic dialogue
 message MessageChunk {
-    string textChunk = 1;
-    repeated string revealedFacts = 2;
-    repeated string triggeredMemories = 3;
-    repeated string displayedTraits = 4;
-    repeated string displayedMoods = 5;
-    repeated common.ItemDTO revealedItems = 6;
-    repeated LocationDTO revealedLocations = 7;
-    repeated common.CharacterDTO revealedPeople = 8;
-    repeated OrganizationDTO revealedOrganizations = 9;
-    repeated EventDTO revealedEvents = 10;
-    repeated string tags = 11;
-    repeated common.PlayerGoalDTO addedGoals = 12;
-    repeated common.PlayerGoalDTO fulfilledGoals = 13;
-    CharacterAttitudeEnumDTO characterAttitude = 14;
-    bool isLast = 15;
+    string textChunk = 1;                       // A chunk of the counterpart's dialogue
+    repeated string revealedFacts = 2;          // Newly revealed facts
+    repeated string observedTraits = 3;         // Newly observed traits
+    repeated string displayedMoods = 4;         // Changes in counterpart mood
+    repeated common.ItemDTO revealedItems = 5;  // Items revealed in the dialogue
+    repeated LocationDTO revealedLocations = 6; // Locations mentioned
+    int32 updatedOpinionMeter = 7;              // Updated opinion value (-100 to 100)
+    bool isLast = 8;                            // Whether this is the last chunk of the message
 }
+
 
 // Ends a dialogue session
 message EndDialogueRequest {
-    string sessionId = 1;
-    common.DynamicContextDTO finalContext = 2;
+    string sessionId = 1;                       // Dialogue session ID
+    common.ContextDTO context = 2;             // Final context
 }
 
 // Final summary of dialogue
 message EndDialogueResponse {
-    bool success = 1;
-    string summary = 2;
-    repeated RevealedInformationDTO revealedInformation = 3;
-    repeated string triggeredMemories = 4;
-    repeated string displayedTraits = 5;
-    repeated string displayedMoods = 6;
-    repeated common.ItemDTO revealedItems = 7;
-    repeated LocationDTO revealedLocations = 8;
-    repeated common.CharacterDTO revealedPeople = 9;
-    repeated OrganizationDTO revealedOrganizations = 10;
-    repeated EventDTO revealedEvents = 11;
+    bool success = 1;                           // Whether the dialogue ended successfully
+    string summary = 2;                         // Summary of the dialogue
+    repeated RevealedInformationDTO revealedInformation = 3; // Consolidated revealed information
+    repeated CharacterDialogueStateDTO updatedParticipants = 4; // Final states of participants
 }
+
 
 // Models player-defined goals
 message PlayerGoalDTO {

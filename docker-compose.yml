@@ -1,33 +1,61 @@
 version: '3.8'
 
 services:
-
-  server:
+  #============================================================
+  # Backend AI Services
+  #============================================================
+  ai-service-server:
     build:
       context: ./backend/ai-service
-    environment:
-      - ROLE=server
+    env_file:
+      - ./ai-service-server.env
     command: python3 server.py
     ports:
       - "50051:50051"
     depends_on:
-      - redis
+      - ai-service-redis
 
   ai-service-worker:
     build:
       context: ./backend/ai-service
-    environment:
-      - ROLE=worker
+    env_file:
+      - ./ai-service-worker.env
     command: python3 worker.py
     ports:
       - "50052:50052"
     depends_on:
-      - redis
+      - ai-service-redis
 
-  # Backend Proto Generation Service
-  backend-proto-generator:
+  ai-service-redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
+  #============================================================
+  # Backend Dialogue Service
+  #============================================================
+  dialogue-service:
+    build:
+      context: ./backend/dialogue-service
+    environment:
+      - SERVICE_NAME=dialogue-service
+    env_file:
+      - ./dialogue-service.env
+    command: python3 server.py
+    ports:
+      - "50052:50052"
+    depends_on:
+      - ai-service-server
+    profiles:
+      - backend
+      - fullstack
+
+  #============================================================
+  # Backend Content Services
+  #============================================================
+  content-service-proto-generator:
     image: node:18
-    container_name: backend_proto_generator
+    container_name: content_service_proto_generator
     working_dir: /usr/src/app
     volumes:
       - ./backend/content-service:/usr/src/app
@@ -39,11 +67,14 @@ services:
       - world-db
       - campaign-db
 
-  # Backend Microservices
   content-service:
     build:
       context: ./backend/content-service
       dockerfile: Dockerfile.dev
+    environment:
+      - SERVICE_NAME=content-service
+    env_file:
+      - ./content-service.env
     container_name: content_service
     logging:
       driver: "json-file"
@@ -53,53 +84,54 @@ services:
     restart: always
     ports:
       - "50051:50051"
-    environment:
-      - NODE_ENV=development
-      - DATABASE_USER=${POSTGRES_USER}
-      - DATABASE_PASSWORD=${POSTGRES_PASSWORD}
-      - DATABASE_HOST__WORLD=world-db
-      - DATABASE_PORT__WORLD=5432
-      - DATABASE_NAME__WORLD=${POSTGRES_DB__WORLD}
-      - DATABASE_HOST__CAMPAIGN=campaign-db
-      - DATABASE_PORT__CAMPAIGN=5432
-      - DATABASE_NAME__CAMPAIGN=${POSTGRES_DB__CAMPAIGN}
-      - DATABASE_SYNCHRONIZE=false
     volumes:
       - ./backend/content-service:/usr/src/app
       - /usr/src/app/node_modules
     depends_on:
       - world-db
       - campaign-db
-      - backend-proto-generator
+      - content-service-proto-generator
     profiles:
       - fullstack
       - backend
 
-  # Envoy Proxy
+  #============================================================
+  # gRPC Proxy
+  #============================================================
   envoy:
     image: envoyproxy/envoy:v1.22.0
     container_name: envoy_proxy
     restart: always
+    environment:
+      - CONTENT_SERVICE_HOST
+      - CONTENT_SERVICE_PORT
+      - DIALOGUE_SERVICE_HOST
+      - DIALOGUE_SERVICE_PORT
+      - FRONTEND_UI_PORT
+      - ENVOY_ADMIN_PORT
+    env_file:
+      - ./envoy/envoy.env
     ports:
-      - "8080:8080" # HTTP endpoint for frontend
-      - "9901:9901" # Admin interface (optional)
+      - "${FRONTEND_UI_PORT}:${FRONTEND_UI_PORT}"
+      - "${ENVOY_ADMIN_PORT}:${ENVOY_ADMIN_PORT}"
     volumes:
       - ./envoy/envoy.yaml:/etc/envoy/envoy.yaml
       - ./envoy/envoy_access.log:/var/log/envoy/envoy_access.log
     depends_on:
       - content-service
+      - dialogue-service
     profiles:
       - fullstack
 
+  #============================================================
   # Databases
+  #============================================================
   world-db:
     image: postgres:14
+    env_file:
+      - ./world-db.env
     container_name: world_db
     restart: always
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB__WORLD}
     ports:
       - "55433:5432"
     volumes:
@@ -113,10 +145,8 @@ services:
     image: postgres:14
     container_name: campaign_db
     restart: always
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB__CAMPAIGN}
+    env_file:
+      - ./campaign-db.env
     ports:
       - "55434:5432"
     volumes:
@@ -126,29 +156,12 @@ services:
       - fullstack
       - backend
 
-  # Frontends
-  world-building-ui:
-    build:
-      context: ./frontend/world-building-ui
-      dockerfile: Dockerfile.dev
-    container_name: world_building_ui
-    restart: always
-    ports:
-      - "3001:3000"
-    volumes:
-      - ./frontend/world-building-ui:/usr/src/app
-    depends_on:
-      - frontend-proto-generator
-      - content-service
-      - envoy
-    profiles:
-      - frontend
-      - fullstack
-
-  # Proto Generation Service for Frontend
-  frontend-proto-generator:
+  #============================================================
+  # Frontend Services
+  #============================================================
+  world-building-ui-proto-generator:
     image: node:18
-    container_name: frontend_proto_generator
+    container_name: world_building_ui_proto_generator
     working_dir: /usr/src/app
     volumes:
       - ./frontend/world-building-ui:/usr/src/app
@@ -156,11 +169,33 @@ services:
     profiles:
       - frontend
       - fullstack
-    # Ensure this service runs before the UI service
     depends_on:
       - world-db
       - campaign-db
 
+  world-building-ui-frontend:
+    build:
+      context: ./frontend/world-building-ui
+      dockerfile: Dockerfile.dev
+    env_file:
+      - ./world-building-ui.env
+    container_name: world_building_ui
+    restart: always
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./frontend/world-building-ui:/usr/src/app
+    depends_on:
+      - world-building-ui-proto-generator
+      - content-service
+      - envoy
+    profiles:
+      - frontend
+      - fullstack
+
+#============================================================
+# Persistent Storage
+#============================================================
 volumes:
   world_db_data:
   campaign_db_data:
