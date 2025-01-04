@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package generator;
 
-import "common.proto";
+import "entities.proto";
 
 service GeneratorService {
     rpc generateItems(GenerateItemsRequest) returns (GenerateItemsResponse);
@@ -12,30 +12,30 @@ service GeneratorService {
 }
 
 message GenerateItemsRequest {
-    common.DataSourceEnumDTO source = 1;
-    repeated common.GenerationInstructionDTO arr = 2;
-    common.ContextDTO context = 3;
+    entities.DataSourceEnumDTO source = 1;
+    repeated entities.GenerationInstructionDTO arr = 2;
+    entities.ContextDTO context = 3;
 }
 message GenerateItemsResponse {
-    repeated common.ItemDTO arr = 1;
+    repeated entities.ItemDTO arr = 1;
 }
 message GenerateCharactersRequestCustom {
-    common.DataSourceEnumDTO source = 1;
-    repeated common.CharacterGenInstructionDTO arr = 2;
-    common.ContextDTO context = 3;
+    entities.DataSourceEnumDTO source = 1;
+    repeated entities.CharacterGenInstructionDTO arr = 2;
+    entities.ContextDTO context = 3;
 }
 message GenerateCharactersRequestDB {
-    common.DataSourceEnumDTO source = 1;
+    entities.DataSourceEnumDTO source = 1;
     repeated string charGenInstructionIds = 2;
-    common.ContextDTO context = 3;
+    entities.ContextDTO context = 3;
 }
 message GenerateCharactersResponse {
-    repeated common.CharacterDTO arr = 1;
+    repeated entities.CharacterDTO arr = 1;
 }
 message GenerateCharacterGroupsRequest {
-    common.DataSourceEnumDTO source = 1;
-    repeated common.CharacterGroupGenInstructionDTO arr = 2;
-    common.ContextDTO context = 3;
+    entities.DataSourceEnumDTO source = 1;
+    repeated entities.CharacterGroupGenInstructionDTO arr = 2;
+    entities.ContextDTO context = 3;
 }
 message GenerateCharacterGroupsResponse {
     repeated GenerateCharactersResponse arr = 1;

@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package activity;
 
-import "common.proto";
+import "entities.proto";
 
 service ActivityService {
     rpc search(ActivitySearchRequest) returns (ActivitySearchResponse);
@@ -12,8 +12,8 @@ service ActivityService {
 }
 
 message ActivitySearchRequest {
-    common.ContextDTO context = 1;
-    common.SearchQueryDTO search = 2;
+    entities.ContextDTO context = 1;
+    entities.SearchQueryDTO search = 2;
 }
 
 message ActivitySearchResponse {
@@ -24,7 +24,7 @@ message ActivitySearchResponse {
 }
 
 message ActivityClearAllRequest {
-    common.ContextDTO context = 1;
+    entities.ContextDTO context = 1;
 }
 
 message ActivityClearAllResponse {
@@ -32,7 +32,7 @@ message ActivityClearAllResponse {
 }
 
 message ActivityCreateRequest {
-    common.ContextDTO context = 1;
+    entities.ContextDTO context = 1;
     ActivityDTO data = 2;
 }
 
@@ -41,7 +41,7 @@ message ActivityCreateResponse {
 }
 
 message ActivityHeadRequest {
-    common.ContextDTO context = 1;
+    entities.ContextDTO context = 1;
     int32 limit = 2;
 }
 

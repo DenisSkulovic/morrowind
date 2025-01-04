@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package campaign;
 
-import "common.proto";
+import "entities.proto";
 
 service CampaignService {
     rpc getCampaign (GetCampaignRequest) returns (GetCampaignResponse);
@@ -13,19 +13,19 @@ service CampaignService {
 }
 
 message UpdateCampaignRequest {
-    common.CampaignDTO campaign = 1;
+    entities.CampaignDTO campaign = 1;
 }
 
 message UpdateCampaignResponse {
-    common.CampaignDTO campaign = 1;
+    entities.CampaignDTO campaign = 1;
 }
 
 message CreateCampaignRequest {
-    common.CampaignDTO campaign = 1;
+    entities.CampaignDTO campaign = 1;
 }
 
 message CreateCampaignResponse {
-    common.CampaignDTO campaign = 1;
+    entities.CampaignDTO campaign = 1;
 }
 
 message GetCampaignRequest {
@@ -33,7 +33,7 @@ message GetCampaignRequest {
 }
 
 message GetCampaignResponse {
-    common.CampaignDTO campaign = 1;
+    entities.CampaignDTO campaign = 1;
 }
 
 message DeleteCampaignRequest {
@@ -46,12 +46,12 @@ message DeleteCampaignResponse {
 
 message SearchCampaignRequest {
     string entityName = 1;
-    common.SearchQueryDTO query = 2;
-    common.ContextDTO context = 3;
+    entities.SearchQueryDTO query = 2;
+    entities.ContextDTO context = 3;
 }
 
 message SearchCampaignResponse {
-    repeated common.CampaignDTO campaigns = 1;
+    repeated entities.CampaignDTO campaigns = 1;
     int32 totalResults = 2;
     int32 totalPages = 3;
     int32 currentPage = 4;

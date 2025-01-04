@@ -1,14 +1,28 @@
 syntax = "proto3";
 
-package common;
+package entities;
+
+// Version tracking for proto files
+// Major.Minor.Patch format (e.g. 1.0.0)
+// Major: Breaking changes
+// Minor: Backwards-compatible new features
+// Patch: Backwards-compatible bug fixes
+option (proto_version) = "1.0.0";
+
+// Last updated: 2025-01-04
+// Change history:
+// 1.0.0 - Initial version
+// Add new versions above this line
 
 
+
+// #######################################################################################
 message ContextDTO {
     string user = 1;
-    string world = 2;
+    string world = 2; 
     string campaign = 3;
-} 
-
+}
+// #######################################################################################
 
 
 // #######################################################################################
@@ -48,6 +62,25 @@ message Metadata {
 }
 // #######################################################################################
 
+
+// #######################################################################################
+message LocationDTO {
+    string id = 1;
+    string name = 2;
+    string description = 3;
+    string user = 4;
+    string campaign = 5;
+    string world = 6;
+    int32 createdAt = 7;
+}
+message LocationsDTO {
+    repeated LocationDTO arr = 1;
+}
+// #######################################################################################
+
+
+
+// #######################################################################################
 
 
 // #######################################################################################

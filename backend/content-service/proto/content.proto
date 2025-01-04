@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package content;
 
-import "common.proto";
+import "entities.proto";
 
 service ContentService {
     rpc create (CreateContentRequest) returns (CreateContentResponse);
@@ -18,8 +18,8 @@ service ContentService {
 message UpdateContentRequest {
     ContentBodyDTO contentBody = 1;
     string entityName = 2;
-    common.ContextDTO context = 3;
-    common.DataSourceEnumDTO source = 4;
+    entities.ContextDTO context = 3;
+    entities.DataSourceEnumDTO source = 4;
 }
 
 message UpdateContentResponse {
@@ -29,8 +29,8 @@ message UpdateContentResponse {
 message DeleteContentRequest {
     string entityName = 1;
     string id = 2;
-    common.ContextDTO context = 3;
-    common.DataSourceEnumDTO source = 4;
+    entities.ContextDTO context = 3;
+    entities.DataSourceEnumDTO source = 4;
 }
 
 message DeleteContentResponse {
@@ -38,9 +38,9 @@ message DeleteContentResponse {
 }
 message SearchContentRequest {
     string entityName = 1;
-    common.SearchQueryDTO query = 2;
-    common.ContextDTO context = 3;
-    common.DataSourceEnumDTO source = 4;
+    entities.SearchQueryDTO query = 2;
+    entities.ContextDTO context = 3;
+    entities.DataSourceEnumDTO source = 4;
 }
 
 message SearchContentResponse {
@@ -51,9 +51,9 @@ message SearchContentResponse {
 }
 
 message GetContentStatsRequest {
-    common.ContextDTO context = 1;
+    entities.ContextDTO context = 1;
     repeated string entityNames = 2;
-    common.DataSourceEnumDTO source = 3;
+    entities.DataSourceEnumDTO source = 3;
 }
 
 message GetContentStatsResponse {
@@ -93,10 +93,10 @@ message DeleteBulkContentResponse {
 }
 
 message CreateContentRequest {
-    common.DataSourceEnumDTO source = 1;
+    entities.DataSourceEnumDTO source = 1;
     ContentBodyDTO contentBody = 2;
     string entityName = 3;
-    common.ContextDTO context = 4;
+    entities.ContextDTO context = 4;
 }
 
 message CreateContentResponse {
@@ -105,36 +105,36 @@ message CreateContentResponse {
 
 message ContentBodyDTO {
     oneof data {
-        common.ItemDTO Item = 1;
-        common.PastExperienceDTO PastExperience = 2;
-        common.CharacterMemoryDTO CharacterMemory = 3;
-        common.MemoryDTO Memory = 4;
-        common.MemoryPoolDTO MemoryPool = 5;
-        common.MemoryPoolEntryDTO MemoryPoolEntry = 6;
-        common.SkillDTO Skill = 7;
-        common.SkillSetDTO SkillSet = 8;
-        common.EquipmentSlotDTO EquipmentSlot = 9;
-        common.StorageSlotDTO StorageSlot = 10;
-        common.TraitDTO Trait = 11;
-        common.AddictionDTO Addiction = 12;
-        common.BackgroundDTO Background = 13;
-        common.BirthsignDTO Birthsign = 14;
-        common.CharacterDTO Character = 15;
-        common.CharacterGenInstructionDTO CharacterGenInstruction = 16;
-        common.CharacterGroupGenInstructionDTO CharacterGroupGenInstruction = 17;
-        common.CharacterProfessionDTO CharacterProfession = 18;
-        common.DiseaseDTO Disease = 19;
-        common.EffectDTO Effect = 20;
-        common.FactDTO Fact = 21;
-        common.FactionDTO Faction = 22;
-        common.ItemSetDTO ItemSet = 23;
-        common.MoodDTO Mood = 24;
-        common.NeedDTO Need = 25;
-        common.PersonalityProfileDTO PersonalityProfile = 26;
-        common.RaceDTO Race = 27;
-        common.ReligionDTO Religion = 28;
-        common.ResistanceDTO Resistance = 29;
-        common.StatusDTO Status = 30;
-        common.TagDTO Tag = 31;
+        entities.ItemDTO Item = 1;
+        entities.PastExperienceDTO PastExperience = 2;
+        entities.CharacterMemoryDTO CharacterMemory = 3;
+        entities.MemoryDTO Memory = 4;
+        entities.MemoryPoolDTO MemoryPool = 5;
+        entities.MemoryPoolEntryDTO MemoryPoolEntry = 6;
+        entities.SkillDTO Skill = 7;
+        entities.SkillSetDTO SkillSet = 8;
+        entities.EquipmentSlotDTO EquipmentSlot = 9;
+        entities.StorageSlotDTO StorageSlot = 10;
+        entities.TraitDTO Trait = 11;
+        entities.AddictionDTO Addiction = 12;
+        entities.BackgroundDTO Background = 13;
+        entities.BirthsignDTO Birthsign = 14;
+        entities.CharacterDTO Character = 15;
+        entities.CharacterGenInstructionDTO CharacterGenInstruction = 16;
+        entities.CharacterGroupGenInstructionDTO CharacterGroupGenInstruction = 17;
+        entities.CharacterProfessionDTO CharacterProfession = 18;
+        entities.DiseaseDTO Disease = 19;
+        entities.EffectDTO Effect = 20;
+        entities.FactDTO Fact = 21;
+        entities.FactionDTO Faction = 22;
+        entities.ItemSetDTO ItemSet = 23;
+        entities.MoodDTO Mood = 24;
+        entities.NeedDTO Need = 25;
+        entities.PersonalityProfileDTO PersonalityProfile = 26;
+        entities.RaceDTO Race = 27;
+        entities.ReligionDTO Religion = 28;
+        entities.ResistanceDTO Resistance = 29;
+        entities.StatusDTO Status = 30;
+        entities.TagDTO Tag = 31;
     }
 }

@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package world;
 
-import "common.proto";
+import "entities.proto";
 
 service WorldService {
     rpc getWorld (GetWorldRequest) returns (GetWorldResponse);
@@ -16,19 +16,19 @@ service WorldService {
 }
 
 message UpdateWorldRequest {
-    common.WorldDTO world = 1;
+    entities.WorldDTO world = 1;
 }
 
 message UpdateWorldResponse {
-    common.WorldDTO world = 1;
+    entities.WorldDTO world = 1;
 }
 
 message CreateWorldRequest {
-    common.WorldDTO world = 1;
+    entities.WorldDTO world = 1;
 }
 
 message CreateWorldResponse {
-    common.WorldDTO world = 1;
+    entities.WorldDTO world = 1;
 }
 
 message GetWorldRequest {
@@ -36,7 +36,7 @@ message GetWorldRequest {
 }
 
 message GetWorldResponse {
-    common.WorldDTO world = 1;
+    entities.WorldDTO world = 1;
 }
 
 message GetWorldsForUserRequest {
@@ -44,7 +44,7 @@ message GetWorldsForUserRequest {
 }
 
 message GetWorldsForUserResponse {
-    repeated common.WorldDTO worlds = 1;
+    repeated entities.WorldDTO worlds = 1;
 }
 
 message DeleteWorldRequest {
@@ -64,8 +64,8 @@ message DropWorldContentResponse {
 }
 
 message LoadWorldPresetRequest {
-    common.PresetEnumDTO preset = 1;
-    common.ContextDTO context = 2;
+    entities.PresetEnumDTO preset = 1;
+    entities.ContextDTO context = 2;
 }
 
 message LoadWorldPresetResponse {
@@ -74,13 +74,13 @@ message LoadWorldPresetResponse {
 
 message SearchWorldRequest {
     string entityName = 1;
-    common.SearchQueryDTO query = 2;
-    common.ContextDTO context = 3;
+    entities.SearchQueryDTO query = 2;
+    entities.ContextDTO context = 3;
 }
 
 
 message SearchWorldResponse {
-    repeated common.WorldDTO worlds = 1;
+    repeated entities.WorldDTO worlds = 1;
     int32 totalResults = 2;
     int32 totalPages = 3;
     int32 currentPage = 4;
@@ -91,5 +91,5 @@ message GetPresetsRequest {
 }
 
 message GetPresetsResponse {
-    repeated common.PresetEnumDTO presets = 1;
+    repeated entities.PresetEnumDTO presets = 1;
 }

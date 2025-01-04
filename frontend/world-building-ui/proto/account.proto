@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package account;
 
-import "common.proto";
+import "entities.proto";
 
 service AccountService {
     rpc createAccountAndUser (CreateAccountRequest) returns (CreateAccountResponse);
@@ -12,11 +12,11 @@ service AccountService {
 }
 
 message UpdateAccountRequest {
-    common.AccountDTO account = 1;
+    entities.AccountDTO account = 1;
 }
 
 message UpdateAccountResponse {
-    common.AccountDTO account = 1;
+    entities.AccountDTO account = 1;
 }
 
 message DeleteAccountRequest {
@@ -35,7 +35,7 @@ message CreateAccountRequest {
 }
 
 message CreateAccountResponse {
-    common.AccountDTO account = 1;
+    entities.AccountDTO account = 1;
 }
 
 message GetAccountRequest {
@@ -43,5 +43,5 @@ message GetAccountRequest {
 }
 
 message GetAccountResponse {
-    common.AccountDTO account = 1;
+    entities.AccountDTO account = 1;
 }
