@@ -53,12 +53,11 @@ export class DialogueController implements OnGatewayConnection, OnGatewayDisconn
             Request: ${JSON.stringify(request)}
         `);
 
-        // Delegate dialogue streaming to the service
-        await this.dialogueService.streamDialogue(payload, (chunk) => {
-            client.emit('dialogueChunk', chunk); // Relay chunks to the client
+        await this.dialogueService.startDialogue(request, (chunk) => {
+            client.emit('replyChunk', chunk); // Relay chunks to the client
         });
 
-        client.emit('dialogueComplete', { message: 'Dialogue completed.' });
+        client.emit('replyComplete', { message: 'Reply completed.' });
     }
 
     @GrpcMethod('DialogueService', 'generateResponseOptions')
@@ -72,15 +71,20 @@ export class DialogueController implements OnGatewayConnection, OnGatewayDisconn
         return response;
     }
 
-    @GrpcMethod('DialogueService', 'sendMessage')
-    public async sendMessage(request: SendMessageRequest): Promise<MessageChunk> {
+    @SubscribeMessage('sendMessage')
+    public async sendMessage(
+        client: Socket,
+        request: SendMessageRequest
+    ): Promise<MessageChunk> {
         this.logger.debug(`Received gRPC request:
             Method: DialogueService.sendMessage
             Request: ${JSON.stringify(request)}
         `);
-        const response = await this.dialogueService.sendMessage(request);
-        console.log('[DialogueController] SendMessage response', response);
-        return response;
+        await this.dialogueService.sendMessage(request, (chunk) => {
+            client.emit('replyChunk', chunk); // Relay chunks to the client
+        });
+
+        client.emit('replyComplete', { message: 'Reply completed.' });
     }
 
     @GrpcMethod('DialogueService', 'interruptDialogue')

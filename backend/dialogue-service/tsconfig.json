@@ -1,14 +1,20 @@
 {
   "compilerOptions": {
-    "target": "ES2020",                   // Set a compatible target
-    "module": "CommonJS",                 // TypeORM uses CommonJS modules
-    "strict": true,                       // Optional but recommended
-    "esModuleInterop": true,              // Required for TypeORM imports
-    "skipLibCheck": true,                 // Speeds up TypeScript checks
-    "experimentalDecorators": true,       // Enable decorator support
-    "emitDecoratorMetadata": true,        // Required for TypeORM metadata
-    "outDir": "./dist"                    // Output directory for compiled files
+    "target": "ES2020", // Set a compatible target
+    "module": "CommonJS", // TypeORM uses CommonJS modules
+    "strict": true, // Optional but recommended
+    "esModuleInterop": true, // Required for TypeORM imports
+    "skipLibCheck": true, // Speeds up TypeScript checks
+    "experimentalDecorators": true, // Enable decorator support
+    "emitDecoratorMetadata": true, // Required for TypeORM metadata
+    "outDir": "./dist" // Output directory for compiled files
   },
-  "include": ["src/**/*", "tsconfig.json", "../content-service/src/enum/weather/WindEnum.ts", "../content-service/src/enum/weather/PrecipitationEnum.ts", "../content-service/src/enum/weather/VisibilityEnum.ts", "../content-service/src/enum/weather/TemperatureEnum.ts", "../content-service/src/enum/weather/WeatherEnum.ts"],                // Include all TypeScript files in 'src'
-  "exclude": ["node_modules", "dist"]     // Exclude irrelevant folders
+  "include": [
+    "src/**/*",
+    "tsconfig.json"
+  ], // Include all TypeScript files in 'src'
+  "exclude": [
+    "node_modules",
+    "dist"
+  ] // Exclude irrelevant folders
 }

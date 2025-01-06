@@ -16,7 +16,6 @@ export class PromptService {
 
     constructor(
         @Inject('ContentService') private readonly contentService: ContentService,
-        @Inject(DialogueStateService) private readonly dialogueStateService: DialogueStateService
     ) { }
 
     async assembleDialoguePrompt(sessionId: string, dialogueState: DialogueState, promptType: string, params: any): Promise<DialoguePromptData> {
