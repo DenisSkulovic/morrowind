@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from "typeorm";
 import { Item } from "../Item/Item";
 import { ContentBase } from "../../../../ContentBase";
-import { StorageGridDTO, StorageSlotDTO } from "../../../../proto/common";
+import { StorageGridDTO, StorageSlotDTO } from "../../../../proto/entities";
 import { Campaign } from "../../../campaign/entities/Campaign";
 import { User } from "../../../user/entities/User";
 import { World } from "../../../world/entities/World";

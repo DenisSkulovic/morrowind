@@ -1,7 +1,7 @@
 import { Entity, Column, ManyToMany, ManyToOne, TableInheritance, PrimaryColumn } from "typeorm";
 import { TaggableContentBase } from "../../../TaggableContentBase";
 import { Tag } from "./Tag";
-import { TraitDTO, TraitTypeEnumDTO } from "../../../proto/common";
+import { TraitDTO, TraitTypeEnumDTO } from "../../../proto/entities";
 import { Campaign } from "../../campaign/entities/Campaign";
 import { User } from "../../user/entities/User";
 import { World } from "../../world/entities/World";

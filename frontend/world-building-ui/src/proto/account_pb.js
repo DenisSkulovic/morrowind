@@ -2,21 +2,18 @@
 /**
  * @fileoverview
  * @enhanceable
- * @suppress {missingRequire} reports error on implicit type usages.
  * @suppress {messageConventions} JS Compiler reports an error if a variable or
  *     field starts with 'MSG_' and isn't a translatable message.
  * @public
  */
 // GENERATED CODE -- DO NOT EDIT!
-/* eslint-disable */
-// @ts-nocheck
 
 var jspb = require('google-protobuf');
 var goog = jspb;
-var global = (function() { return this || window || global || self || Function('return this')(); }).call(null);
+var global = Function('return this')();
 
-var common_pb = require('./common_pb.js');
-goog.object.extend(proto, common_pb);
+var entities_pb = require('./entities_pb.js');
+goog.object.extend(proto, entities_pb);
 goog.exportSymbol('proto.account.CreateAccountRequest', null, global);
 goog.exportSymbol('proto.account.CreateAccountResponse', null, global);
 goog.exportSymbol('proto.account.DeleteAccountRequest', null, global);
@@ -225,7 +222,7 @@ proto.account.UpdateAccountRequest.prototype.toObject = function(opt_includeInst
  */
 proto.account.UpdateAccountRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    account: (f = msg.getAccount()) && common_pb.AccountDTO.toObject(includeInstance, f)
+    account: (f = msg.getAccount()) && entities_pb.AccountDTO.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -263,8 +260,8 @@ proto.account.UpdateAccountRequest.deserializeBinaryFromReader = function(msg, r
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = new common_pb.AccountDTO;
-      reader.readMessage(value,common_pb.AccountDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.AccountDTO;
+      reader.readMessage(value,entities_pb.AccountDTO.deserializeBinaryFromReader);
       msg.setAccount(value);
       break;
     default:
@@ -301,24 +298,24 @@ proto.account.UpdateAccountRequest.serializeBinaryToWriter = function(message, w
     writer.writeMessage(
       1,
       f,
-      common_pb.AccountDTO.serializeBinaryToWriter
+      entities_pb.AccountDTO.serializeBinaryToWriter
     );
   }
 };
 
 
 /**
- * optional common.AccountDTO account = 1;
- * @return {?proto.common.AccountDTO}
+ * optional entities.AccountDTO account = 1;
+ * @return {?proto.entities.AccountDTO}
  */
 proto.account.UpdateAccountRequest.prototype.getAccount = function() {
-  return /** @type{?proto.common.AccountDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.AccountDTO, 1));
+  return /** @type{?proto.entities.AccountDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.AccountDTO, 1));
 };
 
 
 /**
- * @param {?proto.common.AccountDTO|undefined} value
+ * @param {?proto.entities.AccountDTO|undefined} value
  * @return {!proto.account.UpdateAccountRequest} returns this
 */
 proto.account.UpdateAccountRequest.prototype.setAccount = function(value) {
@@ -376,7 +373,7 @@ proto.account.UpdateAccountResponse.prototype.toObject = function(opt_includeIns
  */
 proto.account.UpdateAccountResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    account: (f = msg.getAccount()) && common_pb.AccountDTO.toObject(includeInstance, f)
+    account: (f = msg.getAccount()) && entities_pb.AccountDTO.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -414,8 +411,8 @@ proto.account.UpdateAccountResponse.deserializeBinaryFromReader = function(msg, 
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = new common_pb.AccountDTO;
-      reader.readMessage(value,common_pb.AccountDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.AccountDTO;
+      reader.readMessage(value,entities_pb.AccountDTO.deserializeBinaryFromReader);
       msg.setAccount(value);
       break;
     default:
@@ -452,24 +449,24 @@ proto.account.UpdateAccountResponse.serializeBinaryToWriter = function(message, 
     writer.writeMessage(
       1,
       f,
-      common_pb.AccountDTO.serializeBinaryToWriter
+      entities_pb.AccountDTO.serializeBinaryToWriter
     );
   }
 };
 
 
 /**
- * optional common.AccountDTO account = 1;
- * @return {?proto.common.AccountDTO}
+ * optional entities.AccountDTO account = 1;
+ * @return {?proto.entities.AccountDTO}
  */
 proto.account.UpdateAccountResponse.prototype.getAccount = function() {
-  return /** @type{?proto.common.AccountDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.AccountDTO, 1));
+  return /** @type{?proto.entities.AccountDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.AccountDTO, 1));
 };
 
 
 /**
- * @param {?proto.common.AccountDTO|undefined} value
+ * @param {?proto.entities.AccountDTO|undefined} value
  * @return {!proto.account.UpdateAccountResponse} returns this
 */
 proto.account.UpdateAccountResponse.prototype.setAccount = function(value) {
@@ -978,7 +975,7 @@ proto.account.CreateAccountResponse.prototype.toObject = function(opt_includeIns
  */
 proto.account.CreateAccountResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    account: (f = msg.getAccount()) && common_pb.AccountDTO.toObject(includeInstance, f)
+    account: (f = msg.getAccount()) && entities_pb.AccountDTO.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -1016,8 +1013,8 @@ proto.account.CreateAccountResponse.deserializeBinaryFromReader = function(msg, 
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = new common_pb.AccountDTO;
-      reader.readMessage(value,common_pb.AccountDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.AccountDTO;
+      reader.readMessage(value,entities_pb.AccountDTO.deserializeBinaryFromReader);
       msg.setAccount(value);
       break;
     default:
@@ -1054,24 +1051,24 @@ proto.account.CreateAccountResponse.serializeBinaryToWriter = function(message, 
     writer.writeMessage(
       1,
       f,
-      common_pb.AccountDTO.serializeBinaryToWriter
+      entities_pb.AccountDTO.serializeBinaryToWriter
     );
   }
 };
 
 
 /**
- * optional common.AccountDTO account = 1;
- * @return {?proto.common.AccountDTO}
+ * optional entities.AccountDTO account = 1;
+ * @return {?proto.entities.AccountDTO}
  */
 proto.account.CreateAccountResponse.prototype.getAccount = function() {
-  return /** @type{?proto.common.AccountDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.AccountDTO, 1));
+  return /** @type{?proto.entities.AccountDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.AccountDTO, 1));
 };
 
 
 /**
- * @param {?proto.common.AccountDTO|undefined} value
+ * @param {?proto.entities.AccountDTO|undefined} value
  * @return {!proto.account.CreateAccountResponse} returns this
 */
 proto.account.CreateAccountResponse.prototype.setAccount = function(value) {
@@ -1259,7 +1256,7 @@ proto.account.GetAccountResponse.prototype.toObject = function(opt_includeInstan
  */
 proto.account.GetAccountResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    account: (f = msg.getAccount()) && common_pb.AccountDTO.toObject(includeInstance, f)
+    account: (f = msg.getAccount()) && entities_pb.AccountDTO.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -1297,8 +1294,8 @@ proto.account.GetAccountResponse.deserializeBinaryFromReader = function(msg, rea
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = new common_pb.AccountDTO;
-      reader.readMessage(value,common_pb.AccountDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.AccountDTO;
+      reader.readMessage(value,entities_pb.AccountDTO.deserializeBinaryFromReader);
       msg.setAccount(value);
       break;
     default:
@@ -1335,24 +1332,24 @@ proto.account.GetAccountResponse.serializeBinaryToWriter = function(message, wri
     writer.writeMessage(
       1,
       f,
-      common_pb.AccountDTO.serializeBinaryToWriter
+      entities_pb.AccountDTO.serializeBinaryToWriter
     );
   }
 };
 
 
 /**
- * optional common.AccountDTO account = 1;
- * @return {?proto.common.AccountDTO}
+ * optional entities.AccountDTO account = 1;
+ * @return {?proto.entities.AccountDTO}
  */
 proto.account.GetAccountResponse.prototype.getAccount = function() {
-  return /** @type{?proto.common.AccountDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.AccountDTO, 1));
+  return /** @type{?proto.entities.AccountDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.AccountDTO, 1));
 };
 
 
 /**
- * @param {?proto.common.AccountDTO|undefined} value
+ * @param {?proto.entities.AccountDTO|undefined} value
  * @return {!proto.account.GetAccountResponse} returns this
 */
 proto.account.GetAccountResponse.prototype.setAccount = function(value) {

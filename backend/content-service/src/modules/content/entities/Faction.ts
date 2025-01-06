@@ -2,7 +2,7 @@ import { Column, Entity, ManyToMany, ManyToOne, PrimaryColumn } from "typeorm";
 import { TaggableContentBase } from "../../../TaggableContentBase";
 import { Tag } from "./Tag";
 import { Character } from "./Character";
-import { FactionDTO } from "../../../proto/common";
+import { FactionDTO } from "../../../proto/entities";
 import { Campaign } from "../../campaign/entities/Campaign";
 import { User } from "../../user/entities/User";
 import { World } from "../../world/entities/World";

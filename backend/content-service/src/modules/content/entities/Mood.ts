@@ -4,7 +4,7 @@
 
 import { Entity, Column, ManyToOne, PrimaryColumn } from "typeorm";
 import { ContentBase } from "../../../ContentBase";
-import { MoodDTO } from "../../../proto/common";
+import { MoodDTO } from "../../../proto/entities";
 import { Campaign } from "../../campaign/entities/Campaign";
 import { User } from "../../user/entities/User";
 import { World } from "../../world/entities/World";

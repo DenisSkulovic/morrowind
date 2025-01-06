@@ -16,7 +16,7 @@ import { DataSourceEnum } from '../../common/enum/DataSourceEnum';
 import { ContentEntityMapService } from '../../CONTENT_ENTITY_MAP';
 import { EntityConstructor } from '../../types';
 import { Serializer } from '../../serializer';
-import { DataSourceEnumDTO } from '../../proto/common';
+import { DataSourceEnumDTO } from '../../proto/entities';
 import { Context } from '../../class/Context';
 import { SearchQuery } from '../../class/search/SearchQuery';
 import { ActivityService } from '../activity/activity.service';

@@ -1,11 +1,11 @@
 import * as jspb from 'google-protobuf'
 
-import * as common_pb from './common_pb'; // proto import: "common.proto"
+import * as entities_pb from './entities_pb'; // proto import: "entities.proto"
 
 
 export class UpdateWorldRequest extends jspb.Message {
-  getWorld(): common_pb.WorldDTO | undefined;
-  setWorld(value?: common_pb.WorldDTO): UpdateWorldRequest;
+  getWorld(): entities_pb.WorldDTO | undefined;
+  setWorld(value?: entities_pb.WorldDTO): UpdateWorldRequest;
   hasWorld(): boolean;
   clearWorld(): UpdateWorldRequest;
 
@@ -19,13 +19,13 @@ export class UpdateWorldRequest extends jspb.Message {
 
 export namespace UpdateWorldRequest {
   export type AsObject = {
-    world?: common_pb.WorldDTO.AsObject,
+    world?: entities_pb.WorldDTO.AsObject,
   }
 }
 
 export class UpdateWorldResponse extends jspb.Message {
-  getWorld(): common_pb.WorldDTO | undefined;
-  setWorld(value?: common_pb.WorldDTO): UpdateWorldResponse;
+  getWorld(): entities_pb.WorldDTO | undefined;
+  setWorld(value?: entities_pb.WorldDTO): UpdateWorldResponse;
   hasWorld(): boolean;
   clearWorld(): UpdateWorldResponse;
 
@@ -39,13 +39,13 @@ export class UpdateWorldResponse extends jspb.Message {
 
 export namespace UpdateWorldResponse {
   export type AsObject = {
-    world?: common_pb.WorldDTO.AsObject,
+    world?: entities_pb.WorldDTO.AsObject,
   }
 }
 
 export class CreateWorldRequest extends jspb.Message {
-  getWorld(): common_pb.WorldDTO | undefined;
-  setWorld(value?: common_pb.WorldDTO): CreateWorldRequest;
+  getWorld(): entities_pb.WorldDTO | undefined;
+  setWorld(value?: entities_pb.WorldDTO): CreateWorldRequest;
   hasWorld(): boolean;
   clearWorld(): CreateWorldRequest;
 
@@ -59,13 +59,13 @@ export class CreateWorldRequest extends jspb.Message {
 
 export namespace CreateWorldRequest {
   export type AsObject = {
-    world?: common_pb.WorldDTO.AsObject,
+    world?: entities_pb.WorldDTO.AsObject,
   }
 }
 
 export class CreateWorldResponse extends jspb.Message {
-  getWorld(): common_pb.WorldDTO | undefined;
-  setWorld(value?: common_pb.WorldDTO): CreateWorldResponse;
+  getWorld(): entities_pb.WorldDTO | undefined;
+  setWorld(value?: entities_pb.WorldDTO): CreateWorldResponse;
   hasWorld(): boolean;
   clearWorld(): CreateWorldResponse;
 
@@ -79,7 +79,7 @@ export class CreateWorldResponse extends jspb.Message {
 
 export namespace CreateWorldResponse {
   export type AsObject = {
-    world?: common_pb.WorldDTO.AsObject,
+    world?: entities_pb.WorldDTO.AsObject,
   }
 }
 
@@ -102,8 +102,8 @@ export namespace GetWorldRequest {
 }
 
 export class GetWorldResponse extends jspb.Message {
-  getWorld(): common_pb.WorldDTO | undefined;
-  setWorld(value?: common_pb.WorldDTO): GetWorldResponse;
+  getWorld(): entities_pb.WorldDTO | undefined;
+  setWorld(value?: entities_pb.WorldDTO): GetWorldResponse;
   hasWorld(): boolean;
   clearWorld(): GetWorldResponse;
 
@@ -117,7 +117,7 @@ export class GetWorldResponse extends jspb.Message {
 
 export namespace GetWorldResponse {
   export type AsObject = {
-    world?: common_pb.WorldDTO.AsObject,
+    world?: entities_pb.WorldDTO.AsObject,
   }
 }
 
@@ -140,10 +140,10 @@ export namespace GetWorldsForUserRequest {
 }
 
 export class GetWorldsForUserResponse extends jspb.Message {
-  getWorldsList(): Array<common_pb.WorldDTO>;
-  setWorldsList(value: Array<common_pb.WorldDTO>): GetWorldsForUserResponse;
+  getWorldsList(): Array<entities_pb.WorldDTO>;
+  setWorldsList(value: Array<entities_pb.WorldDTO>): GetWorldsForUserResponse;
   clearWorldsList(): GetWorldsForUserResponse;
-  addWorlds(value?: common_pb.WorldDTO, index?: number): common_pb.WorldDTO;
+  addWorlds(value?: entities_pb.WorldDTO, index?: number): entities_pb.WorldDTO;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetWorldsForUserResponse.AsObject;
@@ -155,7 +155,7 @@ export class GetWorldsForUserResponse extends jspb.Message {
 
 export namespace GetWorldsForUserResponse {
   export type AsObject = {
-    worldsList: Array<common_pb.WorldDTO.AsObject>,
+    worldsList: Array<entities_pb.WorldDTO.AsObject>,
   }
 }
 
@@ -224,11 +224,11 @@ export namespace DropWorldContentResponse {
 }
 
 export class LoadWorldPresetRequest extends jspb.Message {
-  getPreset(): common_pb.PresetEnumDTO;
-  setPreset(value: common_pb.PresetEnumDTO): LoadWorldPresetRequest;
+  getPreset(): entities_pb.PresetEnumDTO;
+  setPreset(value: entities_pb.PresetEnumDTO): LoadWorldPresetRequest;
 
-  getContext(): common_pb.ContextDTO | undefined;
-  setContext(value?: common_pb.ContextDTO): LoadWorldPresetRequest;
+  getContext(): entities_pb.ContextDTO | undefined;
+  setContext(value?: entities_pb.ContextDTO): LoadWorldPresetRequest;
   hasContext(): boolean;
   clearContext(): LoadWorldPresetRequest;
 
@@ -242,8 +242,8 @@ export class LoadWorldPresetRequest extends jspb.Message {
 
 export namespace LoadWorldPresetRequest {
   export type AsObject = {
-    preset: common_pb.PresetEnumDTO,
-    context?: common_pb.ContextDTO.AsObject,
+    preset: entities_pb.PresetEnumDTO,
+    context?: entities_pb.ContextDTO.AsObject,
   }
 }
 
@@ -265,13 +265,13 @@ export class SearchWorldRequest extends jspb.Message {
   getEntityname(): string;
   setEntityname(value: string): SearchWorldRequest;
 
-  getQuery(): common_pb.SearchQueryDTO | undefined;
-  setQuery(value?: common_pb.SearchQueryDTO): SearchWorldRequest;
+  getQuery(): entities_pb.SearchQueryDTO | undefined;
+  setQuery(value?: entities_pb.SearchQueryDTO): SearchWorldRequest;
   hasQuery(): boolean;
   clearQuery(): SearchWorldRequest;
 
-  getContext(): common_pb.ContextDTO | undefined;
-  setContext(value?: common_pb.ContextDTO): SearchWorldRequest;
+  getContext(): entities_pb.ContextDTO | undefined;
+  setContext(value?: entities_pb.ContextDTO): SearchWorldRequest;
   hasContext(): boolean;
   clearContext(): SearchWorldRequest;
 
@@ -286,16 +286,16 @@ export class SearchWorldRequest extends jspb.Message {
 export namespace SearchWorldRequest {
   export type AsObject = {
     entityname: string,
-    query?: common_pb.SearchQueryDTO.AsObject,
-    context?: common_pb.ContextDTO.AsObject,
+    query?: entities_pb.SearchQueryDTO.AsObject,
+    context?: entities_pb.ContextDTO.AsObject,
   }
 }
 
 export class SearchWorldResponse extends jspb.Message {
-  getWorldsList(): Array<common_pb.WorldDTO>;
-  setWorldsList(value: Array<common_pb.WorldDTO>): SearchWorldResponse;
+  getWorldsList(): Array<entities_pb.WorldDTO>;
+  setWorldsList(value: Array<entities_pb.WorldDTO>): SearchWorldResponse;
   clearWorldsList(): SearchWorldResponse;
-  addWorlds(value?: common_pb.WorldDTO, index?: number): common_pb.WorldDTO;
+  addWorlds(value?: entities_pb.WorldDTO, index?: number): entities_pb.WorldDTO;
 
   getTotalresults(): number;
   setTotalresults(value: number): SearchWorldResponse;
@@ -316,7 +316,7 @@ export class SearchWorldResponse extends jspb.Message {
 
 export namespace SearchWorldResponse {
   export type AsObject = {
-    worldsList: Array<common_pb.WorldDTO.AsObject>,
+    worldsList: Array<entities_pb.WorldDTO.AsObject>,
     totalresults: number,
     totalpages: number,
     currentpage: number,
@@ -338,10 +338,10 @@ export namespace GetPresetsRequest {
 }
 
 export class GetPresetsResponse extends jspb.Message {
-  getPresetsList(): Array<common_pb.PresetEnumDTO>;
-  setPresetsList(value: Array<common_pb.PresetEnumDTO>): GetPresetsResponse;
+  getPresetsList(): Array<entities_pb.PresetEnumDTO>;
+  setPresetsList(value: Array<entities_pb.PresetEnumDTO>): GetPresetsResponse;
   clearPresetsList(): GetPresetsResponse;
-  addPresets(value: common_pb.PresetEnumDTO, index?: number): GetPresetsResponse;
+  addPresets(value: entities_pb.PresetEnumDTO, index?: number): GetPresetsResponse;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetPresetsResponse.AsObject;
@@ -353,7 +353,7 @@ export class GetPresetsResponse extends jspb.Message {
 
 export namespace GetPresetsResponse {
   export type AsObject = {
-    presetsList: Array<common_pb.PresetEnumDTO>,
+    presetsList: Array<entities_pb.PresetEnumDTO>,
   }
 }
 

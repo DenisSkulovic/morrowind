@@ -11,7 +11,7 @@ import { Faction } from "./Faction";
 import { Disease } from "./Disease";
 import { Addiction } from "./Addiction";
 import { EquipmentSlot } from "./Slot/EquipmentSlot";
-import { CharacterDTO, GenderEnumDTO } from "../../../proto/common";
+import { CharacterDTO, GenderEnumDTO } from "../../../proto/entities";
 import { GenderEnum } from "../../../common/enum/GenderEnum";
 import { serializeEnum, deserializeEnum } from "../../../common/enum/util";
 import { Campaign } from "../../campaign/entities/Campaign";

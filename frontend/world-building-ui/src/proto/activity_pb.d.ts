@@ -1,16 +1,16 @@
 import * as jspb from 'google-protobuf'
 
-import * as common_pb from './common_pb'; // proto import: "common.proto"
+import * as entities_pb from './entities_pb'; // proto import: "entities.proto"
 
 
 export class ActivitySearchRequest extends jspb.Message {
-  getContext(): common_pb.ContextDTO | undefined;
-  setContext(value?: common_pb.ContextDTO): ActivitySearchRequest;
+  getContext(): entities_pb.ContextDTO | undefined;
+  setContext(value?: entities_pb.ContextDTO): ActivitySearchRequest;
   hasContext(): boolean;
   clearContext(): ActivitySearchRequest;
 
-  getSearch(): common_pb.SearchQueryDTO | undefined;
-  setSearch(value?: common_pb.SearchQueryDTO): ActivitySearchRequest;
+  getSearch(): entities_pb.SearchQueryDTO | undefined;
+  setSearch(value?: entities_pb.SearchQueryDTO): ActivitySearchRequest;
   hasSearch(): boolean;
   clearSearch(): ActivitySearchRequest;
 
@@ -24,8 +24,8 @@ export class ActivitySearchRequest extends jspb.Message {
 
 export namespace ActivitySearchRequest {
   export type AsObject = {
-    context?: common_pb.ContextDTO.AsObject,
-    search?: common_pb.SearchQueryDTO.AsObject,
+    context?: entities_pb.ContextDTO.AsObject,
+    search?: entities_pb.SearchQueryDTO.AsObject,
   }
 }
 
@@ -62,8 +62,8 @@ export namespace ActivitySearchResponse {
 }
 
 export class ActivityClearAllRequest extends jspb.Message {
-  getContext(): common_pb.ContextDTO | undefined;
-  setContext(value?: common_pb.ContextDTO): ActivityClearAllRequest;
+  getContext(): entities_pb.ContextDTO | undefined;
+  setContext(value?: entities_pb.ContextDTO): ActivityClearAllRequest;
   hasContext(): boolean;
   clearContext(): ActivityClearAllRequest;
 
@@ -77,7 +77,7 @@ export class ActivityClearAllRequest extends jspb.Message {
 
 export namespace ActivityClearAllRequest {
   export type AsObject = {
-    context?: common_pb.ContextDTO.AsObject,
+    context?: entities_pb.ContextDTO.AsObject,
   }
 }
 
@@ -100,8 +100,8 @@ export namespace ActivityClearAllResponse {
 }
 
 export class ActivityCreateRequest extends jspb.Message {
-  getContext(): common_pb.ContextDTO | undefined;
-  setContext(value?: common_pb.ContextDTO): ActivityCreateRequest;
+  getContext(): entities_pb.ContextDTO | undefined;
+  setContext(value?: entities_pb.ContextDTO): ActivityCreateRequest;
   hasContext(): boolean;
   clearContext(): ActivityCreateRequest;
 
@@ -120,7 +120,7 @@ export class ActivityCreateRequest extends jspb.Message {
 
 export namespace ActivityCreateRequest {
   export type AsObject = {
-    context?: common_pb.ContextDTO.AsObject,
+    context?: entities_pb.ContextDTO.AsObject,
     data?: ActivityDTO.AsObject,
   }
 }
@@ -144,8 +144,8 @@ export namespace ActivityCreateResponse {
 }
 
 export class ActivityHeadRequest extends jspb.Message {
-  getContext(): common_pb.ContextDTO | undefined;
-  setContext(value?: common_pb.ContextDTO): ActivityHeadRequest;
+  getContext(): entities_pb.ContextDTO | undefined;
+  setContext(value?: entities_pb.ContextDTO): ActivityHeadRequest;
   hasContext(): boolean;
   clearContext(): ActivityHeadRequest;
 
@@ -162,7 +162,7 @@ export class ActivityHeadRequest extends jspb.Message {
 
 export namespace ActivityHeadRequest {
   export type AsObject = {
-    context?: common_pb.ContextDTO.AsObject,
+    context?: entities_pb.ContextDTO.AsObject,
     limit: number,
   }
 }

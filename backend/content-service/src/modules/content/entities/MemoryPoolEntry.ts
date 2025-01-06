@@ -2,7 +2,7 @@ import { Entity, Column, ManyToOne, PrimaryColumn } from "typeorm";
 import { Memory } from "./Memory"
 import { MemoryPool } from "./MemoryPool"
 import { ContentBase } from "../../../ContentBase";
-import { MemoryPoolEntryDTO } from "../../../proto/common";
+import { MemoryPoolEntryDTO } from "../../../proto/entities";
 import { Campaign } from "../../campaign/entities/Campaign";
 import { User } from "../../user/entities/User";
 import { World } from "../../world/entities/World";

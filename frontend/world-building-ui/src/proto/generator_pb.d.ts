@@ -1,19 +1,19 @@
 import * as jspb from 'google-protobuf'
 
-import * as common_pb from './common_pb'; // proto import: "common.proto"
+import * as entities_pb from './entities_pb'; // proto import: "entities.proto"
 
 
 export class GenerateItemsRequest extends jspb.Message {
-  getSource(): common_pb.DataSourceEnumDTO;
-  setSource(value: common_pb.DataSourceEnumDTO): GenerateItemsRequest;
+  getSource(): entities_pb.DataSourceEnumDTO;
+  setSource(value: entities_pb.DataSourceEnumDTO): GenerateItemsRequest;
 
-  getArrList(): Array<common_pb.GenerationInstructionDTO>;
-  setArrList(value: Array<common_pb.GenerationInstructionDTO>): GenerateItemsRequest;
+  getArrList(): Array<entities_pb.GenerationInstructionDTO>;
+  setArrList(value: Array<entities_pb.GenerationInstructionDTO>): GenerateItemsRequest;
   clearArrList(): GenerateItemsRequest;
-  addArr(value?: common_pb.GenerationInstructionDTO, index?: number): common_pb.GenerationInstructionDTO;
+  addArr(value?: entities_pb.GenerationInstructionDTO, index?: number): entities_pb.GenerationInstructionDTO;
 
-  getContext(): common_pb.ContextDTO | undefined;
-  setContext(value?: common_pb.ContextDTO): GenerateItemsRequest;
+  getContext(): entities_pb.ContextDTO | undefined;
+  setContext(value?: entities_pb.ContextDTO): GenerateItemsRequest;
   hasContext(): boolean;
   clearContext(): GenerateItemsRequest;
 
@@ -27,17 +27,17 @@ export class GenerateItemsRequest extends jspb.Message {
 
 export namespace GenerateItemsRequest {
   export type AsObject = {
-    source: common_pb.DataSourceEnumDTO,
-    arrList: Array<common_pb.GenerationInstructionDTO.AsObject>,
-    context?: common_pb.ContextDTO.AsObject,
+    source: entities_pb.DataSourceEnumDTO,
+    arrList: Array<entities_pb.GenerationInstructionDTO.AsObject>,
+    context?: entities_pb.ContextDTO.AsObject,
   }
 }
 
 export class GenerateItemsResponse extends jspb.Message {
-  getArrList(): Array<common_pb.ItemDTO>;
-  setArrList(value: Array<common_pb.ItemDTO>): GenerateItemsResponse;
+  getArrList(): Array<entities_pb.ItemDTO>;
+  setArrList(value: Array<entities_pb.ItemDTO>): GenerateItemsResponse;
   clearArrList(): GenerateItemsResponse;
-  addArr(value?: common_pb.ItemDTO, index?: number): common_pb.ItemDTO;
+  addArr(value?: entities_pb.ItemDTO, index?: number): entities_pb.ItemDTO;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GenerateItemsResponse.AsObject;
@@ -49,21 +49,21 @@ export class GenerateItemsResponse extends jspb.Message {
 
 export namespace GenerateItemsResponse {
   export type AsObject = {
-    arrList: Array<common_pb.ItemDTO.AsObject>,
+    arrList: Array<entities_pb.ItemDTO.AsObject>,
   }
 }
 
 export class GenerateCharactersRequestCustom extends jspb.Message {
-  getSource(): common_pb.DataSourceEnumDTO;
-  setSource(value: common_pb.DataSourceEnumDTO): GenerateCharactersRequestCustom;
+  getSource(): entities_pb.DataSourceEnumDTO;
+  setSource(value: entities_pb.DataSourceEnumDTO): GenerateCharactersRequestCustom;
 
-  getArrList(): Array<common_pb.CharacterGenInstructionDTO>;
-  setArrList(value: Array<common_pb.CharacterGenInstructionDTO>): GenerateCharactersRequestCustom;
+  getArrList(): Array<entities_pb.CharacterGenInstructionDTO>;
+  setArrList(value: Array<entities_pb.CharacterGenInstructionDTO>): GenerateCharactersRequestCustom;
   clearArrList(): GenerateCharactersRequestCustom;
-  addArr(value?: common_pb.CharacterGenInstructionDTO, index?: number): common_pb.CharacterGenInstructionDTO;
+  addArr(value?: entities_pb.CharacterGenInstructionDTO, index?: number): entities_pb.CharacterGenInstructionDTO;
 
-  getContext(): common_pb.ContextDTO | undefined;
-  setContext(value?: common_pb.ContextDTO): GenerateCharactersRequestCustom;
+  getContext(): entities_pb.ContextDTO | undefined;
+  setContext(value?: entities_pb.ContextDTO): GenerateCharactersRequestCustom;
   hasContext(): boolean;
   clearContext(): GenerateCharactersRequestCustom;
 
@@ -77,23 +77,23 @@ export class GenerateCharactersRequestCustom extends jspb.Message {
 
 export namespace GenerateCharactersRequestCustom {
   export type AsObject = {
-    source: common_pb.DataSourceEnumDTO,
-    arrList: Array<common_pb.CharacterGenInstructionDTO.AsObject>,
-    context?: common_pb.ContextDTO.AsObject,
+    source: entities_pb.DataSourceEnumDTO,
+    arrList: Array<entities_pb.CharacterGenInstructionDTO.AsObject>,
+    context?: entities_pb.ContextDTO.AsObject,
   }
 }
 
 export class GenerateCharactersRequestDB extends jspb.Message {
-  getSource(): common_pb.DataSourceEnumDTO;
-  setSource(value: common_pb.DataSourceEnumDTO): GenerateCharactersRequestDB;
+  getSource(): entities_pb.DataSourceEnumDTO;
+  setSource(value: entities_pb.DataSourceEnumDTO): GenerateCharactersRequestDB;
 
   getChargeninstructionidsList(): Array<string>;
   setChargeninstructionidsList(value: Array<string>): GenerateCharactersRequestDB;
   clearChargeninstructionidsList(): GenerateCharactersRequestDB;
   addChargeninstructionids(value: string, index?: number): GenerateCharactersRequestDB;
 
-  getContext(): common_pb.ContextDTO | undefined;
-  setContext(value?: common_pb.ContextDTO): GenerateCharactersRequestDB;
+  getContext(): entities_pb.ContextDTO | undefined;
+  setContext(value?: entities_pb.ContextDTO): GenerateCharactersRequestDB;
   hasContext(): boolean;
   clearContext(): GenerateCharactersRequestDB;
 
@@ -107,17 +107,17 @@ export class GenerateCharactersRequestDB extends jspb.Message {
 
 export namespace GenerateCharactersRequestDB {
   export type AsObject = {
-    source: common_pb.DataSourceEnumDTO,
+    source: entities_pb.DataSourceEnumDTO,
     chargeninstructionidsList: Array<string>,
-    context?: common_pb.ContextDTO.AsObject,
+    context?: entities_pb.ContextDTO.AsObject,
   }
 }
 
 export class GenerateCharactersResponse extends jspb.Message {
-  getArrList(): Array<common_pb.CharacterDTO>;
-  setArrList(value: Array<common_pb.CharacterDTO>): GenerateCharactersResponse;
+  getArrList(): Array<entities_pb.CharacterDTO>;
+  setArrList(value: Array<entities_pb.CharacterDTO>): GenerateCharactersResponse;
   clearArrList(): GenerateCharactersResponse;
-  addArr(value?: common_pb.CharacterDTO, index?: number): common_pb.CharacterDTO;
+  addArr(value?: entities_pb.CharacterDTO, index?: number): entities_pb.CharacterDTO;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GenerateCharactersResponse.AsObject;
@@ -129,21 +129,21 @@ export class GenerateCharactersResponse extends jspb.Message {
 
 export namespace GenerateCharactersResponse {
   export type AsObject = {
-    arrList: Array<common_pb.CharacterDTO.AsObject>,
+    arrList: Array<entities_pb.CharacterDTO.AsObject>,
   }
 }
 
 export class GenerateCharacterGroupsRequest extends jspb.Message {
-  getSource(): common_pb.DataSourceEnumDTO;
-  setSource(value: common_pb.DataSourceEnumDTO): GenerateCharacterGroupsRequest;
+  getSource(): entities_pb.DataSourceEnumDTO;
+  setSource(value: entities_pb.DataSourceEnumDTO): GenerateCharacterGroupsRequest;
 
-  getArrList(): Array<common_pb.CharacterGroupGenInstructionDTO>;
-  setArrList(value: Array<common_pb.CharacterGroupGenInstructionDTO>): GenerateCharacterGroupsRequest;
+  getArrList(): Array<entities_pb.CharacterGroupGenInstructionDTO>;
+  setArrList(value: Array<entities_pb.CharacterGroupGenInstructionDTO>): GenerateCharacterGroupsRequest;
   clearArrList(): GenerateCharacterGroupsRequest;
-  addArr(value?: common_pb.CharacterGroupGenInstructionDTO, index?: number): common_pb.CharacterGroupGenInstructionDTO;
+  addArr(value?: entities_pb.CharacterGroupGenInstructionDTO, index?: number): entities_pb.CharacterGroupGenInstructionDTO;
 
-  getContext(): common_pb.ContextDTO | undefined;
-  setContext(value?: common_pb.ContextDTO): GenerateCharacterGroupsRequest;
+  getContext(): entities_pb.ContextDTO | undefined;
+  setContext(value?: entities_pb.ContextDTO): GenerateCharacterGroupsRequest;
   hasContext(): boolean;
   clearContext(): GenerateCharacterGroupsRequest;
 
@@ -157,9 +157,9 @@ export class GenerateCharacterGroupsRequest extends jspb.Message {
 
 export namespace GenerateCharacterGroupsRequest {
   export type AsObject = {
-    source: common_pb.DataSourceEnumDTO,
-    arrList: Array<common_pb.CharacterGroupGenInstructionDTO.AsObject>,
-    context?: common_pb.ContextDTO.AsObject,
+    source: entities_pb.DataSourceEnumDTO,
+    arrList: Array<entities_pb.CharacterGroupGenInstructionDTO.AsObject>,
+    context?: entities_pb.ContextDTO.AsObject,
   }
 }
 

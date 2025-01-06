@@ -2,7 +2,7 @@ import { TableInheritance, Entity, Column, BaseEntity, OneToOne, JoinColumn, Bef
 import { User } from "../../user/entities/User";
 import { randomUUID } from "crypto";
 import { AccountRoleEnum } from "../../../common/enum/AccountRoleEnum";
-import { AccountDTO } from "../../../proto/common";
+import { AccountDTO } from "../../../proto/entities";
 import { Serializable } from "../../../decorator/serializable.decorator";
 import { Serializer, SerializeStrategyEnum } from "../../../serializer";
 

@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne, PrimaryColumn } from "typeorm";
 import { ContentBase } from "../../../ContentBase";
-import { BirthsignDTO } from "../../../proto/common";
+import { BirthsignDTO } from "../../../proto/entities";
 import { Campaign } from "../../campaign/entities/Campaign";
 import { User } from "../../user/entities/User";
 import { World } from "../../world/entities/World";

@@ -1,11 +1,11 @@
 import * as jspb from 'google-protobuf'
 
-import * as common_pb from './common_pb'; // proto import: "common.proto"
+import * as entities_pb from './entities_pb'; // proto import: "entities.proto"
 
 
 export class UpdateAccountRequest extends jspb.Message {
-  getAccount(): common_pb.AccountDTO | undefined;
-  setAccount(value?: common_pb.AccountDTO): UpdateAccountRequest;
+  getAccount(): entities_pb.AccountDTO | undefined;
+  setAccount(value?: entities_pb.AccountDTO): UpdateAccountRequest;
   hasAccount(): boolean;
   clearAccount(): UpdateAccountRequest;
 
@@ -19,13 +19,13 @@ export class UpdateAccountRequest extends jspb.Message {
 
 export namespace UpdateAccountRequest {
   export type AsObject = {
-    account?: common_pb.AccountDTO.AsObject,
+    account?: entities_pb.AccountDTO.AsObject,
   }
 }
 
 export class UpdateAccountResponse extends jspb.Message {
-  getAccount(): common_pb.AccountDTO | undefined;
-  setAccount(value?: common_pb.AccountDTO): UpdateAccountResponse;
+  getAccount(): entities_pb.AccountDTO | undefined;
+  setAccount(value?: entities_pb.AccountDTO): UpdateAccountResponse;
   hasAccount(): boolean;
   clearAccount(): UpdateAccountResponse;
 
@@ -39,7 +39,7 @@ export class UpdateAccountResponse extends jspb.Message {
 
 export namespace UpdateAccountResponse {
   export type AsObject = {
-    account?: common_pb.AccountDTO.AsObject,
+    account?: entities_pb.AccountDTO.AsObject,
   }
 }
 
@@ -106,8 +106,8 @@ export namespace CreateAccountRequest {
 }
 
 export class CreateAccountResponse extends jspb.Message {
-  getAccount(): common_pb.AccountDTO | undefined;
-  setAccount(value?: common_pb.AccountDTO): CreateAccountResponse;
+  getAccount(): entities_pb.AccountDTO | undefined;
+  setAccount(value?: entities_pb.AccountDTO): CreateAccountResponse;
   hasAccount(): boolean;
   clearAccount(): CreateAccountResponse;
 
@@ -121,7 +121,7 @@ export class CreateAccountResponse extends jspb.Message {
 
 export namespace CreateAccountResponse {
   export type AsObject = {
-    account?: common_pb.AccountDTO.AsObject,
+    account?: entities_pb.AccountDTO.AsObject,
   }
 }
 
@@ -144,8 +144,8 @@ export namespace GetAccountRequest {
 }
 
 export class GetAccountResponse extends jspb.Message {
-  getAccount(): common_pb.AccountDTO | undefined;
-  setAccount(value?: common_pb.AccountDTO): GetAccountResponse;
+  getAccount(): entities_pb.AccountDTO | undefined;
+  setAccount(value?: entities_pb.AccountDTO): GetAccountResponse;
   hasAccount(): boolean;
   clearAccount(): GetAccountResponse;
 
@@ -159,7 +159,7 @@ export class GetAccountResponse extends jspb.Message {
 
 export namespace GetAccountResponse {
   export type AsObject = {
-    account?: common_pb.AccountDTO.AsObject,
+    account?: entities_pb.AccountDTO.AsObject,
   }
 }
 

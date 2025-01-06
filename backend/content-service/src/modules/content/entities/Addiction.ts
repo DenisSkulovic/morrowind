@@ -2,7 +2,7 @@ import { Column, Entity, ManyToOne, PrimaryColumn } from "typeorm";
 import { ContentBase } from "../../../ContentBase";
 import { Character } from "./Character";
 import { ManyToMany } from "typeorm";
-import { AddictionDTO } from "../../../proto/common";
+import { AddictionDTO } from "../../../proto/entities";
 import { Campaign } from "../../campaign/entities/Campaign";
 import { User } from "../../user/entities/User";
 import { World } from "../../world/entities/World";

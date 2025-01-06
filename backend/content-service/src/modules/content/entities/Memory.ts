@@ -2,7 +2,7 @@ import { Entity, ManyToMany, Column, JoinTable, ManyToOne, PrimaryColumn } from 
 import { Fact } from "./Fact";
 import { Tag } from "./Tag";
 import { TaggableContentBase } from "../../../TaggableContentBase";
-import { MemoryDTO, MemoryTypeEnumDTO } from "../../../proto/common";
+import { MemoryDTO, MemoryTypeEnumDTO } from "../../../proto/entities";
 import { MemoryTypeEnum } from "../../../common/enum/entityEnums";
 import { serializeEnum, deserializeEnum } from "../../../common/enum/util";
 import { Campaign } from "../../campaign/entities/Campaign";

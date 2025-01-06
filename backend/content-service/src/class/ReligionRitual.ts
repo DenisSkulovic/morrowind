@@ -1,5 +1,5 @@
 import { Serializable } from "../decorator/serializable.decorator";
-import { ReligionRitualDTO } from "../proto/common";
+import { ReligionRitualDTO } from "../proto/entities";
 import { Serializer } from "../serializer";
 
 export class ReligionRitual {

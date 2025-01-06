@@ -1,6 +1,6 @@
 import { Entity, Column, ManyToOne, PrimaryColumn } from "typeorm";
 import { ContentBase } from "../../../ContentBase";
-import { CharacterGenInstructionDTO, GenderEnumDTO } from "../../../proto/common";
+import { CharacterGenInstructionDTO, GenderEnumDTO } from "../../../proto/entities";
 import { GenderEnum } from "../../../common/enum/GenderEnum";
 import { serializeEnum, deserializeEnum } from "../../../common/enum/util";
 import { Campaign } from "../../campaign/entities/Campaign";

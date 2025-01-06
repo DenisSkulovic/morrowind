@@ -1,6 +1,6 @@
 import { Entity, Column, ManyToOne, PrimaryColumn } from "typeorm";
 import { ContentBase } from "../../../ContentBase";
-import { NeedDTO, NeedLayerEnumDTO, NeedTypeEnumDTO } from "../../../proto/common";
+import { NeedDTO, NeedLayerEnumDTO, NeedTypeEnumDTO } from "../../../proto/entities";
 import { NeedTypeEnum, NeedLayerEnum } from "../../../common/enum/entityEnums";
 import { serializeEnum, deserializeEnum } from "../../../common/enum/util";
 import { Campaign } from "../../campaign/entities/Campaign";

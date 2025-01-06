@@ -2,21 +2,18 @@
 /**
  * @fileoverview
  * @enhanceable
- * @suppress {missingRequire} reports error on implicit type usages.
  * @suppress {messageConventions} JS Compiler reports an error if a variable or
  *     field starts with 'MSG_' and isn't a translatable message.
  * @public
  */
 // GENERATED CODE -- DO NOT EDIT!
-/* eslint-disable */
-// @ts-nocheck
 
 var jspb = require('google-protobuf');
 var goog = jspb;
-var global = (function() { return this || window || global || self || Function('return this')(); }).call(null);
+var global = Function('return this')();
 
-var common_pb = require('./common_pb.js');
-goog.object.extend(proto, common_pb);
+var entities_pb = require('./entities_pb.js');
+goog.object.extend(proto, entities_pb);
 goog.exportSymbol('proto.generator.GenerateCharacterGroupsRequest', null, global);
 goog.exportSymbol('proto.generator.GenerateCharacterGroupsResponse', null, global);
 goog.exportSymbol('proto.generator.GenerateCharactersRequestCustom', null, global);
@@ -212,8 +209,8 @@ proto.generator.GenerateItemsRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     source: jspb.Message.getFieldWithDefault(msg, 1, 0),
     arrList: jspb.Message.toObjectList(msg.getArrList(),
-    common_pb.GenerationInstructionDTO.toObject, includeInstance),
-    context: (f = msg.getContext()) && common_pb.ContextDTO.toObject(includeInstance, f)
+    entities_pb.GenerationInstructionDTO.toObject, includeInstance),
+    context: (f = msg.getContext()) && entities_pb.ContextDTO.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -251,17 +248,17 @@ proto.generator.GenerateItemsRequest.deserializeBinaryFromReader = function(msg,
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {!proto.common.DataSourceEnumDTO} */ (reader.readEnum());
+      var value = /** @type {!proto.entities.DataSourceEnumDTO} */ (reader.readEnum());
       msg.setSource(value);
       break;
     case 2:
-      var value = new common_pb.GenerationInstructionDTO;
-      reader.readMessage(value,common_pb.GenerationInstructionDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.GenerationInstructionDTO;
+      reader.readMessage(value,entities_pb.GenerationInstructionDTO.deserializeBinaryFromReader);
       msg.addArr(value);
       break;
     case 3:
-      var value = new common_pb.ContextDTO;
-      reader.readMessage(value,common_pb.ContextDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.ContextDTO;
+      reader.readMessage(value,entities_pb.ContextDTO.deserializeBinaryFromReader);
       msg.setContext(value);
       break;
     default:
@@ -305,7 +302,7 @@ proto.generator.GenerateItemsRequest.serializeBinaryToWriter = function(message,
     writer.writeRepeatedMessage(
       2,
       f,
-      common_pb.GenerationInstructionDTO.serializeBinaryToWriter
+      entities_pb.GenerationInstructionDTO.serializeBinaryToWriter
     );
   }
   f = message.getContext();
@@ -313,23 +310,23 @@ proto.generator.GenerateItemsRequest.serializeBinaryToWriter = function(message,
     writer.writeMessage(
       3,
       f,
-      common_pb.ContextDTO.serializeBinaryToWriter
+      entities_pb.ContextDTO.serializeBinaryToWriter
     );
   }
 };
 
 
 /**
- * optional common.DataSourceEnumDTO source = 1;
- * @return {!proto.common.DataSourceEnumDTO}
+ * optional entities.DataSourceEnumDTO source = 1;
+ * @return {!proto.entities.DataSourceEnumDTO}
  */
 proto.generator.GenerateItemsRequest.prototype.getSource = function() {
-  return /** @type {!proto.common.DataSourceEnumDTO} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+  return /** @type {!proto.entities.DataSourceEnumDTO} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
 /**
- * @param {!proto.common.DataSourceEnumDTO} value
+ * @param {!proto.entities.DataSourceEnumDTO} value
  * @return {!proto.generator.GenerateItemsRequest} returns this
  */
 proto.generator.GenerateItemsRequest.prototype.setSource = function(value) {
@@ -338,17 +335,17 @@ proto.generator.GenerateItemsRequest.prototype.setSource = function(value) {
 
 
 /**
- * repeated common.GenerationInstructionDTO arr = 2;
- * @return {!Array<!proto.common.GenerationInstructionDTO>}
+ * repeated entities.GenerationInstructionDTO arr = 2;
+ * @return {!Array<!proto.entities.GenerationInstructionDTO>}
  */
 proto.generator.GenerateItemsRequest.prototype.getArrList = function() {
-  return /** @type{!Array<!proto.common.GenerationInstructionDTO>} */ (
-    jspb.Message.getRepeatedWrapperField(this, common_pb.GenerationInstructionDTO, 2));
+  return /** @type{!Array<!proto.entities.GenerationInstructionDTO>} */ (
+    jspb.Message.getRepeatedWrapperField(this, entities_pb.GenerationInstructionDTO, 2));
 };
 
 
 /**
- * @param {!Array<!proto.common.GenerationInstructionDTO>} value
+ * @param {!Array<!proto.entities.GenerationInstructionDTO>} value
  * @return {!proto.generator.GenerateItemsRequest} returns this
 */
 proto.generator.GenerateItemsRequest.prototype.setArrList = function(value) {
@@ -357,12 +354,12 @@ proto.generator.GenerateItemsRequest.prototype.setArrList = function(value) {
 
 
 /**
- * @param {!proto.common.GenerationInstructionDTO=} opt_value
+ * @param {!proto.entities.GenerationInstructionDTO=} opt_value
  * @param {number=} opt_index
- * @return {!proto.common.GenerationInstructionDTO}
+ * @return {!proto.entities.GenerationInstructionDTO}
  */
 proto.generator.GenerateItemsRequest.prototype.addArr = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 2, opt_value, proto.common.GenerationInstructionDTO, opt_index);
+  return jspb.Message.addToRepeatedWrapperField(this, 2, opt_value, proto.entities.GenerationInstructionDTO, opt_index);
 };
 
 
@@ -376,17 +373,17 @@ proto.generator.GenerateItemsRequest.prototype.clearArrList = function() {
 
 
 /**
- * optional common.ContextDTO context = 3;
- * @return {?proto.common.ContextDTO}
+ * optional entities.ContextDTO context = 3;
+ * @return {?proto.entities.ContextDTO}
  */
 proto.generator.GenerateItemsRequest.prototype.getContext = function() {
-  return /** @type{?proto.common.ContextDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.ContextDTO, 3));
+  return /** @type{?proto.entities.ContextDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.ContextDTO, 3));
 };
 
 
 /**
- * @param {?proto.common.ContextDTO|undefined} value
+ * @param {?proto.entities.ContextDTO|undefined} value
  * @return {!proto.generator.GenerateItemsRequest} returns this
 */
 proto.generator.GenerateItemsRequest.prototype.setContext = function(value) {
@@ -452,7 +449,7 @@ proto.generator.GenerateItemsResponse.prototype.toObject = function(opt_includeI
 proto.generator.GenerateItemsResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
     arrList: jspb.Message.toObjectList(msg.getArrList(),
-    common_pb.ItemDTO.toObject, includeInstance)
+    entities_pb.ItemDTO.toObject, includeInstance)
   };
 
   if (includeInstance) {
@@ -490,8 +487,8 @@ proto.generator.GenerateItemsResponse.deserializeBinaryFromReader = function(msg
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = new common_pb.ItemDTO;
-      reader.readMessage(value,common_pb.ItemDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.ItemDTO;
+      reader.readMessage(value,entities_pb.ItemDTO.deserializeBinaryFromReader);
       msg.addArr(value);
       break;
     default:
@@ -528,24 +525,24 @@ proto.generator.GenerateItemsResponse.serializeBinaryToWriter = function(message
     writer.writeRepeatedMessage(
       1,
       f,
-      common_pb.ItemDTO.serializeBinaryToWriter
+      entities_pb.ItemDTO.serializeBinaryToWriter
     );
   }
 };
 
 
 /**
- * repeated common.ItemDTO arr = 1;
- * @return {!Array<!proto.common.ItemDTO>}
+ * repeated entities.ItemDTO arr = 1;
+ * @return {!Array<!proto.entities.ItemDTO>}
  */
 proto.generator.GenerateItemsResponse.prototype.getArrList = function() {
-  return /** @type{!Array<!proto.common.ItemDTO>} */ (
-    jspb.Message.getRepeatedWrapperField(this, common_pb.ItemDTO, 1));
+  return /** @type{!Array<!proto.entities.ItemDTO>} */ (
+    jspb.Message.getRepeatedWrapperField(this, entities_pb.ItemDTO, 1));
 };
 
 
 /**
- * @param {!Array<!proto.common.ItemDTO>} value
+ * @param {!Array<!proto.entities.ItemDTO>} value
  * @return {!proto.generator.GenerateItemsResponse} returns this
 */
 proto.generator.GenerateItemsResponse.prototype.setArrList = function(value) {
@@ -554,12 +551,12 @@ proto.generator.GenerateItemsResponse.prototype.setArrList = function(value) {
 
 
 /**
- * @param {!proto.common.ItemDTO=} opt_value
+ * @param {!proto.entities.ItemDTO=} opt_value
  * @param {number=} opt_index
- * @return {!proto.common.ItemDTO}
+ * @return {!proto.entities.ItemDTO}
  */
 proto.generator.GenerateItemsResponse.prototype.addArr = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 1, opt_value, proto.common.ItemDTO, opt_index);
+  return jspb.Message.addToRepeatedWrapperField(this, 1, opt_value, proto.entities.ItemDTO, opt_index);
 };
 
 
@@ -613,8 +610,8 @@ proto.generator.GenerateCharactersRequestCustom.toObject = function(includeInsta
   var f, obj = {
     source: jspb.Message.getFieldWithDefault(msg, 1, 0),
     arrList: jspb.Message.toObjectList(msg.getArrList(),
-    common_pb.CharacterGenInstructionDTO.toObject, includeInstance),
-    context: (f = msg.getContext()) && common_pb.ContextDTO.toObject(includeInstance, f)
+    entities_pb.CharacterGenInstructionDTO.toObject, includeInstance),
+    context: (f = msg.getContext()) && entities_pb.ContextDTO.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -652,17 +649,17 @@ proto.generator.GenerateCharactersRequestCustom.deserializeBinaryFromReader = fu
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {!proto.common.DataSourceEnumDTO} */ (reader.readEnum());
+      var value = /** @type {!proto.entities.DataSourceEnumDTO} */ (reader.readEnum());
       msg.setSource(value);
       break;
     case 2:
-      var value = new common_pb.CharacterGenInstructionDTO;
-      reader.readMessage(value,common_pb.CharacterGenInstructionDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.CharacterGenInstructionDTO;
+      reader.readMessage(value,entities_pb.CharacterGenInstructionDTO.deserializeBinaryFromReader);
       msg.addArr(value);
       break;
     case 3:
-      var value = new common_pb.ContextDTO;
-      reader.readMessage(value,common_pb.ContextDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.ContextDTO;
+      reader.readMessage(value,entities_pb.ContextDTO.deserializeBinaryFromReader);
       msg.setContext(value);
       break;
     default:
@@ -706,7 +703,7 @@ proto.generator.GenerateCharactersRequestCustom.serializeBinaryToWriter = functi
     writer.writeRepeatedMessage(
       2,
       f,
-      common_pb.CharacterGenInstructionDTO.serializeBinaryToWriter
+      entities_pb.CharacterGenInstructionDTO.serializeBinaryToWriter
     );
   }
   f = message.getContext();
@@ -714,23 +711,23 @@ proto.generator.GenerateCharactersRequestCustom.serializeBinaryToWriter = functi
     writer.writeMessage(
       3,
       f,
-      common_pb.ContextDTO.serializeBinaryToWriter
+      entities_pb.ContextDTO.serializeBinaryToWriter
     );
   }
 };
 
 
 /**
- * optional common.DataSourceEnumDTO source = 1;
- * @return {!proto.common.DataSourceEnumDTO}
+ * optional entities.DataSourceEnumDTO source = 1;
+ * @return {!proto.entities.DataSourceEnumDTO}
  */
 proto.generator.GenerateCharactersRequestCustom.prototype.getSource = function() {
-  return /** @type {!proto.common.DataSourceEnumDTO} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+  return /** @type {!proto.entities.DataSourceEnumDTO} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
 /**
- * @param {!proto.common.DataSourceEnumDTO} value
+ * @param {!proto.entities.DataSourceEnumDTO} value
  * @return {!proto.generator.GenerateCharactersRequestCustom} returns this
  */
 proto.generator.GenerateCharactersRequestCustom.prototype.setSource = function(value) {
@@ -739,17 +736,17 @@ proto.generator.GenerateCharactersRequestCustom.prototype.setSource = function(v
 
 
 /**
- * repeated common.CharacterGenInstructionDTO arr = 2;
- * @return {!Array<!proto.common.CharacterGenInstructionDTO>}
+ * repeated entities.CharacterGenInstructionDTO arr = 2;
+ * @return {!Array<!proto.entities.CharacterGenInstructionDTO>}
  */
 proto.generator.GenerateCharactersRequestCustom.prototype.getArrList = function() {
-  return /** @type{!Array<!proto.common.CharacterGenInstructionDTO>} */ (
-    jspb.Message.getRepeatedWrapperField(this, common_pb.CharacterGenInstructionDTO, 2));
+  return /** @type{!Array<!proto.entities.CharacterGenInstructionDTO>} */ (
+    jspb.Message.getRepeatedWrapperField(this, entities_pb.CharacterGenInstructionDTO, 2));
 };
 
 
 /**
- * @param {!Array<!proto.common.CharacterGenInstructionDTO>} value
+ * @param {!Array<!proto.entities.CharacterGenInstructionDTO>} value
  * @return {!proto.generator.GenerateCharactersRequestCustom} returns this
 */
 proto.generator.GenerateCharactersRequestCustom.prototype.setArrList = function(value) {
@@ -758,12 +755,12 @@ proto.generator.GenerateCharactersRequestCustom.prototype.setArrList = function(
 
 
 /**
- * @param {!proto.common.CharacterGenInstructionDTO=} opt_value
+ * @param {!proto.entities.CharacterGenInstructionDTO=} opt_value
  * @param {number=} opt_index
- * @return {!proto.common.CharacterGenInstructionDTO}
+ * @return {!proto.entities.CharacterGenInstructionDTO}
  */
 proto.generator.GenerateCharactersRequestCustom.prototype.addArr = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 2, opt_value, proto.common.CharacterGenInstructionDTO, opt_index);
+  return jspb.Message.addToRepeatedWrapperField(this, 2, opt_value, proto.entities.CharacterGenInstructionDTO, opt_index);
 };
 
 
@@ -777,17 +774,17 @@ proto.generator.GenerateCharactersRequestCustom.prototype.clearArrList = functio
 
 
 /**
- * optional common.ContextDTO context = 3;
- * @return {?proto.common.ContextDTO}
+ * optional entities.ContextDTO context = 3;
+ * @return {?proto.entities.ContextDTO}
  */
 proto.generator.GenerateCharactersRequestCustom.prototype.getContext = function() {
-  return /** @type{?proto.common.ContextDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.ContextDTO, 3));
+  return /** @type{?proto.entities.ContextDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.ContextDTO, 3));
 };
 
 
 /**
- * @param {?proto.common.ContextDTO|undefined} value
+ * @param {?proto.entities.ContextDTO|undefined} value
  * @return {!proto.generator.GenerateCharactersRequestCustom} returns this
 */
 proto.generator.GenerateCharactersRequestCustom.prototype.setContext = function(value) {
@@ -854,7 +851,7 @@ proto.generator.GenerateCharactersRequestDB.toObject = function(includeInstance,
   var f, obj = {
     source: jspb.Message.getFieldWithDefault(msg, 1, 0),
     chargeninstructionidsList: (f = jspb.Message.getRepeatedField(msg, 2)) == null ? undefined : f,
-    context: (f = msg.getContext()) && common_pb.ContextDTO.toObject(includeInstance, f)
+    context: (f = msg.getContext()) && entities_pb.ContextDTO.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -892,7 +889,7 @@ proto.generator.GenerateCharactersRequestDB.deserializeBinaryFromReader = functi
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {!proto.common.DataSourceEnumDTO} */ (reader.readEnum());
+      var value = /** @type {!proto.entities.DataSourceEnumDTO} */ (reader.readEnum());
       msg.setSource(value);
       break;
     case 2:
@@ -900,8 +897,8 @@ proto.generator.GenerateCharactersRequestDB.deserializeBinaryFromReader = functi
       msg.addChargeninstructionids(value);
       break;
     case 3:
-      var value = new common_pb.ContextDTO;
-      reader.readMessage(value,common_pb.ContextDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.ContextDTO;
+      reader.readMessage(value,entities_pb.ContextDTO.deserializeBinaryFromReader);
       msg.setContext(value);
       break;
     default:
@@ -952,23 +949,23 @@ proto.generator.GenerateCharactersRequestDB.serializeBinaryToWriter = function(m
     writer.writeMessage(
       3,
       f,
-      common_pb.ContextDTO.serializeBinaryToWriter
+      entities_pb.ContextDTO.serializeBinaryToWriter
     );
   }
 };
 
 
 /**
- * optional common.DataSourceEnumDTO source = 1;
- * @return {!proto.common.DataSourceEnumDTO}
+ * optional entities.DataSourceEnumDTO source = 1;
+ * @return {!proto.entities.DataSourceEnumDTO}
  */
 proto.generator.GenerateCharactersRequestDB.prototype.getSource = function() {
-  return /** @type {!proto.common.DataSourceEnumDTO} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+  return /** @type {!proto.entities.DataSourceEnumDTO} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
 /**
- * @param {!proto.common.DataSourceEnumDTO} value
+ * @param {!proto.entities.DataSourceEnumDTO} value
  * @return {!proto.generator.GenerateCharactersRequestDB} returns this
  */
 proto.generator.GenerateCharactersRequestDB.prototype.setSource = function(value) {
@@ -1014,17 +1011,17 @@ proto.generator.GenerateCharactersRequestDB.prototype.clearChargeninstructionids
 
 
 /**
- * optional common.ContextDTO context = 3;
- * @return {?proto.common.ContextDTO}
+ * optional entities.ContextDTO context = 3;
+ * @return {?proto.entities.ContextDTO}
  */
 proto.generator.GenerateCharactersRequestDB.prototype.getContext = function() {
-  return /** @type{?proto.common.ContextDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.ContextDTO, 3));
+  return /** @type{?proto.entities.ContextDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.ContextDTO, 3));
 };
 
 
 /**
- * @param {?proto.common.ContextDTO|undefined} value
+ * @param {?proto.entities.ContextDTO|undefined} value
  * @return {!proto.generator.GenerateCharactersRequestDB} returns this
 */
 proto.generator.GenerateCharactersRequestDB.prototype.setContext = function(value) {
@@ -1090,7 +1087,7 @@ proto.generator.GenerateCharactersResponse.prototype.toObject = function(opt_inc
 proto.generator.GenerateCharactersResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
     arrList: jspb.Message.toObjectList(msg.getArrList(),
-    common_pb.CharacterDTO.toObject, includeInstance)
+    entities_pb.CharacterDTO.toObject, includeInstance)
   };
 
   if (includeInstance) {
@@ -1128,8 +1125,8 @@ proto.generator.GenerateCharactersResponse.deserializeBinaryFromReader = functio
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = new common_pb.CharacterDTO;
-      reader.readMessage(value,common_pb.CharacterDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.CharacterDTO;
+      reader.readMessage(value,entities_pb.CharacterDTO.deserializeBinaryFromReader);
       msg.addArr(value);
       break;
     default:
@@ -1166,24 +1163,24 @@ proto.generator.GenerateCharactersResponse.serializeBinaryToWriter = function(me
     writer.writeRepeatedMessage(
       1,
       f,
-      common_pb.CharacterDTO.serializeBinaryToWriter
+      entities_pb.CharacterDTO.serializeBinaryToWriter
     );
   }
 };
 
 
 /**
- * repeated common.CharacterDTO arr = 1;
- * @return {!Array<!proto.common.CharacterDTO>}
+ * repeated entities.CharacterDTO arr = 1;
+ * @return {!Array<!proto.entities.CharacterDTO>}
  */
 proto.generator.GenerateCharactersResponse.prototype.getArrList = function() {
-  return /** @type{!Array<!proto.common.CharacterDTO>} */ (
-    jspb.Message.getRepeatedWrapperField(this, common_pb.CharacterDTO, 1));
+  return /** @type{!Array<!proto.entities.CharacterDTO>} */ (
+    jspb.Message.getRepeatedWrapperField(this, entities_pb.CharacterDTO, 1));
 };
 
 
 /**
- * @param {!Array<!proto.common.CharacterDTO>} value
+ * @param {!Array<!proto.entities.CharacterDTO>} value
  * @return {!proto.generator.GenerateCharactersResponse} returns this
 */
 proto.generator.GenerateCharactersResponse.prototype.setArrList = function(value) {
@@ -1192,12 +1189,12 @@ proto.generator.GenerateCharactersResponse.prototype.setArrList = function(value
 
 
 /**
- * @param {!proto.common.CharacterDTO=} opt_value
+ * @param {!proto.entities.CharacterDTO=} opt_value
  * @param {number=} opt_index
- * @return {!proto.common.CharacterDTO}
+ * @return {!proto.entities.CharacterDTO}
  */
 proto.generator.GenerateCharactersResponse.prototype.addArr = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 1, opt_value, proto.common.CharacterDTO, opt_index);
+  return jspb.Message.addToRepeatedWrapperField(this, 1, opt_value, proto.entities.CharacterDTO, opt_index);
 };
 
 
@@ -1251,8 +1248,8 @@ proto.generator.GenerateCharacterGroupsRequest.toObject = function(includeInstan
   var f, obj = {
     source: jspb.Message.getFieldWithDefault(msg, 1, 0),
     arrList: jspb.Message.toObjectList(msg.getArrList(),
-    common_pb.CharacterGroupGenInstructionDTO.toObject, includeInstance),
-    context: (f = msg.getContext()) && common_pb.ContextDTO.toObject(includeInstance, f)
+    entities_pb.CharacterGroupGenInstructionDTO.toObject, includeInstance),
+    context: (f = msg.getContext()) && entities_pb.ContextDTO.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -1290,17 +1287,17 @@ proto.generator.GenerateCharacterGroupsRequest.deserializeBinaryFromReader = fun
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {!proto.common.DataSourceEnumDTO} */ (reader.readEnum());
+      var value = /** @type {!proto.entities.DataSourceEnumDTO} */ (reader.readEnum());
       msg.setSource(value);
       break;
     case 2:
-      var value = new common_pb.CharacterGroupGenInstructionDTO;
-      reader.readMessage(value,common_pb.CharacterGroupGenInstructionDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.CharacterGroupGenInstructionDTO;
+      reader.readMessage(value,entities_pb.CharacterGroupGenInstructionDTO.deserializeBinaryFromReader);
       msg.addArr(value);
       break;
     case 3:
-      var value = new common_pb.ContextDTO;
-      reader.readMessage(value,common_pb.ContextDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.ContextDTO;
+      reader.readMessage(value,entities_pb.ContextDTO.deserializeBinaryFromReader);
       msg.setContext(value);
       break;
     default:
@@ -1344,7 +1341,7 @@ proto.generator.GenerateCharacterGroupsRequest.serializeBinaryToWriter = functio
     writer.writeRepeatedMessage(
       2,
       f,
-      common_pb.CharacterGroupGenInstructionDTO.serializeBinaryToWriter
+      entities_pb.CharacterGroupGenInstructionDTO.serializeBinaryToWriter
     );
   }
   f = message.getContext();
@@ -1352,23 +1349,23 @@ proto.generator.GenerateCharacterGroupsRequest.serializeBinaryToWriter = functio
     writer.writeMessage(
       3,
       f,
-      common_pb.ContextDTO.serializeBinaryToWriter
+      entities_pb.ContextDTO.serializeBinaryToWriter
     );
   }
 };
 
 
 /**
- * optional common.DataSourceEnumDTO source = 1;
- * @return {!proto.common.DataSourceEnumDTO}
+ * optional entities.DataSourceEnumDTO source = 1;
+ * @return {!proto.entities.DataSourceEnumDTO}
  */
 proto.generator.GenerateCharacterGroupsRequest.prototype.getSource = function() {
-  return /** @type {!proto.common.DataSourceEnumDTO} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+  return /** @type {!proto.entities.DataSourceEnumDTO} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
 /**
- * @param {!proto.common.DataSourceEnumDTO} value
+ * @param {!proto.entities.DataSourceEnumDTO} value
  * @return {!proto.generator.GenerateCharacterGroupsRequest} returns this
  */
 proto.generator.GenerateCharacterGroupsRequest.prototype.setSource = function(value) {
@@ -1377,17 +1374,17 @@ proto.generator.GenerateCharacterGroupsRequest.prototype.setSource = function(va
 
 
 /**
- * repeated common.CharacterGroupGenInstructionDTO arr = 2;
- * @return {!Array<!proto.common.CharacterGroupGenInstructionDTO>}
+ * repeated entities.CharacterGroupGenInstructionDTO arr = 2;
+ * @return {!Array<!proto.entities.CharacterGroupGenInstructionDTO>}
  */
 proto.generator.GenerateCharacterGroupsRequest.prototype.getArrList = function() {
-  return /** @type{!Array<!proto.common.CharacterGroupGenInstructionDTO>} */ (
-    jspb.Message.getRepeatedWrapperField(this, common_pb.CharacterGroupGenInstructionDTO, 2));
+  return /** @type{!Array<!proto.entities.CharacterGroupGenInstructionDTO>} */ (
+    jspb.Message.getRepeatedWrapperField(this, entities_pb.CharacterGroupGenInstructionDTO, 2));
 };
 
 
 /**
- * @param {!Array<!proto.common.CharacterGroupGenInstructionDTO>} value
+ * @param {!Array<!proto.entities.CharacterGroupGenInstructionDTO>} value
  * @return {!proto.generator.GenerateCharacterGroupsRequest} returns this
 */
 proto.generator.GenerateCharacterGroupsRequest.prototype.setArrList = function(value) {
@@ -1396,12 +1393,12 @@ proto.generator.GenerateCharacterGroupsRequest.prototype.setArrList = function(v
 
 
 /**
- * @param {!proto.common.CharacterGroupGenInstructionDTO=} opt_value
+ * @param {!proto.entities.CharacterGroupGenInstructionDTO=} opt_value
  * @param {number=} opt_index
- * @return {!proto.common.CharacterGroupGenInstructionDTO}
+ * @return {!proto.entities.CharacterGroupGenInstructionDTO}
  */
 proto.generator.GenerateCharacterGroupsRequest.prototype.addArr = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 2, opt_value, proto.common.CharacterGroupGenInstructionDTO, opt_index);
+  return jspb.Message.addToRepeatedWrapperField(this, 2, opt_value, proto.entities.CharacterGroupGenInstructionDTO, opt_index);
 };
 
 
@@ -1415,17 +1412,17 @@ proto.generator.GenerateCharacterGroupsRequest.prototype.clearArrList = function
 
 
 /**
- * optional common.ContextDTO context = 3;
- * @return {?proto.common.ContextDTO}
+ * optional entities.ContextDTO context = 3;
+ * @return {?proto.entities.ContextDTO}
  */
 proto.generator.GenerateCharacterGroupsRequest.prototype.getContext = function() {
-  return /** @type{?proto.common.ContextDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.ContextDTO, 3));
+  return /** @type{?proto.entities.ContextDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.ContextDTO, 3));
 };
 
 
 /**
- * @param {?proto.common.ContextDTO|undefined} value
+ * @param {?proto.entities.ContextDTO|undefined} value
  * @return {!proto.generator.GenerateCharacterGroupsRequest} returns this
 */
 proto.generator.GenerateCharacterGroupsRequest.prototype.setContext = function(value) {

@@ -3,7 +3,7 @@ import { Campaign } from "../../campaign/entities/Campaign";
 import { World } from "../../world/entities/World";
 
 import { randomUUID } from "crypto";
-import { UserDTO } from "../../../proto/common";
+import { UserDTO } from "../../../proto/entities";
 import { Account } from "../../account/entities/Account";
 import { Addiction } from "../../content/entities/Addiction";
 import { Background } from "../../content/entities/Background";

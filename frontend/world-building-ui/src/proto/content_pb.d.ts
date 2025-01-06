@@ -1,6 +1,6 @@
 import * as jspb from 'google-protobuf'
 
-import * as common_pb from './common_pb'; // proto import: "common.proto"
+import * as entities_pb from './entities_pb'; // proto import: "entities.proto"
 
 
 export class UpdateContentRequest extends jspb.Message {
@@ -12,13 +12,13 @@ export class UpdateContentRequest extends jspb.Message {
   getEntityname(): string;
   setEntityname(value: string): UpdateContentRequest;
 
-  getContext(): common_pb.ContextDTO | undefined;
-  setContext(value?: common_pb.ContextDTO): UpdateContentRequest;
+  getContext(): entities_pb.ContextDTO | undefined;
+  setContext(value?: entities_pb.ContextDTO): UpdateContentRequest;
   hasContext(): boolean;
   clearContext(): UpdateContentRequest;
 
-  getSource(): common_pb.DataSourceEnumDTO;
-  setSource(value: common_pb.DataSourceEnumDTO): UpdateContentRequest;
+  getSource(): entities_pb.DataSourceEnumDTO;
+  setSource(value: entities_pb.DataSourceEnumDTO): UpdateContentRequest;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): UpdateContentRequest.AsObject;
@@ -32,8 +32,8 @@ export namespace UpdateContentRequest {
   export type AsObject = {
     contentbody?: ContentBodyDTO.AsObject,
     entityname: string,
-    context?: common_pb.ContextDTO.AsObject,
-    source: common_pb.DataSourceEnumDTO,
+    context?: entities_pb.ContextDTO.AsObject,
+    source: entities_pb.DataSourceEnumDTO,
   }
 }
 
@@ -64,13 +64,13 @@ export class DeleteContentRequest extends jspb.Message {
   getId(): string;
   setId(value: string): DeleteContentRequest;
 
-  getContext(): common_pb.ContextDTO | undefined;
-  setContext(value?: common_pb.ContextDTO): DeleteContentRequest;
+  getContext(): entities_pb.ContextDTO | undefined;
+  setContext(value?: entities_pb.ContextDTO): DeleteContentRequest;
   hasContext(): boolean;
   clearContext(): DeleteContentRequest;
 
-  getSource(): common_pb.DataSourceEnumDTO;
-  setSource(value: common_pb.DataSourceEnumDTO): DeleteContentRequest;
+  getSource(): entities_pb.DataSourceEnumDTO;
+  setSource(value: entities_pb.DataSourceEnumDTO): DeleteContentRequest;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): DeleteContentRequest.AsObject;
@@ -84,8 +84,8 @@ export namespace DeleteContentRequest {
   export type AsObject = {
     entityname: string,
     id: string,
-    context?: common_pb.ContextDTO.AsObject,
-    source: common_pb.DataSourceEnumDTO,
+    context?: entities_pb.ContextDTO.AsObject,
+    source: entities_pb.DataSourceEnumDTO,
   }
 }
 
@@ -111,18 +111,18 @@ export class SearchContentRequest extends jspb.Message {
   getEntityname(): string;
   setEntityname(value: string): SearchContentRequest;
 
-  getQuery(): common_pb.SearchQueryDTO | undefined;
-  setQuery(value?: common_pb.SearchQueryDTO): SearchContentRequest;
+  getQuery(): entities_pb.SearchQueryDTO | undefined;
+  setQuery(value?: entities_pb.SearchQueryDTO): SearchContentRequest;
   hasQuery(): boolean;
   clearQuery(): SearchContentRequest;
 
-  getContext(): common_pb.ContextDTO | undefined;
-  setContext(value?: common_pb.ContextDTO): SearchContentRequest;
+  getContext(): entities_pb.ContextDTO | undefined;
+  setContext(value?: entities_pb.ContextDTO): SearchContentRequest;
   hasContext(): boolean;
   clearContext(): SearchContentRequest;
 
-  getSource(): common_pb.DataSourceEnumDTO;
-  setSource(value: common_pb.DataSourceEnumDTO): SearchContentRequest;
+  getSource(): entities_pb.DataSourceEnumDTO;
+  setSource(value: entities_pb.DataSourceEnumDTO): SearchContentRequest;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): SearchContentRequest.AsObject;
@@ -135,9 +135,9 @@ export class SearchContentRequest extends jspb.Message {
 export namespace SearchContentRequest {
   export type AsObject = {
     entityname: string,
-    query?: common_pb.SearchQueryDTO.AsObject,
-    context?: common_pb.ContextDTO.AsObject,
-    source: common_pb.DataSourceEnumDTO,
+    query?: entities_pb.SearchQueryDTO.AsObject,
+    context?: entities_pb.ContextDTO.AsObject,
+    source: entities_pb.DataSourceEnumDTO,
   }
 }
 
@@ -174,8 +174,8 @@ export namespace SearchContentResponse {
 }
 
 export class GetContentStatsRequest extends jspb.Message {
-  getContext(): common_pb.ContextDTO | undefined;
-  setContext(value?: common_pb.ContextDTO): GetContentStatsRequest;
+  getContext(): entities_pb.ContextDTO | undefined;
+  setContext(value?: entities_pb.ContextDTO): GetContentStatsRequest;
   hasContext(): boolean;
   clearContext(): GetContentStatsRequest;
 
@@ -184,8 +184,8 @@ export class GetContentStatsRequest extends jspb.Message {
   clearEntitynamesList(): GetContentStatsRequest;
   addEntitynames(value: string, index?: number): GetContentStatsRequest;
 
-  getSource(): common_pb.DataSourceEnumDTO;
-  setSource(value: common_pb.DataSourceEnumDTO): GetContentStatsRequest;
+  getSource(): entities_pb.DataSourceEnumDTO;
+  setSource(value: entities_pb.DataSourceEnumDTO): GetContentStatsRequest;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetContentStatsRequest.AsObject;
@@ -197,9 +197,9 @@ export class GetContentStatsRequest extends jspb.Message {
 
 export namespace GetContentStatsRequest {
   export type AsObject = {
-    context?: common_pb.ContextDTO.AsObject,
+    context?: entities_pb.ContextDTO.AsObject,
     entitynamesList: Array<string>,
-    source: common_pb.DataSourceEnumDTO,
+    source: entities_pb.DataSourceEnumDTO,
   }
 }
 
@@ -378,8 +378,8 @@ export namespace DeleteBulkContentResponse {
 }
 
 export class CreateContentRequest extends jspb.Message {
-  getSource(): common_pb.DataSourceEnumDTO;
-  setSource(value: common_pb.DataSourceEnumDTO): CreateContentRequest;
+  getSource(): entities_pb.DataSourceEnumDTO;
+  setSource(value: entities_pb.DataSourceEnumDTO): CreateContentRequest;
 
   getContentbody(): ContentBodyDTO | undefined;
   setContentbody(value?: ContentBodyDTO): CreateContentRequest;
@@ -389,8 +389,8 @@ export class CreateContentRequest extends jspb.Message {
   getEntityname(): string;
   setEntityname(value: string): CreateContentRequest;
 
-  getContext(): common_pb.ContextDTO | undefined;
-  setContext(value?: common_pb.ContextDTO): CreateContentRequest;
+  getContext(): entities_pb.ContextDTO | undefined;
+  setContext(value?: entities_pb.ContextDTO): CreateContentRequest;
   hasContext(): boolean;
   clearContext(): CreateContentRequest;
 
@@ -404,10 +404,10 @@ export class CreateContentRequest extends jspb.Message {
 
 export namespace CreateContentRequest {
   export type AsObject = {
-    source: common_pb.DataSourceEnumDTO,
+    source: entities_pb.DataSourceEnumDTO,
     contentbody?: ContentBodyDTO.AsObject,
     entityname: string,
-    context?: common_pb.ContextDTO.AsObject,
+    context?: entities_pb.ContextDTO.AsObject,
   }
 }
 
@@ -432,158 +432,158 @@ export namespace CreateContentResponse {
 }
 
 export class ContentBodyDTO extends jspb.Message {
-  getItem(): common_pb.ItemDTO | undefined;
-  setItem(value?: common_pb.ItemDTO): ContentBodyDTO;
+  getItem(): entities_pb.ItemDTO | undefined;
+  setItem(value?: entities_pb.ItemDTO): ContentBodyDTO;
   hasItem(): boolean;
   clearItem(): ContentBodyDTO;
 
-  getPastexperience(): common_pb.PastExperienceDTO | undefined;
-  setPastexperience(value?: common_pb.PastExperienceDTO): ContentBodyDTO;
+  getPastexperience(): entities_pb.PastExperienceDTO | undefined;
+  setPastexperience(value?: entities_pb.PastExperienceDTO): ContentBodyDTO;
   hasPastexperience(): boolean;
   clearPastexperience(): ContentBodyDTO;
 
-  getCharactermemory(): common_pb.CharacterMemoryDTO | undefined;
-  setCharactermemory(value?: common_pb.CharacterMemoryDTO): ContentBodyDTO;
+  getCharactermemory(): entities_pb.CharacterMemoryDTO | undefined;
+  setCharactermemory(value?: entities_pb.CharacterMemoryDTO): ContentBodyDTO;
   hasCharactermemory(): boolean;
   clearCharactermemory(): ContentBodyDTO;
 
-  getMemory(): common_pb.MemoryDTO | undefined;
-  setMemory(value?: common_pb.MemoryDTO): ContentBodyDTO;
+  getMemory(): entities_pb.MemoryDTO | undefined;
+  setMemory(value?: entities_pb.MemoryDTO): ContentBodyDTO;
   hasMemory(): boolean;
   clearMemory(): ContentBodyDTO;
 
-  getMemorypool(): common_pb.MemoryPoolDTO | undefined;
-  setMemorypool(value?: common_pb.MemoryPoolDTO): ContentBodyDTO;
+  getMemorypool(): entities_pb.MemoryPoolDTO | undefined;
+  setMemorypool(value?: entities_pb.MemoryPoolDTO): ContentBodyDTO;
   hasMemorypool(): boolean;
   clearMemorypool(): ContentBodyDTO;
 
-  getMemorypoolentry(): common_pb.MemoryPoolEntryDTO | undefined;
-  setMemorypoolentry(value?: common_pb.MemoryPoolEntryDTO): ContentBodyDTO;
+  getMemorypoolentry(): entities_pb.MemoryPoolEntryDTO | undefined;
+  setMemorypoolentry(value?: entities_pb.MemoryPoolEntryDTO): ContentBodyDTO;
   hasMemorypoolentry(): boolean;
   clearMemorypoolentry(): ContentBodyDTO;
 
-  getSkill(): common_pb.SkillDTO | undefined;
-  setSkill(value?: common_pb.SkillDTO): ContentBodyDTO;
+  getSkill(): entities_pb.SkillDTO | undefined;
+  setSkill(value?: entities_pb.SkillDTO): ContentBodyDTO;
   hasSkill(): boolean;
   clearSkill(): ContentBodyDTO;
 
-  getSkillset(): common_pb.SkillSetDTO | undefined;
-  setSkillset(value?: common_pb.SkillSetDTO): ContentBodyDTO;
+  getSkillset(): entities_pb.SkillSetDTO | undefined;
+  setSkillset(value?: entities_pb.SkillSetDTO): ContentBodyDTO;
   hasSkillset(): boolean;
   clearSkillset(): ContentBodyDTO;
 
-  getEquipmentslot(): common_pb.EquipmentSlotDTO | undefined;
-  setEquipmentslot(value?: common_pb.EquipmentSlotDTO): ContentBodyDTO;
+  getEquipmentslot(): entities_pb.EquipmentSlotDTO | undefined;
+  setEquipmentslot(value?: entities_pb.EquipmentSlotDTO): ContentBodyDTO;
   hasEquipmentslot(): boolean;
   clearEquipmentslot(): ContentBodyDTO;
 
-  getStorageslot(): common_pb.StorageSlotDTO | undefined;
-  setStorageslot(value?: common_pb.StorageSlotDTO): ContentBodyDTO;
+  getStorageslot(): entities_pb.StorageSlotDTO | undefined;
+  setStorageslot(value?: entities_pb.StorageSlotDTO): ContentBodyDTO;
   hasStorageslot(): boolean;
   clearStorageslot(): ContentBodyDTO;
 
-  getTrait(): common_pb.TraitDTO | undefined;
-  setTrait(value?: common_pb.TraitDTO): ContentBodyDTO;
+  getTrait(): entities_pb.TraitDTO | undefined;
+  setTrait(value?: entities_pb.TraitDTO): ContentBodyDTO;
   hasTrait(): boolean;
   clearTrait(): ContentBodyDTO;
 
-  getAddiction(): common_pb.AddictionDTO | undefined;
-  setAddiction(value?: common_pb.AddictionDTO): ContentBodyDTO;
+  getAddiction(): entities_pb.AddictionDTO | undefined;
+  setAddiction(value?: entities_pb.AddictionDTO): ContentBodyDTO;
   hasAddiction(): boolean;
   clearAddiction(): ContentBodyDTO;
 
-  getBackground(): common_pb.BackgroundDTO | undefined;
-  setBackground(value?: common_pb.BackgroundDTO): ContentBodyDTO;
+  getBackground(): entities_pb.BackgroundDTO | undefined;
+  setBackground(value?: entities_pb.BackgroundDTO): ContentBodyDTO;
   hasBackground(): boolean;
   clearBackground(): ContentBodyDTO;
 
-  getBirthsign(): common_pb.BirthsignDTO | undefined;
-  setBirthsign(value?: common_pb.BirthsignDTO): ContentBodyDTO;
+  getBirthsign(): entities_pb.BirthsignDTO | undefined;
+  setBirthsign(value?: entities_pb.BirthsignDTO): ContentBodyDTO;
   hasBirthsign(): boolean;
   clearBirthsign(): ContentBodyDTO;
 
-  getCharacter(): common_pb.CharacterDTO | undefined;
-  setCharacter(value?: common_pb.CharacterDTO): ContentBodyDTO;
+  getCharacter(): entities_pb.CharacterDTO | undefined;
+  setCharacter(value?: entities_pb.CharacterDTO): ContentBodyDTO;
   hasCharacter(): boolean;
   clearCharacter(): ContentBodyDTO;
 
-  getCharactergeninstruction(): common_pb.CharacterGenInstructionDTO | undefined;
-  setCharactergeninstruction(value?: common_pb.CharacterGenInstructionDTO): ContentBodyDTO;
+  getCharactergeninstruction(): entities_pb.CharacterGenInstructionDTO | undefined;
+  setCharactergeninstruction(value?: entities_pb.CharacterGenInstructionDTO): ContentBodyDTO;
   hasCharactergeninstruction(): boolean;
   clearCharactergeninstruction(): ContentBodyDTO;
 
-  getCharactergroupgeninstruction(): common_pb.CharacterGroupGenInstructionDTO | undefined;
-  setCharactergroupgeninstruction(value?: common_pb.CharacterGroupGenInstructionDTO): ContentBodyDTO;
+  getCharactergroupgeninstruction(): entities_pb.CharacterGroupGenInstructionDTO | undefined;
+  setCharactergroupgeninstruction(value?: entities_pb.CharacterGroupGenInstructionDTO): ContentBodyDTO;
   hasCharactergroupgeninstruction(): boolean;
   clearCharactergroupgeninstruction(): ContentBodyDTO;
 
-  getCharacterprofession(): common_pb.CharacterProfessionDTO | undefined;
-  setCharacterprofession(value?: common_pb.CharacterProfessionDTO): ContentBodyDTO;
+  getCharacterprofession(): entities_pb.CharacterProfessionDTO | undefined;
+  setCharacterprofession(value?: entities_pb.CharacterProfessionDTO): ContentBodyDTO;
   hasCharacterprofession(): boolean;
   clearCharacterprofession(): ContentBodyDTO;
 
-  getDisease(): common_pb.DiseaseDTO | undefined;
-  setDisease(value?: common_pb.DiseaseDTO): ContentBodyDTO;
+  getDisease(): entities_pb.DiseaseDTO | undefined;
+  setDisease(value?: entities_pb.DiseaseDTO): ContentBodyDTO;
   hasDisease(): boolean;
   clearDisease(): ContentBodyDTO;
 
-  getEffect(): common_pb.EffectDTO | undefined;
-  setEffect(value?: common_pb.EffectDTO): ContentBodyDTO;
+  getEffect(): entities_pb.EffectDTO | undefined;
+  setEffect(value?: entities_pb.EffectDTO): ContentBodyDTO;
   hasEffect(): boolean;
   clearEffect(): ContentBodyDTO;
 
-  getFact(): common_pb.FactDTO | undefined;
-  setFact(value?: common_pb.FactDTO): ContentBodyDTO;
+  getFact(): entities_pb.FactDTO | undefined;
+  setFact(value?: entities_pb.FactDTO): ContentBodyDTO;
   hasFact(): boolean;
   clearFact(): ContentBodyDTO;
 
-  getFaction(): common_pb.FactionDTO | undefined;
-  setFaction(value?: common_pb.FactionDTO): ContentBodyDTO;
+  getFaction(): entities_pb.FactionDTO | undefined;
+  setFaction(value?: entities_pb.FactionDTO): ContentBodyDTO;
   hasFaction(): boolean;
   clearFaction(): ContentBodyDTO;
 
-  getItemset(): common_pb.ItemSetDTO | undefined;
-  setItemset(value?: common_pb.ItemSetDTO): ContentBodyDTO;
+  getItemset(): entities_pb.ItemSetDTO | undefined;
+  setItemset(value?: entities_pb.ItemSetDTO): ContentBodyDTO;
   hasItemset(): boolean;
   clearItemset(): ContentBodyDTO;
 
-  getMood(): common_pb.MoodDTO | undefined;
-  setMood(value?: common_pb.MoodDTO): ContentBodyDTO;
+  getMood(): entities_pb.MoodDTO | undefined;
+  setMood(value?: entities_pb.MoodDTO): ContentBodyDTO;
   hasMood(): boolean;
   clearMood(): ContentBodyDTO;
 
-  getNeed(): common_pb.NeedDTO | undefined;
-  setNeed(value?: common_pb.NeedDTO): ContentBodyDTO;
+  getNeed(): entities_pb.NeedDTO | undefined;
+  setNeed(value?: entities_pb.NeedDTO): ContentBodyDTO;
   hasNeed(): boolean;
   clearNeed(): ContentBodyDTO;
 
-  getPersonalityprofile(): common_pb.PersonalityProfileDTO | undefined;
-  setPersonalityprofile(value?: common_pb.PersonalityProfileDTO): ContentBodyDTO;
+  getPersonalityprofile(): entities_pb.PersonalityProfileDTO | undefined;
+  setPersonalityprofile(value?: entities_pb.PersonalityProfileDTO): ContentBodyDTO;
   hasPersonalityprofile(): boolean;
   clearPersonalityprofile(): ContentBodyDTO;
 
-  getRace(): common_pb.RaceDTO | undefined;
-  setRace(value?: common_pb.RaceDTO): ContentBodyDTO;
+  getRace(): entities_pb.RaceDTO | undefined;
+  setRace(value?: entities_pb.RaceDTO): ContentBodyDTO;
   hasRace(): boolean;
   clearRace(): ContentBodyDTO;
 
-  getReligion(): common_pb.ReligionDTO | undefined;
-  setReligion(value?: common_pb.ReligionDTO): ContentBodyDTO;
+  getReligion(): entities_pb.ReligionDTO | undefined;
+  setReligion(value?: entities_pb.ReligionDTO): ContentBodyDTO;
   hasReligion(): boolean;
   clearReligion(): ContentBodyDTO;
 
-  getResistance(): common_pb.ResistanceDTO | undefined;
-  setResistance(value?: common_pb.ResistanceDTO): ContentBodyDTO;
+  getResistance(): entities_pb.ResistanceDTO | undefined;
+  setResistance(value?: entities_pb.ResistanceDTO): ContentBodyDTO;
   hasResistance(): boolean;
   clearResistance(): ContentBodyDTO;
 
-  getStatus(): common_pb.StatusDTO | undefined;
-  setStatus(value?: common_pb.StatusDTO): ContentBodyDTO;
+  getStatus(): entities_pb.StatusDTO | undefined;
+  setStatus(value?: entities_pb.StatusDTO): ContentBodyDTO;
   hasStatus(): boolean;
   clearStatus(): ContentBodyDTO;
 
-  getTag(): common_pb.TagDTO | undefined;
-  setTag(value?: common_pb.TagDTO): ContentBodyDTO;
+  getTag(): entities_pb.TagDTO | undefined;
+  setTag(value?: entities_pb.TagDTO): ContentBodyDTO;
   hasTag(): boolean;
   clearTag(): ContentBodyDTO;
 
@@ -599,37 +599,37 @@ export class ContentBodyDTO extends jspb.Message {
 
 export namespace ContentBodyDTO {
   export type AsObject = {
-    item?: common_pb.ItemDTO.AsObject,
-    pastexperience?: common_pb.PastExperienceDTO.AsObject,
-    charactermemory?: common_pb.CharacterMemoryDTO.AsObject,
-    memory?: common_pb.MemoryDTO.AsObject,
-    memorypool?: common_pb.MemoryPoolDTO.AsObject,
-    memorypoolentry?: common_pb.MemoryPoolEntryDTO.AsObject,
-    skill?: common_pb.SkillDTO.AsObject,
-    skillset?: common_pb.SkillSetDTO.AsObject,
-    equipmentslot?: common_pb.EquipmentSlotDTO.AsObject,
-    storageslot?: common_pb.StorageSlotDTO.AsObject,
-    trait?: common_pb.TraitDTO.AsObject,
-    addiction?: common_pb.AddictionDTO.AsObject,
-    background?: common_pb.BackgroundDTO.AsObject,
-    birthsign?: common_pb.BirthsignDTO.AsObject,
-    character?: common_pb.CharacterDTO.AsObject,
-    charactergeninstruction?: common_pb.CharacterGenInstructionDTO.AsObject,
-    charactergroupgeninstruction?: common_pb.CharacterGroupGenInstructionDTO.AsObject,
-    characterprofession?: common_pb.CharacterProfessionDTO.AsObject,
-    disease?: common_pb.DiseaseDTO.AsObject,
-    effect?: common_pb.EffectDTO.AsObject,
-    fact?: common_pb.FactDTO.AsObject,
-    faction?: common_pb.FactionDTO.AsObject,
-    itemset?: common_pb.ItemSetDTO.AsObject,
-    mood?: common_pb.MoodDTO.AsObject,
-    need?: common_pb.NeedDTO.AsObject,
-    personalityprofile?: common_pb.PersonalityProfileDTO.AsObject,
-    race?: common_pb.RaceDTO.AsObject,
-    religion?: common_pb.ReligionDTO.AsObject,
-    resistance?: common_pb.ResistanceDTO.AsObject,
-    status?: common_pb.StatusDTO.AsObject,
-    tag?: common_pb.TagDTO.AsObject,
+    item?: entities_pb.ItemDTO.AsObject,
+    pastexperience?: entities_pb.PastExperienceDTO.AsObject,
+    charactermemory?: entities_pb.CharacterMemoryDTO.AsObject,
+    memory?: entities_pb.MemoryDTO.AsObject,
+    memorypool?: entities_pb.MemoryPoolDTO.AsObject,
+    memorypoolentry?: entities_pb.MemoryPoolEntryDTO.AsObject,
+    skill?: entities_pb.SkillDTO.AsObject,
+    skillset?: entities_pb.SkillSetDTO.AsObject,
+    equipmentslot?: entities_pb.EquipmentSlotDTO.AsObject,
+    storageslot?: entities_pb.StorageSlotDTO.AsObject,
+    trait?: entities_pb.TraitDTO.AsObject,
+    addiction?: entities_pb.AddictionDTO.AsObject,
+    background?: entities_pb.BackgroundDTO.AsObject,
+    birthsign?: entities_pb.BirthsignDTO.AsObject,
+    character?: entities_pb.CharacterDTO.AsObject,
+    charactergeninstruction?: entities_pb.CharacterGenInstructionDTO.AsObject,
+    charactergroupgeninstruction?: entities_pb.CharacterGroupGenInstructionDTO.AsObject,
+    characterprofession?: entities_pb.CharacterProfessionDTO.AsObject,
+    disease?: entities_pb.DiseaseDTO.AsObject,
+    effect?: entities_pb.EffectDTO.AsObject,
+    fact?: entities_pb.FactDTO.AsObject,
+    faction?: entities_pb.FactionDTO.AsObject,
+    itemset?: entities_pb.ItemSetDTO.AsObject,
+    mood?: entities_pb.MoodDTO.AsObject,
+    need?: entities_pb.NeedDTO.AsObject,
+    personalityprofile?: entities_pb.PersonalityProfileDTO.AsObject,
+    race?: entities_pb.RaceDTO.AsObject,
+    religion?: entities_pb.ReligionDTO.AsObject,
+    resistance?: entities_pb.ResistanceDTO.AsObject,
+    status?: entities_pb.StatusDTO.AsObject,
+    tag?: entities_pb.TagDTO.AsObject,
   }
 
   export enum DataCase { 

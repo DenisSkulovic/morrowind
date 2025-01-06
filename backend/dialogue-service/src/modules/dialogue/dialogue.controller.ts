@@ -13,24 +13,52 @@ import {
     EndDialogueRequest,
     EndDialogueResponse
 } from '../../proto/dialogue';
+import { OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
+import { Server, Socket } from 'socket.io';
+import { Observable } from 'rxjs';
 
 @Controller()
-export class DialogueController {
+@WebSocketGateway({
+    cors: {
+        origin: "*"
+    }
+})
+export class DialogueController implements OnGatewayConnection, OnGatewayDisconnect {
+    @WebSocketServer()
+    private server: Server;
+
     private readonly logger = new Logger(DialogueController.name);
 
     constructor(
         @Inject('IDialogueService') private readonly dialogueService: DialogueService,
     ) { }
 
-    @GrpcMethod('DialogueService', 'startDialogue')
-    public async startDialogue(request: StartDialogueRequest): Promise<StartDialogueResponse> {
+    // Handle new WebSocket connections
+    handleConnection(client: Socket) {
+        console.log(`Client connected: ${client.id}`);
+    }
+
+    // Handle WebSocket disconnections
+    handleDisconnect(client: Socket) {
+        console.log(`Client disconnected: ${client.id}`);
+    }
+
+    @SubscribeMessage('startDialogue')
+    public async handleStartDialogue(
+        client: Socket,
+        request: StartDialogueRequest
+    ): Promise<StartDialogueResponse> {
         this.logger.debug(`Received gRPC request:
             Method: DialogueService.startDialogue
             Request: ${JSON.stringify(request)}
         `);
-        const response = await this.dialogueService.startDialogue(request);
-        console.log('[DialogueController] StartDialogue response', response);
-        return response;
+
+        // Delegate dialogue streaming to the service
+        await this.dialogueService.streamDialogue(payload, (chunk) => {
+            client.emit('dialogueChunk', chunk); // Relay chunks to the client
+        });
+
+        client.emit('dialogueComplete', { message: 'Dialogue completed.' });
     }
 
     @GrpcMethod('DialogueService', 'generateResponseOptions')

@@ -2,21 +2,18 @@
 /**
  * @fileoverview
  * @enhanceable
- * @suppress {missingRequire} reports error on implicit type usages.
  * @suppress {messageConventions} JS Compiler reports an error if a variable or
  *     field starts with 'MSG_' and isn't a translatable message.
  * @public
  */
 // GENERATED CODE -- DO NOT EDIT!
-/* eslint-disable */
-// @ts-nocheck
 
 var jspb = require('google-protobuf');
 var goog = jspb;
-var global = (function() { return this || window || global || self || Function('return this')(); }).call(null);
+var global = Function('return this')();
 
-var common_pb = require('./common_pb.js');
-goog.object.extend(proto, common_pb);
+var entities_pb = require('./entities_pb.js');
+goog.object.extend(proto, entities_pb);
 goog.exportSymbol('proto.world.CreateWorldRequest', null, global);
 goog.exportSymbol('proto.world.CreateWorldResponse', null, global);
 goog.exportSymbol('proto.world.DeleteWorldRequest', null, global);
@@ -445,7 +442,7 @@ proto.world.UpdateWorldRequest.prototype.toObject = function(opt_includeInstance
  */
 proto.world.UpdateWorldRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    world: (f = msg.getWorld()) && common_pb.WorldDTO.toObject(includeInstance, f)
+    world: (f = msg.getWorld()) && entities_pb.WorldDTO.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -483,8 +480,8 @@ proto.world.UpdateWorldRequest.deserializeBinaryFromReader = function(msg, reade
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = new common_pb.WorldDTO;
-      reader.readMessage(value,common_pb.WorldDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.WorldDTO;
+      reader.readMessage(value,entities_pb.WorldDTO.deserializeBinaryFromReader);
       msg.setWorld(value);
       break;
     default:
@@ -521,24 +518,24 @@ proto.world.UpdateWorldRequest.serializeBinaryToWriter = function(message, write
     writer.writeMessage(
       1,
       f,
-      common_pb.WorldDTO.serializeBinaryToWriter
+      entities_pb.WorldDTO.serializeBinaryToWriter
     );
   }
 };
 
 
 /**
- * optional common.WorldDTO world = 1;
- * @return {?proto.common.WorldDTO}
+ * optional entities.WorldDTO world = 1;
+ * @return {?proto.entities.WorldDTO}
  */
 proto.world.UpdateWorldRequest.prototype.getWorld = function() {
-  return /** @type{?proto.common.WorldDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.WorldDTO, 1));
+  return /** @type{?proto.entities.WorldDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.WorldDTO, 1));
 };
 
 
 /**
- * @param {?proto.common.WorldDTO|undefined} value
+ * @param {?proto.entities.WorldDTO|undefined} value
  * @return {!proto.world.UpdateWorldRequest} returns this
 */
 proto.world.UpdateWorldRequest.prototype.setWorld = function(value) {
@@ -596,7 +593,7 @@ proto.world.UpdateWorldResponse.prototype.toObject = function(opt_includeInstanc
  */
 proto.world.UpdateWorldResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    world: (f = msg.getWorld()) && common_pb.WorldDTO.toObject(includeInstance, f)
+    world: (f = msg.getWorld()) && entities_pb.WorldDTO.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -634,8 +631,8 @@ proto.world.UpdateWorldResponse.deserializeBinaryFromReader = function(msg, read
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = new common_pb.WorldDTO;
-      reader.readMessage(value,common_pb.WorldDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.WorldDTO;
+      reader.readMessage(value,entities_pb.WorldDTO.deserializeBinaryFromReader);
       msg.setWorld(value);
       break;
     default:
@@ -672,24 +669,24 @@ proto.world.UpdateWorldResponse.serializeBinaryToWriter = function(message, writ
     writer.writeMessage(
       1,
       f,
-      common_pb.WorldDTO.serializeBinaryToWriter
+      entities_pb.WorldDTO.serializeBinaryToWriter
     );
   }
 };
 
 
 /**
- * optional common.WorldDTO world = 1;
- * @return {?proto.common.WorldDTO}
+ * optional entities.WorldDTO world = 1;
+ * @return {?proto.entities.WorldDTO}
  */
 proto.world.UpdateWorldResponse.prototype.getWorld = function() {
-  return /** @type{?proto.common.WorldDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.WorldDTO, 1));
+  return /** @type{?proto.entities.WorldDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.WorldDTO, 1));
 };
 
 
 /**
- * @param {?proto.common.WorldDTO|undefined} value
+ * @param {?proto.entities.WorldDTO|undefined} value
  * @return {!proto.world.UpdateWorldResponse} returns this
 */
 proto.world.UpdateWorldResponse.prototype.setWorld = function(value) {
@@ -747,7 +744,7 @@ proto.world.CreateWorldRequest.prototype.toObject = function(opt_includeInstance
  */
 proto.world.CreateWorldRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    world: (f = msg.getWorld()) && common_pb.WorldDTO.toObject(includeInstance, f)
+    world: (f = msg.getWorld()) && entities_pb.WorldDTO.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -785,8 +782,8 @@ proto.world.CreateWorldRequest.deserializeBinaryFromReader = function(msg, reade
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = new common_pb.WorldDTO;
-      reader.readMessage(value,common_pb.WorldDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.WorldDTO;
+      reader.readMessage(value,entities_pb.WorldDTO.deserializeBinaryFromReader);
       msg.setWorld(value);
       break;
     default:
@@ -823,24 +820,24 @@ proto.world.CreateWorldRequest.serializeBinaryToWriter = function(message, write
     writer.writeMessage(
       1,
       f,
-      common_pb.WorldDTO.serializeBinaryToWriter
+      entities_pb.WorldDTO.serializeBinaryToWriter
     );
   }
 };
 
 
 /**
- * optional common.WorldDTO world = 1;
- * @return {?proto.common.WorldDTO}
+ * optional entities.WorldDTO world = 1;
+ * @return {?proto.entities.WorldDTO}
  */
 proto.world.CreateWorldRequest.prototype.getWorld = function() {
-  return /** @type{?proto.common.WorldDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.WorldDTO, 1));
+  return /** @type{?proto.entities.WorldDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.WorldDTO, 1));
 };
 
 
 /**
- * @param {?proto.common.WorldDTO|undefined} value
+ * @param {?proto.entities.WorldDTO|undefined} value
  * @return {!proto.world.CreateWorldRequest} returns this
 */
 proto.world.CreateWorldRequest.prototype.setWorld = function(value) {
@@ -898,7 +895,7 @@ proto.world.CreateWorldResponse.prototype.toObject = function(opt_includeInstanc
  */
 proto.world.CreateWorldResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    world: (f = msg.getWorld()) && common_pb.WorldDTO.toObject(includeInstance, f)
+    world: (f = msg.getWorld()) && entities_pb.WorldDTO.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -936,8 +933,8 @@ proto.world.CreateWorldResponse.deserializeBinaryFromReader = function(msg, read
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = new common_pb.WorldDTO;
-      reader.readMessage(value,common_pb.WorldDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.WorldDTO;
+      reader.readMessage(value,entities_pb.WorldDTO.deserializeBinaryFromReader);
       msg.setWorld(value);
       break;
     default:
@@ -974,24 +971,24 @@ proto.world.CreateWorldResponse.serializeBinaryToWriter = function(message, writ
     writer.writeMessage(
       1,
       f,
-      common_pb.WorldDTO.serializeBinaryToWriter
+      entities_pb.WorldDTO.serializeBinaryToWriter
     );
   }
 };
 
 
 /**
- * optional common.WorldDTO world = 1;
- * @return {?proto.common.WorldDTO}
+ * optional entities.WorldDTO world = 1;
+ * @return {?proto.entities.WorldDTO}
  */
 proto.world.CreateWorldResponse.prototype.getWorld = function() {
-  return /** @type{?proto.common.WorldDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.WorldDTO, 1));
+  return /** @type{?proto.entities.WorldDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.WorldDTO, 1));
 };
 
 
 /**
- * @param {?proto.common.WorldDTO|undefined} value
+ * @param {?proto.entities.WorldDTO|undefined} value
  * @return {!proto.world.CreateWorldResponse} returns this
 */
 proto.world.CreateWorldResponse.prototype.setWorld = function(value) {
@@ -1179,7 +1176,7 @@ proto.world.GetWorldResponse.prototype.toObject = function(opt_includeInstance) 
  */
 proto.world.GetWorldResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    world: (f = msg.getWorld()) && common_pb.WorldDTO.toObject(includeInstance, f)
+    world: (f = msg.getWorld()) && entities_pb.WorldDTO.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -1217,8 +1214,8 @@ proto.world.GetWorldResponse.deserializeBinaryFromReader = function(msg, reader)
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = new common_pb.WorldDTO;
-      reader.readMessage(value,common_pb.WorldDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.WorldDTO;
+      reader.readMessage(value,entities_pb.WorldDTO.deserializeBinaryFromReader);
       msg.setWorld(value);
       break;
     default:
@@ -1255,24 +1252,24 @@ proto.world.GetWorldResponse.serializeBinaryToWriter = function(message, writer)
     writer.writeMessage(
       1,
       f,
-      common_pb.WorldDTO.serializeBinaryToWriter
+      entities_pb.WorldDTO.serializeBinaryToWriter
     );
   }
 };
 
 
 /**
- * optional common.WorldDTO world = 1;
- * @return {?proto.common.WorldDTO}
+ * optional entities.WorldDTO world = 1;
+ * @return {?proto.entities.WorldDTO}
  */
 proto.world.GetWorldResponse.prototype.getWorld = function() {
-  return /** @type{?proto.common.WorldDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.WorldDTO, 1));
+  return /** @type{?proto.entities.WorldDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.WorldDTO, 1));
 };
 
 
 /**
- * @param {?proto.common.WorldDTO|undefined} value
+ * @param {?proto.entities.WorldDTO|undefined} value
  * @return {!proto.world.GetWorldResponse} returns this
 */
 proto.world.GetWorldResponse.prototype.setWorld = function(value) {
@@ -1468,7 +1465,7 @@ proto.world.GetWorldsForUserResponse.prototype.toObject = function(opt_includeIn
 proto.world.GetWorldsForUserResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
     worldsList: jspb.Message.toObjectList(msg.getWorldsList(),
-    common_pb.WorldDTO.toObject, includeInstance)
+    entities_pb.WorldDTO.toObject, includeInstance)
   };
 
   if (includeInstance) {
@@ -1506,8 +1503,8 @@ proto.world.GetWorldsForUserResponse.deserializeBinaryFromReader = function(msg,
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = new common_pb.WorldDTO;
-      reader.readMessage(value,common_pb.WorldDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.WorldDTO;
+      reader.readMessage(value,entities_pb.WorldDTO.deserializeBinaryFromReader);
       msg.addWorlds(value);
       break;
     default:
@@ -1544,24 +1541,24 @@ proto.world.GetWorldsForUserResponse.serializeBinaryToWriter = function(message,
     writer.writeRepeatedMessage(
       1,
       f,
-      common_pb.WorldDTO.serializeBinaryToWriter
+      entities_pb.WorldDTO.serializeBinaryToWriter
     );
   }
 };
 
 
 /**
- * repeated common.WorldDTO worlds = 1;
- * @return {!Array<!proto.common.WorldDTO>}
+ * repeated entities.WorldDTO worlds = 1;
+ * @return {!Array<!proto.entities.WorldDTO>}
  */
 proto.world.GetWorldsForUserResponse.prototype.getWorldsList = function() {
-  return /** @type{!Array<!proto.common.WorldDTO>} */ (
-    jspb.Message.getRepeatedWrapperField(this, common_pb.WorldDTO, 1));
+  return /** @type{!Array<!proto.entities.WorldDTO>} */ (
+    jspb.Message.getRepeatedWrapperField(this, entities_pb.WorldDTO, 1));
 };
 
 
 /**
- * @param {!Array<!proto.common.WorldDTO>} value
+ * @param {!Array<!proto.entities.WorldDTO>} value
  * @return {!proto.world.GetWorldsForUserResponse} returns this
 */
 proto.world.GetWorldsForUserResponse.prototype.setWorldsList = function(value) {
@@ -1570,12 +1567,12 @@ proto.world.GetWorldsForUserResponse.prototype.setWorldsList = function(value) {
 
 
 /**
- * @param {!proto.common.WorldDTO=} opt_value
+ * @param {!proto.entities.WorldDTO=} opt_value
  * @param {number=} opt_index
- * @return {!proto.common.WorldDTO}
+ * @return {!proto.entities.WorldDTO}
  */
 proto.world.GetWorldsForUserResponse.prototype.addWorlds = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 1, opt_value, proto.common.WorldDTO, opt_index);
+  return jspb.Message.addToRepeatedWrapperField(this, 1, opt_value, proto.entities.WorldDTO, opt_index);
 };
 
 
@@ -2083,7 +2080,7 @@ proto.world.LoadWorldPresetRequest.prototype.toObject = function(opt_includeInst
 proto.world.LoadWorldPresetRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     preset: jspb.Message.getFieldWithDefault(msg, 1, 0),
-    context: (f = msg.getContext()) && common_pb.ContextDTO.toObject(includeInstance, f)
+    context: (f = msg.getContext()) && entities_pb.ContextDTO.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -2121,12 +2118,12 @@ proto.world.LoadWorldPresetRequest.deserializeBinaryFromReader = function(msg, r
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {!proto.common.PresetEnumDTO} */ (reader.readEnum());
+      var value = /** @type {!proto.entities.PresetEnumDTO} */ (reader.readEnum());
       msg.setPreset(value);
       break;
     case 2:
-      var value = new common_pb.ContextDTO;
-      reader.readMessage(value,common_pb.ContextDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.ContextDTO;
+      reader.readMessage(value,entities_pb.ContextDTO.deserializeBinaryFromReader);
       msg.setContext(value);
       break;
     default:
@@ -2170,23 +2167,23 @@ proto.world.LoadWorldPresetRequest.serializeBinaryToWriter = function(message, w
     writer.writeMessage(
       2,
       f,
-      common_pb.ContextDTO.serializeBinaryToWriter
+      entities_pb.ContextDTO.serializeBinaryToWriter
     );
   }
 };
 
 
 /**
- * optional common.PresetEnumDTO preset = 1;
- * @return {!proto.common.PresetEnumDTO}
+ * optional entities.PresetEnumDTO preset = 1;
+ * @return {!proto.entities.PresetEnumDTO}
  */
 proto.world.LoadWorldPresetRequest.prototype.getPreset = function() {
-  return /** @type {!proto.common.PresetEnumDTO} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+  return /** @type {!proto.entities.PresetEnumDTO} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
 /**
- * @param {!proto.common.PresetEnumDTO} value
+ * @param {!proto.entities.PresetEnumDTO} value
  * @return {!proto.world.LoadWorldPresetRequest} returns this
  */
 proto.world.LoadWorldPresetRequest.prototype.setPreset = function(value) {
@@ -2195,17 +2192,17 @@ proto.world.LoadWorldPresetRequest.prototype.setPreset = function(value) {
 
 
 /**
- * optional common.ContextDTO context = 2;
- * @return {?proto.common.ContextDTO}
+ * optional entities.ContextDTO context = 2;
+ * @return {?proto.entities.ContextDTO}
  */
 proto.world.LoadWorldPresetRequest.prototype.getContext = function() {
-  return /** @type{?proto.common.ContextDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.ContextDTO, 2));
+  return /** @type{?proto.entities.ContextDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.ContextDTO, 2));
 };
 
 
 /**
- * @param {?proto.common.ContextDTO|undefined} value
+ * @param {?proto.entities.ContextDTO|undefined} value
  * @return {!proto.world.LoadWorldPresetRequest} returns this
 */
 proto.world.LoadWorldPresetRequest.prototype.setContext = function(value) {
@@ -2365,8 +2362,8 @@ proto.world.SearchWorldRequest.prototype.toObject = function(opt_includeInstance
 proto.world.SearchWorldRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     entityname: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    query: (f = msg.getQuery()) && common_pb.SearchQueryDTO.toObject(includeInstance, f),
-    context: (f = msg.getContext()) && common_pb.ContextDTO.toObject(includeInstance, f)
+    query: (f = msg.getQuery()) && entities_pb.SearchQueryDTO.toObject(includeInstance, f),
+    context: (f = msg.getContext()) && entities_pb.ContextDTO.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -2408,13 +2405,13 @@ proto.world.SearchWorldRequest.deserializeBinaryFromReader = function(msg, reade
       msg.setEntityname(value);
       break;
     case 2:
-      var value = new common_pb.SearchQueryDTO;
-      reader.readMessage(value,common_pb.SearchQueryDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.SearchQueryDTO;
+      reader.readMessage(value,entities_pb.SearchQueryDTO.deserializeBinaryFromReader);
       msg.setQuery(value);
       break;
     case 3:
-      var value = new common_pb.ContextDTO;
-      reader.readMessage(value,common_pb.ContextDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.ContextDTO;
+      reader.readMessage(value,entities_pb.ContextDTO.deserializeBinaryFromReader);
       msg.setContext(value);
       break;
     default:
@@ -2458,7 +2455,7 @@ proto.world.SearchWorldRequest.serializeBinaryToWriter = function(message, write
     writer.writeMessage(
       2,
       f,
-      common_pb.SearchQueryDTO.serializeBinaryToWriter
+      entities_pb.SearchQueryDTO.serializeBinaryToWriter
     );
   }
   f = message.getContext();
@@ -2466,7 +2463,7 @@ proto.world.SearchWorldRequest.serializeBinaryToWriter = function(message, write
     writer.writeMessage(
       3,
       f,
-      common_pb.ContextDTO.serializeBinaryToWriter
+      entities_pb.ContextDTO.serializeBinaryToWriter
     );
   }
 };
@@ -2491,17 +2488,17 @@ proto.world.SearchWorldRequest.prototype.setEntityname = function(value) {
 
 
 /**
- * optional common.SearchQueryDTO query = 2;
- * @return {?proto.common.SearchQueryDTO}
+ * optional entities.SearchQueryDTO query = 2;
+ * @return {?proto.entities.SearchQueryDTO}
  */
 proto.world.SearchWorldRequest.prototype.getQuery = function() {
-  return /** @type{?proto.common.SearchQueryDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.SearchQueryDTO, 2));
+  return /** @type{?proto.entities.SearchQueryDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.SearchQueryDTO, 2));
 };
 
 
 /**
- * @param {?proto.common.SearchQueryDTO|undefined} value
+ * @param {?proto.entities.SearchQueryDTO|undefined} value
  * @return {!proto.world.SearchWorldRequest} returns this
 */
 proto.world.SearchWorldRequest.prototype.setQuery = function(value) {
@@ -2528,17 +2525,17 @@ proto.world.SearchWorldRequest.prototype.hasQuery = function() {
 
 
 /**
- * optional common.ContextDTO context = 3;
- * @return {?proto.common.ContextDTO}
+ * optional entities.ContextDTO context = 3;
+ * @return {?proto.entities.ContextDTO}
  */
 proto.world.SearchWorldRequest.prototype.getContext = function() {
-  return /** @type{?proto.common.ContextDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.ContextDTO, 3));
+  return /** @type{?proto.entities.ContextDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.ContextDTO, 3));
 };
 
 
 /**
- * @param {?proto.common.ContextDTO|undefined} value
+ * @param {?proto.entities.ContextDTO|undefined} value
  * @return {!proto.world.SearchWorldRequest} returns this
 */
 proto.world.SearchWorldRequest.prototype.setContext = function(value) {
@@ -2604,7 +2601,7 @@ proto.world.SearchWorldResponse.prototype.toObject = function(opt_includeInstanc
 proto.world.SearchWorldResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
     worldsList: jspb.Message.toObjectList(msg.getWorldsList(),
-    common_pb.WorldDTO.toObject, includeInstance),
+    entities_pb.WorldDTO.toObject, includeInstance),
     totalresults: jspb.Message.getFieldWithDefault(msg, 2, 0),
     totalpages: jspb.Message.getFieldWithDefault(msg, 3, 0),
     currentpage: jspb.Message.getFieldWithDefault(msg, 4, 0)
@@ -2645,8 +2642,8 @@ proto.world.SearchWorldResponse.deserializeBinaryFromReader = function(msg, read
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = new common_pb.WorldDTO;
-      reader.readMessage(value,common_pb.WorldDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.WorldDTO;
+      reader.readMessage(value,entities_pb.WorldDTO.deserializeBinaryFromReader);
       msg.addWorlds(value);
       break;
     case 2:
@@ -2695,7 +2692,7 @@ proto.world.SearchWorldResponse.serializeBinaryToWriter = function(message, writ
     writer.writeRepeatedMessage(
       1,
       f,
-      common_pb.WorldDTO.serializeBinaryToWriter
+      entities_pb.WorldDTO.serializeBinaryToWriter
     );
   }
   f = message.getTotalresults();
@@ -2723,17 +2720,17 @@ proto.world.SearchWorldResponse.serializeBinaryToWriter = function(message, writ
 
 
 /**
- * repeated common.WorldDTO worlds = 1;
- * @return {!Array<!proto.common.WorldDTO>}
+ * repeated entities.WorldDTO worlds = 1;
+ * @return {!Array<!proto.entities.WorldDTO>}
  */
 proto.world.SearchWorldResponse.prototype.getWorldsList = function() {
-  return /** @type{!Array<!proto.common.WorldDTO>} */ (
-    jspb.Message.getRepeatedWrapperField(this, common_pb.WorldDTO, 1));
+  return /** @type{!Array<!proto.entities.WorldDTO>} */ (
+    jspb.Message.getRepeatedWrapperField(this, entities_pb.WorldDTO, 1));
 };
 
 
 /**
- * @param {!Array<!proto.common.WorldDTO>} value
+ * @param {!Array<!proto.entities.WorldDTO>} value
  * @return {!proto.world.SearchWorldResponse} returns this
 */
 proto.world.SearchWorldResponse.prototype.setWorldsList = function(value) {
@@ -2742,12 +2739,12 @@ proto.world.SearchWorldResponse.prototype.setWorldsList = function(value) {
 
 
 /**
- * @param {!proto.common.WorldDTO=} opt_value
+ * @param {!proto.entities.WorldDTO=} opt_value
  * @param {number=} opt_index
- * @return {!proto.common.WorldDTO}
+ * @return {!proto.entities.WorldDTO}
  */
 proto.world.SearchWorldResponse.prototype.addWorlds = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 1, opt_value, proto.common.WorldDTO, opt_index);
+  return jspb.Message.addToRepeatedWrapperField(this, 1, opt_value, proto.entities.WorldDTO, opt_index);
 };
 
 
@@ -2992,10 +2989,8 @@ proto.world.GetPresetsResponse.deserializeBinaryFromReader = function(msg, reade
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var values = /** @type {!Array<!proto.common.PresetEnumDTO>} */ (reader.isDelimited() ? reader.readPackedEnum() : [reader.readEnum()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addPresets(values[i]);
-      }
+      var value = /** @type {!Array<!proto.entities.PresetEnumDTO>} */ (reader.readPackedEnum());
+      msg.setPresetsList(value);
       break;
     default:
       reader.skipField();
@@ -3037,16 +3032,16 @@ proto.world.GetPresetsResponse.serializeBinaryToWriter = function(message, write
 
 
 /**
- * repeated common.PresetEnumDTO presets = 1;
- * @return {!Array<!proto.common.PresetEnumDTO>}
+ * repeated entities.PresetEnumDTO presets = 1;
+ * @return {!Array<!proto.entities.PresetEnumDTO>}
  */
 proto.world.GetPresetsResponse.prototype.getPresetsList = function() {
-  return /** @type {!Array<!proto.common.PresetEnumDTO>} */ (jspb.Message.getRepeatedField(this, 1));
+  return /** @type {!Array<!proto.entities.PresetEnumDTO>} */ (jspb.Message.getRepeatedField(this, 1));
 };
 
 
 /**
- * @param {!Array<!proto.common.PresetEnumDTO>} value
+ * @param {!Array<!proto.entities.PresetEnumDTO>} value
  * @return {!proto.world.GetPresetsResponse} returns this
  */
 proto.world.GetPresetsResponse.prototype.setPresetsList = function(value) {
@@ -3055,7 +3050,7 @@ proto.world.GetPresetsResponse.prototype.setPresetsList = function(value) {
 
 
 /**
- * @param {!proto.common.PresetEnumDTO} value
+ * @param {!proto.entities.PresetEnumDTO} value
  * @param {number=} opt_index
  * @return {!proto.world.GetPresetsResponse} returns this
  */

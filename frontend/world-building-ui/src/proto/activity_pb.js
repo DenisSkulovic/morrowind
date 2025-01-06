@@ -2,21 +2,18 @@
 /**
  * @fileoverview
  * @enhanceable
- * @suppress {missingRequire} reports error on implicit type usages.
  * @suppress {messageConventions} JS Compiler reports an error if a variable or
  *     field starts with 'MSG_' and isn't a translatable message.
  * @public
  */
 // GENERATED CODE -- DO NOT EDIT!
-/* eslint-disable */
-// @ts-nocheck
 
 var jspb = require('google-protobuf');
 var goog = jspb;
-var global = (function() { return this || window || global || self || Function('return this')(); }).call(null);
+var global = Function('return this')();
 
-var common_pb = require('./common_pb.js');
-goog.object.extend(proto, common_pb);
+var entities_pb = require('./entities_pb.js');
+goog.object.extend(proto, entities_pb);
 goog.exportSymbol('proto.activity.ActivityClearAllRequest', null, global);
 goog.exportSymbol('proto.activity.ActivityClearAllResponse', null, global);
 goog.exportSymbol('proto.activity.ActivityCreateRequest', null, global);
@@ -248,8 +245,8 @@ proto.activity.ActivitySearchRequest.prototype.toObject = function(opt_includeIn
  */
 proto.activity.ActivitySearchRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    context: (f = msg.getContext()) && common_pb.ContextDTO.toObject(includeInstance, f),
-    search: (f = msg.getSearch()) && common_pb.SearchQueryDTO.toObject(includeInstance, f)
+    context: (f = msg.getContext()) && entities_pb.ContextDTO.toObject(includeInstance, f),
+    search: (f = msg.getSearch()) && entities_pb.SearchQueryDTO.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -287,13 +284,13 @@ proto.activity.ActivitySearchRequest.deserializeBinaryFromReader = function(msg,
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = new common_pb.ContextDTO;
-      reader.readMessage(value,common_pb.ContextDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.ContextDTO;
+      reader.readMessage(value,entities_pb.ContextDTO.deserializeBinaryFromReader);
       msg.setContext(value);
       break;
     case 2:
-      var value = new common_pb.SearchQueryDTO;
-      reader.readMessage(value,common_pb.SearchQueryDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.SearchQueryDTO;
+      reader.readMessage(value,entities_pb.SearchQueryDTO.deserializeBinaryFromReader);
       msg.setSearch(value);
       break;
     default:
@@ -330,7 +327,7 @@ proto.activity.ActivitySearchRequest.serializeBinaryToWriter = function(message,
     writer.writeMessage(
       1,
       f,
-      common_pb.ContextDTO.serializeBinaryToWriter
+      entities_pb.ContextDTO.serializeBinaryToWriter
     );
   }
   f = message.getSearch();
@@ -338,24 +335,24 @@ proto.activity.ActivitySearchRequest.serializeBinaryToWriter = function(message,
     writer.writeMessage(
       2,
       f,
-      common_pb.SearchQueryDTO.serializeBinaryToWriter
+      entities_pb.SearchQueryDTO.serializeBinaryToWriter
     );
   }
 };
 
 
 /**
- * optional common.ContextDTO context = 1;
- * @return {?proto.common.ContextDTO}
+ * optional entities.ContextDTO context = 1;
+ * @return {?proto.entities.ContextDTO}
  */
 proto.activity.ActivitySearchRequest.prototype.getContext = function() {
-  return /** @type{?proto.common.ContextDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.ContextDTO, 1));
+  return /** @type{?proto.entities.ContextDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.ContextDTO, 1));
 };
 
 
 /**
- * @param {?proto.common.ContextDTO|undefined} value
+ * @param {?proto.entities.ContextDTO|undefined} value
  * @return {!proto.activity.ActivitySearchRequest} returns this
 */
 proto.activity.ActivitySearchRequest.prototype.setContext = function(value) {
@@ -382,17 +379,17 @@ proto.activity.ActivitySearchRequest.prototype.hasContext = function() {
 
 
 /**
- * optional common.SearchQueryDTO search = 2;
- * @return {?proto.common.SearchQueryDTO}
+ * optional entities.SearchQueryDTO search = 2;
+ * @return {?proto.entities.SearchQueryDTO}
  */
 proto.activity.ActivitySearchRequest.prototype.getSearch = function() {
-  return /** @type{?proto.common.SearchQueryDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.SearchQueryDTO, 2));
+  return /** @type{?proto.entities.SearchQueryDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.SearchQueryDTO, 2));
 };
 
 
 /**
- * @param {?proto.common.SearchQueryDTO|undefined} value
+ * @param {?proto.entities.SearchQueryDTO|undefined} value
  * @return {!proto.activity.ActivitySearchRequest} returns this
 */
 proto.activity.ActivitySearchRequest.prototype.setSearch = function(value) {
@@ -700,7 +697,7 @@ proto.activity.ActivityClearAllRequest.prototype.toObject = function(opt_include
  */
 proto.activity.ActivityClearAllRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    context: (f = msg.getContext()) && common_pb.ContextDTO.toObject(includeInstance, f)
+    context: (f = msg.getContext()) && entities_pb.ContextDTO.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -738,8 +735,8 @@ proto.activity.ActivityClearAllRequest.deserializeBinaryFromReader = function(ms
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = new common_pb.ContextDTO;
-      reader.readMessage(value,common_pb.ContextDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.ContextDTO;
+      reader.readMessage(value,entities_pb.ContextDTO.deserializeBinaryFromReader);
       msg.setContext(value);
       break;
     default:
@@ -776,24 +773,24 @@ proto.activity.ActivityClearAllRequest.serializeBinaryToWriter = function(messag
     writer.writeMessage(
       1,
       f,
-      common_pb.ContextDTO.serializeBinaryToWriter
+      entities_pb.ContextDTO.serializeBinaryToWriter
     );
   }
 };
 
 
 /**
- * optional common.ContextDTO context = 1;
- * @return {?proto.common.ContextDTO}
+ * optional entities.ContextDTO context = 1;
+ * @return {?proto.entities.ContextDTO}
  */
 proto.activity.ActivityClearAllRequest.prototype.getContext = function() {
-  return /** @type{?proto.common.ContextDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.ContextDTO, 1));
+  return /** @type{?proto.entities.ContextDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.ContextDTO, 1));
 };
 
 
 /**
- * @param {?proto.common.ContextDTO|undefined} value
+ * @param {?proto.entities.ContextDTO|undefined} value
  * @return {!proto.activity.ActivityClearAllRequest} returns this
 */
 proto.activity.ActivityClearAllRequest.prototype.setContext = function(value) {
@@ -981,7 +978,7 @@ proto.activity.ActivityCreateRequest.prototype.toObject = function(opt_includeIn
  */
 proto.activity.ActivityCreateRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    context: (f = msg.getContext()) && common_pb.ContextDTO.toObject(includeInstance, f),
+    context: (f = msg.getContext()) && entities_pb.ContextDTO.toObject(includeInstance, f),
     data: (f = msg.getData()) && proto.activity.ActivityDTO.toObject(includeInstance, f)
   };
 
@@ -1020,8 +1017,8 @@ proto.activity.ActivityCreateRequest.deserializeBinaryFromReader = function(msg,
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = new common_pb.ContextDTO;
-      reader.readMessage(value,common_pb.ContextDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.ContextDTO;
+      reader.readMessage(value,entities_pb.ContextDTO.deserializeBinaryFromReader);
       msg.setContext(value);
       break;
     case 2:
@@ -1063,7 +1060,7 @@ proto.activity.ActivityCreateRequest.serializeBinaryToWriter = function(message,
     writer.writeMessage(
       1,
       f,
-      common_pb.ContextDTO.serializeBinaryToWriter
+      entities_pb.ContextDTO.serializeBinaryToWriter
     );
   }
   f = message.getData();
@@ -1078,17 +1075,17 @@ proto.activity.ActivityCreateRequest.serializeBinaryToWriter = function(message,
 
 
 /**
- * optional common.ContextDTO context = 1;
- * @return {?proto.common.ContextDTO}
+ * optional entities.ContextDTO context = 1;
+ * @return {?proto.entities.ContextDTO}
  */
 proto.activity.ActivityCreateRequest.prototype.getContext = function() {
-  return /** @type{?proto.common.ContextDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.ContextDTO, 1));
+  return /** @type{?proto.entities.ContextDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.ContextDTO, 1));
 };
 
 
 /**
- * @param {?proto.common.ContextDTO|undefined} value
+ * @param {?proto.entities.ContextDTO|undefined} value
  * @return {!proto.activity.ActivityCreateRequest} returns this
 */
 proto.activity.ActivityCreateRequest.prototype.setContext = function(value) {
@@ -1313,7 +1310,7 @@ proto.activity.ActivityHeadRequest.prototype.toObject = function(opt_includeInst
  */
 proto.activity.ActivityHeadRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    context: (f = msg.getContext()) && common_pb.ContextDTO.toObject(includeInstance, f),
+    context: (f = msg.getContext()) && entities_pb.ContextDTO.toObject(includeInstance, f),
     limit: jspb.Message.getFieldWithDefault(msg, 2, 0)
   };
 
@@ -1352,8 +1349,8 @@ proto.activity.ActivityHeadRequest.deserializeBinaryFromReader = function(msg, r
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = new common_pb.ContextDTO;
-      reader.readMessage(value,common_pb.ContextDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.ContextDTO;
+      reader.readMessage(value,entities_pb.ContextDTO.deserializeBinaryFromReader);
       msg.setContext(value);
       break;
     case 2:
@@ -1394,7 +1391,7 @@ proto.activity.ActivityHeadRequest.serializeBinaryToWriter = function(message, w
     writer.writeMessage(
       1,
       f,
-      common_pb.ContextDTO.serializeBinaryToWriter
+      entities_pb.ContextDTO.serializeBinaryToWriter
     );
   }
   f = message.getLimit();
@@ -1408,17 +1405,17 @@ proto.activity.ActivityHeadRequest.serializeBinaryToWriter = function(message, w
 
 
 /**
- * optional common.ContextDTO context = 1;
- * @return {?proto.common.ContextDTO}
+ * optional entities.ContextDTO context = 1;
+ * @return {?proto.entities.ContextDTO}
  */
 proto.activity.ActivityHeadRequest.prototype.getContext = function() {
-  return /** @type{?proto.common.ContextDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.ContextDTO, 1));
+  return /** @type{?proto.entities.ContextDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.ContextDTO, 1));
 };
 
 
 /**
- * @param {?proto.common.ContextDTO|undefined} value
+ * @param {?proto.entities.ContextDTO|undefined} value
  * @return {!proto.activity.ActivityHeadRequest} returns this
 */
 proto.activity.ActivityHeadRequest.prototype.setContext = function(value) {

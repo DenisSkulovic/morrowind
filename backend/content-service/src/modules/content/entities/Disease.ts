@@ -2,7 +2,7 @@ import { Column, Entity, ManyToMany, ManyToOne, PrimaryColumn } from "typeorm";
 import { TaggableContentBase } from "../../../TaggableContentBase";
 import { Tag } from "./Tag";
 import { Character } from "./Character";
-import { DiseaseDTO, DiseaseSeverityEnumDTO } from "../../../proto/common";
+import { DiseaseDTO, DiseaseSeverityEnumDTO } from "../../../proto/entities";
 import { DiseaseSeverityEnum } from "../../../common/enum/entityEnums";
 import { Campaign } from "../../campaign/entities/Campaign";
 import { User } from "../../user/entities/User";

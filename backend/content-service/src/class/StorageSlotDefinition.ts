@@ -1,5 +1,5 @@
 import { Serializable } from "../decorator/serializable.decorator"
-import { StorageSlotDefinitionDTO } from "../proto/common"
+import { StorageSlotDefinitionDTO } from "../proto/entities"
 import { Serializer, SerializeStrategyEnum } from "../serializer"
 import { GridSize } from "./GridSize"
 

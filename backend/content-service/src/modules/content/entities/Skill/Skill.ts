@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToMany, ManyToOne, PrimaryColumn } from "typeorm";
 import { TaggableContentBase } from "../../../../TaggableContentBase";
 import { Tag } from "../Tag";
-import { SkillDTO } from "../../../../proto/common";
+import { SkillDTO } from "../../../../proto/entities";
 import { SkillCategoryEnum } from "../../../../common/enum/entityEnums";
 import { Campaign } from "../../../campaign/entities/Campaign";
 import { User } from "../../../user/entities/User";

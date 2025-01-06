@@ -3,7 +3,7 @@ import { MemoryPool } from "./MemoryPool";
 import { Character } from "./Character";
 import { TaggableContentBase } from "../../../TaggableContentBase";
 import { Tag } from "./Tag";
-import { CharacterProfessionDTO } from "../../../proto/common";
+import { CharacterProfessionDTO } from "../../../proto/entities";
 import { Campaign } from "../../campaign/entities/Campaign";
 import { User } from "../../user/entities/User";
 import { World } from "../../world/entities/World";

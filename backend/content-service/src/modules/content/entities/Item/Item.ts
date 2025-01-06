@@ -1,7 +1,7 @@
 import { Entity, TableInheritance, PrimaryColumn, Column, ManyToOne, OneToMany, ManyToMany } from "typeorm";
 import { TaggableContentBase } from "../../../../TaggableContentBase";
 import { ItemActionEnum } from "../../../../common/enum/entityEnums";
-import { ItemActionEnumDTO, ItemDTO } from "../../../../proto/common";
+import { ItemActionEnumDTO, ItemDTO } from "../../../../proto/entities";
 import { Campaign } from "../../../campaign/entities/Campaign";
 import { User } from "../../../user/entities/User";
 import { World } from "../../../world/entities/World";

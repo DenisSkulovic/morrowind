@@ -1,0 +1,1 @@
+This is the dialogue orchestrator service. It manages different algorithms and when necessary makes calls to other microservices (e.g. the AI microservice, the Content microservice, etc.)

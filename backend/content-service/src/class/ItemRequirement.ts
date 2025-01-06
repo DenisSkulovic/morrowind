@@ -1,6 +1,6 @@
 import { Serializable } from "../decorator/serializable.decorator";
 import { ItemRequirementTypeEnum } from "../enum/ItemRequirementTypeEnum";
-import { ItemRequirementDTO, ItemRequirementTypeEnumDTO } from "../proto/common";
+import { ItemRequirementDTO, ItemRequirementTypeEnumDTO } from "../proto/entities";
 import { Serializer, SerializeStrategyEnum } from "../serializer";
 
 

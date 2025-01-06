@@ -13,7 +13,7 @@ import {
 import { World } from "./entities/World";
 import { DataSourceEnum } from "../../common/enum/DataSourceEnum";
 import { PresetEnum } from "../../common/enum/entityEnums";
-import { ContextDTO, PresetEnumDTO, WorldDTO } from "../../proto/common";
+import { ContextDTO, PresetEnumDTO, WorldDTO } from "../../proto/entities";
 import { deserializeEnum, serializeEnum } from "../../common/enum/util";
 import { Controller, Inject, Logger } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';

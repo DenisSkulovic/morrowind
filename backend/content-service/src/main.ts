@@ -26,7 +26,7 @@ async function bootstrap() {
         options: {
             url: `0.0.0.0:${CONTENT_SERVICE_PORT}`,
             package: [
-                'common',
+                'entities',
                 'account',
                 'content',
                 'world',
@@ -34,7 +34,7 @@ async function bootstrap() {
                 'activity',
             ],
             protoPath: [
-                join(__dirname, '../proto/common.proto'),
+                join(__dirname, '../proto/entities.proto'),
                 join(__dirname, '../proto/account.proto'),
                 join(__dirname, '../proto/content.proto'),
                 join(__dirname, '../proto/world.proto'),

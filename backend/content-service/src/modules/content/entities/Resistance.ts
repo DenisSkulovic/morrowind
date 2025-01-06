@@ -1,6 +1,6 @@
 import { Entity, Column, ManyToOne, PrimaryColumn } from "typeorm";
 import { ContentBase } from "../../../ContentBase";
-import { EffectTypeEnumDTO, ResistanceDTO } from "../../../proto/common";
+import { EffectTypeEnumDTO, ResistanceDTO } from "../../../proto/entities";
 import { EffectTypeEnum } from "../../../common/enum/entityEnums";
 import { serializeEnum, deserializeEnum } from "../../../common/enum/util";
 import { Campaign } from "../../campaign/entities/Campaign";

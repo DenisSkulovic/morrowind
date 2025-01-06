@@ -1,21 +1,17 @@
 import { Module } from "@nestjs/common";
 import { DialogueService } from "./dialogue.service";
 import { DialogueController } from "./dialogue.controller";
-import { ClientsModule, Transport } from "@nestjs/microservices";
-import { join } from "path";
+import { AiModule } from "../ai/ai.module";
+import { ContentModule } from "../content/content.module";
+import { PromptModule } from "../prompt/prompt.module";
+import { DialogueStateModule } from "../dialogueState/dialogueState.module";
 
 @Module({
     imports: [
-        ClientsModule.register([
-            {
-                name: 'AI_SERVICE',
-                transport: Transport.GRPC,
-                options: {
-                    package: 'ai_service_openai_v1',
-                    protoPath: join(__dirname, '../../proto/ai_service_openai_v1.proto'),
-                }
-            }
-        ])
+        PromptModule,
+        DialogueStateModule,
+        AiModule,
+        ContentModule,
     ],
     controllers: [DialogueController],
     providers: [

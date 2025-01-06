@@ -2,7 +2,7 @@ import { Entity, Column, ManyToMany, ManyToOne, PrimaryGeneratedColumn, BeforeIn
 import { Tag } from "./Tag";
 import { TaggableContentBase } from "../../../TaggableContentBase";
 import { Memory } from "./Memory";
-import { FactDTO } from "../../../proto/common";
+import { FactDTO } from "../../../proto/entities";
 import { Campaign } from "../../campaign/entities/Campaign";
 import { User } from "../../user/entities/User";
 import { World } from "../../world/entities/World";

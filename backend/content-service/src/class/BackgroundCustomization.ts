@@ -1,5 +1,5 @@
 import { Serializable } from "../decorator/serializable.decorator";
-import { BackgroundCustomizationDTO } from "../proto/common";
+import { BackgroundCustomizationDTO } from "../proto/entities";
 import { Serializer } from "../serializer";
 import { GenerationInstruction, serializeInstruction, serializeGenerationInstructions, deserializeInstruction, deserializeGenerationInstructions } from "./GenerationInstruction";
 

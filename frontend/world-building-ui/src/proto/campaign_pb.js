@@ -2,21 +2,18 @@
 /**
  * @fileoverview
  * @enhanceable
- * @suppress {missingRequire} reports error on implicit type usages.
  * @suppress {messageConventions} JS Compiler reports an error if a variable or
  *     field starts with 'MSG_' and isn't a translatable message.
  * @public
  */
 // GENERATED CODE -- DO NOT EDIT!
-/* eslint-disable */
-// @ts-nocheck
 
 var jspb = require('google-protobuf');
 var goog = jspb;
-var global = (function() { return this || window || global || self || Function('return this')(); }).call(null);
+var global = Function('return this')();
 
-var common_pb = require('./common_pb.js');
-goog.object.extend(proto, common_pb);
+var entities_pb = require('./entities_pb.js');
+goog.object.extend(proto, entities_pb);
 goog.exportSymbol('proto.campaign.CreateCampaignRequest', null, global);
 goog.exportSymbol('proto.campaign.CreateCampaignResponse', null, global);
 goog.exportSymbol('proto.campaign.DeleteCampaignRequest', null, global);
@@ -269,7 +266,7 @@ proto.campaign.UpdateCampaignRequest.prototype.toObject = function(opt_includeIn
  */
 proto.campaign.UpdateCampaignRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    campaign: (f = msg.getCampaign()) && common_pb.CampaignDTO.toObject(includeInstance, f)
+    campaign: (f = msg.getCampaign()) && entities_pb.CampaignDTO.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -307,8 +304,8 @@ proto.campaign.UpdateCampaignRequest.deserializeBinaryFromReader = function(msg,
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = new common_pb.CampaignDTO;
-      reader.readMessage(value,common_pb.CampaignDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.CampaignDTO;
+      reader.readMessage(value,entities_pb.CampaignDTO.deserializeBinaryFromReader);
       msg.setCampaign(value);
       break;
     default:
@@ -345,24 +342,24 @@ proto.campaign.UpdateCampaignRequest.serializeBinaryToWriter = function(message,
     writer.writeMessage(
       1,
       f,
-      common_pb.CampaignDTO.serializeBinaryToWriter
+      entities_pb.CampaignDTO.serializeBinaryToWriter
     );
   }
 };
 
 
 /**
- * optional common.CampaignDTO campaign = 1;
- * @return {?proto.common.CampaignDTO}
+ * optional entities.CampaignDTO campaign = 1;
+ * @return {?proto.entities.CampaignDTO}
  */
 proto.campaign.UpdateCampaignRequest.prototype.getCampaign = function() {
-  return /** @type{?proto.common.CampaignDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.CampaignDTO, 1));
+  return /** @type{?proto.entities.CampaignDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.CampaignDTO, 1));
 };
 
 
 /**
- * @param {?proto.common.CampaignDTO|undefined} value
+ * @param {?proto.entities.CampaignDTO|undefined} value
  * @return {!proto.campaign.UpdateCampaignRequest} returns this
 */
 proto.campaign.UpdateCampaignRequest.prototype.setCampaign = function(value) {
@@ -420,7 +417,7 @@ proto.campaign.UpdateCampaignResponse.prototype.toObject = function(opt_includeI
  */
 proto.campaign.UpdateCampaignResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    campaign: (f = msg.getCampaign()) && common_pb.CampaignDTO.toObject(includeInstance, f)
+    campaign: (f = msg.getCampaign()) && entities_pb.CampaignDTO.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -458,8 +455,8 @@ proto.campaign.UpdateCampaignResponse.deserializeBinaryFromReader = function(msg
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = new common_pb.CampaignDTO;
-      reader.readMessage(value,common_pb.CampaignDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.CampaignDTO;
+      reader.readMessage(value,entities_pb.CampaignDTO.deserializeBinaryFromReader);
       msg.setCampaign(value);
       break;
     default:
@@ -496,24 +493,24 @@ proto.campaign.UpdateCampaignResponse.serializeBinaryToWriter = function(message
     writer.writeMessage(
       1,
       f,
-      common_pb.CampaignDTO.serializeBinaryToWriter
+      entities_pb.CampaignDTO.serializeBinaryToWriter
     );
   }
 };
 
 
 /**
- * optional common.CampaignDTO campaign = 1;
- * @return {?proto.common.CampaignDTO}
+ * optional entities.CampaignDTO campaign = 1;
+ * @return {?proto.entities.CampaignDTO}
  */
 proto.campaign.UpdateCampaignResponse.prototype.getCampaign = function() {
-  return /** @type{?proto.common.CampaignDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.CampaignDTO, 1));
+  return /** @type{?proto.entities.CampaignDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.CampaignDTO, 1));
 };
 
 
 /**
- * @param {?proto.common.CampaignDTO|undefined} value
+ * @param {?proto.entities.CampaignDTO|undefined} value
  * @return {!proto.campaign.UpdateCampaignResponse} returns this
 */
 proto.campaign.UpdateCampaignResponse.prototype.setCampaign = function(value) {
@@ -571,7 +568,7 @@ proto.campaign.CreateCampaignRequest.prototype.toObject = function(opt_includeIn
  */
 proto.campaign.CreateCampaignRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    campaign: (f = msg.getCampaign()) && common_pb.CampaignDTO.toObject(includeInstance, f)
+    campaign: (f = msg.getCampaign()) && entities_pb.CampaignDTO.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -609,8 +606,8 @@ proto.campaign.CreateCampaignRequest.deserializeBinaryFromReader = function(msg,
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = new common_pb.CampaignDTO;
-      reader.readMessage(value,common_pb.CampaignDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.CampaignDTO;
+      reader.readMessage(value,entities_pb.CampaignDTO.deserializeBinaryFromReader);
       msg.setCampaign(value);
       break;
     default:
@@ -647,24 +644,24 @@ proto.campaign.CreateCampaignRequest.serializeBinaryToWriter = function(message,
     writer.writeMessage(
       1,
       f,
-      common_pb.CampaignDTO.serializeBinaryToWriter
+      entities_pb.CampaignDTO.serializeBinaryToWriter
     );
   }
 };
 
 
 /**
- * optional common.CampaignDTO campaign = 1;
- * @return {?proto.common.CampaignDTO}
+ * optional entities.CampaignDTO campaign = 1;
+ * @return {?proto.entities.CampaignDTO}
  */
 proto.campaign.CreateCampaignRequest.prototype.getCampaign = function() {
-  return /** @type{?proto.common.CampaignDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.CampaignDTO, 1));
+  return /** @type{?proto.entities.CampaignDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.CampaignDTO, 1));
 };
 
 
 /**
- * @param {?proto.common.CampaignDTO|undefined} value
+ * @param {?proto.entities.CampaignDTO|undefined} value
  * @return {!proto.campaign.CreateCampaignRequest} returns this
 */
 proto.campaign.CreateCampaignRequest.prototype.setCampaign = function(value) {
@@ -722,7 +719,7 @@ proto.campaign.CreateCampaignResponse.prototype.toObject = function(opt_includeI
  */
 proto.campaign.CreateCampaignResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    campaign: (f = msg.getCampaign()) && common_pb.CampaignDTO.toObject(includeInstance, f)
+    campaign: (f = msg.getCampaign()) && entities_pb.CampaignDTO.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -760,8 +757,8 @@ proto.campaign.CreateCampaignResponse.deserializeBinaryFromReader = function(msg
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = new common_pb.CampaignDTO;
-      reader.readMessage(value,common_pb.CampaignDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.CampaignDTO;
+      reader.readMessage(value,entities_pb.CampaignDTO.deserializeBinaryFromReader);
       msg.setCampaign(value);
       break;
     default:
@@ -798,24 +795,24 @@ proto.campaign.CreateCampaignResponse.serializeBinaryToWriter = function(message
     writer.writeMessage(
       1,
       f,
-      common_pb.CampaignDTO.serializeBinaryToWriter
+      entities_pb.CampaignDTO.serializeBinaryToWriter
     );
   }
 };
 
 
 /**
- * optional common.CampaignDTO campaign = 1;
- * @return {?proto.common.CampaignDTO}
+ * optional entities.CampaignDTO campaign = 1;
+ * @return {?proto.entities.CampaignDTO}
  */
 proto.campaign.CreateCampaignResponse.prototype.getCampaign = function() {
-  return /** @type{?proto.common.CampaignDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.CampaignDTO, 1));
+  return /** @type{?proto.entities.CampaignDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.CampaignDTO, 1));
 };
 
 
 /**
- * @param {?proto.common.CampaignDTO|undefined} value
+ * @param {?proto.entities.CampaignDTO|undefined} value
  * @return {!proto.campaign.CreateCampaignResponse} returns this
 */
 proto.campaign.CreateCampaignResponse.prototype.setCampaign = function(value) {
@@ -1003,7 +1000,7 @@ proto.campaign.GetCampaignResponse.prototype.toObject = function(opt_includeInst
  */
 proto.campaign.GetCampaignResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    campaign: (f = msg.getCampaign()) && common_pb.CampaignDTO.toObject(includeInstance, f)
+    campaign: (f = msg.getCampaign()) && entities_pb.CampaignDTO.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -1041,8 +1038,8 @@ proto.campaign.GetCampaignResponse.deserializeBinaryFromReader = function(msg, r
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = new common_pb.CampaignDTO;
-      reader.readMessage(value,common_pb.CampaignDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.CampaignDTO;
+      reader.readMessage(value,entities_pb.CampaignDTO.deserializeBinaryFromReader);
       msg.setCampaign(value);
       break;
     default:
@@ -1079,24 +1076,24 @@ proto.campaign.GetCampaignResponse.serializeBinaryToWriter = function(message, w
     writer.writeMessage(
       1,
       f,
-      common_pb.CampaignDTO.serializeBinaryToWriter
+      entities_pb.CampaignDTO.serializeBinaryToWriter
     );
   }
 };
 
 
 /**
- * optional common.CampaignDTO campaign = 1;
- * @return {?proto.common.CampaignDTO}
+ * optional entities.CampaignDTO campaign = 1;
+ * @return {?proto.entities.CampaignDTO}
  */
 proto.campaign.GetCampaignResponse.prototype.getCampaign = function() {
-  return /** @type{?proto.common.CampaignDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.CampaignDTO, 1));
+  return /** @type{?proto.entities.CampaignDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.CampaignDTO, 1));
 };
 
 
 /**
- * @param {?proto.common.CampaignDTO|undefined} value
+ * @param {?proto.entities.CampaignDTO|undefined} value
  * @return {!proto.campaign.GetCampaignResponse} returns this
 */
 proto.campaign.GetCampaignResponse.prototype.setCampaign = function(value) {
@@ -1386,8 +1383,8 @@ proto.campaign.SearchCampaignRequest.prototype.toObject = function(opt_includeIn
 proto.campaign.SearchCampaignRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     entityname: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    query: (f = msg.getQuery()) && common_pb.SearchQueryDTO.toObject(includeInstance, f),
-    context: (f = msg.getContext()) && common_pb.ContextDTO.toObject(includeInstance, f)
+    query: (f = msg.getQuery()) && entities_pb.SearchQueryDTO.toObject(includeInstance, f),
+    context: (f = msg.getContext()) && entities_pb.ContextDTO.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -1429,13 +1426,13 @@ proto.campaign.SearchCampaignRequest.deserializeBinaryFromReader = function(msg,
       msg.setEntityname(value);
       break;
     case 2:
-      var value = new common_pb.SearchQueryDTO;
-      reader.readMessage(value,common_pb.SearchQueryDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.SearchQueryDTO;
+      reader.readMessage(value,entities_pb.SearchQueryDTO.deserializeBinaryFromReader);
       msg.setQuery(value);
       break;
     case 3:
-      var value = new common_pb.ContextDTO;
-      reader.readMessage(value,common_pb.ContextDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.ContextDTO;
+      reader.readMessage(value,entities_pb.ContextDTO.deserializeBinaryFromReader);
       msg.setContext(value);
       break;
     default:
@@ -1479,7 +1476,7 @@ proto.campaign.SearchCampaignRequest.serializeBinaryToWriter = function(message,
     writer.writeMessage(
       2,
       f,
-      common_pb.SearchQueryDTO.serializeBinaryToWriter
+      entities_pb.SearchQueryDTO.serializeBinaryToWriter
     );
   }
   f = message.getContext();
@@ -1487,7 +1484,7 @@ proto.campaign.SearchCampaignRequest.serializeBinaryToWriter = function(message,
     writer.writeMessage(
       3,
       f,
-      common_pb.ContextDTO.serializeBinaryToWriter
+      entities_pb.ContextDTO.serializeBinaryToWriter
     );
   }
 };
@@ -1512,17 +1509,17 @@ proto.campaign.SearchCampaignRequest.prototype.setEntityname = function(value) {
 
 
 /**
- * optional common.SearchQueryDTO query = 2;
- * @return {?proto.common.SearchQueryDTO}
+ * optional entities.SearchQueryDTO query = 2;
+ * @return {?proto.entities.SearchQueryDTO}
  */
 proto.campaign.SearchCampaignRequest.prototype.getQuery = function() {
-  return /** @type{?proto.common.SearchQueryDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.SearchQueryDTO, 2));
+  return /** @type{?proto.entities.SearchQueryDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.SearchQueryDTO, 2));
 };
 
 
 /**
- * @param {?proto.common.SearchQueryDTO|undefined} value
+ * @param {?proto.entities.SearchQueryDTO|undefined} value
  * @return {!proto.campaign.SearchCampaignRequest} returns this
 */
 proto.campaign.SearchCampaignRequest.prototype.setQuery = function(value) {
@@ -1549,17 +1546,17 @@ proto.campaign.SearchCampaignRequest.prototype.hasQuery = function() {
 
 
 /**
- * optional common.ContextDTO context = 3;
- * @return {?proto.common.ContextDTO}
+ * optional entities.ContextDTO context = 3;
+ * @return {?proto.entities.ContextDTO}
  */
 proto.campaign.SearchCampaignRequest.prototype.getContext = function() {
-  return /** @type{?proto.common.ContextDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.ContextDTO, 3));
+  return /** @type{?proto.entities.ContextDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.ContextDTO, 3));
 };
 
 
 /**
- * @param {?proto.common.ContextDTO|undefined} value
+ * @param {?proto.entities.ContextDTO|undefined} value
  * @return {!proto.campaign.SearchCampaignRequest} returns this
 */
 proto.campaign.SearchCampaignRequest.prototype.setContext = function(value) {
@@ -1625,7 +1622,7 @@ proto.campaign.SearchCampaignResponse.prototype.toObject = function(opt_includeI
 proto.campaign.SearchCampaignResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
     campaignsList: jspb.Message.toObjectList(msg.getCampaignsList(),
-    common_pb.CampaignDTO.toObject, includeInstance),
+    entities_pb.CampaignDTO.toObject, includeInstance),
     totalresults: jspb.Message.getFieldWithDefault(msg, 2, 0),
     totalpages: jspb.Message.getFieldWithDefault(msg, 3, 0),
     currentpage: jspb.Message.getFieldWithDefault(msg, 4, 0)
@@ -1666,8 +1663,8 @@ proto.campaign.SearchCampaignResponse.deserializeBinaryFromReader = function(msg
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = new common_pb.CampaignDTO;
-      reader.readMessage(value,common_pb.CampaignDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.CampaignDTO;
+      reader.readMessage(value,entities_pb.CampaignDTO.deserializeBinaryFromReader);
       msg.addCampaigns(value);
       break;
     case 2:
@@ -1716,7 +1713,7 @@ proto.campaign.SearchCampaignResponse.serializeBinaryToWriter = function(message
     writer.writeRepeatedMessage(
       1,
       f,
-      common_pb.CampaignDTO.serializeBinaryToWriter
+      entities_pb.CampaignDTO.serializeBinaryToWriter
     );
   }
   f = message.getTotalresults();
@@ -1744,17 +1741,17 @@ proto.campaign.SearchCampaignResponse.serializeBinaryToWriter = function(message
 
 
 /**
- * repeated common.CampaignDTO campaigns = 1;
- * @return {!Array<!proto.common.CampaignDTO>}
+ * repeated entities.CampaignDTO campaigns = 1;
+ * @return {!Array<!proto.entities.CampaignDTO>}
  */
 proto.campaign.SearchCampaignResponse.prototype.getCampaignsList = function() {
-  return /** @type{!Array<!proto.common.CampaignDTO>} */ (
-    jspb.Message.getRepeatedWrapperField(this, common_pb.CampaignDTO, 1));
+  return /** @type{!Array<!proto.entities.CampaignDTO>} */ (
+    jspb.Message.getRepeatedWrapperField(this, entities_pb.CampaignDTO, 1));
 };
 
 
 /**
- * @param {!Array<!proto.common.CampaignDTO>} value
+ * @param {!Array<!proto.entities.CampaignDTO>} value
  * @return {!proto.campaign.SearchCampaignResponse} returns this
 */
 proto.campaign.SearchCampaignResponse.prototype.setCampaignsList = function(value) {
@@ -1763,12 +1760,12 @@ proto.campaign.SearchCampaignResponse.prototype.setCampaignsList = function(valu
 
 
 /**
- * @param {!proto.common.CampaignDTO=} opt_value
+ * @param {!proto.entities.CampaignDTO=} opt_value
  * @param {number=} opt_index
- * @return {!proto.common.CampaignDTO}
+ * @return {!proto.entities.CampaignDTO}
  */
 proto.campaign.SearchCampaignResponse.prototype.addCampaigns = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 1, opt_value, proto.common.CampaignDTO, opt_index);
+  return jspb.Message.addToRepeatedWrapperField(this, 1, opt_value, proto.entities.CampaignDTO, opt_index);
 };
 
 

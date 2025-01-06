@@ -2,21 +2,18 @@
 /**
  * @fileoverview
  * @enhanceable
- * @suppress {missingRequire} reports error on implicit type usages.
  * @suppress {messageConventions} JS Compiler reports an error if a variable or
  *     field starts with 'MSG_' and isn't a translatable message.
  * @public
  */
 // GENERATED CODE -- DO NOT EDIT!
-/* eslint-disable */
-// @ts-nocheck
 
 var jspb = require('google-protobuf');
 var goog = jspb;
-var global = (function() { return this || window || global || self || Function('return this')(); }).call(null);
+var global = Function('return this')();
 
-var common_pb = require('./common_pb.js');
-goog.object.extend(proto, common_pb);
+var entities_pb = require('./entities_pb.js');
+goog.object.extend(proto, entities_pb);
 goog.exportSymbol('proto.content.ContentBodyDTO', null, global);
 goog.exportSymbol('proto.content.ContentBodyDTO.DataCase', null, global);
 goog.exportSymbol('proto.content.ContentStatDTO', null, global);
@@ -448,7 +445,7 @@ proto.content.UpdateContentRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     contentbody: (f = msg.getContentbody()) && proto.content.ContentBodyDTO.toObject(includeInstance, f),
     entityname: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    context: (f = msg.getContext()) && common_pb.ContextDTO.toObject(includeInstance, f),
+    context: (f = msg.getContext()) && entities_pb.ContextDTO.toObject(includeInstance, f),
     source: jspb.Message.getFieldWithDefault(msg, 4, 0)
   };
 
@@ -496,12 +493,12 @@ proto.content.UpdateContentRequest.deserializeBinaryFromReader = function(msg, r
       msg.setEntityname(value);
       break;
     case 3:
-      var value = new common_pb.ContextDTO;
-      reader.readMessage(value,common_pb.ContextDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.ContextDTO;
+      reader.readMessage(value,entities_pb.ContextDTO.deserializeBinaryFromReader);
       msg.setContext(value);
       break;
     case 4:
-      var value = /** @type {!proto.common.DataSourceEnumDTO} */ (reader.readEnum());
+      var value = /** @type {!proto.entities.DataSourceEnumDTO} */ (reader.readEnum());
       msg.setSource(value);
       break;
     default:
@@ -553,7 +550,7 @@ proto.content.UpdateContentRequest.serializeBinaryToWriter = function(message, w
     writer.writeMessage(
       3,
       f,
-      common_pb.ContextDTO.serializeBinaryToWriter
+      entities_pb.ContextDTO.serializeBinaryToWriter
     );
   }
   f = message.getSource();
@@ -622,17 +619,17 @@ proto.content.UpdateContentRequest.prototype.setEntityname = function(value) {
 
 
 /**
- * optional common.ContextDTO context = 3;
- * @return {?proto.common.ContextDTO}
+ * optional entities.ContextDTO context = 3;
+ * @return {?proto.entities.ContextDTO}
  */
 proto.content.UpdateContentRequest.prototype.getContext = function() {
-  return /** @type{?proto.common.ContextDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.ContextDTO, 3));
+  return /** @type{?proto.entities.ContextDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.ContextDTO, 3));
 };
 
 
 /**
- * @param {?proto.common.ContextDTO|undefined} value
+ * @param {?proto.entities.ContextDTO|undefined} value
  * @return {!proto.content.UpdateContentRequest} returns this
 */
 proto.content.UpdateContentRequest.prototype.setContext = function(value) {
@@ -659,16 +656,16 @@ proto.content.UpdateContentRequest.prototype.hasContext = function() {
 
 
 /**
- * optional common.DataSourceEnumDTO source = 4;
- * @return {!proto.common.DataSourceEnumDTO}
+ * optional entities.DataSourceEnumDTO source = 4;
+ * @return {!proto.entities.DataSourceEnumDTO}
  */
 proto.content.UpdateContentRequest.prototype.getSource = function() {
-  return /** @type {!proto.common.DataSourceEnumDTO} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+  return /** @type {!proto.entities.DataSourceEnumDTO} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
 };
 
 
 /**
- * @param {!proto.common.DataSourceEnumDTO} value
+ * @param {!proto.entities.DataSourceEnumDTO} value
  * @return {!proto.content.UpdateContentRequest} returns this
  */
 proto.content.UpdateContentRequest.prototype.setSource = function(value) {
@@ -861,7 +858,7 @@ proto.content.DeleteContentRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     entityname: jspb.Message.getFieldWithDefault(msg, 1, ""),
     id: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    context: (f = msg.getContext()) && common_pb.ContextDTO.toObject(includeInstance, f),
+    context: (f = msg.getContext()) && entities_pb.ContextDTO.toObject(includeInstance, f),
     source: jspb.Message.getFieldWithDefault(msg, 4, 0)
   };
 
@@ -908,12 +905,12 @@ proto.content.DeleteContentRequest.deserializeBinaryFromReader = function(msg, r
       msg.setId(value);
       break;
     case 3:
-      var value = new common_pb.ContextDTO;
-      reader.readMessage(value,common_pb.ContextDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.ContextDTO;
+      reader.readMessage(value,entities_pb.ContextDTO.deserializeBinaryFromReader);
       msg.setContext(value);
       break;
     case 4:
-      var value = /** @type {!proto.common.DataSourceEnumDTO} */ (reader.readEnum());
+      var value = /** @type {!proto.entities.DataSourceEnumDTO} */ (reader.readEnum());
       msg.setSource(value);
       break;
     default:
@@ -964,7 +961,7 @@ proto.content.DeleteContentRequest.serializeBinaryToWriter = function(message, w
     writer.writeMessage(
       3,
       f,
-      common_pb.ContextDTO.serializeBinaryToWriter
+      entities_pb.ContextDTO.serializeBinaryToWriter
     );
   }
   f = message.getSource();
@@ -1014,17 +1011,17 @@ proto.content.DeleteContentRequest.prototype.setId = function(value) {
 
 
 /**
- * optional common.ContextDTO context = 3;
- * @return {?proto.common.ContextDTO}
+ * optional entities.ContextDTO context = 3;
+ * @return {?proto.entities.ContextDTO}
  */
 proto.content.DeleteContentRequest.prototype.getContext = function() {
-  return /** @type{?proto.common.ContextDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.ContextDTO, 3));
+  return /** @type{?proto.entities.ContextDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.ContextDTO, 3));
 };
 
 
 /**
- * @param {?proto.common.ContextDTO|undefined} value
+ * @param {?proto.entities.ContextDTO|undefined} value
  * @return {!proto.content.DeleteContentRequest} returns this
 */
 proto.content.DeleteContentRequest.prototype.setContext = function(value) {
@@ -1051,16 +1048,16 @@ proto.content.DeleteContentRequest.prototype.hasContext = function() {
 
 
 /**
- * optional common.DataSourceEnumDTO source = 4;
- * @return {!proto.common.DataSourceEnumDTO}
+ * optional entities.DataSourceEnumDTO source = 4;
+ * @return {!proto.entities.DataSourceEnumDTO}
  */
 proto.content.DeleteContentRequest.prototype.getSource = function() {
-  return /** @type {!proto.common.DataSourceEnumDTO} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+  return /** @type {!proto.entities.DataSourceEnumDTO} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
 };
 
 
 /**
- * @param {!proto.common.DataSourceEnumDTO} value
+ * @param {!proto.entities.DataSourceEnumDTO} value
  * @return {!proto.content.DeleteContentRequest} returns this
  */
 proto.content.DeleteContentRequest.prototype.setSource = function(value) {
@@ -1231,8 +1228,8 @@ proto.content.SearchContentRequest.prototype.toObject = function(opt_includeInst
 proto.content.SearchContentRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     entityname: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    query: (f = msg.getQuery()) && common_pb.SearchQueryDTO.toObject(includeInstance, f),
-    context: (f = msg.getContext()) && common_pb.ContextDTO.toObject(includeInstance, f),
+    query: (f = msg.getQuery()) && entities_pb.SearchQueryDTO.toObject(includeInstance, f),
+    context: (f = msg.getContext()) && entities_pb.ContextDTO.toObject(includeInstance, f),
     source: jspb.Message.getFieldWithDefault(msg, 4, 0)
   };
 
@@ -1275,17 +1272,17 @@ proto.content.SearchContentRequest.deserializeBinaryFromReader = function(msg, r
       msg.setEntityname(value);
       break;
     case 2:
-      var value = new common_pb.SearchQueryDTO;
-      reader.readMessage(value,common_pb.SearchQueryDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.SearchQueryDTO;
+      reader.readMessage(value,entities_pb.SearchQueryDTO.deserializeBinaryFromReader);
       msg.setQuery(value);
       break;
     case 3:
-      var value = new common_pb.ContextDTO;
-      reader.readMessage(value,common_pb.ContextDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.ContextDTO;
+      reader.readMessage(value,entities_pb.ContextDTO.deserializeBinaryFromReader);
       msg.setContext(value);
       break;
     case 4:
-      var value = /** @type {!proto.common.DataSourceEnumDTO} */ (reader.readEnum());
+      var value = /** @type {!proto.entities.DataSourceEnumDTO} */ (reader.readEnum());
       msg.setSource(value);
       break;
     default:
@@ -1329,7 +1326,7 @@ proto.content.SearchContentRequest.serializeBinaryToWriter = function(message, w
     writer.writeMessage(
       2,
       f,
-      common_pb.SearchQueryDTO.serializeBinaryToWriter
+      entities_pb.SearchQueryDTO.serializeBinaryToWriter
     );
   }
   f = message.getContext();
@@ -1337,7 +1334,7 @@ proto.content.SearchContentRequest.serializeBinaryToWriter = function(message, w
     writer.writeMessage(
       3,
       f,
-      common_pb.ContextDTO.serializeBinaryToWriter
+      entities_pb.ContextDTO.serializeBinaryToWriter
     );
   }
   f = message.getSource();
@@ -1369,17 +1366,17 @@ proto.content.SearchContentRequest.prototype.setEntityname = function(value) {
 
 
 /**
- * optional common.SearchQueryDTO query = 2;
- * @return {?proto.common.SearchQueryDTO}
+ * optional entities.SearchQueryDTO query = 2;
+ * @return {?proto.entities.SearchQueryDTO}
  */
 proto.content.SearchContentRequest.prototype.getQuery = function() {
-  return /** @type{?proto.common.SearchQueryDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.SearchQueryDTO, 2));
+  return /** @type{?proto.entities.SearchQueryDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.SearchQueryDTO, 2));
 };
 
 
 /**
- * @param {?proto.common.SearchQueryDTO|undefined} value
+ * @param {?proto.entities.SearchQueryDTO|undefined} value
  * @return {!proto.content.SearchContentRequest} returns this
 */
 proto.content.SearchContentRequest.prototype.setQuery = function(value) {
@@ -1406,17 +1403,17 @@ proto.content.SearchContentRequest.prototype.hasQuery = function() {
 
 
 /**
- * optional common.ContextDTO context = 3;
- * @return {?proto.common.ContextDTO}
+ * optional entities.ContextDTO context = 3;
+ * @return {?proto.entities.ContextDTO}
  */
 proto.content.SearchContentRequest.prototype.getContext = function() {
-  return /** @type{?proto.common.ContextDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.ContextDTO, 3));
+  return /** @type{?proto.entities.ContextDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.ContextDTO, 3));
 };
 
 
 /**
- * @param {?proto.common.ContextDTO|undefined} value
+ * @param {?proto.entities.ContextDTO|undefined} value
  * @return {!proto.content.SearchContentRequest} returns this
 */
 proto.content.SearchContentRequest.prototype.setContext = function(value) {
@@ -1443,16 +1440,16 @@ proto.content.SearchContentRequest.prototype.hasContext = function() {
 
 
 /**
- * optional common.DataSourceEnumDTO source = 4;
- * @return {!proto.common.DataSourceEnumDTO}
+ * optional entities.DataSourceEnumDTO source = 4;
+ * @return {!proto.entities.DataSourceEnumDTO}
  */
 proto.content.SearchContentRequest.prototype.getSource = function() {
-  return /** @type {!proto.common.DataSourceEnumDTO} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+  return /** @type {!proto.entities.DataSourceEnumDTO} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
 };
 
 
 /**
- * @param {!proto.common.DataSourceEnumDTO} value
+ * @param {!proto.entities.DataSourceEnumDTO} value
  * @return {!proto.content.SearchContentRequest} returns this
  */
 proto.content.SearchContentRequest.prototype.setSource = function(value) {
@@ -1749,7 +1746,7 @@ proto.content.GetContentStatsRequest.prototype.toObject = function(opt_includeIn
  */
 proto.content.GetContentStatsRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    context: (f = msg.getContext()) && common_pb.ContextDTO.toObject(includeInstance, f),
+    context: (f = msg.getContext()) && entities_pb.ContextDTO.toObject(includeInstance, f),
     entitynamesList: (f = jspb.Message.getRepeatedField(msg, 2)) == null ? undefined : f,
     source: jspb.Message.getFieldWithDefault(msg, 3, 0)
   };
@@ -1789,8 +1786,8 @@ proto.content.GetContentStatsRequest.deserializeBinaryFromReader = function(msg,
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = new common_pb.ContextDTO;
-      reader.readMessage(value,common_pb.ContextDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.ContextDTO;
+      reader.readMessage(value,entities_pb.ContextDTO.deserializeBinaryFromReader);
       msg.setContext(value);
       break;
     case 2:
@@ -1798,7 +1795,7 @@ proto.content.GetContentStatsRequest.deserializeBinaryFromReader = function(msg,
       msg.addEntitynames(value);
       break;
     case 3:
-      var value = /** @type {!proto.common.DataSourceEnumDTO} */ (reader.readEnum());
+      var value = /** @type {!proto.entities.DataSourceEnumDTO} */ (reader.readEnum());
       msg.setSource(value);
       break;
     default:
@@ -1835,7 +1832,7 @@ proto.content.GetContentStatsRequest.serializeBinaryToWriter = function(message,
     writer.writeMessage(
       1,
       f,
-      common_pb.ContextDTO.serializeBinaryToWriter
+      entities_pb.ContextDTO.serializeBinaryToWriter
     );
   }
   f = message.getEntitynamesList();
@@ -1856,17 +1853,17 @@ proto.content.GetContentStatsRequest.serializeBinaryToWriter = function(message,
 
 
 /**
- * optional common.ContextDTO context = 1;
- * @return {?proto.common.ContextDTO}
+ * optional entities.ContextDTO context = 1;
+ * @return {?proto.entities.ContextDTO}
  */
 proto.content.GetContentStatsRequest.prototype.getContext = function() {
-  return /** @type{?proto.common.ContextDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.ContextDTO, 1));
+  return /** @type{?proto.entities.ContextDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.ContextDTO, 1));
 };
 
 
 /**
- * @param {?proto.common.ContextDTO|undefined} value
+ * @param {?proto.entities.ContextDTO|undefined} value
  * @return {!proto.content.GetContentStatsRequest} returns this
 */
 proto.content.GetContentStatsRequest.prototype.setContext = function(value) {
@@ -1930,16 +1927,16 @@ proto.content.GetContentStatsRequest.prototype.clearEntitynamesList = function()
 
 
 /**
- * optional common.DataSourceEnumDTO source = 3;
- * @return {!proto.common.DataSourceEnumDTO}
+ * optional entities.DataSourceEnumDTO source = 3;
+ * @return {!proto.entities.DataSourceEnumDTO}
  */
 proto.content.GetContentStatsRequest.prototype.getSource = function() {
-  return /** @type {!proto.common.DataSourceEnumDTO} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+  return /** @type {!proto.entities.DataSourceEnumDTO} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
 /**
- * @param {!proto.common.DataSourceEnumDTO} value
+ * @param {!proto.entities.DataSourceEnumDTO} value
  * @return {!proto.content.GetContentStatsRequest} returns this
  */
 proto.content.GetContentStatsRequest.prototype.setSource = function(value) {
@@ -3352,7 +3349,7 @@ proto.content.CreateContentRequest.toObject = function(includeInstance, msg) {
     source: jspb.Message.getFieldWithDefault(msg, 1, 0),
     contentbody: (f = msg.getContentbody()) && proto.content.ContentBodyDTO.toObject(includeInstance, f),
     entityname: jspb.Message.getFieldWithDefault(msg, 3, ""),
-    context: (f = msg.getContext()) && common_pb.ContextDTO.toObject(includeInstance, f)
+    context: (f = msg.getContext()) && entities_pb.ContextDTO.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -3390,7 +3387,7 @@ proto.content.CreateContentRequest.deserializeBinaryFromReader = function(msg, r
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {!proto.common.DataSourceEnumDTO} */ (reader.readEnum());
+      var value = /** @type {!proto.entities.DataSourceEnumDTO} */ (reader.readEnum());
       msg.setSource(value);
       break;
     case 2:
@@ -3403,8 +3400,8 @@ proto.content.CreateContentRequest.deserializeBinaryFromReader = function(msg, r
       msg.setEntityname(value);
       break;
     case 4:
-      var value = new common_pb.ContextDTO;
-      reader.readMessage(value,common_pb.ContextDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.ContextDTO;
+      reader.readMessage(value,entities_pb.ContextDTO.deserializeBinaryFromReader);
       msg.setContext(value);
       break;
     default:
@@ -3463,23 +3460,23 @@ proto.content.CreateContentRequest.serializeBinaryToWriter = function(message, w
     writer.writeMessage(
       4,
       f,
-      common_pb.ContextDTO.serializeBinaryToWriter
+      entities_pb.ContextDTO.serializeBinaryToWriter
     );
   }
 };
 
 
 /**
- * optional common.DataSourceEnumDTO source = 1;
- * @return {!proto.common.DataSourceEnumDTO}
+ * optional entities.DataSourceEnumDTO source = 1;
+ * @return {!proto.entities.DataSourceEnumDTO}
  */
 proto.content.CreateContentRequest.prototype.getSource = function() {
-  return /** @type {!proto.common.DataSourceEnumDTO} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+  return /** @type {!proto.entities.DataSourceEnumDTO} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
 /**
- * @param {!proto.common.DataSourceEnumDTO} value
+ * @param {!proto.entities.DataSourceEnumDTO} value
  * @return {!proto.content.CreateContentRequest} returns this
  */
 proto.content.CreateContentRequest.prototype.setSource = function(value) {
@@ -3543,17 +3540,17 @@ proto.content.CreateContentRequest.prototype.setEntityname = function(value) {
 
 
 /**
- * optional common.ContextDTO context = 4;
- * @return {?proto.common.ContextDTO}
+ * optional entities.ContextDTO context = 4;
+ * @return {?proto.entities.ContextDTO}
  */
 proto.content.CreateContentRequest.prototype.getContext = function() {
-  return /** @type{?proto.common.ContextDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.ContextDTO, 4));
+  return /** @type{?proto.entities.ContextDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.ContextDTO, 4));
 };
 
 
 /**
- * @param {?proto.common.ContextDTO|undefined} value
+ * @param {?proto.entities.ContextDTO|undefined} value
  * @return {!proto.content.CreateContentRequest} returns this
 */
 proto.content.CreateContentRequest.prototype.setContext = function(value) {
@@ -3817,37 +3814,37 @@ proto.content.ContentBodyDTO.prototype.toObject = function(opt_includeInstance) 
  */
 proto.content.ContentBodyDTO.toObject = function(includeInstance, msg) {
   var f, obj = {
-    item: (f = msg.getItem()) && common_pb.ItemDTO.toObject(includeInstance, f),
-    pastexperience: (f = msg.getPastexperience()) && common_pb.PastExperienceDTO.toObject(includeInstance, f),
-    charactermemory: (f = msg.getCharactermemory()) && common_pb.CharacterMemoryDTO.toObject(includeInstance, f),
-    memory: (f = msg.getMemory()) && common_pb.MemoryDTO.toObject(includeInstance, f),
-    memorypool: (f = msg.getMemorypool()) && common_pb.MemoryPoolDTO.toObject(includeInstance, f),
-    memorypoolentry: (f = msg.getMemorypoolentry()) && common_pb.MemoryPoolEntryDTO.toObject(includeInstance, f),
-    skill: (f = msg.getSkill()) && common_pb.SkillDTO.toObject(includeInstance, f),
-    skillset: (f = msg.getSkillset()) && common_pb.SkillSetDTO.toObject(includeInstance, f),
-    equipmentslot: (f = msg.getEquipmentslot()) && common_pb.EquipmentSlotDTO.toObject(includeInstance, f),
-    storageslot: (f = msg.getStorageslot()) && common_pb.StorageSlotDTO.toObject(includeInstance, f),
-    trait: (f = msg.getTrait()) && common_pb.TraitDTO.toObject(includeInstance, f),
-    addiction: (f = msg.getAddiction()) && common_pb.AddictionDTO.toObject(includeInstance, f),
-    background: (f = msg.getBackground()) && common_pb.BackgroundDTO.toObject(includeInstance, f),
-    birthsign: (f = msg.getBirthsign()) && common_pb.BirthsignDTO.toObject(includeInstance, f),
-    character: (f = msg.getCharacter()) && common_pb.CharacterDTO.toObject(includeInstance, f),
-    charactergeninstruction: (f = msg.getCharactergeninstruction()) && common_pb.CharacterGenInstructionDTO.toObject(includeInstance, f),
-    charactergroupgeninstruction: (f = msg.getCharactergroupgeninstruction()) && common_pb.CharacterGroupGenInstructionDTO.toObject(includeInstance, f),
-    characterprofession: (f = msg.getCharacterprofession()) && common_pb.CharacterProfessionDTO.toObject(includeInstance, f),
-    disease: (f = msg.getDisease()) && common_pb.DiseaseDTO.toObject(includeInstance, f),
-    effect: (f = msg.getEffect()) && common_pb.EffectDTO.toObject(includeInstance, f),
-    fact: (f = msg.getFact()) && common_pb.FactDTO.toObject(includeInstance, f),
-    faction: (f = msg.getFaction()) && common_pb.FactionDTO.toObject(includeInstance, f),
-    itemset: (f = msg.getItemset()) && common_pb.ItemSetDTO.toObject(includeInstance, f),
-    mood: (f = msg.getMood()) && common_pb.MoodDTO.toObject(includeInstance, f),
-    need: (f = msg.getNeed()) && common_pb.NeedDTO.toObject(includeInstance, f),
-    personalityprofile: (f = msg.getPersonalityprofile()) && common_pb.PersonalityProfileDTO.toObject(includeInstance, f),
-    race: (f = msg.getRace()) && common_pb.RaceDTO.toObject(includeInstance, f),
-    religion: (f = msg.getReligion()) && common_pb.ReligionDTO.toObject(includeInstance, f),
-    resistance: (f = msg.getResistance()) && common_pb.ResistanceDTO.toObject(includeInstance, f),
-    status: (f = msg.getStatus()) && common_pb.StatusDTO.toObject(includeInstance, f),
-    tag: (f = msg.getTag()) && common_pb.TagDTO.toObject(includeInstance, f)
+    item: (f = msg.getItem()) && entities_pb.ItemDTO.toObject(includeInstance, f),
+    pastexperience: (f = msg.getPastexperience()) && entities_pb.PastExperienceDTO.toObject(includeInstance, f),
+    charactermemory: (f = msg.getCharactermemory()) && entities_pb.CharacterMemoryDTO.toObject(includeInstance, f),
+    memory: (f = msg.getMemory()) && entities_pb.MemoryDTO.toObject(includeInstance, f),
+    memorypool: (f = msg.getMemorypool()) && entities_pb.MemoryPoolDTO.toObject(includeInstance, f),
+    memorypoolentry: (f = msg.getMemorypoolentry()) && entities_pb.MemoryPoolEntryDTO.toObject(includeInstance, f),
+    skill: (f = msg.getSkill()) && entities_pb.SkillDTO.toObject(includeInstance, f),
+    skillset: (f = msg.getSkillset()) && entities_pb.SkillSetDTO.toObject(includeInstance, f),
+    equipmentslot: (f = msg.getEquipmentslot()) && entities_pb.EquipmentSlotDTO.toObject(includeInstance, f),
+    storageslot: (f = msg.getStorageslot()) && entities_pb.StorageSlotDTO.toObject(includeInstance, f),
+    trait: (f = msg.getTrait()) && entities_pb.TraitDTO.toObject(includeInstance, f),
+    addiction: (f = msg.getAddiction()) && entities_pb.AddictionDTO.toObject(includeInstance, f),
+    background: (f = msg.getBackground()) && entities_pb.BackgroundDTO.toObject(includeInstance, f),
+    birthsign: (f = msg.getBirthsign()) && entities_pb.BirthsignDTO.toObject(includeInstance, f),
+    character: (f = msg.getCharacter()) && entities_pb.CharacterDTO.toObject(includeInstance, f),
+    charactergeninstruction: (f = msg.getCharactergeninstruction()) && entities_pb.CharacterGenInstructionDTO.toObject(includeInstance, f),
+    charactergroupgeninstruction: (f = msg.getCharactergroupgeninstruction()) && entities_pb.CharacterGroupGenInstructionDTO.toObject(includeInstance, f),
+    characterprofession: (f = msg.getCharacterprofession()) && entities_pb.CharacterProfessionDTO.toObject(includeInstance, f),
+    disease: (f = msg.getDisease()) && entities_pb.DiseaseDTO.toObject(includeInstance, f),
+    effect: (f = msg.getEffect()) && entities_pb.EffectDTO.toObject(includeInstance, f),
+    fact: (f = msg.getFact()) && entities_pb.FactDTO.toObject(includeInstance, f),
+    faction: (f = msg.getFaction()) && entities_pb.FactionDTO.toObject(includeInstance, f),
+    itemset: (f = msg.getItemset()) && entities_pb.ItemSetDTO.toObject(includeInstance, f),
+    mood: (f = msg.getMood()) && entities_pb.MoodDTO.toObject(includeInstance, f),
+    need: (f = msg.getNeed()) && entities_pb.NeedDTO.toObject(includeInstance, f),
+    personalityprofile: (f = msg.getPersonalityprofile()) && entities_pb.PersonalityProfileDTO.toObject(includeInstance, f),
+    race: (f = msg.getRace()) && entities_pb.RaceDTO.toObject(includeInstance, f),
+    religion: (f = msg.getReligion()) && entities_pb.ReligionDTO.toObject(includeInstance, f),
+    resistance: (f = msg.getResistance()) && entities_pb.ResistanceDTO.toObject(includeInstance, f),
+    status: (f = msg.getStatus()) && entities_pb.StatusDTO.toObject(includeInstance, f),
+    tag: (f = msg.getTag()) && entities_pb.TagDTO.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -3885,158 +3882,158 @@ proto.content.ContentBodyDTO.deserializeBinaryFromReader = function(msg, reader)
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = new common_pb.ItemDTO;
-      reader.readMessage(value,common_pb.ItemDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.ItemDTO;
+      reader.readMessage(value,entities_pb.ItemDTO.deserializeBinaryFromReader);
       msg.setItem(value);
       break;
     case 2:
-      var value = new common_pb.PastExperienceDTO;
-      reader.readMessage(value,common_pb.PastExperienceDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.PastExperienceDTO;
+      reader.readMessage(value,entities_pb.PastExperienceDTO.deserializeBinaryFromReader);
       msg.setPastexperience(value);
       break;
     case 3:
-      var value = new common_pb.CharacterMemoryDTO;
-      reader.readMessage(value,common_pb.CharacterMemoryDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.CharacterMemoryDTO;
+      reader.readMessage(value,entities_pb.CharacterMemoryDTO.deserializeBinaryFromReader);
       msg.setCharactermemory(value);
       break;
     case 4:
-      var value = new common_pb.MemoryDTO;
-      reader.readMessage(value,common_pb.MemoryDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.MemoryDTO;
+      reader.readMessage(value,entities_pb.MemoryDTO.deserializeBinaryFromReader);
       msg.setMemory(value);
       break;
     case 5:
-      var value = new common_pb.MemoryPoolDTO;
-      reader.readMessage(value,common_pb.MemoryPoolDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.MemoryPoolDTO;
+      reader.readMessage(value,entities_pb.MemoryPoolDTO.deserializeBinaryFromReader);
       msg.setMemorypool(value);
       break;
     case 6:
-      var value = new common_pb.MemoryPoolEntryDTO;
-      reader.readMessage(value,common_pb.MemoryPoolEntryDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.MemoryPoolEntryDTO;
+      reader.readMessage(value,entities_pb.MemoryPoolEntryDTO.deserializeBinaryFromReader);
       msg.setMemorypoolentry(value);
       break;
     case 7:
-      var value = new common_pb.SkillDTO;
-      reader.readMessage(value,common_pb.SkillDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.SkillDTO;
+      reader.readMessage(value,entities_pb.SkillDTO.deserializeBinaryFromReader);
       msg.setSkill(value);
       break;
     case 8:
-      var value = new common_pb.SkillSetDTO;
-      reader.readMessage(value,common_pb.SkillSetDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.SkillSetDTO;
+      reader.readMessage(value,entities_pb.SkillSetDTO.deserializeBinaryFromReader);
       msg.setSkillset(value);
       break;
     case 9:
-      var value = new common_pb.EquipmentSlotDTO;
-      reader.readMessage(value,common_pb.EquipmentSlotDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.EquipmentSlotDTO;
+      reader.readMessage(value,entities_pb.EquipmentSlotDTO.deserializeBinaryFromReader);
       msg.setEquipmentslot(value);
       break;
     case 10:
-      var value = new common_pb.StorageSlotDTO;
-      reader.readMessage(value,common_pb.StorageSlotDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.StorageSlotDTO;
+      reader.readMessage(value,entities_pb.StorageSlotDTO.deserializeBinaryFromReader);
       msg.setStorageslot(value);
       break;
     case 11:
-      var value = new common_pb.TraitDTO;
-      reader.readMessage(value,common_pb.TraitDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.TraitDTO;
+      reader.readMessage(value,entities_pb.TraitDTO.deserializeBinaryFromReader);
       msg.setTrait(value);
       break;
     case 12:
-      var value = new common_pb.AddictionDTO;
-      reader.readMessage(value,common_pb.AddictionDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.AddictionDTO;
+      reader.readMessage(value,entities_pb.AddictionDTO.deserializeBinaryFromReader);
       msg.setAddiction(value);
       break;
     case 13:
-      var value = new common_pb.BackgroundDTO;
-      reader.readMessage(value,common_pb.BackgroundDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.BackgroundDTO;
+      reader.readMessage(value,entities_pb.BackgroundDTO.deserializeBinaryFromReader);
       msg.setBackground(value);
       break;
     case 14:
-      var value = new common_pb.BirthsignDTO;
-      reader.readMessage(value,common_pb.BirthsignDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.BirthsignDTO;
+      reader.readMessage(value,entities_pb.BirthsignDTO.deserializeBinaryFromReader);
       msg.setBirthsign(value);
       break;
     case 15:
-      var value = new common_pb.CharacterDTO;
-      reader.readMessage(value,common_pb.CharacterDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.CharacterDTO;
+      reader.readMessage(value,entities_pb.CharacterDTO.deserializeBinaryFromReader);
       msg.setCharacter(value);
       break;
     case 16:
-      var value = new common_pb.CharacterGenInstructionDTO;
-      reader.readMessage(value,common_pb.CharacterGenInstructionDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.CharacterGenInstructionDTO;
+      reader.readMessage(value,entities_pb.CharacterGenInstructionDTO.deserializeBinaryFromReader);
       msg.setCharactergeninstruction(value);
       break;
     case 17:
-      var value = new common_pb.CharacterGroupGenInstructionDTO;
-      reader.readMessage(value,common_pb.CharacterGroupGenInstructionDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.CharacterGroupGenInstructionDTO;
+      reader.readMessage(value,entities_pb.CharacterGroupGenInstructionDTO.deserializeBinaryFromReader);
       msg.setCharactergroupgeninstruction(value);
       break;
     case 18:
-      var value = new common_pb.CharacterProfessionDTO;
-      reader.readMessage(value,common_pb.CharacterProfessionDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.CharacterProfessionDTO;
+      reader.readMessage(value,entities_pb.CharacterProfessionDTO.deserializeBinaryFromReader);
       msg.setCharacterprofession(value);
       break;
     case 19:
-      var value = new common_pb.DiseaseDTO;
-      reader.readMessage(value,common_pb.DiseaseDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.DiseaseDTO;
+      reader.readMessage(value,entities_pb.DiseaseDTO.deserializeBinaryFromReader);
       msg.setDisease(value);
       break;
     case 20:
-      var value = new common_pb.EffectDTO;
-      reader.readMessage(value,common_pb.EffectDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.EffectDTO;
+      reader.readMessage(value,entities_pb.EffectDTO.deserializeBinaryFromReader);
       msg.setEffect(value);
       break;
     case 21:
-      var value = new common_pb.FactDTO;
-      reader.readMessage(value,common_pb.FactDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.FactDTO;
+      reader.readMessage(value,entities_pb.FactDTO.deserializeBinaryFromReader);
       msg.setFact(value);
       break;
     case 22:
-      var value = new common_pb.FactionDTO;
-      reader.readMessage(value,common_pb.FactionDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.FactionDTO;
+      reader.readMessage(value,entities_pb.FactionDTO.deserializeBinaryFromReader);
       msg.setFaction(value);
       break;
     case 23:
-      var value = new common_pb.ItemSetDTO;
-      reader.readMessage(value,common_pb.ItemSetDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.ItemSetDTO;
+      reader.readMessage(value,entities_pb.ItemSetDTO.deserializeBinaryFromReader);
       msg.setItemset(value);
       break;
     case 24:
-      var value = new common_pb.MoodDTO;
-      reader.readMessage(value,common_pb.MoodDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.MoodDTO;
+      reader.readMessage(value,entities_pb.MoodDTO.deserializeBinaryFromReader);
       msg.setMood(value);
       break;
     case 25:
-      var value = new common_pb.NeedDTO;
-      reader.readMessage(value,common_pb.NeedDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.NeedDTO;
+      reader.readMessage(value,entities_pb.NeedDTO.deserializeBinaryFromReader);
       msg.setNeed(value);
       break;
     case 26:
-      var value = new common_pb.PersonalityProfileDTO;
-      reader.readMessage(value,common_pb.PersonalityProfileDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.PersonalityProfileDTO;
+      reader.readMessage(value,entities_pb.PersonalityProfileDTO.deserializeBinaryFromReader);
       msg.setPersonalityprofile(value);
       break;
     case 27:
-      var value = new common_pb.RaceDTO;
-      reader.readMessage(value,common_pb.RaceDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.RaceDTO;
+      reader.readMessage(value,entities_pb.RaceDTO.deserializeBinaryFromReader);
       msg.setRace(value);
       break;
     case 28:
-      var value = new common_pb.ReligionDTO;
-      reader.readMessage(value,common_pb.ReligionDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.ReligionDTO;
+      reader.readMessage(value,entities_pb.ReligionDTO.deserializeBinaryFromReader);
       msg.setReligion(value);
       break;
     case 29:
-      var value = new common_pb.ResistanceDTO;
-      reader.readMessage(value,common_pb.ResistanceDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.ResistanceDTO;
+      reader.readMessage(value,entities_pb.ResistanceDTO.deserializeBinaryFromReader);
       msg.setResistance(value);
       break;
     case 30:
-      var value = new common_pb.StatusDTO;
-      reader.readMessage(value,common_pb.StatusDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.StatusDTO;
+      reader.readMessage(value,entities_pb.StatusDTO.deserializeBinaryFromReader);
       msg.setStatus(value);
       break;
     case 31:
-      var value = new common_pb.TagDTO;
-      reader.readMessage(value,common_pb.TagDTO.deserializeBinaryFromReader);
+      var value = new entities_pb.TagDTO;
+      reader.readMessage(value,entities_pb.TagDTO.deserializeBinaryFromReader);
       msg.setTag(value);
       break;
     default:
@@ -4073,7 +4070,7 @@ proto.content.ContentBodyDTO.serializeBinaryToWriter = function(message, writer)
     writer.writeMessage(
       1,
       f,
-      common_pb.ItemDTO.serializeBinaryToWriter
+      entities_pb.ItemDTO.serializeBinaryToWriter
     );
   }
   f = message.getPastexperience();
@@ -4081,7 +4078,7 @@ proto.content.ContentBodyDTO.serializeBinaryToWriter = function(message, writer)
     writer.writeMessage(
       2,
       f,
-      common_pb.PastExperienceDTO.serializeBinaryToWriter
+      entities_pb.PastExperienceDTO.serializeBinaryToWriter
     );
   }
   f = message.getCharactermemory();
@@ -4089,7 +4086,7 @@ proto.content.ContentBodyDTO.serializeBinaryToWriter = function(message, writer)
     writer.writeMessage(
       3,
       f,
-      common_pb.CharacterMemoryDTO.serializeBinaryToWriter
+      entities_pb.CharacterMemoryDTO.serializeBinaryToWriter
     );
   }
   f = message.getMemory();
@@ -4097,7 +4094,7 @@ proto.content.ContentBodyDTO.serializeBinaryToWriter = function(message, writer)
     writer.writeMessage(
       4,
       f,
-      common_pb.MemoryDTO.serializeBinaryToWriter
+      entities_pb.MemoryDTO.serializeBinaryToWriter
     );
   }
   f = message.getMemorypool();
@@ -4105,7 +4102,7 @@ proto.content.ContentBodyDTO.serializeBinaryToWriter = function(message, writer)
     writer.writeMessage(
       5,
       f,
-      common_pb.MemoryPoolDTO.serializeBinaryToWriter
+      entities_pb.MemoryPoolDTO.serializeBinaryToWriter
     );
   }
   f = message.getMemorypoolentry();
@@ -4113,7 +4110,7 @@ proto.content.ContentBodyDTO.serializeBinaryToWriter = function(message, writer)
     writer.writeMessage(
       6,
       f,
-      common_pb.MemoryPoolEntryDTO.serializeBinaryToWriter
+      entities_pb.MemoryPoolEntryDTO.serializeBinaryToWriter
     );
   }
   f = message.getSkill();
@@ -4121,7 +4118,7 @@ proto.content.ContentBodyDTO.serializeBinaryToWriter = function(message, writer)
     writer.writeMessage(
       7,
       f,
-      common_pb.SkillDTO.serializeBinaryToWriter
+      entities_pb.SkillDTO.serializeBinaryToWriter
     );
   }
   f = message.getSkillset();
@@ -4129,7 +4126,7 @@ proto.content.ContentBodyDTO.serializeBinaryToWriter = function(message, writer)
     writer.writeMessage(
       8,
       f,
-      common_pb.SkillSetDTO.serializeBinaryToWriter
+      entities_pb.SkillSetDTO.serializeBinaryToWriter
     );
   }
   f = message.getEquipmentslot();
@@ -4137,7 +4134,7 @@ proto.content.ContentBodyDTO.serializeBinaryToWriter = function(message, writer)
     writer.writeMessage(
       9,
       f,
-      common_pb.EquipmentSlotDTO.serializeBinaryToWriter
+      entities_pb.EquipmentSlotDTO.serializeBinaryToWriter
     );
   }
   f = message.getStorageslot();
@@ -4145,7 +4142,7 @@ proto.content.ContentBodyDTO.serializeBinaryToWriter = function(message, writer)
     writer.writeMessage(
       10,
       f,
-      common_pb.StorageSlotDTO.serializeBinaryToWriter
+      entities_pb.StorageSlotDTO.serializeBinaryToWriter
     );
   }
   f = message.getTrait();
@@ -4153,7 +4150,7 @@ proto.content.ContentBodyDTO.serializeBinaryToWriter = function(message, writer)
     writer.writeMessage(
       11,
       f,
-      common_pb.TraitDTO.serializeBinaryToWriter
+      entities_pb.TraitDTO.serializeBinaryToWriter
     );
   }
   f = message.getAddiction();
@@ -4161,7 +4158,7 @@ proto.content.ContentBodyDTO.serializeBinaryToWriter = function(message, writer)
     writer.writeMessage(
       12,
       f,
-      common_pb.AddictionDTO.serializeBinaryToWriter
+      entities_pb.AddictionDTO.serializeBinaryToWriter
     );
   }
   f = message.getBackground();
@@ -4169,7 +4166,7 @@ proto.content.ContentBodyDTO.serializeBinaryToWriter = function(message, writer)
     writer.writeMessage(
       13,
       f,
-      common_pb.BackgroundDTO.serializeBinaryToWriter
+      entities_pb.BackgroundDTO.serializeBinaryToWriter
     );
   }
   f = message.getBirthsign();
@@ -4177,7 +4174,7 @@ proto.content.ContentBodyDTO.serializeBinaryToWriter = function(message, writer)
     writer.writeMessage(
       14,
       f,
-      common_pb.BirthsignDTO.serializeBinaryToWriter
+      entities_pb.BirthsignDTO.serializeBinaryToWriter
     );
   }
   f = message.getCharacter();
@@ -4185,7 +4182,7 @@ proto.content.ContentBodyDTO.serializeBinaryToWriter = function(message, writer)
     writer.writeMessage(
       15,
       f,
-      common_pb.CharacterDTO.serializeBinaryToWriter
+      entities_pb.CharacterDTO.serializeBinaryToWriter
     );
   }
   f = message.getCharactergeninstruction();
@@ -4193,7 +4190,7 @@ proto.content.ContentBodyDTO.serializeBinaryToWriter = function(message, writer)
     writer.writeMessage(
       16,
       f,
-      common_pb.CharacterGenInstructionDTO.serializeBinaryToWriter
+      entities_pb.CharacterGenInstructionDTO.serializeBinaryToWriter
     );
   }
   f = message.getCharactergroupgeninstruction();
@@ -4201,7 +4198,7 @@ proto.content.ContentBodyDTO.serializeBinaryToWriter = function(message, writer)
     writer.writeMessage(
       17,
       f,
-      common_pb.CharacterGroupGenInstructionDTO.serializeBinaryToWriter
+      entities_pb.CharacterGroupGenInstructionDTO.serializeBinaryToWriter
     );
   }
   f = message.getCharacterprofession();
@@ -4209,7 +4206,7 @@ proto.content.ContentBodyDTO.serializeBinaryToWriter = function(message, writer)
     writer.writeMessage(
       18,
       f,
-      common_pb.CharacterProfessionDTO.serializeBinaryToWriter
+      entities_pb.CharacterProfessionDTO.serializeBinaryToWriter
     );
   }
   f = message.getDisease();
@@ -4217,7 +4214,7 @@ proto.content.ContentBodyDTO.serializeBinaryToWriter = function(message, writer)
     writer.writeMessage(
       19,
       f,
-      common_pb.DiseaseDTO.serializeBinaryToWriter
+      entities_pb.DiseaseDTO.serializeBinaryToWriter
     );
   }
   f = message.getEffect();
@@ -4225,7 +4222,7 @@ proto.content.ContentBodyDTO.serializeBinaryToWriter = function(message, writer)
     writer.writeMessage(
       20,
       f,
-      common_pb.EffectDTO.serializeBinaryToWriter
+      entities_pb.EffectDTO.serializeBinaryToWriter
     );
   }
   f = message.getFact();
@@ -4233,7 +4230,7 @@ proto.content.ContentBodyDTO.serializeBinaryToWriter = function(message, writer)
     writer.writeMessage(
       21,
       f,
-      common_pb.FactDTO.serializeBinaryToWriter
+      entities_pb.FactDTO.serializeBinaryToWriter
     );
   }
   f = message.getFaction();
@@ -4241,7 +4238,7 @@ proto.content.ContentBodyDTO.serializeBinaryToWriter = function(message, writer)
     writer.writeMessage(
       22,
       f,
-      common_pb.FactionDTO.serializeBinaryToWriter
+      entities_pb.FactionDTO.serializeBinaryToWriter
     );
   }
   f = message.getItemset();
@@ -4249,7 +4246,7 @@ proto.content.ContentBodyDTO.serializeBinaryToWriter = function(message, writer)
     writer.writeMessage(
       23,
       f,
-      common_pb.ItemSetDTO.serializeBinaryToWriter
+      entities_pb.ItemSetDTO.serializeBinaryToWriter
     );
   }
   f = message.getMood();
@@ -4257,7 +4254,7 @@ proto.content.ContentBodyDTO.serializeBinaryToWriter = function(message, writer)
     writer.writeMessage(
       24,
       f,
-      common_pb.MoodDTO.serializeBinaryToWriter
+      entities_pb.MoodDTO.serializeBinaryToWriter
     );
   }
   f = message.getNeed();
@@ -4265,7 +4262,7 @@ proto.content.ContentBodyDTO.serializeBinaryToWriter = function(message, writer)
     writer.writeMessage(
       25,
       f,
-      common_pb.NeedDTO.serializeBinaryToWriter
+      entities_pb.NeedDTO.serializeBinaryToWriter
     );
   }
   f = message.getPersonalityprofile();
@@ -4273,7 +4270,7 @@ proto.content.ContentBodyDTO.serializeBinaryToWriter = function(message, writer)
     writer.writeMessage(
       26,
       f,
-      common_pb.PersonalityProfileDTO.serializeBinaryToWriter
+      entities_pb.PersonalityProfileDTO.serializeBinaryToWriter
     );
   }
   f = message.getRace();
@@ -4281,7 +4278,7 @@ proto.content.ContentBodyDTO.serializeBinaryToWriter = function(message, writer)
     writer.writeMessage(
       27,
       f,
-      common_pb.RaceDTO.serializeBinaryToWriter
+      entities_pb.RaceDTO.serializeBinaryToWriter
     );
   }
   f = message.getReligion();
@@ -4289,7 +4286,7 @@ proto.content.ContentBodyDTO.serializeBinaryToWriter = function(message, writer)
     writer.writeMessage(
       28,
       f,
-      common_pb.ReligionDTO.serializeBinaryToWriter
+      entities_pb.ReligionDTO.serializeBinaryToWriter
     );
   }
   f = message.getResistance();
@@ -4297,7 +4294,7 @@ proto.content.ContentBodyDTO.serializeBinaryToWriter = function(message, writer)
     writer.writeMessage(
       29,
       f,
-      common_pb.ResistanceDTO.serializeBinaryToWriter
+      entities_pb.ResistanceDTO.serializeBinaryToWriter
     );
   }
   f = message.getStatus();
@@ -4305,7 +4302,7 @@ proto.content.ContentBodyDTO.serializeBinaryToWriter = function(message, writer)
     writer.writeMessage(
       30,
       f,
-      common_pb.StatusDTO.serializeBinaryToWriter
+      entities_pb.StatusDTO.serializeBinaryToWriter
     );
   }
   f = message.getTag();
@@ -4313,24 +4310,24 @@ proto.content.ContentBodyDTO.serializeBinaryToWriter = function(message, writer)
     writer.writeMessage(
       31,
       f,
-      common_pb.TagDTO.serializeBinaryToWriter
+      entities_pb.TagDTO.serializeBinaryToWriter
     );
   }
 };
 
 
 /**
- * optional common.ItemDTO Item = 1;
- * @return {?proto.common.ItemDTO}
+ * optional entities.ItemDTO Item = 1;
+ * @return {?proto.entities.ItemDTO}
  */
 proto.content.ContentBodyDTO.prototype.getItem = function() {
-  return /** @type{?proto.common.ItemDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.ItemDTO, 1));
+  return /** @type{?proto.entities.ItemDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.ItemDTO, 1));
 };
 
 
 /**
- * @param {?proto.common.ItemDTO|undefined} value
+ * @param {?proto.entities.ItemDTO|undefined} value
  * @return {!proto.content.ContentBodyDTO} returns this
 */
 proto.content.ContentBodyDTO.prototype.setItem = function(value) {
@@ -4357,17 +4354,17 @@ proto.content.ContentBodyDTO.prototype.hasItem = function() {
 
 
 /**
- * optional common.PastExperienceDTO PastExperience = 2;
- * @return {?proto.common.PastExperienceDTO}
+ * optional entities.PastExperienceDTO PastExperience = 2;
+ * @return {?proto.entities.PastExperienceDTO}
  */
 proto.content.ContentBodyDTO.prototype.getPastexperience = function() {
-  return /** @type{?proto.common.PastExperienceDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.PastExperienceDTO, 2));
+  return /** @type{?proto.entities.PastExperienceDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.PastExperienceDTO, 2));
 };
 
 
 /**
- * @param {?proto.common.PastExperienceDTO|undefined} value
+ * @param {?proto.entities.PastExperienceDTO|undefined} value
  * @return {!proto.content.ContentBodyDTO} returns this
 */
 proto.content.ContentBodyDTO.prototype.setPastexperience = function(value) {
@@ -4394,17 +4391,17 @@ proto.content.ContentBodyDTO.prototype.hasPastexperience = function() {
 
 
 /**
- * optional common.CharacterMemoryDTO CharacterMemory = 3;
- * @return {?proto.common.CharacterMemoryDTO}
+ * optional entities.CharacterMemoryDTO CharacterMemory = 3;
+ * @return {?proto.entities.CharacterMemoryDTO}
  */
 proto.content.ContentBodyDTO.prototype.getCharactermemory = function() {
-  return /** @type{?proto.common.CharacterMemoryDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.CharacterMemoryDTO, 3));
+  return /** @type{?proto.entities.CharacterMemoryDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.CharacterMemoryDTO, 3));
 };
 
 
 /**
- * @param {?proto.common.CharacterMemoryDTO|undefined} value
+ * @param {?proto.entities.CharacterMemoryDTO|undefined} value
  * @return {!proto.content.ContentBodyDTO} returns this
 */
 proto.content.ContentBodyDTO.prototype.setCharactermemory = function(value) {
@@ -4431,17 +4428,17 @@ proto.content.ContentBodyDTO.prototype.hasCharactermemory = function() {
 
 
 /**
- * optional common.MemoryDTO Memory = 4;
- * @return {?proto.common.MemoryDTO}
+ * optional entities.MemoryDTO Memory = 4;
+ * @return {?proto.entities.MemoryDTO}
  */
 proto.content.ContentBodyDTO.prototype.getMemory = function() {
-  return /** @type{?proto.common.MemoryDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.MemoryDTO, 4));
+  return /** @type{?proto.entities.MemoryDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.MemoryDTO, 4));
 };
 
 
 /**
- * @param {?proto.common.MemoryDTO|undefined} value
+ * @param {?proto.entities.MemoryDTO|undefined} value
  * @return {!proto.content.ContentBodyDTO} returns this
 */
 proto.content.ContentBodyDTO.prototype.setMemory = function(value) {
@@ -4468,17 +4465,17 @@ proto.content.ContentBodyDTO.prototype.hasMemory = function() {
 
 
 /**
- * optional common.MemoryPoolDTO MemoryPool = 5;
- * @return {?proto.common.MemoryPoolDTO}
+ * optional entities.MemoryPoolDTO MemoryPool = 5;
+ * @return {?proto.entities.MemoryPoolDTO}
  */
 proto.content.ContentBodyDTO.prototype.getMemorypool = function() {
-  return /** @type{?proto.common.MemoryPoolDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.MemoryPoolDTO, 5));
+  return /** @type{?proto.entities.MemoryPoolDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.MemoryPoolDTO, 5));
 };
 
 
 /**
- * @param {?proto.common.MemoryPoolDTO|undefined} value
+ * @param {?proto.entities.MemoryPoolDTO|undefined} value
  * @return {!proto.content.ContentBodyDTO} returns this
 */
 proto.content.ContentBodyDTO.prototype.setMemorypool = function(value) {
@@ -4505,17 +4502,17 @@ proto.content.ContentBodyDTO.prototype.hasMemorypool = function() {
 
 
 /**
- * optional common.MemoryPoolEntryDTO MemoryPoolEntry = 6;
- * @return {?proto.common.MemoryPoolEntryDTO}
+ * optional entities.MemoryPoolEntryDTO MemoryPoolEntry = 6;
+ * @return {?proto.entities.MemoryPoolEntryDTO}
  */
 proto.content.ContentBodyDTO.prototype.getMemorypoolentry = function() {
-  return /** @type{?proto.common.MemoryPoolEntryDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.MemoryPoolEntryDTO, 6));
+  return /** @type{?proto.entities.MemoryPoolEntryDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.MemoryPoolEntryDTO, 6));
 };
 
 
 /**
- * @param {?proto.common.MemoryPoolEntryDTO|undefined} value
+ * @param {?proto.entities.MemoryPoolEntryDTO|undefined} value
  * @return {!proto.content.ContentBodyDTO} returns this
 */
 proto.content.ContentBodyDTO.prototype.setMemorypoolentry = function(value) {
@@ -4542,17 +4539,17 @@ proto.content.ContentBodyDTO.prototype.hasMemorypoolentry = function() {
 
 
 /**
- * optional common.SkillDTO Skill = 7;
- * @return {?proto.common.SkillDTO}
+ * optional entities.SkillDTO Skill = 7;
+ * @return {?proto.entities.SkillDTO}
  */
 proto.content.ContentBodyDTO.prototype.getSkill = function() {
-  return /** @type{?proto.common.SkillDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.SkillDTO, 7));
+  return /** @type{?proto.entities.SkillDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.SkillDTO, 7));
 };
 
 
 /**
- * @param {?proto.common.SkillDTO|undefined} value
+ * @param {?proto.entities.SkillDTO|undefined} value
  * @return {!proto.content.ContentBodyDTO} returns this
 */
 proto.content.ContentBodyDTO.prototype.setSkill = function(value) {
@@ -4579,17 +4576,17 @@ proto.content.ContentBodyDTO.prototype.hasSkill = function() {
 
 
 /**
- * optional common.SkillSetDTO SkillSet = 8;
- * @return {?proto.common.SkillSetDTO}
+ * optional entities.SkillSetDTO SkillSet = 8;
+ * @return {?proto.entities.SkillSetDTO}
  */
 proto.content.ContentBodyDTO.prototype.getSkillset = function() {
-  return /** @type{?proto.common.SkillSetDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.SkillSetDTO, 8));
+  return /** @type{?proto.entities.SkillSetDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.SkillSetDTO, 8));
 };
 
 
 /**
- * @param {?proto.common.SkillSetDTO|undefined} value
+ * @param {?proto.entities.SkillSetDTO|undefined} value
  * @return {!proto.content.ContentBodyDTO} returns this
 */
 proto.content.ContentBodyDTO.prototype.setSkillset = function(value) {
@@ -4616,17 +4613,17 @@ proto.content.ContentBodyDTO.prototype.hasSkillset = function() {
 
 
 /**
- * optional common.EquipmentSlotDTO EquipmentSlot = 9;
- * @return {?proto.common.EquipmentSlotDTO}
+ * optional entities.EquipmentSlotDTO EquipmentSlot = 9;
+ * @return {?proto.entities.EquipmentSlotDTO}
  */
 proto.content.ContentBodyDTO.prototype.getEquipmentslot = function() {
-  return /** @type{?proto.common.EquipmentSlotDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.EquipmentSlotDTO, 9));
+  return /** @type{?proto.entities.EquipmentSlotDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.EquipmentSlotDTO, 9));
 };
 
 
 /**
- * @param {?proto.common.EquipmentSlotDTO|undefined} value
+ * @param {?proto.entities.EquipmentSlotDTO|undefined} value
  * @return {!proto.content.ContentBodyDTO} returns this
 */
 proto.content.ContentBodyDTO.prototype.setEquipmentslot = function(value) {
@@ -4653,17 +4650,17 @@ proto.content.ContentBodyDTO.prototype.hasEquipmentslot = function() {
 
 
 /**
- * optional common.StorageSlotDTO StorageSlot = 10;
- * @return {?proto.common.StorageSlotDTO}
+ * optional entities.StorageSlotDTO StorageSlot = 10;
+ * @return {?proto.entities.StorageSlotDTO}
  */
 proto.content.ContentBodyDTO.prototype.getStorageslot = function() {
-  return /** @type{?proto.common.StorageSlotDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.StorageSlotDTO, 10));
+  return /** @type{?proto.entities.StorageSlotDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.StorageSlotDTO, 10));
 };
 
 
 /**
- * @param {?proto.common.StorageSlotDTO|undefined} value
+ * @param {?proto.entities.StorageSlotDTO|undefined} value
  * @return {!proto.content.ContentBodyDTO} returns this
 */
 proto.content.ContentBodyDTO.prototype.setStorageslot = function(value) {
@@ -4690,17 +4687,17 @@ proto.content.ContentBodyDTO.prototype.hasStorageslot = function() {
 
 
 /**
- * optional common.TraitDTO Trait = 11;
- * @return {?proto.common.TraitDTO}
+ * optional entities.TraitDTO Trait = 11;
+ * @return {?proto.entities.TraitDTO}
  */
 proto.content.ContentBodyDTO.prototype.getTrait = function() {
-  return /** @type{?proto.common.TraitDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.TraitDTO, 11));
+  return /** @type{?proto.entities.TraitDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.TraitDTO, 11));
 };
 
 
 /**
- * @param {?proto.common.TraitDTO|undefined} value
+ * @param {?proto.entities.TraitDTO|undefined} value
  * @return {!proto.content.ContentBodyDTO} returns this
 */
 proto.content.ContentBodyDTO.prototype.setTrait = function(value) {
@@ -4727,17 +4724,17 @@ proto.content.ContentBodyDTO.prototype.hasTrait = function() {
 
 
 /**
- * optional common.AddictionDTO Addiction = 12;
- * @return {?proto.common.AddictionDTO}
+ * optional entities.AddictionDTO Addiction = 12;
+ * @return {?proto.entities.AddictionDTO}
  */
 proto.content.ContentBodyDTO.prototype.getAddiction = function() {
-  return /** @type{?proto.common.AddictionDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.AddictionDTO, 12));
+  return /** @type{?proto.entities.AddictionDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.AddictionDTO, 12));
 };
 
 
 /**
- * @param {?proto.common.AddictionDTO|undefined} value
+ * @param {?proto.entities.AddictionDTO|undefined} value
  * @return {!proto.content.ContentBodyDTO} returns this
 */
 proto.content.ContentBodyDTO.prototype.setAddiction = function(value) {
@@ -4764,17 +4761,17 @@ proto.content.ContentBodyDTO.prototype.hasAddiction = function() {
 
 
 /**
- * optional common.BackgroundDTO Background = 13;
- * @return {?proto.common.BackgroundDTO}
+ * optional entities.BackgroundDTO Background = 13;
+ * @return {?proto.entities.BackgroundDTO}
  */
 proto.content.ContentBodyDTO.prototype.getBackground = function() {
-  return /** @type{?proto.common.BackgroundDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.BackgroundDTO, 13));
+  return /** @type{?proto.entities.BackgroundDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.BackgroundDTO, 13));
 };
 
 
 /**
- * @param {?proto.common.BackgroundDTO|undefined} value
+ * @param {?proto.entities.BackgroundDTO|undefined} value
  * @return {!proto.content.ContentBodyDTO} returns this
 */
 proto.content.ContentBodyDTO.prototype.setBackground = function(value) {
@@ -4801,17 +4798,17 @@ proto.content.ContentBodyDTO.prototype.hasBackground = function() {
 
 
 /**
- * optional common.BirthsignDTO Birthsign = 14;
- * @return {?proto.common.BirthsignDTO}
+ * optional entities.BirthsignDTO Birthsign = 14;
+ * @return {?proto.entities.BirthsignDTO}
  */
 proto.content.ContentBodyDTO.prototype.getBirthsign = function() {
-  return /** @type{?proto.common.BirthsignDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.BirthsignDTO, 14));
+  return /** @type{?proto.entities.BirthsignDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.BirthsignDTO, 14));
 };
 
 
 /**
- * @param {?proto.common.BirthsignDTO|undefined} value
+ * @param {?proto.entities.BirthsignDTO|undefined} value
  * @return {!proto.content.ContentBodyDTO} returns this
 */
 proto.content.ContentBodyDTO.prototype.setBirthsign = function(value) {
@@ -4838,17 +4835,17 @@ proto.content.ContentBodyDTO.prototype.hasBirthsign = function() {
 
 
 /**
- * optional common.CharacterDTO Character = 15;
- * @return {?proto.common.CharacterDTO}
+ * optional entities.CharacterDTO Character = 15;
+ * @return {?proto.entities.CharacterDTO}
  */
 proto.content.ContentBodyDTO.prototype.getCharacter = function() {
-  return /** @type{?proto.common.CharacterDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.CharacterDTO, 15));
+  return /** @type{?proto.entities.CharacterDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.CharacterDTO, 15));
 };
 
 
 /**
- * @param {?proto.common.CharacterDTO|undefined} value
+ * @param {?proto.entities.CharacterDTO|undefined} value
  * @return {!proto.content.ContentBodyDTO} returns this
 */
 proto.content.ContentBodyDTO.prototype.setCharacter = function(value) {
@@ -4875,17 +4872,17 @@ proto.content.ContentBodyDTO.prototype.hasCharacter = function() {
 
 
 /**
- * optional common.CharacterGenInstructionDTO CharacterGenInstruction = 16;
- * @return {?proto.common.CharacterGenInstructionDTO}
+ * optional entities.CharacterGenInstructionDTO CharacterGenInstruction = 16;
+ * @return {?proto.entities.CharacterGenInstructionDTO}
  */
 proto.content.ContentBodyDTO.prototype.getCharactergeninstruction = function() {
-  return /** @type{?proto.common.CharacterGenInstructionDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.CharacterGenInstructionDTO, 16));
+  return /** @type{?proto.entities.CharacterGenInstructionDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.CharacterGenInstructionDTO, 16));
 };
 
 
 /**
- * @param {?proto.common.CharacterGenInstructionDTO|undefined} value
+ * @param {?proto.entities.CharacterGenInstructionDTO|undefined} value
  * @return {!proto.content.ContentBodyDTO} returns this
 */
 proto.content.ContentBodyDTO.prototype.setCharactergeninstruction = function(value) {
@@ -4912,17 +4909,17 @@ proto.content.ContentBodyDTO.prototype.hasCharactergeninstruction = function() {
 
 
 /**
- * optional common.CharacterGroupGenInstructionDTO CharacterGroupGenInstruction = 17;
- * @return {?proto.common.CharacterGroupGenInstructionDTO}
+ * optional entities.CharacterGroupGenInstructionDTO CharacterGroupGenInstruction = 17;
+ * @return {?proto.entities.CharacterGroupGenInstructionDTO}
  */
 proto.content.ContentBodyDTO.prototype.getCharactergroupgeninstruction = function() {
-  return /** @type{?proto.common.CharacterGroupGenInstructionDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.CharacterGroupGenInstructionDTO, 17));
+  return /** @type{?proto.entities.CharacterGroupGenInstructionDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.CharacterGroupGenInstructionDTO, 17));
 };
 
 
 /**
- * @param {?proto.common.CharacterGroupGenInstructionDTO|undefined} value
+ * @param {?proto.entities.CharacterGroupGenInstructionDTO|undefined} value
  * @return {!proto.content.ContentBodyDTO} returns this
 */
 proto.content.ContentBodyDTO.prototype.setCharactergroupgeninstruction = function(value) {
@@ -4949,17 +4946,17 @@ proto.content.ContentBodyDTO.prototype.hasCharactergroupgeninstruction = functio
 
 
 /**
- * optional common.CharacterProfessionDTO CharacterProfession = 18;
- * @return {?proto.common.CharacterProfessionDTO}
+ * optional entities.CharacterProfessionDTO CharacterProfession = 18;
+ * @return {?proto.entities.CharacterProfessionDTO}
  */
 proto.content.ContentBodyDTO.prototype.getCharacterprofession = function() {
-  return /** @type{?proto.common.CharacterProfessionDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.CharacterProfessionDTO, 18));
+  return /** @type{?proto.entities.CharacterProfessionDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.CharacterProfessionDTO, 18));
 };
 
 
 /**
- * @param {?proto.common.CharacterProfessionDTO|undefined} value
+ * @param {?proto.entities.CharacterProfessionDTO|undefined} value
  * @return {!proto.content.ContentBodyDTO} returns this
 */
 proto.content.ContentBodyDTO.prototype.setCharacterprofession = function(value) {
@@ -4986,17 +4983,17 @@ proto.content.ContentBodyDTO.prototype.hasCharacterprofession = function() {
 
 
 /**
- * optional common.DiseaseDTO Disease = 19;
- * @return {?proto.common.DiseaseDTO}
+ * optional entities.DiseaseDTO Disease = 19;
+ * @return {?proto.entities.DiseaseDTO}
  */
 proto.content.ContentBodyDTO.prototype.getDisease = function() {
-  return /** @type{?proto.common.DiseaseDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.DiseaseDTO, 19));
+  return /** @type{?proto.entities.DiseaseDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.DiseaseDTO, 19));
 };
 
 
 /**
- * @param {?proto.common.DiseaseDTO|undefined} value
+ * @param {?proto.entities.DiseaseDTO|undefined} value
  * @return {!proto.content.ContentBodyDTO} returns this
 */
 proto.content.ContentBodyDTO.prototype.setDisease = function(value) {
@@ -5023,17 +5020,17 @@ proto.content.ContentBodyDTO.prototype.hasDisease = function() {
 
 
 /**
- * optional common.EffectDTO Effect = 20;
- * @return {?proto.common.EffectDTO}
+ * optional entities.EffectDTO Effect = 20;
+ * @return {?proto.entities.EffectDTO}
  */
 proto.content.ContentBodyDTO.prototype.getEffect = function() {
-  return /** @type{?proto.common.EffectDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.EffectDTO, 20));
+  return /** @type{?proto.entities.EffectDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.EffectDTO, 20));
 };
 
 
 /**
- * @param {?proto.common.EffectDTO|undefined} value
+ * @param {?proto.entities.EffectDTO|undefined} value
  * @return {!proto.content.ContentBodyDTO} returns this
 */
 proto.content.ContentBodyDTO.prototype.setEffect = function(value) {
@@ -5060,17 +5057,17 @@ proto.content.ContentBodyDTO.prototype.hasEffect = function() {
 
 
 /**
- * optional common.FactDTO Fact = 21;
- * @return {?proto.common.FactDTO}
+ * optional entities.FactDTO Fact = 21;
+ * @return {?proto.entities.FactDTO}
  */
 proto.content.ContentBodyDTO.prototype.getFact = function() {
-  return /** @type{?proto.common.FactDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.FactDTO, 21));
+  return /** @type{?proto.entities.FactDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.FactDTO, 21));
 };
 
 
 /**
- * @param {?proto.common.FactDTO|undefined} value
+ * @param {?proto.entities.FactDTO|undefined} value
  * @return {!proto.content.ContentBodyDTO} returns this
 */
 proto.content.ContentBodyDTO.prototype.setFact = function(value) {
@@ -5097,17 +5094,17 @@ proto.content.ContentBodyDTO.prototype.hasFact = function() {
 
 
 /**
- * optional common.FactionDTO Faction = 22;
- * @return {?proto.common.FactionDTO}
+ * optional entities.FactionDTO Faction = 22;
+ * @return {?proto.entities.FactionDTO}
  */
 proto.content.ContentBodyDTO.prototype.getFaction = function() {
-  return /** @type{?proto.common.FactionDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.FactionDTO, 22));
+  return /** @type{?proto.entities.FactionDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.FactionDTO, 22));
 };
 
 
 /**
- * @param {?proto.common.FactionDTO|undefined} value
+ * @param {?proto.entities.FactionDTO|undefined} value
  * @return {!proto.content.ContentBodyDTO} returns this
 */
 proto.content.ContentBodyDTO.prototype.setFaction = function(value) {
@@ -5134,17 +5131,17 @@ proto.content.ContentBodyDTO.prototype.hasFaction = function() {
 
 
 /**
- * optional common.ItemSetDTO ItemSet = 23;
- * @return {?proto.common.ItemSetDTO}
+ * optional entities.ItemSetDTO ItemSet = 23;
+ * @return {?proto.entities.ItemSetDTO}
  */
 proto.content.ContentBodyDTO.prototype.getItemset = function() {
-  return /** @type{?proto.common.ItemSetDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.ItemSetDTO, 23));
+  return /** @type{?proto.entities.ItemSetDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.ItemSetDTO, 23));
 };
 
 
 /**
- * @param {?proto.common.ItemSetDTO|undefined} value
+ * @param {?proto.entities.ItemSetDTO|undefined} value
  * @return {!proto.content.ContentBodyDTO} returns this
 */
 proto.content.ContentBodyDTO.prototype.setItemset = function(value) {
@@ -5171,17 +5168,17 @@ proto.content.ContentBodyDTO.prototype.hasItemset = function() {
 
 
 /**
- * optional common.MoodDTO Mood = 24;
- * @return {?proto.common.MoodDTO}
+ * optional entities.MoodDTO Mood = 24;
+ * @return {?proto.entities.MoodDTO}
  */
 proto.content.ContentBodyDTO.prototype.getMood = function() {
-  return /** @type{?proto.common.MoodDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.MoodDTO, 24));
+  return /** @type{?proto.entities.MoodDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.MoodDTO, 24));
 };
 
 
 /**
- * @param {?proto.common.MoodDTO|undefined} value
+ * @param {?proto.entities.MoodDTO|undefined} value
  * @return {!proto.content.ContentBodyDTO} returns this
 */
 proto.content.ContentBodyDTO.prototype.setMood = function(value) {
@@ -5208,17 +5205,17 @@ proto.content.ContentBodyDTO.prototype.hasMood = function() {
 
 
 /**
- * optional common.NeedDTO Need = 25;
- * @return {?proto.common.NeedDTO}
+ * optional entities.NeedDTO Need = 25;
+ * @return {?proto.entities.NeedDTO}
  */
 proto.content.ContentBodyDTO.prototype.getNeed = function() {
-  return /** @type{?proto.common.NeedDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.NeedDTO, 25));
+  return /** @type{?proto.entities.NeedDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.NeedDTO, 25));
 };
 
 
 /**
- * @param {?proto.common.NeedDTO|undefined} value
+ * @param {?proto.entities.NeedDTO|undefined} value
  * @return {!proto.content.ContentBodyDTO} returns this
 */
 proto.content.ContentBodyDTO.prototype.setNeed = function(value) {
@@ -5245,17 +5242,17 @@ proto.content.ContentBodyDTO.prototype.hasNeed = function() {
 
 
 /**
- * optional common.PersonalityProfileDTO PersonalityProfile = 26;
- * @return {?proto.common.PersonalityProfileDTO}
+ * optional entities.PersonalityProfileDTO PersonalityProfile = 26;
+ * @return {?proto.entities.PersonalityProfileDTO}
  */
 proto.content.ContentBodyDTO.prototype.getPersonalityprofile = function() {
-  return /** @type{?proto.common.PersonalityProfileDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.PersonalityProfileDTO, 26));
+  return /** @type{?proto.entities.PersonalityProfileDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.PersonalityProfileDTO, 26));
 };
 
 
 /**
- * @param {?proto.common.PersonalityProfileDTO|undefined} value
+ * @param {?proto.entities.PersonalityProfileDTO|undefined} value
  * @return {!proto.content.ContentBodyDTO} returns this
 */
 proto.content.ContentBodyDTO.prototype.setPersonalityprofile = function(value) {
@@ -5282,17 +5279,17 @@ proto.content.ContentBodyDTO.prototype.hasPersonalityprofile = function() {
 
 
 /**
- * optional common.RaceDTO Race = 27;
- * @return {?proto.common.RaceDTO}
+ * optional entities.RaceDTO Race = 27;
+ * @return {?proto.entities.RaceDTO}
  */
 proto.content.ContentBodyDTO.prototype.getRace = function() {
-  return /** @type{?proto.common.RaceDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.RaceDTO, 27));
+  return /** @type{?proto.entities.RaceDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.RaceDTO, 27));
 };
 
 
 /**
- * @param {?proto.common.RaceDTO|undefined} value
+ * @param {?proto.entities.RaceDTO|undefined} value
  * @return {!proto.content.ContentBodyDTO} returns this
 */
 proto.content.ContentBodyDTO.prototype.setRace = function(value) {
@@ -5319,17 +5316,17 @@ proto.content.ContentBodyDTO.prototype.hasRace = function() {
 
 
 /**
- * optional common.ReligionDTO Religion = 28;
- * @return {?proto.common.ReligionDTO}
+ * optional entities.ReligionDTO Religion = 28;
+ * @return {?proto.entities.ReligionDTO}
  */
 proto.content.ContentBodyDTO.prototype.getReligion = function() {
-  return /** @type{?proto.common.ReligionDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.ReligionDTO, 28));
+  return /** @type{?proto.entities.ReligionDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.ReligionDTO, 28));
 };
 
 
 /**
- * @param {?proto.common.ReligionDTO|undefined} value
+ * @param {?proto.entities.ReligionDTO|undefined} value
  * @return {!proto.content.ContentBodyDTO} returns this
 */
 proto.content.ContentBodyDTO.prototype.setReligion = function(value) {
@@ -5356,17 +5353,17 @@ proto.content.ContentBodyDTO.prototype.hasReligion = function() {
 
 
 /**
- * optional common.ResistanceDTO Resistance = 29;
- * @return {?proto.common.ResistanceDTO}
+ * optional entities.ResistanceDTO Resistance = 29;
+ * @return {?proto.entities.ResistanceDTO}
  */
 proto.content.ContentBodyDTO.prototype.getResistance = function() {
-  return /** @type{?proto.common.ResistanceDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.ResistanceDTO, 29));
+  return /** @type{?proto.entities.ResistanceDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.ResistanceDTO, 29));
 };
 
 
 /**
- * @param {?proto.common.ResistanceDTO|undefined} value
+ * @param {?proto.entities.ResistanceDTO|undefined} value
  * @return {!proto.content.ContentBodyDTO} returns this
 */
 proto.content.ContentBodyDTO.prototype.setResistance = function(value) {
@@ -5393,17 +5390,17 @@ proto.content.ContentBodyDTO.prototype.hasResistance = function() {
 
 
 /**
- * optional common.StatusDTO Status = 30;
- * @return {?proto.common.StatusDTO}
+ * optional entities.StatusDTO Status = 30;
+ * @return {?proto.entities.StatusDTO}
  */
 proto.content.ContentBodyDTO.prototype.getStatus = function() {
-  return /** @type{?proto.common.StatusDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.StatusDTO, 30));
+  return /** @type{?proto.entities.StatusDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.StatusDTO, 30));
 };
 
 
 /**
- * @param {?proto.common.StatusDTO|undefined} value
+ * @param {?proto.entities.StatusDTO|undefined} value
  * @return {!proto.content.ContentBodyDTO} returns this
 */
 proto.content.ContentBodyDTO.prototype.setStatus = function(value) {
@@ -5430,17 +5427,17 @@ proto.content.ContentBodyDTO.prototype.hasStatus = function() {
 
 
 /**
- * optional common.TagDTO Tag = 31;
- * @return {?proto.common.TagDTO}
+ * optional entities.TagDTO Tag = 31;
+ * @return {?proto.entities.TagDTO}
  */
 proto.content.ContentBodyDTO.prototype.getTag = function() {
-  return /** @type{?proto.common.TagDTO} */ (
-    jspb.Message.getWrapperField(this, common_pb.TagDTO, 31));
+  return /** @type{?proto.entities.TagDTO} */ (
+    jspb.Message.getWrapperField(this, entities_pb.TagDTO, 31));
 };
 
 
 /**
- * @param {?proto.common.TagDTO|undefined} value
+ * @param {?proto.entities.TagDTO|undefined} value
  * @return {!proto.content.ContentBodyDTO} returns this
 */
 proto.content.ContentBodyDTO.prototype.setTag = function(value) {

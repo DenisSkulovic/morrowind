@@ -1,7 +1,7 @@
 import { Campaign } from "../modules/campaign/entities/Campaign";
 import { User } from "../modules/user/entities/User";
 import { World } from "../modules/world/entities/World";
-import { ContextDTO } from "../proto/common";
+import { ContextDTO } from "../proto/entities";
 import { Serializable } from "../decorator/serializable.decorator";
 import { Serializer, SerializeStrategyEnum } from "../serializer";
 

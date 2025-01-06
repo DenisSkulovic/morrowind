@@ -1,0 +1,16 @@
+export enum SurroundingSituation {
+    NONE = 'none',
+    CALM = 'calm',
+    CROWDED = 'crowded',
+    QUIET_VILLAGE = 'quiet village',
+    RURAL = 'rural',
+    MOUNTAINOUS = 'mountainous',
+    APOCALYPTIC = 'apocalyptic',
+    VOLCANO_ERUPTION = 'volcano eruption',
+    EARTHQUAKE = 'earthquake',
+    TSUNAMI = 'tsunami',
+    FLOOD = 'flood',
+    FOREST_FIRE = 'forest fire',
+    SIEGE = 'siege',
+    BATTLE = 'battle',
+}

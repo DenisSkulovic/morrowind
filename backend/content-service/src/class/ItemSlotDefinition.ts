@@ -1,5 +1,5 @@
 import { Serializable } from "../decorator/serializable.decorator";
-import { EquipmentSlotDefinitionDTO } from "../proto/common";
+import { EquipmentSlotDefinitionDTO } from "../proto/entities";
 import { Serializer } from "../serializer";
 
 export class EquipmentSlotDefinition {

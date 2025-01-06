@@ -13,7 +13,7 @@ import { Disease } from "./Disease";
 import { Effect } from "./Effect";
 import { Fact } from "./Fact";
 import { Faction } from "./Faction";
-import { TagDTO, TagSubtypeEnumDTO } from "../../../proto/common";
+import { TagDTO, TagSubtypeEnumDTO } from "../../../proto/entities";
 import { TagSubtypeEnum } from "../../../common/enum/entityEnums";
 import { Campaign } from "../../campaign/entities/Campaign";
 import { User } from "../../user/entities/User";

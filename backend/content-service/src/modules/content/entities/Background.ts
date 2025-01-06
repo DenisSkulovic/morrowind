@@ -7,7 +7,7 @@ import { Serializer, SerializeStrategyEnum } from "../../../serializer";
 import { Serializable } from "../../../decorator/serializable.decorator";
 import { SkillAdjustment } from "../../../class/SkillAdjustment";
 import { GenerationInstruction, deserializeGenerationInstructions, deserializeInstruction, serializeGenerationInstructions, serializeInstruction } from "../../../class/GenerationInstruction";
-import { BackgroundDTO } from "../../../proto/common";
+import { BackgroundDTO } from "../../../proto/entities";
 
 
 @Entity()

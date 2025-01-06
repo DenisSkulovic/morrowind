@@ -1,11 +1,11 @@
 import * as jspb from 'google-protobuf'
 
-import * as common_pb from './common_pb'; // proto import: "common.proto"
+import * as entities_pb from './entities_pb'; // proto import: "entities.proto"
 
 
 export class UpdateCampaignRequest extends jspb.Message {
-  getCampaign(): common_pb.CampaignDTO | undefined;
-  setCampaign(value?: common_pb.CampaignDTO): UpdateCampaignRequest;
+  getCampaign(): entities_pb.CampaignDTO | undefined;
+  setCampaign(value?: entities_pb.CampaignDTO): UpdateCampaignRequest;
   hasCampaign(): boolean;
   clearCampaign(): UpdateCampaignRequest;
 
@@ -19,13 +19,13 @@ export class UpdateCampaignRequest extends jspb.Message {
 
 export namespace UpdateCampaignRequest {
   export type AsObject = {
-    campaign?: common_pb.CampaignDTO.AsObject,
+    campaign?: entities_pb.CampaignDTO.AsObject,
   }
 }
 
 export class UpdateCampaignResponse extends jspb.Message {
-  getCampaign(): common_pb.CampaignDTO | undefined;
-  setCampaign(value?: common_pb.CampaignDTO): UpdateCampaignResponse;
+  getCampaign(): entities_pb.CampaignDTO | undefined;
+  setCampaign(value?: entities_pb.CampaignDTO): UpdateCampaignResponse;
   hasCampaign(): boolean;
   clearCampaign(): UpdateCampaignResponse;
 
@@ -39,13 +39,13 @@ export class UpdateCampaignResponse extends jspb.Message {
 
 export namespace UpdateCampaignResponse {
   export type AsObject = {
-    campaign?: common_pb.CampaignDTO.AsObject,
+    campaign?: entities_pb.CampaignDTO.AsObject,
   }
 }
 
 export class CreateCampaignRequest extends jspb.Message {
-  getCampaign(): common_pb.CampaignDTO | undefined;
-  setCampaign(value?: common_pb.CampaignDTO): CreateCampaignRequest;
+  getCampaign(): entities_pb.CampaignDTO | undefined;
+  setCampaign(value?: entities_pb.CampaignDTO): CreateCampaignRequest;
   hasCampaign(): boolean;
   clearCampaign(): CreateCampaignRequest;
 
@@ -59,13 +59,13 @@ export class CreateCampaignRequest extends jspb.Message {
 
 export namespace CreateCampaignRequest {
   export type AsObject = {
-    campaign?: common_pb.CampaignDTO.AsObject,
+    campaign?: entities_pb.CampaignDTO.AsObject,
   }
 }
 
 export class CreateCampaignResponse extends jspb.Message {
-  getCampaign(): common_pb.CampaignDTO | undefined;
-  setCampaign(value?: common_pb.CampaignDTO): CreateCampaignResponse;
+  getCampaign(): entities_pb.CampaignDTO | undefined;
+  setCampaign(value?: entities_pb.CampaignDTO): CreateCampaignResponse;
   hasCampaign(): boolean;
   clearCampaign(): CreateCampaignResponse;
 
@@ -79,7 +79,7 @@ export class CreateCampaignResponse extends jspb.Message {
 
 export namespace CreateCampaignResponse {
   export type AsObject = {
-    campaign?: common_pb.CampaignDTO.AsObject,
+    campaign?: entities_pb.CampaignDTO.AsObject,
   }
 }
 
@@ -102,8 +102,8 @@ export namespace GetCampaignRequest {
 }
 
 export class GetCampaignResponse extends jspb.Message {
-  getCampaign(): common_pb.CampaignDTO | undefined;
-  setCampaign(value?: common_pb.CampaignDTO): GetCampaignResponse;
+  getCampaign(): entities_pb.CampaignDTO | undefined;
+  setCampaign(value?: entities_pb.CampaignDTO): GetCampaignResponse;
   hasCampaign(): boolean;
   clearCampaign(): GetCampaignResponse;
 
@@ -117,7 +117,7 @@ export class GetCampaignResponse extends jspb.Message {
 
 export namespace GetCampaignResponse {
   export type AsObject = {
-    campaign?: common_pb.CampaignDTO.AsObject,
+    campaign?: entities_pb.CampaignDTO.AsObject,
   }
 }
 
@@ -157,13 +157,13 @@ export class SearchCampaignRequest extends jspb.Message {
   getEntityname(): string;
   setEntityname(value: string): SearchCampaignRequest;
 
-  getQuery(): common_pb.SearchQueryDTO | undefined;
-  setQuery(value?: common_pb.SearchQueryDTO): SearchCampaignRequest;
+  getQuery(): entities_pb.SearchQueryDTO | undefined;
+  setQuery(value?: entities_pb.SearchQueryDTO): SearchCampaignRequest;
   hasQuery(): boolean;
   clearQuery(): SearchCampaignRequest;
 
-  getContext(): common_pb.ContextDTO | undefined;
-  setContext(value?: common_pb.ContextDTO): SearchCampaignRequest;
+  getContext(): entities_pb.ContextDTO | undefined;
+  setContext(value?: entities_pb.ContextDTO): SearchCampaignRequest;
   hasContext(): boolean;
   clearContext(): SearchCampaignRequest;
 
@@ -178,16 +178,16 @@ export class SearchCampaignRequest extends jspb.Message {
 export namespace SearchCampaignRequest {
   export type AsObject = {
     entityname: string,
-    query?: common_pb.SearchQueryDTO.AsObject,
-    context?: common_pb.ContextDTO.AsObject,
+    query?: entities_pb.SearchQueryDTO.AsObject,
+    context?: entities_pb.ContextDTO.AsObject,
   }
 }
 
 export class SearchCampaignResponse extends jspb.Message {
-  getCampaignsList(): Array<common_pb.CampaignDTO>;
-  setCampaignsList(value: Array<common_pb.CampaignDTO>): SearchCampaignResponse;
+  getCampaignsList(): Array<entities_pb.CampaignDTO>;
+  setCampaignsList(value: Array<entities_pb.CampaignDTO>): SearchCampaignResponse;
   clearCampaignsList(): SearchCampaignResponse;
-  addCampaigns(value?: common_pb.CampaignDTO, index?: number): common_pb.CampaignDTO;
+  addCampaigns(value?: entities_pb.CampaignDTO, index?: number): entities_pb.CampaignDTO;
 
   getTotalresults(): number;
   setTotalresults(value: number): SearchCampaignResponse;
@@ -208,7 +208,7 @@ export class SearchCampaignResponse extends jspb.Message {
 
 export namespace SearchCampaignResponse {
   export type AsObject = {
-    campaignsList: Array<common_pb.CampaignDTO.AsObject>,
+    campaignsList: Array<entities_pb.CampaignDTO.AsObject>,
     totalresults: number,
     totalpages: number,
     currentpage: number,

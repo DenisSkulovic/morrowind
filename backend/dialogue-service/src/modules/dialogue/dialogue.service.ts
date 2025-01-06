@@ -1,6 +1,5 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { ClientGrpc } from '@nestjs/microservices';
-import { firstValueFrom } from 'rxjs';
+import { Inject, Injectable, Logger } from '@nestjs/common';
+import { firstValueFrom, Observable } from 'rxjs';
 import {
     StartDialogueRequest,
     StartDialogueResponse,
@@ -16,18 +15,19 @@ import {
     CharacterDialogueInitiationDTO,
     RevealedInformationDTO
 } from '../../proto/dialogue';
+import { ContentService } from '../content/content.service';
+import { AiProviderImplementationEnum, AiService } from '../ai/ai.service';
+import { DialoguePromptData } from '../../class/DialoguePromptData';
+import { PromptService } from '../prompt/prompt.service';
+import { DialogueState } from '../../class/DialogueState';
+import { DialogueStateService } from '../dialogueState/dialogueState.service';
 
-export interface IAiService {
-    processRequest(request: any): Promise<any>;
-    streamProcessRequest(request: any): Promise<any>;
-    interrupt(request: any): Promise<any>;
-    checkStatus(request: any): Promise<any>;
-}
+
 
 export interface IDialogueService {
-    startDialogue(request: StartDialogueRequest): Promise<StartDialogueResponse>;
+    startDialogue(request: StartDialogueRequest, onChunkReceived: (chunk: any) => void): Promise<StartDialogueResponse>;
     generateResponseOptions(request: GenerateResponseOptionsRequest): Promise<GenerateResponseOptionsResponse>;
-    sendMessage(request: SendMessageRequest): Promise<MessageChunk>;
+    sendMessage(request: SendMessageRequest, onChunkReceived: (chunk: any) => void): Promise<MessageChunk>;
     interruptDialogue(request: InterruptDialogueRequest): Promise<InterruptDialogueResponse>;
     endDialogue(request: EndDialogueRequest): Promise<EndDialogueResponse>;
 }
@@ -35,57 +35,82 @@ export interface IDialogueService {
 @Injectable()
 export class DialogueService implements IDialogueService {
     private readonly logger = new Logger(DialogueService.name);
-    private aiService: IAiService;
 
-    constructor(private readonly grpcClient: ClientGrpc) {
-        this.aiService = this.grpcClient.getService<IAiService>('AiServiceOpenAIv1');
-    }
+    constructor(
+        @Inject(PromptService) private promptService: PromptService,
+        @Inject(ContentService) private contentService: ContentService,
+        @Inject(AiService) private aiService: AiService,
+        @Inject(DialogueStateService) private readonly dialogueStateService: DialogueStateService
+    ) { }
 
-    private async processAiRequest(prompt: string, metadata: any = {}, options: any = {}): Promise<any> {
-        try {
-            const aiRequest = {
-                requestId: `dialogue-${Date.now()}`,
-                prompt,
-                metadata: {
-                    timestamp: Date.now(),
-                    useCase: 'dialogue',
-                    context: metadata.context || ''
-                },
-                options: {
-                    model: options.model || 'gpt-4',
-                    temperature: options.temperature || '0.7',
-                    maxTokens: options.maxTokens || '1000',
-                    timeout: options.timeout || 30
-                }
-            };
-
-            return await firstValueFrom(this.aiService.processRequest(aiRequest));
-        } catch (error) {
-            this.logger.error(`Error processing AI request: ${error.message}`);
-            throw error;
+    async streamDialogue(
+        dialoguePromptData: DialoguePromptData,
+        aiProvider: AiProviderImplementationEnum,
+        options: {
+            aiModel: string,
+            temperature: string,
+            maxTokens: string,
+            timeout: number,
+        },
+        onChunkReceived: (chunk: any) => void,
+    ): Promise<void> {
+        const aiRequest: AiRequest = {
+            requestId: "",
+            prompt: JSON.stringify(dialoguePromptData),
+            metadata: {
+                timestamp: Date.now(),
+                useCase: "DIALOGUE",
+                context: "DIALOGUE"
+            },
+            options
         }
+        const grpcStream: Observable<any> = this.aiService.streamProcessRequest(aiRequest, aiProvider);
+
+        return new Promise((resolve, reject) => {
+            grpcStream.subscribe({
+                next: (chunk) => {
+                    console.log('Received chunk from AI service:', chunk);
+                    onChunkReceived(chunk);
+                },
+                error: (err) => {
+                    console.error('Error from AI service:', err);
+                    reject(err);
+                },
+                complete: () => {
+                    console.log('AI service stream complete');
+                    resolve();
+                },
+            });
+        });
     }
 
-    async startDialogue(request: StartDialogueRequest): Promise<StartDialogueResponse> {
+    async startDialogue(
+        request: StartDialogueRequest,
+        onChunkReceived: (chunk: any) => void
+    ): Promise<StartDialogueResponse> {
         this.logger.debug(`Starting dialogue with request: ${JSON.stringify(request)}`);
 
-        // TODO: Implement dialogue state management
-        // TODO: Implement character state tracking
-        // TODO: Implement context management
+        const dialogueState = DialogueState.build({
+            // TODO: Build dialogue state
+        })
+        await this.dialogueStateService.cacheState(request.sessionId, "DIALOGUE_STATE", dialogueState);
 
-        const response = await this.processAiRequest(
-            'Start dialogue prompt', // TODO: Build proper prompt
-            { context: request.context }
-        );
+        const dialoguePromptData = await this.promptService.assembleDialoguePrompt(request.sessionId, dialogueState, "DIALOGUE", request.context);
 
-        // TODO: Process AI response and build proper DialogueStateDTO
-
-        return {
-            // TODO: Return proper response structure
-            sessionId: `session-${Date.now()}`,
-            initialState: {} as DialogueStateDTO,
-            characterInitiations: [] as CharacterDialogueInitiationDTO[]
+        const aiProvider = AiProviderImplementationEnum.OPENAI_V1;
+        const options = {
+            aiModel: "gpt-4o",
+            temperature: "0.5",
+            maxTokens: "1000",
+            timeout: 10000,
         };
+
+        return this.streamDialogue(
+            dialoguePromptData,
+            aiProvider,
+            options,
+            onChunkReceived,
+        );
     }
 
     async generateResponseOptions(request: GenerateResponseOptionsRequest): Promise<GenerateResponseOptionsResponse> {
@@ -102,30 +127,43 @@ export class DialogueService implements IDialogueService {
         };
     }
 
-    async sendMessage(request: SendMessageRequest): Promise<MessageChunk> {
+    async sendMessage(
+        request: SendMessageRequest,
+        onChunkReceived: (chunk: any) => void
+    ): Promise<MessageChunk> {
         this.logger.debug(`Processing message for session: ${request.sessionId}`);
 
-        // TODO: Implement message processing logic
-        // TODO: Implement streaming response handling
-        // TODO: Implement revealed information tracking
+        const dialogueState = await this.dialogueStateService.getState(request.sessionId);
+        if (!dialogueState) throw new Error(`DialogueState not found for session ${request.sessionId}`);
 
-        return {
-            textChunk: '',
-            revealedFacts: [],
-            observedTraits: [],
-            displayedMoods: [],
-            revealedItems: [],
-            revealedLocations: [],
-            updatedOpinionMeter: 0,
-            isLast: true
+        const dialoguePromptData = await this.promptService.assembleDialoguePrompt(request.sessionId, dialogueState, "DIALOGUE", request.context);
+
+        const aiProvider = AiProviderImplementationEnum.OPENAI_V1;
+        const options = {
+            aiModel: "gpt-4o",
+            temperature: "0.5",
+            maxTokens: "1000",
+            timeout: 10000,
         };
+
+        return this.streamDialogue(
+            dialoguePromptData,
+            aiProvider,
+            options,
+            onChunkReceived,
+        );
     }
 
     async interruptDialogue(request: InterruptDialogueRequest): Promise<InterruptDialogueResponse> {
         this.logger.debug(`Interrupting dialogue session: ${request.sessionId}`);
 
+        const cachedState: DialogueState | null = await this.dialogueStateService.getState(request.sessionId);
+        if (!cachedState) throw new Error(`DialogueState not found for session ${request.sessionId}`);
+
         // TODO: Implement dialogue interruption logic
         // TODO: Implement state cleanup
+
+        // TODO: decide what to do with an interrupted dialogue - terminate it and treat as endDialogue? Or provide options to continue somehow?
 
         return {
             sessionId: request.sessionId
@@ -135,9 +173,13 @@ export class DialogueService implements IDialogueService {
     async endDialogue(request: EndDialogueRequest): Promise<EndDialogueResponse> {
         this.logger.debug(`Ending dialogue session: ${request.sessionId}`);
 
+        const cachedState: DialogueState | null = await this.dialogueStateService.getState(request.sessionId);
+
         // TODO: Implement dialogue conclusion logic
         // TODO: Implement final state processing
         // TODO: Implement dialogue summary generation
+
+        await this.dialogueStateService.removeState(request.sessionId);
 
         return {
             success: true,

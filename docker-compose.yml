@@ -14,6 +14,9 @@ services:
       - "50051:50051"
     depends_on:
       - ai-service-redis
+    profiles:
+      - backend
+      - fullstack
 
   ai-service-worker:
     build:
@@ -25,11 +28,17 @@ services:
       - "50052:50052"
     depends_on:
       - ai-service-redis
+    profiles:
+      - backend
+      - fullstack
 
   ai-service-redis:
     image: redis:latest
     ports:
       - "6379:6379"
+    profiles:
+      - backend
+      - fullstack
 
   #============================================================
   # Backend Dialogue Service
@@ -37,15 +46,22 @@ services:
   dialogue-service:
     build:
       context: ./backend/dialogue-service
-    environment:
-      - SERVICE_NAME=dialogue-service
     env_file:
       - ./dialogue-service.env
     command: python3 server.py
     ports:
-      - "50052:50052"
+      - "50053:50053"
     depends_on:
       - ai-service-server
+      - dialogue-state-redis
+    profiles:
+      - backend
+      - fullstack
+
+  dialogue-state-redis:
+    image: redis:latest
+    ports:
+      - "6380:6379"
     profiles:
       - backend
       - fullstack
@@ -71,8 +87,6 @@ services:
     build:
       context: ./backend/content-service
       dockerfile: Dockerfile.dev
-    environment:
-      - SERVICE_NAME=content-service
     env_file:
       - ./content-service.env
     container_name: content_service

@@ -2,7 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryColumn } from "
 import { Item } from "../Item/Item";
 import { Character } from "../Character";
 import { ContentBase } from "../../../../ContentBase";
-import { EquipmentSlotDTO } from "../../../../proto/common";
+import { EquipmentSlotDTO } from "../../../../proto/entities";
 import { Campaign } from "../../../campaign/entities/Campaign";
 import { User } from "../../../user/entities/User";
 import { World } from "../../../world/entities/World";

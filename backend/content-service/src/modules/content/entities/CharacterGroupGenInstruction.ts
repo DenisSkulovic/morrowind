@@ -1,6 +1,6 @@
 import { Entity, PrimaryColumn, Column, ManyToOne } from "typeorm";
 import { ContentBase } from "../../../ContentBase";
-import { CharacterGroupGenInstructionDTO, ConditionEnumDTO } from "../../../proto/common";
+import { CharacterGroupGenInstructionDTO, ConditionEnumDTO } from "../../../proto/entities";
 import { Campaign } from "../../campaign/entities/Campaign";
 import { User } from "../../user/entities/User";
 import { World } from "../../world/entities/World";

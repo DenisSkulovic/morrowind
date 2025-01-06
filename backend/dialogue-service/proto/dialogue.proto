@@ -89,7 +89,7 @@ message EndDialogueResponse {
 
 message CharacterDialogueInitiationDTO {
     entities.CharacterDTO character = 1;
-    DialogueInitiationResultDTO result = 2; 
+    DialogueInitiationResultEnumDTO result = 2; 
     CharacterAttitudeEnumDTO characterAttitude = 3;
     string individualNarration = 4; // Optional field for AI narration specific to this character's reaction
 }
@@ -206,7 +206,7 @@ message CharacterDialogueStateDTO {
 message DialogueResponseOptionDTO {
     string id = 1;                            // Unique identifier for the response
     string text = 2;                          // Pre-generated response text
-    GoalEnumDTO goal = 3;                     // Goal this response aims to achieve
+    DialogueGoalEnumDTO goal = 3;                     // Goal this response aims to achieve
     AchieveGoalStrategyEnumDTO strategy = 4;  // Strategy this response employs
     ActionEnumDTO action = 5;                 // Action executed by this response
     int32 projectedOpinionChange = 6;         // Estimated effect on the counterpart's opinion (-100 to 100)
@@ -240,7 +240,7 @@ message DialogueStateDTO {
     string sessionId = 1;                       // Unique ID for the dialogue session
     string currentTopic = 2;                    // Current topic of discussion
     string subTopic = 3;                        // Current subtopic, if any
-    GoalEnumDTO currentGoal = 4;                // Overall goal of the dialogue
+    DialogueGoalEnumDTO currentGoal = 4;                // Overall goal of the dialogue
     repeated string discussedTopics = 5;        // Topics already discussed
     repeated CharacterDialogueStateDTO participants = 6; // States of all dialogue participants
 }
@@ -279,7 +279,7 @@ message DynamicContextDTO {
 
 
 
-enum DialogueInitiationResultDTO {
+enum DialogueInitiationResultEnumDTO {
     DIALOGUE_INITIATION_SUCCESS = 0;
     DIALOGUE_INITIATION_FAILURE = 1;
     DIALOGUE_INITIATION_REFUSAL = 2;
@@ -436,68 +436,68 @@ enum AchieveGoalStrategyEnumDTO {
 
 
 
-enum GoalEnumDTO {
+enum DialogueGoalEnumDTO {
     // Meta goals
-    GOAL_NONE = 0;                            // No specific goal
+    DIALOGUE_GOAL_NONE = 0;                            // No specific goal
     
     // Transactional goals
-    GOAL_OBTAIN_ITEM = 1;                     // Acquire an item
-    GOAL_TRADE_ITEM = 2;                      // Exchange items
-    GOAL_BORROW_ITEM = 3;                     // Temporarily acquire an item
-    GOAL_RETURN_ITEM = 4;                     // Return a borrowed item
-    GOAL_REQUEST_ITEM = 5;                    // Ask for an item
-    GOAL_THREATEN_FOR_ITEM = 6;               // Coerce for an item
-    GOAL_NEGOTIATE = 7;                       // Reach an agreement
-    GOAL_BARGAIN = 8;                         // Discuss better terms
+    DIALOGUE_GOAL_OBTAIN_ITEM = 1;                     // Acquire an item
+    DIALOGUE_GOAL_TRADE_ITEM = 2;                      // Exchange items
+    DIALOGUE_GOAL_BORROW_ITEM = 3;                     // Temporarily acquire an item
+    DIALOGUE_GOAL_RETURN_ITEM = 4;                     // Return a borrowed item
+    DIALOGUE_GOAL_REQUEST_ITEM = 5;                    // Ask for an item
+    DIALOGUE_GOAL_THREATEN_FOR_ITEM = 6;               // Coerce for an item
+    DIALOGUE_GOAL_NEGOTIATE = 7;                       // Reach an agreement
+    DIALOGUE_GOAL_BARGAIN = 8;                         // Discuss better terms
 
     // Quest-related goals
-    GOAL_COMPLETE_QUEST = 9;                  // Finish a quest
-    GOAL_GIVE_QUEST = 10;                     // Assign a quest
-    GOAL_ACCEPT_QUEST = 11;                   // Take on a quest
-    GOAL_REPORT_PROGRESS = 12;                // Provide an update on a quest
-    GOAL_DISCUSS_STRATEGY = 13;               // Plan the approach for a quest
-    GOAL_PLAN_ACTION = 14;                    // Strategize for a task
+    DIALOGUE_GOAL_COMPLETE_QUEST = 9;                  // Finish a quest
+    DIALOGUE_GOAL_GIVE_QUEST = 10;                     // Assign a quest
+    DIALOGUE_GOAL_ACCEPT_QUEST = 11;                   // Take on a quest
+    DIALOGUE_GOAL_REPORT_PROGRESS = 12;                // Provide an update on a quest
+    DIALOGUE_GOAL_DISCUSS_STRATEGY = 13;               // Plan the approach for a quest
+    DIALOGUE_GOAL_PLAN_ACTION = 14;                    // Strategize for a task
 
     // Knowledge acquisition goals
-    GOAL_LEARN_INFORMATION = 15;             // General information gathering
-    GOAL_LEARN_LOCATION = 16;                // Discover a place
-    GOAL_GET_DIRECTIONS = 17;                // Obtain directions
-    GOAL_LEARN_ABOUT_FACTION = 18;           // Understand a group or faction
-    GOAL_LEARN_ABOUT_CHARACTER = 19;         // Gather knowledge about an individual
-    GOAL_LEARN_ABOUT_EVENT = 20;             // Inquire about a specific event
-    GOAL_FISH_FOR_INFORMATION = 21;          // Subtly extract information
-    GOAL_SEEK_ADVICE = 22;                   // Ask for guidance or suggestions
+    DIALOGUE_GOAL_LEARN_INFORMATION = 15;             // General information gathering
+    DIALOGUE_GOAL_LEARN_LOCATION = 16;                // Discover a place
+    DIALOGUE_GOAL_GET_DIRECTIONS = 17;                // Obtain directions
+    DIALOGUE_GOAL_LEARN_ABOUT_FACTION = 18;           // Understand a group or faction
+    DIALOGUE_GOAL_LEARN_ABOUT_CHARACTER = 19;         // Gather knowledge about an individual
+    DIALOGUE_GOAL_LEARN_ABOUT_EVENT = 20;             // Inquire about a specific event
+    DIALOGUE_GOAL_FISH_FOR_INFORMATION = 21;          // Subtly extract information
+    DIALOGUE_GOAL_SEEK_ADVICE = 22;                   // Ask for guidance or suggestions
 
     // Relationship and emotional goals
-    GOAL_SOCIALIZE = 23;                     // Build rapport
-    GOAL_FLATTER = 24;                       // Compliment to gain favor
-    GOAL_APOLOGIZE = 25;                     // Express regret
-    GOAL_EXPRESS_GRATITUDE = 26;             // Show appreciation
-    GOAL_BUILD_TRUST = 27;                   // Foster a positive relationship
-    GOAL_RESOLVE_CONFLICT = 28;              // Address and resolve disputes
-    GOAL_REMINISCE = 29;                     // Recall shared experiences
-    GOAL_SHARE_STORY = 30;                   // Tell a story
-    GOAL_SHARE_INFORMATION = 31;             // Provide useful knowledge
-    GOAL_OFFER_HELP = 32;                    // Volunteer assistance
-    GOAL_REQUEST_HELP = 33;                  // Ask for aid
-    GOAL_INFLUENCE_CHARACTER = 34;           // Change someone's perspective or decision
+    DIALOGUE_GOAL_SOCIALIZE = 23;                     // Build rapport
+    DIALOGUE_GOAL_FLATTER = 24;                       // Compliment to gain favor
+    DIALOGUE_GOAL_APOLOGIZE = 25;                     // Express regret
+    DIALOGUE_GOAL_EXPRESS_GRATITUDE = 26;             // Show appreciation
+    DIALOGUE_GOAL_BUILD_TRUST = 27;                   // Foster a positive relationship
+    DIALOGUE_GOAL_RESOLVE_CONFLICT = 28;              // Address and resolve disputes
+    DIALOGUE_GOAL_REMINISCE = 29;                     // Recall shared experiences
+    DIALOGUE_GOAL_SHARE_STORY = 30;                   // Tell a story
+    DIALOGUE_GOAL_SHARE_INFORMATION = 31;             // Provide useful knowledge
+    DIALOGUE_GOAL_OFFER_HELP = 32;                    // Volunteer assistance
+    DIALOGUE_GOAL_REQUEST_HELP = 33;                  // Ask for aid
+    DIALOGUE_GOAL_INFLUENCE_CHARACTER = 34;           // Change someone's perspective or decision
 
     // Inquiry and feedback goals
-    GOAL_ASK_OPINION = 35;                   // Seek someone's perspective
-    GOAL_GIVE_FEEDBACK = 36;                 // Provide constructive input
-    GOAL_RECEIVE_FEEDBACK = 37;              // Hear evaluations or suggestions
+    DIALOGUE_GOAL_ASK_OPINION = 35;                   // Seek someone's perspective
+    DIALOGUE_GOAL_GIVE_FEEDBACK = 36;                 // Provide constructive input
+    DIALOGUE_GOAL_RECEIVE_FEEDBACK = 37;              // Hear evaluations or suggestions
 
     // Casual and filler goals
-    GOAL_DISCUSS_TOPIC = 38;                 // Talk about a specific subject
-    GOAL_DISCUSS_WEATHER = 39;               // Engage in a casual topic
-    GOAL_SMALL_TALK = 40;                    // General light conversation
+    DIALOGUE_GOAL_DISCUSS_TOPIC = 38;                 // Talk about a specific subject
+    DIALOGUE_GOAL_DISCUSS_WEATHER = 39;               // Engage in a casual topic
+    DIALOGUE_GOAL_SMALL_TALK = 40;                    // General light conversation
 
     // Specialized or situational goals
-    GOAL_UPDATE_STATUS = 41;                 // Provide or receive a status update
-    GOAL_DISCUSS_ALLIANCE = 42;              // Explore forming a partnership
-    GOAL_WARN = 43;                          // Alert someone to danger
-    GOAL_INTIMIDATE = 44;                    // Use fear as a tool in dialogue
-    GOAL_PERSUADE = 45;                      // Convince someone to act a certain way
-    GOAL_DECEIVE = 46;                       // Provide false information for gain
-    GOAL_ASK_PERMISSION = 47;                // Request approval for an action
+    DIALOGUE_GOAL_UPDATE_STATUS = 41;                 // Provide or receive a status update
+    DIALOGUE_GOAL_DISCUSS_ALLIANCE = 42;              // Explore forming a partnership
+    DIALOGUE_GOAL_WARN = 43;                          // Alert someone to danger
+    DIALOGUE_GOAL_INTIMIDATE = 44;                    // Use fear as a tool in dialogue
+    DIALOGUE_GOAL_PERSUADE = 45;                      // Convince someone to act a certain way
+    DIALOGUE_GOAL_DECEIVE = 46;                       // Provide false information for gain
+    DIALOGUE_GOAL_ASK_PERMISSION = 47;                // Request approval for an action
 }

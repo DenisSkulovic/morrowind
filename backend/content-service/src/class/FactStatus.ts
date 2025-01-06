@@ -1,6 +1,6 @@
 import { FactStatusEnum } from "../common/enum/entityEnums";
 import { Serializable } from "../decorator/serializable.decorator";
-import { FactStatusDTO, FactStatusEnumDTO } from "../proto/common";
+import { FactStatusDTO, FactStatusEnumDTO } from "../proto/entities";
 import { Serializer, SerializeStrategyEnum } from "../serializer";
 
 export class FactStatus {

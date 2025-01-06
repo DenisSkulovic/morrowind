@@ -1,4 +1,4 @@
-import { SearchQueryDTO } from "../../proto/common";
+import { SearchQueryDTO } from "../../proto/entities";
 import { QueryFilter } from "./QueryFilter";
 import { Serializable } from "../../decorator/serializable.decorator";
 import { Serializer, SerializeStrategyEnum } from "../../serializer";
