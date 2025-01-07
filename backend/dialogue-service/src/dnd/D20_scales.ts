@@ -1,27 +1,5 @@
-export enum D20_OUTCOME_ENUM {
-    CRITICAL_FAILURE = "Critical Failure",
-    STRONG_FAILURE = "Strong Failure",
-    MILD_FAILURE = "Mild Failure",
-    NEUTRAL_OUTCOME = "Neutral Outcome",
-    MILD_SUCCESS = "Mild Success",
-    STRONG_SUCCESS = "Strong Success",
-    CRITICAL_SUCCESS = "Critical Success"
-}
-
-export enum D20_SCALE_TYPE_ENUM {
-    LOW_RISK_LOW_IMPACT = "Low Risk Low Impact",
-    LOW_RISK_MEDIUM_IMPACT = "Low Risk Medium Impact",
-    LOW_RISK_HIGH_IMPACT = "Low Risk High Impact",
-    MEDIUM_RISK_LOW_IMPACT = "Medium Risk Low Impact",
-    MEDIUM_RISK_MEDIUM_IMPACT = "Medium Risk Medium Impact",
-    MEDIUM_RISK_HIGH_IMPACT = "Medium Risk High Impact",
-    HIGH_RISK_LOW_IMPACT = "High Risk Low Impact",
-    HIGH_RISK_MEDIUM_IMPACT = "High Risk Medium Impact",
-    HIGH_RISK_HIGH_IMPACT = "High Risk High Impact"
-}
-
-
-
+import { D20_OUTCOME_ENUM } from "./enum/D20_OUTCOME_ENUM";
+import { D20_SCALE_TYPE_ENUM } from "./enum/D20_SCALE_TYPE_ENUM";
 
 const D20_low_risk_low_impact_scale = {
     [D20_OUTCOME_ENUM.CRITICAL_FAILURE]: "1",

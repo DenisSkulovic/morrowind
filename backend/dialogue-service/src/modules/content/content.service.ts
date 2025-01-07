@@ -14,6 +14,10 @@ import { Context } from './class/Context';
 import { serializeEnum } from '../../common/enum/util';
 import { EntityEnum } from '../../common/enum/EntityEnum';
 
+// I added this service just in case I would need to additionally fetch content for expanded dialogue context.
+// For example the knowledge base contains only 5 known things from the total 50 that a character knows.
+// These 5 things were enough to start the dialogue, but more info may be needed, so it could be fetched and cached in the knowledge base.
+
 @Injectable()
 export class ContentService {
     @Client({

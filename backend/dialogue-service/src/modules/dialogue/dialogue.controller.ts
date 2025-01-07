@@ -72,7 +72,7 @@ export class DialogueController implements OnGatewayConnection, OnGatewayDisconn
     }
 
     @SubscribeMessage('sendMessage')
-    public async sendMessage(
+    public async progressDialogue(
         client: Socket,
         request: SendMessageRequest
     ): Promise<MessageChunk> {
@@ -80,9 +80,11 @@ export class DialogueController implements OnGatewayConnection, OnGatewayDisconn
             Method: DialogueService.sendMessage
             Request: ${JSON.stringify(request)}
         `);
-        await this.dialogueService.sendMessage(request, (chunk) => {
-            client.emit('replyChunk', chunk); // Relay chunks to the client
-        });
+        await this.dialogueService.progressDialogue(
+            request,
+            (chunk) => {
+                client.emit('replyChunk', chunk); // Relay chunks to the client
+            });
 
         client.emit('replyComplete', { message: 'Reply completed.' });
     }

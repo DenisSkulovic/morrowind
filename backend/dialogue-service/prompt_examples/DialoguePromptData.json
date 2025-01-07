@@ -12,13 +12,15 @@
             "enneagram": "5w4",
             "mood": "NEUTRAL",
             "needs": ["THIRSTY", "SLEEPY", "WELL_FED"],
-            "activeGoal": "GOAL_LEARN_LOCATION => VIVEC",
-            "goals": [
-                "GOAL_LEARN_LOCATION => VIVEC",
-                "GOAL_LEARN_ABOUT_FACTION => HOUSE_HLAALU",
-                "GOAL_SEEK_ADVICE",
-                "GOAL_SOCIALIZE"
-            ],
+            "goals": {
+                "satisfied": [],
+                "unsatisfied": [
+                    "GOAL_LEARN_LOCATION => VIVEC",
+                    "GOAL_LEARN_ABOUT_FACTION => HOUSE_HLAALU",
+                    "GOAL_SEEK_ADVICE",
+                    "GOAL_SOCIALIZE"
+                ]
+            },
             "skills": {
                 "combat": 10,
                 "survival": 5,
@@ -50,13 +52,15 @@
             },
             "traits": ["RUDE", "SADISTIC", "SECRETIVE"],
             "needs": ["VERY_THIRSTY", "VERY_SLEEPY", "HUNGRY", "IN_PAIN"],
-            "activeGoal": "GOAL_SOCIALIZE",
-            "goals": [
-                "GOAL_SOCIALIZE",
-                "GOAL_SHARE_STORY",
-                "GOAL_DISCUSS_WEATHER",
-                "GOAL_SMALL_TALK"
-            ],
+            "goals": {
+                "satisfied": [],
+                "unsatisfied": [
+                    "GOAL_SOCIALIZE",
+                    "GOAL_SHARE_STORY",
+                    "GOAL_DISCUSS_WEATHER",
+                    "GOAL_SMALL_TALK"
+                ]
+            },
             "stats": {
                 "health": "80/80",
                 "stamina": "90/90",

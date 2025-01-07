@@ -1,45 +1,49 @@
-import { FactionData } from "./FactionData";
-import { ItemData } from "./ItemData";
-import { LocationData } from "./LocationData";
+import { FactionKnowledgeBase } from "./FactionKnowledgeBase";
+import { ItemKnowledgeBase } from "./ItemKnowledgeBase";
+import { LocationKnowledgeBase } from "./LocationKnowledgeBase";
+import { CharacterKnowledgeBase } from "./CharacterKnowledgeBase";
 
 export class KnowledgeBase {
-    locations: LocationData[] = [];
-    factions: FactionData[] = [];
-    characters: CharacterData[] = [];
-    items: ItemData[] = [];
+    characters!: CharacterKnowledgeBase[];
+    factions!: FactionKnowledgeBase[];
+    locations!: LocationKnowledgeBase[];
+    items!: ItemKnowledgeBase[];
 
-    static validate(data: any) {
+    static validate(data: Partial<KnowledgeBase>) {
         // Validate types
-        if (data.locations) {
-            if (!(data.locations instanceof Array)) throw new Error('KnowledgeBase: locations must be an array');
-            for (const location of data.locations) {
-                if (!(location instanceof LocationData)) throw new Error('KnowledgeBase: locations must be an array of LocationData');
+        if (data.characters) {
+            if (!(data.characters instanceof Array)) throw new Error('KnowledgeBase: characters must be an array');
+            for (const character of data.characters) {
+                if (!(typeof character === 'object')) throw new Error('KnowledgeBase: characters must be an array of CharacterKnowledgeBase');
             }
         }
         if (data.factions) {
             if (!(data.factions instanceof Array)) throw new Error('KnowledgeBase: factions must be an array');
             for (const faction of data.factions) {
-                if (!(faction instanceof FactionData)) throw new Error('KnowledgeBase: factions must be an array of FactionData');
+                if (!(typeof faction === 'object')) throw new Error('KnowledgeBase: factions must be an array of FactionKnowledgeBase');
             }
         }
-        if (data.characters) {
-            if (!(data.characters instanceof Array)) throw new Error('KnowledgeBase: characters must be an array');
-            for (const character of data.characters) {
-                if (!(character instanceof CharacterData)) throw new Error('KnowledgeBase: characters must be an array of CharacterData');
+        if (data.locations) {
+            if (!(data.locations instanceof Array)) throw new Error('KnowledgeBase: locations must be an array');
+            for (const location of data.locations) {
+                if (!(typeof location === 'object')) throw new Error('KnowledgeBase: locations must be an array of LocationKnowledgeBase');
             }
         }
         if (data.items) {
             if (!(data.items instanceof Array)) throw new Error('KnowledgeBase: items must be an array');
             for (const item of data.items) {
-                if (!(item instanceof ItemData)) throw new Error('KnowledgeBase: items must be an array of ItemData');
+                if (!(typeof item === 'object')) throw new Error('KnowledgeBase: items must be an array of ItemKnowledgeBase');
             }
         }
     }
 
-    static build(data: any) {
+    static build(data: Partial<KnowledgeBase>) {
         KnowledgeBase.validate(data);
         const state = new KnowledgeBase();
-        Object.assign(state, data);
+        state.characters = data.characters?.map((character) => CharacterKnowledgeBase.build(character)) || [];
+        state.factions = data.factions?.map((faction) => FactionKnowledgeBase.build(faction)) || [];
+        state.locations = data.locations?.map((location) => LocationKnowledgeBase.build(location)) || [];
+        state.items = data.items?.map((item) => ItemKnowledgeBase.build(item)) || [];
         return state;
     }
 }

@@ -7,8 +7,10 @@ export class CharacterProfile {
     enneagram?: string;
     mood?: string;
     needs?: string[];
-    activeGoal?: string;
-    goals?: string[];
+    goals?: {
+        satisfied: string[];
+        unsatisfied: string[];
+    }
     skills!: Record<string, number>;
     stats!: Record<string, string>;
     inventory!: string[];
@@ -17,6 +19,10 @@ export class CharacterProfile {
         factions: string[];
         familiar_characters: string[];
     };
+
+    getExplanation() {
+        return `This is the character profile. It contains different information about the character. Character knowledge is a collection of things this character knows and potentially could share in the dialogue (COULD, because not everything you know you would share with anyone, right?). If someone asks this character about things they don't have in knowledge - it means they do not know about it and cannot talk about in the dialogue.`
+    }
 
     static validate(data: any) {
         // Validate required fields

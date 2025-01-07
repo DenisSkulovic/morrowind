@@ -1,18 +1,22 @@
-import { LocationData } from "../KnowledgeBase/LocationData";
-import { SceneData } from "./SceneData";
-import { TimeData } from "./TimeData";
-import { WeatherData } from "./WeatherData";
+import { LocationContext } from "./LocationContext";
+import { SceneContext } from "./SceneContext";
+import { TimeContext } from "./TimeContext";
+import { WeatherContext } from "./WeatherContext";
 
 export class WorldContext {
-    location!: LocationData;
-    time!: TimeData;
-    weather!: WeatherData;
-    scene!: SceneData;
+    location!: LocationContext;
+    time!: TimeContext;
+    weather!: WeatherContext;
+    scene!: SceneContext;
 
     getExplanation() {
-        return {
-            location: ""
-        }
+        return `
+        This is the world context. It contains information about the location, time, weather, and scene.
+        WorldContext.location: ${this.location.getExplanation()}
+        WorldContext.time: ${this.time.getExplanation()}
+        WorldContext.weather: ${this.weather.getExplanation()}
+        WorldContext.scene: ${this.scene.getExplanation()}
+        `
     }
 
     static validate(data: any) {
@@ -23,10 +27,10 @@ export class WorldContext {
         if (!data.scene) throw new Error('WorldContext: scene is required');
 
         // Validate types
-        if (!(data.location instanceof LocationData)) throw new Error('WorldContext: location must be instance of LocationData');
-        if (!(data.time instanceof TimeData)) throw new Error('WorldContext: time must be instance of TimeData');
-        if (!(data.weather instanceof WeatherData)) throw new Error('WorldContext: weather must be instance of WeatherData');
-        if (!(data.scene instanceof SceneData)) throw new Error('WorldContext: scene must be instance of SceneData');
+        if (!(data.location instanceof LocationContext)) throw new Error('WorldContext: location must be instance of LocationContext');
+        if (!(data.time instanceof TimeContext)) throw new Error('WorldContext: time must be instance of TimeContext');
+        if (!(data.weather instanceof WeatherContext)) throw new Error('WorldContext: weather must be instance of WeatherContext');
+        if (!(data.scene instanceof SceneContext)) throw new Error('WorldContext: scene must be instance of SceneContext');
     }
 
     static build(data: any) {

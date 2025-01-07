@@ -5,29 +5,88 @@ package dialogue;
 import "entities.proto";
 
 service DialogueService {
-    rpc StartDialogue(StartDialogueRequest) returns (StartDialogueResponse);
+    rpc StartDialogue(StartDialogueRequest) returns (stream MessageChunkResponse);
+    rpc ContinueDialogue(ContinueDialogueRequest) returns (stream MessageChunkResponse);
+    rpc EndDialogue(EndDialogueRequest) returns (stream MessageChunkResponse);
     rpc GenerateResponseOptions(GenerateResponseOptionsRequest) returns (GenerateResponseOptionsResponse);
-    rpc SendMessage(SendMessageRequest) returns (stream MessageChunkResponse);
     rpc InterruptDialogue(InterruptDialogueRequest) returns (InterruptDialogueResponse);
-    rpc EndDialogue(EndDialogueRequest) returns (EndDialogueResponse);
 }
 
 
+
+
+
+// ============================================================================
+// Start Dialogue
 // ============================================================================
 message StartDialogueRequest {
-    string initiatorCharacterId = 1;
-    repeated string targetCharacterIds = 2;
-    entities.ContextDTO initialContext = 3;
+    string initiatingParticipantId = 1;
+    AiProviderImplementationEnum aiProvider = 2;
+    AiRequestOptionsV1 options = 3;
+    repeated CharacterProfileDTO dialogueParticipants = 4;
+    WorldContextDTO worldContext = 5;
+    DialogueHistoryDTO dialogueHistory = 6;
+    KnowledgeBaseDTO knowledgeBase = 7;
+    entities.ContextDTO context = 8; // User, World, Campaign
 }
 message StartDialogueResponse {
-    string sessionId = 1;                       // Dialogue session ID
-    DialogueStateDTO initialState = 2;         // Initial state of the dialogue
-    repeated DialogueResponseOptionDTO suggestedResponses = 3; // AI-suggested responses
-    string narration = 4;                      // Optional AI narration for the initial scene
+    string dialogueId = 1;
 }
 // ============================================================================
 
 
+message DialogueParticipantDTO {
+}
+message DialogueParticipantsDTO {
+}
+message WorldContextDTO {
+    LocationKnowledgeBaseDTO location = 1;
+}
+message DialogueHistoryDTO {
+    repeated DialogueHistoryEntryDTO entries = 1;
+}
+message DialogueHistoryEntryDTO {
+    string summary = 1;
+    string topic = 2;
+    repeated string revealedInformation = 3;
+    repeated string actionsTaken = 4;
+}
+message KnowledgeBaseDTO {
+    repeated LocationKnowledgeBaseDTO locations = 1;
+    repeated FactionKnowledgeBaseDTO factions = 2;
+    repeated CharacterKnowledgeBaseDTO characters = 3;
+    repeated ItemKnowledgeBaseDTO items = 4;
+}
+message LocationKnowledgeBaseDTO {
+    string id = 1;
+    string name = 2;
+    string description = 3;
+    string parentLocationChain = 4;
+}
+message FactionKnowledgeBaseDTO {
+    string id = 1;
+    string name = 2;
+    string description = 3;
+}
+message CharacterKnowledgeBaseDTO {
+    string id = 1;
+    string name = 2;
+    string description = 3;
+    string locationId = 4;
+    string factionId = 5;
+}
+message ItemKnowledgeBaseDTO {
+    string id = 1;
+    string name = 2;
+    string description = 3;
+}
+
+
+
+
+
+// ============================================================================
+// Generate Response Options
 // ============================================================================
 message GenerateResponseOptionsRequest {
     string sessionId = 1;
@@ -41,28 +100,28 @@ message GenerateResponseOptionsResponse {
 // ============================================================================
 
 
+
+
+
 // ============================================================================
-message SendMessageRequest {
+// Send Message
+// ============================================================================
+message ContinueDialogueRequest {
     string sessionId = 1;                       // Dialogue session ID
-    ResponseSelectionDTO responseSelection = 2; // Player's response choice
+    string responseOptionId = 2;                // Player's response choice
+    entities.ContextDTO context = 3;            // User, World, Campaign
 }
-// Streamed message chunks for dynamic dialogue
-message MessageChunkResponse {
-    string textChunk = 1;                       // A chunk of the counterpart's dialogue
-    repeated string revealedFacts = 2;          // Newly revealed facts
-    repeated string observedTraits = 3;         // Newly observed traits
-    repeated string displayedMoods = 4;         // Changes in counterpart mood
-    entities.ItemsDTO revealedItems = 5;  // Items revealed in the dialogue
-    entities.LocationsDTO revealedLocations = 6; // Locations mentioned
-    int32 updatedOpinionMeter = 7;              // Updated opinion value (-100 to 100)
-    bool isLast = 8;                            // Whether this is the last chunk of the message
-}
+// returns a stream of MessageChunkResponse
 // ============================================================================
+
+
+
 
 
 // ============================================================================
 message InterruptDialogueRequest {
     string sessionId = 1;
+    entities.ContextDTO context = 2;            // User, World, Campaign
 }
 message InterruptDialogueResponse {
     string sessionId = 1;
@@ -70,111 +129,66 @@ message InterruptDialogueResponse {
 // ============================================================================
 
 
+
+
+
 // ============================================================================
 message EndDialogueRequest {
     string sessionId = 1;                       // Dialogue session ID
-    entities.ContextDTO context = 2;             // Final context
+    entities.ContextDTO context = 2;            // User, World, Campaign
 }
-message EndDialogueResponse {
-    bool success = 1;                           // Whether the dialogue ended successfully
-    string summary = 2;                         // Summary of the dialogue
-    repeated RevealedInformationDTO revealedInformation = 3; // Consolidated revealed information
-    repeated CharacterDialogueStateDTO updatedParticipants = 4; // Final states of participants
-}
+// returns a stream of MessageChunkResponse
 // ============================================================================
 
 
 
 
 
-message CharacterDialogueInitiationDTO {
-    entities.CharacterDTO character = 1;
-    DialogueInitiationResultEnumDTO result = 2; 
-    CharacterAttitudeEnumDTO characterAttitude = 3;
-    string individualNarration = 4; // Optional field for AI narration specific to this character's reaction
+// ===============================
+// MessageChunkResponse
+// ===============================
+message MessageChunkResponse {
+    string textChunk = 1;                       // A chunk of the counterpart's dialogue
+    bool isLast = 2;                            // Whether this is the last chunk of the message
 }
+// ===============================
 
 
 
 
-message RevealedInformationDTO {
-    oneof information {
-        string fact = 1;
-        string memory = 2;
-        string trait = 3;
-        string mood = 4;
-        entities.ItemDTO item = 5;
-        LocationDTO location = 6;
-        entities.CharacterDTO person = 7;
-        OrganizationDTO organization = 8;
-        EventDTO event = 9;
-        CharacterAttitudeEnumDTO characterAttitude = 10;
-        QuestGoalDTO goal = 11;
-        QuestDTO quest = 12;
-    }
+// ===============================
+// KnowledgeBase
+// ===============================
+message KnowledgeBaseDTO {
+    repeated CharacterKnowledgeBaseDTO characters = 1;
+    repeated FactionKnowledgeBaseDTO factions = 2;
+    repeated LocationKnowledgeBaseDTO locations = 3;
+    repeated ItemKnowledgeBaseDTO items = 4;
 }
-
-
-
-
-message LocationDTO {
+message CharacterKnowledgeBaseDTO {
     string id = 1;
     string name = 2;
     string description = 3;
-    string ownerId = 4;  // Character/Organization ID of location owner if applicable
-    repeated string containedItemIds = 5;  // Items known to be at this location
-    repeated string residentCharacterIds = 6;  // Characters known to reside here
+    string locationId = 4;
+    string factionId = 5;
 }
-
-
-
-
-message OrganizationDTO {
-    string id = 1;
-    string name = 2;
-    repeated string memberCharacterIds = 3;
-    repeated string controlledLocationIds = 4;
-    repeated string relatedQuestIds = 5;
-}
-
-
-
-
-message EventDTO {
+message FactionKnowledgeBaseDTO {
     string id = 1;
     string name = 2;
     string description = 3;
-    repeated string involvedCharacterIds = 4;
-    string locationId = 5;
-    repeated string relatedItemIds = 6;
 }
-
-
-
-
-message QuestGoalDTO {
-    string id = 1;
-    string description = 2;
-    repeated string targetItemIds = 3;  // Items needed for goal
-    repeated string targetLocationIds = 4;  // Locations involved in goal
-    repeated string targetCharacterIds = 5;  // Characters involved in goal
-    string status = 6;
-}
-
-
-
-
-message QuestDTO {
+message LocationKnowledgeBaseDTO {
     string id = 1;
     string name = 2;
     string description = 3;
-    string questGiverId = 4;  // Character who gave the quest
-    repeated QuestGoalDTO subgoals = 5;  // Component goals of this quest
-    repeated string requiredItemIds = 6;
-    repeated string targetLocationIds = 7;
-    repeated string involvedCharacterIds = 8;
-    string status = 9;
+    string parentLocationChain = 4;
 }
+message ItemKnowledgeBaseDTO {
+    string id = 1;
+    string name = 2;
+    string description = 3;
+}
+// ===============================
 
 
 
@@ -184,10 +198,22 @@ message QuestDTO {
 message DialogueResponseOptionDTO {
     string id = 1;
     string text = 2; // Response text
+    dndRiskImpactEnumDTO riskImpact = 3;
     ResponseToneEnumDTO tone = 3; // Emotional tone of the response
     DialogueActionDTO triggeredAction = 4; // Action to be triggered if this response is chosen
 }
 
+enum dndRiskImpactEnumDTO {
+    LOW_RISK_LOW_IMPACT = 0;
+    LOW_RISK_MEDIUM_IMPACT = 1;
+    LOW_RISK_HIGH_IMPACT = 2;
+    MEDIUM_RISK_LOW_IMPACT = 3;
+    MEDIUM_RISK_MEDIUM_IMPACT = 4;
+    MEDIUM_RISK_HIGH_IMPACT = 5;
+    HIGH_RISK_LOW_IMPACT = 6;
+    HIGH_RISK_MEDIUM_IMPACT = 7;
+    HIGH_RISK_HIGH_IMPACT = 8;
+}
 
 
 
@@ -202,40 +228,41 @@ message CharacterDialogueStateDTO {
 
 
 
-
+// ===============================
+// DialogueResponseOptionDTO
+// ===============================
 message DialogueResponseOptionDTO {
     string id = 1;                            // Unique identifier for the response
     string text = 2;                          // Pre-generated response text
     DialogueGoalEnumDTO goal = 3;                     // Goal this response aims to achieve
     AchieveGoalStrategyEnumDTO strategy = 4;  // Strategy this response employs
-    ActionEnumDTO action = 5;                 // Action executed by this response
+    DialogueActionEnumDTO action = 5;                 // Action executed by this response
     int32 projectedOpinionChange = 6;         // Estimated effect on the counterpart's opinion (-100 to 100)
     string tone = 7;                          // Descriptive tone, e.g., "polite," "aggressive"
 }
+// ===============================
 
 
 
 
-message ResponseSelectionDTO {
-    string sessionId = 1;                        // Dialogue session ID
-    DialogueResponseOptionDTO selectedResponse = 2;              // Chosen response from suggested options
-}
 
-
-
-
+// ===============================
+// DialogueActionDTO
+// ===============================
 message DialogueActionDTO {
-    string id = 1;
-    string description = 2;
-    repeated string targetCharacterIds = 3;
-    repeated string targetItemIds = 4;
-    repeated string targetLocationIds = 5;
-    ActionEnumDTO actionType = 6;
+    string description = 1;
+    repeated string targetCharacterIds = 2;
+    repeated string targetItemIds = 3;
+    repeated string targetLocationIds = 4;
+    DialogueActionEnumDTO actionType = 5;
 }
+// ===============================
 
 
 
-
+// ===============================
+// DialogueStateDTO
+// ===============================
 message DialogueStateDTO {
     string sessionId = 1;                       // Unique ID for the dialogue session
     string currentTopic = 2;                    // Current topic of discussion
@@ -244,15 +271,9 @@ message DialogueStateDTO {
     repeated string discussedTopics = 5;        // Topics already discussed
     repeated CharacterDialogueStateDTO participants = 6; // States of all dialogue participants
 }
+// ===============================
 
 
-
-// Enhanced message for evolving dialogue
-message SendMessageRequest {
-    string sessionId = 1;
-    string responseOptionId = 2; // Chosen response option ID
-    entities.DynamicContextDTO context = 3; // Updated context
-}
 
 
 
@@ -305,70 +326,70 @@ enum CharacterAttitudeEnumDTO {
 
 
 
-enum ActionEnumDTO {
+enum DialogueActionEnumDTO {
     // Meta actions
-    ACTION_TYPE_NONE = 0;                    // No action
-    ACTION_TYPE_WAIT = 1;                    // Passive action, allow others to act
-    ACTION_TYPE_OBSERVE = 2;                 // Monitor the situation without acting
+    DIALOGUE_ACTION_TYPE_NONE = 0;                    // No action
+    DIALOGUE_ACTION_TYPE_WAIT = 1;                    // Passive action, allow others to act
+    DIALOGUE_ACTION_TYPE_OBSERVE = 2;                 // Monitor the situation without acting
 
     // Dialogue-specific actions
-    ACTION_TYPE_RESPOND_TO_TOPIC = 3;        // Reply to the current discussion topic
-    ACTION_TYPE_CHANGE_TOPIC = 4;            // Switch to a new topic of discussion
-    ACTION_TYPE_CHANGE_SUBTOPIC = 5;         // Adjust focus within the current topic
-    ACTION_TYPE_END_DIALOGUE = 6;            // Conclude the dialogue session
+    DIALOGUE_ACTION_TYPE_RESPOND_TO_TOPIC = 3;        // Reply to the current discussion topic
+    DIALOGUE_ACTION_TYPE_CHANGE_TOPIC = 4;            // Switch to a new topic of discussion
+    DIALOGUE_ACTION_TYPE_CHANGE_SUBTOPIC = 5;         // Adjust focus within the current topic
+    DIALOGUE_ACTION_TYPE_END_DIALOGUE = 6;            // Conclude the dialogue session
 
     // Goal-related actions
-    ACTION_TYPE_CHANGE_GOAL = 7;             // Shift the overall goal of the dialogue
-    ACTION_TYPE_CHANGE_GOAL_STRATEGY = 8;    // Modify the strategy to achieve the goal
+    DIALOGUE_ACTION_TYPE_CHANGE_GOAL = 7;             // Shift the overall goal of the dialogue
+    DIALOGUE_ACTION_TYPE_CHANGE_GOAL_STRATEGY = 8;    // Modify the strategy to achieve the goal
 
     // Trade-related actions
-    ACTION_TYPE_REQUEST_TRADE = 9;           // Initiate a trade request
-    ACTION_TYPE_OFFER_ITEM = 10;             // Propose an item for trade or as a gift
-    ACTION_TYPE_ACCEPT_ITEM = 11;            // Agree to receive an item
-    ACTION_TYPE_BARGAIN = 12;                // Negotiate the terms of an exchange
+    DIALOGUE_ACTION_TYPE_REQUEST_TRADE = 9;           // Initiate a trade request
+    DIALOGUE_ACTION_TYPE_OFFER_ITEM = 10;             // Propose an item for trade or as a gift
+    DIALOGUE_ACTION_TYPE_ACCEPT_ITEM = 11;            // Agree to receive an item
+    DIALOGUE_ACTION_TYPE_BARGAIN = 12;                // Negotiate the terms of an exchange
 
     // Quest-related actions
-    ACTION_TYPE_OFFER_QUEST = 13;            // Propose a quest
-    ACTION_TYPE_ACCEPT_QUEST = 14;           // Agree to take on a quest
-    ACTION_TYPE_DECLINE_QUEST = 15;          // Refuse a quest offer
-    ACTION_TYPE_REPORT_PROGRESS = 16;        // Update on quest status
+    DIALOGUE_ACTION_TYPE_OFFER_QUEST = 13;            // Propose a quest
+    DIALOGUE_ACTION_TYPE_ACCEPT_QUEST = 14;           // Agree to take on a quest
+    DIALOGUE_ACTION_TYPE_DECLINE_QUEST = 15;          // Refuse a quest offer
+    DIALOGUE_ACTION_TYPE_REPORT_PROGRESS = 16;        // Update on quest status
 
     // Conflict-related actions
-    ACTION_TYPE_INITIATE_COMBAT = 17;        // Start a conflict or battle
-    ACTION_TYPE_END_COMBAT = 18;             // De-escalate or resolve a conflict
-    ACTION_TYPE_THREATEN = 19;               // Use intimidation as a tactic
-    ACTION_TYPE_CONFRONT = 20;               // Challenge or address directly
-    ACTION_TYPE_INTIMIDATE = 21;             // Use fear to influence others
+    DIALOGUE_ACTION_TYPE_INITIATE_COMBAT = 17;        // Start a conflict or battle
+    DIALOGUE_ACTION_TYPE_END_COMBAT = 18;             // De-escalate or resolve a conflict
+    DIALOGUE_ACTION_TYPE_THREATEN = 19;               // Use intimidation as a tactic
+    DIALOGUE_ACTION_TYPE_CONFRONT = 20;               // Challenge or address directly
+    DIALOGUE_ACTION_TYPE_INTIMIDATE = 21;             // Use fear to influence others
 
     // Social actions
-    ACTION_TYPE_SOCIALIZE = 22;              // Engage in casual conversation
-    ACTION_TYPE_FLATTER = 23;                // Compliment or praise
-    ACTION_TYPE_APOLOGIZE = 24;              // Express regret
-    ACTION_TYPE_EXPRESS_GRATITUDE = 25;      // Show appreciation
-    ACTION_TYPE_BUILD_TRUST = 26;            // Foster a stronger relationship
-    ACTION_TYPE_SHARE_INFORMATION = 27;      // Provide knowledge to others
-    ACTION_TYPE_REQUEST_INFORMATION = 28;    // Ask for knowledge or details
-    ACTION_TYPE_SHARE_STORY = 29;            // Tell a narrative or anecdote
+    DIALOGUE_ACTION_TYPE_SOCIALIZE = 22;              // Engage in casual conversation
+    DIALOGUE_ACTION_TYPE_FLATTER = 23;                // Compliment or praise
+    DIALOGUE_ACTION_TYPE_APOLOGIZE = 24;              // Express regret
+    DIALOGUE_ACTION_TYPE_EXPRESS_GRATITUDE = 25;      // Show appreciation
+    DIALOGUE_ACTION_TYPE_BUILD_TRUST = 26;            // Foster a stronger relationship
+    DIALOGUE_ACTION_TYPE_SHARE_INFORMATION = 27;      // Provide knowledge to others
+    DIALOGUE_ACTION_TYPE_REQUEST_INFORMATION = 28;    // Ask for knowledge or details
+    DIALOGUE_ACTION_TYPE_SHARE_STORY = 29;            // Tell a narrative or anecdote
 
     // Strategic and situational actions
-    ACTION_TYPE_PLAN_ACTION = 30;            // Prepare a strategic response
-    ACTION_TYPE_ADAPT_STRATEGY = 31;         // Adjust tactics based on context
-    ACTION_TYPE_USE_RESOURCE = 32;           // Employ an item or tool
-    ACTION_TYPE_DELAY = 33;                  // Stall or buy time
-    ACTION_TYPE_OBSERVE_AND_ANALYZE = 34;    // Evaluate the situation for insight
+    DIALOGUE_ACTION_TYPE_PLAN_ACTION = 30;            // Prepare a strategic response
+    DIALOGUE_ACTION_TYPE_ADAPT_STRATEGY = 31;         // Adjust tactics based on context
+    DIALOGUE_ACTION_TYPE_USE_RESOURCE = 32;           // Employ an item or tool
+    DIALOGUE_ACTION_TYPE_DELAY = 33;                  // Stall or buy time
+    DIALOGUE_ACTION_TYPE_OBSERVE_AND_ANALYZE = 34;    // Evaluate the situation for insight
 
     // Cooperative and alliance-building actions
-    ACTION_TYPE_FORM_ALLIANCE = 35;          // Propose collaboration or partnership
-    ACTION_TYPE_SHARE_GOALS = 36;            // Align objectives with others
-    ACTION_TYPE_OFFER_HELP = 37;             // Volunteer assistance
-    ACTION_TYPE_REQUEST_HELP = 38;           // Ask for aid or support
-    ACTION_TYPE_INSPIRE = 39;                // Motivate or encourage others
+    DIALOGUE_ACTION_TYPE_FORM_ALLIANCE = 35;          // Propose collaboration or partnership
+    DIALOGUE_ACTION_TYPE_SHARE_GOALS = 36;            // Align objectives with others
+    DIALOGUE_ACTION_TYPE_OFFER_HELP = 37;             // Volunteer assistance
+    DIALOGUE_ACTION_TYPE_REQUEST_HELP = 38;           // Ask for aid or support
+    DIALOGUE_ACTION_TYPE_INSPIRE = 39;                // Motivate or encourage others
 
     // Miscellaneous actions
-    ACTION_TYPE_DISCUSS_STRATEGY = 40;       // Collaboratively plan steps
-    ACTION_TYPE_WARN = 41;                   // Alert others to danger or risk
-    ACTION_TYPE_ASK_PERMISSION = 42;         // Seek approval for an action
-    ACTION_TYPE_INITIATE_SMALL_TALK = 43;    // Start light, casual conversation
+    DIALOGUE_ACTION_TYPE_DISCUSS_STRATEGY = 40;       // Collaboratively plan steps
+    DIALOGUE_ACTION_TYPE_WARN = 41;                   // Alert others to danger or risk
+    DIALOGUE_ACTION_TYPE_ASK_PERMISSION = 42;         // Seek approval for an action
+    DIALOGUE_ACTION_TYPE_INITIATE_SMALL_TALK = 43;    // Start light, casual conversation
 }
 
 
