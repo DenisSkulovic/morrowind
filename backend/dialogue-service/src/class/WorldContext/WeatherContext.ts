@@ -4,12 +4,10 @@ export class WeatherContext {
     wind!: string;
     precipitation!: string;
     visibility!: string;
-
-    getExplanation() {
-        return `This is the weather context. It contains information about the weather, temperature, wind, precipitation, and visibility.`
-    }
+    clazz = 'WeatherContext';
 
     static validate(data: any) {
+        if (data.clazz !== 'WeatherContext') throw new Error("Invalid class");
         // Validate required fields
         if (!data.weather) throw new Error('WeatherContext: weather is required');
         if (!data.temperature) throw new Error('WeatherContext: temperature is required');
@@ -24,7 +22,11 @@ export class WeatherContext {
     static build(data: any) {
         WeatherContext.validate(data);
         const state = new WeatherContext();
-        Object.assign(state, data);
+        state.weather = data.weather;
+        state.temperature = data.temperature;
+        state.wind = data.wind;
+        state.precipitation = data.precipitation;
+        state.visibility = data.visibility;
         return state;
     }
 }

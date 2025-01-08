@@ -1,40 +1,40 @@
-import { DiceThrowResult } from "./class/DiceThrowResult";
-import { D20_scales } from "./D20_scales";
-import { D20_OUTCOME_ENUM } from "./enum/D20_OUTCOME_ENUM";
-import { D20_SCALE_TYPE_ENUM } from "./enum/D20_SCALE_TYPE_ENUM";
+import { DiceRollResult } from "./class/DiceRollResult";
+import { DICE_OUTCOME_ENUM } from "./enum/DICE_OUTCOME_ENUM";
+import { SCALE_TYPE_ENUM } from "./enum/SCALE_TYPE_ENUM";
+import { DiceScaleConfig } from "./types";
 
 /**
  * Roll a dice with a given scale and custom sides
  * @param scale - The scale to use for the dice roll
- * @param customSides - The number of sides to use for the dice roll
+ * @param scaleType - The type of scale to use for the dice roll
  * @returns The result of the dice roll
  */
 export function rollDice(
-    scaleType?: D20_SCALE_TYPE_ENUM,
-    customSides?: number,
-): DiceThrowResult {
-    const sides = customSides || 20;
+    scale: DiceScaleConfig,
+    scaleType?: SCALE_TYPE_ENUM,
+): DiceRollResult {
+    const sides = scale.sides
 
     // Roll the dice
     const roll = Math.floor(Math.random() * (sides || 20)) + 1;
 
-    // If no scale provided or not D20, return just the roll
-    if (!scaleType || sides !== 20) {
-        return DiceThrowResult.build({ roll, scaleType });
+    // If no scale provided, return just the roll
+    if (!scaleType) {
+        return DiceRollResult.build({ roll, scaleType });
     }
 
     // Get the scale mapping for the provided scale type
-    const scaleMapping = D20_scales[scaleType];
+    const scaleMapping = scale.items[scaleType];
 
     // Find matching outcome based on roll
-    let matchedOutcome: D20_OUTCOME_ENUM | undefined;
+    let matchedOutcome: DICE_OUTCOME_ENUM | undefined;
     for (const [outcome, range] of Object.entries(scaleMapping)) {
         if (!range) continue;
 
         // Handle single number case
         if (!range.includes('-')) {
             if (roll === parseInt(range)) {
-                matchedOutcome = outcome as D20_OUTCOME_ENUM;
+                matchedOutcome = outcome as DICE_OUTCOME_ENUM;
                 break;
             }
             continue;
@@ -43,12 +43,12 @@ export function rollDice(
         // Handle range case
         const [min, max] = range.split('-').map(num => parseInt(num));
         if (roll >= min && roll <= max) {
-            matchedOutcome = outcome as D20_OUTCOME_ENUM;
+            matchedOutcome = outcome as DICE_OUTCOME_ENUM;
             break;
         }
     }
 
-    return DiceThrowResult.build({
+    return DiceRollResult.build({
         roll,
         outcome: matchedOutcome,
         scaleType

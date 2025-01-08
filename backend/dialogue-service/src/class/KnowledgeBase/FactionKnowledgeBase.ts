@@ -2,8 +2,10 @@ export class FactionKnowledgeBase {
     id!: string;
     name!: string;
     description!: string;
+    clazz = 'FactionKnowledgeBase';
 
     static validate(data: any) {
+        if (data.clazz !== 'FactionKnowledgeBase') throw new Error("Invalid class");
         // Validate mandatory fields
         if (!data.id) throw new Error('FactionKnowledgeBase: id is required');
         if (!data.name) throw new Error('FactionKnowledgeBase: name is required');

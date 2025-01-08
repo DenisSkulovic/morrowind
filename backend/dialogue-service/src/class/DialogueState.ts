@@ -1,5 +1,4 @@
 import { AiProviderImplementationEnum } from "../modules/ai/ai.service";
-import { AiRequestOptionsV1 } from "./AiRequestOptionsV1";
 import { CharacterProfile } from "./CharacterProfile";
 import { KnowledgeBase } from "./KnowledgeBase";
 import { WorldContext } from "./WorldContext";
@@ -9,14 +8,15 @@ export class DialogueState {
     initiatingParticipantId!: string;
     dialogueId!: string;
     playerCharacterId!: string;
-    lastUsedOptions!: AiRequestOptionsV1;
     aiProvider!: AiProviderImplementationEnum;
     dialogueParticipants!: CharacterProfile[];
     worldContext!: WorldContext;
     dialogueHistory!: DialogueHistory;
     knowledgeBase!: KnowledgeBase;
+    clazz = 'DialogueState';
 
     static validate(data: Partial<DialogueState>) {
+        if (data.clazz !== 'DialogueState') throw new Error("Invalid class");
         // Validate required fields
         if (!data.initiatingParticipantId) throw new Error('DialogueState: initiatingParticipantId is required');
         if (!data.dialogueId) throw new Error('DialogueState: dialogueId is required');
@@ -42,7 +42,14 @@ export class DialogueState {
     static build(data: Partial<DialogueState>) {
         DialogueState.validate(data);
         const state = new DialogueState();
-        Object.assign(state, data);
+        state.dialogueId = data.dialogueId!;
+        state.initiatingParticipantId = data.initiatingParticipantId!;
+        state.playerCharacterId = data.playerCharacterId!;
+        state.aiProvider = data.aiProvider!;
+        state.dialogueParticipants = data.dialogueParticipants!.map((participant: any) => CharacterProfile.build(participant));
+        state.worldContext = WorldContext.build(data.worldContext!);
+        state.dialogueHistory = DialogueHistory.build(data.dialogueHistory!);
+        state.knowledgeBase = KnowledgeBase.build(data.knowledgeBase!);
         return state;
     }
 }

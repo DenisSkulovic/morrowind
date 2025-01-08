@@ -24,22 +24,21 @@ import { KnowledgeBase } from '../../class/KnowledgeBase';
 import { DialogueHistoryEntry } from '../../class/DialogueHistory/DialogueHistoryEntry';
 import { WorldContext } from '../../class/WorldContext';
 import { CharacterProfile } from '../../class/CharacterProfile';
-import { AiRequestOptionsV1 } from '../../class/AiRequestOptionsV1';
 
 import { v4 as uuidv4 } from 'uuid';
-import { DialogueResponseOption } from '../../class/DialogueResponseOption';
+import { DialoguePlayerResponseOption } from '../../class/DialoguePlayerResponseOption';
 import { rollDice } from '../../dnd/rollDice';
-import { DiceThrowResult } from '../../dnd/class/DiceThrowResult';
+import { DiceThrowResult } from '../../dnd/class/DiceRollResult';
 import { DialogueHistoryTopic } from '../../class/DialogueHistory/DialogueHistoryTopic';
 import { DialogueHistory } from '../../class/DialogueHistory';
-import { DialogueOptionDirectionEnum } from '../../enum/DialogueOptionDirectionEnum';
-import {
-    summarizeTopicAiProvider, summarizeTopicAiModel, summarizeTopicMaxTokens, summarizeTopicTemperature,
-    analyzeAiResponseForOutcomesAiProvider, analyzeAiResponseForOutcomesAiModel, analyzeAiResponseForOutcomesMaxTokens, analyzeAiResponseForOutcomesTemperature,
-    generateResponseOptionsAiProvider, generateResponseOptionsAiModel, generateResponseOptionsMaxTokens, generateResponseOptionsTemperature,
-} from '../../config/aiConfig';
-import { DialogueActionEnum } from '../../enum/DialogueActionEnum';
-import { AiResponseOutcome } from '../../class/AiResponseOutcome';
+import { DialogueDirectionEnum } from '../../enum/DialogueDirectionEnum';
+import { aiConfig } from '../../config/aiConfig';
+import { DialogueStepOutcomeEnum } from '../../enum/DialogueStepOutcomeEnum';
+import { AiResponseOutcome, StepOutcome } from '../../class/StepOutcome';
+import { AiDialogueOption } from '../../class/DialogueOption/AiDialogueOption';
+import { DialogueOption } from '../../class/DialogueOption';
+import { D20_SCALE_CONFIG } from '../../dnd/scales/D20_SCALE_CONFIG';
+import { DiceScaleConfig } from '../../dnd/types';
 
 
 
@@ -50,20 +49,37 @@ export interface IDialogueService {
         initiatingParticipantId: string,
         playerCharacterId: string,
         aiProvider: AiProviderImplementationEnum,
-        options: AiRequestOptionsV1,
         dialogueParticipants: CharacterProfile[],
         worldContext: WorldContext,
-        dialogueHistory: DialogueHistoryEntry[],
+        dialogueHistory: DialogueHistory,
         knowledgeBase: KnowledgeBase,
     ): Promise<{ dialogueId: string }>;
-    generateResponseOptions(dialogueId: string): Promise<GenerateResponseOptionsResponse>;
-    progressDialogue(
-        selectedDialogueOption: DialogueResponseOption,
+    generateResponseOptions(
         dialogueId: string,
+        desiredOptionDirection: DialogueDirectionEnum,
+        quantity: number,
+    ): Promise<GenerateResponseOptionsResponse>;
+    progressDialogue(
+        dialogueId: string,
+        selectedPlayerDialogueOption: DialoguePlayerResponseOption,
         onChunkReceived: (chunk: any) => void,
-        options?: AiRequestOptionsV1,
-        diceSides?: number,
+        diceScale?: DiceScaleConfig,
     ): Promise<{ requestId: string, fullResponse: string, outcome: AiResponseOutcome }>;
+    modifyDialogueGoals(
+        participantId: string,
+        add: string[],
+        remove: string[],
+        dialogueId: string,
+    ): Promise<void>;
+    generatePlayerDialogueDirections(
+        dialogueId: string,
+        quantity: number,
+    ): Promise<DialogueDirectionEnum[]>;
+    generatePlayerDialogueOptions(
+        dialogueId: string,
+        dialogueDirection: DialogueDirectionEnum,
+        quantity: number,
+    ): Promise<DialogueOption[]>;
     interrupt(dialogueId: string): Promise<void>;
     finalizeDialogue(dialogueId: string): Promise<EndDialogueResponse>;
 }
@@ -124,7 +140,12 @@ export class DialogueService implements IDialogueService {
         return dialogueState;
     }
 
-    public async modifyDialogueGoals(participantId: string, add: string[], remove: string[], dialogueId: string): Promise<void> {
+    public async modifyDialogueGoals(
+        participantId: string,
+        add: string[],
+        remove: string[],
+        dialogueId: string,
+    ): Promise<void> {
         if (add.length === 0 && remove.length === 0) throw new Error("No goals to modify");
 
         // we only deal with unsatisfied goals, cannot modify satisfied
@@ -158,13 +179,12 @@ export class DialogueService implements IDialogueService {
         initiatingParticipantId: string,
         playerCharacterId: string,
         aiProvider: AiProviderImplementationEnum,
-        options: AiRequestOptionsV1,
         dialogueParticipants: CharacterProfile[],
         worldContext: WorldContext,
         dialogueHistory: DialogueHistory,
         knowledgeBase: KnowledgeBase,
     ): Promise<{ dialogueId: string }> {
-        this.logger.debug(`Starting dialogue with arguments:`, { aiProvider, options, dialogueParticipants, worldContext, dialogueHistory, knowledgeBase });
+        this.logger.debug(`Starting dialogue with arguments:`, { aiProvider, dialogueParticipants, worldContext, dialogueHistory, knowledgeBase });
 
         const dialogueId: string = uuidv4();
 
@@ -172,7 +192,6 @@ export class DialogueService implements IDialogueService {
             initiatingParticipantId,
             dialogueId,
             playerCharacterId,
-            lastUsedOptions: options,
             aiProvider,
             dialogueParticipants,
             worldContext,
@@ -184,78 +203,166 @@ export class DialogueService implements IDialogueService {
         return { dialogueId };
     }
 
-    async generateResponseOptions(dialogueId: string, desiredOptionDirection: DialogueOptionDirectionEnum): Promise<GenerateResponseOptionsResponse> {
-        this.logger.debug(`Generating response options for dialogue id: ${dialogueId}`);
-
+    public async generatePlayerDialogueDirections(
+        dialogueId: string,
+        quantity = 10,
+    ): Promise<DialogueDirectionEnum[]> {
+        // extract data from dialogue state
         const dialogueState: DialogueState = await this.getDialogueState(dialogueId);
+        const playerCharacterId: string = dialogueState.playerCharacterId;
+        const dialogueParticipants: CharacterProfile[] = dialogueState.dialogueParticipants;
+        const dialogueHistory: DialogueHistory = dialogueState.dialogueHistory;
+        const knowledgeBase: KnowledgeBase = dialogueState.knowledgeBase;
+        const worldContext: WorldContext = dialogueState.worldContext;
 
-        const prompt = await this.promptService.assembleGenerateResponseOptionsPrompt(dialogueState, desiredOptionDirection);
+        // extract player character and ai characters
+        const playerCharacter: CharacterProfile | undefined = dialogueParticipants.find((participant) => participant.id === playerCharacterId);
+        if (!playerCharacter) throw new Error(`Player character not found for id ${playerCharacterId}`);
+        const aiCharacters: CharacterProfile[] = dialogueParticipants.filter((participant) => participant.id !== playerCharacterId);
+        if (aiCharacters.length === 0) throw new Error('No AI characters found');
 
-
-
-        // TODO: Implement response options generation logic
-        // TODO: Implement context-aware processing
-        // TODO: Implement character personality influence
-
-        return {
-            // TODO: Return proper response structure
-            responseOptions: [],
-            updatedState: {} as DialogueStateDTO
-        };
+        // generate player dialogue directions
+        const prompt = this.promptService.assembleGeneratePlayerDialogueDirectionsPrompt(
+            playerCharacter,
+            aiCharacters,
+            dialogueHistory,
+            knowledgeBase,
+            worldContext,
+            quantity,
+        );
+        const aiProvider: AiProviderImplementationEnum = aiConfig.useCases.generatePlayerDialogueDirections.aiProvider;
+        const aiDialogueOptionsString: string = await this.aiService.processPrompt(
+            prompt,
+            aiProvider,
+            aiConfig.useCases.generatePlayerDialogueDirections,
+        );
+        try {
+            const aiDialogueOptions: DialogueDirectionEnum[] = JSON.parse(aiDialogueOptionsString) as DialogueDirectionEnum[];
+            return aiDialogueOptions;
+        } catch (error) {
+            throw new Error(`[DialogueService - generatePlayerDialogueDirections] Failed to parse ai generated outcome: ${error}; outcomeString: ${aiDialogueOptionsString}`);
+        }
     }
 
-    async progressDialogue(
-        selectedDialogueOption: DialogueResponseOption,
+    public async generatePlayerDialogueOptions(
         dialogueId: string,
+        dialogueDirection: DialogueDirectionEnum,
+        quantity = 5,
+    ): Promise<DialogueOption[]> {
+        // extract data from dialogue state
+        const dialogueState: DialogueState = await this.getDialogueState(dialogueId);
+        const playerCharacter: CharacterProfile | undefined = dialogueState.dialogueParticipants.find((participant) => participant.id === dialogueState.playerCharacterId);
+        if (!playerCharacter) throw new Error(`Player character not found for id ${dialogueState.playerCharacterId}`);
+        const aiCharacters: CharacterProfile[] = dialogueState.dialogueParticipants.filter((participant) => participant.id !== dialogueState.playerCharacterId);
+        if (aiCharacters.length === 0) throw new Error('No AI characters found');
+        const dialogueHistory: DialogueHistory = dialogueState.dialogueHistory;
+        const knowledgeBase: KnowledgeBase = dialogueState.knowledgeBase;
+        const worldContext: WorldContext = dialogueState.worldContext;
+
+        const prompt: string = this.promptService.assembleGeneratePlayerDialogueOptionsPrompt(
+            dialogueDirection,
+            playerCharacter,
+            aiCharacters,
+            dialogueHistory,
+            knowledgeBase,
+            worldContext,
+            quantity,
+        );
+        const aiProvider: AiProviderImplementationEnum = aiConfig.useCases.generatePlayerDialogueOptions.aiProvider;
+        const options = AiRequestOptionsV1.build({
+            model: aiConfig.useCases.generatePlayerDialogueOptions.aiModel,
+            maxTokens: aiConfig.useCases.generatePlayerDialogueOptions.maxTokens,
+            temperature: aiConfig.useCases.generatePlayerDialogueOptions.temperature,
+        });
+        const aiDialogueOptionsString: string = await this.aiService.processPrompt(aiProvider, prompt, options);
+        try {
+            const aiDialogueOptionsRaw: any[] = JSON.parse(aiDialogueOptionsString);
+            const aiDialogueOptions: DialogueOption[] = aiDialogueOptionsRaw.map((option: any) => DialogueOption.build(option));
+            return aiDialogueOptions;
+        } catch (error) {
+            throw new Error(`[DialogueService - generatePlayerDialogueOptions] Failed to parse ai generated outcome: ${error}; aiDialogueOptionsString: ${aiDialogueOptionsString}`);
+        }
+    }
+
+    private addDialogueHistoryEntry(
+        topicName: string,
+        entry: DialoguePlayerResponseOption | StepOutcome,
+        dialogueState: DialogueState,
+    ): DialogueHistoryTopic {
+        // manage topics
+        let currentTopic: DialogueHistoryTopic
+        const latestTopic: DialogueHistoryTopic | undefined = dialogueState.dialogueHistory.topicsNewestToOldest[0];
+        const isNeedToChangeTopic: boolean = topicName !== latestTopic?.topicName;
+        if (isNeedToChangeTopic) {
+            currentTopic = DialogueHistoryTopic.build({
+                name: topicName,
+                entriesNewestToOldest: []
+            })
+            dialogueState.dialogueHistory.topicsNewestToOldest.unshift(currentTopic);
+        } else {
+            currentTopic = latestTopic;
+        }
+        if (!currentTopic.entriesNewestToOldest) currentTopic.entriesNewestToOldest = [];
+        currentTopic.entriesNewestToOldest.unshift(entry);
+        return currentTopic
+    }
+
+    public async progressDialogue(
+        dialogueId: string,
+        selectedPlayerDialogueOption: DialoguePlayerResponseOption,
         onChunkReceived: (chunk: any) => void,
-        options?: AiRequestOptionsV1,
-        diceSides?: number,
+        diceScale: DiceScaleConfig = D20_SCALE_CONFIG,
     ): Promise<{ requestId: string, fullResponse: string, outcome: AiResponseOutcome }> {
         this.logger.debug(`Processing message for dialogue id: ${dialogueId}`);
 
         const dialogueState: DialogueState = await this.getDialogueState(dialogueId);
-        if (options) dialogueState.lastUsedOptions = options;
 
         const playerCharacter: CharacterProfile | undefined = dialogueState.dialogueParticipants.find((participant) => participant.id === dialogueState.playerCharacterId);
         if (!playerCharacter) throw new Error(`Player character not found for id ${dialogueState.playerCharacterId}`);
 
         const playerHistoryEntry: DialogueHistoryEntry = DialogueHistoryEntry.build({
             dialogueParticipantId: playerCharacter.id,
-            text: JSON.stringify(selectedDialogueOption),
+            text: JSON.stringify(selectedPlayerDialogueOption),
         });
 
         const aiProvider: AiProviderImplementationEnum = dialogueState.aiProvider;
 
-        // manage topics
-        let currentTopic: DialogueHistoryTopic
-        const latestTopic: DialogueHistoryTopic | undefined = dialogueState.dialogueHistory.topicsNewestToOldest[0];
-        const isNeedToChangeTopic = selectedDialogueOption.topic !== latestTopic?.name;
-        if (isNeedToChangeTopic) {
-            const summarizedTopic: DialogueHistoryTopic = await this.summarizeTopic(latestTopic);
-            dialogueState.dialogueHistory.topicsNewestToOldest.splice(0, 1, summarizedTopic);
-            currentTopic = DialogueHistoryTopic.build({
-                name: selectedDialogueOption.topic,
-                exchangesNewestToOldest: []
-            })
-        } else {
-            currentTopic = latestTopic;
-        }
-        currentTopic.exchangesNewestToOldest?.push(playerHistoryEntry); // TODO at the moment the player has full control of topics, which is lame, so in the future I need to trigger topic change based on AI actions as well... Ok for now as it is
+        this.addDialogueHistoryEntry(
+            selectedPlayerDialogueOption.topic,
+            playerHistoryEntry,
+            dialogueState,
+        );
 
         // roll dice
-        const diceResult: DiceThrowResult = rollDice(selectedDialogueOption.riskImpact, diceSides);
+        const playerResponseDiceResult: DiceThrowResult = rollDice(
+            diceScale,
+            selectedPlayerDialogueOption.riskImpact,
+        );
+
+        const { selectedAiDialogueOption, allAiDialogueOptions } = await this.getAiDialogueDirectionDecision(
+            playerCharacter.id,
+            selectedPlayerDialogueOption,
+            playerResponseDiceResult,
+            dialogueState,
+        );
 
         // assemble progress dialogue prompt
-        const prompt = await this.promptService.assembleProgressDialoguePrompt(
-            diceResult,
-            dialogueState,
+        const prompt = this.promptService.assembleProgressDialoguePrompt(
+            playerCharacter.id,
+            selectedPlayerDialogueOption,
+            selectedAiDialogueOption,
+            playerResponseDiceResult,
+            dialogueState.dialogueParticipants,
+            dialogueState.dialogueHistory,
+            dialogueState.knowledgeBase,
+            dialogueState.worldContext,
         );
 
         // get the stream
         const { requestId, dialoguePromise } = this.streamDialogue(
             prompt,
             aiProvider,
-            dialogueState.lastUsedOptions,
+            aiConfig.useCases.progressDialogue,
             onChunkReceived,
         );
 
@@ -263,12 +370,12 @@ export class DialogueService implements IDialogueService {
         const { fullResponse } = await dialoguePromise;
 
         // analyze the response for outcomes
-        const outcome: AiResponseOutcome = await this.analyzeAiResponseForOutcomes(fullResponse, dialogueState);
         const aiHistoryEntry: DialogueHistoryEntry = DialogueHistoryEntry.build({
             dialogueParticipantId: playerCharacter.id,
-            text: JSON.stringify(selectedDialogueOption),
-            outcome,
+            text: JSON.stringify(selectedAiDialogueOption),
         });
+        const outcome: StepOutcome = await this.analyzeDialogueStepForOutcome(fullResponse);
+
         currentTopic.exchangesNewestToOldest?.push(aiHistoryEntry);
 
         // save the state
@@ -278,57 +385,61 @@ export class DialogueService implements IDialogueService {
     }
 
 
+    async getAiDialogueDirectionDecision(
+        playerCharacterId: string,
+        selectedPlayerDialogueOption: DialoguePlayerResponseOption,
+        playerResponseDiceResult: DiceThrowResult,
+        dialogueState: DialogueState,
+        quantityOptionsConsidered = 10,
+    ): Promise<{ selectedAiDialogueOption: AiDialogueOption, allAiDialogueOptions: AiDialogueOption[] }> {
+        const prompt: string = this.promptService.assembleGetAiDialogueDirectionDecisionPrompt(
+            playerCharacterId,
+            selectedPlayerDialogueOption,
+            playerResponseDiceResult,
+            dialogueState.dialogueParticipants,
+            dialogueState.dialogueHistory,
+            dialogueState.knowledgeBase,
+            dialogueState.worldContext,
+            quantityOptionsConsidered,
+        );
+        console.log(`[DialogueService - getAiDialogueDirectionDecision] Prompt: ${prompt}`);
+        const aiDialogueOptionsString: string = await this.aiService.processPrompt(
+            prompt,
+            aiConfig.useCases.getAiDialogueDirectionDecision,
+        );
+        console.log(`[DialogueService - getAiDialogueDirectionDecision] AiDialogueOptionsString: ${aiDialogueOptionsString}`);
+        try {
+            const aiDialogueOptions: AiDialogueOption[] = JSON.parse(aiDialogueOptionsString) as AiDialogueOption[];
+            const selectedAiDialogueOption: AiDialogueOption = AiDialogueOption.selectOptionByProbability(aiDialogueOptions);
+            console.log(`[DialogueService - getAiDialogueDirectionDecision] SelectedAiDialogueOption: ${JSON.stringify(selectedAiDialogueOption)}`);
+            return {
+                selectedAiDialogueOption,
+                allAiDialogueOptions: aiDialogueOptions,
+            };
+        } catch (error) {
+            throw new Error(`[DialogueService - getAiDialogueDirectionDecision] Failed to parse ai generated outcome: ${error}; outcomeString: ${aiDialogueOptionsString}`);
+        }
+    }
 
-    private async analyzeAiResponseForOutcomes(fullResponse: string, dialogueState: DialogueState): Promise<AiResponseOutcome> {
-        const [actionsTaken, goalsFulfilled] = await Promise.all([
-            this.analyzeAiResponseForActionsTaken(fullResponse),
-            this.analyzeAiResponseForGoalsFulfilled(fullResponse, dialogueState),
-        ]);
-        const outcome = AiResponseOutcome.build({
+
+    private async analyzeDialogueStepForOutcome(
+        fullResponse: string,
+    ): Promise<StepOutcome> {
+
+        const outcome = StepOutcome.build({
             actionsTaken,
             aiUnfulfilledGoalsFulfilled: goalsFulfilled,
         });
         return outcome;
     }
 
-    private async analyzeAiResponseForActionsTaken(fullResponse: string): Promise<DialogueActionEnum[]> {
-        const prompt: string = this.promptService.assembleAnalyzeAiResponseForActionsTakenPrompt(fullResponse);
-        const aiProvider = analyzeAiResponseForOutcomesAiProvider;
-        const options = AiRequestOptionsV1.build({
-            model: analyzeAiResponseForOutcomesAiModel,
-            maxTokens: analyzeAiResponseForOutcomesMaxTokens,
-        });
-        const outcomeString: string = await this.aiService.processPrompt(aiProvider, prompt, options);
-        try {
-            return JSON.parse(outcomeString) as DialogueActionEnum[];
-        } catch (error) {
-            throw new Error(`[DialogueService - analyzeAiResponseForActionsTaken] Failed to parse ai generated outcome: ${error}; outcomeString: ${outcomeString}`);
-        }
-    }
-
-    private async analyzeAiResponseForGoalsFulfilled(fullResponse: string, dialogueState: DialogueState): Promise<string[]> {
-        const prompt: string = this.promptService.assembleAnalyzeAiResponseForGoalsFulfilledPrompt(fullResponse, dialogueState.goals.unsatisfied);
-        const aiProvider = analyzeAiResponseForOutcomesAiProvider;
-        const options = AiRequestOptionsV1.build({
-            model: analyzeAiResponseForOutcomesAiModel,
-            maxTokens: analyzeAiResponseForOutcomesMaxTokens,
-            temperature: analyzeAiResponseForOutcomesTemperature,
-        });
-        const outcomeString: string = await this.aiService.processPrompt(aiProvider, prompt, options);
-        try {
-            return JSON.parse(outcomeString) as string[];
-        } catch (error) {
-            throw new Error(`[DialogueService - analyzeAiResponseForGoalsFulfilled] Failed to parse ai generated outcome: ${error}; outcomeString: ${outcomeString}`);
-        }
-    }
-
     private async summarizeTopic(topic: DialogueHistoryTopic): Promise<DialogueHistoryTopic> {
         const prompt: string = this.promptService.assembleSummarizeTopicPrompt(topic)
-        const aiProvider = summarizeTopicAiProvider;
+        const aiProvider = aiConfig.summarizeTopic.aiProvider;
         const options = AiRequestOptionsV1.build({
-            model: summarizeTopicAiModel,
-            maxTokens: summarizeTopicMaxTokens,
-            temperature: summarizeTopicTemperature,
+            model: aiConfig.summarizeTopic.aiModel,
+            maxTokens: aiConfig.summarizeTopic.maxTokens,
+            temperature: aiConfig.summarizeTopic.temperature,
         });
 
         const summarizeResponse: string = await this.aiService.processPrompt(
@@ -337,9 +448,20 @@ export class DialogueService implements IDialogueService {
             options,
         );
         // erase actual exchanges and instead set a summary
-        delete topic.exchangesNewestToOldest
         topic.summary = summarizeResponse
         return topic
+    }
+
+    private async summarizeDialogue(dialogueState: DialogueState): Promise<string> {
+        const prompt: string = this.promptService.assembleSummarizeDialoguePrompt(dialogueState.dialogueHistory);
+        const aiProvider = aiConfig.summarizeDialogue.aiProvider;
+        const options = AiRequestOptionsV1.build({
+            model: aiConfig.summarizeDialogue.aiModel,
+            maxTokens: aiConfig.summarizeDialogue.maxTokens,
+            temperature: aiConfig.summarizeDialogue.temperature,
+        });
+        const summary: string = await this.aiService.processPrompt(aiProvider, prompt, options);
+        return summary;
     }
 
     public async interrupt(dialogueId: string): Promise<void> {
@@ -348,7 +470,6 @@ export class DialogueService implements IDialogueService {
         const dialogueState: DialogueState = await this.getDialogueState(dialogueId);
 
         await this.aiService.interrupt(dialogueState.aiProvider, dialogueId);
-
         // TODO: decide what to do with an interrupted dialogue - terminate it and treat as endDialogue? Or provide options to continue somehow?
     }
 
@@ -364,6 +485,8 @@ export class DialogueService implements IDialogueService {
         // TODO: Implement dialogue conclusion logic
         // TODO: Implement final state processing
         // TODO: Implement dialogue summary generation
+
+        const summary: string = await this.summarizeDialogue(dialogueState);
 
         await this.dialogueStateService.removeState(dialogueId);
 

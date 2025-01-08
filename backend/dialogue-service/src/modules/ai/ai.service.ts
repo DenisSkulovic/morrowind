@@ -8,11 +8,11 @@ import {
 } from '../../proto/ai_service_common';
 import { AiRequestMetadataV1 } from '../../class/AiRequestMetadataV1';
 import { v4 as uuidv4 } from 'uuid';
-import { AiRequestOptionsV1 } from '../../class/AiRequestOptionsV1';
 import { AiTaskStatusEnum } from '../../enum/AiTaskStatusEnum';
 import { deserializeEnum } from '../../common/enum/util';
 import { encoding_for_model, TiktokenModel } from 'tiktoken';
 import { modelMaxTokensConfig } from './modelMaxTokensConfig';
+import { AiUseCaseConfig } from '../../config/aiConfig';
 
 export enum AiProviderImplementationEnum {
     OPENAI_V1 = 'openai_v1',
@@ -30,19 +30,17 @@ interface IAiGRPCService {
 
 interface IAiService {
     processPrompt(
-        provider: AiProviderImplementationEnum,
         prompt: string,
-        options: AiRequestOptionsV1,
+        options: AiUseCaseConfig,
         throwOnExceed?: boolean,
         customMaxTokens?: number,
     ): Promise<string>;
     streamProcessPrompt(
-        provider: AiProviderImplementationEnum,
         prompt: string,
-        options: AiRequestOptionsV1,
+        options: AiUseCaseConfig,
     ): { requestId: string, stream: Observable<any> };
-    interrupt(provider: AiProviderImplementationEnum, requestId: string): Promise<boolean>;
-    checkStatus(provider: AiProviderImplementationEnum, requestId: string): Promise<AiTaskStatusEnum>;
+    interrupt(requestId: string, provider: AiProviderImplementationEnum): Promise<boolean>;
+    checkStatus(requestId: string, provider: AiProviderImplementationEnum): Promise<AiTaskStatusEnum>;
 }
 
 @Injectable()
@@ -145,13 +143,12 @@ export class AiService implements IAiService, OnModuleInit {
      * @returns The AI response.
      */
     public async processPrompt(
-        provider: AiProviderImplementationEnum,
         prompt: string,
-        options: AiRequestOptionsV1,
+        options: AiUseCaseConfig,
         throwOnExceed?: boolean,
         customMaxInputTokens?: number,
     ): Promise<string> {
-        const service: IAiGRPCService = this._getService(provider);
+        const service: IAiGRPCService = this._getService(options.aiProvider);
         const requestId: string = uuidv4();
         const metadata: AiRequestMetadataV1 = {
             timestamp: Date.now(),
@@ -183,16 +180,15 @@ export class AiService implements IAiService, OnModuleInit {
      * @returns An object containing the requestId and the stream of the AI response.
      */
     public streamProcessPrompt(
-        provider: AiProviderImplementationEnum,
         prompt: string,
-        options: AiRequestOptionsV1,
+        options: AiUseCaseConfig,
         throwOnExceed?: boolean,
         customMaxInputTokens?: number,
     ): {
         requestId: string,
         stream: Observable<any>
     } {
-        const service: IAiGRPCService = this._getService(provider);
+        const service: IAiGRPCService = this._getService(options.aiProvider);
         const requestId: string = uuidv4();
         const metadata: AiRequestMetadataV1 = {
             timestamp: Date.now(),
@@ -221,8 +217,8 @@ export class AiService implements IAiService, OnModuleInit {
      * @returns Whether the request was interrupted successfully.
      */
     public async interrupt(
+        requestId: string,
         provider: AiProviderImplementationEnum,
-        requestId: string
     ): Promise<boolean> {
         const service: IAiGRPCService = this._getService(provider);
         const request = { requestId };
@@ -233,8 +229,8 @@ export class AiService implements IAiService, OnModuleInit {
 
 
     public async checkStatus(
+        requestId: string,
         provider: AiProviderImplementationEnum,
-        requestId: string
     ): Promise<AiTaskStatusEnum> {
         const service: IAiGRPCService = this._getService(provider);
         const response: CheckStatusResponse = await service.checkStatus(requestId);

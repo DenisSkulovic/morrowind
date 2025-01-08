@@ -2,8 +2,10 @@ import { DialogueHistoryTopic } from "./DialogueHistoryTopic";
 
 export class DialogueHistory {
     topicsNewestToOldest: DialogueHistoryTopic[] = [];
+    clazz = 'DialogueHistory';
 
     static validate(data: any) {
+        if (data.clazz !== 'DialogueHistory') throw new Error("Invalid class");
         if (!data.topicsNewestToOldest) throw new Error('DialogueHistory: topicsNewestToOldest is required');
         if (!Array.isArray(data.topicsNewestToOldest)) throw new Error('DialogueHistory: topicsNewestToOldest must be an array');
         if (typeof data.topicsNewestToOldest[0] !== 'object') throw new Error('DialogueHistory: topicsNewestToOldest must be an array of DialogueHistoryTopic objects');
@@ -12,8 +14,7 @@ export class DialogueHistory {
     static build(data: any) {
         DialogueHistory.validate(data);
         const history = new DialogueHistory();
-        Object.assign(history, data);
+        history.topicsNewestToOldest = data.topicsNewestToOldest.map((topic: any) => DialogueHistoryTopic.build(topic));
         return history;
     }
 }
-

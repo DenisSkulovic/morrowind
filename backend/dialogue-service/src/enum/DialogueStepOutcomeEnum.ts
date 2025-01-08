@@ -1,6 +1,7 @@
 // this enum is necessary to connect an action with a game/dialogue mechanic, which could be triggered.
 
-export enum DialogueActionEnum {
+export enum DialogueStepOutcomeEnum {
+    NOTHING_SPECIAL = 'NOTHING_SPECIAL',
     CHANGE_TOPIC = 'CHANGE_TOPIC',
     END_DIALOGUE = 'END_DIALOGUE',
     ADD_UNFULFILLED_GOAL = 'ADD_UNFULFILLED_GOAL',

@@ -4,14 +4,10 @@ export class TimeContext {
     month!: string;
     year!: number;
     season!: string;
-
-    getExplanation() {
-        return `
-        This is the time context. It contains information about the time of day, day, month, year, and season.
-        `
-    }
+    clazz = 'TimeContext';
 
     static validate(data: any) {
+        if (data.clazz !== 'TimeContext') throw new Error("Invalid class");
         // Validate required fields
         if (!data.timeOfDay) throw new Error('TimeContext: timeOfDay is required');
         if (!data.day) throw new Error('TimeContext: day is required');
@@ -30,7 +26,11 @@ export class TimeContext {
     static build(data: any) {
         TimeContext.validate(data);
         const state = new TimeContext();
-        Object.assign(state, data);
+        state.timeOfDay = data.timeOfDay;
+        state.day = data.day;
+        state.month = data.month;
+        state.year = data.year;
+        state.season = data.season;
         return state;
     }
 }

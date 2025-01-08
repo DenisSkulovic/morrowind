@@ -1,4 +1,4 @@
-export enum CharacterAttitudeEnum {
+export enum DialogueAttitudeEnum {
     ENTHUSIASTIC = 'ENTHUSIASTIC',
     FRIENDLY = 'FRIENDLY',
     NEUTRAL = 'NEUTRAL',

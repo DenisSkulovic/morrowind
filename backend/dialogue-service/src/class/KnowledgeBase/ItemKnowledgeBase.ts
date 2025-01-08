@@ -2,8 +2,10 @@ export class ItemKnowledgeBase {
     id!: string;
     name!: string;
     description!: string;
+    clazz = 'ItemKnowledgeBase';
 
     static validate(data: any) {
+        if (data.clazz !== 'ItemKnowledgeBase') throw new Error("Invalid class");
         // Validate mandatory fields
         if (!data.id) throw new Error('ItemKnowledgeBase: id is required');
         if (!data.name) throw new Error('ItemKnowledgeBase: name is required');

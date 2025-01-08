@@ -3,8 +3,10 @@ export class LocationKnowledgeBase {
     name!: string;
     description!: string;
     parentLocationChain!: string;
+    clazz = 'LocationKnowledgeBase';
 
     static validate(data: any) {
+        if (data.clazz !== 'LocationKnowledgeBase') throw new Error("Invalid class");
         // Validate required fields
         if (!data.id) throw new Error('LocationKnowledgeBase: id is required');
         if (!data.name) throw new Error('LocationKnowledgeBase: name is required');

@@ -4,8 +4,11 @@ export class CharacterKnowledgeBase {
     description!: string;
     locationId?: string;
     factionId?: string;
+    clazz = 'CharacterKnowledgeBase';
 
     static validate(data: any) {
+        if (data.clazz !== 'CharacterKnowledgeBase') throw new Error("Invalid class");
+
         // Validate mandatory fields
         if (!data.id) throw new Error('CharacterKnowledgeBase: id is required');
         if (!data.name) throw new Error('CharacterKnowledgeBase: name is required');

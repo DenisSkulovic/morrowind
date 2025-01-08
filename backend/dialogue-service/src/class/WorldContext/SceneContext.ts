@@ -7,12 +7,10 @@ export class SceneContext {
     southWest?: DirectionSceneEntry
     west?: DirectionSceneEntry
     northWest?: DirectionSceneEntry
-
-    getExplanation() {
-        return "This scene context represents what can be seen in each cardinal and intercardinal direction (N, NE, E, SE, S, SW, W, NW). For each direction, objects and features can be described at near, mid, and far distances. This structure allows for a detailed spatial description of the surroundings in a scene."
-    }
+    clazz = 'SceneContext';
 
     static validate(data: any) {
+        if (data.clazz !== 'SceneContext') throw new Error("Invalid class");
         // Validate types
         if (data.north) {
             if (!(data.north instanceof DirectionSceneEntry)) throw new Error('SceneContext: north must be instance of DirectionSceneEntry');
@@ -43,7 +41,14 @@ export class SceneContext {
     static build(data: any) {
         SceneContext.validate(data);
         const state = new SceneContext();
-        Object.assign(state, data);
+        state.north = data.north ? DirectionSceneEntry.build(data.north) : undefined;
+        state.northEast = data.northEast ? DirectionSceneEntry.build(data.northEast) : undefined;
+        state.east = data.east ? DirectionSceneEntry.build(data.east) : undefined;
+        state.southEast = data.southEast ? DirectionSceneEntry.build(data.southEast) : undefined;
+        state.south = data.south ? DirectionSceneEntry.build(data.south) : undefined;
+        state.southWest = data.southWest ? DirectionSceneEntry.build(data.southWest) : undefined;
+        state.west = data.west ? DirectionSceneEntry.build(data.west) : undefined;
+        state.northWest = data.northWest ? DirectionSceneEntry.build(data.northWest) : undefined;
         return state;
     }
 }
@@ -58,12 +63,20 @@ export class DirectionSceneEntry {
         if (data.near) {
             if (!(data.near instanceof SceneEntry)) throw new Error('DirectionSceneEntry: near must be instance of SceneEntry');
         }
+        if (data.mid) {
+            if (!(data.mid instanceof SceneEntry)) throw new Error('DirectionSceneEntry: mid must be instance of SceneEntry');
+        }
+        if (data.far) {
+            if (!(data.far instanceof SceneEntry)) throw new Error('DirectionSceneEntry: far must be instance of SceneEntry');
+        }
     }
 
     static build(data: any) {
         DirectionSceneEntry.validate(data);
         const state = new DirectionSceneEntry();
-        Object.assign(state, data);
+        state.near = data.near ? SceneEntry.build(data.near) : undefined;
+        state.mid = data.mid ? SceneEntry.build(data.mid) : undefined;
+        state.far = data.far ? SceneEntry.build(data.far) : undefined;
         return state;
     }
 }
@@ -89,7 +102,9 @@ export class SceneEntry {
     static build(data: any) {
         SceneEntry.validate(data);
         const state = new SceneEntry();
-        Object.assign(state, data);
+        state.biome = data.biome;
+        state.NPCs = data.NPCs;
+        state.items = data.items;
         return state;
     }
 }

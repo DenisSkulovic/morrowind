@@ -8,18 +8,10 @@ export class WorldContext {
     time!: TimeContext;
     weather!: WeatherContext;
     scene!: SceneContext;
-
-    getExplanation() {
-        return `
-        This is the world context. It contains information about the location, time, weather, and scene.
-        WorldContext.location: ${this.location.getExplanation()}
-        WorldContext.time: ${this.time.getExplanation()}
-        WorldContext.weather: ${this.weather.getExplanation()}
-        WorldContext.scene: ${this.scene.getExplanation()}
-        `
-    }
+    clazz = 'WorldContext';
 
     static validate(data: any) {
+        if (data.clazz !== 'WorldContext') throw new Error("Invalid class");
         // Validate required fields
         if (!data.location) throw new Error('WorldContext: location is required');
         if (!data.time) throw new Error('WorldContext: time is required');
@@ -36,7 +28,10 @@ export class WorldContext {
     static build(data: any) {
         WorldContext.validate(data);
         const state = new WorldContext();
-        Object.assign(state, data);
+        state.location = LocationContext.build(data.location);
+        state.time = TimeContext.build(data.time);
+        state.weather = WeatherContext.build(data.weather);
+        state.scene = SceneContext.build(data.scene);
         return state;
     }
 }

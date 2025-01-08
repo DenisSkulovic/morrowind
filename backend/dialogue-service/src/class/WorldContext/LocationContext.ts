@@ -3,12 +3,11 @@ export class LocationContext {
     name!: string;
     description!: string;
     biome!: string;
-
-    getExplanation() {
-        return `This is the location context. It contains information about the location, name, description, and the biome of the location.`
-    }
+    clazz = 'LocationContext';
 
     static validate(data: any) {
+        if (data.clazz !== 'LocationContext') throw new Error("Invalid class");
+
         // Validate required fields
         if (!data.locationId) throw new Error('LocationContext: locationId is required');
         if (!data.name) throw new Error('LocationContext: name is required');

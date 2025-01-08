@@ -8,8 +8,10 @@ export class KnowledgeBase {
     factions!: FactionKnowledgeBase[];
     locations!: LocationKnowledgeBase[];
     items!: ItemKnowledgeBase[];
+    clazz = 'KnowledgeBase';
 
     static validate(data: Partial<KnowledgeBase>) {
+        if (data.clazz !== 'KnowledgeBase') throw new Error("Invalid class");
         // Validate types
         if (data.characters) {
             if (!(data.characters instanceof Array)) throw new Error('KnowledgeBase: characters must be an array');
