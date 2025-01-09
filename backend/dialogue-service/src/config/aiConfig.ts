@@ -11,7 +11,13 @@ type AllowedModel = typeof allowedModels[number];
 export interface AiConfig {
     allowedModels: AllowedModel[];
     useCases: {
-        [useCase: string]: AiUseCaseConfig;
+        summarizeTopic: AiUseCaseConfig;
+        summarizeDialogue: AiUseCaseConfig;
+        generatePlayerDialogueDirections: AiUseCaseConfig;
+        generatePlayerDialogueOptions: AiUseCaseConfig;
+        getAiDialogueOptions: AiUseCaseConfig;
+        analyzeDialogueStepForOutcome: AiUseCaseConfig;
+        progressDialogue: AiUseCaseConfig;
     }
 }
 export interface AiUseCaseConfig {
@@ -36,18 +42,6 @@ export const aiConfig: AiConfig = {
             maxTokens: 150,
             temperature: 0.5,
         },
-        analyzeAiResponseForActionsTaken: {
-            aiProvider: AiProviderImplementationEnum.OPENAI_V1,
-            aiModel: "gpt-4o-mini",
-            maxTokens: 150,
-            temperature: 0.3,
-        },
-        analyzeAiResponseForGoalsFulfilled: {
-            aiProvider: AiProviderImplementationEnum.OPENAI_V1,
-            aiModel: "gpt-4o-mini",
-            maxTokens: 150,
-            temperature: 0.3,
-        },
         generatePlayerDialogueDirections: {
             aiProvider: AiProviderImplementationEnum.OPENAI_V1,
             aiModel: "gpt-4o-mini",
@@ -60,7 +54,7 @@ export const aiConfig: AiConfig = {
             maxTokens: 150,
             temperature: 0.8,
         },
-        getAiDialogueDirectionDecision: {
+        getAiDialogueOptions: {
             aiProvider: AiProviderImplementationEnum.OPENAI_V1,
             aiModel: "gpt-4o-mini",
             maxTokens: 150,
@@ -70,6 +64,12 @@ export const aiConfig: AiConfig = {
             aiProvider: AiProviderImplementationEnum.OPENAI_V1,
             aiModel: "gpt-3.5-turbo",
             temperature: 0.8,
+        },
+        analyzeDialogueStepForOutcome: {
+            aiProvider: AiProviderImplementationEnum.OPENAI_V1,
+            aiModel: "gpt-4o-mini",
+            maxTokens: 150,
+            temperature: 0.5,
         },
     }
 };

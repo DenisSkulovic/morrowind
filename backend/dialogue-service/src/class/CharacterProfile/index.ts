@@ -1,3 +1,5 @@
+import { DialogueAttitudeEnum } from "../../enum/DialogueAttitudeEnum";
+
 export class CharacterProfile {
     id!: string;
     name!: string;
@@ -19,10 +21,7 @@ export class CharacterProfile {
         factions: string[];
         familiar_characters: string[];
     };
-
-    getExplanation() {
-        return `This is the character profile. It contains different information about the character. Character knowledge is a collection of things this character knows and potentially could share in the dialogue (COULD, because not everything you know you would share with anyone, right?). If someone asks this character about things they don't have in knowledge - it means they do not know about it and cannot talk about in the dialogue.`
-    }
+    dialogueAttitude?: DialogueAttitudeEnum;
 
     static validate(data: any) {
         // Validate required fields
@@ -36,6 +35,7 @@ export class CharacterProfile {
         if (typeof data.name !== 'string') throw new Error('CharacterProfile: name must be a string');
         if (typeof data.race !== 'string') throw new Error('CharacterProfile: race must be a string');
         if (typeof data.class !== 'string') throw new Error('CharacterProfile: class must be a string');
+        if (data.dialogueAttitude && !Object.values(DialogueAttitudeEnum).includes(data.dialogueAttitude)) throw new Error('CharacterProfile: dialogueAttitude must be a valid DialogueAttitudeEnum value');
     }
 
     static build(data: any) {

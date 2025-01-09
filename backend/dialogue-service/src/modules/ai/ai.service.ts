@@ -11,7 +11,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { AiTaskStatusEnum } from '../../enum/AiTaskStatusEnum';
 import { deserializeEnum } from '../../common/enum/util';
 import { encoding_for_model, TiktokenModel } from 'tiktoken';
-import { modelMaxTokensConfig } from './modelMaxTokensConfig';
+import { modelMaxTokensConfig } from '../../config/modelMaxTokensConfig';
 import { AiUseCaseConfig } from '../../config/aiConfig';
 
 export enum AiProviderImplementationEnum {

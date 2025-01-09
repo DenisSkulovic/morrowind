@@ -14,21 +14,24 @@ export class StepOutcome {
             }
         }
     }
-    dialogueOutcome!: DialogueStepOutcomeEnum
+    newTopicName?: string;
+    stepOutcome!: DialogueStepOutcomeEnum
     clazz = 'StepOutcome';
 
     static validate(body: Partial<StepOutcome>): void {
         // validate types
         if (body.clazz !== 'StepOutcome') throw new Error("Invalid class");
         if (body.characterChanges && !Array.isArray(body.characterChanges)) throw new Error('characterChanges must be an array');
-        if (body.dialogueOutcome && !Object.values(DialogueStepOutcomeEnum).includes(body.dialogueOutcome)) throw new Error('dialogueOutcome must be a valid DialogueStepOutcomeEnum value');
+        if (body.stepOutcome && !Object.values(DialogueStepOutcomeEnum).includes(body.stepOutcome)) throw new Error('stepOutcome must be a valid DialogueStepOutcomeEnum value');
+        if (body.newTopicName && typeof body.newTopicName !== 'string') throw new Error('newTopicName must be a string');
     }
 
     static build(body: Partial<StepOutcome>): StepOutcome {
         StepOutcome.validate(body);
         const outcome = new StepOutcome();
         outcome.characterChanges = body.characterChanges;
-        outcome.dialogueOutcome = DialogueStepOutcomeEnum[body.dialogueOutcome!];
+        outcome.stepOutcome = DialogueStepOutcomeEnum[body.stepOutcome!];
+        outcome.newTopicName = body.newTopicName;
         return outcome;
     }
 }
