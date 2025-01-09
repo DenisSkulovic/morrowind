@@ -174,16 +174,15 @@ export class DialogueService implements IDialogueService {
             worldContext,
             quantity,
         );
-        const aiProvider: AiProviderImplementationEnum = aiConfig.useCases.generatePlayerDialogueDirections.aiProvider;
-        const aiDialogueOptionsString: string = await this.aiService.processPrompt(
+        const playerDialogueDirectionsString: string = await this.aiService.processPrompt(
             prompt,
             aiConfig.useCases.generatePlayerDialogueDirections,
         );
         try {
-            const aiDialogueOptions: DialogueDirectionEnum[] = JSON.parse(aiDialogueOptionsString) as DialogueDirectionEnum[];
-            return aiDialogueOptions;
+            const playerDialogueDirections: DialogueDirectionEnum[] = JSON.parse(playerDialogueDirectionsString) as DialogueDirectionEnum[];
+            return playerDialogueDirections;
         } catch (error) {
-            throw new Error(`[DialogueService - generatePlayerDialogueDirections] Failed to parse ai generated outcome: ${error}; outcomeString: ${aiDialogueOptionsString}`);
+            throw new Error(`[DialogueService - generatePlayerDialogueDirections] Failed to parse ai generated outcome: ${error}; outcomeString: ${playerDialogueDirectionsString}`);
         }
     }
 
