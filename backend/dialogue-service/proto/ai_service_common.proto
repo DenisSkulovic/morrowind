@@ -3,18 +3,18 @@ syntax = "proto3";
 package ai_service_common;
 
 // Request to the AI Service
-message AiRequestV1 {
+message AiRequest {
     string requestId = 1;
     string prompt = 2;                 // The main prompt or input to be sent to the AI
     AiRequestMetadata metadata = 3;                // General context or metadata for the request
     AiRequestOptions options = 4;   // Options for AI behavior (e.g., temperature, max tokens)
 }
 
-message AiRequestMetadataV1 {
+message AiRequestMetadata {
     int64 timestamp = 1; // Unix timestamp when the request was created
     string useCase = 2;
 }
-message AiRequestOptionsV1 {
+message AiRequestOptions {
     string model = 1;
     float temperature = 2;
     int32 maxTokens = 3;
@@ -22,14 +22,15 @@ message AiRequestOptionsV1 {
 }
 
 // Response from the AI Service
-message AiResponseV1 {
+message AiResponse {
     string output = 1;                 // Raw output from the AI
     string errorMessage = 2;           // Error message in case of failure
+    bool isLast = 3;                   // Whether this is the last chunk of the response
 }
 
 
 
-message AiResponseMetadataV1 {
+message AiResponseMetadata {
     int64 timestamp = 1; // Unix timestamp when the request was created
     string useCase = 2;
     string context = 3;
@@ -37,23 +38,23 @@ message AiResponseMetadataV1 {
 
 
 // Interrupt Request
-message InterruptRequestV1 {
+message InterruptRequest {
     string requestId = 1;              // The ID of the request to interrupt
 }
 
 // Interrupt Response
-message InterruptResponseV1 {
+message InterruptResponse {
     string requestId = 1;              // The ID of the interrupted request
     bool success = 2;                  // Whether the interruption was successful
     string status = 3;                 // Status after interruption: queued, interrupted, completed
     string message = 4;                // Additional information about the interruption
 }
 
-message CheckStatusRequestV1 {
+message CheckStatusRequest {
     string requestId = 1;              // The ID of the request whose status is being checked
 }
 
-message CheckStatusResponseV1 {
+message CheckStatusResponse {
     AiTaskStatusEnumDTO status = 1;    // Task status: queued, processing, completed, failed
 }
 

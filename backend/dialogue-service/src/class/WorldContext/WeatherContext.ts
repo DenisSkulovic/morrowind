@@ -1,9 +1,22 @@
+import { Serializable } from "../../common/decorator/serializable.decorator";
+
 export class WeatherContext {
+    @Serializable()
     weather!: string;
+
+    @Serializable()
     temperature!: string;
+
+    @Serializable()
     wind!: string;
+
+    @Serializable()
     precipitation!: string;
+
+    @Serializable()
     visibility!: string;
+
+    @Serializable()
     clazz = 'WeatherContext';
 
     static validate(data: any) {

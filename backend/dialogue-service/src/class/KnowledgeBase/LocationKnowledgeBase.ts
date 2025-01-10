@@ -1,8 +1,19 @@
+import { Serializable } from "../../common/decorator/serializable.decorator";
+
 export class LocationKnowledgeBase {
+    @Serializable()
     id!: string;
+
+    @Serializable()
     name!: string;
+
+    @Serializable()
     description!: string;
+
+    @Serializable()
     parentLocationChain!: string;
+
+    @Serializable()
     clazz = 'LocationKnowledgeBase';
 
     static validate(data: any) {

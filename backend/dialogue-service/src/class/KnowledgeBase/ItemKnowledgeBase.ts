@@ -1,7 +1,16 @@
+import { Serializable } from "../../common/decorator/serializable.decorator";
+
 export class ItemKnowledgeBase {
+    @Serializable()
     id!: string;
+
+    @Serializable()
     name!: string;
+
+    @Serializable()
     description!: string;
+
+    @Serializable()
     clazz = 'ItemKnowledgeBase';
 
     static validate(data: any) {

@@ -2,12 +2,23 @@ import { FactionKnowledgeBase } from "./FactionKnowledgeBase";
 import { ItemKnowledgeBase } from "./ItemKnowledgeBase";
 import { LocationKnowledgeBase } from "./LocationKnowledgeBase";
 import { CharacterKnowledgeBase } from "./CharacterKnowledgeBase";
+import { Serializable } from "../../common/decorator/serializable.decorator";
+import { SerializeStrategyEnum } from "../../common/serializer/serializer";
 
 export class KnowledgeBase {
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true, internalClass: CharacterKnowledgeBase })
     characters!: CharacterKnowledgeBase[];
+
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true, internalClass: FactionKnowledgeBase })
     factions!: FactionKnowledgeBase[];
+
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true, internalClass: LocationKnowledgeBase })
     locations!: LocationKnowledgeBase[];
+
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true, internalClass: ItemKnowledgeBase })
     items!: ItemKnowledgeBase[];
+
+    @Serializable()
     clazz = 'KnowledgeBase';
 
     static validate(data: Partial<KnowledgeBase>) {

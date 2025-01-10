@@ -6,8 +6,8 @@ import "ai_service_common.proto";
 
 // AI Service Definition
 service AiServiceOpenAIv1 {
-    rpc ProcessPrompt(ai_service_common.AiRequestV1) returns (ai_service_common.AiResponseV1);
-    rpc StreamProcessPrompt(ai_service_common.AiRequestV1) returns (stream ai_service_common.AiResponseV1);
-    rpc Interrupt(ai_service_common.InterruptRequestV1) returns (ai_service_common.InterruptResponseV1);
-    rpc CheckStatus(ai_service_common.CheckStatusRequestV1) returns (ai_service_common.CheckStatusResponseV1);
+    rpc ProcessPrompt(ai_service_common.AiRequest) returns (ai_service_common.AiResponse);
+    rpc StreamProcessPrompt(ai_service_common.AiRequest) returns (stream ai_service_common.AiResponse);
+    rpc Interrupt(ai_service_common.InterruptRequest) returns (ai_service_common.InterruptResponse);
+    rpc CheckStatus(ai_service_common.CheckStatusRequest) returns (ai_service_common.CheckStatusResponse);
 }

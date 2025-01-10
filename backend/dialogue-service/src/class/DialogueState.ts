@@ -1,18 +1,20 @@
-import { AiProviderImplementationEnum } from "../modules/ai/ai.service";
 import { CharacterProfile } from "./CharacterProfile";
 import { KnowledgeBase } from "./KnowledgeBase";
 import { WorldContext } from "./WorldContext";
 import { DialogueHistory } from "./DialogueHistory";
+import { Context } from "../modules/dialogue/content/class/Context";
+import { AiServiceEnum } from "../enum/AiServiceEnum";
 
 export class DialogueState {
     initiatingParticipantId!: string;
     dialogueId!: string;
     playerCharacterId!: string;
-    aiProvider!: AiProviderImplementationEnum;
+    aiProvider!: AiServiceEnum;
     dialogueParticipants!: CharacterProfile[];
     worldContext!: WorldContext;
     dialogueHistory!: DialogueHistory;
     knowledgeBase!: KnowledgeBase;
+    context?: Context;
     clazz = 'DialogueState';
 
     static validate(data: Partial<DialogueState>) {
@@ -36,7 +38,8 @@ export class DialogueState {
         if (typeof data.dialogueHistory !== 'object') throw new Error('DialogueState: dialogueHistory must be an object');
         if (typeof data.knowledgeBase !== 'object') throw new Error('DialogueState: knowledgeBase must be an object');
         if (typeof data.aiProvider !== 'string') throw new Error('DialogueState: aiProvider must be a string');
-        if (!Object.values(AiProviderImplementationEnum).includes(data.aiProvider as AiProviderImplementationEnum)) throw new Error('DialogueState: aiProvider must be a valid AI provider');
+        if (!Object.values(AiServiceEnum).includes(data.aiProvider as AiServiceEnum)) throw new Error('DialogueState: aiProvider must be a valid AI provider');
+        if (data.context && typeof data.context !== 'object') throw new Error('DialogueState: context must be an object');
     }
 
     static build(data: Partial<DialogueState>) {

@@ -5,10 +5,9 @@ package dialogue;
 import "entities.proto";
 
 service DialogueService {
-    rpc StartDialogue(StartDialogueRequest) returns (stream MessageChunkResponse);
-    rpc ContinueDialogue(ContinueDialogueRequest) returns (stream MessageChunkResponse);
-    rpc EndDialogue(EndDialogueRequest) returns (stream MessageChunkResponse);
-    rpc GenerateResponseOptions(GenerateResponseOptionsRequest) returns (GenerateResponseOptionsResponse);
+    rpc InitializeDialogue(InitializeDialogueRequest) returns (InitializeDialogueResponse);
+    rpc FinalizeDialogue(FinalizeDialogueRequest) returns (FinalizeDialogueResponse);
+    rpc GeneratePlayerDialogueOptions(GeneratePlayerDialogueOptionsRequest) returns (GeneratePlayerDialogueOptionsResponse);
     rpc InterruptDialogue(InterruptDialogueRequest) returns (InterruptDialogueResponse);
 }
 
@@ -17,141 +16,207 @@ service DialogueService {
 
 
 // ============================================================================
-// Start Dialogue
+// Initialize Dialogue
 // ============================================================================
-message StartDialogueRequest {
+message InitializeDialogueRequest {
     string initiatingParticipantId = 1;
-    AiProviderImplementationEnum aiProvider = 2;
-    AiRequestOptionsV1 options = 3;
-    repeated CharacterProfileDTO dialogueParticipants = 4;
+    string playerCharacterId = 2;
+    string aiProvider = 3; // e.g. OPENAI_V1
+    CharacterProfilesDTO dialogueParticipants = 4;
     WorldContextDTO worldContext = 5;
     DialogueHistoryDTO dialogueHistory = 6;
     KnowledgeBaseDTO knowledgeBase = 7;
     entities.ContextDTO context = 8; // User, World, Campaign
 }
-message StartDialogueResponse {
+message InitializeDialogueResponse {
     string dialogueId = 1;
 }
 // ============================================================================
 
 
-message DialogueParticipantDTO {
+
+
+// ============================================================================
+// Character Profile
+// ============================================================================
+message CharacterProfileDTO {
+    string id = 1;
+    string name = 2;
+    string race = 3;
+    string class = 4;
+    string traits = 5;
+    string enneagram = 6;
+    string mood = 7;
+    string needs = 8;
+    CharacterGoalsDTO goals = 9;
+    map<string, int32> skills = 10;
+    map<string, string> stats = 11;
+    CharacterInventoryDTO inventory = 12;
+    CharacterKnowledgeDTO knowledge = 13;
+    string dialogueAttitude = 14;
 }
-message DialogueParticipantsDTO {
+message CharacterGoalsDTO {
+    repeated string satisfied = 1;
+    repeated string unsatisfied = 2;
 }
+message CharacterInventoryDTO {
+    repeated string equipped = 1;
+    repeated string stored = 2;
+}
+message CharacterKnowledgeDTO {
+    repeated string locations = 1;
+    repeated string factions = 2;
+    repeated string familiar_characters = 3;
+}
+message CharacterProfilesDTO {
+    repeated CharacterProfileDTO arr = 1;
+}
+// ============================================================================
+
+
+
+
+// ============================================================================
+// World Context
+// ============================================================================
 message WorldContextDTO {
-    LocationKnowledgeBaseDTO location = 1;
+    LocationContextDTO location = 1;
+    TimeContextDTO time = 2;
+    WeatherContextDTO weather = 3;
+    SceneContextDTO scene = 4;
+    string clazz = 5;
 }
+message LocationContextDTO {
+    string id = 1;
+    string name = 2;
+    string description = 3;
+    string biome = 4;
+    string clazz = 5;
+}
+message TimeContextDTO {
+    string timeOfDay = 1;
+    int32 day = 2;
+    string month = 3;
+    int32 year = 4;
+    string season = 5;
+    string clazz = 6;
+}
+message WeatherContextDTO {
+    string weather = 1;
+    string temperature = 2;
+    string wind = 3;
+    string precipitation = 4;
+    string visibility = 5;
+    string clazz = 6;
+}
+message SceneContextDTO {
+    DirectionSceneEntryDTO north = 1;
+    DirectionSceneEntryDTO northEast = 2;
+    DirectionSceneEntryDTO east = 3;
+    DirectionSceneEntryDTO southEast = 4;
+    DirectionSceneEntryDTO south = 5;
+    string clazz = 6;
+}
+message DirectionSceneEntryDTO {
+    SceneEntryDTO near = 1;
+    SceneEntryDTO mid = 2;
+    SceneEntryDTO far = 3;
+    string clazz = 4;
+}
+message SceneEntryDTO {
+    string biome = 1;
+    SceneNPCsDTO NPCs = 2;
+    SceneItemsDTO items = 3;
+    string clazz = 4;
+}
+message SceneNPCDTO {
+    string id = 1;
+    string activity = 2;
+    string clazz = 3;
+}
+message SceneNPCsDTO {
+    repeated SceneNPCDTO arr = 1;
+}
+message SceneItemDTO {
+    string id = 1;
+    string clazz = 2;
+}
+message SceneItemsDTO {
+    repeated SceneItemDTO arr = 1;
+}
+// ============================================================================
+
+
+
+
+// ============================================================================
+// Dialogue History
+// ============================================================================
 message DialogueHistoryDTO {
-    repeated DialogueHistoryEntryDTO entries = 1;
+    DialogueHistoryTopicsDTO topicsNewestToOldest = 1;
+    string clazz = 2;
 }
-message DialogueHistoryEntryDTO {
-    string summary = 1;
-    string topic = 2;
-    repeated string revealedInformation = 3;
-    repeated string actionsTaken = 4;
+message DialogueHistoryTopicDTO {
+    string topicName = 1;
+    DialogueStepsDTO stepsNewestToOldest = 2;
+    string clazz = 3;
 }
-message KnowledgeBaseDTO {
-    repeated LocationKnowledgeBaseDTO locations = 1;
-    repeated FactionKnowledgeBaseDTO factions = 2;
-    repeated CharacterKnowledgeBaseDTO characters = 3;
-    repeated ItemKnowledgeBaseDTO items = 4;
+message DialogueHistoryTopicsDTO {
+    repeated DialogueHistoryTopicDTO arr = 1;
 }
-message LocationKnowledgeBaseDTO {
-    string id = 1;
-    string name = 2;
-    string description = 3;
-    string parentLocationChain = 4;
+message DialogueStepDTO {
+    PlayerCharacterStepDTO playerStep = 1;
+    AiCharacterStepDTO aiStep = 2;
+    string narration = 3;
+    StepOutcomeDTO outcome = 4;
+    string clazz = 5;
 }
-message FactionKnowledgeBaseDTO {
-    string id = 1;
-    string name = 2;
-    string description = 3;
+message DialogueStepsDTO {
+    repeated DialogueStepDTO arr = 1;
 }
-message CharacterKnowledgeBaseDTO {
-    string id = 1;
-    string name = 2;
-    string description = 3;
-    string locationId = 4;
-    string factionId = 5;
+message DiceRollResultDTO {
+    int32 roll = 1;
+    string outcome = 2;
+    string scaleType = 3;
+    string usedScaleConfig = 4;
+    string clazz = 5;
 }
-message ItemKnowledgeBaseDTO {
-    string id = 1;
-    string name = 2;
-    string description = 3;
+message PlayerCharacterStepDTO {
+    string characterId = 1;
+    string selectedDialogueOption = 2;
+    DiceRollResultDTO diceRollResult = 3;
+    string clazz = 4;
 }
-
-
-
-
-
-// ============================================================================
-// Generate Response Options
-// ============================================================================
-message GenerateResponseOptionsRequest {
-    string sessionId = 1;
-    entities.PlayerGoalDTO playerGoal = 2;
-    entities.DynamicContextDTO context = 3; // Updated context for dialogue progression
+message AiCharacterStepDTO {
+    string characterId = 1;
+    string selectedDialogueOption = 2;
+    DiceRollResultDTO diceRollResult = 3;
+    string clazz = 4;
 }
-message GenerateResponseOptionsResponse {
-    repeated DialogueResponseOptionDTO responseOptions = 1;
-    string narration = 2; // Optional AI narration for scene progression
+message StepOutcomeDTO {
+    map<string, CharacterChangesDTO> characterChanges = 1;
+    string newTopicName = 2;
+    string stepOutcome = 3;
+    string clazz = 4;
 }
-// ============================================================================
-
-
-
-
-
-// ============================================================================
-// Send Message
-// ============================================================================
-message ContinueDialogueRequest {
-    string sessionId = 1;                       // Dialogue session ID
-    string responseOptionId = 2;                // Player's response choice
-    entities.ContextDTO context = 3;            // User, World, Campaign
+message CharacterChangeDTO {
+    repeated string markUnfulfilledGoalsAsFulfilled = 1;
+    repeated string addUnfulfilledGoals = 2;
+    repeated string removeUnfulfilledGoals = 3;
+    string changeDialogueAttitudeTo = 4;
+    InventoryChangesDTO addOrRemoveOrModifyItemInInventory = 5;
 }
-// returns a stream of MessageChunkResponse
-// ============================================================================
-
-
-
-
-
-// ============================================================================
-message InterruptDialogueRequest {
-    string sessionId = 1;
-    entities.ContextDTO context = 2;            // User, World, Campaign
+message CharacterChangesDTO {
+    repeated CharacterChangeDTO arr = 1;
 }
-message InterruptDialogueResponse {
-    string sessionId = 1;
+message InventoryChangeDTO {
+    string itemId = 1;
+    int32 quantityDeltaChange = 2;
+}
+message InventoryChangesDTO {
+    repeated InventoryChangeDTO arr = 1;
 }
 // ============================================================================
-
-
-
-
-
-// ============================================================================
-message EndDialogueRequest {
-    string sessionId = 1;                       // Dialogue session ID
-    entities.ContextDTO context = 2;            // User, World, Campaign
-}
-// returns a stream of MessageChunkResponse
-// ============================================================================
-
-
-
-
-
-// ===============================
-// MessageChunkResponse
-// ===============================
-message MessageChunkResponse {
-    string textChunk = 1;                       // A chunk of the counterpart's dialogue
-    bool isLast = 2;                            // Whether this is the last chunk of the message
-}
-// ===============================
 
 
 
@@ -164,6 +229,7 @@ message KnowledgeBaseDTO {
     repeated FactionKnowledgeBaseDTO factions = 2;
     repeated LocationKnowledgeBaseDTO locations = 3;
     repeated ItemKnowledgeBaseDTO items = 4;
+    string clazz = 5;
 }
 message CharacterKnowledgeBaseDTO {
     string id = 1;
@@ -171,354 +237,88 @@ message CharacterKnowledgeBaseDTO {
     string description = 3;
     string locationId = 4;
     string factionId = 5;
+    string clazz = 6;
 }
 message FactionKnowledgeBaseDTO {
     string id = 1;
     string name = 2;
     string description = 3;
+    string clazz = 4;
 }
 message LocationKnowledgeBaseDTO {
     string id = 1;
     string name = 2;
     string description = 3;
     string parentLocationChain = 4;
+    string clazz = 5;
 }
 message ItemKnowledgeBaseDTO {
     string id = 1;
     string name = 2;
     string description = 3;
+    string clazz = 4;
 }
 // ===============================
 
 
 
 
-
-// Represents response options the player can choose from
-message DialogueResponseOptionDTO {
-    string id = 1;
-    string text = 2; // Response text
-    dndRiskImpactEnumDTO riskImpact = 3;
-    ResponseToneEnumDTO tone = 3; // Emotional tone of the response
-    DialogueActionDTO triggeredAction = 4; // Action to be triggered if this response is chosen
+// ============================================================================
+// Generate Response Options
+// ============================================================================
+message GeneratePlayerDialogueOptionsRequest {
+    string dialogueId = 1;
+    int32 directionsQuantity = 2;
+    int32 variations = 3;
+    string scaleType = 4; // e.g. D20_V1
 }
-
-enum dndRiskImpactEnumDTO {
-    LOW_RISK_LOW_IMPACT = 0;
-    LOW_RISK_MEDIUM_IMPACT = 1;
-    LOW_RISK_HIGH_IMPACT = 2;
-    MEDIUM_RISK_LOW_IMPACT = 3;
-    MEDIUM_RISK_MEDIUM_IMPACT = 4;
-    MEDIUM_RISK_HIGH_IMPACT = 5;
-    HIGH_RISK_LOW_IMPACT = 6;
-    HIGH_RISK_MEDIUM_IMPACT = 7;
-    HIGH_RISK_HIGH_IMPACT = 8;
+message GeneratePlayerDialogueOptionsResponse {
+    repeated DialogueOptionDTO dialogueOptions = 1;
 }
-
-
-
-// if two characters are talking to each other, they each have a CharacterDialogueStateDTO
-message CharacterDialogueStateDTO {
-    string characterId = 1;
-    int32 opinionMeter = 2;                 // Opinion of the counterpart toward the player (-100 to 100)
-    string currentMood = 3;                // Descriptive mood, e.g., "angry," "nervous," "friendly"
-    repeated string observedTraits = 4;    // Traits observed by the player during the dialogue
-    repeated string revealedFacts = 5;     // Facts revealed about this character
-}
-
-
-
-// ===============================
-// DialogueResponseOptionDTO
-// ===============================
-message DialogueResponseOptionDTO {
-    string id = 1;                            // Unique identifier for the response
-    string text = 2;                          // Pre-generated response text
-    DialogueGoalEnumDTO goal = 3;                     // Goal this response aims to achieve
-    AchieveGoalStrategyEnumDTO strategy = 4;  // Strategy this response employs
-    DialogueActionEnumDTO action = 5;                 // Action executed by this response
-    int32 projectedOpinionChange = 6;         // Estimated effect on the counterpart's opinion (-100 to 100)
-    string tone = 7;                          // Descriptive tone, e.g., "polite," "aggressive"
-}
-// ===============================
-
+// ============================================================================
 
 
 
 
 // ===============================
-// DialogueActionDTO
+// DialogueOptionDTO
 // ===============================
-message DialogueActionDTO {
-    string description = 1;
-    repeated string targetCharacterIds = 2;
-    repeated string targetItemIds = 3;
-    repeated string targetLocationIds = 4;
-    DialogueActionEnumDTO actionType = 5;
-}
-// ===============================
-
-
-
-// ===============================
-// DialogueStateDTO
-// ===============================
-message DialogueStateDTO {
-    string sessionId = 1;                       // Unique ID for the dialogue session
-    string currentTopic = 2;                    // Current topic of discussion
-    string subTopic = 3;                        // Current subtopic, if any
-    DialogueGoalEnumDTO currentGoal = 4;                // Overall goal of the dialogue
-    repeated string discussedTopics = 5;        // Topics already discussed
-    repeated CharacterDialogueStateDTO participants = 6; // States of all dialogue participants
+message DialogueOptionDTO {
+    string explanation = 1;                          // Pre-generated response text
+    string dialogueDirection = 2;                     // Goal this response aims to achieve
+    string riskImpact = 3;  // Strategy this response employs
+    string clazz = 4;
 }
 // ===============================
 
 
 
-
-
-message PlayerGoalDTO {
-    string id = 1;
-    string description = 2;
-    repeated string targetItemIds = 3;
-    repeated string targetLocationIds = 4;
-    repeated string targetCharacterIds = 5;
-    string status = 6;
+// ============================================================================
+// Interrupt Dialogue
+// ============================================================================
+message InterruptDialogueRequest {
+    string requestId = 1;
+    string aiProvider = 2; // e.g. OPENAI_V1
 }
-
-
-
-message DynamicContextDTO {
-    string id = 1;
-    repeated string activeTopics = 2; // Active topics in the dialogue
-    string mood = 3; // Current mood of the session
-    string playerMood = 4; // Player's current mood
-    repeated string recentEvents = 5; // Events influencing the context
-    repeated string activeTags = 6; // Tags for AI contextual relevance
+message InterruptDialogueResponse {
+    string requestId = 1;
 }
+// ============================================================================
 
 
 
 
-enum DialogueInitiationResultEnumDTO {
-    DIALOGUE_INITIATION_SUCCESS = 0;
-    DIALOGUE_INITIATION_FAILURE = 1;
-    DIALOGUE_INITIATION_REFUSAL = 2;
+
+// ============================================================================
+message FinalizeDialogueRequest {
+    string dialogueId = 1;                       // Dialogue session ID
+    entities.ContextDTO context = 2;            // User, World, Campaign
 }
-
-enum CharacterAttitudeEnumDTO {
-    CHARACTER_DIALOGUE_ATTITUDE_ENTHUSIASTIC = 0;
-    CHARACTER_DIALOGUE_ATTITUDE_FRIENDLY = 1;
-    CHARACTER_DIALOGUE_ATTITUDE_NEUTRAL = 2;
-    CHARACTER_DIALOGUE_ATTITUDE_RESERVED = 3;
-    CHARACTER_DIALOGUE_ATTITUDE_RELUCTANT = 4;
-    CHARACTER_DIALOGUE_ATTITUDE_SUSPICIOUS = 5;
-    CHARACTER_DIALOGUE_ATTITUDE_PASSIVE_AGGRESSIVE = 6;
-    CHARACTER_DIALOGUE_ATTITUDE_HOSTILE = 7;
-    CHARACTER_DIALOGUE_ATTITUDE_DISRESPECTFUL = 8;
-    CHARACTER_DIALOGUE_ATTITUDE_FEARFUL = 9;
-    CHARACTER_DIALOGUE_ATTITUDE_ADMIRING = 10;
-    CHARACTER_DIALOGUE_ATTITUDE_DISMISSIVE = 11;
-    CHARACTER_DIALOGUE_ATTITUDE_CURIOUS = 12;
-    CHARACTER_DIALOGUE_ATTITUDE_CONDESCENDING = 13;
-    CHARACTER_DIALOGUE_ATTITUDE_DEFERENTIAL = 14;
+message FinalizeDialogueResponse {
+    string dialogueId = 1;                      // Dialogue session ID
+    string summary = 2;                       // Summary of the dialogue
+    repeated CharacterProfileDTO dialogueParticipants = 3;
+    WorldContextDTO worldContext = 4;
+    DialogueHistoryDTO dialogueHistory = 5;
 }
-
-
-
-enum DialogueActionEnumDTO {
-    // Meta actions
-    DIALOGUE_ACTION_TYPE_NONE = 0;                    // No action
-    DIALOGUE_ACTION_TYPE_WAIT = 1;                    // Passive action, allow others to act
-    DIALOGUE_ACTION_TYPE_OBSERVE = 2;                 // Monitor the situation without acting
-
-    // Dialogue-specific actions
-    DIALOGUE_ACTION_TYPE_RESPOND_TO_TOPIC = 3;        // Reply to the current discussion topic
-    DIALOGUE_ACTION_TYPE_CHANGE_TOPIC = 4;            // Switch to a new topic of discussion
-    DIALOGUE_ACTION_TYPE_CHANGE_SUBTOPIC = 5;         // Adjust focus within the current topic
-    DIALOGUE_ACTION_TYPE_END_DIALOGUE = 6;            // Conclude the dialogue session
-
-    // Goal-related actions
-    DIALOGUE_ACTION_TYPE_CHANGE_GOAL = 7;             // Shift the overall goal of the dialogue
-    DIALOGUE_ACTION_TYPE_CHANGE_GOAL_STRATEGY = 8;    // Modify the strategy to achieve the goal
-
-    // Trade-related actions
-    DIALOGUE_ACTION_TYPE_REQUEST_TRADE = 9;           // Initiate a trade request
-    DIALOGUE_ACTION_TYPE_OFFER_ITEM = 10;             // Propose an item for trade or as a gift
-    DIALOGUE_ACTION_TYPE_ACCEPT_ITEM = 11;            // Agree to receive an item
-    DIALOGUE_ACTION_TYPE_BARGAIN = 12;                // Negotiate the terms of an exchange
-
-    // Quest-related actions
-    DIALOGUE_ACTION_TYPE_OFFER_QUEST = 13;            // Propose a quest
-    DIALOGUE_ACTION_TYPE_ACCEPT_QUEST = 14;           // Agree to take on a quest
-    DIALOGUE_ACTION_TYPE_DECLINE_QUEST = 15;          // Refuse a quest offer
-    DIALOGUE_ACTION_TYPE_REPORT_PROGRESS = 16;        // Update on quest status
-
-    // Conflict-related actions
-    DIALOGUE_ACTION_TYPE_INITIATE_COMBAT = 17;        // Start a conflict or battle
-    DIALOGUE_ACTION_TYPE_END_COMBAT = 18;             // De-escalate or resolve a conflict
-    DIALOGUE_ACTION_TYPE_THREATEN = 19;               // Use intimidation as a tactic
-    DIALOGUE_ACTION_TYPE_CONFRONT = 20;               // Challenge or address directly
-    DIALOGUE_ACTION_TYPE_INTIMIDATE = 21;             // Use fear to influence others
-
-    // Social actions
-    DIALOGUE_ACTION_TYPE_SOCIALIZE = 22;              // Engage in casual conversation
-    DIALOGUE_ACTION_TYPE_FLATTER = 23;                // Compliment or praise
-    DIALOGUE_ACTION_TYPE_APOLOGIZE = 24;              // Express regret
-    DIALOGUE_ACTION_TYPE_EXPRESS_GRATITUDE = 25;      // Show appreciation
-    DIALOGUE_ACTION_TYPE_BUILD_TRUST = 26;            // Foster a stronger relationship
-    DIALOGUE_ACTION_TYPE_SHARE_INFORMATION = 27;      // Provide knowledge to others
-    DIALOGUE_ACTION_TYPE_REQUEST_INFORMATION = 28;    // Ask for knowledge or details
-    DIALOGUE_ACTION_TYPE_SHARE_STORY = 29;            // Tell a narrative or anecdote
-
-    // Strategic and situational actions
-    DIALOGUE_ACTION_TYPE_PLAN_ACTION = 30;            // Prepare a strategic response
-    DIALOGUE_ACTION_TYPE_ADAPT_STRATEGY = 31;         // Adjust tactics based on context
-    DIALOGUE_ACTION_TYPE_USE_RESOURCE = 32;           // Employ an item or tool
-    DIALOGUE_ACTION_TYPE_DELAY = 33;                  // Stall or buy time
-    DIALOGUE_ACTION_TYPE_OBSERVE_AND_ANALYZE = 34;    // Evaluate the situation for insight
-
-    // Cooperative and alliance-building actions
-    DIALOGUE_ACTION_TYPE_FORM_ALLIANCE = 35;          // Propose collaboration or partnership
-    DIALOGUE_ACTION_TYPE_SHARE_GOALS = 36;            // Align objectives with others
-    DIALOGUE_ACTION_TYPE_OFFER_HELP = 37;             // Volunteer assistance
-    DIALOGUE_ACTION_TYPE_REQUEST_HELP = 38;           // Ask for aid or support
-    DIALOGUE_ACTION_TYPE_INSPIRE = 39;                // Motivate or encourage others
-
-    // Miscellaneous actions
-    DIALOGUE_ACTION_TYPE_DISCUSS_STRATEGY = 40;       // Collaboratively plan steps
-    DIALOGUE_ACTION_TYPE_WARN = 41;                   // Alert others to danger or risk
-    DIALOGUE_ACTION_TYPE_ASK_PERMISSION = 42;         // Seek approval for an action
-    DIALOGUE_ACTION_TYPE_INITIATE_SMALL_TALK = 43;    // Start light, casual conversation
-}
-
-
-enum AchieveGoalStrategyEnumDTO {
-    // Meta strategies
-    ACHIEVE_GOAL_STRATEGY_NONE = 0;                  // No active strategy
-    ACHIEVE_GOAL_STRATEGY_EXPERIMENT = 1;            // Try an exploratory approach
-
-    // Direct approaches
-    ACHIEVE_GOAL_STRATEGY_REQUEST_DIRECTLY = 2;      // Ask directly to achieve the goal
-    ACHIEVE_GOAL_STRATEGY_NEGOTIATE = 3;             // Engage in a mutual agreement
-    ACHIEVE_GOAL_STRATEGY_BARGAIN = 4;               // Propose a trade or compromise
-    ACHIEVE_GOAL_STRATEGY_OFFER_HELP = 5;            // Provide assistance to gain favor
-    ACHIEVE_GOAL_STRATEGY_APOLOGIZE = 6;             // Show regret to mend relationships
-    ACHIEVE_GOAL_STRATEGY_FLATTER = 7;               // Compliment to gain favor
-
-    // Subversive approaches
-    ACHIEVE_GOAL_STRATEGY_DECEIVE = 8;               // Mislead or lie to achieve the goal
-    ACHIEVE_GOAL_STRATEGY_THREATEN = 9;              // Use intimidation or coercion
-    ACHIEVE_GOAL_STRATEGY_BRIBE = 10;                // Offer a reward for compliance
-    ACHIEVE_GOAL_STRATEGY_STEAL = 11;                // Take items or information without consent
-    ACHIEVE_GOAL_STRATEGY_INTERROGATE = 12;          // Use persistent questioning to extract information
-    ACHIEVE_GOAL_STRATEGY_TRICK = 13;                // Use cleverness or deception to achieve the goal
-
-    // Social and emotional strategies
-    ACHIEVE_GOAL_STRATEGY_INFLUENCE_EMOTION = 14;    // Appeal to emotions (e.g., empathy, guilt)
-    ACHIEVE_GOAL_STRATEGY_BUILD_TRUST = 15;          // Foster a relationship for cooperation
-    ACHIEVE_GOAL_STRATEGY_APPEAL_TO_LOGIC = 16;      // Make a reasoned argument
-    ACHIEVE_GOAL_STRATEGY_SHARE_INFORMATION = 17;    // Provide knowledge to gain cooperation
-    ACHIEVE_GOAL_STRATEGY_SOCIALIZE = 18;            // Engage in friendly conversation to build rapport
-
-    // Confrontational strategies
-    ACHIEVE_GOAL_STRATEGY_CONFRONT = 19;             // Address issues directly and assertively
-    ACHIEVE_GOAL_STRATEGY_START_CONFLICT = 20;       // Escalate to verbal or physical confrontation
-    ACHIEVE_GOAL_STRATEGY_END_CONFLICT = 21;         // Resolve or de-escalate a conflict
-    ACHIEVE_GOAL_STRATEGY_INTIMIDATE = 22;           // Instill fear or pressure
-
-    // Cooperative and collaborative strategies
-    ACHIEVE_GOAL_STRATEGY_FORM_ALLIANCE = 23;        // Propose cooperation for mutual benefit
-    ACHIEVE_GOAL_STRATEGY_SHARE_GOALS = 24;          // Align objectives with others
-    ACHIEVE_GOAL_STRATEGY_MAKE_PROMISE = 25;         // Commit to future action for immediate benefit
-
-    // Situational strategies
-    ACHIEVE_GOAL_STRATEGY_OBSERVE = 26;              // Gather information passively
-    ACHIEVE_GOAL_STRATEGY_DELAY = 27;                // Stall to buy time or gain advantage
-    ACHIEVE_GOAL_STRATEGY_PLAN_ACTION = 28;          // Strategically prepare to achieve the goal
-    ACHIEVE_GOAL_STRATEGY_USE_RESOURCES = 29;        // Leverage items or tools to succeed
-    ACHIEVE_GOAL_STRATEGY_ADAPT = 30;                // Change tactics based on the situation
-
-    // Quest-specific strategies
-    ACHIEVE_GOAL_STRATEGY_GIVE_QUEST = 31;           // Assign a quest to others
-    ACHIEVE_GOAL_STRATEGY_ACCEPT_QUEST = 32;         // Agree to take on a quest
-    ACHIEVE_GOAL_STRATEGY_REPORT_PROGRESS = 33;      // Update others on quest status
-    ACHIEVE_GOAL_STRATEGY_DISCUSS_STRATEGY = 34;     // Collaboratively plan the next steps
-
-    // Trade-related strategies
-    ACHIEVE_GOAL_STRATEGY_PROPOSE_TRADE = 35;        // Suggest a mutually beneficial exchange
-    ACHIEVE_GOAL_STRATEGY_REQUEST_TRADE = 36;        // Directly request a trade
-
-    // Miscellaneous strategies
-    ACHIEVE_GOAL_STRATEGY_USE_CHARM = 37;            // Employ charisma to sway others
-    ACHIEVE_GOAL_STRATEGY_RELY_ON_LUCK = 38;         // Take chances or gamble
-    ACHIEVE_GOAL_STRATEGY_INSPIRE = 39;              // Motivate others through encouragement
-}
-
-
-
-enum DialogueGoalEnumDTO {
-    // Meta goals
-    DIALOGUE_GOAL_NONE = 0;                            // No specific goal
-    
-    // Transactional goals
-    DIALOGUE_GOAL_OBTAIN_ITEM = 1;                     // Acquire an item
-    DIALOGUE_GOAL_TRADE_ITEM = 2;                      // Exchange items
-    DIALOGUE_GOAL_BORROW_ITEM = 3;                     // Temporarily acquire an item
-    DIALOGUE_GOAL_RETURN_ITEM = 4;                     // Return a borrowed item
-    DIALOGUE_GOAL_REQUEST_ITEM = 5;                    // Ask for an item
-    DIALOGUE_GOAL_THREATEN_FOR_ITEM = 6;               // Coerce for an item
-    DIALOGUE_GOAL_NEGOTIATE = 7;                       // Reach an agreement
-    DIALOGUE_GOAL_BARGAIN = 8;                         // Discuss better terms
-
-    // Quest-related goals
-    DIALOGUE_GOAL_COMPLETE_QUEST = 9;                  // Finish a quest
-    DIALOGUE_GOAL_GIVE_QUEST = 10;                     // Assign a quest
-    DIALOGUE_GOAL_ACCEPT_QUEST = 11;                   // Take on a quest
-    DIALOGUE_GOAL_REPORT_PROGRESS = 12;                // Provide an update on a quest
-    DIALOGUE_GOAL_DISCUSS_STRATEGY = 13;               // Plan the approach for a quest
-    DIALOGUE_GOAL_PLAN_ACTION = 14;                    // Strategize for a task
-
-    // Knowledge acquisition goals
-    DIALOGUE_GOAL_LEARN_INFORMATION = 15;             // General information gathering
-    DIALOGUE_GOAL_LEARN_LOCATION = 16;                // Discover a place
-    DIALOGUE_GOAL_GET_DIRECTIONS = 17;                // Obtain directions
-    DIALOGUE_GOAL_LEARN_ABOUT_FACTION = 18;           // Understand a group or faction
-    DIALOGUE_GOAL_LEARN_ABOUT_CHARACTER = 19;         // Gather knowledge about an individual
-    DIALOGUE_GOAL_LEARN_ABOUT_EVENT = 20;             // Inquire about a specific event
-    DIALOGUE_GOAL_FISH_FOR_INFORMATION = 21;          // Subtly extract information
-    DIALOGUE_GOAL_SEEK_ADVICE = 22;                   // Ask for guidance or suggestions
-
-    // Relationship and emotional goals
-    DIALOGUE_GOAL_SOCIALIZE = 23;                     // Build rapport
-    DIALOGUE_GOAL_FLATTER = 24;                       // Compliment to gain favor
-    DIALOGUE_GOAL_APOLOGIZE = 25;                     // Express regret
-    DIALOGUE_GOAL_EXPRESS_GRATITUDE = 26;             // Show appreciation
-    DIALOGUE_GOAL_BUILD_TRUST = 27;                   // Foster a positive relationship
-    DIALOGUE_GOAL_RESOLVE_CONFLICT = 28;              // Address and resolve disputes
-    DIALOGUE_GOAL_REMINISCE = 29;                     // Recall shared experiences
-    DIALOGUE_GOAL_SHARE_STORY = 30;                   // Tell a story
-    DIALOGUE_GOAL_SHARE_INFORMATION = 31;             // Provide useful knowledge
-    DIALOGUE_GOAL_OFFER_HELP = 32;                    // Volunteer assistance
-    DIALOGUE_GOAL_REQUEST_HELP = 33;                  // Ask for aid
-    DIALOGUE_GOAL_INFLUENCE_CHARACTER = 34;           // Change someone's perspective or decision
-
-    // Inquiry and feedback goals
-    DIALOGUE_GOAL_ASK_OPINION = 35;                   // Seek someone's perspective
-    DIALOGUE_GOAL_GIVE_FEEDBACK = 36;                 // Provide constructive input
-    DIALOGUE_GOAL_RECEIVE_FEEDBACK = 37;              // Hear evaluations or suggestions
-
-    // Casual and filler goals
-    DIALOGUE_GOAL_DISCUSS_TOPIC = 38;                 // Talk about a specific subject
-    DIALOGUE_GOAL_DISCUSS_WEATHER = 39;               // Engage in a casual topic
-    DIALOGUE_GOAL_SMALL_TALK = 40;                    // General light conversation
-
-    // Specialized or situational goals
-    DIALOGUE_GOAL_UPDATE_STATUS = 41;                 // Provide or receive a status update
-    DIALOGUE_GOAL_DISCUSS_ALLIANCE = 42;              // Explore forming a partnership
-    DIALOGUE_GOAL_WARN = 43;                          // Alert someone to danger
-    DIALOGUE_GOAL_INTIMIDATE = 44;                    // Use fear as a tool in dialogue
-    DIALOGUE_GOAL_PERSUADE = 45;                      // Convince someone to act a certain way
-    DIALOGUE_GOAL_DECEIVE = 46;                       // Provide false information for gain
-    DIALOGUE_GOAL_ASK_PERMISSION = 47;                // Request approval for an action
-}
+// ============================================================================

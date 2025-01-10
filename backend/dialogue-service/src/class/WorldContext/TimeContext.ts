@@ -1,9 +1,22 @@
+import { Serializable } from "../../common/decorator/serializable.decorator";
+
 export class TimeContext {
+    @Serializable()
     timeOfDay!: string;
+
+    @Serializable()
     day!: number;
+
+    @Serializable()
     month!: string;
+
+    @Serializable()
     year!: number;
+
+    @Serializable()
     season!: string;
+
+    @Serializable()
     clazz = 'TimeContext';
 
     static validate(data: any) {

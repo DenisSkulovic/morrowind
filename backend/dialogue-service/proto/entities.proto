@@ -7,7 +7,6 @@ package entities;
 // Major: Breaking changes
 // Minor: Backwards-compatible new features
 // Patch: Backwards-compatible bug fixes
-option (proto_version) = "1.0.0";
 
 // Last updated: 2025-01-04
 // Change history:
@@ -62,25 +61,6 @@ message Metadata {
 }
 // #######################################################################################
 
-
-// #######################################################################################
-message LocationDTO {
-    string id = 1;
-    string name = 2;
-    string description = 3;
-    string user = 4;
-    string campaign = 5;
-    string world = 6;
-    int32 createdAt = 7;
-}
-message LocationsDTO {
-    repeated LocationDTO arr = 1;
-}
-// #######################################################################################
-
-
-
-// #######################################################################################
 
 
 // #######################################################################################

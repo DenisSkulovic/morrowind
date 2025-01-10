@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   #============================================================
-  # Backend AI Services
+  # BACKEND - AI Services
   #============================================================
   ai-service-server:
     build:
@@ -41,7 +41,7 @@ services:
       - fullstack
 
   #============================================================
-  # Backend Dialogue Service
+  # BACKEND - Dialogue Service
   #============================================================
   dialogue-service:
     build:
@@ -67,7 +67,7 @@ services:
       - fullstack
 
   #============================================================
-  # Backend Content Services
+  # BACKEND - Content Services
   #============================================================
   content-service-proto-generator:
     image: node:18
@@ -110,7 +110,7 @@ services:
       - backend
 
   #============================================================
-  # gRPC Proxy
+  # BACKEND - gRPC Proxy (for Frontend mainly)
   #============================================================
   envoy:
     image: envoyproxy/envoy:v1.22.0
@@ -138,7 +138,7 @@ services:
       - fullstack
 
   #============================================================
-  # Databases
+  # DATABASES
   #============================================================
   world-db:
     image: postgres:14
@@ -171,7 +171,7 @@ services:
       - backend
 
   #============================================================
-  # Frontend Services
+  # FRONTEND - World Building
   #============================================================
   world-building-ui-proto-generator:
     image: node:18
@@ -208,7 +208,7 @@ services:
       - fullstack
 
 #============================================================
-# Persistent Storage
+# VOLUMES
 #============================================================
 volumes:
   world_db_data:

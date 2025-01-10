@@ -1,12 +1,23 @@
+import { Serializable } from "../../../common/decorator/serializable.decorator";
+import { SerializeStrategyEnum } from "../../../common/serializer/serializer";
 import { AiCharacterStep } from "./AiCharacterStep";
 import { PlayerCharacterStep } from "./PlayerCharacterStep";
 import { StepOutcome } from "./StepOutcome";
 
 export class DialogueStep {
+    @Serializable({ strategy: SerializeStrategyEnum.FULL })
     playerStep!: PlayerCharacterStep;
+
+    @Serializable({ strategy: SerializeStrategyEnum.FULL })
     aiStep!: AiCharacterStep;
+
+    @Serializable()
     narration!: string;
+
+    @Serializable({ strategy: SerializeStrategyEnum.FULL })
     outcome!: StepOutcome;
+
+    @Serializable()
     clazz = 'DialogueStep';
 
     static validate(body: Partial<DialogueStep>): void {

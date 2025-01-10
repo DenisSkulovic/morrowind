@@ -1,7 +1,12 @@
+import { Serializable } from "../../common/decorator/serializable.decorator";
+import { SerializeStrategyEnum } from "../../common/serializer/serializer";
 import { DialogueHistoryTopic } from "./DialogueHistoryTopic";
 
 export class DialogueHistory {
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true, internalClass: DialogueHistoryTopic })
     topicsNewestToOldest: DialogueHistoryTopic[] = [];
+
+    @Serializable()
     clazz = 'DialogueHistory';
 
     static validate(data: any) {

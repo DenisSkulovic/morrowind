@@ -1,62 +1,66 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import { ContentService } from '../content/content.service';
-import { AiProviderImplementationEnum, AiService } from '../ai/ai.service';
-import { PromptService } from '../prompt/prompt.service';
+import { v4 as uuidv4 } from 'uuid';
+// services
+import { ContentService } from './content/content.service';
+import { AiService } from './ai/ai.service';
+import { PromptService } from './prompt/prompt.service';
+// data classes
+import { Context } from './content/class/Context';
 import { DialogueState } from '../../class/DialogueState';
-import { CacheKeyEnum, DialogueStateService } from '../dialogueState/dialogueState.service';
+import { CacheKeyEnum, DialogueStateService } from './dialogueState/dialogueState.service';
 import { KnowledgeBase } from '../../class/KnowledgeBase';
 import { WorldContext } from '../../class/WorldContext';
 import { CharacterProfile } from '../../class/CharacterProfile';
-import { v4 as uuidv4 } from 'uuid';
-import { rollDice } from '../../dnd/rollDice';
-import { DiceRollResult } from '../../dnd/class/DiceRollResult';
 import { DialogueHistoryTopic } from '../../class/DialogueHistory/DialogueHistoryTopic';
 import { DialogueHistory } from '../../class/DialogueHistory';
-import { DialogueDirectionEnum } from '../../enum/DialogueDirectionEnum';
 import { aiConfig, AiUseCaseConfig } from '../../config/aiConfig';
-import { DialogueStepOutcomeEnum } from '../../enum/DialogueStepOutcomeEnum';
 import { StepOutcome } from '../../class/DialogueHistory/DialogueStep/StepOutcome';
 import { DialogueOption } from '../../class/DialogueOption';
-import { D20_SCALE_CONFIG } from '../../dnd/scales/D20_SCALE_CONFIG';
-import { DiceScaleConfig } from '../../dnd/types';
 import { DialogueStep } from '../../class/DialogueHistory/DialogueStep';
 import { PlayerCharacterStep } from '../../class/DialogueHistory/DialogueStep/PlayerCharacterStep';
 import { AiCharacterStep } from '../../class/DialogueHistory/DialogueStep/AiCharacterStep';
 import { ChanceDialogueOption } from '../../class/DialogueOption/ChanceDialogueOption';
+// enums
+import { DialogueDirectionEnum } from '../../enum/DialogueDirectionEnum';
+import { DialogueStepOutcomeEnum } from '../../enum/DialogueStepOutcomeEnum';
+// DND
+import { rollDice } from '../../dnd/rollDice';
+import { DiceRollResult } from '../../dnd/class/DiceRollResult';
+import { DiceScaleConfig } from '../../dnd/types';
+import { SCALE_CONFIGS, ScaleTypeEnum } from '../../dnd/scales';
+import { AiServiceEnum } from '../../enum/AiServiceEnum';
 
 
-const consideredAiCharacterOptionsQuantity = 10;
-const offeredPlayerDirectionsQuantity = 10;
-const offeredPlayerOptionsQuantity = 5;
+const defaultConsideredAiCharacterOptionsQuantity = 10; // this is the number of options that the AI will consider when generating dialogue options
+const defaultOfferedPlayerDirectionsQuantity = 5; // this is the number of directions that the player will be offered when generating dialogue options
+const defaultOfferedPlayerOptionsVariations = 3; // this is the number of variations that the player will be offered for each direction
+
 
 export interface IDialogueService {
-    startDialogue(
+    initializeDialogue(
         initiatingParticipantId: string,
         playerCharacterId: string,
-        aiProvider: AiProviderImplementationEnum,
+        aiProvider: AiServiceEnum,
         dialogueParticipants: CharacterProfile[],
         worldContext: WorldContext,
         dialogueHistory: DialogueHistory,
         knowledgeBase: KnowledgeBase,
+        context: Context,
     ): Promise<{ dialogueId: string }>;
     progressDialogue(
         dialogueId: string,
         selectedPlayerDialogueOption: DialogueOption,
         onChunkReceived: (chunk: any) => void,
-        diceScale?: DiceScaleConfig,
+        scaleType: ScaleTypeEnum,
     ): Promise<{ requestId: string, dialogueStep: DialogueStep }>;
-    generatePlayerDialogueDirections(
-        dialogueId: string,
-        quantity: number,
-    ): Promise<DialogueDirectionEnum[]>;
     generatePlayerDialogueOptions(
         dialogueId: string,
-        dialogueDirection: DialogueDirectionEnum,
-        quantity: number,
-        scaleConfig?: DiceScaleConfig,
+        directionsQuantity: number,
+        variations: number,
+        scaleType?: ScaleTypeEnum,
     ): Promise<DialogueOption[]>;
-    interrupt(requestId: string, provider: AiProviderImplementationEnum): Promise<void>;
-    finalizeDialogue(dialogueId: string): Promise<void>;
+    interrupt(requestId: string, provider: AiServiceEnum): Promise<void>;
+    finalizeDialogue(dialogueId: string): Promise<{ summary: string, dialogueParticipants: CharacterProfile[], worldContext: WorldContext, dialogueHistory: DialogueHistory }>;
 }
 
 
@@ -94,7 +98,7 @@ export class DialogueService implements IDialogueService {
                     fullResponse += chunk.output;
                     onChunkReceived(chunk);
                 },
-                error: (err) => {
+                error: (err: any) => {
                     console.error('Error from AI service:', err);
                     reject(err);
                 },
@@ -113,17 +117,30 @@ export class DialogueService implements IDialogueService {
         return dialogueState;
     }
 
+    private getPlayerAndAiCharacters(
+        playerCharacterId: string,
+        dialogueParticipants: CharacterProfile[],
+    ): { playerCharacter: CharacterProfile, aiCharacters: CharacterProfile[] } {
+        const playerCharacter: CharacterProfile | undefined = dialogueParticipants.find((participant) => participant.id === playerCharacterId);
+        if (!playerCharacter) throw new Error(`Player character not found for id ${playerCharacterId}`);
+        const aiCharacters: CharacterProfile[] = dialogueParticipants.filter((participant) => participant.id !== playerCharacterId);
+        if (aiCharacters.length === 0) throw new Error('No AI characters found');
+        if (aiCharacters.length > 1) throw new Error('More than one AI character found, and it is not supported yet. Sorry.');
+        return { playerCharacter, aiCharacters };
+    }
 
 
 
-    public async startDialogue(
+
+    public async initializeDialogue(
         initiatingParticipantId: string,
         playerCharacterId: string,
-        aiProvider: AiProviderImplementationEnum,
+        aiProvider: AiServiceEnum,
         dialogueParticipants: CharacterProfile[],
         worldContext: WorldContext,
         dialogueHistory: DialogueHistory,
         knowledgeBase: KnowledgeBase,
+        context?: Context,
     ): Promise<{ dialogueId: string }> {
         this.logger.debug(`Starting dialogue with arguments:`, { aiProvider, dialogueParticipants, worldContext, dialogueHistory, knowledgeBase });
 
@@ -137,7 +154,8 @@ export class DialogueService implements IDialogueService {
             dialogueParticipants,
             worldContext,
             dialogueHistory,
-            knowledgeBase
+            knowledgeBase,
+            context
         })
         await this.dialogueStateService.cacheState(dialogueId, CacheKeyEnum.DIALOGUE_STATE, dialogueState);
 
@@ -147,73 +165,32 @@ export class DialogueService implements IDialogueService {
 
 
 
-    public async generatePlayerDialogueDirections(
-        dialogueId: string,
-        quantity = offeredPlayerDirectionsQuantity,
-    ): Promise<DialogueDirectionEnum[]> {
-        // extract data from dialogue state
-        const dialogueState: DialogueState = await this.getDialogueState(dialogueId);
-        const playerCharacterId: string = dialogueState.playerCharacterId;
-        const dialogueParticipants: CharacterProfile[] = dialogueState.dialogueParticipants;
-        const dialogueHistory: DialogueHistory = dialogueState.dialogueHistory;
-        const knowledgeBase: KnowledgeBase = dialogueState.knowledgeBase;
-        const worldContext: WorldContext = dialogueState.worldContext;
-
-        // extract player character and ai characters
-        const playerCharacter: CharacterProfile | undefined = dialogueParticipants.find((participant) => participant.id === playerCharacterId);
-        if (!playerCharacter) throw new Error(`Player character not found for id ${playerCharacterId}`);
-        const aiCharacters: CharacterProfile[] = dialogueParticipants.filter((participant) => participant.id !== playerCharacterId);
-        if (aiCharacters.length === 0) throw new Error('No AI characters found');
-
-        // generate player dialogue directions
-        const prompt = this.promptService.assembleGeneratePlayerDialogueDirectionsPrompt(
-            playerCharacter,
-            aiCharacters,
-            dialogueHistory,
-            knowledgeBase,
-            worldContext,
-            quantity,
-        );
-        const playerDialogueDirectionsString: string = await this.aiService.processPrompt(
-            prompt,
-            aiConfig.useCases.generatePlayerDialogueDirections,
-        );
-        try {
-            const playerDialogueDirections: DialogueDirectionEnum[] = JSON.parse(playerDialogueDirectionsString) as DialogueDirectionEnum[];
-            return playerDialogueDirections;
-        } catch (error) {
-            throw new Error(`[DialogueService - generatePlayerDialogueDirections] Failed to parse ai generated outcome: ${error}; outcomeString: ${playerDialogueDirectionsString}`);
-        }
-    }
-
-
-
-
     public async generatePlayerDialogueOptions(
         dialogueId: string,
-        dialogueDirection: DialogueDirectionEnum,
-        quantity = offeredPlayerOptionsQuantity,
-        scaleConfig: DiceScaleConfig = D20_SCALE_CONFIG,
+        directionsQuantity = defaultOfferedPlayerDirectionsQuantity,
+        variations = defaultOfferedPlayerOptionsVariations,
+        scaleType: ScaleTypeEnum,
     ): Promise<DialogueOption[]> {
         // extract data from dialogue state
         const dialogueState: DialogueState = await this.getDialogueState(dialogueId);
-        const playerCharacter: CharacterProfile | undefined = dialogueState.dialogueParticipants.find((participant) => participant.id === dialogueState.playerCharacterId);
-        if (!playerCharacter) throw new Error(`Player character not found for id ${dialogueState.playerCharacterId}`);
-        const aiCharacters: CharacterProfile[] = dialogueState.dialogueParticipants.filter((participant) => participant.id !== dialogueState.playerCharacterId);
-        if (aiCharacters.length === 0) throw new Error('No AI characters found');
-        const dialogueHistory: DialogueHistory = dialogueState.dialogueHistory;
-        const knowledgeBase: KnowledgeBase = dialogueState.knowledgeBase;
-        const worldContext: WorldContext = dialogueState.worldContext;
+        const { playerCharacter, aiCharacters } = this.getPlayerAndAiCharacters(dialogueState.playerCharacterId, dialogueState.dialogueParticipants);
+
+        const mandatoryDirections: DialogueDirectionEnum[] | null = null;
+        const allowedDirections: DialogueDirectionEnum[] | null = null;
+
+        const scaleConfig: DiceScaleConfig = SCALE_CONFIGS[scaleType];
 
         const prompt: string = this.promptService.assembleGeneratePlayerDialogueOptionsPrompt(
-            dialogueDirection,
+            scaleConfig,
             playerCharacter,
             aiCharacters,
-            dialogueHistory,
-            knowledgeBase,
-            worldContext,
-            scaleConfig,
-            quantity,
+            dialogueState.dialogueHistory,
+            dialogueState.knowledgeBase,
+            dialogueState.worldContext,
+            directionsQuantity,
+            variations,
+            mandatoryDirections,
+            allowedDirections,
         );
         const aiDialogueOptionsString: string = await this.aiService.processPrompt(
             prompt,
@@ -235,22 +212,19 @@ export class DialogueService implements IDialogueService {
         dialogueId: string,
         selectedPlayerDialogueOption: DialogueOption,
         onChunkReceived: (chunk: any) => void,
-        diceScale: DiceScaleConfig = D20_SCALE_CONFIG,
+        scaleType: ScaleTypeEnum,
     ): Promise<{ requestId: string, dialogueStep: DialogueStep }> {
         this.logger.debug(`Processing message for dialogue id: ${dialogueId}`);
 
         const dialogueState: DialogueState = await this.getDialogueState(dialogueId);
-        const playerCharacter: CharacterProfile | undefined = dialogueState.dialogueParticipants.find((participant) => participant.id === dialogueState.playerCharacterId);
-        if (!playerCharacter) throw new Error(`Player character not found for id ${dialogueState.playerCharacterId}`);
-
-        const aiCharacters: CharacterProfile[] = dialogueState.dialogueParticipants.filter((participant) => participant.id !== dialogueState.playerCharacterId);
-        if (aiCharacters.length === 0) throw new Error('No AI characters found');
-        if (aiCharacters.length > 1) throw new Error('More than one AI character found, and it is not supported yet. Sorry.');
+        const { playerCharacter, aiCharacters } = this.getPlayerAndAiCharacters(dialogueState.playerCharacterId, dialogueState.dialogueParticipants);
         const aiCharacter: CharacterProfile = aiCharacters[0];
+
+        const scaleConfig: DiceScaleConfig = SCALE_CONFIGS[scaleType];
 
         //  PLAYER STEP
         // roll dice for player step
-        const playerResponseDiceResult: DiceRollResult = rollDice(diceScale, selectedPlayerDialogueOption.riskImpact);
+        const playerResponseDiceResult: DiceRollResult = rollDice(scaleConfig, selectedPlayerDialogueOption.riskImpact);
         // build player step
         const playerStep: PlayerCharacterStep = PlayerCharacterStep.build({
             characterId: playerCharacter.id,
@@ -266,7 +240,7 @@ export class DialogueService implements IDialogueService {
             dialogueState,
         );
         // roll dice for ai step
-        const aiResponseDiceResult: DiceRollResult = rollDice(diceScale, selectedAiDialogueOption.option.riskImpact);
+        const aiResponseDiceResult: DiceRollResult = rollDice(scaleConfig, selectedAiDialogueOption.option.riskImpact);
         // build ai step
         const aiStep: AiCharacterStep = AiCharacterStep.build({
             characterId: aiCharacter.id,
@@ -341,12 +315,9 @@ export class DialogueService implements IDialogueService {
     async getAiDialogueOptionDecision(
         playerStep: PlayerCharacterStep,
         dialogueState: DialogueState,
-        quantity = consideredAiCharacterOptionsQuantity,
+        quantity = defaultConsideredAiCharacterOptionsQuantity,
     ): Promise<{ selectedAiDialogueOption: ChanceDialogueOption, allAiDialogueOptions: ChanceDialogueOption[] }> {
-        const playerCharacter: CharacterProfile | undefined = dialogueState.dialogueParticipants.find((participant) => participant.id === dialogueState.playerCharacterId);
-        if (!playerCharacter) throw new Error(`Player character not found for id ${dialogueState.playerCharacterId}`);
-        const aiCharacters: CharacterProfile[] = dialogueState.dialogueParticipants.filter((participant) => participant.id !== dialogueState.playerCharacterId);
-        if (aiCharacters.length === 0) throw new Error('No AI characters found');
+        const { playerCharacter, aiCharacters } = this.getPlayerAndAiCharacters(dialogueState.playerCharacterId, dialogueState.dialogueParticipants);
 
         const prompt: string = this.promptService.assembleGetAiDialogueOptionsPrompt(
             playerCharacter,
@@ -385,7 +356,6 @@ export class DialogueService implements IDialogueService {
         aiStep: AiCharacterStep,
         dialogueState: DialogueState,
     ): Promise<StepOutcome> {
-
         const prompt = this.promptService.assembleAnalyzeDialogueStepForOutcomePrompt(
             playerStep,
             aiStep,
@@ -422,7 +392,7 @@ export class DialogueService implements IDialogueService {
 
 
 
-    public async interrupt(requestId: string, provider: AiProviderImplementationEnum): Promise<void> {
+    public async interrupt(requestId: string, provider: AiServiceEnum): Promise<void> {
         this.logger.debug(`Interrupting dialogue id: ${requestId}`);
         await this.aiService.interrupt(requestId, provider);
         // TODO: decide what to do with an interrupted response - I don't store chunks on the state, so I would simply treat this as if nothing even happened and reset to the situation prior to launching the stream?
@@ -433,7 +403,7 @@ export class DialogueService implements IDialogueService {
 
     public async finalizeDialogue(
         dialogueId: string,
-    ): Promise<void> {
+    ): Promise<{ summary: string, dialogueParticipants: CharacterProfile[], worldContext: WorldContext, dialogueHistory: DialogueHistory }> {
         this.logger.debug(`Ending dialogue id: ${dialogueId}`);
 
         const dialogueState: DialogueState = await this.getDialogueState(dialogueId);
@@ -444,5 +414,13 @@ export class DialogueService implements IDialogueService {
         await this.dialogueStateService.removeState(dialogueId);
 
         // TODO Get all dialogue data as of the end of the dialogue, and emit an event into a queue so that a worker could process it and store the outcomes in the content database
+
+        // return modified data to the client
+        return {
+            summary,
+            dialogueParticipants: dialogueState.dialogueParticipants,
+            worldContext: dialogueState.worldContext,
+            dialogueHistory: dialogueState.dialogueHistory,
+        }
     }
 }

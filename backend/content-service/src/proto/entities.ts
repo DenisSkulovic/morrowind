@@ -993,6 +993,7 @@ export function itemRequirementTypeEnumDTOToJSON(object: ItemRequirementTypeEnum
   }
 }
 
+/** ####################################################################################### */
 export interface ContextDTO {
   user: string;
   world: string;

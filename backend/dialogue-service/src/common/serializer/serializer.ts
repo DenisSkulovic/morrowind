@@ -1,5 +1,5 @@
-import { getSerializableFields } from '../../../../common/decorator/serializable.decorator';
-import { serializeEnum, deserializeEnum } from '../../../../common/enum/util';
+import { getSerializableFields } from '../../common/decorator/serializable.decorator';
+import { serializeEnum, deserializeEnum } from '../../common/enum/util';
 
 export enum SerializeStrategyEnum {
     ID = 'id',

@@ -1,10 +1,19 @@
+import { Serializable } from "../../../common/decorator/serializable.decorator";
+import { SerializeStrategyEnum } from "../../../common/serializer/serializer";
 import { DiceRollResult } from "../../../dnd/class/DiceRollResult";
 import { DialogueOption } from "../../DialogueOption";
 
 export class AiCharacterStep {
+    @Serializable()
     characterId!: string;
+
+    @Serializable({ strategy: SerializeStrategyEnum.FULL })
     selectedDialogueOption!: DialogueOption;
+
+    @Serializable({ strategy: SerializeStrategyEnum.FULL })
     diceRollResult!: DiceRollResult;
+
+    @Serializable()
     clazz = 'AiCharacterStep';
 
     static validate(body: Partial<AiCharacterStep>): void {

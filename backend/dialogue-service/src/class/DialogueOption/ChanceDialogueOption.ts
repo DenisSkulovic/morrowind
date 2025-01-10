@@ -1,8 +1,15 @@
 import { DialogueOption } from ".";
+import { Serializable } from "../../common/decorator/serializable.decorator";
+import { SerializeStrategyEnum } from "../../common/serializer/serializer";
 
 export class ChanceDialogueOption {
+    @Serializable()
     chance!: number;
+
+    @Serializable({ strategy: SerializeStrategyEnum.FULL })
     option!: DialogueOption;
+
+    @Serializable()
     clazz = "ChanceDialogueOption";
 
     static validate(data: any) {

@@ -1,0 +1,4 @@
+I am conceptualizing the dialogue functionality at the moment, so I have a few first ideas on what I would need here.
+
+1) I need a **RabbitMQ**, because any campaign WRITE operations (i.e. world state changes) must be handled as part of an **event architecture**.
+In my specific dialogue case, at the end of the dialogue, it spits out any changes that happened to the characters (items exchanged, information learned, goals achieved, opinions changed, etc.), and this world state change must be reflected in the campaign. So I will emit a corresponding event, and a worker would consume it and perform operations on the content-service microservice. I guess then the campaign frontend will be notified of state changes via an open websocket connection.

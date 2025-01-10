@@ -15,6 +15,7 @@ static_resources:
                 route_config:
                   name: local_route
                   virtual_hosts:
+                    # only exposing services that are accessible to the frontend
                     - name: content_service
                       domains:
                         - "content-service.local" # Domain for content service

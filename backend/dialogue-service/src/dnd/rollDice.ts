@@ -1,6 +1,6 @@
 import { DiceRollResult } from "./class/DiceRollResult";
 import { DICE_OUTCOME_ENUM } from "./enum/DICE_OUTCOME_ENUM";
-import { SCALE_TYPE_ENUM } from "./enum/SCALE_TYPE_ENUM";
+import { SCALE_RISK_IMPACT_ENUM } from "./enum/SCALE_RISK_IMPACT_ENUM";
 import { DiceScaleConfig } from "./types";
 
 /**
@@ -11,7 +11,7 @@ import { DiceScaleConfig } from "./types";
  */
 export function rollDice(
     scale: DiceScaleConfig,
-    scaleType?: SCALE_TYPE_ENUM,
+    scaleType?: SCALE_RISK_IMPACT_ENUM,
 ): DiceRollResult {
     const sides = scale.sides
 

@@ -1,9 +1,22 @@
+import { Serializable } from "../../common/decorator/serializable.decorator";
+
 export class CharacterKnowledgeBase {
+    @Serializable()
     id!: string;
+
+    @Serializable()
     name!: string;
+
+    @Serializable()
     description!: string;
+
+    @Serializable()
     locationId?: string;
+
+    @Serializable()
     factionId?: string;
+
+    @Serializable()
     clazz = 'CharacterKnowledgeBase';
 
     static validate(data: any) {

@@ -1,8 +1,19 @@
+import { Serializable } from "../../common/decorator/serializable.decorator";
+
 export class LocationContext {
+    @Serializable()
     locationId!: string;
+
+    @Serializable()
     name!: string;
+
+    @Serializable()
     description!: string;
+
+    @Serializable()
     biome!: string;
+
+    @Serializable()
     clazz = 'LocationContext';
 
     static validate(data: any) {

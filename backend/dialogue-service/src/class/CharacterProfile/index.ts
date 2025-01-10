@@ -1,26 +1,52 @@
+import { Serializable } from "../../common/decorator/serializable.decorator";
+import { SerializeStrategyEnum } from "../../common/serializer/serializer";
 import { DialogueAttitudeEnum } from "../../enum/DialogueAttitudeEnum";
+import { CharacterGoals } from "./CharacterGoals";
+import { CharacterInventory } from "./CharacterInventory";
+import { CharacterKnowledge } from "./CharacterKnowledge";
+
 
 export class CharacterProfile {
+    @Serializable()
     id!: string;
+
+    @Serializable()
     name!: string;
+
+    @Serializable()
     race!: string;
+
+    @Serializable()
     class!: string;
+
+    @Serializable()
     traits?: string[];
+
+    @Serializable()
     enneagram?: string;
+
+    @Serializable()
     mood?: string;
+
+    @Serializable()
     needs?: string[];
-    goals?: {
-        satisfied: string[];
-        unsatisfied: string[];
-    }
+
+    @Serializable({ strategy: SerializeStrategyEnum.FULL })
+    goals?: CharacterGoals;
+
+    @Serializable()
     skills!: Record<string, number>;
+
+    @Serializable()
     stats!: Record<string, string>;
-    inventory!: string[];
-    knowledge!: {
-        locations: string[];
-        factions: string[];
-        familiar_characters: string[];
-    };
+
+    @Serializable({ strategy: SerializeStrategyEnum.FULL })
+    inventory!: CharacterInventory;
+
+    @Serializable({ strategy: SerializeStrategyEnum.FULL })
+    knowledge!: CharacterKnowledge;
+
+    @Serializable() // no need for serializeEnum, in proto it's just a string (for simplicity)
     dialogueAttitude?: DialogueAttitudeEnum;
 
     static validate(data: any) {
@@ -40,8 +66,21 @@ export class CharacterProfile {
 
     static build(data: any) {
         CharacterProfile.validate(data);
-        const state = new CharacterProfile();
-        Object.assign(state, data);
-        return state;
+        const profile = new CharacterProfile();
+        profile.id = data.id;
+        profile.name = data.name;
+        profile.race = data.race;
+        profile.class = data.class;
+        profile.dialogueAttitude = data.dialogueAttitude;
+        profile.goals = CharacterGoals.build(data.goals);
+        profile.inventory = CharacterInventory.build(data.inventory);
+        profile.knowledge = CharacterKnowledge.build(data.knowledge);
+        profile.skills = data.skills;
+        profile.stats = data.stats;
+        profile.traits = data.traits;
+        profile.enneagram = data.enneagram;
+        profile.mood = data.mood;
+        profile.needs = data.needs;
+        return profile;
     }
 }

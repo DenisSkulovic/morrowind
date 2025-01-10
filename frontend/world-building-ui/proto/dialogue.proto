@@ -1,0 +1,324 @@
+syntax = "proto3";
+
+package dialogue;
+
+import "entities.proto";
+
+service DialogueService {
+    rpc InitializeDialogue(InitializeDialogueRequest) returns (InitializeDialogueResponse);
+    rpc FinalizeDialogue(FinalizeDialogueRequest) returns (FinalizeDialogueResponse);
+    rpc GeneratePlayerDialogueOptions(GeneratePlayerDialogueOptionsRequest) returns (GeneratePlayerDialogueOptionsResponse);
+    rpc InterruptDialogue(InterruptDialogueRequest) returns (InterruptDialogueResponse);
+}
+
+
+
+
+
+// ============================================================================
+// Initialize Dialogue
+// ============================================================================
+message InitializeDialogueRequest {
+    string initiatingParticipantId = 1;
+    string playerCharacterId = 2;
+    string aiProvider = 3; // e.g. OPENAI_V1
+    CharacterProfilesDTO dialogueParticipants = 4;
+    WorldContextDTO worldContext = 5;
+    DialogueHistoryDTO dialogueHistory = 6;
+    KnowledgeBaseDTO knowledgeBase = 7;
+    entities.ContextDTO context = 8; // User, World, Campaign
+}
+message InitializeDialogueResponse {
+    string dialogueId = 1;
+}
+// ============================================================================
+
+
+
+
+// ============================================================================
+// Character Profile
+// ============================================================================
+message CharacterProfileDTO {
+    string id = 1;
+    string name = 2;
+    string race = 3;
+    string class = 4;
+    string traits = 5;
+    string enneagram = 6;
+    string mood = 7;
+    string needs = 8;
+    CharacterGoalsDTO goals = 9;
+    map<string, int32> skills = 10;
+    map<string, string> stats = 11;
+    CharacterInventoryDTO inventory = 12;
+    CharacterKnowledgeDTO knowledge = 13;
+    string dialogueAttitude = 14;
+}
+message CharacterGoalsDTO {
+    repeated string satisfied = 1;
+    repeated string unsatisfied = 2;
+}
+message CharacterInventoryDTO {
+    repeated string equipped = 1;
+    repeated string stored = 2;
+}
+message CharacterKnowledgeDTO {
+    repeated string locations = 1;
+    repeated string factions = 2;
+    repeated string familiar_characters = 3;
+}
+message CharacterProfilesDTO {
+    repeated CharacterProfileDTO arr = 1;
+}
+// ============================================================================
+
+
+
+
+// ============================================================================
+// World Context
+// ============================================================================
+message WorldContextDTO {
+    LocationContextDTO location = 1;
+    TimeContextDTO time = 2;
+    WeatherContextDTO weather = 3;
+    SceneContextDTO scene = 4;
+    string clazz = 5;
+}
+message LocationContextDTO {
+    string id = 1;
+    string name = 2;
+    string description = 3;
+    string biome = 4;
+    string clazz = 5;
+}
+message TimeContextDTO {
+    string timeOfDay = 1;
+    int32 day = 2;
+    string month = 3;
+    int32 year = 4;
+    string season = 5;
+    string clazz = 6;
+}
+message WeatherContextDTO {
+    string weather = 1;
+    string temperature = 2;
+    string wind = 3;
+    string precipitation = 4;
+    string visibility = 5;
+    string clazz = 6;
+}
+message SceneContextDTO {
+    DirectionSceneEntryDTO north = 1;
+    DirectionSceneEntryDTO northEast = 2;
+    DirectionSceneEntryDTO east = 3;
+    DirectionSceneEntryDTO southEast = 4;
+    DirectionSceneEntryDTO south = 5;
+    string clazz = 6;
+}
+message DirectionSceneEntryDTO {
+    SceneEntryDTO near = 1;
+    SceneEntryDTO mid = 2;
+    SceneEntryDTO far = 3;
+    string clazz = 4;
+}
+message SceneEntryDTO {
+    string biome = 1;
+    SceneNPCsDTO NPCs = 2;
+    SceneItemsDTO items = 3;
+    string clazz = 4;
+}
+message SceneNPCDTO {
+    string id = 1;
+    string activity = 2;
+    string clazz = 3;
+}
+message SceneNPCsDTO {
+    repeated SceneNPCDTO arr = 1;
+}
+message SceneItemDTO {
+    string id = 1;
+    string clazz = 2;
+}
+message SceneItemsDTO {
+    repeated SceneItemDTO arr = 1;
+}
+// ============================================================================
+
+
+
+
+// ============================================================================
+// Dialogue History
+// ============================================================================
+message DialogueHistoryDTO {
+    DialogueHistoryTopicsDTO topicsNewestToOldest = 1;
+    string clazz = 2;
+}
+message DialogueHistoryTopicDTO {
+    string topicName = 1;
+    DialogueStepsDTO stepsNewestToOldest = 2;
+    string clazz = 3;
+}
+message DialogueHistoryTopicsDTO {
+    repeated DialogueHistoryTopicDTO arr = 1;
+}
+message DialogueStepDTO {
+    PlayerCharacterStepDTO playerStep = 1;
+    AiCharacterStepDTO aiStep = 2;
+    string narration = 3;
+    StepOutcomeDTO outcome = 4;
+    string clazz = 5;
+}
+message DialogueStepsDTO {
+    repeated DialogueStepDTO arr = 1;
+}
+message DiceRollResultDTO {
+    int32 roll = 1;
+    string outcome = 2;
+    string scaleType = 3;
+    string usedScaleConfig = 4;
+    string clazz = 5;
+}
+message PlayerCharacterStepDTO {
+    string characterId = 1;
+    string selectedDialogueOption = 2;
+    DiceRollResultDTO diceRollResult = 3;
+    string clazz = 4;
+}
+message AiCharacterStepDTO {
+    string characterId = 1;
+    string selectedDialogueOption = 2;
+    DiceRollResultDTO diceRollResult = 3;
+    string clazz = 4;
+}
+message StepOutcomeDTO {
+    map<string, CharacterChangesDTO> characterChanges = 1;
+    string newTopicName = 2;
+    string stepOutcome = 3;
+    string clazz = 4;
+}
+message CharacterChangeDTO {
+    repeated string markUnfulfilledGoalsAsFulfilled = 1;
+    repeated string addUnfulfilledGoals = 2;
+    repeated string removeUnfulfilledGoals = 3;
+    string changeDialogueAttitudeTo = 4;
+    InventoryChangesDTO addOrRemoveOrModifyItemInInventory = 5;
+}
+message CharacterChangesDTO {
+    repeated CharacterChangeDTO arr = 1;
+}
+message InventoryChangeDTO {
+    string itemId = 1;
+    int32 quantityDeltaChange = 2;
+}
+message InventoryChangesDTO {
+    repeated InventoryChangeDTO arr = 1;
+}
+// ============================================================================
+
+
+
+
+// ===============================
+// KnowledgeBase
+// ===============================
+message KnowledgeBaseDTO {
+    repeated CharacterKnowledgeBaseDTO characters = 1;
+    repeated FactionKnowledgeBaseDTO factions = 2;
+    repeated LocationKnowledgeBaseDTO locations = 3;
+    repeated ItemKnowledgeBaseDTO items = 4;
+    string clazz = 5;
+}
+message CharacterKnowledgeBaseDTO {
+    string id = 1;
+    string name = 2;
+    string description = 3;
+    string locationId = 4;
+    string factionId = 5;
+    string clazz = 6;
+}
+message FactionKnowledgeBaseDTO {
+    string id = 1;
+    string name = 2;
+    string description = 3;
+    string clazz = 4;
+}
+message LocationKnowledgeBaseDTO {
+    string id = 1;
+    string name = 2;
+    string description = 3;
+    string parentLocationChain = 4;
+    string clazz = 5;
+}
+message ItemKnowledgeBaseDTO {
+    string id = 1;
+    string name = 2;
+    string description = 3;
+    string clazz = 4;
+}
+// ===============================
+
+
+
+
+// ============================================================================
+// Generate Response Options
+// ============================================================================
+message GeneratePlayerDialogueOptionsRequest {
+    string dialogueId = 1;
+    int32 directionsQuantity = 2;
+    int32 variations = 3;
+    string scaleType = 4; // e.g. D20_V1
+}
+message GeneratePlayerDialogueOptionsResponse {
+    repeated DialogueOptionDTO dialogueOptions = 1;
+}
+// ============================================================================
+
+
+
+
+// ===============================
+// DialogueOptionDTO
+// ===============================
+message DialogueOptionDTO {
+    string explanation = 1;                          // Pre-generated response text
+    string dialogueDirection = 2;                     // Goal this response aims to achieve
+    string riskImpact = 3;  // Strategy this response employs
+    string clazz = 4;
+}
+// ===============================
+
+
+
+// ============================================================================
+// Interrupt Dialogue
+// ============================================================================
+message InterruptDialogueRequest {
+    string requestId = 1;
+    string aiProvider = 2; // e.g. OPENAI_V1
+}
+message InterruptDialogueResponse {
+    string requestId = 1;
+}
+// ============================================================================
+
+
+
+
+
+// ============================================================================
+message FinalizeDialogueRequest {
+    string dialogueId = 1;                       // Dialogue session ID
+    entities.ContextDTO context = 2;            // User, World, Campaign
+}
+message FinalizeDialogueResponse {
+    string dialogueId = 1;                      // Dialogue session ID
+    string summary = 2;                       // Summary of the dialogue
+    repeated CharacterProfileDTO dialogueParticipants = 3;
+    WorldContextDTO worldContext = 4;
+    DialogueHistoryDTO dialogueHistory = 5;
+}
+// ============================================================================
