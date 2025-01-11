@@ -11,9 +11,9 @@ export class DialogueState {
     playerCharacterId!: string;
     aiProvider!: AiServiceEnum;
     dialogueParticipants!: CharacterProfile[];
-    worldContext!: WorldContext;
-    dialogueHistory!: DialogueHistory;
-    knowledgeBase!: KnowledgeBase;
+    worldContext?: WorldContext;
+    dialogueHistory?: DialogueHistory;
+    knowledgeBase?: KnowledgeBase;
     context?: Context;
     clazz = 'DialogueState';
 
@@ -25,18 +25,15 @@ export class DialogueState {
         if (!data.playerCharacterId) throw new Error('DialogueState: playerCharacterId is required');
         if (!data.aiProvider) throw new Error('DialogueState: aiProvider is required');
         if (!data.dialogueParticipants) throw new Error('DialogueState: dialogueParticipants is required');
-        if (!data.worldContext) throw new Error('DialogueState: worldContext is required');
-        if (!data.dialogueHistory) throw new Error('DialogueState: dialogueHistory is required');
-        if (!data.knowledgeBase) throw new Error('DialogueState: knowledgeBase is required');
 
         // Validate types
         if (typeof data.initiatingParticipantId !== 'string') throw new Error('DialogueState: initiatingParticipantId must be a string');
         if (typeof data.dialogueId !== 'string') throw new Error('DialogueState: dialogueId must be a string');
         if (typeof data.playerCharacterId !== 'string') throw new Error('DialogueState: playerCharacterId must be a string');
         if (typeof data.dialogueParticipants !== 'object') throw new Error('DialogueState: dialogueParticipants must be an object');
-        if (typeof data.worldContext !== 'object') throw new Error('DialogueState: worldContext must be an object');
-        if (typeof data.dialogueHistory !== 'object') throw new Error('DialogueState: dialogueHistory must be an object');
-        if (typeof data.knowledgeBase !== 'object') throw new Error('DialogueState: knowledgeBase must be an object');
+        if (data.worldContext && typeof data.worldContext !== 'object') throw new Error('DialogueState: worldContext must be an object');
+        if (data.dialogueHistory && typeof data.dialogueHistory !== 'object') throw new Error('DialogueState: dialogueHistory must be an object');
+        if (data.knowledgeBase && typeof data.knowledgeBase !== 'object') throw new Error('DialogueState: knowledgeBase must be an object');
         if (typeof data.aiProvider !== 'string') throw new Error('DialogueState: aiProvider must be a string');
         if (!Object.values(AiServiceEnum).includes(data.aiProvider as AiServiceEnum)) throw new Error('DialogueState: aiProvider must be a valid AI provider');
         if (data.context && typeof data.context !== 'object') throw new Error('DialogueState: context must be an object');
@@ -50,9 +47,9 @@ export class DialogueState {
         state.playerCharacterId = data.playerCharacterId!;
         state.aiProvider = data.aiProvider!;
         state.dialogueParticipants = data.dialogueParticipants!.map((participant: any) => CharacterProfile.build(participant));
-        state.worldContext = WorldContext.build(data.worldContext!);
-        state.dialogueHistory = DialogueHistory.build(data.dialogueHistory!);
-        state.knowledgeBase = KnowledgeBase.build(data.knowledgeBase!);
+        state.worldContext = data.worldContext ? WorldContext.build(data.worldContext) : undefined;
+        state.dialogueHistory = data.dialogueHistory ? DialogueHistory.build(data.dialogueHistory) : undefined;
+        state.knowledgeBase = data.knowledgeBase ? KnowledgeBase.build(data.knowledgeBase) : undefined;
         return state;
     }
 }

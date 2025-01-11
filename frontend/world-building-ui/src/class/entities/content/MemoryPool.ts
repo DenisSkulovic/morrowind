@@ -9,7 +9,7 @@ import { EntityDisplay } from '../../../decorator/entity-display.decorator';
 import { FilterOption, FilterOptionTypeEnum } from '../../../decorator/filter-option.decorator';
 import { Context } from '../../../class/Context';
 import { SearchQuery } from '../../../class/search/SearchQuery';
-import { MemoryPoolEntriesDTO, MemoryPoolEntryDTO } from "../../../proto/common_pb";
+import { MemoryPoolEntriesDTO, MemoryPoolEntryDTO } from "../../../proto/entities_pb";
 import { SerializeStrategyEnum } from "../../../serialize/serializer";
 
 @EntityDisplay({

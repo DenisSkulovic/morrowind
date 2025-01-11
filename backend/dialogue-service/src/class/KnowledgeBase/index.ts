@@ -7,16 +7,16 @@ import { SerializeStrategyEnum } from "../../common/serializer/serializer";
 
 export class KnowledgeBase {
     @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true, internalClass: CharacterKnowledgeBase })
-    characters!: CharacterKnowledgeBase[];
+    characters?: CharacterKnowledgeBase[];
 
     @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true, internalClass: FactionKnowledgeBase })
-    factions!: FactionKnowledgeBase[];
+    factions?: FactionKnowledgeBase[];
 
     @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true, internalClass: LocationKnowledgeBase })
-    locations!: LocationKnowledgeBase[];
+    locations?: LocationKnowledgeBase[];
 
     @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true, internalClass: ItemKnowledgeBase })
-    items!: ItemKnowledgeBase[];
+    items?: ItemKnowledgeBase[];
 
     @Serializable()
     clazz = 'KnowledgeBase';

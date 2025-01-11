@@ -4,7 +4,7 @@ import { FormField } from "../decorator/form-field.decorator";
 import { FieldComponentEnum } from "../enum/FieldComponentEnum";
 import { Serializable } from "../decorator/serializable.decorator";
 import { SkillAdjustment } from "./SkillAdjustment";
-import { SkillAdjustmentDTO } from "../proto/common_pb";
+import { SkillAdjustmentDTO } from "../proto/entities_pb";
 import { SerializeStrategyEnum } from "../serialize/serializer";
 
 export class BackgroundCustomization {

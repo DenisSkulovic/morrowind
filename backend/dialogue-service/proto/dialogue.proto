@@ -6,6 +6,7 @@ import "entities.proto";
 
 service DialogueService {
     rpc InitializeDialogue(InitializeDialogueRequest) returns (InitializeDialogueResponse);
+    
     rpc FinalizeDialogue(FinalizeDialogueRequest) returns (FinalizeDialogueResponse);
     rpc GeneratePlayerDialogueOptions(GeneratePlayerDialogueOptionsRequest) returns (GeneratePlayerDialogueOptionsResponse);
     rpc InterruptDialogue(InterruptDialogueRequest) returns (InterruptDialogueResponse);

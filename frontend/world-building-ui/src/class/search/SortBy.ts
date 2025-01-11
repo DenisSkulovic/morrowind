@@ -1,6 +1,6 @@
 import { Serializable } from "../../decorator/serializable.decorator";
 import Serializer, { SerializeStrategyEnum } from "../../serialize/serializer";
-import { SortByDirectionEnumDTO, SortByDTO } from "../../proto/common_pb";
+import { SortByDirectionEnumDTO, SortByDTO } from "../../proto/entities_pb";
 
 export enum SortByDirectionEnum {
     ASC = 'asc',

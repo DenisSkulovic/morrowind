@@ -1,6 +1,13 @@
+import { Serializable } from "../../../../common/decorator/serializable.decorator";
+
 export class InventoryChange {
+    @Serializable()
     itemId!: string;
+
+    @Serializable()
     quantityDeltaChange!: number;
+
+    @Serializable()
     clazz = 'InventoryChange';
 
     static validate(body: Partial<InventoryChange>): void {

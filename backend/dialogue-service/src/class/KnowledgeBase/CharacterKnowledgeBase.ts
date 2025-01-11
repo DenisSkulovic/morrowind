@@ -1,5 +1,6 @@
 import { Serializable } from "../../common/decorator/serializable.decorator";
 
+// some data about a character (this one) a dialogue participant knows about (sorry for the misleading name, Base is part of KnowledgeBase, it's not a base for another class)
 export class CharacterKnowledgeBase {
     @Serializable()
     id!: string;

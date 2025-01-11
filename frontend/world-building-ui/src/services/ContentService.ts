@@ -2,7 +2,7 @@ import { ContentBase } from '../class/ContentBase';
 import { Context } from '../class/Context';
 import { SearchQuery } from '../class/search/SearchQuery';
 import { ContentEntityMapService } from '../CONTENT_ENTITY_MAP';
-import { ContextDTO, DataSourceEnumDTO, SearchQueryDTO } from '../proto/common_pb';
+import { ContextDTO, DataSourceEnumDTO, SearchQueryDTO } from '../proto/entities_pb';
 import {
     CreateContentRequest,
     UpdateContentRequest,
@@ -19,8 +19,7 @@ import { ContentServiceClient } from "../proto/ContentServiceClientPb";
 import Serializer from '../serialize/serializer';
 import { EntityEnum } from '../enum/EntityEnum';
 import { ClassConstructor } from '../types';
-import { contentBackendURL, dialogueBackendURL } from '../config';
-import { io, Socket } from 'socket.io-client';
+import { contentBackendURL } from '../config';
 
 export class SearchContentResults {
     results!: ContentBase[];
@@ -30,12 +29,10 @@ export class SearchContentResults {
 }
 
 export class ContentService<T extends ContentBase> {
-    private contentClient: ContentServiceClient;
-    private dialogueSocket: Socket;
+    private contentGRPCClient: ContentServiceClient;
 
     constructor() {
-        this.contentClient = new ContentServiceClient(contentBackendURL);
-        this.dialogueSocket = io(dialogueBackendURL);
+        this.contentGRPCClient = new ContentServiceClient(contentBackendURL);
     }
 
     async getContentStats(entityNames: string[] | null, context: Context): Promise<GetContentStatsResponse> {
@@ -43,7 +40,7 @@ export class ContentService<T extends ContentBase> {
         request.setContext(Serializer.toDTO(context, new ContextDTO()));
         request.setEntitynamesList(entityNames || Object.keys(EntityEnum));
         return new Promise((resolve, reject) => {
-            this.contentClient.getStats(request, {}, (err, response) => {
+            this.contentGRPCClient.getStats(request, {}, (err, response) => {
                 if (err) reject(err);
                 else if (!response) reject(new Error('No response from server'));
                 else resolve(response);
@@ -65,7 +62,7 @@ export class ContentService<T extends ContentBase> {
         request.setContentbody(contentBodyDTO);
         console.log('[createContent] request', request);
         return new Promise((resolve, reject) => {
-            this.contentClient.create(request, {}, (err, response) => {
+            this.contentGRPCClient.create(request, {}, (err, response) => {
                 console.log('[createContent] after createContent', err, response);
                 if (err) reject(err);
                 else if (!response) reject(new Error('No response from server'));
@@ -90,7 +87,7 @@ export class ContentService<T extends ContentBase> {
         request.setContext(Serializer.toDTO(context, new ContextDTO()));
 
         return new Promise((resolve, reject) => {
-            this.contentClient.update(request, {}, (err, response) => {
+            this.contentGRPCClient.update(request, {}, (err, response) => {
                 if (err) reject(err);
                 else if (!response) reject(new Error('No response from server'));
                 else {
@@ -111,7 +108,7 @@ export class ContentService<T extends ContentBase> {
         request.setContext(Serializer.toDTO(context, new ContextDTO()));
 
         return new Promise((resolve, reject) => {
-            this.contentClient.delete(request, {}, (err, response) => {
+            this.contentGRPCClient.delete(request, {}, (err, response) => {
                 console.log(`[ContentService] deleteContent response, err: ${err}, response: ${response}`);
                 if (err) reject(err);
                 else if (!response) reject(new Error('No response from server'));
@@ -134,7 +131,7 @@ export class ContentService<T extends ContentBase> {
         const rootEntityConstructor: ClassConstructor<T> | null = ContentEntityMapService.getRootEntityConstructor<T>(entityName);
 
         return new Promise((resolve, reject) => {
-            this.contentClient.search(request, {}, (err, response) => {
+            this.contentGRPCClient.search(request, {}, (err, response) => {
                 console.log(`[ContentService] search result`, response);
                 if (err) reject(err);
                 else if (!response) reject(new Error('No response from server'));
@@ -173,7 +170,7 @@ export class ContentService<T extends ContentBase> {
         request.setRequestsList(requests);
 
         return new Promise((resolve, reject) => {
-            this.contentClient.createBulk(request, {}, (err, response) => {
+            this.contentGRPCClient.createBulk(request, {}, (err, response) => {
                 if (err) reject(err);
                 else if (!response) reject(new Error('No response from server'));
                 else resolve(response.getResponsesList().map(response =>
@@ -199,7 +196,7 @@ export class ContentService<T extends ContentBase> {
         request.setRequestsList(requests);
 
         return new Promise((resolve, reject) => {
-            this.contentClient.updateBulk(request, {}, (err, response) => {
+            this.contentGRPCClient.updateBulk(request, {}, (err, response) => {
                 if (err) reject(err);
                 else if (!response) reject(new Error('No response from server'));
                 else resolve(response.getResponsesList().map(response =>
@@ -222,7 +219,7 @@ export class ContentService<T extends ContentBase> {
         request.setRequestsList(requests);
 
         return new Promise((resolve, reject) => {
-            this.contentClient.deleteBulk(request, {}, (err, response) => {
+            this.contentGRPCClient.deleteBulk(request, {}, (err, response) => {
                 if (err) reject(err);
                 else if (!response) reject(new Error('No response from server'));
                 else resolve();
@@ -230,47 +227,4 @@ export class ContentService<T extends ContentBase> {
         });
     }
 
-    generateContentAI(request: {
-        contentType: string;
-        parameters: any;
-        requestId: string;
-    }): Promise<any> {
-        return new Promise((resolve, reject) => {
-            this.dialogueSocket.emit('generateContent', request);
-
-            this.dialogueSocket.on('contentGenerated', (data) => {
-                resolve(data);
-            });
-
-            this.dialogueSocket.on('error', (error) => {
-                reject(error);
-            });
-        });
-    }
-
-    generateContentAIStreaming(request: {
-        contentType: string;
-        parameters: any;
-        requestId: string;
-    }, onChunk: (chunk: any) => void): Promise<void> {
-        return new Promise((resolve, reject) => {
-            // Emit the initial request
-            this.dialogueSocket.emit('generateContent', request);
-
-            // Listen for data chunks
-            this.dialogueSocket.on('contentChunk', (chunk) => {
-                onChunk(chunk); // Pass the chunk to the callback for handling in the app state
-            });
-
-            // Listen for the end of the stream
-            this.dialogueSocket.on('streamEnd', () => {
-                resolve(); // Stream completed
-            });
-
-            // Handle errors
-            this.dialogueSocket.on('error', (error) => {
-                reject(error);
-            });
-        });
-    }
 }

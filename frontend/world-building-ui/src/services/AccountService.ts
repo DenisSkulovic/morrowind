@@ -7,7 +7,7 @@ import {
 import { AccountServiceClient } from "../proto/AccountServiceClientPb";
 import { Account } from '../class/entities/Account';
 import Serializer from '../serialize/serializer';
-import { AccountDTO } from "../proto/common_pb";
+import { AccountDTO } from "../proto/entities_pb";
 import { backendURL } from "../config";
 
 export class AccountService {

@@ -6,7 +6,7 @@ import { GeneratorServiceClient } from "../proto/GeneratorServiceClientPb";
 import Serializer from "../serialize/serializer";
 import { Item } from "../class/entities/content/Item/Item";
 import { Character } from "../class/entities/content/Character";
-import { CharacterDTO, CharacterGenInstructionDTO, CharacterGroupGenInstructionDTO, ContextDTO, DataSourceEnumDTO, GenerationInstructionDTO } from "../proto/common_pb";
+import { CharacterDTO, CharacterGenInstructionDTO, CharacterGroupGenInstructionDTO, ContextDTO, DataSourceEnumDTO, GenerationInstructionDTO } from "../proto/entities_pb";
 import { GenerateItemsRequest, GenerateCharactersRequestCustom, GenerateCharactersRequestDB, GenerateCharacterGroupsRequest, GenerateCharacterGroupsResponse, GenerateCharactersResponse, GenerateItemsResponse } from "../proto/generator_pb";
 import { EquipmentSlot } from "../class/entities/content/Slot/EquipmentSlot";
 import { StorageSlot } from "../class/entities/content/Slot/StorageSlot";

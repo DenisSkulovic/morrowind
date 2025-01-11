@@ -9,7 +9,7 @@ import {
     MoodDTO, NeedDTO, PastExperienceDTO, PersonalityProfileDTO,
     RaceDTO, ReligionDTO, ResistanceDTO, SkillDTO,
     SkillSetDTO, StatusDTO, StorageSlotDTO, TagDTO, TraitDTO
-} from "./proto/common_pb";
+} from "./proto/entities_pb";
 import { Addiction } from "./class/entities/content/Addiction";
 import { Background } from "./class/entities/content/Background";
 import { Birthsign } from "./class/entities/content/Birthsign";

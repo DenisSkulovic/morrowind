@@ -7,7 +7,7 @@ import { DisplayField } from '../../../decorator/display-field.decorator';
 import { EntityDisplay } from '../../../decorator/entity-display.decorator';
 import { FilterOption, FilterOptionTypeEnum } from '../../../decorator/filter-option.decorator';
 import { ReligionTenet } from '../../../class/ReligionTenet';
-import { ReligionRitualDTO, ReligionRitualsDTO, ReligionTenetDTO, ReligionTenetsDTO } from "../../../proto/common_pb";
+import { ReligionRitualDTO, ReligionRitualsDTO, ReligionTenetDTO, ReligionTenetsDTO } from "../../../proto/entities_pb";
 import { SerializeStrategyEnum } from "../../../serialize/serializer";
 
 @EntityDisplay({

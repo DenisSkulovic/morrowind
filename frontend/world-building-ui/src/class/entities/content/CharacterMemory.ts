@@ -6,7 +6,7 @@ import { FieldComponentEnum } from "../../../enum/FieldComponentEnum";
 import { DisplayField } from "../../../decorator/display-field.decorator";
 import { EntityDisplay } from "../../../decorator/entity-display.decorator";
 import { FilterOption, FilterOptionTypeEnum } from "../../../decorator/filter-option.decorator";
-import { CharacterDTO, FactStatusDTO, FactStatusesDTO, MemoryDTO } from "../../../proto/common_pb";
+import { CharacterDTO, FactStatusDTO, FactStatusesDTO, MemoryDTO } from "../../../proto/entities_pb";
 import { Character } from "./Character";
 import { Memory } from "./Memory";
 import { SerializeStrategyEnum } from "../../../serialize/serializer";

@@ -2,38 +2,32 @@ import { Serializable } from "../../common/decorator/serializable.decorator";
 
 export class TimeContext {
     @Serializable()
-    timeOfDay!: string;
+    timeOfDay?: string;
 
     @Serializable()
-    day!: number;
+    day?: number;
 
     @Serializable()
-    month!: string;
+    month?: string;
 
     @Serializable()
-    year!: number;
+    year?: number;
 
     @Serializable()
-    season!: string;
+    season?: string;
 
     @Serializable()
     clazz = 'TimeContext';
 
     static validate(data: any) {
         if (data.clazz !== 'TimeContext') throw new Error("Invalid class");
-        // Validate required fields
-        if (!data.timeOfDay) throw new Error('TimeContext: timeOfDay is required');
-        if (!data.day) throw new Error('TimeContext: day is required');
-        if (!data.month) throw new Error('TimeContext: month is required');
-        if (!data.year) throw new Error('TimeContext: year is required');
-        if (!data.season) throw new Error('TimeContext: season is required');
 
         // Validate types
-        if (typeof data.timeOfDay !== 'string') throw new Error('TimeContext: timeOfDay must be a string');
-        if (typeof data.day !== 'number') throw new Error('TimeContext: day must be a number');
-        if (typeof data.month !== 'string') throw new Error('TimeContext: month must be a string');
-        if (typeof data.year !== 'number') throw new Error('TimeContext: year must be a number');
-        if (typeof data.season !== 'string') throw new Error('TimeContext: season must be a string');
+        if (data.timeOfDay && typeof data.timeOfDay !== 'string') throw new Error('TimeContext: timeOfDay must be a string');
+        if (data.day && typeof data.day !== 'number') throw new Error('TimeContext: day must be a number');
+        if (data.month && typeof data.month !== 'string') throw new Error('TimeContext: month must be a string');
+        if (data.year && typeof data.year !== 'number') throw new Error('TimeContext: year must be a number');
+        if (data.season && typeof data.season !== 'string') throw new Error('TimeContext: season must be a string');
     }
 
     static build(data: any) {

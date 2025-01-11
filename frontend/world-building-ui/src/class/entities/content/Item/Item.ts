@@ -15,7 +15,7 @@ import { Context } from "../../../../class/Context";
 import { SearchQuery } from "../../../../class/search/SearchQuery";
 import { ItemRequirement } from "../../../../class/ItemRequirement";
 import { StorageSlotDefinition } from "../../../../class/StorageSlotDefinition";
-import { GridSizeDTO, ItemActionEnumDTO, ItemRequirementDTO, ItemRequirementsDTO, StorageSlotDefinitionDTO, StorageSlotDefinitionsDTO, StorageSlotDTO, StorageSlotsDTO } from "../../../../proto/common_pb";
+import { GridSizeDTO, ItemActionEnumDTO, ItemRequirementDTO, ItemRequirementsDTO, StorageSlotDefinitionDTO, StorageSlotDefinitionsDTO, StorageSlotDTO, StorageSlotsDTO } from "../../../../proto/entities_pb";
 import { SerializeStrategyEnum } from "../../../../serialize/serializer";
 
 @EntityDisplay({

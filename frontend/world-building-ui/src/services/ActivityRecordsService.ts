@@ -5,7 +5,7 @@ import { backendURL } from "../config";
 import { activityRecordsHeadLimit } from "../config/dashboardWorld";
 import { ActivityClearAllRequest, ActivityClearAllResponse, ActivityCreateRequest, ActivityCreateResponse, ActivityDTO, ActivityHeadRequest, ActivityHeadResponse, ActivitySearchRequest, ActivitySearchResponse, } from "../proto/activity_pb";
 import { ActivityServiceClient } from "../proto/ActivityServiceClientPb";
-import { ContextDTO, SearchQueryDTO } from "../proto/common_pb";
+import { ContextDTO, SearchQueryDTO } from "../proto/entities_pb";
 import Serializer from "../serialize/serializer";
 
 export class ActivityRecordsService {

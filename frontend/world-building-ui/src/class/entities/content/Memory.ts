@@ -8,7 +8,7 @@ import { FormSelectOption } from "../../../class/FormSelectOption";
 import { DisplayField } from '../../../decorator/display-field.decorator';
 import { EntityDisplay } from '../../../decorator/entity-display.decorator';
 import { FilterOption, FilterOptionTypeEnum } from '../../../decorator/filter-option.decorator';
-import { FactDTO, FactsDTO, MemoryTypeEnumDTO } from '../../../proto/common_pb';
+import { FactDTO, FactsDTO, MemoryTypeEnumDTO } from '../../../proto/entities_pb';
 import { SerializeStrategyEnum } from "../../../serialize/serializer";
 
 @EntityDisplay({

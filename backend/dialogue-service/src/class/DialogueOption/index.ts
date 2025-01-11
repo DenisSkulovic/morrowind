@@ -1,6 +1,6 @@
 import { DialogueDirectionEnum } from "../../enum/DialogueDirectionEnum";
-import { SCALE_RISK_IMPACT_ENUM } from "../../dnd/enum/SCALE_RISK_IMPACT_ENUM";
 import { Serializable } from "../../common/decorator/serializable.decorator";
+import { SCALE_RISK_IMPACT_ENUM } from "../../dnd/enum/SCALE_RISK_IMPACT_ENUM";
 
 export class DialogueOption {
     @Serializable()

@@ -21,11 +21,11 @@ import { Context } from './content/class/Context';
 import { KnowledgeBase } from '../../class/KnowledgeBase';
 import { WorldContext } from '../../class/WorldContext';
 import { CharacterProfile } from '../../class/CharacterProfile';
-import { ScaleTypeEnum } from '../../dnd/scales';
 import { ProgressDialogueRequest } from '../../class/ProgressDialogueRequest';
 import { AiServiceEnum } from '../../enum/AiServiceEnum';
 import { DialogueOption } from '../../class/DialogueOption';
 import { Serializer } from '../../common/serializer/serializer';
+import { ScaleTypeEnum } from '../../dnd/enum/ScaleTypeEnum';
 
 @Controller()
 @WebSocketGateway({
@@ -73,14 +73,12 @@ export class DialogueController implements OnGatewayConnection, OnGatewayDisconn
         if (!Object.values(AiServiceEnum).includes(request.aiProvider as any)) throw new Error(`The AI provider ${request.aiProvider} is not supported.`);
         if (!request.dialogueParticipants) throw new Error('The request is missing the dialogue participants.');
         if (!request.worldContext) throw new Error('The request is missing the world context.');
-        if (!request.dialogueHistory) throw new Error('The request is missing the dialogue history.');
         if (!request.knowledgeBase) throw new Error('The request is missing the knowledge base.');
 
         // deserialize request
         const aiProvider: AiServiceEnum = request.aiProvider as AiServiceEnum; // can safely cast because we validated the enum in the request
         const dialogueParticipants: CharacterProfile[] = request.dialogueParticipants.arr.map((participant: any) => Serializer.fromDTO(participant, new CharacterProfile()));
         const worldContext: WorldContext = Serializer.fromDTO(request.worldContext, new WorldContext());
-        const dialogueHistory: DialogueHistory = Serializer.fromDTO(request.dialogueHistory, new DialogueHistory());
         const knowledgeBase: KnowledgeBase = Serializer.fromDTO(request.knowledgeBase, new KnowledgeBase());
         const context: Context = request.context ? Serializer.fromDTO(request.context, new Context()) : undefined;
 
@@ -91,7 +89,7 @@ export class DialogueController implements OnGatewayConnection, OnGatewayDisconn
             aiProvider,
             dialogueParticipants,
             worldContext,
-            dialogueHistory,
+            new DialogueHistory(),
             knowledgeBase,
             context,
         );

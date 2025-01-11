@@ -1,4 +1,4 @@
-import { SkillImprovementDTO } from "../proto/common_pb";
+import { SkillImprovementDTO } from "../proto/entities_pb";
 
 export class SkillImprovement {
     [skill_blueprintId: string]: number // number by which the base skill from race gets increased

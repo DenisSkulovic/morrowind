@@ -29,7 +29,7 @@ import {
     FactionsDTO, GenderEnumDTO, MemoryPoolDTO, MemoryPoolsDTO,
     PastExperienceDTO,
     PastExperiencesDTO, RaceDTO, TraitDTO, TraitsDTO
-} from '../../../proto/common_pb';
+} from '../../../proto/entities_pb';
 import { CharacterMemory } from "./CharacterMemory";
 import { SerializeStrategyEnum } from "../../../serialize/serializer";
 

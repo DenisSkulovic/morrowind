@@ -5,7 +5,7 @@ const SERIALIZABLE_FIELDS_KEY = Symbol('serializable_fields');
 const defaultRequired = false; // if "required" was not set, this will be used
 
 export class SerializableFieldOptions {
-    dtoKey!: string;
+    dtoKey?: string;
     strategy?: SerializeStrategyEnum;
     internalEnum?: any;
     protoEnum?: any;

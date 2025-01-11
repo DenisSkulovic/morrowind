@@ -5,7 +5,7 @@ export class SceneNPC {
     id!: string;
 
     @Serializable()
-    activity!: string;
+    activity?: string;
 
     @Serializable()
     clazz = 'SceneNPC';

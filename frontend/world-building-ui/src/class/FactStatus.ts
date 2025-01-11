@@ -3,7 +3,7 @@ import { FieldComponentEnum } from "../enum/FieldComponentEnum";
 import { FactStatusEnum } from "../enum/entityEnums";
 import { FormSelectOption } from "./FormSelectOption";
 import { Serializable } from "../decorator/serializable.decorator";
-import { FactStatusEnumDTO } from "../proto/common_pb";
+import { FactStatusEnumDTO } from "../proto/entities_pb";
 import { SerializeStrategyEnum } from "../serialize/serializer";
 
 export class FactStatus {

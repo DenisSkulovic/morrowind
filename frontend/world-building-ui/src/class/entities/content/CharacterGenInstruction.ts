@@ -12,7 +12,7 @@ import { EntityDisplay } from '../../../decorator/entity-display.decorator';
 import { FilterOption, FilterOptionTypeEnum } from '../../../decorator/filter-option.decorator';
 import { Context } from '../../../class/Context';
 import { SearchQuery } from '../../../class/search/SearchQuery';
-import { BackgroundCustomizationDTO, GenderEnumDTO } from '../../../proto/common_pb';
+import { BackgroundCustomizationDTO, GenderEnumDTO } from '../../../proto/entities_pb';
 import { SerializeStrategyEnum } from "../../../serialize/serializer";
 
 @EntityDisplay({

@@ -1,4 +1,4 @@
-import { Serializable } from "../../../decorator/serializable.decorator";
+import { Serializable } from "../../../../decorator/serializable.decorator";
 import { DialogueDirectionEnum } from "../../enum/DialogueDirectionEnum";
 import { SCALE_RISK_IMPACT_ENUM } from "../../enum/SCALE_RISK_IMPACT_ENUM";
 

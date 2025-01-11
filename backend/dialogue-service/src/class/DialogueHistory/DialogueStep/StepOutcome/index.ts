@@ -1,10 +1,19 @@
+import { Serializable } from "../../../../common/decorator/serializable.decorator";
+import { SerializeStrategyEnum } from "../../../../common/serializer/serializer";
 import { DialogueStepOutcomeEnum } from "../../../../enum/DialogueStepOutcomeEnum";
 import { CharacterChange } from "./CharacterChange";
 
 export class StepOutcome {
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true, internalClass: CharacterChange })
     characterChanges?: CharacterChange[]
+
+    @Serializable()
     newTopicName?: string;
+
+    @Serializable()
     stepOutcome!: DialogueStepOutcomeEnum
+
+    @Serializable()
     clazz = 'StepOutcome';
 
     static validate(body: Partial<StepOutcome>): void {

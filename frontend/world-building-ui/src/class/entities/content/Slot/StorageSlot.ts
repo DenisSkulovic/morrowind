@@ -5,7 +5,7 @@ import { FieldComponentEnum } from "../../../../enum/FieldComponentEnum";
 import { EntityDisplay } from "../../../../decorator/entity-display.decorator";
 import { DisplayField } from "../../../../decorator/display-field.decorator";
 import { FilterOption } from "../../../../decorator/filter-option.decorator";
-import { StorageGridDTO, StorageGridCellDTO } from "../../../../proto/common_pb";
+import { StorageGridDTO, StorageGridCellDTO } from "../../../../proto/entities_pb";
 import { GridSize } from "../../../../class/GridSize";
 
 export type StorageGridCell = string | null;

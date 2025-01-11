@@ -14,7 +14,7 @@ import {
     GetPresetsRequest
 } from "../proto/world_pb";
 import Serializer from "../serialize/serializer";
-import { ContextDTO, PresetEnumDTO, SearchQueryDTO, WorldDTO } from "../proto/common_pb";
+import { ContextDTO, PresetEnumDTO, SearchQueryDTO, WorldDTO } from "../proto/entities_pb";
 import { backendURL } from "../config";
 
 export class WorldService {

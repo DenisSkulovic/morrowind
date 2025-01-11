@@ -4,7 +4,7 @@ import { ItemRequirementTypeEnum } from "../enum/ItemRequirementTypeEnum";
 import { FormSelectOption } from "./FormSelectOption";
 import { Serializable } from "../decorator/serializable.decorator";
 import { SerializeStrategyEnum } from "../serialize/serializer";
-import { ItemRequirementTypeEnumDTO } from "../proto/common_pb";
+import { ItemRequirementTypeEnumDTO } from "../proto/entities_pb";
 
 export class ItemRequirement {
     clazz = "ItemRequirement"

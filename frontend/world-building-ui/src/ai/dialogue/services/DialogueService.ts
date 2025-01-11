@@ -1,19 +1,24 @@
-import { DialogueServiceClient } from "../proto/DialogueServiceClientPb";
-import { Context } from "../../class/Context";
-import Serializer from "../../serialize/serializer";
-import { ContextDTO } from "../proto/common_pb";
+import { DialogueServiceClient } from "../../../proto/DialogueServiceClientPb";
+import { Context } from "../../../class/Context";
+import Serializer from "../../../serialize/serializer";
+import { ContextDTO } from "../../../proto/entities_pb";
 import {
     InitializeDialogueRequest,
     InitializeDialogueResponse,
-    MessageChunk,
     GeneratePlayerDialogueOptionsRequest,
     GeneratePlayerDialogueOptionsResponse,
     FinalizeDialogueRequest,
     FinalizeDialogueResponse,
-    ResponseSelectionDTO
-} from "../../proto/dialogue_pb";
-import { dialogueBackendURL } from "../../config";
+    WorldContextDTO,
+    KnowledgeBaseDTO,
+    CharacterProfilesDTO,
+    CharacterProfileDTO,
+} from "../../../proto/dialogue_pb";
+import { dialogueBackendURL } from "../../../config";
 import { io, Socket } from "socket.io-client";
+import { Character } from "../../../class/entities/content/Character";
+
+
 
 export class DialogueService {
     private client: DialogueServiceClient;
@@ -25,11 +30,25 @@ export class DialogueService {
     }
 
     // gRPC method
-    async initializeDialogue(initiatingParticipantId: string, dialogueParticipants: string[], context: Context): Promise<InitializeDialogueResponse> {
+    async initializeDialogue(
+        initiatingParticipantId: string,
+        characters: Character[],
+        context: Context,
+    ): Promise<InitializeDialogueResponse> {
+        // extract data from db
+        const dialogueParticipants: CharacterProfile[] = [];
+        const dialogueHistory = new DialogueHistory();
+        const worldContext
+
+        // build request
+        const characterProfilesDTO = new CharacterProfilesDTO();
+        characterProfilesDTO.setArrList(dialogueParticipants.map(character => Serializer.toDTO(character, new CharacterProfileDTO())));
         const request = new InitializeDialogueRequest();
         request.setInitiatingparticipantid(initiatingParticipantId);
-        request.setDialogueparticipantsList(dialogueParticipants);
-        request.setInitialcontext(Serializer.toDTO(context, new ContextDTO()));
+        request.setDialogueparticipants(characterProfilesDTO);
+        request.setWorldcontext(Serializer.toDTO(context, new WorldContextDTO()));
+        request.setKnowledgebase(new KnowledgeBaseDTO());
+        request.setContext(new ContextDTO());
 
         return new Promise((resolve, reject) => {
             this.client.initializeDialogue(request, {}, (err, response) => {
@@ -56,7 +75,7 @@ export class DialogueService {
         });
     }
 
-    // WebSocket connection
+    // WebSocket connection // TODO this for sure needs to be a gRPC stream, not websocket
     progressDialogue(dialogueId: string, responseSelection: ResponseSelectionDTO): Promise<MessageChunk[]> {
         const request = new ProgressDialogueRequest();
         request.setDialogueid(dialogueId);

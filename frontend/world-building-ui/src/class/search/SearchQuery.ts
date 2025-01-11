@@ -1,6 +1,6 @@
 import { QueryFilter } from "./QueryFilter";
 import { Serializable } from "../../decorator/serializable.decorator";
-import { QueryFilterDTO, QueryFiltersDTO, SearchQueryDTO, SortByDTO } from "../../proto/common_pb";
+import { QueryFilterDTO, QueryFiltersDTO, SearchQueryDTO, SortByDTO } from "../../proto/entities_pb";
 import { SortBy } from "./SortBy";
 import Serializer, { SerializeStrategyEnum } from "../../serialize/serializer";
 import { LooseObject } from "../../types";

@@ -1,6 +1,6 @@
 import { ConditionEnum } from "../enum/ConditionEnum"
 import { serializeEnum, deserializeEnum } from "../enum/util"
-import { GenerationInstructionDTO, IdAndQuantDTO, SimpleProbDTO, ConditionEnumDTO, GaussianProbDTO, CombinatorDTO, GenerationInstructionsDTO } from "../proto/common_pb"
+import { GenerationInstructionDTO, IdAndQuantDTO, SimpleProbDTO, ConditionEnumDTO, GaussianProbDTO, CombinatorDTO, GenerationInstructionsDTO } from "../proto/entities_pb"
 import { BlueprintGenInstruction_Simple, Probability_0_to_1 } from "../types"
 
 

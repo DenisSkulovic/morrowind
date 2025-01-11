@@ -27,13 +27,18 @@ import { DialogueStepOutcomeEnum } from '../../enum/DialogueStepOutcomeEnum';
 import { rollDice } from '../../dnd/rollDice';
 import { DiceRollResult } from '../../dnd/class/DiceRollResult';
 import { DiceScaleConfig } from '../../dnd/types';
-import { SCALE_CONFIGS, ScaleTypeEnum } from '../../dnd/scales';
+import { SCALE_CONFIGS } from '../../dnd/scales';
 import { AiServiceEnum } from '../../enum/AiServiceEnum';
+import { ScaleTypeEnum } from '../../dnd/enum/ScaleTypeEnum';
+import { AiResponse } from '../../proto/ai_service_common';
 
 
 const defaultConsideredAiCharacterOptionsQuantity = 10; // this is the number of options that the AI will consider when generating dialogue options
 const defaultOfferedPlayerDirectionsQuantity = 5; // this is the number of directions that the player will be offered when generating dialogue options
 const defaultOfferedPlayerOptionsVariations = 3; // this is the number of variations that the player will be offered for each direction
+
+
+// TODO I dont need an interrupt gRPC call, instead I will do it via the open websocket connection
 
 
 export interface IDialogueService {
@@ -90,7 +95,7 @@ export class DialogueService implements IDialogueService {
         const dialoguePromise: Promise<{ fullResponse: string }> = new Promise((resolve, reject) => {
             let fullResponse: string = "";
             stream.subscribe({
-                next: (chunk: AiResponseV1) => {
+                next: (chunk: AiResponse) => {
                     if (chunk.errorMessage) {
                         reject(new Error(chunk.errorMessage));
                         return;

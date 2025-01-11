@@ -8,7 +8,7 @@ import {
     SearchCampaignResponse, DeleteCampaignRequest
 } from "../proto/campaign_pb";
 import Serializer from "../serialize/serializer";
-import { CampaignDTO, ContextDTO, SearchQueryDTO } from "../proto/common_pb";
+import { CampaignDTO, ContextDTO, SearchQueryDTO } from "../proto/entities_pb";
 import { User } from "../class/entities/User";
 import { backendURL } from "../config";
 

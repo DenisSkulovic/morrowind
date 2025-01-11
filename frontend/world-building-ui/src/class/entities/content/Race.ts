@@ -6,7 +6,7 @@ import { FieldComponentEnum } from "../../../enum/FieldComponentEnum";
 import { EntityDisplay } from "../../../decorator/entity-display.decorator";
 import { DisplayField } from "../../../decorator/display-field.decorator";
 import { FilterOption, FilterOptionTypeEnum } from "../../../decorator/filter-option.decorator";
-import { EquipmentSlotDefinitionDTO, EquipmentSlotDefinitionsDTO } from "../../../proto/common_pb";
+import { EquipmentSlotDefinitionDTO, EquipmentSlotDefinitionsDTO } from "../../../proto/entities_pb";
 import { SerializeStrategyEnum } from "../../../serialize/serializer";
 
 @EntityDisplay({

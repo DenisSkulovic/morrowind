@@ -3,7 +3,7 @@ import { FieldComponentEnum } from "../enum/FieldComponentEnum"
 import { Serializable } from "../decorator/serializable.decorator";
 import { GridSize } from "./GridSize";
 import { SerializeStrategyEnum } from "../serialize/serializer";
-import { GridSizeDTO } from "../proto/common_pb";
+import { GridSizeDTO } from "../proto/entities_pb";
 
 export class StorageSlotDefinition {
     clazz = "StorageSlotDefinition"

@@ -2,16 +2,16 @@ import { Serializable } from "../../common/decorator/serializable.decorator";
 
 export class LocationContext {
     @Serializable()
-    locationId!: string;
+    locationId?: string;
 
     @Serializable()
-    name!: string;
+    name?: string;
 
     @Serializable()
-    description!: string;
+    description?: string;
 
     @Serializable()
-    biome!: string;
+    biome?: string;
 
     @Serializable()
     clazz = 'LocationContext';
@@ -19,17 +19,11 @@ export class LocationContext {
     static validate(data: any) {
         if (data.clazz !== 'LocationContext') throw new Error("Invalid class");
 
-        // Validate required fields
-        if (!data.locationId) throw new Error('LocationContext: locationId is required');
-        if (!data.name) throw new Error('LocationContext: name is required');
-        if (!data.description) throw new Error('LocationContext: description is required');
-        if (!data.biome) throw new Error('LocationContext: biome is required');
-
         // Validate types
-        if (typeof data.locationId !== 'string') throw new Error('LocationContext: locationId must be a string');
-        if (typeof data.name !== 'string') throw new Error('LocationContext: name must be a string');
-        if (typeof data.description !== 'string') throw new Error('LocationContext: description must be a string');
-        if (typeof data.biome !== 'string') throw new Error('LocationContext: biome must be a string');
+        if (data.locationId && typeof data.locationId !== 'string') throw new Error('LocationContext: locationId must be a string');
+        if (data.name && typeof data.name !== 'string') throw new Error('LocationContext: name must be a string');
+        if (data.description && typeof data.description !== 'string') throw new Error('LocationContext: description must be a string');
+        if (data.biome && typeof data.biome !== 'string') throw new Error('LocationContext: biome must be a string');
     }
 
     static build(data: any) {

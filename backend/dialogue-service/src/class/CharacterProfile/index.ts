@@ -14,10 +14,10 @@ export class CharacterProfile {
     name!: string;
 
     @Serializable()
-    race!: string;
+    race?: string;
 
     @Serializable()
-    class!: string;
+    class?: string;
 
     @Serializable()
     traits?: string[];
@@ -35,16 +35,16 @@ export class CharacterProfile {
     goals?: CharacterGoals;
 
     @Serializable()
-    skills!: Record<string, number>;
+    skills?: Record<string, number>;
 
     @Serializable()
-    stats!: Record<string, string>;
+    stats?: Record<string, string>;
 
     @Serializable({ strategy: SerializeStrategyEnum.FULL })
-    inventory!: CharacterInventory;
+    inventory?: CharacterInventory;
 
     @Serializable({ strategy: SerializeStrategyEnum.FULL })
-    knowledge!: CharacterKnowledge;
+    knowledge?: CharacterKnowledge;
 
     @Serializable() // no need for serializeEnum, in proto it's just a string (for simplicity)
     dialogueAttitude?: DialogueAttitudeEnum;
@@ -53,14 +53,12 @@ export class CharacterProfile {
         // Validate required fields
         if (!data.id) throw new Error('CharacterProfile: id is required');
         if (!data.name) throw new Error('CharacterProfile: name is required');
-        if (!data.race) throw new Error('CharacterProfile: race is required');
-        if (!data.class) throw new Error('CharacterProfile: class is required');
 
         // Validate types
         if (typeof data.id !== 'string') throw new Error('CharacterProfile: id must be a string');
         if (typeof data.name !== 'string') throw new Error('CharacterProfile: name must be a string');
-        if (typeof data.race !== 'string') throw new Error('CharacterProfile: race must be a string');
-        if (typeof data.class !== 'string') throw new Error('CharacterProfile: class must be a string');
+        if (data.race && typeof data.race !== 'string') throw new Error('CharacterProfile: race must be a string');
+        if (data.class && typeof data.class !== 'string') throw new Error('CharacterProfile: class must be a string');
         if (data.dialogueAttitude && !Object.values(DialogueAttitudeEnum).includes(data.dialogueAttitude)) throw new Error('CharacterProfile: dialogueAttitude must be a valid DialogueAttitudeEnum value');
     }
 
@@ -72,9 +70,9 @@ export class CharacterProfile {
         profile.race = data.race;
         profile.class = data.class;
         profile.dialogueAttitude = data.dialogueAttitude;
-        profile.goals = CharacterGoals.build(data.goals);
-        profile.inventory = CharacterInventory.build(data.inventory);
-        profile.knowledge = CharacterKnowledge.build(data.knowledge);
+        profile.goals = data.goals ? CharacterGoals.build(data.goals) : undefined;
+        profile.inventory = data.inventory ? CharacterInventory.build(data.inventory) : undefined;
+        profile.knowledge = data.knowledge ? CharacterKnowledge.build(data.knowledge) : undefined;
         profile.skills = data.skills;
         profile.stats = data.stats;
         profile.traits = data.traits;
