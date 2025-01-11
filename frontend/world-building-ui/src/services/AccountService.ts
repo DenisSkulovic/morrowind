@@ -8,13 +8,13 @@ import { AccountServiceClient } from "../proto/AccountServiceClientPb";
 import { Account } from '../class/entities/Account';
 import Serializer from '../serialize/serializer';
 import { AccountDTO } from "../proto/entities_pb";
-import { backendURL } from "../config";
+import { contentBackendURL } from "../config";
 
 export class AccountService {
     private client: AccountServiceClient;
 
     constructor() {
-        this.client = new AccountServiceClient(backendURL);
+        this.client = new AccountServiceClient(contentBackendURL);
     }
 
     async createAccountAndUser(username: string, passwordHash: string, email: string, role: string): Promise<Account> {

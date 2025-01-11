@@ -1,7 +1,7 @@
 import { Context } from "../class/Context";
 import { ActivityRecord } from "../class/entities/ActivityRecord";
 import { SearchQuery } from "../class/search/SearchQuery";
-import { backendURL } from "../config";
+import { contentBackendURL } from "../config";
 import { activityRecordsHeadLimit } from "../config/dashboardWorld";
 import { ActivityClearAllRequest, ActivityClearAllResponse, ActivityCreateRequest, ActivityCreateResponse, ActivityDTO, ActivityHeadRequest, ActivityHeadResponse, ActivitySearchRequest, ActivitySearchResponse, } from "../proto/activity_pb";
 import { ActivityServiceClient } from "../proto/ActivityServiceClientPb";
@@ -12,7 +12,7 @@ export class ActivityRecordsService {
     private client: ActivityServiceClient
 
     constructor() {
-        this.client = new ActivityServiceClient(backendURL);
+        this.client = new ActivityServiceClient(contentBackendURL);
     }
 
     async search(query: SearchQuery, context: Context): Promise<{

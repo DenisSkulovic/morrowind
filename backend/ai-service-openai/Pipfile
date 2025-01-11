@@ -4,11 +4,13 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-grpcio = "*"
-grpcio-tools = "*"
 grpcio-status = "*"
 redis = "*"
 celery = "*"
+grpcio = "*"
+grpcio-tools = "*"
+asyncio = "*"
+aio-pika = "*"
 openai = "*"
 
 [dev-packages]

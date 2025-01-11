@@ -4,38 +4,53 @@ services:
   #============================================================
   # BACKEND - AI Services
   #============================================================
-  ai-service-server:
+  ai-service-openai-proto-generator:
     build:
-      context: ./backend/ai-service
-    env_file:
-      - ./ai-service-server.env
-    command: python3 server.py
-    ports:
-      - "50051:50051"
-    depends_on:
-      - ai-service-redis
+      context: ./backend/ai-service-openai
+      dockerfile: Dockerfile
+    volumes:
+      - ./backend/ai-service-openai/proto:/proto
+      - ./backend/ai-service-openai/app/proto:/app/proto
+    entrypoint: [ "python3", "app/helper_proto_generator.py" ]
     profiles:
       - backend
       - fullstack
 
-  ai-service-worker:
+  ai-service-api-openai:
     build:
-      context: ./backend/ai-service
+      context: ./backend/ai-service-openai
+      dockerfile: Dockerfile
     env_file:
-      - ./ai-service-worker.env
-    command: python3 worker.py
+      - ./backend/ai-service-openai/ai-service-api-openai.env
     ports:
-      - "50052:50052"
+      - "${PORT:-50061}:${PORT:-50061}"
     depends_on:
-      - ai-service-redis
+      - ai-service-rabbitmq
+      - ai-service-openai-proto-generator
     profiles:
       - backend
       - fullstack
 
-  ai-service-redis:
-    image: redis:latest
+  ai-service-worker-openai:
+    build:
+      context: ./backend/ai-service-openai
+      dockerfile: Dockerfile
+    env_file:
+      - ./backend/ai-service-openai/ai-service-worker-openai.env
+    depends_on:
+      - ai-service-rabbitmq
+      - ai-service-openai-proto-generator
+    profiles:
+      - backend
+      - fullstack
+
+  ai-service-rabbitmq:
+    image: rabbitmq:3-management
+    env_file:
+      - ./backend/ai-service-rabbitmq.env
     ports:
-      - "6379:6379"
+      - "${PORT:-5672}:5672"
+      - "${MANAGEMENT_PORT:-15672}:15672" # RabbitMQ Management UI
     profiles:
       - backend
       - fullstack
@@ -47,12 +62,12 @@ services:
     build:
       context: ./backend/dialogue-service
     env_file:
-      - ./dialogue-service.env
+      - ./backend/dialogue-service/dialogue-service.env
     command: python3 server.py
     ports:
-      - "50053:50053"
+      - "${PORT:-50053}:${PORT:-50053}"
     depends_on:
-      - ai-service-server
+      - ai-service-api-openai
       - dialogue-state-redis
     profiles:
       - backend
@@ -60,8 +75,10 @@ services:
 
   dialogue-state-redis:
     image: redis:latest
+    env_file:
+      - ./backend/dialogue-service/dialogue-service.env
     ports:
-      - "6380:6379"
+      - "${REDIS_PORT:-6379}:6379"
     profiles:
       - backend
       - fullstack
@@ -88,7 +105,7 @@ services:
       context: ./backend/content-service
       dockerfile: Dockerfile.dev
     env_file:
-      - ./content-service.env
+      - ./backend/content-service/content-service.env
     container_name: content_service
     logging:
       driver: "json-file"
@@ -97,7 +114,7 @@ services:
         max-file: "3"
     restart: always
     ports:
-      - "50051:50051"
+      - "${PORT:-50051}:${PORT:-50051}"
     volumes:
       - ./backend/content-service:/usr/src/app
       - /usr/src/app/node_modules
@@ -116,18 +133,11 @@ services:
     image: envoyproxy/envoy:v1.22.0
     container_name: envoy_proxy
     restart: always
-    environment:
-      - CONTENT_SERVICE_HOST
-      - CONTENT_SERVICE_PORT
-      - DIALOGUE_SERVICE_HOST
-      - DIALOGUE_SERVICE_PORT
-      - FRONTEND_UI_PORT
-      - ENVOY_ADMIN_PORT
     env_file:
       - ./envoy/envoy.env
     ports:
-      - "${FRONTEND_UI_PORT}:${FRONTEND_UI_PORT}"
-      - "${ENVOY_ADMIN_PORT}:${ENVOY_ADMIN_PORT}"
+      - "${FRONTEND_UI_PORT:-8080}:8080"
+      - "${ENVOY_ADMIN_PORT:-9901}:9901"
     volumes:
       - ./envoy/envoy.yaml:/etc/envoy/envoy.yaml
       - ./envoy/envoy_access.log:/var/log/envoy/envoy_access.log
@@ -143,11 +153,11 @@ services:
   world-db:
     image: postgres:14
     env_file:
-      - ./world-db.env
+      - ./backend/world-db.env
     container_name: world_db
     restart: always
     ports:
-      - "55433:5432"
+      - "${PORT:-55432}:5432"
     volumes:
       - world_db_data:/var/lib/postgresql/data
     profiles:
@@ -160,9 +170,9 @@ services:
     container_name: campaign_db
     restart: always
     env_file:
-      - ./campaign-db.env
+      - ./backend/campaign-db.env
     ports:
-      - "55434:5432"
+      - "${PORT:-55433}:5432"
     volumes:
       - campaign_db_data:/var/lib/postgresql/data
     profiles:
@@ -192,11 +202,11 @@ services:
       context: ./frontend/world-building-ui
       dockerfile: Dockerfile.dev
     env_file:
-      - ./world-building-ui.env
+      - ./frontend/world-building-ui/world-building-ui.env
     container_name: world_building_ui
     restart: always
     ports:
-      - "3001:3000"
+      - "${FRONTEND_UI_PORT:-3001}:3000"
     volumes:
       - ./frontend/world-building-ui:/usr/src/app
     depends_on:

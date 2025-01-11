@@ -9,18 +9,17 @@ import {
 } from "../proto/campaign_pb";
 import Serializer from "../serialize/serializer";
 import { CampaignDTO, ContextDTO, SearchQueryDTO } from "../proto/entities_pb";
-import { User } from "../class/entities/User";
-import { backendURL } from "../config";
+import { contentBackendURL } from "../config";
 
 export class CampaignService {
     private client: CampaignServiceClient;
 
     constructor() {
-        this.client = new CampaignServiceClient(backendURL);
+        this.client = new CampaignServiceClient(contentBackendURL);
     }
 
     async createCampaign(campaignObj: Campaign, userId: string): Promise<Campaign> {
-        campaignObj.user = User.build({ id: userId });
+        campaignObj.user = userId
         const request = new CreateCampaignRequest();
         request.setCampaign(Serializer.toDTO(campaignObj, new CampaignDTO()));
         return new Promise((resolve, reject) => {

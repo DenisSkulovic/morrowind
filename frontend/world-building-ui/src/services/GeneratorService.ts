@@ -11,7 +11,7 @@ import { GenerateItemsRequest, GenerateCharactersRequestCustom, GenerateCharacte
 import { EquipmentSlot } from "../class/entities/content/Slot/EquipmentSlot";
 import { StorageSlot } from "../class/entities/content/Slot/StorageSlot";
 import { EntityEnum } from "../enum/EntityEnum";
-import { backendURL } from "../config";
+import { contentBackendURL } from "../config";
 
 export type GenerationResult = {
     [EntityEnum.Item]?: {
@@ -38,7 +38,7 @@ export class GeneratorService {
     private client: GeneratorServiceClient;
 
     constructor() {
-        this.client = new GeneratorServiceClient(backendURL);
+        this.client = new GeneratorServiceClient(contentBackendURL);
     }
 
     private createEntityMaps<T extends { id: string }>(entities: T[]) {

@@ -3,7 +3,8 @@ import { AppModule } from './app.module';
 import { Transport } from '@nestjs/microservices';
 import { join } from 'path';
 
-const CONTENT_SERVICE_PORT = process.env.CONTENT_SERVICE_PORT || 50051;
+const PORT = process.env.PORT;
+if (!PORT) throw new Error('PORT is not set');
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule, {
@@ -20,11 +21,11 @@ async function bootstrap() {
     });
     console.log(`[ContentService - bootstrap] CORS enabled`);
 
-    // Configure gRPC to listen on port CONTENT_SERVICE_PORT
+    // Configure gRPC to listen on port PORT
     app.connectMicroservice({
         transport: Transport.GRPC,
         options: {
-            url: `0.0.0.0:${CONTENT_SERVICE_PORT}`,
+            url: `0.0.0.0:${PORT}`,
             package: [
                 'entities',
                 'account',
@@ -52,8 +53,8 @@ async function bootstrap() {
     });
 
     await app.startAllMicroservices();
-    await app.listen(CONTENT_SERVICE_PORT);
-    console.log(`Application is running on http://localhost:${CONTENT_SERVICE_PORT}`);
+    await app.listen(PORT);
+    console.log(`Application is running on http://localhost:${PORT}`);
 }
 
 bootstrap();

@@ -3,9 +3,9 @@
 import grpc
 import warnings
 
-import ai_service_openai_v1_pb2 as ai__service__openai__v1__pb2
+import ai_service_common_pb2 as ai__service__common__pb2
 
-GRPC_GENERATED_VERSION = '1.68.1'
+GRPC_GENERATED_VERSION = '1.69.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -35,25 +35,25 @@ class AiServiceOpenAIv1Stub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.ProcessRequest = channel.unary_unary(
-                '/ai_service_openai_v1.AiServiceOpenAIv1/ProcessRequest',
-                request_serializer=ai__service__openai__v1__pb2.AiRequest.SerializeToString,
-                response_deserializer=ai__service__openai__v1__pb2.AiResponse.FromString,
+        self.ProcessPrompt = channel.unary_unary(
+                '/ai_service_openai_v1.AiServiceOpenAIv1/ProcessPrompt',
+                request_serializer=ai__service__common__pb2.AiRequest.SerializeToString,
+                response_deserializer=ai__service__common__pb2.AiResponse.FromString,
                 _registered_method=True)
-        self.StreamProcessRequest = channel.unary_stream(
-                '/ai_service_openai_v1.AiServiceOpenAIv1/StreamProcessRequest',
-                request_serializer=ai__service__openai__v1__pb2.AiRequest.SerializeToString,
-                response_deserializer=ai__service__openai__v1__pb2.AiResponse.FromString,
+        self.StreamProcessPrompt = channel.unary_stream(
+                '/ai_service_openai_v1.AiServiceOpenAIv1/StreamProcessPrompt',
+                request_serializer=ai__service__common__pb2.AiRequest.SerializeToString,
+                response_deserializer=ai__service__common__pb2.AiResponse.FromString,
                 _registered_method=True)
         self.Interrupt = channel.unary_unary(
                 '/ai_service_openai_v1.AiServiceOpenAIv1/Interrupt',
-                request_serializer=ai__service__openai__v1__pb2.InterruptRequest.SerializeToString,
-                response_deserializer=ai__service__openai__v1__pb2.InterruptResponse.FromString,
+                request_serializer=ai__service__common__pb2.InterruptRequest.SerializeToString,
+                response_deserializer=ai__service__common__pb2.InterruptResponse.FromString,
                 _registered_method=True)
         self.CheckStatus = channel.unary_unary(
                 '/ai_service_openai_v1.AiServiceOpenAIv1/CheckStatus',
-                request_serializer=ai__service__openai__v1__pb2.CheckStatusRequest.SerializeToString,
-                response_deserializer=ai__service__openai__v1__pb2.CheckStatusResponse.FromString,
+                request_serializer=ai__service__common__pb2.CheckStatusRequest.SerializeToString,
+                response_deserializer=ai__service__common__pb2.CheckStatusResponse.FromString,
                 _registered_method=True)
 
 
@@ -61,13 +61,13 @@ class AiServiceOpenAIv1Servicer(object):
     """AI Service Definition
     """
 
-    def ProcessRequest(self, request, context):
+    def ProcessPrompt(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def StreamProcessRequest(self, request, context):
+    def StreamProcessPrompt(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -88,25 +88,25 @@ class AiServiceOpenAIv1Servicer(object):
 
 def add_AiServiceOpenAIv1Servicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'ProcessRequest': grpc.unary_unary_rpc_method_handler(
-                    servicer.ProcessRequest,
-                    request_deserializer=ai__service__openai__v1__pb2.AiRequest.FromString,
-                    response_serializer=ai__service__openai__v1__pb2.AiResponse.SerializeToString,
+            'ProcessPrompt': grpc.unary_unary_rpc_method_handler(
+                    servicer.ProcessPrompt,
+                    request_deserializer=ai__service__common__pb2.AiRequest.FromString,
+                    response_serializer=ai__service__common__pb2.AiResponse.SerializeToString,
             ),
-            'StreamProcessRequest': grpc.unary_stream_rpc_method_handler(
-                    servicer.StreamProcessRequest,
-                    request_deserializer=ai__service__openai__v1__pb2.AiRequest.FromString,
-                    response_serializer=ai__service__openai__v1__pb2.AiResponse.SerializeToString,
+            'StreamProcessPrompt': grpc.unary_stream_rpc_method_handler(
+                    servicer.StreamProcessPrompt,
+                    request_deserializer=ai__service__common__pb2.AiRequest.FromString,
+                    response_serializer=ai__service__common__pb2.AiResponse.SerializeToString,
             ),
             'Interrupt': grpc.unary_unary_rpc_method_handler(
                     servicer.Interrupt,
-                    request_deserializer=ai__service__openai__v1__pb2.InterruptRequest.FromString,
-                    response_serializer=ai__service__openai__v1__pb2.InterruptResponse.SerializeToString,
+                    request_deserializer=ai__service__common__pb2.InterruptRequest.FromString,
+                    response_serializer=ai__service__common__pb2.InterruptResponse.SerializeToString,
             ),
             'CheckStatus': grpc.unary_unary_rpc_method_handler(
                     servicer.CheckStatus,
-                    request_deserializer=ai__service__openai__v1__pb2.CheckStatusRequest.FromString,
-                    response_serializer=ai__service__openai__v1__pb2.CheckStatusResponse.SerializeToString,
+                    request_deserializer=ai__service__common__pb2.CheckStatusRequest.FromString,
+                    response_serializer=ai__service__common__pb2.CheckStatusResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -121,7 +121,7 @@ class AiServiceOpenAIv1(object):
     """
 
     @staticmethod
-    def ProcessRequest(request,
+    def ProcessPrompt(request,
             target,
             options=(),
             channel_credentials=None,
@@ -134,9 +134,9 @@ class AiServiceOpenAIv1(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/ai_service_openai_v1.AiServiceOpenAIv1/ProcessRequest',
-            ai__service__openai__v1__pb2.AiRequest.SerializeToString,
-            ai__service__openai__v1__pb2.AiResponse.FromString,
+            '/ai_service_openai_v1.AiServiceOpenAIv1/ProcessPrompt',
+            ai__service__common__pb2.AiRequest.SerializeToString,
+            ai__service__common__pb2.AiResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -148,7 +148,7 @@ class AiServiceOpenAIv1(object):
             _registered_method=True)
 
     @staticmethod
-    def StreamProcessRequest(request,
+    def StreamProcessPrompt(request,
             target,
             options=(),
             channel_credentials=None,
@@ -161,9 +161,9 @@ class AiServiceOpenAIv1(object):
         return grpc.experimental.unary_stream(
             request,
             target,
-            '/ai_service_openai_v1.AiServiceOpenAIv1/StreamProcessRequest',
-            ai__service__openai__v1__pb2.AiRequest.SerializeToString,
-            ai__service__openai__v1__pb2.AiResponse.FromString,
+            '/ai_service_openai_v1.AiServiceOpenAIv1/StreamProcessPrompt',
+            ai__service__common__pb2.AiRequest.SerializeToString,
+            ai__service__common__pb2.AiResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -189,8 +189,8 @@ class AiServiceOpenAIv1(object):
             request,
             target,
             '/ai_service_openai_v1.AiServiceOpenAIv1/Interrupt',
-            ai__service__openai__v1__pb2.InterruptRequest.SerializeToString,
-            ai__service__openai__v1__pb2.InterruptResponse.FromString,
+            ai__service__common__pb2.InterruptRequest.SerializeToString,
+            ai__service__common__pb2.InterruptResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -216,8 +216,8 @@ class AiServiceOpenAIv1(object):
             request,
             target,
             '/ai_service_openai_v1.AiServiceOpenAIv1/CheckStatus',
-            ai__service__openai__v1__pb2.CheckStatusRequest.SerializeToString,
-            ai__service__openai__v1__pb2.CheckStatusResponse.FromString,
+            ai__service__common__pb2.CheckStatusRequest.SerializeToString,
+            ai__service__common__pb2.CheckStatusResponse.FromString,
             options,
             channel_credentials,
             insecure,

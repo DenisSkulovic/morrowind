@@ -16,7 +16,7 @@ FROM node:18
 
 WORKDIR /usr/src/app
 COPY --from=build /usr/src/app ./
-EXPOSE 3000
+EXPOSE ${FRONTEND_UI_PORT}
 
 # Start the app
 CMD ["npm", "run", "dev"]

@@ -1,6 +1,5 @@
 import { Context } from "../class/Context";
 import { SearchQuery } from "../class/search/SearchQuery";
-import { User } from "../class/entities/User";
 import { World } from "../class/entities/World";
 import { PresetEnum } from "../enum/entityEnums";
 import { deserializeEnum, serializeEnum } from "../enum/util";
@@ -15,13 +14,13 @@ import {
 } from "../proto/world_pb";
 import Serializer from "../serialize/serializer";
 import { ContextDTO, PresetEnumDTO, SearchQueryDTO, WorldDTO } from "../proto/entities_pb";
-import { backendURL } from "../config";
+import { contentBackendURL } from "../config";
 
 export class WorldService {
     private client: WorldServiceClient;
 
     constructor() {
-        this.client = new WorldServiceClient(backendURL);
+        this.client = new WorldServiceClient(contentBackendURL);
     }
 
     async createWorld(worldObj: World, userId: string): Promise<World> {
