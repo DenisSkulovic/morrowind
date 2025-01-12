@@ -17,5 +17,4 @@ COPY . .
 # Expose default port (can be overridden via env)
 EXPOSE ${PORT}
 
-# Entry point script that checks ROLE
-ENTRYPOINT ["python3", "app/entrypoint.py"]
+ENTRYPOINT ["python3", "app/entrypoint_dev.py"]

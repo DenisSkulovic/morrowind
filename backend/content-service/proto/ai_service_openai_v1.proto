@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package ai_service_openai_v1;
+
+import "ai_service_common.proto";
+
+// AI Service Definition
+service AiServiceOpenAIv1 {
+    rpc ProcessPrompt(ai_service_common.AiRequest) returns (ai_service_common.AiResponse);
+    rpc StreamProcessPrompt(ai_service_common.AiRequest) returns (stream ai_service_common.AiResponse);
+    rpc Interrupt(ai_service_common.InterruptRequest) returns (ai_service_common.InterruptResponse);
+    rpc CheckStatus(ai_service_common.CheckStatusRequest) returns (ai_service_common.CheckStatusResponse);
+}

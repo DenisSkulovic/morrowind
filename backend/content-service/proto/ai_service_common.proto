@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package ai_service_common;
+
+// Request to the AI Service
+message AiRequest {
+    string requestId = 1;
+    string prompt = 2;                 // The main prompt or input to be sent to the AI
+    AiRequestMetadata metadata = 3;                // General context or metadata for the request
+    AiRequestOptions options = 4;   // Options for AI behavior (e.g., temperature, max tokens)
+}
+
+message AiRequestMetadata {
+    int64 timestamp = 1; // Unix timestamp when the request was created
+    string useCase = 2;
+}
+message AiRequestOptions {
+    string model = 1;
+    float temperature = 2;
+    int32 maxTokens = 3;
+    int32 timeout = 4;  // Maximum processing time in seconds (optional)
+}
+
+// Response from the AI Service
+message AiResponse {
+    string output = 1;                 // Raw output from the AI
+    string errorMessage = 2;           // Error message in case of failure
+    bool isLast = 3;                   // Whether this is the last chunk of the response
+}
+
+
+
+message AiResponseMetadata {
+    int64 timestamp = 1; // Unix timestamp when the request was created
+    string useCase = 2;
+    string context = 3;
+}
+
+
+// Interrupt Request
+message InterruptRequest {
+    string requestId = 1;              // The ID of the request to interrupt
+}
+
+// Interrupt Response
+message InterruptResponse {
+    string requestId = 1;              // The ID of the interrupted request
+    bool success = 2;                  // Whether the interruption was successful
+    string status = 3;                 // Status after interruption: queued, interrupted, completed
+    string message = 4;                // Additional information about the interruption
+}
+
+message CheckStatusRequest {
+    string requestId = 1;              // The ID of the request whose status is being checked
+}
+
+message CheckStatusResponse {
+    AiTaskStatusEnumDTO status = 1;    // Task status: queued, processing, completed, failed
+}
+
+
+enum AiTaskStatusEnumDTO {
+    QUEUED = 0;
+    PROCESSING = 1;
+    COMPLETED = 2;
+    FAILED = 3;
+}

@@ -15,14 +15,6 @@ ENV_FILE_WORKER := ./ai-service-worker-openai.env
 proto:
 	pipenv run $(PYTHON) app/helper_proto_generator.py
 
-# Generate Protobuf files using Docker
-proto-docker:
-	docker run --rm \
-		-v $(PWD)/proto:/proto \
-		-v $(PWD)/app/proto:/app/proto \
-		--entrypoint python3 \
-		$(DOCKER_IMAGE):$(DOCKER_TAG) app/helper_proto_generator.py
-
 # Run the server locally
 server:
 	ROLE=server ENV_FILE=$(ENV_FILE_API) pipenv run $(PYTHON) entrypoint.py

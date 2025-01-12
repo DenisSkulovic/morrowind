@@ -4,7 +4,7 @@ from pathlib import Path
 
 # Define paths
 PROTO_SRC = "./proto"
-PROTO_OUT = "./app/proto"
+PROTO_OUT = "./"
 
 # Ensure output directory exists
 Path(PROTO_OUT).mkdir(parents=True, exist_ok=True)

@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   #============================================================
   # BACKEND - AI Services
@@ -7,40 +5,49 @@ services:
   ai-service-openai-proto-generator:
     build:
       context: ./backend/ai-service-openai
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     volumes:
       - ./backend/ai-service-openai/proto:/proto
       - ./backend/ai-service-openai/app/proto:/app/proto
     entrypoint: [ "python3", "app/helper_proto_generator.py" ]
     profiles:
+      - ai
       - backend
       - fullstack
 
   ai-service-api-openai:
     build:
       context: ./backend/ai-service-openai
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     env_file:
       - ./backend/ai-service-openai/ai-service-api-openai.env
+    command: [ "python3", "/app/entrypoint_dev.py" ]
     ports:
       - "${PORT:-50061}:${PORT:-50061}"
+    volumes:
+      - ./backend/ai-service-openai:/app
     depends_on:
-      - ai-service-rabbitmq
       - ai-service-openai-proto-generator
+      - ai-service-rabbitmq
     profiles:
+      - ai
       - backend
       - fullstack
 
   ai-service-worker-openai:
     build:
       context: ./backend/ai-service-openai
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     env_file:
       - ./backend/ai-service-openai/ai-service-worker-openai.env
+    command: [ "python3", "/app/entrypoint_dev.py" ]
     depends_on:
       - ai-service-rabbitmq
       - ai-service-openai-proto-generator
+    volumes:
+      - ./backend/ai-service-openai:/app
     profiles:
+      - ai
       - backend
       - fullstack
 
@@ -48,10 +55,16 @@ services:
     image: rabbitmq:3-management
     env_file:
       - ./backend/ai-service-rabbitmq.env
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "ping" ]
+      interval: 5s
+      timeout: 10s
+      retries: 5
     ports:
       - "${PORT:-5672}:5672"
       - "${MANAGEMENT_PORT:-15672}:15672" # RabbitMQ Management UI
     profiles:
+      - ai
       - backend
       - fullstack
 
@@ -61,9 +74,9 @@ services:
   dialogue-service:
     build:
       context: ./backend/dialogue-service
+      dockerfile: Dockerfile.dev
     env_file:
       - ./backend/dialogue-service/dialogue-service.env
-    command: python3 server.py
     ports:
       - "${PORT:-50053}:${PORT:-50053}"
     depends_on:
@@ -78,7 +91,7 @@ services:
     env_file:
       - ./backend/dialogue-service/dialogue-service.env
     ports:
-      - "${REDIS_PORT:-6379}:6379"
+      - "${REDIS_PORT:-6380}:6379"
     profiles:
       - backend
       - fullstack
@@ -96,9 +109,6 @@ services:
     profiles:
       - backend
       - fullstack
-    depends_on:
-      - world-db
-      - campaign-db
 
   content-service:
     build:
@@ -141,10 +151,8 @@ services:
     volumes:
       - ./envoy/envoy.yaml:/etc/envoy/envoy.yaml
       - ./envoy/envoy_access.log:/var/log/envoy/envoy_access.log
-    depends_on:
-      - content-service
-      - dialogue-service
     profiles:
+      - envoy
       - fullstack
 
   #============================================================
@@ -211,8 +219,6 @@ services:
       - ./frontend/world-building-ui:/usr/src/app
     depends_on:
       - world-building-ui-proto-generator
-      - content-service
-      - envoy
     profiles:
       - frontend
       - fullstack

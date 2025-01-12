@@ -12,6 +12,7 @@ grpcio-tools = "*"
 asyncio = "*"
 aio-pika = "*"
 openai = "*"
+watchdog = "*"
 
 [dev-packages]
 

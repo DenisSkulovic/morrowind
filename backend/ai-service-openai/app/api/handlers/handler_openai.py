@@ -1,10 +1,10 @@
 import json
 from aio_pika import connect_robust
-from app.proto.ai_service_pb2 import AiResponse
-from app.proto.ai_service_pb2_grpc import AiServiceServicer
-from config import WORKER_QUEUE
+from ai_service_common_pb2 import AiResponse
+from ai_service_openai_v1_pb2_grpc import AiServiceOpenAIv1Servicer
+from app.config import WORKER_QUEUE
 
-class OpenAIHandler(AiServiceServicer):
+class OpenAIHandler(AiServiceOpenAIv1Servicer):
     def __init__(self, rabbitmq_url):
         self.rabbitmq_url = rabbitmq_url
 

@@ -1,55 +1,8 @@
 import { Injectable, Inject, Logger } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
 import { Observable, catchError, firstValueFrom, map } from 'rxjs';
+import { AiRequest, AiResponse, InterruptRequest, InterruptResponse, CheckStatusRequest, CheckStatusResponse } from '../../../proto/ai_service_common';
 
-interface InterruptRequest {
-    requestId: string;
-}
-
-interface InterruptResponse {
-    requestId: string;
-    success: boolean;
-}
-
-interface CheckStatusRequest {
-    requestId: string;
-}
-
-interface CheckStatusResponse {
-    requestId: string;
-    status: string;
-}
-
-interface AiRequest {
-    requestId: string;
-    prompt: string;
-    metadata?: {
-        timestamp: number;
-        useCase: string;
-        context: string;
-    };
-    options?: {
-        model: string;
-        temperature: string;
-        maxTokens: string;
-        timeout: number;
-    };
-}
-
-interface AiResponse {
-    requestId: string;
-    success: boolean;
-    status: string;
-    output: string;
-    errorMessage?: string;
-    metadata?: {
-        timestamp: number;
-        useCase: string;
-        context: string;
-    };
-    isLast: boolean;
-    chunkId?: number;
-}
 
 export interface IAiService {
     processRequest(request: AiRequest): Promise<AiResponse>;
@@ -79,7 +32,6 @@ export class AiContentGeneratorService {
                 metadata: {
                     timestamp: Date.now(),
                     useCase: metadata.useCase || 'content_generation',
-                    context: metadata.context || ''
                 },
                 options: {
                     model: options.model || 'gpt-4',
@@ -89,8 +41,8 @@ export class AiContentGeneratorService {
                 }
             };
 
-            const response = this.aiService.processRequest(aiRequest);
-            return firstValueFrom(response);
+            const response = await this.aiService.processRequest(aiRequest);
+            return response
         } catch (error) {
             this.logger.error(`Error processing AI request: ${error instanceof Error ? error.message : 'Unknown error'}`);
             throw error;
@@ -105,7 +57,7 @@ export class AiContentGeneratorService {
         this.logger.debug(`Generating content with request: ${JSON.stringify(request)}`);
 
         try {
-            const response = await this.processAiRequest(
+            const response: AiResponse = await this.processAiRequest(
                 this.buildPrompt(request.contentType, request.parameters),
                 {
                     useCase: 'content_generation',
@@ -113,14 +65,14 @@ export class AiContentGeneratorService {
                 }
             );
 
-            if (!response.success) {
+            if (response.errorMessage) {
                 throw new Error(response.errorMessage || 'Content generation failed');
             }
 
             return {
                 success: true,
                 content: JSON.parse(response.output),
-                requestId: response.requestId
+                requestId: request.requestId
             };
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : 'Unknown error';
@@ -141,26 +93,25 @@ export class AiContentGeneratorService {
 
         try {
             // Create the AI service request
-            const aiRequest = {
+            const aiRequest: AiRequest = {
                 requestId: request.requestId,
                 prompt: this.buildPrompt(request.contentType, request.parameters),
                 metadata: {
                     timestamp: Date.now(),
                     useCase: 'content_generation',
-                    context: request.contentType
                 },
                 options: {
-                    model: 'gpt-4',
+                    model: 'gpt-4o-mini',
                     temperature: 0.7,
                     maxTokens: 2000,
-                    stream: true // Enable streaming response
+                    timeout: 30
                 }
             };
 
             // Return the stream from AI service
             return this.aiService.streamProcessRequest(aiRequest).pipe(
-                map(chunk => ({
-                    content: chunk.content,
+                map((chunk: AiResponse) => ({
+                    output: chunk.output,
                     requestId: request.requestId,
                     timestamp: Date.now()
                 })),

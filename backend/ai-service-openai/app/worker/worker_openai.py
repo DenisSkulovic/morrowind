@@ -1,8 +1,8 @@
 import asyncio
 import json
-from config import PROVIDER
+from app.config import PROVIDER
 from aio_pika import connect_robust, IncomingMessage
-from config import RABBITMQ_URL, WORKER_QUEUE, OPENAI_API_KEY
+from app.config import RABBITMQ_URL, WORKER_QUEUE, OPENAI_API_KEY
 import openai
 
 openai.api_key = OPENAI_API_KEY
