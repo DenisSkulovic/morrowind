@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { FormSelectOption } from '../class/FormSelectOption';
 import { FieldComponentEnum } from '../enum/FieldComponentEnum';
 import { Context } from '../class/Context';
-import { SearchQuery } from '../class/search/SearchQuery';
+import { SearchQuery } from '../class/search/grpc/SearchQuery';
 import { ClassConstructor } from '../types';
 import { EntityMetadataKeyEnum } from '../enum/EntityMetadataKeyEnum';
 

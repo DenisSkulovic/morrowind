@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { searchWorldsThunk, getSearchKey, WorldSearchResult, clearSearchResultsForKey } from '../store/slices/worldSlice';
 import { Context } from '../class/Context';
 import { User } from '../class/entities/User';
-import { SearchQuery } from '../class/search/SearchQuery';
+import { SearchQuery } from '../class/search/grpc/SearchQuery';
 import { AppDispatch, RootState } from '../store/store';
 import { World } from '../class/entities/World';
 import { useLoading } from "./useLoading";

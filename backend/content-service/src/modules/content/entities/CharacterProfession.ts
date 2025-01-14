@@ -9,42 +9,56 @@ import { User } from "../../user/entities/User";
 import { World } from "../../world/entities/World";
 import { Serializable } from "../../../decorator/serializable.decorator";
 import { Serializer, SerializeStrategyEnum } from "../../../serializer";
+import {
+    Field as GQLField,
+    ID as GQLID,
+    ObjectType as GQLObjectType,
+} from '@nestjs/graphql';
 
 @Entity()
+@GQLObjectType({ implements: TaggableContentBase })
 export class CharacterProfession extends TaggableContentBase {
     @PrimaryColumn()
     @Serializable()
+    @GQLField(() => GQLID)
     id!: string;
 
     idPrefix = "CHARACTER_PROFESSION"
 
     @ManyToMany(() => Character, character => character.professions, {})
     @JoinTable()
+    @GQLField(() => [Character])
     characters?: Character[];
 
     @ManyToMany(() => MemoryPool, {})
     @JoinTable()
     @Serializable({ strategy: SerializeStrategyEnum.ID })
+    @GQLField(() => [MemoryPool])
     memoryPools?: MemoryPool[]
 
     @Column({ type: "varchar", length: 60 })
     @Serializable()
+    @GQLField()
     name!: string; // E.g., "Fisherman", "Kwama Egg Miner", "Imperial Soldier"
 
 
     @ManyToMany(() => Tag, (tag) => tag.characterProfessions, {})
+    @GQLField(() => [Tag])
     @Serializable({ strategy: SerializeStrategyEnum.ID })
     tags?: Tag[];
 
     @ManyToOne(() => User, { nullable: true, })
+    @GQLField(() => User, { nullable: true })
     @Serializable({ strategy: SerializeStrategyEnum.ID })
     user!: User;
 
     @ManyToOne(() => Campaign, { nullable: true, })
+    @GQLField(() => Campaign, { nullable: true })
     @Serializable({ strategy: SerializeStrategyEnum.ID })
     campaign?: Campaign;
 
     @ManyToOne(() => World, { nullable: true, })
+    @GQLField(() => World, { nullable: true })
     @Serializable({ strategy: SerializeStrategyEnum.ID })
     world!: World;
 

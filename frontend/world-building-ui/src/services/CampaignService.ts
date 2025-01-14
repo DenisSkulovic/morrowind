@@ -1,5 +1,5 @@
 import { Context } from "../class/Context";
-import { SearchQuery } from "../class/search/SearchQuery";
+import { SearchQuery } from "../class/search/grpc/SearchQuery";
 import { Campaign } from "../class/entities/Campaign";
 import { CampaignServiceClient } from "../proto/CampaignServiceClientPb";
 import {

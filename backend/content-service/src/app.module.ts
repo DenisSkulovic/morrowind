@@ -16,9 +16,17 @@ import { InjectDataSourceModule } from './data-source/inject-datasource.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { worldDbOptions, campaignDbOptions } from './data-source/datasource-config';
 import { ActivityModule } from './modules/activity/activity.module';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { join } from 'path';
 
 @Module({
     imports: [
+        GraphQLModule.forRoot<ApolloDriverConfig>({
+            driver: ApolloDriver,
+            autoSchemaFile: join(process.cwd(), 'src/schema.gql'), // Auto-generate schema file
+            playground: true, // Enable GraphQL Playground
+        }),
         // Register World Database
         TypeOrmModule.forRootAsync({
             name: DataSourceEnum.DATA_SOURCE_WORLD,

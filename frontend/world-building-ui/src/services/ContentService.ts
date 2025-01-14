@@ -1,6 +1,6 @@
 import { ContentBase } from '../class/ContentBase';
 import { Context } from '../class/Context';
-import { SearchQuery } from '../class/search/SearchQuery';
+import { SearchQuery } from '../class/search/grpc/SearchQuery';
 import { ContentEntityMapService } from '../CONTENT_ENTITY_MAP';
 import { ContextDTO, DataSourceEnumDTO, SearchQueryDTO } from '../proto/entities_pb';
 import {
@@ -20,6 +20,7 @@ import Serializer from '../serialize/serializer';
 import { EntityEnum } from '../enum/EntityEnum';
 import { ClassConstructor } from '../types';
 import { contentBackendURL } from '../config';
+import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client';
 
 export class SearchContentResults {
     results!: ContentBase[];

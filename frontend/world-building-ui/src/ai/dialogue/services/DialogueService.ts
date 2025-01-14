@@ -13,41 +13,60 @@ import {
     KnowledgeBaseDTO,
     CharacterProfilesDTO,
     CharacterProfileDTO,
+    GetDialogueStateRequest,
+    DialogueStateFieldsEnumDTO,
+    GetDialogueStateResponse,
 } from "../../../proto/dialogue_pb";
 import { dialogueBackendURL } from "../../../config";
 import { io, Socket } from "socket.io-client";
 import { Character } from "../../../class/entities/content/Character";
+import { DialogueStateFieldsEnum } from "../enum/DialogueStateFieldsEnum";
+import { serializeEnum } from "../../../enum/util";
+import { ProgressDialogueRequest } from "../class/ProgressDialogueRequest";
+import { ScaleTypeEnum } from "../enum/ScaleTypeEnum";
+import { MessageChunk } from "../class/MessageChunk";
+import { DialogueOption } from "../class/DialogueOption";
+import { CharacterProfile } from "../class/CharacterProfile";
+import { WorldContext } from "../class/WorldContext";
+import { SceneContext } from "../class/WorldContext/SceneContext";
+import { WeatherContext } from "../class/WorldContext/WeatherContext";
+import { LocationContext } from "../class/WorldContext/LocationContext";
+import { TimeContext } from "../class/WorldContext/TimeContext";
+import { KnowledgeBase } from "../class/KnowledgeBase";
+import { AiServiceEnum } from "../enum/AiServiceEnum";
 
 
 
 export class DialogueService {
     private client: DialogueServiceClient;
-    private socket: Socket;
 
     constructor() {
         this.client = new DialogueServiceClient(dialogueBackendURL);
-        this.socket = io(dialogueBackendURL);
     }
+
+
 
     // gRPC method
     async initializeDialogue(
         initiatingParticipantId: string,
-        characters: Character[],
-        context: Context,
+        playerCharacterId: string,
+        aiProvider: AiServiceEnum,
+        dialogueParticipants: CharacterProfile[],
+        worldContext?: WorldContext,
+        knowledgeBase?: KnowledgeBase
     ): Promise<InitializeDialogueResponse> {
-        // extract data from db
-        const dialogueParticipants: CharacterProfile[] = [];
-        const dialogueHistory = new DialogueHistory();
-        const worldContext
-
         // build request
-        const characterProfilesDTO = new CharacterProfilesDTO();
-        characterProfilesDTO.setArrList(dialogueParticipants.map(character => Serializer.toDTO(character, new CharacterProfileDTO())));
         const request = new InitializeDialogueRequest();
         request.setInitiatingparticipantid(initiatingParticipantId);
+        request.setPlayercharacterid(playerCharacterId);
+        request.setAiprovider(aiProvider);
+
+        const characterProfilesDTO = new CharacterProfilesDTO();
+        characterProfilesDTO.setArrList(dialogueParticipants.map(character => Serializer.toDTO(character, new CharacterProfileDTO())));
         request.setDialogueparticipants(characterProfilesDTO);
-        request.setWorldcontext(Serializer.toDTO(context, new WorldContextDTO()));
-        request.setKnowledgebase(new KnowledgeBaseDTO());
+
+        if (worldContext) request.setWorldcontext(Serializer.toDTO(worldContext, new WorldContextDTO()));
+        if (knowledgeBase) request.setKnowledgebase(Serializer.toDTO(knowledgeBase, new KnowledgeBaseDTO()));
         request.setContext(new ContextDTO());
 
         return new Promise((resolve, reject) => {
@@ -59,12 +78,13 @@ export class DialogueService {
         });
     }
 
+
+
     // gRPC method
     async generatePlayerDialogueOptions(dialogueId: string, directionsQuantity: number, context: any): Promise<GeneratePlayerDialogueOptionsResponse> {
         const request = new GeneratePlayerDialogueOptionsRequest();
         request.setDialogueid(dialogueId);
         request.setDirectionsquantity(directionsQuantity);
-        request.setContext(context);
 
         return new Promise((resolve, reject) => {
             this.client.generatePlayerDialogueOptions(request, {}, (err, response) => {
@@ -75,29 +95,63 @@ export class DialogueService {
         });
     }
 
-    // WebSocket connection // TODO this for sure needs to be a gRPC stream, not websocket
-    progressDialogue(dialogueId: string, responseSelection: ResponseSelectionDTO): Promise<MessageChunk[]> {
-        const request = new ProgressDialogueRequest();
-        request.setDialogueid(dialogueId);
-        request.setResponseselection(responseSelection);
 
+
+    // WebSocket connection
+    progressDialogue(
+        dialogueId: string,
+        responseSelection: DialogueOption,
+        onChunk: (chunk: MessageChunk) => void,
+    ): Promise<void> {
         return new Promise((resolve, reject) => {
-            const chunks: MessageChunk[] = [];
-            const stream = this.client.sendMessage(request, {});
+            // Establish WebSocket connection
+            const socket: Socket = io(dialogueBackendURL);
 
-            stream.on('data', (chunk: MessageChunk) => {
-                chunks.push(chunk);
+            const request = ProgressDialogueRequest.build({
+                dialogueId: dialogueId,
+                selectedPlayerDialogueOption: responseSelection,
             });
 
-            stream.on('end', () => {
-                resolve(chunks);
+            socket.emit('progressDialogue', request);
+
+            socket.on('replyChunk', (chunk: MessageChunk) => {
+                onChunk(chunk);
             });
 
-            stream.on('error', (err) => {
+            socket.on('replyComplete', (message: any) => {
+                socket.close(); // Close the WebSocket connection
+                resolve();
+            });
+
+            socket.on('error', (err: any) => {
+                socket.close(); // Close the WebSocket connection on error
                 reject(err);
             });
         });
     }
+
+
+
+    // gRPC method
+    getDialogueState(
+        dialogueId: string,
+        fields: DialogueStateFieldsEnum[]
+    ): Promise<GetDialogueStateResponse> {
+        const dialogueStateFieldsEnumDTO = fields.map(field => serializeEnum(DialogueStateFieldsEnum, DialogueStateFieldsEnumDTO, field));
+        const request = new GetDialogueStateRequest();
+        request.setDialogueid(dialogueId);
+        request.setFieldsList(dialogueStateFieldsEnumDTO);
+
+        return new Promise((resolve, reject) => {
+            this.client.getDialogueState(request, {}, (err, response) => {
+                if (err) reject(err);
+                else if (!response) reject(new Error('No response from server'));
+                else resolve(response);
+            });
+        });
+    }
+
+
 
     // gRPC method
     async finalizeDialogue(dialogueId: string, context: Context): Promise<FinalizeDialogueResponse> {

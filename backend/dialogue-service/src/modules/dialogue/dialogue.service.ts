@@ -217,7 +217,6 @@ export class DialogueService implements IDialogueService {
         dialogueId: string,
         selectedPlayerDialogueOption: DialogueOption,
         onChunkReceived: (chunk: any) => void,
-        scaleType: ScaleTypeEnum,
     ): Promise<{ requestId: string, dialogueStep: DialogueStep }> {
         this.logger.debug(`Processing message for dialogue id: ${dialogueId}`);
 
@@ -225,7 +224,7 @@ export class DialogueService implements IDialogueService {
         const { playerCharacter, aiCharacters } = this.getPlayerAndAiCharacters(dialogueState.playerCharacterId, dialogueState.dialogueParticipants);
         const aiCharacter: CharacterProfile = aiCharacters[0];
 
-        const scaleConfig: DiceScaleConfig = SCALE_CONFIGS[scaleType];
+        const scaleConfig: DiceScaleConfig = SCALE_CONFIGS[selectedPlayerDialogueOption.scaleType];
 
         //  PLAYER STEP
         // roll dice for player step
@@ -268,7 +267,7 @@ export class DialogueService implements IDialogueService {
         const prompt = this.promptService.assembleProgressDialoguePrompt(
             dialogueStep,
             playerCharacter,
-            dialogueState.dialogueParticipants,
+            aiCharacters,
             dialogueState.dialogueHistory,
             dialogueState.knowledgeBase,
             dialogueState.worldContext,

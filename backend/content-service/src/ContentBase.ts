@@ -5,12 +5,34 @@ import { User } from "./modules/user/entities/User";
 import { World } from "./modules/world/entities/World";
 import { Serializable } from "./decorator/serializable.decorator";
 import { SerializeStrategyEnum } from "./serializer";
+import {
+    Field as GQLField,
+    ID as GQLID,
+    ObjectType as GQLObjectType,
+} from '@nestjs/graphql';
+import { SearchQuery } from "./class/search/grpc/SearchQuery";
+import { Context } from "./class/Context";
+import { LooseObject } from "./types";
 
+export interface ContentBaseStatic<T extends ContentBase> {
+    new(): T; // content base constructor
+    build(obj: LooseObject): T;
+    search(filter: SearchQuery, context: Context): Promise<T[]>;
+}
+
+@GQLObjectType()
 export abstract class ContentBase extends BaseEntity {
 
+    @GQLField(() => GQLID)
     id?: string
+
+    @GQLField()
     name!: string
+
+    @GQLField(() => GQLID, { nullable: true })
     idPrefix?: string
+
+    @GQLField({ nullable: true })
     type?: string
 
     @BeforeInsert()
@@ -19,18 +41,22 @@ export abstract class ContentBase extends BaseEntity {
     }
 
     @Column({ type: "varchar", length: 255, nullable: true })
+    @GQLField(() => GQLID, { nullable: true })
     @Serializable()
     blueprintId!: string;
 
     @Column({ type: "timestamp", nullable: true })
+    @GQLField(() => Date, { nullable: true })
     @Serializable({ strategy: SerializeStrategyEnum.DATE })
     createdAt?: Date;
 
     @Column({ type: "json", nullable: true })
+    @GQLField(() => JSON, { nullable: true })
     @Serializable()
     metadata?: { [key: string]: string };
 
     @Column({ name: "targetEntity", type: "varchar" })
+    @GQLField()
     @Serializable()
     targetEntity!: string;
 

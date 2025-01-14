@@ -66,34 +66,34 @@ import { Status } from "./class/entities/content/Status";
 import { Tag } from "./class/entities/content/Tag";
 import { Trait } from "./class/entities/content/Trait";
 import { EntityEnum } from "./enum/EntityEnum";
-import { ContentBase } from "./class/ContentBase";
+import { ContentBase, ContentBaseStatic } from "./class/ContentBase";
 
 export type EntityMap<T extends ContentBase> = {
     [key in keyof typeof EntityEnum]: {
-        entity: ClassConstructor<T>;
+        entity: ContentBaseStatic<T>;
         dto: ClassConstructor<any>;
-        rootEntity?: ClassConstructor<any>;
+        rootEntity?: ContentBaseStatic<any>;
     }
 }
 
 export class ContentEntityMapService {
 
-    static getEntityConstructor<T extends ContentBase>(entityName: EntityEnum): ClassConstructor<T> {
+    static getEntityConstructor<T extends ContentBase>(entityName: EntityEnum): ContentBaseStatic<T> {
         const entityConfig = CONTENT_ENTITY_MAP[entityName]
         if (!entityConfig) throw new Error(`unrecognized entityName: "${entityName}"`)
-        return entityConfig.entity as ClassConstructor<T>
+        return entityConfig.entity as ContentBaseStatic<T>
     }
 
-    static getDTOConstructor<T extends ContentBase>(entityName: EntityEnum): ClassConstructor<T> {
+    static getDTOConstructor<T extends ContentBase>(entityName: EntityEnum): ContentBaseStatic<T> {
         const entityConfig = CONTENT_ENTITY_MAP[entityName]
         if (!entityConfig) throw new Error(`unrecognized entityName: "${entityName}"`)
-        return entityConfig.dto as ClassConstructor<T>
+        return entityConfig.dto as ContentBaseStatic<T>
     }
 
-    static getRootEntityConstructor<T extends ContentBase>(entityName: EntityEnum): ClassConstructor<T> | null {
+    static getRootEntityConstructor<T extends ContentBase>(entityName: EntityEnum): ContentBaseStatic<T> | null {
         const entityConfig = CONTENT_ENTITY_MAP[entityName]
         if (!entityConfig) throw new Error(`unrecognized entityName: "${entityName}"`)
-        return entityConfig.rootEntity ? entityConfig.rootEntity as ClassConstructor<T> : null
+        return entityConfig.rootEntity ? entityConfig.rootEntity as ContentBaseStatic<T> : null
     }
 
 }

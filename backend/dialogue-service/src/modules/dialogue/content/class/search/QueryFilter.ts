@@ -1,10 +1,7 @@
 import { Serializable } from "../../../../../common/decorator/serializable.decorator";
 import { Serializer, SerializeStrategyEnum } from "../../../../../common/serializer/serializer";
-import {
-    QueryFilterDTO,
-    QueryFilterOperatorEnumDTO,
-    QueryFilterValueDTO,
-} from "../../../../proto/entities";
+import { QueryFilterDTO, QueryFilterValueDTO, QueryFilterOperatorEnumDTO } from "../../../../../proto/entities";
+
 
 export enum QueryFilterOperatorEnum {
     EQUAL = 'eq',

@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { Box, TextField, InputAdornment, IconButton, List, ListItem, ListItemText, ListItemIcon, Paper } from '@mui/material';
 import { Search as SearchIcon, Clear as ClearIcon } from '@mui/icons-material';
+import { useSmartSearch } from '../../../hooks/useSmartSearch';
+import { DataSourceEnum } from '../../../enum/DataSourceEnum';
+import { useEffect } from 'react';
+import { debounce } from 'lodash';
 
 interface SearchResult {
     id: string;
@@ -10,13 +14,15 @@ interface SearchResult {
 }
 
 export const GlobalSearch = () => {
+
+
     const [searchTerm, setSearchTerm] = useState('');
     const [results, setResults] = useState<SearchResult[]>([]);
     const [isSearching, setIsSearching] = useState(false);
 
-    const handleSearch = async (term: string) => {
-        setSearchTerm(term);
+    const { data, loading, error } = useSmartSearch(searchTerm, DataSourceEnum.DATA_SOURCE_WORLD);
 
+    const handleSearch = async (term: string) => {
         if (!term) {
             setResults([]);
             return;
@@ -36,6 +42,12 @@ export const GlobalSearch = () => {
         setIsSearching(false);
     };
 
+    const debouncedHandleSearch = debounce(handleSearch, 300);
+
+    useEffect(() => {
+        debouncedHandleSearch(searchTerm);
+    }, [searchTerm]);
+
     const clearSearch = () => {
         setSearchTerm('');
         setResults([]);
@@ -47,7 +59,7 @@ export const GlobalSearch = () => {
                 fullWidth
                 placeholder="Search across all content..."
                 value={searchTerm}
-                onChange={(e) => handleSearch(e.target.value)}
+                onChange={(e) => debouncedHandleSearch(e.target.value)}
                 InputProps={{
                     startAdornment: (
                         <InputAdornment position="start">

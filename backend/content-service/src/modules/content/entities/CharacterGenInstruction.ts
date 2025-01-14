@@ -9,12 +9,18 @@ import { World } from "../../world/entities/World";
 import { Serializable } from "../../../decorator/serializable.decorator";
 import { BackgroundCustomization } from "../../../class/BackgroundCustomization";
 import { Serializer, SerializeStrategyEnum } from "../../../serializer";
-
+import {
+    Field as GQLField,
+    ID as GQLID,
+    ObjectType as GQLObjectType,
+} from '@nestjs/graphql';
 
 
 @Entity()
+@GQLObjectType({ implements: ContentBase })
 export class CharacterGenInstruction extends ContentBase {
     @PrimaryColumn()
+    @GQLField(() => GQLID)
     @Serializable()
     id!: string;
 
@@ -22,14 +28,17 @@ export class CharacterGenInstruction extends ContentBase {
 
 
     @Column({ nullable: true })
+    @GQLField()
     @Serializable()
     firstName?: string
 
     @Column({ nullable: true })
+    @GQLField()
     @Serializable()
     lastName?: string
 
     @Column({ nullable: true, type: "enum", enum: Object.values(GenderEnum) })
+    @GQLField(() => GenderEnum)
     @Serializable({
         serialize: (i: GenderEnum) => serializeEnum(GenderEnum, GenderEnumDTO, i),
         deserialize: (i: GenderEnumDTO | undefined) => typeof i !== "undefined" ? deserializeEnum(GenderEnumDTO, GenderEnum, i) : null
@@ -37,42 +46,52 @@ export class CharacterGenInstruction extends ContentBase {
     gender?: GenderEnum
 
     @Column({ nullable: true })
+    @GQLField()
     @Serializable()
     birthsign?: string
 
     @Column({ nullable: true })
+    @GQLField()
     @Serializable()
     birthEra?: string
 
     @Column({ nullable: true })
+    @GQLField()
     @Serializable()
     birthYear?: number
 
     @Column({ nullable: true })
+    @GQLField()
     @Serializable()
     birthMonth?: string
 
     @Column({ nullable: true })
+    @GQLField()
     @Serializable()
     birthDay?: number
 
     @Column()
+    @GQLField(() => GQLID)
     @Serializable()
     backgroundBlueprintId!: string
 
     @Column("jsonb", { nullable: true })
+    @GQLField(() => BackgroundCustomization, { nullable: true })
     @Serializable({ strategy: SerializeStrategyEnum.FULL })
     backgroundCustomization?: BackgroundCustomization
 
     @ManyToOne(() => User, { nullable: true })
+    @GQLField(() => User, { nullable: true })
     @Serializable({ strategy: SerializeStrategyEnum.ID })
     user!: User;
 
     @ManyToOne(() => Campaign, { nullable: true })
+    @GQLField(() => Campaign, { nullable: true })
     @Serializable({ strategy: SerializeStrategyEnum.ID })
     campaign?: Campaign;
 
     @ManyToOne(() => World, { nullable: true })
+    @GQLField(() => World, { nullable: true })
     @Serializable({ strategy: SerializeStrategyEnum.ID })
     world!: World;
 

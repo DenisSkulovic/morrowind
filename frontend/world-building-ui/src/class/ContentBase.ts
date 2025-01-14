@@ -1,5 +1,5 @@
 import { Serializable } from "../decorator/serializable.decorator";
-import { SearchQuery } from "./search/SearchQuery";
+import { SearchQuery } from "./search/grpc/SearchQuery";
 import { ContentService } from "../services/ContentService";
 import { Context } from "./Context";
 import { LooseObject } from "../types";

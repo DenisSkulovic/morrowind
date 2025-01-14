@@ -1,6 +1,6 @@
 import { Context } from "../class/Context";
 import { FormSelectOption } from "../class/FormSelectOption";
-import { SearchQuery } from "../class/search/SearchQuery";
+import { SearchQuery } from "../class/search/grpc/SearchQuery";
 import { EntityMetadataKeyEnum } from "../enum/EntityMetadataKeyEnum";
 import { ClassConstructor } from "../types";
 

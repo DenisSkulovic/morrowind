@@ -1,6 +1,12 @@
 import { ContentBase } from "./ContentBase";
 import { Tag } from "./modules/content/entities/Tag";
+import {
+    Field as GQLField,
+    ID as GQLID,
+    ObjectType as GQLObjectType,
+} from '@nestjs/graphql';
 
+@GQLObjectType({ implements: ContentBase })
 export abstract class TaggableContentBase extends ContentBase {
     tags?: Promise<Tag[]> | Tag[];
 

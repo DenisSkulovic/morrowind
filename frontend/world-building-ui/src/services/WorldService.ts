@@ -1,5 +1,5 @@
 import { Context } from "../class/Context";
-import { SearchQuery } from "../class/search/SearchQuery";
+import { SearchQuery } from "../class/search/grpc/SearchQuery";
 import { World } from "../class/entities/World";
 import { PresetEnum } from "../enum/entityEnums";
 import { deserializeEnum, serializeEnum } from "../enum/util";

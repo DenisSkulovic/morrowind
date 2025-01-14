@@ -3,6 +3,80 @@ import * as jspb from 'google-protobuf'
 import * as entities_pb from './entities_pb'; // proto import: "entities.proto"
 
 
+export class GetDialogueStateRequest extends jspb.Message {
+  getDialogueid(): string;
+  setDialogueid(value: string): GetDialogueStateRequest;
+
+  getFieldsList(): Array<DialogueStateFieldsEnumDTO>;
+  setFieldsList(value: Array<DialogueStateFieldsEnumDTO>): GetDialogueStateRequest;
+  clearFieldsList(): GetDialogueStateRequest;
+  addFields(value: DialogueStateFieldsEnumDTO, index?: number): GetDialogueStateRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetDialogueStateRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetDialogueStateRequest): GetDialogueStateRequest.AsObject;
+  static serializeBinaryToWriter(message: GetDialogueStateRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetDialogueStateRequest;
+  static deserializeBinaryFromReader(message: GetDialogueStateRequest, reader: jspb.BinaryReader): GetDialogueStateRequest;
+}
+
+export namespace GetDialogueStateRequest {
+  export type AsObject = {
+    dialogueid: string,
+    fieldsList: Array<DialogueStateFieldsEnumDTO>,
+  }
+}
+
+export class GetDialogueStateResponse extends jspb.Message {
+  getInitiatingparticipantid(): string;
+  setInitiatingparticipantid(value: string): GetDialogueStateResponse;
+
+  getPlayercharacterid(): string;
+  setPlayercharacterid(value: string): GetDialogueStateResponse;
+
+  getAiprovider(): string;
+  setAiprovider(value: string): GetDialogueStateResponse;
+
+  getDialogueparticipants(): CharacterProfilesDTO | undefined;
+  setDialogueparticipants(value?: CharacterProfilesDTO): GetDialogueStateResponse;
+  hasDialogueparticipants(): boolean;
+  clearDialogueparticipants(): GetDialogueStateResponse;
+
+  getWorldcontext(): WorldContextDTO | undefined;
+  setWorldcontext(value?: WorldContextDTO): GetDialogueStateResponse;
+  hasWorldcontext(): boolean;
+  clearWorldcontext(): GetDialogueStateResponse;
+
+  getDialoguehistory(): DialogueHistoryDTO | undefined;
+  setDialoguehistory(value?: DialogueHistoryDTO): GetDialogueStateResponse;
+  hasDialoguehistory(): boolean;
+  clearDialoguehistory(): GetDialogueStateResponse;
+
+  getKnowledgebase(): KnowledgeBaseDTO | undefined;
+  setKnowledgebase(value?: KnowledgeBaseDTO): GetDialogueStateResponse;
+  hasKnowledgebase(): boolean;
+  clearKnowledgebase(): GetDialogueStateResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetDialogueStateResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetDialogueStateResponse): GetDialogueStateResponse.AsObject;
+  static serializeBinaryToWriter(message: GetDialogueStateResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetDialogueStateResponse;
+  static deserializeBinaryFromReader(message: GetDialogueStateResponse, reader: jspb.BinaryReader): GetDialogueStateResponse;
+}
+
+export namespace GetDialogueStateResponse {
+  export type AsObject = {
+    initiatingparticipantid: string,
+    playercharacterid: string,
+    aiprovider: string,
+    dialogueparticipants?: CharacterProfilesDTO.AsObject,
+    worldcontext?: WorldContextDTO.AsObject,
+    dialoguehistory?: DialogueHistoryDTO.AsObject,
+    knowledgebase?: KnowledgeBaseDTO.AsObject,
+  }
+}
+
 export class InitializeDialogueRequest extends jspb.Message {
   getInitiatingparticipantid(): string;
   setInitiatingparticipantid(value: string): InitializeDialogueRequest;
@@ -1337,3 +1411,12 @@ export namespace FinalizeDialogueResponse {
   }
 }
 
+export enum DialogueStateFieldsEnumDTO { 
+  INITIATING_PARTICIPANT_ID = 0,
+  PLAYER_CHARACTER_ID = 1,
+  AI_PROVIDER = 2,
+  DIALOGUE_PARTICIPANTS = 3,
+  WORLD_CONTEXT = 4,
+  DIALOGUE_HISTORY = 5,
+  KNOWLEDGE_BASE = 6,
+}

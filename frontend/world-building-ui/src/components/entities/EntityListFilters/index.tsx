@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Box, TextField, FormControl, Button, MenuItem, Select, InputLabel } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { QueryFilter, QueryFilterOperatorEnum } from '../../../class/search/QueryFilter';
+import { QueryFilter } from '../../../class/search/grpc/QueryFilter';
 import { FilterOptionConfig, FilterOptionTypeEnum } from '../../../decorator/filter-option.decorator';
-import { SearchQuery } from '../../../class/search/SearchQuery';
+import { SearchQuery } from '../../../class/search/grpc/SearchQuery';
 import { Context } from '../../../class/Context';
+import { QueryFilterOperatorEnum } from '../../../enum/QueryFilterOperatorEnum';
 
 interface EntityListFiltersProps {
     filterConfigs: FilterOptionConfig[];

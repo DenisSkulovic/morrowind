@@ -1,14 +1,13 @@
 import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
-import { DataSource, FindOptionsWhere, Repository, Like } from 'typeorm';
+import { DataSource, FindOptionsWhere, Repository, Like, SelectQueryBuilder } from 'typeorm';
 import { ContentEntityMapService } from '../../CONTENT_ENTITY_MAP';
 import { DataSourceEnum } from '../../common/enum/DataSourceEnum';
 import { ContentBase } from '../../ContentBase';
 import { WorldService } from '../world/world.service';
-import { SearchQuery } from '../../class/search/SearchQuery';
+import { SearchQuery } from '../../class/search/grpc/SearchQuery';
 import { Context } from '../../class/Context';
 import { ContentStatDTO } from '../../proto/content';
-import { QueryFilterOperatorEnum } from '../../class/search/QueryFilter';
 import { EntityEnum } from '../../common/enum/EntityEnum';
 import { EntityConstructor } from '../../types';
 import { sanitizeEntityName } from '../../util/sanitizeEntityName';
@@ -17,6 +16,9 @@ import { Serializer } from '../../serializer';
 import { World } from '../world/entities/World';
 import { User } from '../user/entities/User';
 import { Campaign } from '../campaign/entities/Campaign';
+import { QueryFilterOperatorEnum } from '../../enum/QueryFilterOperatorEnum';
+import { SearchContentInput } from '../../class/search/graphql/SearchContentInput';
+import { SearchContentResult } from '../../class/search/graphql/SearchContentResult';
 
 type DynamicWhere<T> = FindOptionsWhere<T> & {
     [key: string]: any;
@@ -160,6 +162,72 @@ export class ContentService<T extends ContentBase> {
         result.totalPages = Math.ceil(total / query.pageSize);
         result.currentPage = query.page;
         return result;
+    }
+
+    async searchGraphQL(input: SearchContentInput[]): Promise<SearchContentResult[]> {
+        const searchPromises: Promise<SearchContentResult>[] = input.map(async ({ entityName, query }) => {
+            const getOperator = (operator: QueryFilterOperatorEnum): string => {
+                switch (operator) {
+                    case QueryFilterOperatorEnum.EQUAL:
+                        return '=';
+                    case QueryFilterOperatorEnum.CONTAINS:
+                        return 'LIKE';
+                    default:
+                        throw new Error(`Unknown operator: ${operator}`);
+                }
+            }
+
+            const repository: Repository<any> = this.getRepository(entityName, DataSourceEnum.DATA_SOURCE_WORLD);
+
+            // Get metadata for the entity to validate fields
+            const entityMetadata = repository.metadata.columns.map((col) => col.propertyName);
+
+            const qb: SelectQueryBuilder<any> = repository.createQueryBuilder(entityName);
+
+            // Apply filters
+            if (query.filters) {
+                query.filters.forEach((filter) => {
+                    if (!entityMetadata.includes(filter.field)) {
+                        console.warn(`[ContentService] searchGraphQL filter field ${filter.field} not found in entity ${entityName}`);
+                        return;
+                    }
+                    qb.andWhere(`${entityName}.${filter.field} ${getOperator(filter.operator)} :value`, {
+                        value: filter.value,
+                    });
+                });
+            }
+
+            // Apply relations
+            if (query.relations) {
+                query.relations.forEach((relation) => {
+                    qb.leftJoinAndSelect(`${entityName}.${relation}`, relation);
+                });
+            }
+
+            // Apply nested filters
+            if (query.nestedFilters) {
+                query.nestedFilters.forEach((nestedFilter) => {
+                    qb.leftJoinAndSelect(`${entityName}.${nestedFilter.relation}`, nestedFilter.relation);
+                    nestedFilter.filters.forEach((filter) => {
+                        qb.andWhere(`${nestedFilter.relation}.${filter.field} ${getOperator(filter.operator)} :value`, {
+                            value: filter.value,
+                        });
+                    });
+                });
+            }
+
+            // Pagination
+            qb.skip((query.page - 1) * query.pageSize).take(query.pageSize);
+
+            console.log(`[ContentService] searchGraphQL qb`, qb.getQueryAndParameters())
+
+            return {
+                entityName,
+                items: await qb.getMany(),
+            };
+        });
+
+        return Promise.all(searchPromises);
     }
 
     async createBulk(entityName: string, entities: T[], source: DataSourceEnum): Promise<T[]> {

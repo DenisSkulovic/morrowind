@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction, ActionReducerMapBuilder }
 import { World } from '../../class/entities/World';
 import { RequestStatusEnum } from '../../enum/RequestStatusEnum';
 import { WorldService } from '../../services/WorldService';
-import { SearchQuery } from '../../class/search/SearchQuery';
+import { SearchQuery } from '../../class/search/grpc/SearchQuery';
 import { Context, ContextPlain } from '../../class/Context';
 import { LooseObject } from '../../types';
 import { handlePending, handleRejected } from '../common';

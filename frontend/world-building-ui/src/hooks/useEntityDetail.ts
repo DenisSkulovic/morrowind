@@ -5,8 +5,8 @@ import { RequestStatusEnum } from "../enum/RequestStatusEnum";
 import { AppDispatch, RootState } from "../store/store";
 import { ContentEntityMapService } from "../CONTENT_ENTITY_MAP";
 import { ContentBase, ContentBaseStatic } from "../class/ContentBase";
-import { SearchQuery } from "../class/search/SearchQuery";
-import { QueryFilter, QueryFilterOperatorEnum } from "../class/search/QueryFilter";
+import { SearchQuery } from "../class/search/grpc/SearchQuery";
+import { QueryFilter } from "../class/search/grpc/QueryFilter";
 import { getSearchKey, searchContent } from "../store/slices/contentSlice";
 import { Context } from "../class/Context";
 import { useAccount } from "./useAccount";
@@ -14,6 +14,7 @@ import { Account } from "../class/entities/Account";
 import { World } from "../class/entities/World";
 import { User } from "../class/entities/User";
 import { useLoading } from "./useLoading";
+import { QueryFilterOperatorEnum } from "../enum/QueryFilterOperatorEnum";
 
 export const useEntityDetail = (entityName: EntityEnum | null, entityId: string | null, worldId: string | null) => {
     const dispatch = useDispatch<AppDispatch>();

@@ -3,7 +3,7 @@ import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource, FindManyOptions, FindOptionsWhere, Repository } from 'typeorm';
 import { DataSourceEnum } from '../../common/enum/DataSourceEnum';
 import { ActivityRecord } from './entities/ActivityRecord';
-import { SearchQuery } from '../../class/search/SearchQuery';
+import { SearchQuery } from '../../class/search/grpc/SearchQuery';
 
 export interface IActivityService {
     create(data: any, userId: string, worldId: string, source: DataSourceEnum): Promise<ActivityRecord[]>

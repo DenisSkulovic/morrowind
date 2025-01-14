@@ -7,10 +7,17 @@ import { World } from "../../world/entities/World";
 import { Serializable } from "../../../decorator/serializable.decorator";
 import { serializeInstruction, deserializeInstruction, BlueprintSetCombinator } from "../../../class/GenerationInstruction";
 import { Serializer, SerializeStrategyEnum } from "../../../serializer";
+import {
+    Field as GQLField,
+    ID as GQLID,
+    ObjectType as GQLObjectType,
+} from '@nestjs/graphql';
 
 @Entity()
+@GQLObjectType({ implements: ContentBase })
 export class CharacterGroupGenInstruction extends ContentBase {
     @PrimaryColumn()
+    @GQLField(() => GQLID)
     @Serializable()
     id!: string;
 
@@ -21,18 +28,22 @@ export class CharacterGroupGenInstruction extends ContentBase {
     name!: string
 
     @Column({ type: "jsonb" })
+    @GQLField(() => BlueprintSetCombinator)
     @Serializable({ serialize: serializeInstruction, deserialize: deserializeInstruction })
     set!: BlueprintSetCombinator;
 
     @ManyToOne(() => User, { nullable: true })
+    @GQLField(() => User, { nullable: true })
     @Serializable({ strategy: SerializeStrategyEnum.ID })
     user!: User;
 
     @ManyToOne(() => Campaign, { nullable: true })
+    @GQLField(() => Campaign, { nullable: true })
     @Serializable({ strategy: SerializeStrategyEnum.ID })
     campaign?: Campaign;
 
     @ManyToOne(() => World, { nullable: true })
+    @GQLField(() => World, { nullable: true })
     @Serializable({ strategy: SerializeStrategyEnum.ID })
     world!: World;
 

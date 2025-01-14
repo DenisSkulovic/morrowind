@@ -17,7 +17,7 @@ import { Addiction } from "./Addiction";
 import { DisplayField } from '../../../decorator/display-field.decorator';
 import { EntityDisplay } from '../../../decorator/entity-display.decorator';
 import { FilterOption, FilterOptionTypeEnum } from '../../../decorator/filter-option.decorator';
-import { SearchQuery } from '../../../class/search/SearchQuery';
+import { SearchQuery } from '../../search/grpc/SearchQuery';
 import { Context } from '../../../class/Context';
 import {
     AddictionDTO,

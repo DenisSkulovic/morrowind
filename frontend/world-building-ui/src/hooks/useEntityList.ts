@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { EntityEnum } from "../enum/EntityEnum";
 import { AppDispatch, RootState } from "../store/store";
 import { ContentBase, ContentBaseStatic } from "../class/ContentBase";
-import { SearchQuery } from "../class/search/SearchQuery";
+import { SearchQuery } from "../class/search/grpc/SearchQuery";
 import { ContentPlain, ContentSearchResult, getSearchKey, searchContent, clearSearchResultsForKey, ContentSearchResultPlain } from "../store/slices/contentSlice";
 import { Context } from "../class/Context";
 import { useAccount } from "./useAccount";

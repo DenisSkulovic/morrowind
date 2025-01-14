@@ -19,7 +19,7 @@ import { Controller, Inject, Logger } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
 import { WorldService } from "./world.service";
 import { UserService } from "../user/user.service";
-import { SearchQuery } from "../../class/search/SearchQuery";
+import { SearchQuery } from "../../class/search/grpc/SearchQuery";
 import { Context } from "../../class/Context";
 import { ActivityService } from "../activity/activity.service";
 import { ActivityRecord } from "../activity/entities/ActivityRecord";

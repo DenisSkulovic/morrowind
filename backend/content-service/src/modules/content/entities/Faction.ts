@@ -8,35 +8,48 @@ import { User } from "../../user/entities/User";
 import { World } from "../../world/entities/World";
 import { Serializer, SerializeStrategyEnum } from "../../../serializer";
 import { Serializable } from "../../../decorator/serializable.decorator";
+import {
+    Field as GQLField,
+    ID as GQLID,
+    ObjectType as GQLObjectType,
+} from '@nestjs/graphql';
 
 @Entity()
+@GQLObjectType({ implements: TaggableContentBase })
 export class Faction extends TaggableContentBase {
     @PrimaryColumn()
     @Serializable()
+    @GQLField(() => GQLID)
     id!: string;
 
     idPrefix = "FACTION"
 
     @Column()
     @Serializable()
+    @GQLField()
     name!: string
 
     @ManyToMany(() => Character, (character) => character.factions, {})
+    @GQLField(() => [Character])
     characters?: Character[];
 
     @ManyToMany(() => Tag, (tag) => tag.factions, {})
+    @GQLField(() => [Tag])
     @Serializable({ strategy: SerializeStrategyEnum.ID })
     tags?: Tag[];
 
     @ManyToOne(() => User, { nullable: true, })
+    @GQLField(() => User, { nullable: true })
     @Serializable({ strategy: SerializeStrategyEnum.ID })
     user!: User;
 
     @ManyToOne(() => Campaign, { nullable: true, })
+    @GQLField(() => Campaign, { nullable: true })
     @Serializable({ strategy: SerializeStrategyEnum.ID })
     campaign?: Campaign;
 
     @ManyToOne(() => World, { nullable: true, })
+    @GQLField(() => World, { nullable: true })
     @Serializable({ strategy: SerializeStrategyEnum.ID })
     world!: World;
 

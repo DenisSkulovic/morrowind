@@ -2,7 +2,7 @@ import { Controller, Inject, Logger } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
 import { ActivityService } from "./activity.service";
 import { DataSourceEnum } from "../../common/enum/DataSourceEnum";
-import { SearchQuery } from '../../class/search/SearchQuery';
+import { SearchQuery } from '../../class/search/grpc/SearchQuery';
 import {
     ActivitySearchRequest,
     ActivitySearchResponse,

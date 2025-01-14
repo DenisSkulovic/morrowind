@@ -2,18 +2,15 @@
 /**
  * @fileoverview
  * @enhanceable
- * @suppress {missingRequire} reports error on implicit type usages.
  * @suppress {messageConventions} JS Compiler reports an error if a variable or
  *     field starts with 'MSG_' and isn't a translatable message.
  * @public
  */
 // GENERATED CODE -- DO NOT EDIT!
-/* eslint-disable */
-// @ts-nocheck
 
 var jspb = require('google-protobuf');
 var goog = jspb;
-var global = (function() { return this || window || global || self || Function('return this')(); }).call(null);
+var global = Function('return this')();
 
 goog.exportSymbol('proto.entities.AccountDTO', null, global);
 goog.exportSymbol('proto.entities.AddictionDTO', null, global);
@@ -8405,10 +8402,8 @@ proto.entities.ItemActionsDTO.deserializeBinaryFromReader = function(msg, reader
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var values = /** @type {!Array<!proto.entities.ItemActionEnumDTO>} */ (reader.isDelimited() ? reader.readPackedEnum() : [reader.readEnum()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addActions(values[i]);
-      }
+      var value = /** @type {!Array<!proto.entities.ItemActionEnumDTO>} */ (reader.readPackedEnum());
+      msg.setActionsList(value);
       break;
     default:
       reader.skipField();
@@ -8605,10 +8600,8 @@ proto.entities.StorageSlotDTO.deserializeBinaryFromReader = function(msg, reader
       msg.setWorld(value);
       break;
     case 8:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedInt32() : [reader.readInt32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addGrid(values[i]);
-      }
+      var value = /** @type {!Array<number>} */ (reader.readPackedInt32());
+      msg.setGridList(value);
       break;
     case 9:
       var value = new proto.entities.StorageGridDTO;
@@ -21474,10 +21467,8 @@ proto.entities.StorageSlotDefinitionDTO.deserializeBinaryFromReader = function(m
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var values = /** @type {!Array<number>} */ (reader.isDelimited() ? reader.readPackedInt32() : [reader.readInt32()]);
-      for (var i = 0; i < values.length; i++) {
-        msg.addGrid(values[i]);
-      }
+      var value = /** @type {!Array<number>} */ (reader.readPackedInt32());
+      msg.setGridList(value);
       break;
     case 2:
       var value = /** @type {string} */ (reader.readString());

@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import { Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import { ContentBase } from '../../../class/ContentBase';
-import { SortBy, SortByDirectionEnum } from '../../../class/search/SortBy';
+import { SortBy, SortByDirectionEnum } from '../../../class/search/grpc/SortBy';
 import { ContentSearchResult } from '../../../store/slices/contentSlice';
 import { DisplayFieldConfig } from '../../../decorator/display-field.decorator';
 

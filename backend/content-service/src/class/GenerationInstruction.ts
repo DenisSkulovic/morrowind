@@ -2,14 +2,35 @@ import { ConditionEnum } from "../common/enum/ConditionEnum"
 import { deserializeEnum, serializeEnum } from "../common/enum/util"
 import { ConditionEnumDTO, GenerationInstructionDTO, GenerationInstructionsDTO } from "../proto/entities"
 import { BlueprintGenInstruction_Simple, Probability_0_to_1 } from "../types"
+import {
+    createUnionType,
+    Field as GQLField,
+    ID as GQLID,
+    ObjectType as GQLObjectType,
+} from "@nestjs/graphql";
 
+
+export const GenerationInstructionGQLUnion = createUnionType({
+    name: "GenerationInstructionUnion",
+    types: () => [IdAndQuant, ProbObject_Simple, BlueprintGenInstruction_Gaussian, BlueprintSetCombinator],
+    resolveType: (value) => {
+        if (value instanceof IdAndQuant) return IdAndQuant
+        if (value instanceof ProbObject_Simple) return ProbObject_Simple
+        if (value instanceof BlueprintGenInstruction_Gaussian) return BlueprintGenInstruction_Gaussian
+        if (value instanceof BlueprintSetCombinator) return BlueprintSetCombinator
+        return null
+    }
+})
 
 export type GenerationInstruction = string | IdAndQuant | ProbObject_Simple | BlueprintGenInstruction_Gaussian | BlueprintSetCombinator
 
-
+@GQLObjectType()
 export class IdAndQuant {
+    @GQLField()
     blueprintId: string
+    @GQLField()
     quantity?: number
+    @GQLField()
     clazz = "IdAndQuant"
     constructor(blueprintId: string, quantity?: number) {
         this.blueprintId = blueprintId
@@ -20,8 +41,11 @@ export class IdAndQuant {
     }
 }
 
+@GQLObjectType()
 export class ProbObject_Simple {
+    @GQLField(() => ConditionEnum)
     cond: ConditionEnum
+    @GQLField(() => GenerationInstructionGQLUnion)
     prob: BlueprintGenInstruction_Simple
     clazz = "ProbObject_Simple"
     constructor(cond: ConditionEnum, prob: BlueprintGenInstruction_Simple) {
@@ -33,12 +57,19 @@ export class ProbObject_Simple {
     }
 }
 
+@GQLObjectType()
 export class BlueprintGenInstruction_Gaussian {
+    @GQLField()
     blueprintId: string
+    @GQLField()
     prob?: Probability_0_to_1 // 0-1, default 1
+    @GQLField()
     avg_quan?: number // positive integer, default 1
+    @GQLField()
     st_dev?: number // positive float, default 0
+    @GQLField()
     skew?: number // positive float, default 0
+    @GQLField(() => GenerationInstructionGQLUnion)
     clazz = "BlueprintGenInstruction_Gaussian"
     constructor(blueprintId: string, prob?: Probability_0_to_1, avg_quan?: number, st_dev?: number, skew?: number) {
         this.blueprintId = blueprintId
@@ -52,11 +83,17 @@ export class BlueprintGenInstruction_Gaussian {
     }
 }
 
+@GQLObjectType()
 export class BlueprintSetCombinator {
+    @GQLField()
     name?: string
+    @GQLField()
     prob?: Probability_0_to_1 // 0-1, default 1
+    @GQLField(() => ConditionEnum)
     cond: ConditionEnum
+    @GQLField(() => [GenerationInstructionGQLUnion])
     items: GenerationInstruction[]
+    @GQLField()
     clazz = "BlueprintSetCombinator"
     constructor(name: string | undefined, prob: Probability_0_to_1 | undefined, cond: ConditionEnum, items: GenerationInstruction[]) {
         this.name = name

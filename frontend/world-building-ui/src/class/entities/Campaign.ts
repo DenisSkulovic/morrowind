@@ -2,7 +2,7 @@ import { Serializable } from "../../decorator/serializable.decorator";
 import { CampaignService } from "../../services/CampaignService";
 import { LooseObject } from "../../types";
 import { Context } from "../Context";
-import { SearchQuery } from "../search/SearchQuery";
+import { SearchQuery } from "../search/grpc/SearchQuery";
 import { Entity } from "../Entity";
 
 export class Campaign extends Entity {

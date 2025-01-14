@@ -11,37 +11,49 @@ import { World } from "../../world/entities/World";
 import { Serializable } from "../../../decorator/serializable.decorator";
 import { Serializer, SerializeStrategyEnum } from "../../../serializer";
 import { PastExperienceTypeEnum } from "../../../common/enum/PastExperienceTypeEnum";
-import { deserializeEnum, serializeEnum } from "../../../common/enum/util";
+import {
+    Field as GQLField,
+    ID as GQLID,
+    ObjectType as GQLObjectType,
+} from '@nestjs/graphql';
 
 @Entity()
+@GQLObjectType({ implements: TaggableContentBase })
 export class PastExperience extends TaggableContentBase {
     @PrimaryColumn()
+    @GQLField(() => GQLID)
     @Serializable()
     id!: string;
 
     idPrefix = "PAST_EXPERIENCE"
 
     @Column()
+    @GQLField()
     @Serializable()
     name!: string;
 
     @Column({ type: "enum", enum: Object.values(PastExperienceTypeEnum) })
+    @GQLField(() => PastExperienceTypeEnum)
     @Serializable({ strategy: SerializeStrategyEnum.ENUM, internalEnum: PastExperienceTypeEnum, protoEnum: PastExperienceTypeEnumDTO })
     expType!: PastExperienceTypeEnum
 
     @ManyToMany(() => Tag, (tag) => tag.pastExperiences)
+    @GQLField(() => [Tag])
     @Serializable({ strategy: SerializeStrategyEnum.ID })
     tags?: Tag[];
 
     @ManyToOne(() => User, { nullable: true })
+    @GQLField(() => User, { nullable: true })
     @Serializable({ strategy: SerializeStrategyEnum.ID })
     user!: User;
 
     @ManyToOne(() => Campaign, { nullable: true })
+    @GQLField(() => Campaign, { nullable: true })
     @Serializable({ strategy: SerializeStrategyEnum.ID })
     campaign?: Campaign;
 
     @ManyToOne(() => World, { nullable: true })
+    @GQLField(() => World, { nullable: true })
     @Serializable({ strategy: SerializeStrategyEnum.ID })
     world!: World;
 

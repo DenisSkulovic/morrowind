@@ -1,17 +1,8 @@
-import { QueryFilterDTO, QueryFilterOperatorEnumDTO, QueryFilterValueDTO } from "../../proto/entities";
-import { Serializable } from "../../decorator/serializable.decorator";
-import { Serializer, SerializeStrategyEnum } from "../../serializer";
+import { QueryFilterDTO, QueryFilterOperatorEnumDTO, QueryFilterValueDTO } from "../../../proto/entities";
+import { Serializable } from "../../../decorator/serializable.decorator";
+import { Serializer, SerializeStrategyEnum } from "../../../serializer";
+import { QueryFilterOperatorEnum } from "../../../enum/QueryFilterOperatorEnum";
 
-export enum QueryFilterOperatorEnum {
-    EQUAL = 'eq',
-    NOT_EQUAL = 'neq',
-    GREATER_THAN = 'gt',
-    GREATER_THAN_OR_EQUAL = 'gte',
-    LESS_THAN = 'lt',
-    LESS_THAN_OR_EQUAL = 'lte',
-    CONTAINS = 'contains',
-    REGEX = 'regex'
-}
 
 export class QueryFilter {
 

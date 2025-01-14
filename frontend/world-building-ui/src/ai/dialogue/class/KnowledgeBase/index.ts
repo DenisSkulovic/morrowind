@@ -4,18 +4,19 @@ import { LocationKnowledgeBase } from "./LocationKnowledgeBase";
 import { CharacterKnowledgeBase } from "./CharacterKnowledgeBase";
 import { Serializable } from "../../../../decorator/serializable.decorator";
 import { SerializeStrategyEnum } from "../../../../serialize/serializer";
+import { CharacterKnowledgeBaseDTO } from "../../../../proto/dialogue_pb";
 
 export class KnowledgeBase {
-    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true, internalClass: CharacterKnowledgeBase })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, internalClass: CharacterKnowledgeBase, dtoClass: CharacterKnowledgeBaseDTO, dtoArrClass: CharacterKnowledgeBasesDTO })
     characters?: CharacterKnowledgeBase[];
 
-    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true, internalClass: FactionKnowledgeBase })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, internalClass: FactionKnowledgeBase, dtoClass: FactionKnowledgeBaseDTO, dtoArrClass: FactionKnowledgeBasesDTO })
     factions?: FactionKnowledgeBase[];
 
-    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true, internalClass: LocationKnowledgeBase })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, internalClass: LocationKnowledgeBase, dtoClass: LocationKnowledgeBaseDTO, dtoArrClass: LocationKnowledgeBasesDTO })
     locations?: LocationKnowledgeBase[];
 
-    @Serializable({ strategy: SerializeStrategyEnum.FULL, asDtoArray: true, internalClass: ItemKnowledgeBase })
+    @Serializable({ strategy: SerializeStrategyEnum.FULL, internalClass: ItemKnowledgeBase, dtoClass: ItemKnowledgeBaseDTO, dtoArrClass: ItemKnowledgeBasesDTO })
     items?: ItemKnowledgeBase[];
 
     @Serializable()

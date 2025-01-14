@@ -52,9 +52,9 @@ export class PromptService {
         dialogueStep: DialogueStep,
         playerCharacter: CharacterProfile,
         aiCharacters: CharacterProfile[],
-        dialogueHistory: DialogueHistory,
-        knowledgeBase: KnowledgeBase,
-        worldContext: WorldContext,
+        dialogueHistory?: DialogueHistory,
+        knowledgeBase?: KnowledgeBase,
+        worldContext?: WorldContext,
     ): string {
         return `
             Instructions: 
@@ -69,9 +69,9 @@ export class PromptService {
             Dialogue Step: ${JSON.stringify(dialogueStep)}
             Player Character: ${JSON.stringify(playerCharacter)}
             AI Character(s): ${JSON.stringify(aiCharacters)}
-            World Context: ${JSON.stringify(worldContext)}
-            Dialogue History: ${JSON.stringify(dialogueHistory)}
-            Knowledge Base: ${JSON.stringify(knowledgeBase)}
+            World Context: ${JSON.stringify(worldContext || {})}
+            Dialogue History: ${JSON.stringify(dialogueHistory || {})}
+            Knowledge Base: ${JSON.stringify(knowledgeBase || {})}
         `;
     }
 

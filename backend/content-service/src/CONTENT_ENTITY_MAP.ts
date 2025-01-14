@@ -1,5 +1,5 @@
 import { EntityTarget, getMetadataArgsStorage } from "typeorm";
-import { ContentBase } from "./ContentBase";
+import { ContentBase, ContentBaseStatic } from "./ContentBase";
 import { Addiction } from "./modules/content/entities/Addiction";
 import { Background } from "./modules/content/entities/Background";
 import { Birthsign } from "./modules/content/entities/Birthsign";
@@ -67,16 +67,16 @@ export type EntityMap<T extends ContentBase> = {
 
 
 export class ContentEntityMapService {
-    static getEntityConstructor<T extends ContentBase>(entityName: EntityEnum): EntityConstructor<T> {
+    static getEntityConstructor<T extends ContentBase>(entityName: EntityEnum): ContentBaseStatic<T> {
         const entityConfig = CONTENT_ENTITY_MAP[entityName]
         if (!entityConfig) throw new Error(`unrecognized entityName: "${entityName}"`)
-        return entityConfig.entity as EntityConstructor<T>
+        return entityConfig.entity as ContentBaseStatic<T>
     }
 
-    static getRootEntityConstructor<T extends ContentBase>(entityName: EntityEnum): EntityConstructor<T> | null {
+    static getRootEntityConstructor<T extends ContentBase>(entityName: EntityEnum): ContentBaseStatic<T> | null {
         const entityConfig = CONTENT_ENTITY_MAP[entityName]
         if (!entityConfig) throw new Error(`unrecognized entityName: "${entityName}"`)
-        return entityConfig.rootEntity ? entityConfig.rootEntity as EntityConstructor<T> : null
+        return entityConfig.rootEntity ? entityConfig.rootEntity as ContentBaseStatic<T> : null
     }
 }
 

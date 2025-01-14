@@ -14,7 +14,7 @@ import { UserService } from "../user/user.service";
 import { ContentBase } from "../../ContentBase";
 import { Preset, PresetService } from "../preset/preset.service";
 import { join } from "path";
-import { SearchQuery } from "../../class/search/SearchQuery";
+import { SearchQuery } from "../../class/search/grpc/SearchQuery";
 import { EntityEnum } from "../../common/enum/EntityEnum";
 
 const pathToPresetsFolder = join(__dirname, "../../../world_presets")

@@ -3,7 +3,7 @@ import { ContentService } from '../../services/ContentService';
 import { ContentBase } from '../../class/ContentBase';
 import { Context, ContextPlain } from '../../class/Context';
 import { RequestStatusEnum } from '../../enum/RequestStatusEnum';
-import { SearchQuery, SearchQueryPlain } from '../../class/search/SearchQuery';
+import { SearchQuery, SearchQueryPlain } from '../../class/search/grpc/SearchQuery';
 import { ContentEntityMapService } from '../../CONTENT_ENTITY_MAP';
 import { LooseObject } from '../../types';
 import { EntityEnum } from '../../enum/EntityEnum';

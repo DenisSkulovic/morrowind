@@ -149,7 +149,6 @@ export class DialogueController implements OnGatewayConnection, OnGatewayDisconn
             dialogueId,
             request.selectedPlayerDialogueOption,
             (chunk) => client.emit('replyChunk', chunk), // Relay chunks to the client
-            request.scaleType
         );
         client.emit('replyComplete', { message: 'Reply completed.' });
         client.disconnect();

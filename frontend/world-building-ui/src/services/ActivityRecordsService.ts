@@ -1,6 +1,6 @@
 import { Context } from "../class/Context";
 import { ActivityRecord } from "../class/entities/ActivityRecord";
-import { SearchQuery } from "../class/search/SearchQuery";
+import { SearchQuery } from "../class/search/grpc/SearchQuery";
 import { contentBackendURL } from "../config";
 import { activityRecordsHeadLimit } from "../config/dashboardWorld";
 import { ActivityClearAllRequest, ActivityClearAllResponse, ActivityCreateRequest, ActivityCreateResponse, ActivityDTO, ActivityHeadRequest, ActivityHeadResponse, ActivitySearchRequest, ActivitySearchResponse, } from "../proto/activity_pb";

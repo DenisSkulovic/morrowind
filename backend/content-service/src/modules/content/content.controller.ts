@@ -18,7 +18,7 @@ import { EntityConstructor } from '../../types';
 import { Serializer } from '../../serializer';
 import { DataSourceEnumDTO } from '../../proto/entities';
 import { Context } from '../../class/Context';
-import { SearchQuery } from '../../class/search/SearchQuery';
+import { SearchQuery } from '../../class/search/grpc/SearchQuery';
 import { ActivityService } from '../activity/activity.service';
 import { ActivityRecord } from '../activity/entities/ActivityRecord';
 import { ActivityEventNameEnum } from '../../enum/ActivityEventNameEnum';

@@ -1,6 +1,7 @@
 import { World } from "../class/entities/World";
-import { QueryFilter, QueryFilterOperatorEnum } from "../class/search/QueryFilter";
-import { SearchQuery } from "../class/search/SearchQuery";
+import { QueryFilter } from "../class/search/grpc/QueryFilter";
+import { SearchQuery } from "../class/search/grpc/SearchQuery";
+import { QueryFilterOperatorEnum } from "../enum/QueryFilterOperatorEnum";
 import { WorldPlain } from "../store/slices/worldSlice";
 import { useWorlds } from "./useWorlds";
 

@@ -1,6 +1,7 @@
 import { DialogueDirectionEnum } from "../../enum/DialogueDirectionEnum";
 import { Serializable } from "../../common/decorator/serializable.decorator";
 import { SCALE_RISK_IMPACT_ENUM } from "../../dnd/enum/SCALE_RISK_IMPACT_ENUM";
+import { ScaleTypeEnum } from "../../dnd/enum/ScaleTypeEnum";
 
 export class DialogueOption {
     @Serializable()
@@ -12,6 +13,9 @@ export class DialogueOption {
     @Serializable() // no need for serializeEnum, this is just a string in proto (for simplicity)
     riskImpact!: SCALE_RISK_IMPACT_ENUM;
 
+    @Serializable() // no need for serializeEnum, this is just a string in proto (for simplicity)
+    scaleType!: ScaleTypeEnum;
+
     @Serializable()
     clazz = 'DialogueOption';
 
@@ -21,6 +25,7 @@ export class DialogueOption {
         if (!body.dialogueDirection) throw new Error("Dialogue direction is required");
         if (!Object.values(DialogueDirectionEnum).includes(body.dialogueDirection)) throw new Error("Invalid dialogue direction");
         if (!body.riskImpact || !Object.values(SCALE_RISK_IMPACT_ENUM).includes(body.riskImpact)) throw new Error("Invalid risk impact");
+        if (!body.scaleType || !Object.values(ScaleTypeEnum).includes(body.scaleType)) throw new Error("Invalid scale type");
     }
 
     static build(body: Partial<DialogueOption>): DialogueOption {
@@ -29,6 +34,7 @@ export class DialogueOption {
         dialogueOption.explanation = body.explanation!;
         dialogueOption.dialogueDirection = DialogueDirectionEnum[body.dialogueDirection!];
         dialogueOption.riskImpact = SCALE_RISK_IMPACT_ENUM[body.riskImpact!];
+        dialogueOption.scaleType = ScaleTypeEnum[body.scaleType!];
         return dialogueOption;
     }
 }

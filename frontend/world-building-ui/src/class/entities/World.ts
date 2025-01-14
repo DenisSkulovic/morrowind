@@ -6,7 +6,7 @@ import { EntityDisplay } from "../../decorator/entity-display.decorator";
 import { FilterOption, FilterOptionTypeEnum } from "../../decorator/filter-option.decorator";
 import { WorldService } from "../../services/WorldService";
 import { Context } from "../Context";
-import { SearchQuery } from "../search/SearchQuery";
+import { SearchQuery } from "../search/grpc/SearchQuery";
 import { LooseObject } from "../../types";
 import { Entity } from "../Entity";
 

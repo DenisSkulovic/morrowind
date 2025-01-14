@@ -6,11 +6,39 @@ import "entities.proto";
 
 service DialogueService {
     rpc InitializeDialogue(InitializeDialogueRequest) returns (InitializeDialogueResponse);
-    rpc FinalizeDialogue(FinalizeDialogueRequest) returns (FinalizeDialogueResponse);
     rpc GeneratePlayerDialogueOptions(GeneratePlayerDialogueOptionsRequest) returns (GeneratePlayerDialogueOptionsResponse);
+    rpc FinalizeDialogue(FinalizeDialogueRequest) returns (FinalizeDialogueResponse);
     rpc InterruptDialogue(InterruptDialogueRequest) returns (InterruptDialogueResponse);
+    rpc GetDialogueState(GetDialogueStateRequest) returns (GetDialogueStateResponse);
 }
 
+
+// ===============================
+// Get Dialogue State
+// ===============================
+message GetDialogueStateRequest {
+    string dialogueId = 1;
+    repeated DialogueStateFieldsEnumDTO fields = 2;
+}
+enum DialogueStateFieldsEnumDTO {
+    INITIATING_PARTICIPANT_ID = 0;
+    PLAYER_CHARACTER_ID = 1;
+    AI_PROVIDER = 2;
+    DIALOGUE_PARTICIPANTS = 3;
+    WORLD_CONTEXT = 4;
+    DIALOGUE_HISTORY = 5;
+    KNOWLEDGE_BASE = 6;
+}
+message GetDialogueStateResponse {
+    string initiatingParticipantId = 1;
+    string playerCharacterId = 2;
+    string aiProvider = 3; // e.g. OPENAI_V1
+    CharacterProfilesDTO dialogueParticipants = 4;
+    WorldContextDTO worldContext = 5;
+    DialogueHistoryDTO dialogueHistory = 6;
+    KnowledgeBaseDTO knowledgeBase = 7;
+}
+// ===============================
 
 
 
@@ -225,12 +253,13 @@ message InventoryChangesDTO {
 // KnowledgeBase
 // ===============================
 message KnowledgeBaseDTO {
-    repeated CharacterKnowledgeBaseDTO characters = 1;
-    repeated FactionKnowledgeBaseDTO factions = 2;
-    repeated LocationKnowledgeBaseDTO locations = 3;
-    repeated ItemKnowledgeBaseDTO items = 4;
+    CharacterKnowledgeBasesDTO characters = 1;
+    FactionKnowledgeBasesDTO factions = 2;
+    LocationKnowledgeBasesDTO locations = 3;
+    ItemKnowledgeBasesDTO items = 4;
     string clazz = 5;
 }
+
 message CharacterKnowledgeBaseDTO {
     string id = 1;
     string name = 2;
@@ -239,11 +268,17 @@ message CharacterKnowledgeBaseDTO {
     string factionId = 5;
     string clazz = 6;
 }
+message CharacterKnowledgeBasesDTO {
+    repeated CharacterKnowledgeBaseDTO arr = 1;
+}
 message FactionKnowledgeBaseDTO {
     string id = 1;
     string name = 2;
     string description = 3;
     string clazz = 4;
+}
+message FactionKnowledgeBasesDTO {
+    repeated FactionKnowledgeBaseDTO arr = 1;
 }
 message LocationKnowledgeBaseDTO {
     string id = 1;
@@ -252,11 +287,17 @@ message LocationKnowledgeBaseDTO {
     string parentLocationChain = 4;
     string clazz = 5;
 }
+message LocationKnowledgeBasesDTO {
+    repeated LocationKnowledgeBaseDTO arr = 1;
+}
 message ItemKnowledgeBaseDTO {
     string id = 1;
     string name = 2;
     string description = 3;
     string clazz = 4;
+}
+message ItemKnowledgeBasesDTO {
+    repeated ItemKnowledgeBaseDTO arr = 1;
 }
 // ===============================
 

@@ -16,8 +16,8 @@ import { BreadcrumbItem } from '../../../../../../components/common/PageWrapper/
 import { PageModeEnum, routes } from '../../../../../../routes';
 import PageWrapper from '../../../../../../components/common/PageWrapper';
 import { AppDispatch } from '../../../../../../store/store';
-import { SearchQuery } from '../../../../../../class/search/SearchQuery';
-import { SortBy, SortByDirectionEnum } from '../../../../../../class/search/SortBy';
+import { SearchQuery } from '../../../../../../class/search/grpc/SearchQuery';
+import { SortBy, SortByDirectionEnum } from '../../../../../../class/search/grpc/SortBy';
 import { useEntityList } from '../../../../../../hooks/useEntityList';
 import { ContentPlain, deleteContent, deleteContentBulk, setSearchResult } from '../../../../../../store/slices/contentSlice';
 import { User } from '../../../../../../class/entities/User';

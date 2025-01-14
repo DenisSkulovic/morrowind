@@ -9,7 +9,7 @@ import { EntityDisplay } from "../../../decorator/entity-display.decorator";
 import { DisplayField } from "../../../decorator/display-field.decorator";
 import { FilterOption, FilterOptionTypeEnum } from "../../../decorator/filter-option.decorator";
 import { Context } from "../../../class/Context";
-import { SearchQuery } from "../../../class/search/SearchQuery";
+import { SearchQuery } from "../../search/grpc/SearchQuery";
 import { EffectTypeEnumDTO } from "../../../proto/entities_pb";
 import { SerializeStrategyEnum } from "../../../serialize/serializer";
 
