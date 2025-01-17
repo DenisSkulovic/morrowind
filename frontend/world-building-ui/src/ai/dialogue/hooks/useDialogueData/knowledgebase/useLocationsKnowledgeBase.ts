@@ -1,11 +1,11 @@
 import { useQuery } from "@apollo/client"
 import { useState, useEffect } from "react"
-import { EntitySearchQueryInput } from "../../../../class/search/graphql/EntitySearchQueryInput"
-import { SearchContentInput } from "../../../../class/search/graphql/SearchContentInput"
-import { SearchContentResult } from "../../../../class/search/graphql/SearchContentResult"
-import { DataSourceEnum } from "../../../../enum/DataSourceEnum"
-import { EntityEnum } from "../../../../enum/EntityEnum"
-import { LocationKnowledgeBase } from "../../class/KnowledgeBase/LocationKnowledgeBase"
+import { EntitySearchQueryInput } from "../../../../../class/search/graphql/EntitySearchQueryInput"
+import { SearchContentInput } from "../../../../../class/search/graphql/SearchContentInput"
+import { SearchContentResult } from "../../../../../class/search/graphql/SearchContentResult"
+import { DataSourceEnum } from "../../../../../enum/DataSourceEnum"
+import { EntityEnum } from "../../../../../enum/EntityEnum"
+import { LocationKnowledgeBase } from "../../../class/KnowledgeBase/LocationKnowledgeBase"
 
 
 export const useLocationsKnowledgeBase = (locationIds: string[]) => {
