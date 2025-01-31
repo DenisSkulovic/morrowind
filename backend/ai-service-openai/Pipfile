@@ -13,6 +13,9 @@ asyncio = "*"
 aio-pika = "*"
 openai = "*"
 watchdog = "*"
+sqlalchemy = "*"
+asyncpg = "*"
+alembic = "*"
 
 [dev-packages]
 

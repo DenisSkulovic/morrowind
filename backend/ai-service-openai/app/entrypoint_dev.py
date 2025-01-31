@@ -15,13 +15,16 @@ class ReloadHandler(FileSystemEventHandler):
         self.start_process()
 
     def start_process(self):
+        print(f"Starting process", flush=True)
         if self.process:
+            print(f"Terminating existing process", flush=True)
             self.process.terminate()
+        print(f"Starting new process", flush=True)
         self.process = subprocess.Popen(self.process_cmd)
 
     def on_modified(self, event):
         if event.src_path.endswith(".py"):
-            print(f"File changed: {event.src_path}. Restarting process...")
+            print(f"File changed: {event.src_path}. Restarting process...", flush=True)
             self.start_process()
 
 
@@ -66,16 +69,24 @@ def main():
 
     # Start auto-reload with watchdog
     handler = ReloadHandler(role_to_command[role])
+    print(f"Handler created", flush=True)
     observer = Observer()
+    print(f"Observer created", flush=True)
     observer.schedule(handler, path=".", recursive=True)
+    print(f"Observer scheduled", flush=True)
 
     print(f"Starting {role} with auto-reload...", flush=True)
     observer.start()
+    print(f"Observer started", flush=True)
     try:
+        print(f"Joining {role} observer", flush=True)
         observer.join()
     except KeyboardInterrupt:
+        print(f"Stopping {role} observer", flush=True)
         observer.stop()
+    print(f"Terminating {role} process", flush=True)
     handler.process.terminate()
+    print(f"{role} process terminated", flush=True)
 
 
 if __name__ == "__main__":

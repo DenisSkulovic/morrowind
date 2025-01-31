@@ -1,0 +1,158 @@
+service UserPolicyService {
+    // User management
+    rpc CreateUser (CreateUserRequest) returns (CreateUserResponse);
+    rpc GetUser (GetUserRequest) returns (GetUserResponse);
+    rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResponse);
+    rpc ListUsers (ListUsersRequest) returns (ListUsersResponse);
+    
+    // Policy management
+    rpc CreatePolicy (CreatePolicyRequest) returns (CreatePolicyResponse);
+    rpc GetPolicy (GetPolicyRequest) returns (GetPolicyResponse);
+    rpc UpdatePolicy (UpdatePolicyRequest) returns (UpdatePolicyResponse);
+    rpc DeletePolicy (DeletePolicyRequest) returns (DeletePolicyResponse);
+    rpc ListPolicies (ListPoliciesRequest) returns (ListPoliciesResponse);
+    
+    // Policy assignments
+    rpc AssignPoliciesToUser (AssignPoliciesRequest) returns (AssignPoliciesResponse);
+    rpc RemovePoliciesFromUser (RemovePoliciesRequest) returns (RemovePoliciesResponse);
+    rpc ListUserPolicies (UserPoliciesRequest) returns (UserPoliciesResponse);
+    
+    // Usage tracking
+    rpc GetUserUsage (UserUsageRequest) returns (UserUsageResponse);
+}
+
+// --- User Management ---
+message CreateUserRequest {
+    string user_id = 1;
+    string name = 2;
+    string user_type = 3;
+}
+
+message CreateUserResponse {
+    bool success = 1;
+}
+
+message GetUserRequest {
+    string user_id = 1;
+}
+
+message GetUserResponse {
+    string user_id = 1;
+    string name = 2;
+    string user_type = 3;
+    repeated string policies = 4;
+}
+
+message DeleteUserRequest {
+    string user_id = 1;
+}
+
+message DeleteUserResponse {
+    bool success = 1;
+}
+
+message ListUsersRequest {
+    int32 page = 1;
+    int32 page_size = 2;
+}
+
+message ListUsersResponse {
+    repeated GetUserResponse users = 1;
+    int32 total_count = 2;
+}
+
+
+// --- Policy Management ---
+message CreatePolicyRequest {
+    string name = 1;
+    string model = 2;
+    int32 token_limit = 3;
+    string period = 4;
+}
+
+message CreatePolicyResponse {
+    bool success = 1;
+}
+
+message GetPolicyRequest {
+    string policy_id = 1;
+}
+
+message GetPolicyResponse {
+    string name = 1;
+    string model = 2;
+    int32 token_limit = 3;
+    string period = 4;
+}
+
+message UpdatePolicyRequest {
+    string policy_id = 1;
+    string name = 2;
+    string model = 3;
+    int32 token_limit = 4;
+    string period = 5;
+}
+
+message UpdatePolicyResponse {
+    bool success = 1;
+}
+
+message DeletePolicyRequest {
+    string policy_id = 1;
+}
+
+message DeletePolicyResponse {
+    bool success = 1;
+}
+
+message ListPoliciesRequest {
+    int32 page = 1;
+    int32 page_size = 2;
+}
+
+message ListPoliciesResponse {
+    repeated GetPolicyResponse policies = 1;
+    int32 total_count = 2;
+}
+
+// --- Policy Assignments ---
+message AssignPoliciesRequest {
+    string user_id = 1;
+    repeated string policy_ids = 2;
+}
+
+message AssignPoliciesResponse {
+    bool success = 1;
+}
+
+message RemovePoliciesRequest {
+    string user_id = 1;
+    repeated string policy_ids = 2;
+}
+
+message RemovePoliciesResponse {
+    bool success = 1;
+}
+
+message UserPoliciesRequest {
+    string user_id = 1;
+}
+
+message UserPoliciesResponse {
+    repeated string policies = 1;
+}
+
+// --- Usage Tracking ---
+message UserUsageRequest {
+    string user_id = 1;
+}
+
+message UserUsageResponse {
+    repeated UserUsageEntry usage = 1;
+}
+
+message UserUsageEntry {
+    string model = 1;
+    int32 tokens_used = 2;
+    int32 token_limit = 3;
+}

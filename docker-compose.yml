@@ -68,6 +68,13 @@ services:
       - backend
       - fullstack
 
+  ai-service-openai-rate-limit-postgres:
+    image: postgres:latest
+    env_file:
+      - ./backend/ai-service-rate-limit-postgres.env
+    ports:
+      - "5432:5432"
+
   #============================================================
   # BACKEND - Dialogue Service
   #============================================================
