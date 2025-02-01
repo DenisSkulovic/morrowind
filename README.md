@@ -14,15 +14,16 @@ A modern web application for creating and managing game worlds and campaigns, le
 
 ### Backend
 - **NestJS** - Progressive Node.js framework for scalable applications
+- **TypeScript** - For type-safe code and enhanced developer experience
 - **GraphQL** - Flexible querying for smart search and dynamic data needs
 - **gRPC** - High-performance RPC framework for service communication
 - **Python** - For AI integration and content processing
 - **Redis** - High-speed caching for transient gameplay data
-- **RabbitMQ** - Reliable message broker for microservice coordination
+- **RabbitMQ** - Reliable message broker for microservice coordination, specifically for AI usage at the moment
 - **Docker** - Containerization for consistent deployment
 - **Kubernetes** - Container orchestration for scalable deployment
 - **AWS** - Cloud infrastructure and services
-- **PostgreSQL** - Robust database for world/campaign data
+- **PostgreSQL** - Robust database for world/campaign data; to track rate limiting for AI usage
 
 ### 🤖 AI Integration
 - **OpenAI API** - For dynamic content generation, dialogue and game narration
