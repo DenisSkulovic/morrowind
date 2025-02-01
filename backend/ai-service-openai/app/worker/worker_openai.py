@@ -1,6 +1,5 @@
 import asyncio
 import json
-from app.config import PROVIDER
 import aio_pika
 from app.config import RABBITMQ_URL, WORKER_QUEUE, OPENAI_API_KEY
 from openai import OpenAI
@@ -8,7 +7,7 @@ from openai import OpenAI
 client = OpenAI(api_key=OPENAI_API_KEY)
 
 async def process_task(task):
-    print(f"Processing task: {task}", flush=True)
+    print(f"[worker_openai.py process_task] Processing task: {task}", flush=True)
     request_id = task["requestId"]
     options = task["options"]
 
@@ -24,7 +23,7 @@ async def process_task(task):
     total_output_tokens = 0
 
     for chunk in completion:
-        print(f"Chunk received: {chunk}", flush=True)
+        print(f"[worker_openai.py process_task] Chunk received: {chunk}", flush=True)
 
         if chunk.usage:
             total_input_tokens = chunk.usage.prompt_tokens  # Input tokens (only received in first chunk)
@@ -34,12 +33,11 @@ async def process_task(task):
             content = chunk.choices[0].delta.content
             yield content, total_input_tokens, total_output_tokens
 
-    print(f"Final token usage: Input = {total_input_tokens}, Output = {total_output_tokens}")
-    return total_input_tokens, total_output_tokens
+    print(f"[worker_openai.py process_task] Final token usage: Input = {total_input_tokens}, Output = {total_output_tokens}")
 
 
 async def process_message(message: aio_pika.IncomingMessage):
-    print(f"Processing message", flush=True)
+    print(f"[worker_openai.py process_message] Processing message", flush=True)
     task = json.loads(message.body)
     request_id = task["requestId"]
     user_id = task["user_id"]
@@ -68,21 +66,21 @@ async def process_message(message: aio_pika.IncomingMessage):
         await RateLimiter.update_usage(user_id, model, total_input_tokens, total_output_tokens)
 
     except Exception as e:
-        print(f"Error processing task {request_id}: {e}", flush=True)
+        print(f"[worker_openai.py process_message] Error processing task {request_id}: {e}", flush=True)
     finally:
         await message.ack()
 
 
 async def main():
-    print(f"Starting worker", flush=True)
+    print(f"[worker_openai.py main] Starting worker", flush=True)
     connection = await aio_pika.connect_robust(RABBITMQ_URL)
-    print(f"Connection established", flush=True)
+    print(f"[worker_openai.py main] Connection established", flush=True)
     async with connection.channel() as channel:
-        print(f"Channel opened", flush=True)
+        print(f"[worker_openai.py main] Channel opened", flush=True)
         queue = await channel.declare_queue(WORKER_QUEUE)
-        print(f"Queue declared", flush=True)
+        print(f"[worker_openai.py main] Queue declared", flush=True)
         await queue.consume(process_message)
-        print(f"Worker started for queue {WORKER_QUEUE}", flush=True)
+        print(f"[worker_openai.py main] Worker started for queue {WORKER_QUEUE}", flush=True)
         await asyncio.Future()
 
 if __name__ == "__main__":

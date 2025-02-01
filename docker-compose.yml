@@ -29,6 +29,7 @@ services:
     depends_on:
       - ai-service-openai-proto-generator
       - ai-service-rabbitmq
+      - ai-service-openai-rate-limit-postgres
     profiles:
       - ai
       - backend
@@ -61,8 +62,8 @@ services:
       timeout: 10s
       retries: 5
     ports:
-      - "${PORT:-5672}:5672"
-      - "${MANAGEMENT_PORT:-15672}:15672" # RabbitMQ Management UI
+      - "5672:5672"
+      - "15672:15672"
     profiles:
       - ai
       - backend
@@ -73,7 +74,13 @@ services:
     env_file:
       - ./backend/ai-service-rate-limit-postgres.env
     ports:
-      - "5432:5432"
+      - "55434:5432"
+    volumes:
+      - ai-service-openai-rate-limit-postgres-data:/var/lib/postgresql/data
+    profiles:
+      - ai
+      - backend
+      - fullstack
 
   #============================================================
   # BACKEND - Dialogue Service
@@ -172,7 +179,7 @@ services:
     container_name: world_db
     restart: always
     ports:
-      - "${PORT:-55432}:5432"
+      - "55432:5432"
     volumes:
       - world_db_data:/var/lib/postgresql/data
     profiles:
@@ -187,7 +194,7 @@ services:
     env_file:
       - ./backend/campaign-db.env
     ports:
-      - "${PORT:-55433}:5432"
+      - "55433:5432"
     volumes:
       - campaign_db_data:/var/lib/postgresql/data
     profiles:
@@ -236,3 +243,4 @@ services:
 volumes:
   world_db_data:
   campaign_db_data:
+  ai-service-openai-rate-limit-postgres-data:

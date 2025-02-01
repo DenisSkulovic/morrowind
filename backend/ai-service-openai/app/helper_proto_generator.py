@@ -13,12 +13,12 @@ Path(PROTO_OUT).mkdir(parents=True, exist_ok=True)
 proto_files = [f for f in Path(PROTO_SRC).glob("*.proto")]
 
 if not proto_files:
-    print("No .proto files found.")
+    print("[helper_proto_generator.py] No .proto files found.")
     exit(1)
 
 # Generate gRPC code for each .proto file
 for proto_file in proto_files:
-    print(f"Processing {proto_file}...")
+    print(f"[helper_proto_generator.py] Processing {proto_file}...", flush=True)
     subprocess.run([
         "python3", "-m", "grpc_tools.protoc",
         f"--proto_path={PROTO_SRC}",
@@ -27,4 +27,4 @@ for proto_file in proto_files:
         str(proto_file)
     ], check=True)
 
-print("Protobuf files generated successfully.")
+print("[helper_proto_generator.py] Protobuf files generated successfully.", flush=True)

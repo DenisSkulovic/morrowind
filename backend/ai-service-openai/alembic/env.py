@@ -1,3 +1,4 @@
+import os
 from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config
@@ -38,9 +39,13 @@ def run_migrations_offline() -> None:
     script output.
 
     """
-    url = config.get_main_option("sqlalchemy.url")
+
+    # Get database URL from environment variables
+    database_url = f"postgresql://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@{os.getenv('POSTGRES_HOST')}:{os.getenv('POSTGRES_PORT')}/{os.getenv('POSTGRES_DB')}"
+    print(f"[alembic env.py run_migrations_offline] database_url: {database_url}", flush=True)
+    config.set_main_option("sqlalchemy.url", database_url)
     context.configure(
-        url=url,
+        url=database_url,
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
@@ -51,14 +56,14 @@ def run_migrations_offline() -> None:
 
 
 def run_migrations_online() -> None:
-    """Run migrations in 'online' mode.
+    """Run migrations in 'online' mode."""
 
-    In this scenario we need to create an Engine
-    and associate a connection with the context.
-
-    """
+    # Ensure the URL is set
+    database_url = f"postgresql://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@{os.getenv('POSTGRES_HOST')}:{os.getenv('POSTGRES_PORT')}/{os.getenv('POSTGRES_DB')}"
+    print(f"[alembic env.py run_migrations_online] database_url: {database_url}", flush=True)
+    config.set_main_option("sqlalchemy.url", database_url)
     connectable = engine_from_config(
-        config.get_section(config.config_ini_section, {}),
+        {"sqlalchemy.url": database_url},  # Manually passing the resolved URL
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )

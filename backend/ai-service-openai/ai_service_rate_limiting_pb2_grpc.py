@@ -25,7 +25,7 @@ if _version_not_supported:
     )
 
 
-class UserPolicyServiceStub(object):
+class RateLimitServiceStub(object):
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -35,52 +35,98 @@ class UserPolicyServiceStub(object):
             channel: A grpc.Channel.
         """
         self.CreateUser = channel.unary_unary(
-                '/ai_service_rate_limiting.UserPolicyService/CreateUser',
+                '/ai_service_rate_limiting.RateLimitService/CreateUser',
                 request_serializer=ai__service__rate__limiting__pb2.CreateUserRequest.SerializeToString,
                 response_deserializer=ai__service__rate__limiting__pb2.CreateUserResponse.FromString,
                 _registered_method=True)
         self.GetUser = channel.unary_unary(
-                '/ai_service_rate_limiting.UserPolicyService/GetUser',
+                '/ai_service_rate_limiting.RateLimitService/GetUser',
                 request_serializer=ai__service__rate__limiting__pb2.GetUserRequest.SerializeToString,
                 response_deserializer=ai__service__rate__limiting__pb2.GetUserResponse.FromString,
                 _registered_method=True)
-        self.AssignPolicyToUser = channel.unary_unary(
-                '/ai_service_rate_limiting.UserPolicyService/AssignPolicyToUser',
-                request_serializer=ai__service__rate__limiting__pb2.AssignPolicyRequest.SerializeToString,
-                response_deserializer=ai__service__rate__limiting__pb2.AssignPolicyResponse.FromString,
+        self.DeleteUser = channel.unary_unary(
+                '/ai_service_rate_limiting.RateLimitService/DeleteUser',
+                request_serializer=ai__service__rate__limiting__pb2.DeleteUserRequest.SerializeToString,
+                response_deserializer=ai__service__rate__limiting__pb2.DeleteUserResponse.FromString,
                 _registered_method=True)
-        self.ListUserPolicies = channel.unary_unary(
-                '/ai_service_rate_limiting.UserPolicyService/ListUserPolicies',
-                request_serializer=ai__service__rate__limiting__pb2.UserPoliciesRequest.SerializeToString,
-                response_deserializer=ai__service__rate__limiting__pb2.UserPoliciesResponse.FromString,
+        self.ListUsers = channel.unary_unary(
+                '/ai_service_rate_limiting.RateLimitService/ListUsers',
+                request_serializer=ai__service__rate__limiting__pb2.ListUsersRequest.SerializeToString,
+                response_deserializer=ai__service__rate__limiting__pb2.ListUsersResponse.FromString,
+                _registered_method=True)
+        self.CreatePolicyGroup = channel.unary_unary(
+                '/ai_service_rate_limiting.RateLimitService/CreatePolicyGroup',
+                request_serializer=ai__service__rate__limiting__pb2.CreatePolicyGroupRequest.SerializeToString,
+                response_deserializer=ai__service__rate__limiting__pb2.CreatePolicyGroupResponse.FromString,
+                _registered_method=True)
+        self.GetPolicyGroup = channel.unary_unary(
+                '/ai_service_rate_limiting.RateLimitService/GetPolicyGroup',
+                request_serializer=ai__service__rate__limiting__pb2.GetPolicyGroupRequest.SerializeToString,
+                response_deserializer=ai__service__rate__limiting__pb2.GetPolicyGroupResponse.FromString,
+                _registered_method=True)
+        self.UpdatePolicyGroup = channel.unary_unary(
+                '/ai_service_rate_limiting.RateLimitService/UpdatePolicyGroup',
+                request_serializer=ai__service__rate__limiting__pb2.UpdatePolicyGroupRequest.SerializeToString,
+                response_deserializer=ai__service__rate__limiting__pb2.UpdatePolicyGroupResponse.FromString,
+                _registered_method=True)
+        self.DeletePolicyGroup = channel.unary_unary(
+                '/ai_service_rate_limiting.RateLimitService/DeletePolicyGroup',
+                request_serializer=ai__service__rate__limiting__pb2.DeletePolicyGroupRequest.SerializeToString,
+                response_deserializer=ai__service__rate__limiting__pb2.DeletePolicyGroupResponse.FromString,
+                _registered_method=True)
+        self.ListPolicyGroups = channel.unary_unary(
+                '/ai_service_rate_limiting.RateLimitService/ListPolicyGroups',
+                request_serializer=ai__service__rate__limiting__pb2.ListPolicyGroupsRequest.SerializeToString,
+                response_deserializer=ai__service__rate__limiting__pb2.ListPolicyGroupsResponse.FromString,
                 _registered_method=True)
         self.CreatePolicy = channel.unary_unary(
-                '/ai_service_rate_limiting.UserPolicyService/CreatePolicy',
+                '/ai_service_rate_limiting.RateLimitService/CreatePolicy',
                 request_serializer=ai__service__rate__limiting__pb2.CreatePolicyRequest.SerializeToString,
                 response_deserializer=ai__service__rate__limiting__pb2.CreatePolicyResponse.FromString,
                 _registered_method=True)
         self.GetPolicy = channel.unary_unary(
-                '/ai_service_rate_limiting.UserPolicyService/GetPolicy',
+                '/ai_service_rate_limiting.RateLimitService/GetPolicy',
                 request_serializer=ai__service__rate__limiting__pb2.GetPolicyRequest.SerializeToString,
                 response_deserializer=ai__service__rate__limiting__pb2.GetPolicyResponse.FromString,
                 _registered_method=True)
-        self.ListPolicies = channel.unary_unary(
-                '/ai_service_rate_limiting.UserPolicyService/ListPolicies',
-                request_serializer=ai__service__rate__limiting__pb2.ListPoliciesRequest.SerializeToString,
-                response_deserializer=ai__service__rate__limiting__pb2.ListPoliciesResponse.FromString,
+        self.UpdatePolicy = channel.unary_unary(
+                '/ai_service_rate_limiting.RateLimitService/UpdatePolicy',
+                request_serializer=ai__service__rate__limiting__pb2.UpdatePolicyRequest.SerializeToString,
+                response_deserializer=ai__service__rate__limiting__pb2.UpdatePolicyResponse.FromString,
                 _registered_method=True)
         self.DeletePolicy = channel.unary_unary(
-                '/ai_service_rate_limiting.UserPolicyService/DeletePolicy',
+                '/ai_service_rate_limiting.RateLimitService/DeletePolicy',
                 request_serializer=ai__service__rate__limiting__pb2.DeletePolicyRequest.SerializeToString,
                 response_deserializer=ai__service__rate__limiting__pb2.DeletePolicyResponse.FromString,
                 _registered_method=True)
+        self.ListPolicies = channel.unary_unary(
+                '/ai_service_rate_limiting.RateLimitService/ListPolicies',
+                request_serializer=ai__service__rate__limiting__pb2.ListPoliciesRequest.SerializeToString,
+                response_deserializer=ai__service__rate__limiting__pb2.ListPoliciesResponse.FromString,
+                _registered_method=True)
+        self.AssignPoliciesToUser = channel.unary_unary(
+                '/ai_service_rate_limiting.RateLimitService/AssignPoliciesToUser',
+                request_serializer=ai__service__rate__limiting__pb2.AssignPoliciesRequest.SerializeToString,
+                response_deserializer=ai__service__rate__limiting__pb2.AssignPoliciesResponse.FromString,
+                _registered_method=True)
+        self.RemovePoliciesFromUser = channel.unary_unary(
+                '/ai_service_rate_limiting.RateLimitService/RemovePoliciesFromUser',
+                request_serializer=ai__service__rate__limiting__pb2.RemovePoliciesRequest.SerializeToString,
+                response_deserializer=ai__service__rate__limiting__pb2.RemovePoliciesResponse.FromString,
+                _registered_method=True)
+        self.GetUserUsage = channel.unary_unary(
+                '/ai_service_rate_limiting.RateLimitService/GetUserUsage',
+                request_serializer=ai__service__rate__limiting__pb2.UserUsageRequest.SerializeToString,
+                response_deserializer=ai__service__rate__limiting__pb2.UserUsageResponse.FromString,
+                _registered_method=True)
 
 
-class UserPolicyServiceServicer(object):
+class RateLimitServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def CreateUser(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """User management
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -91,20 +137,52 @@ class UserPolicyServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def AssignPolicyToUser(self, request, context):
+    def DeleteUser(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def ListUserPolicies(self, request, context):
+    def ListUsers(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def CreatePolicyGroup(self, request, context):
+        """Policy group management
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetPolicyGroup(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def UpdatePolicyGroup(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DeletePolicyGroup(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListPolicyGroups(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def CreatePolicy(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Policy management
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -115,7 +193,7 @@ class UserPolicyServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def ListPolicies(self, request, context):
+    def UpdatePolicy(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -127,8 +205,34 @@ class UserPolicyServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def ListPolicies(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
-def add_UserPolicyServiceServicer_to_server(servicer, server):
+    def AssignPoliciesToUser(self, request, context):
+        """Policy assignments
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def RemovePoliciesFromUser(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetUserUsage(self, request, context):
+        """Usage tracking
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+
+def add_RateLimitServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'CreateUser': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateUser,
@@ -140,15 +244,40 @@ def add_UserPolicyServiceServicer_to_server(servicer, server):
                     request_deserializer=ai__service__rate__limiting__pb2.GetUserRequest.FromString,
                     response_serializer=ai__service__rate__limiting__pb2.GetUserResponse.SerializeToString,
             ),
-            'AssignPolicyToUser': grpc.unary_unary_rpc_method_handler(
-                    servicer.AssignPolicyToUser,
-                    request_deserializer=ai__service__rate__limiting__pb2.AssignPolicyRequest.FromString,
-                    response_serializer=ai__service__rate__limiting__pb2.AssignPolicyResponse.SerializeToString,
+            'DeleteUser': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteUser,
+                    request_deserializer=ai__service__rate__limiting__pb2.DeleteUserRequest.FromString,
+                    response_serializer=ai__service__rate__limiting__pb2.DeleteUserResponse.SerializeToString,
             ),
-            'ListUserPolicies': grpc.unary_unary_rpc_method_handler(
-                    servicer.ListUserPolicies,
-                    request_deserializer=ai__service__rate__limiting__pb2.UserPoliciesRequest.FromString,
-                    response_serializer=ai__service__rate__limiting__pb2.UserPoliciesResponse.SerializeToString,
+            'ListUsers': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListUsers,
+                    request_deserializer=ai__service__rate__limiting__pb2.ListUsersRequest.FromString,
+                    response_serializer=ai__service__rate__limiting__pb2.ListUsersResponse.SerializeToString,
+            ),
+            'CreatePolicyGroup': grpc.unary_unary_rpc_method_handler(
+                    servicer.CreatePolicyGroup,
+                    request_deserializer=ai__service__rate__limiting__pb2.CreatePolicyGroupRequest.FromString,
+                    response_serializer=ai__service__rate__limiting__pb2.CreatePolicyGroupResponse.SerializeToString,
+            ),
+            'GetPolicyGroup': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetPolicyGroup,
+                    request_deserializer=ai__service__rate__limiting__pb2.GetPolicyGroupRequest.FromString,
+                    response_serializer=ai__service__rate__limiting__pb2.GetPolicyGroupResponse.SerializeToString,
+            ),
+            'UpdatePolicyGroup': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdatePolicyGroup,
+                    request_deserializer=ai__service__rate__limiting__pb2.UpdatePolicyGroupRequest.FromString,
+                    response_serializer=ai__service__rate__limiting__pb2.UpdatePolicyGroupResponse.SerializeToString,
+            ),
+            'DeletePolicyGroup': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeletePolicyGroup,
+                    request_deserializer=ai__service__rate__limiting__pb2.DeletePolicyGroupRequest.FromString,
+                    response_serializer=ai__service__rate__limiting__pb2.DeletePolicyGroupResponse.SerializeToString,
+            ),
+            'ListPolicyGroups': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListPolicyGroups,
+                    request_deserializer=ai__service__rate__limiting__pb2.ListPolicyGroupsRequest.FromString,
+                    response_serializer=ai__service__rate__limiting__pb2.ListPolicyGroupsResponse.SerializeToString,
             ),
             'CreatePolicy': grpc.unary_unary_rpc_method_handler(
                     servicer.CreatePolicy,
@@ -160,25 +289,45 @@ def add_UserPolicyServiceServicer_to_server(servicer, server):
                     request_deserializer=ai__service__rate__limiting__pb2.GetPolicyRequest.FromString,
                     response_serializer=ai__service__rate__limiting__pb2.GetPolicyResponse.SerializeToString,
             ),
-            'ListPolicies': grpc.unary_unary_rpc_method_handler(
-                    servicer.ListPolicies,
-                    request_deserializer=ai__service__rate__limiting__pb2.ListPoliciesRequest.FromString,
-                    response_serializer=ai__service__rate__limiting__pb2.ListPoliciesResponse.SerializeToString,
+            'UpdatePolicy': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdatePolicy,
+                    request_deserializer=ai__service__rate__limiting__pb2.UpdatePolicyRequest.FromString,
+                    response_serializer=ai__service__rate__limiting__pb2.UpdatePolicyResponse.SerializeToString,
             ),
             'DeletePolicy': grpc.unary_unary_rpc_method_handler(
                     servicer.DeletePolicy,
                     request_deserializer=ai__service__rate__limiting__pb2.DeletePolicyRequest.FromString,
                     response_serializer=ai__service__rate__limiting__pb2.DeletePolicyResponse.SerializeToString,
             ),
+            'ListPolicies': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListPolicies,
+                    request_deserializer=ai__service__rate__limiting__pb2.ListPoliciesRequest.FromString,
+                    response_serializer=ai__service__rate__limiting__pb2.ListPoliciesResponse.SerializeToString,
+            ),
+            'AssignPoliciesToUser': grpc.unary_unary_rpc_method_handler(
+                    servicer.AssignPoliciesToUser,
+                    request_deserializer=ai__service__rate__limiting__pb2.AssignPoliciesRequest.FromString,
+                    response_serializer=ai__service__rate__limiting__pb2.AssignPoliciesResponse.SerializeToString,
+            ),
+            'RemovePoliciesFromUser': grpc.unary_unary_rpc_method_handler(
+                    servicer.RemovePoliciesFromUser,
+                    request_deserializer=ai__service__rate__limiting__pb2.RemovePoliciesRequest.FromString,
+                    response_serializer=ai__service__rate__limiting__pb2.RemovePoliciesResponse.SerializeToString,
+            ),
+            'GetUserUsage': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetUserUsage,
+                    request_deserializer=ai__service__rate__limiting__pb2.UserUsageRequest.FromString,
+                    response_serializer=ai__service__rate__limiting__pb2.UserUsageResponse.SerializeToString,
+            ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'ai_service_rate_limiting.UserPolicyService', rpc_method_handlers)
+            'ai_service_rate_limiting.RateLimitService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers('ai_service_rate_limiting.UserPolicyService', rpc_method_handlers)
+    server.add_registered_method_handlers('ai_service_rate_limiting.RateLimitService', rpc_method_handlers)
 
 
  # This class is part of an EXPERIMENTAL API.
-class UserPolicyService(object):
+class RateLimitService(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
@@ -195,7 +344,7 @@ class UserPolicyService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/ai_service_rate_limiting.UserPolicyService/CreateUser',
+            '/ai_service_rate_limiting.RateLimitService/CreateUser',
             ai__service__rate__limiting__pb2.CreateUserRequest.SerializeToString,
             ai__service__rate__limiting__pb2.CreateUserResponse.FromString,
             options,
@@ -222,7 +371,7 @@ class UserPolicyService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/ai_service_rate_limiting.UserPolicyService/GetUser',
+            '/ai_service_rate_limiting.RateLimitService/GetUser',
             ai__service__rate__limiting__pb2.GetUserRequest.SerializeToString,
             ai__service__rate__limiting__pb2.GetUserResponse.FromString,
             options,
@@ -236,7 +385,7 @@ class UserPolicyService(object):
             _registered_method=True)
 
     @staticmethod
-    def AssignPolicyToUser(request,
+    def DeleteUser(request,
             target,
             options=(),
             channel_credentials=None,
@@ -249,9 +398,9 @@ class UserPolicyService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/ai_service_rate_limiting.UserPolicyService/AssignPolicyToUser',
-            ai__service__rate__limiting__pb2.AssignPolicyRequest.SerializeToString,
-            ai__service__rate__limiting__pb2.AssignPolicyResponse.FromString,
+            '/ai_service_rate_limiting.RateLimitService/DeleteUser',
+            ai__service__rate__limiting__pb2.DeleteUserRequest.SerializeToString,
+            ai__service__rate__limiting__pb2.DeleteUserResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -263,7 +412,7 @@ class UserPolicyService(object):
             _registered_method=True)
 
     @staticmethod
-    def ListUserPolicies(request,
+    def ListUsers(request,
             target,
             options=(),
             channel_credentials=None,
@@ -276,9 +425,144 @@ class UserPolicyService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/ai_service_rate_limiting.UserPolicyService/ListUserPolicies',
-            ai__service__rate__limiting__pb2.UserPoliciesRequest.SerializeToString,
-            ai__service__rate__limiting__pb2.UserPoliciesResponse.FromString,
+            '/ai_service_rate_limiting.RateLimitService/ListUsers',
+            ai__service__rate__limiting__pb2.ListUsersRequest.SerializeToString,
+            ai__service__rate__limiting__pb2.ListUsersResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def CreatePolicyGroup(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/ai_service_rate_limiting.RateLimitService/CreatePolicyGroup',
+            ai__service__rate__limiting__pb2.CreatePolicyGroupRequest.SerializeToString,
+            ai__service__rate__limiting__pb2.CreatePolicyGroupResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetPolicyGroup(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/ai_service_rate_limiting.RateLimitService/GetPolicyGroup',
+            ai__service__rate__limiting__pb2.GetPolicyGroupRequest.SerializeToString,
+            ai__service__rate__limiting__pb2.GetPolicyGroupResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def UpdatePolicyGroup(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/ai_service_rate_limiting.RateLimitService/UpdatePolicyGroup',
+            ai__service__rate__limiting__pb2.UpdatePolicyGroupRequest.SerializeToString,
+            ai__service__rate__limiting__pb2.UpdatePolicyGroupResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeletePolicyGroup(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/ai_service_rate_limiting.RateLimitService/DeletePolicyGroup',
+            ai__service__rate__limiting__pb2.DeletePolicyGroupRequest.SerializeToString,
+            ai__service__rate__limiting__pb2.DeletePolicyGroupResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListPolicyGroups(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/ai_service_rate_limiting.RateLimitService/ListPolicyGroups',
+            ai__service__rate__limiting__pb2.ListPolicyGroupsRequest.SerializeToString,
+            ai__service__rate__limiting__pb2.ListPolicyGroupsResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -303,7 +587,7 @@ class UserPolicyService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/ai_service_rate_limiting.UserPolicyService/CreatePolicy',
+            '/ai_service_rate_limiting.RateLimitService/CreatePolicy',
             ai__service__rate__limiting__pb2.CreatePolicyRequest.SerializeToString,
             ai__service__rate__limiting__pb2.CreatePolicyResponse.FromString,
             options,
@@ -330,7 +614,7 @@ class UserPolicyService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/ai_service_rate_limiting.UserPolicyService/GetPolicy',
+            '/ai_service_rate_limiting.RateLimitService/GetPolicy',
             ai__service__rate__limiting__pb2.GetPolicyRequest.SerializeToString,
             ai__service__rate__limiting__pb2.GetPolicyResponse.FromString,
             options,
@@ -344,7 +628,7 @@ class UserPolicyService(object):
             _registered_method=True)
 
     @staticmethod
-    def ListPolicies(request,
+    def UpdatePolicy(request,
             target,
             options=(),
             channel_credentials=None,
@@ -357,9 +641,9 @@ class UserPolicyService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/ai_service_rate_limiting.UserPolicyService/ListPolicies',
-            ai__service__rate__limiting__pb2.ListPoliciesRequest.SerializeToString,
-            ai__service__rate__limiting__pb2.ListPoliciesResponse.FromString,
+            '/ai_service_rate_limiting.RateLimitService/UpdatePolicy',
+            ai__service__rate__limiting__pb2.UpdatePolicyRequest.SerializeToString,
+            ai__service__rate__limiting__pb2.UpdatePolicyResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -384,9 +668,117 @@ class UserPolicyService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/ai_service_rate_limiting.UserPolicyService/DeletePolicy',
+            '/ai_service_rate_limiting.RateLimitService/DeletePolicy',
             ai__service__rate__limiting__pb2.DeletePolicyRequest.SerializeToString,
             ai__service__rate__limiting__pb2.DeletePolicyResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListPolicies(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/ai_service_rate_limiting.RateLimitService/ListPolicies',
+            ai__service__rate__limiting__pb2.ListPoliciesRequest.SerializeToString,
+            ai__service__rate__limiting__pb2.ListPoliciesResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def AssignPoliciesToUser(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/ai_service_rate_limiting.RateLimitService/AssignPoliciesToUser',
+            ai__service__rate__limiting__pb2.AssignPoliciesRequest.SerializeToString,
+            ai__service__rate__limiting__pb2.AssignPoliciesResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def RemovePoliciesFromUser(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/ai_service_rate_limiting.RateLimitService/RemovePoliciesFromUser',
+            ai__service__rate__limiting__pb2.RemovePoliciesRequest.SerializeToString,
+            ai__service__rate__limiting__pb2.RemovePoliciesResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetUserUsage(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/ai_service_rate_limiting.RateLimitService/GetUserUsage',
+            ai__service__rate__limiting__pb2.UserUsageRequest.SerializeToString,
+            ai__service__rate__limiting__pb2.UserUsageResponse.FromString,
             options,
             channel_credentials,
             insecure,

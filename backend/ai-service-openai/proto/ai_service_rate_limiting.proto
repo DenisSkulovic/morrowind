@@ -1,9 +1,20 @@
-service UserPolicyService {
+syntax = "proto3";
+
+package ai_service_rate_limiting;
+
+service RateLimitService {
     // User management
     rpc CreateUser (CreateUserRequest) returns (CreateUserResponse);
     rpc GetUser (GetUserRequest) returns (GetUserResponse);
     rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResponse);
     rpc ListUsers (ListUsersRequest) returns (ListUsersResponse);
+
+    // Policy group management
+    rpc CreatePolicyGroup (CreatePolicyGroupRequest) returns (CreatePolicyGroupResponse);
+    rpc GetPolicyGroup (GetPolicyGroupRequest) returns (GetPolicyGroupResponse);
+    rpc UpdatePolicyGroup (UpdatePolicyGroupRequest) returns (UpdatePolicyGroupResponse);
+    rpc DeletePolicyGroup (DeletePolicyGroupRequest) returns (DeletePolicyGroupResponse);
+    rpc ListPolicyGroups (ListPolicyGroupsRequest) returns (ListPolicyGroupsResponse);
     
     // Policy management
     rpc CreatePolicy (CreatePolicyRequest) returns (CreatePolicyResponse);
@@ -15,17 +26,61 @@ service UserPolicyService {
     // Policy assignments
     rpc AssignPoliciesToUser (AssignPoliciesRequest) returns (AssignPoliciesResponse);
     rpc RemovePoliciesFromUser (RemovePoliciesRequest) returns (RemovePoliciesResponse);
-    rpc ListUserPolicies (UserPoliciesRequest) returns (UserPoliciesResponse);
     
     // Usage tracking
     rpc GetUserUsage (UserUsageRequest) returns (UserUsageResponse);
+}
+
+// --- Policy Group Management ---
+message CreatePolicyGroupRequest {
+    string name = 1;
+}
+
+message CreatePolicyGroupResponse {
+    bool success = 1;
+}
+
+message GetPolicyGroupRequest {
+    string policy_group_id = 1;
+}
+
+message GetPolicyGroupResponse {
+    string policy_group_id = 1;
+    string name = 2;
+}
+
+message UpdatePolicyGroupRequest {
+    string policy_group_id = 1;
+    string name = 2;
+}
+
+message UpdatePolicyGroupResponse {
+    bool success = 1;
+}
+
+message DeletePolicyGroupRequest {
+    string policy_group_id = 1;
+}
+
+message DeletePolicyGroupResponse {
+    bool success = 1;
+}
+
+message ListPolicyGroupsRequest {
+    int32 page = 1;
+    int32 page_size = 2;
+}
+
+message ListPolicyGroupsResponse {
+    repeated GetPolicyGroupResponse policy_groups = 1;
+    int32 total_count = 2;
 }
 
 // --- User Management ---
 message CreateUserRequest {
     string user_id = 1;
     string name = 2;
-    string user_type = 3;
+    string policy_group_id = 3;
 }
 
 message CreateUserResponse {
@@ -39,7 +94,7 @@ message GetUserRequest {
 message GetUserResponse {
     string user_id = 1;
     string name = 2;
-    string user_type = 3;
+    string policy_group_id = 3;
     repeated string policies = 4;
 }
 
@@ -61,13 +116,15 @@ message ListUsersResponse {
     int32 total_count = 2;
 }
 
-
 // --- Policy Management ---
 message CreatePolicyRequest {
     string name = 1;
     string model = 2;
-    int32 token_limit = 3;
-    string period = 4;
+    string provider = 3;
+    int32 input_token_limit = 4;
+    int32 output_token_limit = 5;
+    string period = 6;
+    string policy_group_id = 7;
 }
 
 message CreatePolicyResponse {
@@ -81,16 +138,22 @@ message GetPolicyRequest {
 message GetPolicyResponse {
     string name = 1;
     string model = 2;
-    int32 token_limit = 3;
-    string period = 4;
+    string provider = 3;
+    int32 input_token_limit = 4;
+    int32 output_token_limit = 5;
+    string period = 6;
+    string policy_group_id = 7;
 }
 
 message UpdatePolicyRequest {
     string policy_id = 1;
     string name = 2;
     string model = 3;
-    int32 token_limit = 4;
-    string period = 5;
+    string provider = 4;
+    int32 input_token_limit = 5;
+    int32 output_token_limit = 6;
+    string period = 7;
+    string policy_group_id = 8;
 }
 
 message UpdatePolicyResponse {
@@ -134,14 +197,6 @@ message RemovePoliciesResponse {
     bool success = 1;
 }
 
-message UserPoliciesRequest {
-    string user_id = 1;
-}
-
-message UserPoliciesResponse {
-    repeated string policies = 1;
-}
-
 // --- Usage Tracking ---
 message UserUsageRequest {
     string user_id = 1;
@@ -153,6 +208,9 @@ message UserUsageResponse {
 
 message UserUsageEntry {
     string model = 1;
-    int32 tokens_used = 2;
-    int32 token_limit = 3;
+    string provider = 2;
+    int32 input_tokens_used = 3;
+    int32 output_tokens_used = 4;
+    int32 input_token_limit = 5;
+    int32 output_token_limit = 6;
 }

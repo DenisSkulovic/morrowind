@@ -1,0 +1,4 @@
+POSTGRES_USER=content_user
+POSTGRES_PASSWORD=content_password
+POSTGRES_DB__CAMPAIGN=campaign-db
+PORT=55433
