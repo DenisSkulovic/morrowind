@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from api.rate_limit.models import User, AsyncSessionLocal
+from app.api.rate_limit.models import User, AsyncSessionLocal
 
 
 
@@ -8,24 +8,24 @@ class RateLimitUserService:
     """Handles user rate limiting based on assigned policies."""
 
     @staticmethod
-    async def create_user(user_id: str, name: str, policy_group_id: str):
-        print(f"[RateLimitUserService.create_user] Creating user: {user_id} - {name} - {policy_group_id}", flush=True)
+    async def create_user(id: str, name: str, policy_group_id: str):
+        print(f"[RateLimitUserService.create_user] Creating user: {id} - {name} - {policy_group_id}", flush=True)
         async with AsyncSessionLocal() as session:
-            new_user = User(id=user_id, name=name, policy_group_id=policy_group_id)
+            new_user = User(id=id, name=name, policy_group_id=policy_group_id)
             session.add(new_user)
             await session.commit()
 
     @staticmethod
-    async def get_user(user_id: str):
-        print(f"[RateLimitUserService.get_user] Getting user: {user_id}", flush=True)
+    async def get_user(id: str):
+        print(f"[RateLimitUserService.get_user] Getting user: {id}", flush=True)
         async with AsyncSessionLocal() as session:
-            return await session.get(User, user_id)
+            return await session.get(User, id)
 
     @staticmethod
-    async def delete_user(user_id: str):
-        print(f"[RateLimitUserService.delete_user] Deleting user: {user_id}", flush=True)
+    async def delete_user(id: str):
+        print(f"[RateLimitUserService.delete_user] Deleting user: {id}", flush=True)
         async with AsyncSessionLocal() as session:
-            user = await session.get(User, user_id)
+            user = await session.get(User, id)
             if user:
                 await session.delete(user)
                 await session.commit()

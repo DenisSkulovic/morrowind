@@ -1,8 +1,8 @@
 import datetime
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from api.rate_limit.models import UserUsage, AsyncSessionLocal
-from api.rate_limit.enums import PolicyPeriodEnum
+from app.api.rate_limit.models import UserUsage, AsyncSessionLocal
+from app.api.rate_limit.enums import PolicyPeriodEnum
 
 
 

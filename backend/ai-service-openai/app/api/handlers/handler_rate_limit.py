@@ -1,7 +1,7 @@
 import asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from app.api.rate_limit.models import AsyncSessionLocal, User, Policy, UserUsage, user_policies
+from app.api.rate_limit.models import AsyncSessionLocal, User, Policy, UserUsage
 from ai_service_rate_limiting_pb2 import (
     CreateUserResponse, GetUserResponse, DeleteUserResponse, ListUsersResponse,
     AssignPoliciesResponse, RemovePoliciesResponse,

@@ -3,8 +3,8 @@ from sqlalchemy.orm import sessionmaker, relationship, declarative_base
 from sqlalchemy import Column, String, Integer, DateTime, ForeignKey, Table, func, Enum
 import uuid
 import os
-from api.rate_limit.enums import PolicyPeriodEnum, AIModelEnum, ProviderEnum
-from config import DATABASE_URL
+from app.api.rate_limit.enums import PolicyPeriodEnum, AIModelEnum, ProviderEnum
+from app.config import DATABASE_URL
 
 
 Base = declarative_base()

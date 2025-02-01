@@ -48,7 +48,7 @@ async def create_policy_groups(policy_groups):
         policy_group_obj = await RateLimitPolicyGroupService.get_policy_group(policy_group['id'])
         if not policy_group_obj:
             print(f"[initialize_db] Creating policy group: {policy_group['id']} - {policy_group['name']}", flush=True)
-            await RateLimitPolicyGroupService.create_policy_group(policy_group_id=policy_group['id'], name=policy_group['name'])
+            await RateLimitPolicyGroupService.create_policy_group(id=policy_group['id'], name=policy_group['name'])
             print(f"Predefined policy group created: {policy_group['id']} - {policy_group['name']}", flush=True)
         else:
             print(f"[initialize_db] Policy group already exists: {policy_group['id']} - {policy_group['name']}", flush=True)
@@ -60,7 +60,7 @@ async def create_users(users):
         user_obj = await RateLimitUserService.get_user(user['id'])
         if not user_obj:
             print(f"[initialize_db] Creating user: {user['id']} - {user['name']} - {user['policy_group_id']}", flush=True)
-            await RateLimitUserService.create_user(user_id=user['id'], name=user['name'], policy_group_id=user['policy_group_id'])
+            await RateLimitUserService.create_user(id=user['id'], name=user['name'], policy_group_id=user['policy_group_id'])
             print(f"Predefined user created: {user['id']} - {user['name']} - {user['policy_group_id']}", flush=True)
         else:
             print(f"[initialize_db] User already exists: {user['id']} - {user['name']} - {user['policy_group_id']}", flush=True)
@@ -73,7 +73,7 @@ async def create_policies(policies):
         policy_obj = await RateLimitPolicyService.get_policy(policy['id'])
         if not policy_obj:
             print(f"[initialize_db] Creating policy: {policy['id']} - {policy['name']} - {policy['model']} - {policy['provider']} - {policy['input_token_limit']} - {policy['output_token_limit']} - {policy['period']} - {policy['policy_group_id']}", flush=True)
-            await RateLimitPolicyService.create_policy(policy_id=policy['id'], name=policy['name'], model=policy['model'], provider=policy['provider'], input_token_limit=policy['input_token_limit'], output_token_limit=policy['output_token_limit'], period=policy['period'], policy_group_id=policy['policy_group_id'])
+            await RateLimitPolicyService.create_policy(id=policy['id'], name=policy['name'], model=policy['model'], provider=policy['provider'], input_token_limit=policy['input_token_limit'], output_token_limit=policy['output_token_limit'], period=policy['period'], policy_group_id=policy['policy_group_id'])
             print(f"Predefined policy created: {policy['id']} - {policy['name']} - {policy['model']} - {policy['provider']} - {policy['input_token_limit']} - {policy['output_token_limit']} - {policy['period']} - {policy['policy_group_id']}", flush=True)
         else:
             print(f"[initialize_db] Policy already exists: {policy['id']} - {policy['name']} - {policy['model']} - {policy['provider']} - {policy['input_token_limit']} - {policy['output_token_limit']} - {policy['period']} - {policy['policy_group_id']}", flush=True)

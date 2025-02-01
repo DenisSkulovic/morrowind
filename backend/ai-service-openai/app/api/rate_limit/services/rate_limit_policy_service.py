@@ -1,8 +1,8 @@
 from typing import List
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from api.rate_limit.models import User, Policy, UserUsage, AsyncSessionLocal
-from api.rate_limit.enums import PolicyPeriodEnum
+from app.api.rate_limit.models import User, Policy, UserUsage, AsyncSessionLocal
+from app.api.rate_limit.enums import PolicyPeriodEnum
 
 
 
@@ -10,11 +10,11 @@ from api.rate_limit.enums import PolicyPeriodEnum
 class RateLimitPolicyService:
 
     @staticmethod
-    async def create_policy(name: str, model: str, provider: str, input_token_limit: int, output_token_limit: int, period: str, policy_group_id: str):
-        print(f"[RateLimitPolicyService.create_policy] Creating policy: {name} - {model} - {provider} - {input_token_limit} - {output_token_limit} - {period} - {policy_group_id}", flush=True)
+    async def create_policy(id: str, name: str, model: str, provider: str, input_token_limit: int, output_token_limit: int, period: str, policy_group_id: str):
+        print(f"[RateLimitPolicyService.create_policy] Creating policy: {id} - {name} - {model} - {provider} - {input_token_limit} - {output_token_limit} - {period} - {policy_group_id}", flush=True)
         async with AsyncSessionLocal() as session:
             new_policy = Policy(
-                name=name, model=model, provider=provider,
+                id=id, name=name, model=model, provider=provider,
                 input_token_limit=input_token_limit, output_token_limit=output_token_limit,
                 period=period, policy_group_id=policy_group_id
             )
@@ -28,10 +28,10 @@ class RateLimitPolicyService:
             return await session.get(Policy, policy_id)
 
     @staticmethod
-    async def update_policy(policy_id: str, name: str, model: str, provider: str, input_token_limit: int, output_token_limit: int, period: str, policy_group_id: str):
-        print(f"[RateLimitPolicyService.update_policy] Updating policy: {policy_id} - {name} - {model} - {provider} - {input_token_limit} - {output_token_limit} - {period} - {policy_group_id}", flush=True)
+    async def update_policy(id: str, name: str, model: str, provider: str, input_token_limit: int, output_token_limit: int, period: str, policy_group_id: str):
+        print(f"[RateLimitPolicyService.update_policy] Updating policy: {id} - {name} - {model} - {provider} - {input_token_limit} - {output_token_limit} - {period} - {policy_group_id}", flush=True)
         async with AsyncSessionLocal() as session:
-            policy = await session.get(Policy, policy_id)
+            policy = await session.get(Policy, id)
             if policy:
                 policy.name = name
                 policy.model = model
@@ -43,10 +43,10 @@ class RateLimitPolicyService:
                 await session.commit()
 
     @staticmethod
-    async def delete_policy(policy_id: str):
-        print(f"[RateLimitPolicyService.delete_policy] Deleting policy: {policy_id}", flush=True)
+    async def delete_policy(id: str):
+        print(f"[RateLimitPolicyService.delete_policy] Deleting policy: {id}", flush=True)
         async with AsyncSessionLocal() as session:
-            policy = await session.get(Policy, policy_id)
+            policy = await session.get(Policy, id)
             if policy:
                 await session.delete(policy)
                 await session.commit()

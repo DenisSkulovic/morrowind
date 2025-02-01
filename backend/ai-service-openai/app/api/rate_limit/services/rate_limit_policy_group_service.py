@@ -1,31 +1,31 @@
 from typing import List
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from api.rate_limit.models import PolicyGroup, Policy, AsyncSessionLocal
+from app.api.rate_limit.models import PolicyGroup, Policy, AsyncSessionLocal
 
 
 class RateLimitPolicyGroupService:
     """Handles policy group rate limiting based on assigned policies."""
 
     @staticmethod
-    async def create_policy_group(policy_group_id: str, name: str):
-        print(f"[RateLimitPolicyGroupService.create_policy_group] Creating policy group: {policy_group_id} - {name}", flush=True)
+    async def create_policy_group(id: str, name: str):
+        print(f"[RateLimitPolicyGroupService.create_policy_group] Creating policy group: {id} - {name}", flush=True)
         async with AsyncSessionLocal() as session:
-            new_policy_group = PolicyGroup(id=policy_group_id, name=name)
+            new_policy_group = PolicyGroup(id=id, name=name)
             session.add(new_policy_group)
             await session.commit()
     
     @staticmethod
-    async def get_policy_group(policy_group_id: str):
-        print(f"[RateLimitPolicyGroupService.get_policy_group] Getting policy group: {policy_group_id}", flush=True)
+    async def get_policy_group(id: str):
+        print(f"[RateLimitPolicyGroupService.get_policy_group] Getting policy group: {id}", flush=True)
         async with AsyncSessionLocal() as session:
-            return await session.get(PolicyGroup, policy_group_id)
+            return await session.get(PolicyGroup, id)
 
     @staticmethod
-    async def delete_policy_group(policy_group_id: str):
-        print(f"[RateLimitPolicyGroupService.delete_policy_group] Deleting policy group: {policy_group_id}", flush=True)
+    async def delete_policy_group(id: str):
+        print(f"[RateLimitPolicyGroupService.delete_policy_group] Deleting policy group: {id}", flush=True)
         async with AsyncSessionLocal() as session:
-            policy_group = await session.get(PolicyGroup, policy_group_id)
+            policy_group = await session.get(PolicyGroup, id)
             if policy_group:
                 await session.delete(policy_group)
                 await session.commit()
@@ -46,7 +46,7 @@ class RateLimitPolicyGroupService:
     async def assign_policies_to_policy_group(policy_group_id: str, policy_ids: List[str]):
         print(f"[RateLimitPolicyGroupService.assign_policies_to_policy_group] Assigning policies to policy group: {policy_group_id} - {policy_ids}", flush=True)
         async with AsyncSessionLocal() as session:
-            policy_group = await session.get(PolicyGroup, policy_group_id)
+            policy_group = await session.get(PolicyGroup, id)
             policies = await session.execute(select(Policy).where(Policy.id.in_(policy_ids)))
             if policy_group:
                 for policy in policies.scalars().all():

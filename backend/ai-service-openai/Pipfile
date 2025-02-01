@@ -16,6 +16,7 @@ watchdog = "*"
 sqlalchemy = "*"
 asyncpg = "*"
 alembic = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 
