@@ -55,3 +55,6 @@ Currently focusing on:
 - Refining the **Next.js frontend** for intuitive world-building and gameplay interfaces. Integrating AI-assisted content generation and playground dialogue simulation with a character while on the world-building UI.
 
 [📚 Documentation](./docs) | [🤝 Contributing](./CONTRIBUTING.md)
+
+
+![Architecture Diagram](./architecture.drawio.png)
