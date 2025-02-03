@@ -5,7 +5,7 @@
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="mE6wTCe11L0QiMz-y8vd-45" value="" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shadow=0;dashed=1;strokeWidth=1;shape=mxgraph.ios.iBgFlat;strokeColor=#18211b;dashPattern=12 12;" vertex="1" parent="1">
-          <mxGeometry x="-360" y="330" width="1970" height="940" as="geometry" />
+          <mxGeometry x="-360" y="330" width="2400" height="940" as="geometry" />
         </mxCell>
         <mxCell id="mE6wTCe11L0QiMz-y8vd-27" value="" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shadow=0;dashed=1;strokeWidth=1;shape=mxgraph.ios.iBgFlat;strokeColor=#18211b;dashPattern=8 8;" vertex="1" parent="1">
           <mxGeometry x="-150" y="-340" width="1730" height="390" as="geometry" />
@@ -43,10 +43,13 @@
         <mxCell id="mE6wTCe11L0QiMz-y8vd-20" value="&lt;b&gt;World Building UI&lt;/b&gt;&lt;div&gt;React + NextJS + MaterialUI&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
           <mxGeometry x="210" y="-190" width="180" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="mE6wTCe11L0QiMz-y8vd-21" value="" style="edgeStyle=elbowEdgeStyle;elbow=vertical;endArrow=classic;html=1;curved=0;rounded=0;endSize=8;startSize=8;exitX=0.496;exitY=0.975;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=-0.059;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="mE6wTCe11L0QiMz-y8vd-20" target="mE6wTCe11L0QiMz-y8vd-17">
+        <mxCell id="mE6wTCe11L0QiMz-y8vd-21" value="" style="edgeStyle=elbowEdgeStyle;elbow=vertical;endArrow=classic;html=1;curved=0;rounded=0;endSize=8;startSize=8;exitX=0.496;exitY=0.975;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="mE6wTCe11L0QiMz-y8vd-20" target="mE6wTCe11L0QiMz-y8vd-9">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="508" y="-50" as="sourcePoint" />
             <mxPoint x="770" y="110" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="280" y="260" />
+            </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="mE6wTCe11L0QiMz-y8vd-22" value="&lt;b&gt;Envoy&lt;/b&gt;&lt;div&gt;Proxy for gRPC Web&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
@@ -58,12 +61,12 @@
         <mxCell id="mE6wTCe11L0QiMz-y8vd-24" value="&lt;b&gt;Campaign UI (TO IMPLEMENT)&lt;/b&gt;&lt;div&gt;React&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
           <mxGeometry x="860" y="-200" width="200" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="mE6wTCe11L0QiMz-y8vd-26" value="" style="edgeStyle=elbowEdgeStyle;elbow=vertical;endArrow=classic;html=1;curved=0;rounded=0;endSize=8;startSize=8;exitX=0.503;exitY=0.975;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.529;entryY=-0.029;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="mE6wTCe11L0QiMz-y8vd-24" target="mE6wTCe11L0QiMz-y8vd-17">
+        <mxCell id="mE6wTCe11L0QiMz-y8vd-26" value="" style="edgeStyle=elbowEdgeStyle;elbow=vertical;endArrow=classic;html=1;curved=0;rounded=0;endSize=8;startSize=8;exitX=0.503;exitY=0.975;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="mE6wTCe11L0QiMz-y8vd-24" target="mE6wTCe11L0QiMz-y8vd-58">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="309" y="-141" as="sourcePoint" />
             <mxPoint x="654" y="116" as="targetPoint" />
             <Array as="points">
-              <mxPoint x="800" y="-30" />
+              <mxPoint x="1150" y="90" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -97,19 +100,16 @@
             <mxPoint x="653.5" y="661" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="mE6wTCe11L0QiMz-y8vd-37" value="" style="edgeStyle=elbowEdgeStyle;elbow=vertical;endArrow=classic;html=1;curved=0;rounded=0;endSize=8;startSize=8;exitX=0.231;exitY=0.975;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="mE6wTCe11L0QiMz-y8vd-22" target="mE6wTCe11L0QiMz-y8vd-9">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="309" y="-141" as="sourcePoint" />
-            <mxPoint x="654" y="116" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="mE6wTCe11L0QiMz-y8vd-38" value="" style="edgeStyle=elbowEdgeStyle;elbow=vertical;endArrow=classic;html=1;curved=0;rounded=0;endSize=8;startSize=8;exitX=0.646;exitY=0.975;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="mE6wTCe11L0QiMz-y8vd-22" target="mE6wTCe11L0QiMz-y8vd-10">
+        <mxCell id="mE6wTCe11L0QiMz-y8vd-38" value="" style="edgeStyle=elbowEdgeStyle;elbow=vertical;endArrow=classic;html=1;curved=0;rounded=0;endSize=8;startSize=8;exitX=0.508;exitY=1.114;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="mE6wTCe11L0QiMz-y8vd-20" target="mE6wTCe11L0QiMz-y8vd-10">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="619" y="227" as="sourcePoint" />
             <mxPoint x="253" y="420" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="520" y="260" />
+            </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="mE6wTCe11L0QiMz-y8vd-39" value="Campaign DB" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.postgre_sql_instance;fillColor=#2E73B8;gradientColor=none;" vertex="1" parent="1">
+        <mxCell id="mE6wTCe11L0QiMz-y8vd-39" value="Rate Limit DB" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.postgre_sql_instance;fillColor=#2E73B8;gradientColor=none;" vertex="1" parent="1">
           <mxGeometry x="280" y="1110" width="60" height="63" as="geometry" />
         </mxCell>
         <mxCell id="mE6wTCe11L0QiMz-y8vd-40" value="&lt;div&gt;&lt;b&gt;AI Task Messaging Service&lt;/b&gt;&lt;/div&gt;RabbitMQ" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
@@ -145,7 +145,7 @@
             <mxPoint x="407" y="910" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="mE6wTCe11L0QiMz-y8vd-49" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;AI Service Group&lt;/h1&gt;&lt;p&gt;&lt;span style=&quot;text-align: center; text-wrap-mode: nowrap;&quot;&gt;Service group to process AI prompt requests.&lt;/span&gt;&lt;/p&gt;&lt;div style=&quot;text-wrap-mode: nowrap;&quot;&gt;API instance holds the open gRPC&lt;/div&gt;&lt;div style=&quot;text-wrap-mode: nowrap;&quot;&gt;connection, and sends a task to&lt;/div&gt;&lt;div style=&quot;text-wrap-mode: nowrap;&quot;&gt;RabbitMQ. A worker instance processes&lt;/div&gt;&lt;div style=&quot;text-wrap-mode: nowrap;&quot;&gt;the tasks and sends chunks from OpenAI&lt;/div&gt;&lt;div style=&quot;text-wrap-mode: nowrap;&quot;&gt;into RabbitMQ as messages, which are&lt;/div&gt;&lt;div style=&quot;text-wrap-mode: nowrap;&quot;&gt;relayed by the API instance through the&lt;/div&gt;&lt;div style=&quot;text-wrap-mode: nowrap;&quot;&gt;open connection as a gRPC stream.&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+        <mxCell id="mE6wTCe11L0QiMz-y8vd-49" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;AI Service Group&lt;/h1&gt;&lt;p&gt;&lt;span style=&quot;text-align: center; text-wrap-mode: nowrap;&quot;&gt;Service group to process AI prompt requests.&lt;/span&gt;&lt;/p&gt;&lt;div style=&quot;text-wrap-mode: nowrap;&quot;&gt;API instance holds the open gRPC&lt;/div&gt;&lt;div style=&quot;text-wrap-mode: nowrap;&quot;&gt;connection, and sends a task to&lt;/div&gt;&lt;div style=&quot;text-wrap-mode: nowrap;&quot;&gt;RabbitMQ. A worker instance processes&lt;/div&gt;&lt;div style=&quot;text-wrap-mode: nowrap;&quot;&gt;the tasks and sends chunks from OpenAI&lt;/div&gt;&lt;div style=&quot;text-wrap-mode: nowrap;&quot;&gt;into RabbitMQ as messages, which are&lt;/div&gt;&lt;div style=&quot;text-wrap-mode: nowrap;&quot;&gt;relayed by the API instance through the&lt;/div&gt;&lt;div style=&quot;text-wrap-mode: nowrap;&quot;&gt;open connection as a gRPC stream.&lt;/div&gt;&lt;div style=&quot;text-wrap-mode: nowrap;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;text-wrap-mode: nowrap;&quot;&gt;Rate limiting and input/output token usage&lt;/div&gt;&lt;div style=&quot;text-wrap-mode: nowrap;&quot;&gt;tracked in a Postgres table&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="651.75" y="920" width="228.25" height="270" as="geometry" />
         </mxCell>
         <mxCell id="mE6wTCe11L0QiMz-y8vd-51" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;Content Service&lt;/h1&gt;&lt;div&gt;CRUD for content entities, for World, for Campaign, etc.&lt;/div&gt;&lt;div&gt;GraphQL Search endpoint for content extraction.&lt;/div&gt;&lt;div&gt;Used for both World Building and Campaign running.&lt;/div&gt;&lt;div&gt;World DB and Capmpaign DB identical in schema, but separated for distinct purposes&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
@@ -176,6 +176,32 @@
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="1364.29" y="547" as="sourcePoint" />
             <mxPoint x="1365.29" y="648" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mE6wTCe11L0QiMz-y8vd-62" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;Campaign Service (TO IMPLEMENT)&lt;/h1&gt;&lt;p&gt;Microservice responsible for actually running a dynamic campaign. Most data changes will be stored in Redis, and periodically pushed into Campaign DB via the Content Service for persistent storage.&lt;/p&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1525" y="485" width="415" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="mE6wTCe11L0QiMz-y8vd-63" value="" style="edgeStyle=segmentEdgeStyle;endArrow=classic;html=1;curved=0;rounded=0;endSize=8;startSize=8;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="mE6wTCe11L0QiMz-y8vd-58" target="mE6wTCe11L0QiMz-y8vd-9">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="860" y="500" as="sourcePoint" />
+            <mxPoint x="1000" y="250" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="980" y="452" />
+              <mxPoint x="980" y="370" />
+              <mxPoint x="280" y="370" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mE6wTCe11L0QiMz-y8vd-64" value="" style="edgeStyle=segmentEdgeStyle;endArrow=classic;html=1;curved=0;rounded=0;endSize=8;startSize=8;exitX=0;exitY=0.75;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="mE6wTCe11L0QiMz-y8vd-58" target="mE6wTCe11L0QiMz-y8vd-10">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1338" y="462" as="sourcePoint" />
+            <mxPoint x="290" y="441" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="1328" y="462" />
+              <mxPoint x="970" y="462" />
+              <mxPoint x="970" y="430" />
+              <mxPoint x="850" y="430" />
+            </Array>
           </mxGeometry>
         </mxCell>
       </root>
