@@ -2,6 +2,8 @@
 
 A modern web application for creating and managing game worlds and campaigns, leveraging cutting-edge technologies and AI assistance for content generation. Built with a robust tech stack focused on performance, scalability, and real-time capabilities.
 
+![Architecture Diagram](./architecture.drawio.png)
+
 ## 🚀 Technology Stack
 
 ### Frontend
@@ -55,6 +57,3 @@ Currently focusing on:
 - Refining the **Next.js frontend** for intuitive world-building and gameplay interfaces. Integrating AI-assisted content generation and playground dialogue simulation with a character while on the world-building UI.
 
 [📚 Documentation](./docs) | [🤝 Contributing](./CONTRIBUTING.md)
-
-
-![Architecture Diagram](./architecture.drawio.png)
